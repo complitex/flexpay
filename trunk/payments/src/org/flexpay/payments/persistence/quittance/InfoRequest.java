@@ -1,7 +1,7 @@
 package org.flexpay.payments.persistence.quittance;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.payments.actions.search.data.SearchDebtsRequest;
+import org.flexpay.payments.actions.request.data.DebtsRequest;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -31,7 +31,7 @@ public class InfoRequest implements Serializable {
 
     protected String requestId;
     protected String request;
-    protected int type = SearchDebtsRequest.QUITTANCE_DEBT_REQUEST;
+    protected int type = DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST;
     private int debtInfoType;
 
     private InfoRequest(String request, int type, int debtInfoType) {
@@ -76,6 +76,7 @@ public class InfoRequest implements Serializable {
      * Create request from account number
      *
      * @param accountNumber Account number
+     * @param debtInfoType debtInfoType
      * @return Request object
      */
     public static InfoRequest accountNumberRequest(@NotNull String accountNumber, int debtInfoType) {
@@ -86,6 +87,7 @@ public class InfoRequest implements Serializable {
      * Create request from quittance number
      *
      * @param quittanceNumber Quittance number
+     * @param debtInfoType debtInfoType
      * @return Request object
      */
     public static InfoRequest quittanceNumberRequest(@NotNull String quittanceNumber, int debtInfoType) {
@@ -96,6 +98,7 @@ public class InfoRequest implements Serializable {
      * Create request from apartment master index
      *
      * @param apartmentNumber Apartment master index
+     * @param debtInfoType debtInfoType
      * @return Request object
      */
     public static InfoRequest apartmentNumberRequest(@NotNull String apartmentNumber, int debtInfoType) {
@@ -106,6 +109,7 @@ public class InfoRequest implements Serializable {
      * Create request from service provider account number
      *
      * @param seviceProviderAccountNumber service provider account number
+     * @param debtInfoType debtInfoType
      * @return Request object
      */
     public static InfoRequest serviceProviderAccountNumberRequest(@NotNull String seviceProviderAccountNumber, int debtInfoType) {
@@ -116,6 +120,7 @@ public class InfoRequest implements Serializable {
      * Create request from address calculated by the personal account number of service provider
      *
      * @param address address calculated by the personal account number of service provider
+     * @param debtInfoType debtInfoType
      * @return Request object
      */
     public static InfoRequest addressRequest(@NotNull String address, int debtInfoType) {

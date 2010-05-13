@@ -51,7 +51,7 @@ public abstract class DetailsResponse implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("requestId", requestId).
                 append("statusCode", statusCode).
                 append("statusMessage", statusMessage).

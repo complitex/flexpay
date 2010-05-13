@@ -1,31 +1,42 @@
-package org.flexpay.payments.actions.search.data;
+package org.flexpay.payments.actions.request.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class SearchDebtsRequest {
+public class DebtsRequest {
 
-    public final static int QUITTANCE_DEBT_REQUEST = 1;
-    public final static int DEBT_REQUEST = 2;
+    public final static int SEARCH_QUITTANCE_DEBT_REQUEST = 1;
+    public final static int SEARCH_DEBT_REQUEST = 2;
+    public final static int PAY_DEBT_REQUEST = 3;
 
 	private DebtInfo debtInfo;
+    private PayDebt payDebt;
     private String login;
     private String signature;
 
-    private int debtInfoType = QUITTANCE_DEBT_REQUEST;
+    private int debtRequestType = SEARCH_QUITTANCE_DEBT_REQUEST;
 
     public DebtInfo getDebtInfo() {
         return debtInfo;
     }
 
     public void setDebtInfo(DebtInfo debtInfo) {
-        debtInfoType = DEBT_REQUEST;
+        debtRequestType = SEARCH_DEBT_REQUEST;
         this.debtInfo = debtInfo;
     }
 
     public void setQuittanceDebtInfo(DebtInfo debtInfo) {
-        debtInfoType = QUITTANCE_DEBT_REQUEST;
+        debtRequestType = SEARCH_QUITTANCE_DEBT_REQUEST;
         this.debtInfo = debtInfo;
+    }
+
+    public PayDebt getPayDebt() {
+        return payDebt;
+    }
+
+    public void setPayDebt(PayDebt payDebt) {
+        debtRequestType = PAY_DEBT_REQUEST;
+        this.payDebt = payDebt;
     }
 
     public String getLogin() {
@@ -44,21 +55,22 @@ public class SearchDebtsRequest {
         this.signature = signature;
     }
 
-    public int getDebtInfoType() {
-        return debtInfoType;
+    public int getDebtRequestType() {
+        return debtRequestType;
     }
 
-    public void setDebtInfoType(int debtInfoType) {
-        this.debtInfoType = debtInfoType;
+    public void setDebtRequestType(int debtRequestType) {
+        this.debtRequestType = debtRequestType;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("debtInfo", debtInfo).
+                append("payDebt", payDebt).
                 append("login", login).
                 append("signature", signature).
-                append("debtInfoType", debtInfoType).
+                append("debtRequestType", debtRequestType).
                 toString();
     }
 }

@@ -121,22 +121,6 @@ public class Client {
 	public static void main(String[] args) throws Exception {
 
         Properties props = loadProperties();
-
-//        Digester digester = new Digester();
-//
-//        digester.addObjectCreate("request", SearchRequest.class);
-//        digester.addObjectCreate("request/getQuittanceDebtInfo", SearchRequest.DebtInfo.class);
-//        digester.addSetNext("request/getQuittanceDebtInfo", "setQuittanceDebtInfo");
-//        digester.addObjectCreate("request/getDebtInfo", SearchRequest.DebtInfo.class);
-//        digester.addSetNext("request/getDebtInfo", "setDebtInfo");
-//        digester.addBeanPropertySetter("*/requestId", "requestId");
-//        digester.addBeanPropertySetter("*/searchType", "searchType");
-//        digester.addBeanPropertySetter("*/searchCriteria", "searchCriteria");
-//        digester.addBeanPropertySetter("request/login", "login");
-//        digester.addBeanPropertySetter("request/signature", "signature");
-//
-//        System.out.println(digester.parse(new FileInputStream(new File(props.getProperty("request.file")))));
-
         HttpClient httpClient = new DefaultHttpClient();
 
         executeRequest(REQUEST_TYPE_SEARCH, props, httpClient);
@@ -251,8 +235,8 @@ public class Client {
         digester.addSetNext("response/payInfo/servicePayInfo", "addServicePayInfo");
         digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceId", "serviceId");
         digester.addBeanPropertySetter("response/payInfo/servicePayInfo/documentId", "documentId");
-        digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceStatusCode/", "statusCode");
-        digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceStatusMessage/", "statusMessage");
+        digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceStatusCode", "statusCode");
+        digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceStatusMessage", "statusMessage");
 
         return digester;
     }
@@ -368,12 +352,14 @@ public class Client {
         signature.initVerify(certificate);
 
         updateSignature(signature, response.getRequestId());
+        updateSignature(signature, response.getOperationId());
         updateSignature(signature, response.getStatusCode());
         updateSignature(signature, response.getStatusMessage());
 
         for (PayDebtResponse.ServicePayInfo servicePayInfo : response.getServicePayInfos()) {
 
             updateSignature(signature, servicePayInfo.getServiceId());
+            updateSignature(signature, servicePayInfo.getDocumentId());
             updateSignature(signature, servicePayInfo.getStatusCode());
             updateSignature(signature, servicePayInfo.getStatusMessage());
 
@@ -451,7 +437,6 @@ public class Client {
                 if (response.getResponseType() == SearchResponse.QUITTANCE_DEBT_RESPONSE) {
 
                     for (ServiceDetails.ServiceAttribute serviceAttribute : serviceDetails.getAttributes()) {
-
                         updateSignature(signature, serviceAttribute.getName());
                         updateSignature(signature, serviceAttribute.getValue());
                     }
@@ -464,7 +449,7 @@ public class Client {
 
 	private static void updateSignature(Signature signature, String value) throws Exception{
     	if (value != null) {
-			signature.update(value.getBytes());
+			signature.update(value.getBytes("utf8"));
 		}
 	}
 }

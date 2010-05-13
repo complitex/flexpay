@@ -240,6 +240,24 @@
 		</property>
 	</bean>
 
+    <bean id="quittancePayer"
+          class="org.flexpay.payments.service.impl.QuittancePayerImpl"
+          p:documentStatusService-ref="documentStatusService"
+          p:documentTypeService-ref="documentTypeService"
+          p:documentAdditionTypeService-ref="documentAdditionTypeService"
+          p:operationLevelService-ref="operationLevelService"
+          p:operationStatusService-ref="operationStatusService"
+          p:operationTypeService-ref="operationTypeService"
+          p:cashboxService-ref="cashboxService"
+          p:spService-ref="spService"
+          p:serviceProviderService-ref="serviceProviderService"
+          p:masterIndexService-ref="masterIndexService"
+          p:addressService-ref="addressService"
+          p:personService-ref="personService"
+          p:operationService-ref="operationService"
+          p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
+          p:correctionsService-ref="correctionsService" />
+
 	<bean id="paymentsUserPreferencesFactory"
 		  autowire-candidate="false"
 		  class="org.flexpay.payments.util.config.PaymentsUserPreferencesFactory" />

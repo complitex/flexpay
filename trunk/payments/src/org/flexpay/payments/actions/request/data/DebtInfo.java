@@ -1,4 +1,4 @@
-package org.flexpay.payments.actions.search.data;
+package org.flexpay.payments.actions.request.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -35,7 +35,7 @@ public class DebtInfo {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("requestId", requestId).
                 append("searchType", searchType).
                 append("searchCriteria", searchCriteria).

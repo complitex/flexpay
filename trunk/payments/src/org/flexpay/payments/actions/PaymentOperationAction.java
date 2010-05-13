@@ -12,7 +12,6 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.quittance.SearchQuittanceAction;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceInfo;
 import org.flexpay.payments.service.*;
@@ -26,6 +25,7 @@ import java.util.Map;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.payments.actions.quittance.SearchQuittanceAction.ServiceFullIndexUtil.getServiceIdFromIndex;
 
 public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
@@ -56,7 +56,6 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 	private OperationTypeService operationTypeService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
-
 
 	private ApartmentService apartmentService;
 	private BuildingService buildingService;
@@ -110,7 +109,7 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 	private Document buildDocument(String serviceFullIndex, Cashbox cashbox) throws FlexPayException {
 		
 		BigDecimal documentSumm = payments.get(serviceFullIndex);
-		String serviceId = SearchQuittanceAction.ServiceFullIndexUtil.getServiceIdFromIndex(serviceFullIndex);
+		String serviceId = getServiceIdFromIndex(serviceFullIndex);
 		Service service = spService.readFull(new Stub<Service>(Long.parseLong(serviceId)));
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
 		Organization serviceProviderOrganization = serviceProvider.getOrganization();

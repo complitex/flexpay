@@ -18,6 +18,7 @@ public class SearchResponse {
     private String statusMessage;
 	private String signature;
     private List<QuittanceInfo> quittanceInfos = new ArrayList<QuittanceInfo>();
+    private List<ServiceDetails> serviceDetails = new ArrayList<ServiceDetails>();
 
     public String getRequestId() {
         return requestId;
@@ -72,6 +73,19 @@ public class SearchResponse {
         this.responseType = responseType;
     }
 
+    public List<ServiceDetails> getServiceDetails() {
+        return serviceDetails;
+    }
+
+    public void setServiceDetails(List<ServiceDetails> serviceDetails) {
+        this.serviceDetails = serviceDetails;
+    }
+
+    public void addServiceDetails(ServiceDetails serviceDetails) {
+        responseType = DEBT_RESPONSE;
+        this.serviceDetails.add(serviceDetails);
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
@@ -81,6 +95,7 @@ public class SearchResponse {
                 append("statusMessage", statusMessage).
                 append("signature", signature).
                 append("quittanceInfos", quittanceInfos).
+                append("serviceDetails", serviceDetails).
                 toString();
     }
 }

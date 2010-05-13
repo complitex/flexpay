@@ -136,14 +136,14 @@
 		<url-pattern>/processLogDownloadServlet</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>searchQuittanceServlet</servlet-name>
-		<servlet-class>org.flexpay.payments.actions.search.SearchQuittanceServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>searchQuittanceServlet</servlet-name>
-		<url-pattern>/search/*</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>processRequestServlet</servlet-name>
+        <servlet-class>org.flexpay.payments.actions.request.ProcessRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>processRequestServlet</servlet-name>
+        <url-pattern>/process/*</url-pattern>
+    </servlet-mapping>
 
 	<security-constraint>
 		<web-resource-collection>
