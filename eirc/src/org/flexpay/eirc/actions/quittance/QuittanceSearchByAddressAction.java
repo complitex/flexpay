@@ -71,6 +71,7 @@ public class QuittanceSearchByAddressAction extends ApartmentFilterDependent2Act
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

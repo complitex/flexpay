@@ -12,7 +12,7 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
-import org.flexpay.payments.actions.search.data.SearchDebtsRequest;
+import org.flexpay.payments.actions.request.data.DebtsRequest;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
@@ -73,9 +73,9 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private InfoRequest buildQuittanceRequest() throws FlexPayException {
 
 		if (SEARCH_TYPE_EIRC_ACCOUNT.equals(searchType)) {
-			return accountNumberRequest(searchCriteria, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST);
+			return accountNumberRequest(searchCriteria, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST);
 		} else if (SEARCH_TYPE_QUITTANCE_NUMBER.equals(searchType)) {
-			return InfoRequest.quittanceNumberRequest(searchCriteria, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST);
+			return InfoRequest.quittanceNumberRequest(searchCriteria, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST);
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
 			Apartment apartment = apartmentService.readFull(
 					new Stub<Apartment>(Long.parseLong(searchCriteria)));
@@ -83,7 +83,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			if (indx == null) {
 				throw new FlexPayException("No master index for apartment #" + searchCriteria);
 			}
-			return apartmentNumberRequest(indx, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST);
+			return apartmentNumberRequest(indx, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
 									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);

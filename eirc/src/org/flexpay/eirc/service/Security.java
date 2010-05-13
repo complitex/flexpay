@@ -1,15 +1,16 @@
 package org.flexpay.eirc.service;
 
+import org.flexpay.common.util.SecurityUtil;
+
+import java.util.List;
+
 import static org.flexpay.ab.service.Roles.APARTMENT_READ;
 import static org.flexpay.ab.service.Roles.PERSON_READ;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
+import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.eirc.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.SERVICE_READ;
 import static org.flexpay.payments.service.Roles.SERVICE_TYPE_READ;
-
-import java.util.List;
 
 public abstract class Security extends org.flexpay.common.service.Security {
 
@@ -21,7 +22,7 @@ public abstract class Security extends org.flexpay.common.service.Security {
 	/**
 	 * Set of authorities names for quittance finder process user
 	 */
-	private static final List<String> USER_QUITTANCE_FINDER_AUTHORITIES = CollectionUtils.list(
+	private static final List<String> USER_QUITTANCE_FINDER_AUTHORITIES = list(
 			QUITTANCE_READ,
 			QUITTANCE_PAYMENT_READ,
 			ACCOUNT_READ,

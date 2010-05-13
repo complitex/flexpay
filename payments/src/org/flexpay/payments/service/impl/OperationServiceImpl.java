@@ -48,6 +48,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @return Operation object
 	 */
 	@Nullable
+    @Override
 	public Operation read(@NotNull Stub<Operation> operationStub) {
 		return operationDao.readFull(operationStub.getId());
 	}
@@ -58,6 +59,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @param operation Operation Object
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void create(@NotNull Operation operation) {
 		operation.setId(null);
 		operationDao.create(operation);
@@ -69,6 +71,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @param operation Operation Object
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void update(@NotNull Operation operation) {
 		operationDao.update(operation);
 	}
@@ -79,6 +82,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @param operationStub operation stub
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void delete(@NotNull Stub<Operation> operationStub) {
 		Operation operation = operationDao.read(operationStub.getId());
 
@@ -90,30 +94,37 @@ public class OperationServiceImpl implements OperationService {
 		operationDao.delete(operation);
 	}
 
+    @Override
 	public List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager) {
 		return operationDao.listPaymentOperations(beginDate, endDate, pager);
 	}
 
+    @Override
 	public List<Operation> listPaymentOperations(Date beginDate, Date endDate) {
 		return operationDao.listPaymentOperations(beginDate, endDate);
 	}
 
+    @Override
 	public List<Operation> listLastPaymentOperations(Date beginDate, Date endDate) {
 		return operationDao.listLastPaymentOperations(beginDate, endDate);
 	}
 
+    @Override
 	public List<Operation> listLastPaymentOperationsForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate) {
 		return operationDao.listLastPaymentPointPaymentOperations(paymentPoint.getId(), beginDate, endDate);
 	}
 
+    @Override
 	public List<Operation> listLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
 		return operationDao.listLastCashboxPaymentOperations(cashbox.getId(), beginDate, endDate);
 	}
 
+    @Override
 	public List<Operation> listReceivedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
+    @Override
 	public List<Operation> listReturnedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.RETURNED);
 	}
@@ -130,34 +141,42 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPaymentsForOperator(cashbox.getId(), beginDate, endDate, OperationStatus.RETURNED, registerUserName);
 	}
 
+    @Override
 	public List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
+    @Override
 	public List<Operation> listReceivedPaymentsForOrganization(Stub<Organization> organization, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByOrganization(organization.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
+    @Override
 	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,
 										   Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
 		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
+    @Override
 	public List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSumm,
 											BigDecimal maximalSumm, Page<Operation> pager) {
 		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
-	@Transactional (readOnly = false)
 	/**
 	 * Creates new operation with no data and BLANK state
 	 *
 	 * @return new operation instance
 	 */
+    @Transactional (readOnly = false)
+    @Override
 	public Operation createBlankOperation(String creator, Stub<Cashbox> cashboxStub) throws FlexPayException {
+
+        log.debug("Creating blank operation for creator = {} and cashboxStub = {}", creator, cashboxStub);
 
 		Cashbox cashbox = cashboxService.read(cashboxStub);
 		if (cashbox == null) {
+            log.error("Invalid cashbox id {}", cashboxStub.getId());
 			throw new FlexPayException("Invalid cashbox id: " + cashboxStub.getId());
 		}
 
@@ -175,22 +194,22 @@ public class OperationServiceImpl implements OperationService {
 		operation.setPaymentPoint(paymentPoint);
 		operation.setCashbox(cashbox);
 
+        log.debug("Creating operation {}", operation);
+
 		operationDao.create(operation);
 
 		return operation;
 	}
 
-	@Override
 	@Transactional (readOnly = true)
+    @Override
 	public Long getBlankOperationsCount() throws FlexPayException {
-
 		return operationDaoExt.getBlankOperationsCount();
 	}
 
-	@Override
 	@Transactional (readOnly = false)
+    @Override
 	public void deleteAllBlankOperations() throws FlexPayException {
-
 		operationDaoExt.deleteAllBlankOperations();
 	}
 

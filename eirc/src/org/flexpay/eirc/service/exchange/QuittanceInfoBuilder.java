@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
@@ -18,7 +17,7 @@ import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.payments.actions.search.data.SearchDebtsRequest;
+import org.flexpay.payments.actions.request.data.DebtsRequest;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceInfo;
@@ -59,7 +58,7 @@ public class QuittanceInfoBuilder {
 
         log.debug("infoType = {}", infoType);
 
-        if (infoType == SearchDebtsRequest.QUITTANCE_DEBT_REQUEST) {
+        if (infoType == DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST) {
 
             Quittance q = quittanceService.readFull(stub);
             if (q == null) {
@@ -123,44 +122,46 @@ public class QuittanceInfoBuilder {
             serviceDetails.setServiceName(getTranslation(service.getDescriptions()).getName());
             serviceDetails.setIncomingBalance(details.getIncomingBalance());
             serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
-            serviceDetails.setAmount(details.getAmount());
+            serviceDetails.setAmount(details.getAmount().setScale(2));
             serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
 
-            if (infoType == SearchDebtsRequest.QUITTANCE_DEBT_REQUEST) {
+            if (infoType == DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
-                serviceDetails.setExpence(details.getExpence());
-                serviceDetails.setRate(details.getRate());
-                serviceDetails.setRecalculation(details.getRecalculation());
-                serviceDetails.setBenifit(details.getBenifit());
-                serviceDetails.setSubsidy(details.getSubsidy());
-                serviceDetails.setPayment(details.getPayment());
-                serviceDetails.setPayed(getPayedSumm(details, payments));
+                serviceDetails.setExpence(details.getExpence().setScale(2));
+                serviceDetails.setRate(details.getRate().setScale(2));
+                serviceDetails.setRecalculation(details.getRecalculation().setScale(2));
+                serviceDetails.setBenifit(details.getBenifit().setScale(2));
+                serviceDetails.setSubsidy(details.getSubsidy().setScale(2));
+                serviceDetails.setPayment(details.getPayment().setScale(2));
+                serviceDetails.setPayed(getPayedSum(details, payments).setScale(2));
                 serviceDetails.setAttributes(getConsumerAttributes(consumer));
             }
 
             ConsumerInfo cinfo = consumer.getConsumerInfo();
             serviceDetails.setFirstName(cinfo.getFirstName());
             serviceDetails.setMiddleName(cinfo.getMiddleName());
-            serviceDetails.setLastName(cinfo.getMiddleName());
+            serviceDetails.setLastName(cinfo.getLastName());
             serviceDetails.setTownName(cinfo.getCityName());
-//            serviceDetails.setTownType(cinfo.getCityName());
+//            serviceDetails.setTownType("");
             serviceDetails.setStreetName(cinfo.getStreetName());
             serviceDetails.setStreetType(cinfo.getStreetTypeName());
             serviceDetails.setBuildingNumber(cinfo.getBuildingNumber());
             serviceDetails.setBuildingBulk(cinfo.getBuildingBulk());
             serviceDetails.setApartmentNumber(cinfo.getApartmentNumber());
-            serviceDetails.setRoomNumber("");
+//            serviceDetails.setRoomNumber("");
 
             detailses.add(serviceDetails);
         }
 
         info.setDetailses(detailses.toArray(new ServiceDetails[detailses.size()]));
 
+        log.debug("QuittanceInfo: {}", info);
+
         return info;
     }
 
     public ServiceDetails.ServiceAttribute[] getConsumerAttributes(Consumer consumer) {
-        List<ServiceDetails.ServiceAttribute> attrs = CollectionUtils.list();
+        List<ServiceDetails.ServiceAttribute> attrs = list();
         for (String attrCode : ConsumerAttributes.PAYMENT_ATTRIBUTES) {
             ConsumerAttributeTypeBase type = attributeTypeService.readByCode(attrCode);
             if (type == null) {
@@ -178,28 +179,28 @@ public class QuittanceInfoBuilder {
 
     public BigDecimal getTotalPayed(Quittance quittance, List<QuittancePayment> payments) {
 
-        BigDecimal summ = new BigDecimal("0.00");
+        BigDecimal sum = new BigDecimal("0.00");
         for (QuittanceDetails details : quittance.getQuittanceDetails()) {
             if (getService(details).isNotSubservice()) {
-                BigDecimal summPayed = getPayedSumm(details, payments);
-                summ = summ.add(summPayed);
+                BigDecimal sumPayed = getPayedSum(details, payments);
+                sum = sum.add(sumPayed);
             }
         }
 
-        return summ;
+        return sum;
     }
 
     @NotNull
-    public BigDecimal getPayedSumm(QuittanceDetails qd, List<QuittancePayment> payments) {
-        BigDecimal summ = new BigDecimal("0.00");
+    public BigDecimal getPayedSum(QuittanceDetails qd, List<QuittancePayment> payments) {
+        BigDecimal sum = new BigDecimal("0.00");
         for (QuittancePayment payment : payments) {
             QuittanceDetailsPayment detailsPayment = payment.getPayment(qd);
             if (detailsPayment != null) {
-                summ = summ.add(detailsPayment.getAmount());
+                sum = sum.add(detailsPayment.getAmount());
             }
         }
 
-        return summ;
+        return sum;
     }
 
     public BigDecimal getTotalPayable(Quittance quittance) {
