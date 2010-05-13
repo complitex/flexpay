@@ -45,7 +45,7 @@
 		  class="org.flexpay.eirc.service.importexport.EircImportServiceTxImpl"
 		  p:consumerService-ref="consumerService"
 		  p:importUtil-ref="eircImportUtil"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager" />
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO" />
 
 	<bean id="importServiceEirc"
 		  class="org.flexpay.eirc.service.importexport.EircImportService"

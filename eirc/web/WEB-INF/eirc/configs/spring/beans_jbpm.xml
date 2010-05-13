@@ -73,7 +73,7 @@
 	<bean name="processRecordActionHandler"
 		  class="org.flexpay.eirc.process.registry.ProcessRecordActionHandler"
 		  p:consumerService-ref="consumerService"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
 		  p:propertiesFactory-ref="propertiesFactory"
 		  scope="prototype" />
 
@@ -91,9 +91,22 @@
 
 	<bean id="startRegistryProcessingActionHandler"
 		  class="org.flexpay.eirc.process.registry.StartRegistryProcessingActionHandler"
+		  p:registryService-ref="registryService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  scope="prototype" />
+
+	<bean id="importConsumersActionHandler"
+		  class="org.flexpay.eirc.process.registry.ImportConsumersActionHandler"
 		  p:processor-ref="registryProcessor"
 		  p:registryService-ref="registryService"
 		  p:handleError-ref="registryHandleError"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:statusService-ref="registryStatusService"
+		  scope="prototype" />
+
+	<bean id="setNextRegistrySuccessStatusActionHandler"
+		  class="org.flexpay.eirc.process.registry.SetNextRegistrySuccessStatusActionHandler"
+		  p:registryService-ref="registryService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  scope="prototype" />
 
@@ -128,7 +141,7 @@
 		  p:typeRegistry-ref="classToTypeRegistry"
 		  p:correctionsService-ref="correctionsService"
 		  p:masterIndexService-ref="masterIndexService"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
 		  scope="prototype" />

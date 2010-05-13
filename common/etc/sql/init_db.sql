@@ -127,6 +127,21 @@ SELECT @registry_status_created:=last_insert_id();
 INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 13);
 SELECT @registry_status_creating_canceled:=last_insert_id();
 
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 14);
+SELECT @registry_status_processed_import_consumer:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 15);
+SELECT @registry_status_processed_import_consumer_with_error:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 16);
+SELECT @registry_status_processing_import_consumer:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 17);
+SELECT @registry_status_processing_import_consumer_with_error:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 18);
+SELECT @registry_status_start_processing:=last_insert_id();
+
 -- Init RegistryArchiveStatuses
 INSERT INTO common_registry_archive_statuses_tbl (code) VALUES (0);
 SELECT @sp_registry_archive_status_none:=last_insert_id();

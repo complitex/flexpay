@@ -46,12 +46,32 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 
 		transitions.put(LOADED_WITH_ERROR, Collections.<Integer>emptyList());
 
-		targets = CollectionUtils.list(PROCESSING);
+		targets = CollectionUtils.list(START_PROCESSING);
 		transitions.put(LOADED, targets);
+
+		targets = CollectionUtils.list(PROCESSING_IMPORT_CONSUMER);
+		transitions.put(START_PROCESSING, targets);
+		processingStates.add(START_PROCESSING);
 
 		targets = CollectionUtils.list(PROCESSED, PROCESSING_WITH_ERROR, PROCESSING_CANCELED);
 		transitions.put(PROCESSING, targets);
 		processingStates.add(PROCESSING);
+
+		targets = CollectionUtils.list(PROCESSED_IMPORT_CONSUMER, PROCESSING_IMPORT_CONSUMER_WITH_ERROR);
+		transitions.put(PROCESSING_IMPORT_CONSUMER, targets);
+		processingStates.add(PROCESSING_IMPORT_CONSUMER);
+
+		targets = CollectionUtils.list(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, PROCESSING_CANCELED);
+		transitions.put(PROCESSING_IMPORT_CONSUMER_WITH_ERROR, targets);
+		processingStates.add(PROCESSING_IMPORT_CONSUMER_WITH_ERROR);
+
+		targets = CollectionUtils.list(PROCESSING, PROCESSING_WITH_ERROR, PROCESSING_CANCELED);
+		transitions.put(PROCESSED_IMPORT_CONSUMER, targets);
+		processingStates.add(PROCESSED_IMPORT_CONSUMER);
+
+		targets = CollectionUtils.list(PROCESSING_WITH_ERROR, PROCESSED_WITH_ERROR);
+		transitions.put(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, targets);
+		processingStates.add(PROCESSED_IMPORT_CONSUMER_WITH_ERROR);
 
 		// allow set processed with errors if there are any not processed records
 		targets = CollectionUtils.list(ROLLBACKING, PROCESSED_WITH_ERROR);
@@ -61,18 +81,18 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		transitions.put(PROCESSING_WITH_ERROR, targets);
 		processingStates.add(PROCESSING_WITH_ERROR);
 
-		targets = CollectionUtils.list(PROCESSING, ROLLBACKING);
+		targets = CollectionUtils.list(START_PROCESSING, ROLLBACKING);
 		transitions.put(PROCESSED_WITH_ERROR, targets);
 		transitionsToProcessing.add(PROCESSED_WITH_ERROR);
 
-		targets = CollectionUtils.list(PROCESSING, ROLLBACKING);
+		targets = CollectionUtils.list(START_PROCESSING, ROLLBACKING);
 		transitions.put(PROCESSING_CANCELED, targets);
 		transitionsToProcessing.add(PROCESSING_CANCELED);
 
 		targets = CollectionUtils.list(ROLLBACKED);
 		transitions.put(ROLLBACKING, targets);
 
-		targets = CollectionUtils.list(PROCESSING);
+		targets = CollectionUtils.list(START_PROCESSING);
 		transitions.put(ROLLBACKED, targets);
 		transitionsToProcessing.add(ROLLBACKED);
 	}
@@ -85,7 +105,8 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @return <code>true</code> if registry processing allowed, or <code>false</code> otherwise
 	 */
 	public boolean canTransit(Registry registry, RegistryStatus nextStatus) {
-
+		log.debug("Current status is {}. Next status is {}. Allowed transition is {}",
+				new Object[] {code(registry), nextStatus.getCode(), transitions.get(code(registry))});
 		return transitions.get(code(registry)).contains(nextStatus.getCode());
 	}
 
@@ -143,7 +164,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 */
 	private Integer code(Registry registry) {
 		int code = registry.getRegistryStatus().getCode();
-		if (code < 0 || code >= transitions.size()) {
+		if (code < 0) {
 			throw new IllegalStateException("Invalid registry status code: " + code);
 		}
 		return code;

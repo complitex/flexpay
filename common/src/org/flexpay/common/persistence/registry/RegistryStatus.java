@@ -27,14 +27,26 @@ public class RegistryStatus extends DomainObject {
 	public static final int CREATED = 12;
 	public static final int CREATING_CANCELED = 13;
 
+	public static final int PROCESSED_IMPORT_CONSUMER = 14;
+	public static final int PROCESSED_IMPORT_CONSUMER_WITH_ERROR = 15;
+	public static final int PROCESSING_IMPORT_CONSUMER = 16;
+	public static final int PROCESSING_IMPORT_CONSUMER_WITH_ERROR = 17;
+
+	public static final int START_PROCESSING = 18;
+
 	static {
 		typeToName.put(LOADING, "eirc.registry.status.LOADING");
 		typeToName.put(LOADED, "eirc.registry.status.LOADED");
 		typeToName.put(LOADING_CANCELED, "eirc.registry.status.LOADING_CANCELED");
 		typeToName.put(LOADED_WITH_ERROR, "eirc.registry.status.LOADED_WITH_ERROR");
+		typeToName.put(START_PROCESSING, "eirc.registry.status.START_PROCESSING");
 		typeToName.put(PROCESSING, "eirc.registry.status.PROCESSING");
+		typeToName.put(PROCESSING_IMPORT_CONSUMER, "eirc.registry.status.PROCESSING_IMPORT_CONSUMER");
 		typeToName.put(PROCESSING_WITH_ERROR, "eirc.registry.status.PROCESSING_WITH_ERROR");
+		typeToName.put(PROCESSING_IMPORT_CONSUMER_WITH_ERROR, "eirc.registry.status.PROCESSING_IMPORT_CONSUMER_WITH_ERROR");
 		typeToName.put(PROCESSED, "eirc.registry.status.PROCESSED");
+		typeToName.put(PROCESSED_IMPORT_CONSUMER, "eirc.registry.status.PROCESSED_IMPORT_CONSUMER");
+		typeToName.put(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, "eirc.registry.status.PROCESSED_IMPORT_CONSUMER_WITH_ERROR");
 		typeToName.put(PROCESSED_WITH_ERROR, "eirc.registry.status.PROCESSED_WITH_ERROR");
 		typeToName.put(PROCESSING_CANCELED, "eirc.registry.status.PROCESSING_CANCELED");
 		typeToName.put(ROLLBACKING, "eirc.registry.status.ROLLBACKING");

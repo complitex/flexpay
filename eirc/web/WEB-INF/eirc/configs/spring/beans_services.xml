@@ -27,7 +27,7 @@
 		  p:organizationService-ref="organizationService"
 		  p:providerService-ref="serviceProviderService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:propertiesFactory-ref="propertiesFactory"
 		  p:typeRegistry-ref="classToTypeRegistry"
@@ -209,7 +209,7 @@
 
 	<bean id="serviceProviderFileProcessorTx"
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTxImpl"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory" />
 
 	<bean id="registryProcessor"
@@ -223,7 +223,7 @@
 		  p:errorsSupport-ref="importErrorSupport"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:classToTypeRegistry-ref="classToTypeRegistry"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:organizationService-ref="organizationService" />
 
@@ -313,7 +313,7 @@
 	<bean id="registryHandleError"
 		  class="org.flexpay.eirc.process.registry.error.impl.RegistryHandleError"
 		  p:classToTypeRegistry-ref="classToTypeRegistry"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:organizationService-ref="organizationService" />
 	
