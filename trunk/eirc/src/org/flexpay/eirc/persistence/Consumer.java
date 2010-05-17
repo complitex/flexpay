@@ -6,12 +6,8 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.payments.persistence.Service;
@@ -22,6 +18,11 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.*;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 public class Consumer extends DomainObjectWithStatus {
 
@@ -35,7 +36,7 @@ public class Consumer extends DomainObjectWithStatus {
 	private Service service;
 	private Person responsiblePerson;
 
-	private Set<ConsumerAttribute> attributes = CollectionUtils.set();
+	private Set<ConsumerAttribute> attributes = set();
 
 	public Consumer() {
 	}
@@ -143,12 +144,12 @@ public class Consumer extends DomainObjectWithStatus {
 			return splitCache;
 		}
 
-		Map<ConsumerAttributeTypeBase, SortedSet<ConsumerAttribute>> result = CollectionUtils.map();
+		Map<ConsumerAttributeTypeBase, SortedSet<ConsumerAttribute>> result = map();
 		for (ConsumerAttribute attribute : getAttributes()) {
 			ConsumerAttributeTypeBase type = attribute.getType();
 			SortedSet<ConsumerAttribute> group = result.get(type);
 			if (group == null) {
-				group = CollectionUtils.treeSet();
+				group = treeSet();
 				result.put(type, group);
 			}
 			group.add(attribute);
@@ -234,8 +235,8 @@ public class Consumer extends DomainObjectWithStatus {
 		end = DateUtil.truncateDay(end);
 
 		SortedSet<ConsumerAttribute> attrs = findAttributes(attribute.getType());
-		Set<ConsumerAttribute> toDelete = CollectionUtils.set();
-		Set<ConsumerAttribute> toAdd = CollectionUtils.set();
+		Set<ConsumerAttribute> toDelete = set();
+		Set<ConsumerAttribute> toAdd = set();
 		for (ConsumerAttribute old : attrs) {
 			old.setTemporal(attribute.getTemporal());
 			if (DateIntervalUtil.areIntersecting(old.getBegin(), old.getEnd(), begin, end)) {
@@ -272,7 +273,7 @@ public class Consumer extends DomainObjectWithStatus {
 		Map<ConsumerAttributeTypeBase, SortedSet<ConsumerAttribute>> splittedAttributes = splitAttributes();
 		SortedSet<ConsumerAttribute> attrs = splittedAttributes.get(type);
 		if (attrs == null) {
-			attrs = CollectionUtils.treeSet();
+			attrs = treeSet();
 			splittedAttributes.put(type, attrs);
 		}
 

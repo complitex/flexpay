@@ -124,15 +124,38 @@ public class ConsumerServiceImpl implements ConsumerService {
 	}
 
     /**
-     * Try to find consumers by external account number
+     * Try to find consumer by ERC account number and service
      *
-     * @param accountNumber External account number
+     * @param ercAccount ERC account number
+     * @param serviceStub   Service stub
+     * @return Consumer if found, or <code>null</code> otherwise
+     */
+    @Nullable
+    @Override
+    public Consumer findConsumerByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<Service> serviceStub) {
+
+        List<Consumer> consumers = consumerDao.findConsumersByERCAccountAndService(ercAccount, serviceStub.getId());
+        if (consumers.isEmpty()) {
+            return null;
+        }
+
+        if (consumers.size() > 1) {
+            log.info("Found several consumers by service {} and ERC account {}", serviceStub, ercAccount);
+        }
+
+        return consumers.get(0);
+    }
+
+    /**
+     * Try to find consumer by ERC account number
+     *
+     * @param ercAccount ERC account number
      * @return found Consumers
      */
     @NotNull
     @Override
-    public List<Consumer> findConsumers(@NotNull String accountNumber) {
-        return consumerDao.findConsumersByAccount(accountNumber);
+    public List<Consumer> findConsumersByERCAccount(@NotNull String ercAccount) {
+        return consumerDao.findConsumersByERCAccount(ercAccount);
     }
 
 	@Required

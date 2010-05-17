@@ -67,12 +67,22 @@ public interface ConsumerService {
 	Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub);
 
     /**
-     * Try to find consumers by external account number
+     * Try to find consumer by ERC account number and service
      *
-     * @param accountNumber External account number
+     * @param ercAccount ERC account number
+     * @param serviceStub   Service stub
+     * @return Consumer if found, or <code>null</code> otherwise
+     */
+    @Nullable
+    Consumer findConsumerByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<Service> serviceStub);
+
+    /**
+     * Try to find consumers by ERC account number
+     *
+     * @param ercAccount ERC account number
      * @return found Consumers
      */
     @NotNull
-    List<Consumer> findConsumers(@NotNull String accountNumber);
+    List<Consumer> findConsumersByERCAccount(@NotNull String ercAccount);
 
 }

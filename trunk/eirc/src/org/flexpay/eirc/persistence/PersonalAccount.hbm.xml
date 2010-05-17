@@ -173,51 +173,61 @@
 	<query name="Consumer.findConsumers.count">
 		select count(*)
 		from Consumer
-		where responsiblePerson.id = ? and service.id = ? and externalAccountNumber = ? and apartment.id = ?
+		where responsiblePerson.id=? and service.id=?
+            and externalAccountNumber=? and apartment.id=?
 	</query>
 
 	<query name="Consumer.findConsumers">
 		from Consumer
-		where responsiblePerson.id = ? and service.id = ? and externalAccountNumber = ? and apartment.id = ?
+		where responsiblePerson.id=? and service.id=?
+            and externalAccountNumber=? and apartment.id=?
 	</query>
 
 	<!-- see Service.findServicesByCode query -->
 	<query name="Consumer.findConsumersByServiceTypeCode">
-		select distinct o
-		from Consumer o
-			inner join o.service s
+		select distinct c
+		from Consumer c
+			inner join c.service s
 			inner join s.serviceProvider p
-		where p.id=? and o.externalAccountNumber=? and s.id=?
+		where p.id=? and c.externalAccountNumber=? and s.id=?
 	</query>
 
 	<!-- see Service.findServicesByCode query -->
 	<query name="Consumer.findConsumersByProviderServiceCode">
-		select distinct o
-		from Consumer o
-			inner join o.service s
+		select distinct c
+		from Consumer c
+			inner join c.service s
 			inner join s.serviceProvider p
-		where p.id=? and o.externalAccountNumber=? and s.externalCode=?
+		where p.id=? and c.externalAccountNumber=? and s.externalCode=?
 	</query>
 
 	<query name="Consumer.findConsumersByAccountAndService">
-		select distinct o
-		from Consumer o
-		where o.status=0 and o.externalAccountNumber=? and o.service.id=?
+		select distinct c
+		from Consumer c
+		where c.status=0 and c.externalAccountNumber=? and c.service.id=?
 	</query>
 
-    <query name="Consumer.findConsumersByAccount">
-        select distinct o
-        from Consumer o
-        where o.status=0 and o.externalAccountNumber=?
+    <query name="Consumer.findConsumersByERCAccountAndService">
+        select distinct c
+        from Consumer c
+            left join c.attributes a
+        where c.status=0 and a.stringValue=? and c.service.id=?
+    </query>
+
+    <query name="Consumer.findConsumersByERCAccount">
+        select distinct c
+        from Consumer c
+            left join c.attributes a
+        where c.status=0 and a.stringValue=?
     </query>
 
 	<query name="Consumer.readFull">
-		select distinct o
-		from Consumer o
-			left join fetch o.consumerInfo
-			left join fetch o.attributes a
+		select distinct c
+		from Consumer c
+			left join fetch c.consumerInfo
+			left join fetch c.attributes a
 			left join fetch a.type 
-		where o.status=0 and o.id=?
+		where c.status=0 and c.id=?
 	</query>
 
 	<query name="EircAccount.findByPersonFIO.count">
