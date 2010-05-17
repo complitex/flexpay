@@ -235,7 +235,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         String[] reqMas = request.split(":");
         if (reqMas.length > 1) {
             try {
-                Consumer consumer = consumerService.findConsumer(reqMas[1], new Stub<Service>(Long.parseLong(reqMas[0])));
+                Consumer consumer = consumerService.findConsumerByERCAccountAndService(reqMas[1], new Stub<Service>(Long.parseLong(reqMas[0])));
                 if (consumer == null) {
                     log.debug("Consumers not found");
                     return null;
@@ -246,7 +246,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
                 return null;
             }
         } else {
-            consumers = consumerService.findConsumers(reqMas[0]);
+            consumers = consumerService.findConsumersByERCAccount(reqMas[0]);
             if (consumers.isEmpty()) {
                 log.debug("Consumers not found");
                 return null;
