@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChargesRecordValidator extends MessageValidatorWithContext<String> {
 
-    private static final long FIELDS_LENGTH = 6;
+    private static final long FIELDS_LENGTH = 5;
 
     private FieldsValidator fieldsValidator;
     private LongValidator longValidator;
@@ -27,7 +27,7 @@ public class ChargesRecordValidator extends MessageValidatorWithContext<String> 
     @Override
     public boolean validate(@NotNull String line) {
         String[] fields = context.getLineParser().parse(line, messenger);
-		if (fields.length != FIELDS_LENGTH) {
+		if (fields.length < FIELDS_LENGTH) {
 			addErrorMessage("Expected {} fields", FIELDS_LENGTH);
             return false;
 		}

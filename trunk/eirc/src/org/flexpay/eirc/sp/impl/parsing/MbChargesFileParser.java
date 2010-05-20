@@ -201,14 +201,16 @@ public class MbChargesFileParser extends MbFileParser {
 		String[] fields = lineParser.parse(line);
 
 		Date operationDate = null;
-		try {
-			operationDate = new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(fields[5]);
-		} catch (ParseException e) {
-			// do nothing
+		if (fields.length >= 6) {
+			try {
+				operationDate = new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(fields[5]);
+			} catch (ParseException e) {
+				// do nothing
+			}
 		}
 
-		if (ObjectUtils.equals(operationDate, context.getRegistry().getFromDate())) {
-			RegistryRecord record = newChargesRecord(context, fields, operationDate);
+		if (operationDate == null || ObjectUtils.equals(operationDate, context.getRegistry().getFromDate())) {
+			RegistryRecord record = newChargesRecord(context, fields, context.getRegistry().getFromDate());
 			context.addLastRecord(record);
 			return 1;
 		}
