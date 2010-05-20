@@ -142,6 +142,7 @@ public class MbChargesFileParser extends MbFileParser {
 				totalLineNum++;
 			} while(parseContext.getRecords().size() < flushNumberRegistryRecord);
 
+			parseContext.flushLastAccountRecords();
 			flushRecordStack(parseContext.getRecords());
 
 		} catch (IOException e) {
