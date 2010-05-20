@@ -1,10 +1,12 @@
 package org.flexpay.eirc.sp.impl.validation;
 
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.flexpay.eirc.sp.impl.ValidationConstants;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,9 +19,14 @@ public class OperationDateValidator extends MessageValidatorWithContext<String> 
     }
 
     @Override
-    public boolean validate(@NotNull String o) {
+    public boolean validate(@Nullable String o) {
         try {
-			Date operationDate = new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(o);
+			Date operationDate;
+			if (o != null) {
+				operationDate = new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(o);
+			} else {
+				operationDate = (Date)context.getParam().get(ValidationConstants.INCOME_PERIOD_DATE);
+			}
             context.getParam().put(ValidationConstants.MODIFICATIONS_BEGIN_DATE, operationDate);
 		} catch (Exception e) {
 			addErrorMessage("Can't parse operation date {}", o);

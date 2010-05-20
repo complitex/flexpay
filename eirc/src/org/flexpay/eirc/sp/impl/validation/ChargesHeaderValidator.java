@@ -18,7 +18,7 @@ public class ChargesHeaderValidator extends MessageValidatorWithContext<String> 
         super(mess, context);
         fieldsValidator = new FieldsValidator(mess);
         serviceProviderValidator = new ServiceProviderValidator(mess, context);
-        incomePeriodDateValidator = new IncomePeriodDateValidator(mess);
+        incomePeriodDateValidator = new IncomePeriodDateValidator(mess, context);
         fileCreationDateValidator = new FileCreationDateValidator(mess, context);
         organizationNameValidator = new OrganizationNameValidator(mess);
     }
