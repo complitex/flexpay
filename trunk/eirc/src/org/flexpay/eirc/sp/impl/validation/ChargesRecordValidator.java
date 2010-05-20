@@ -60,7 +60,11 @@ public class ChargesRecordValidator extends MessageValidatorWithContext<String> 
         sumSaldo += saldo;
         context.getParam().put(ValidationConstants.SALDO, sumSaldo);
 
-        if (!operationDateValidator.validate(fields[5])) {
+		String operationDate = null;
+		if (fields.length >= 6) {
+			operationDate = fields[5];
+		}
+        if (!operationDateValidator.validate(operationDate)) {
             return false;
         }
 		if (!serviceCodeValidator.validate(fields[3])) {
