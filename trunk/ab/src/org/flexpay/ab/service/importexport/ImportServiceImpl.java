@@ -56,7 +56,7 @@ public class ImportServiceImpl implements ImportService {
 
 	private static final int STACK_SIZE = 500;
 
-	private List<DomainObject> objectsStack = new ArrayList<DomainObject>(STACK_SIZE + 5);
+	private Set<DomainObject> objectsStack = new HashSet<DomainObject>(STACK_SIZE + 5);
 
 	protected void addPersonImportError(Stub<DataSourceDescription> sd, RawPersonData data) {
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, personDataSource);
@@ -122,6 +122,21 @@ public class ImportServiceImpl implements ImportService {
 			flushStack();
 		}
 		objectsStack.add(object);
+	}
+
+	protected boolean objectStackContains(DomainObject object) {
+		return objectsStack.contains(object);
+	}
+
+	protected DomainObject getObjectFromStack(DomainObject object) {
+		if (objectsStack.contains(object)) {
+			for (DomainObject domainObject : objectsStack) {
+				if (object.equals(domainObject)) {
+					return domainObject;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Transactional (readOnly = false)
