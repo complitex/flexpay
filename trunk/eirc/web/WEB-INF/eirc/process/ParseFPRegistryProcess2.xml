@@ -13,7 +13,7 @@
 					<variable name="flushNumberRegistryRecords" mapped-name="flushNumberRegistryRecords" access="write" />
 					<expression>
 						numberLoop = 0;
-						flushNumberStack = 500;
+						flushNumberStack = 40;
 						startTime = org.flexpay.common.util.DateUtil.now();
 						minReadChars = 32000L;
 						flushNumberRegistryRecords = 500L;
