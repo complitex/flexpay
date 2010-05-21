@@ -78,11 +78,16 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			}
 
 			RegistryRecord record = data.getRegistryRecord();
+			RegistryRecord recordFromStack = (RegistryRecord)getObjectFromStack(record);
+			if (recordFromStack != null) {
+				record = recordFromStack;
+			}
+
 			EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 			if (props.getConsumer() != null) {
 				log.info("Record already has consumer set up");
 				++counters[1];
-				addToStack(data.getRegistryRecord());
+				addToStack(record, recordFromStack);
 				continue;
 			}
 
@@ -91,7 +96,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				props.getService() != null) {
 				log.info("Record already have apartment, person and service set");
 				++counters[1];
-				addToStack(data.getRegistryRecord());
+				addToStack(record, recordFromStack);
 				continue;
 			}
 
@@ -105,7 +110,8 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					log.info("Found existing consumer correction: #{}", data.getExternalSourceId());
 					// todo do we need to fetch this?
 					++counters[1];
-					postSaveRecord(data, consumerService.read(persistentObj));
+					props.setConsumer(consumerService.read(persistentObj));
+					addToStack(record, recordFromStack);
 					continue;
 				}
 
@@ -113,8 +119,8 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					log.info("Cannot find consumer by short info: {}", data.getShortConsumerId());
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
 					error.setErrorId("error.eirc.import.consumer_not_found");
-					setConsumerError(data, error);
-					addToStack(data.getRegistryRecord());
+					setConsumerError(record, error);
+					addToStack(record, recordFromStack);
 					continue;
 				}
 
@@ -123,11 +129,11 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				if (props.getApartment() == null) {
 					// Find apartment
 					findApartmentWatch.resume();
-					Apartment apartment = findApartment(nameObjsMap, sd, data, dataSource);
+					Apartment apartment = findApartment(nameObjsMap, sd, data, dataSource, record);
 					findApartmentWatch.suspend();
 					if (apartment == null) {
 						// addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-						addToStack(data.getRegistryRecord());
+						addToStack(record, recordFromStack);
 						continue;
 					}
 
@@ -138,7 +144,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				// set person
 				setPersonWatch.resume();
 				if (props.getPerson() == null) {
-					Person person = findPerson(sd, data, dataSource);
+					Person person = findPerson(sd, data, record, dataSource);
 					if (person != null) {
 						props.setPerson(person);
 						log.info("Found responsible person: {}", data.getPersonFIO());
@@ -149,7 +155,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				setPersonWatch.suspend();
 
 				// set service if not found
-				EircRegistryProperties regProps = (EircRegistryProperties) data.getRegistryRecord().getRegistry().getProperties();
+				EircRegistryProperties regProps = (EircRegistryProperties) record.getRegistry().getProperties();
 				Service service = props.getService();
 				Stub<ServiceProvider> spStub = regProps.getServiceProviderStub();
 				if (service == null) {
@@ -160,9 +166,9 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 						log.warn("Unknown service code: {}", data.getServiceCode());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
 						error.setErrorId("error.eirc.import.service_not_found");
-						setConsumerError(data, error);
+						setConsumerError(record, error);
 
-						addToStack(data.getRegistryRecord());
+						addToStack(record, recordFromStack);
 						continue;
 					}
 
@@ -182,7 +188,8 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					addToStack(corr);
 				}
 
-				postSaveRecord(data, consumer);
+				props.setConsumer(consumer);
+				addToStack(record, recordFromStack);
 			} catch (Exception e) {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
@@ -213,17 +220,18 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		return result;
 	}
 
-	private void postSaveRecord(RawConsumerData data, Consumer consumer) {
-		EircRegistryRecordProperties props = (EircRegistryRecordProperties) data.getRegistryRecord().getProperties();
-		props.setConsumer(consumer);
-		addToStack(data.getRegistryRecord());
+	private void addToStack(DomainObject newObject, DomainObject existObject) {
+		if (existObject == null) {
+			log.debug("Add to stack: {}", newObject);
+			addToStack(newObject);
+		}
 	}
 
 	@Override
 	protected void addToStack(DomainObject object) {
-		stackWatch.resume();
-		super.addToStack(object);
-		stackWatch.suspend();
+		if (!objectStackContains(object)) {
+			super.addToStack(object);
+		}
 	}
 
 	@Override
@@ -233,12 +241,12 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		stackWatch.suspend();
 	}
 
-	private void setConsumerError(RawConsumerData data, ImportError error) throws Exception {
-		recordWorkflowManager.setNextErrorStatus(data.getRegistryRecord(), error);
+	private void setConsumerError(RegistryRecord record, ImportError error) throws Exception {
+		recordWorkflowManager.setNextErrorStatus(record, error);
 	}
 
 	@Nullable
-	private Person findPerson(Stub<DataSourceDescription> sd, @NotNull RawConsumerData data,
+	private Person findPerson(Stub<DataSourceDescription> sd, @NotNull RawConsumerData data, RegistryRecord record,
 							  RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		// first try to find person via set correction
@@ -249,7 +257,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			return new Person(personById);
 		}
 
-		EircRegistryRecordProperties props = (EircRegistryRecordProperties) data.getRegistryRecord().getProperties();
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
 		Person person = importUtil.findPersonByFIO(props.getApartmentStub(),
 				data.getFirstName(), data.getMiddleName(), data.getLastName(), error);
@@ -266,7 +274,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
 									Stub<DataSourceDescription> sd, RawConsumerData data,
-									RawDataSource<RawConsumerData> dataSource) throws Exception {
+									RawDataSource<RawConsumerData> dataSource, RegistryRecord record) throws Exception {
 
 		// try to find by apartment correction
 		log.info("Checking for apartment correction: {}", data.getApartmentId());
@@ -283,7 +291,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		if (buildingsById != null) {
 			log.info("Found buildingAddress correction: {}", data.getBuildingId());
 			BuildingAddress buildingAddress = buildingService.readFullAddress(buildingsById);
-			return findApartment(data, buildingAddress, sd, dataSource);
+			return findApartment(data, buildingAddress, sd, dataSource, record);
 		}
 
 		// try to find street by correction
@@ -291,10 +299,10 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				data.getStreetId(), Street.class, sd);
 		if (streetById != null) {
 			log.info("Found street correction: {}", data.getStreetId());
-			return findApartment(data, new Street(streetById), sd, dataSource);
+			return findApartment(data, new Street(streetById), sd, dataSource, record);
 		}
 
-		Street streetByName = findStreet(nameObjsMap, data, sd, dataSource);
+		Street streetByName = findStreet(nameObjsMap, data, sd, dataSource, record);
 		if (streetByName == null) {
 			log.warn("Failed getting street for account #{}", data.getExternalSourceId());
 			return null;
@@ -304,19 +312,19 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		log.info("Adding street correction: {}", data.getStreetId());
 		addToStack(corr);
 
-		return findApartment(data, streetByName, sd, dataSource);
+		return findApartment(data, streetByName, sd, dataSource, record);
 	}
 
 	private Street findStreet(Map<String, List<Street>> nameObjsMap,
 							  RawConsumerData data,
-							  Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
+							  Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource, RegistryRecord record) throws Exception {
 
 		Stub<StreetType> stub = findStreetType(data, sd);
 		if (stub == null) {
 			log.warn("No street type was found: {}, for street {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_not_found");
-			setConsumerError(data, error);
+			setConsumerError(record, error);
 			return null;
 		}
 
@@ -326,7 +334,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			log.info("No candidates for street: {}", data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 			error.setErrorId("error.eirc.import.street_not_found");
-			setConsumerError(data, error);
+			setConsumerError(record, error);
 			return null;
 		}
 
@@ -337,7 +345,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			log.warn("Cannot find street by type: {}, {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_invalid");
-			setConsumerError(data, error);
+			setConsumerError(record, error);
 			return null;
 		}
 
@@ -350,7 +358,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				data.getAddressStreetType(), data.getAddressStreet());
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 		error.setErrorId("error.eirc.import.street_too_many_variants");
-		setConsumerError(data, error);
+		setConsumerError(record, error);
 		return null;
 	}
 
@@ -382,7 +390,8 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 	}
 
 	private Apartment findApartment(RawConsumerData data, Street street,
-									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource)
+									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource,
+									RegistryRecord record)
 			throws Exception {
 
 		BuildingAddress buildingAddress = buildingService.findAddresses(stub(street), buildingService.attributes(data.getAddressHouse(), data.getAddressBulk()));
@@ -391,7 +400,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					new Object[]{street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});
 			ImportError error = addImportError(sd, data.getExternalSourceId(), BuildingAddress.class, dataSource);
 			error.setErrorId("error.eirc.import.building_not_found");
-			setConsumerError(data, error);
+			setConsumerError(record, error);
 			return null;
 		}
 
@@ -399,11 +408,12 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		log.info("Adding buildingAddress correction: {}", data.getBuildingId());
 		addToStack(corr);
 
-		return findApartment(data, buildingAddress, sd, dataSource);
+		return findApartment(data, buildingAddress, sd, dataSource, record);
 	}
 
 	private Apartment findApartment(RawConsumerData data, BuildingAddress buildingAddress,
-									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource)
+									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource,
+									RegistryRecord record)
 			throws Exception {
 		Building building = buildingAddress.getBuilding();
 
@@ -411,7 +421,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		if (stub == null) {
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
 			error.setErrorId("error.eirc.import.apartment_not_found");
-			setConsumerError(data, error);
+			setConsumerError(record, error);
 			return null;
 		}
 
@@ -425,29 +435,33 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 	}
 
 	private void initWatch() {
-		findApartmentWatch.start();
-		findApartmentWatch.suspend();
+		initWatch(findApartmentWatch);
 
-		setPersonWatch.start();
-		setPersonWatch.suspend();
+		initWatch(setPersonWatch);
 
-		findServiceWatch.start();
-		findServiceWatch.suspend();
+		initWatch(findServiceWatch);
 
-		readRawDataBatchWatch.start();
-		readRawDataBatchWatch.suspend();
+		initWatch(readRawDataBatchWatch);
 
-		setConsumerCorrectionWatch.start();
-		setConsumerCorrectionWatch.suspend();
+		initWatch(setConsumerCorrectionWatch);
 
-		findConsumerCorrectionWatch.start();
-		findConsumerCorrectionWatch.suspend();
+		initWatch(findConsumerCorrectionWatch);
 
-		findConsumerWatch.start();
-		findConsumerWatch.suspend();
+		initWatch(findConsumerWatch);
 
-		stackWatch.start();
-		stackWatch.suspend();
+		initWatch(stackWatch);
+	}
+
+	private void initWatch(StopWatch watch) {
+		try {
+			if (watch.getStartTime() > 0) {
+				watch.reset();
+			}
+		} catch (IllegalStateException ex) {
+			// nothing do
+		}
+		watch.start();
+		watch.suspend();
 	}
 
 	private void printWatch() {

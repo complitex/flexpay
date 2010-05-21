@@ -1,17 +1,18 @@
 package org.flexpay.eirc.service.exchange;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
-import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
-import org.flexpay.eirc.persistence.exchange.Operation;
-import org.flexpay.eirc.persistence.exchange.ProcessingContext;
-import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
+import org.flexpay.eirc.persistence.exchange.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br />
@@ -25,6 +26,23 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 
 	private ServiceOperationsFactory serviceOperationsFactory;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
+
+	private StopWatch beforeUpdateWatch = new StopWatch();
+	private StopWatch updateWatch = new StopWatch();
+	private StopWatch nextStatusWatch = new StopWatch();
+
+	private OperationWatchContext watchContext = new OperationWatchContext();
+
+	{
+		beforeUpdateWatch.start();
+		beforeUpdateWatch.suspend();
+
+		updateWatch.start();
+		updateWatch.suspend();
+
+		nextStatusWatch.start();
+		nextStatusWatch.suspend();
+	}
 
 	/**
 	 * Process header
@@ -66,7 +84,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 		log.debug("Record to process: {}", record);
 
 		Operation op = serviceOperationsFactory.getOperation(context.getRegistry(), record);
-		DelayedUpdate update = op.process(context);
+		DelayedUpdate update = op.process(context, watchContext);
 		context.addUpdate(update);
 	}
 
@@ -81,15 +99,31 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	public void doUpdate(@NotNull ProcessingContext context) throws Exception {
 
 		try {
+			beforeUpdateWatch.resume();
 			context.beforeUpdate();
-			context.doUpdate();
+			beforeUpdateWatch.suspend();
 
+			updateWatch.resume();
+			context.doUpdate();
+			updateWatch.suspend();
+
+			nextStatusWatch.resume();
 			recordWorkflowManager.setNextSuccessStatus(context.getOperationRecords());
+			nextStatusWatch.suspend();
+			
 			context.nextOperation();
+
+			printWatch();
 		} catch (Exception ex) {
 			log.error("doUpdate failed", ex);
 			throw ex;
 		}
+	}
+
+	private void printWatch() {
+		log.debug("Start time: {}", beforeUpdateWatch.getStartTime());
+		log.debug("Operation time: {}, before update time: {}, update time: {}, next status time: {}",
+				new Object[]{watchContext.getOperationProcessWatch(), beforeUpdateWatch, updateWatch, nextStatusWatch});
 	}
 
 	@Required

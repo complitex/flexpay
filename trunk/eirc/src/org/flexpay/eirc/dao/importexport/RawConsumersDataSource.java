@@ -56,7 +56,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 
 
 		Long minId = minMaxIds[0];
-		Long maxId = minMaxIds[0] + pager.getPageSize();
+		Long maxId = minMaxIds[0] + pager.getPageSize() - 1;
 
 		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForImport(registry.getId(), minId, maxId);
 		dataIterator = datum.iterator();
@@ -77,7 +77,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
 	public boolean hasNext() {
-		if (minMaxIds[0] == null || minMaxIds[1] == null) {
+		if (minMaxIds[0] == null || minMaxIds[1] == null || pager.isLastPage()) {
 			return false;
 		}
 		if (dataIterator.hasNext()) {
@@ -94,7 +94,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 			pager.setPageNumber(nextPage);
 
 			Long minId = minMaxIds[0] + pager.getThisPageFirstElementNumber();
-			Long maxId = minMaxIds[0] + pager.getThisPageLastElementNumber();
+			Long maxId = minMaxIds[0] + pager.getThisPageLastElementNumber() - 1;
 
 			List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForImport(registry.getId(), minId, maxId);
 			dataIterator = datum.iterator();

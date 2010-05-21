@@ -35,6 +35,17 @@ public class OperationsChain extends Operation {
 		return container;
 	}
 
+	@Override
+	public DelayedUpdate process(@NotNull ProcessingContext context, @NotNull OperationWatchContext watchContext) throws FlexPayException, FlexPayExceptionContainer {
+		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
+		for (Operation operation : containers) {
+			DelayedUpdate update = operation.process(context, watchContext);
+			container.addUpdate(update);
+		}
+
+		return container;
+	}
+
 	/**
 	 * Get container string representation
 	 *

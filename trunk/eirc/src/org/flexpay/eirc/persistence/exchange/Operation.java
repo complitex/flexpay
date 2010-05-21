@@ -49,4 +49,25 @@ public abstract class Operation {
 	abstract public DelayedUpdate process(@NotNull ProcessingContext context)
 			throws FlexPayException, FlexPayExceptionContainer;
 
+	/**
+	 * Process operation
+	 *
+	 * @param context ProcessingContext
+	 * @param watchContext OperationWatchContext
+	 * @return DelayedUpdate object
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	public DelayedUpdate process(@NotNull ProcessingContext context, @NotNull OperationWatchContext watchContext)
+			throws FlexPayException, FlexPayExceptionContainer {
+		watchContext.before(this);
+		try {
+			return process(context);
+		} finally {
+			watchContext.after(this);
+		}
+	}
+
 }
