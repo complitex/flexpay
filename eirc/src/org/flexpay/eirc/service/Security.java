@@ -4,8 +4,7 @@ import org.flexpay.common.util.SecurityUtil;
 
 import java.util.List;
 
-import static org.flexpay.ab.service.Roles.APARTMENT_READ;
-import static org.flexpay.ab.service.Roles.PERSON_READ;
+import static org.flexpay.ab.service.Roles.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.eirc.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
@@ -27,6 +26,15 @@ public abstract class Security extends org.flexpay.common.service.Security {
 			QUITTANCE_PAYMENT_READ,
 			ACCOUNT_READ,
 			APARTMENT_READ,
+            BUILDING_READ,
+            BUILDING_ATTRIBUTE_TYPE_READ,
+            STREET_TYPE_READ,
+            STREET_READ,
+            DISTRICT_READ,
+            TOWN_TYPE_READ,
+            TOWN_READ,
+            REGION_READ,
+            COUNTRY_READ,
 			PERSON_READ,
 			SERVICE_READ,
 			SERVICE_TYPE_READ,

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.common.dao.paging.Page;
@@ -27,6 +26,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
@@ -89,7 +89,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
     private QuittanceDetailsResponse findByQuittanceNumber(String quittanceNumber, int requestType) {
 
-        if (StringUtils.isBlank(quittanceNumber)) {
+        if (isBlank(quittanceNumber)) {
             return getError(STATUS_INVALID_QUITTANCE_NUMBER);
         }
 

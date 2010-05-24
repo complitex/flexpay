@@ -156,11 +156,8 @@
 			left join fetch attr.type
 			left join fetch c.service s
 			left join fetch s.descriptions
-        where d.id in (
-            select qdq.quittanceDetails.id
-            from QuittanceDetailsQuittance qdq
-            where qdq.quittance.id=?
-        )
+			left join fetch d.quittanceDetailsQuittances qdq
+        where qdq.quittance.id=?
     ]]></query>
 
 	<query name="Quittance.findObjectsByEircAccountAndDateTill">
