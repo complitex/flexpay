@@ -36,7 +36,7 @@
 
     <decision name="StartRegistryProcessing">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="ImportConsumers" />
+        <transition name="next" to="RememberProcessState" />
         <transition name="error" to="EndRegistryProcessing" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
@@ -45,6 +45,13 @@
             </action>
         </event>
     </decision>
+
+	<task-node name="RememberProcessState">
+		<task name="startThread">
+			<timer duedate="#{startTime}" transition="process"/>
+		</task>
+		<transition name="process" to="ImportConsumers" />
+	</task-node>
 
 	<decision name="ImportConsumers">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
