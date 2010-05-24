@@ -210,8 +210,8 @@
     <query name="Consumer.findConsumersByERCAccountAndService">
         select distinct c
         from Consumer c
-            left join c.attributes a
-        where c.status=0 and a.stringValue=? and c.service.id=?
+            left join c.attributes attr
+        where c.status=0 and attr.stringValue=? and c.service.id=?
     </query>
 
     <query name="Consumer.findConsumersByERCAccount">

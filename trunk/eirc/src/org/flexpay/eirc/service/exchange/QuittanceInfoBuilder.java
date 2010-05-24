@@ -1,8 +1,7 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.*;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.eirc.persistence.Consumer;
@@ -18,6 +17,7 @@ import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.payments.actions.request.data.DebtsRequest;
+import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceInfo;
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -44,6 +45,11 @@ public class QuittanceInfoBuilder {
     private QuittanceNumberService quittanceNumberService;
     private MasterIndexService masterIndexService;
     private ApartmentService apartmentService;
+    private BuildingService buildingService;
+    private StreetService streetService;
+    private TownService townService;
+    private RegionService regionService;
+    private CountryService countryService;
     private QuittancePaymentService quittancePaymentService;
     private ConsumerAttributeTypeService attributeTypeService;
     private SPService spService;
@@ -75,16 +81,17 @@ public class QuittanceInfoBuilder {
             ConsumerInfo consumerInfo = q.getEircAccount().getConsumerInfo();
 
             Apartment apartment = q.getEircAccount().getApartment();
-            apartment = apartment != null ? apartmentService.readFull(stub(apartment)) : null;
+
             if (apartment != null) {
+                Stub<Apartment> apartmentStub = stub(apartment);
                 info.setApartmentMasterIndex(masterIndexService.getMasterIndex(apartment));
+                setAddress1(info, apartmentStub);
             } else {
-                info.setApartmentNumber(consumerInfo.getApartmentNumber());
-                info.setBuildingNumber(consumerInfo.getBuildingNumber());
-                info.setBuildingBulk(consumerInfo.getBuildingBulk());
-                info.setStreetName(consumerInfo.getStreetName());
-                info.setStreetType(consumerInfo.getStreetTypeName());
-                info.setTownName(consumerInfo.getCityName());
+                Iterator<Consumer> it = consumerInfo.getConsumers().iterator();
+                if (it.hasNext()) {
+                    Consumer consumer = it.next();
+                    setAddress1(info, consumer.getApartmentStub());
+                }
             }
 
             Person person = q.getEircAccount().getPerson();
@@ -141,13 +148,8 @@ public class QuittanceInfoBuilder {
             serviceDetails.setFirstName(cinfo.getFirstName());
             serviceDetails.setMiddleName(cinfo.getMiddleName());
             serviceDetails.setLastName(cinfo.getLastName());
-            serviceDetails.setTownName(cinfo.getCityName());
-//            serviceDetails.setTownType("");
-            serviceDetails.setStreetName(cinfo.getStreetName());
-            serviceDetails.setStreetType(cinfo.getStreetTypeName());
-            serviceDetails.setBuildingNumber(cinfo.getBuildingNumber());
-            serviceDetails.setBuildingBulk(cinfo.getBuildingBulk());
-            serviceDetails.setApartmentNumber(cinfo.getApartmentNumber());
+            //TODO: Пока что непонятно откуда брать apartment, в темповом режиме берем из consumer'а
+            setAddress2(serviceDetails, consumer.getApartmentStub());
 //            serviceDetails.setRoomNumber("");
 
             detailses.add(serviceDetails);
@@ -158,6 +160,56 @@ public class QuittanceInfoBuilder {
         log.debug("QuittanceInfo: {}", info);
 
         return info;
+    }
+
+    private void setAddress2(ServiceDetails serviceDetails, Stub<Apartment> apartmentStub) {
+        Apartment apartment = apartmentService.readFull(apartmentStub);
+        serviceDetails.setApartmentNumber(apartment.getNumber());
+
+        Building building = buildingService.readFull(apartment.getBuildingStub());
+        BuildingAddress buildingAddress = buildingService.readFullAddress(stub(building.getDefaultBuildings()));
+        serviceDetails.setBuildingBulk(buildingAddress.getBulk());
+        serviceDetails.setBuildingNumber(buildingAddress.getNumber());
+
+        Street street = streetService.readFull(buildingAddress.getStreetStub());
+        serviceDetails.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
+        serviceDetails.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
+
+        Town town = townService.readFull(street.getTownStub());
+        serviceDetails.setTownType(getTranslation(town.getCurrentType().getTranslations()).getShortName());
+        serviceDetails.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
+
+        Region region = regionService.readFull(town.getRegionStub());
+        serviceDetails.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
+
+        Country country = countryService.readFull(region.getCountryStub());
+        serviceDetails.setCountry(getTranslation(country.getTranslations()).getName());
+
+    }
+
+    private void setAddress1(QuittanceInfo info, Stub<Apartment> apartmentStub) {
+        Apartment apartment = apartmentService.readFull(apartmentStub);
+        info.setApartmentNumber(apartment.getNumber());
+
+        Building building = buildingService.readFull(apartment.getBuildingStub());
+        BuildingAddress buildingAddress = buildingService.readFullAddress(stub(building.getDefaultBuildings()));
+        info.setBuildingBulk(buildingAddress.getBulk());
+        info.setBuildingNumber(buildingAddress.getNumber());
+
+        Street street = streetService.readFull(buildingAddress.getStreetStub());
+        info.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
+        info.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
+
+        Town town = townService.readFull(street.getTownStub());
+        info.setTownType(getTranslation(town.getCurrentType().getTranslations()).getShortName());
+        info.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
+
+        Region region = regionService.readFull(town.getRegionStub());
+        info.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
+
+        Country country = countryService.readFull(region.getCountryStub());
+        info.setCountry(getTranslation(country.getTranslations()).getName());
+
     }
 
     public ServiceDetails.ServiceAttribute[] getConsumerAttributes(Consumer consumer) {
@@ -219,6 +271,31 @@ public class QuittanceInfoBuilder {
     private Service getService(QuittanceDetails qd) {
         Consumer consumer = qd.getConsumer();
         return spService.readFull(consumer.getServiceStub());
+    }
+
+    @Required
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
+    }
+
+    @Required
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
+    }
+
+    @Required
+    public void setBuildingService(BuildingService buildingService) {
+        this.buildingService = buildingService;
+    }
+
+    @Required
+    public void setStreetService(StreetService streetService) {
+        this.streetService = streetService;
+    }
+
+    @Required
+    public void setTownService(TownService townService) {
+        this.townService = townService;
     }
 
     @Required
