@@ -55,19 +55,25 @@ public class FileValidator extends MessageValidator<FPFile> {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(
 					spFile.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
+			char[] startLine = new char[MbParsingConstants.FIRST_FILE_STRING_SIZE];
 
-			for (int lineNum = 0; ; lineNum++) {
+			if (reader.read(startLine, 0, MbParsingConstants.FIRST_FILE_STRING_SIZE) < MbParsingConstants.FIRST_FILE_STRING_SIZE) {
+				addErrorMessage("Incorrect start line in file");
+				return false;
+			}
+			String firstLineLastSymbols = reader.readLine();
+			if (firstLineLastSymbols == null || firstLineLastSymbols.length() > 0) {
+				addErrorMessage("Incorrect start line in file");
+				return false;
+			}
+
+			for (int lineNum = 1; ; lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
 					addErrorMessage("Can't read file line");
 					return false;
 				}
-				if (lineNum == 0) {
-					if (line.length() != MbParsingConstants.FIRST_FILE_STRING_SIZE) {
-						addErrorMessage("First line must be equals 300 symbols");
-						return false;
-					}
-				} else if (lineNum == 1) {
+				if (lineNum == 1) {
 					if (!headerValidator.validate(line)) {
 						addErrorMessage("Incorrect header in file. Line number = {}\nLine = {}",
 								new Object[]{lineNum, line});

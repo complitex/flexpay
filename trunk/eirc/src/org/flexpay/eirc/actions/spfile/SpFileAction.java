@@ -104,14 +104,20 @@ public class SpFileAction extends FPActionSupport {
 
 			if (line.length() > 0 && line.codePointAt(0) == SpFileReader.Message.MESSAGE_TYPE_HEADER) {
                 return FileParser.REGISTRY_FILE_TYPE;
-            } else if (line.length() == MbParsingConstants.FIRST_FILE_STRING_SIZE) {
-				line = reader.readLine();
+            } else  {
+				int lineLength = line.length();
+				while (lineLength < MbParsingConstants.FIRST_FILE_STRING_SIZE) {
+					lineLength += reader.readLine().length() + 1;
+				}
+				if (line.length() == MbParsingConstants.FIRST_FILE_STRING_SIZE) {
+					line = reader.readLine();
 
-				String[] fields = lineParser.parse(line);
-				if (fields.length == 3) {
-					return FileParser.MB_CORRECTIONS_FILE_TYPE;
-				} else if (fields.length == 4) {
-					return FileParser.MB_REGISTRY_FILE_TYPE;
+					String[] fields = lineParser.parse(line);
+					if (fields.length == 3) {
+						return FileParser.MB_CORRECTIONS_FILE_TYPE;
+					} else if (fields.length == 4) {
+						return FileParser.MB_REGISTRY_FILE_TYPE;
+					}
 				}
 			}
 

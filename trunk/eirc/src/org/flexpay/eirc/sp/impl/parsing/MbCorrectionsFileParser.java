@@ -107,6 +107,11 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		int countChar = 0;
 
 		try {
+			if (totalLineNum == 0) {
+				reader.skip(MbParsingConstants.FIRST_FILE_STRING_SIZE + 2);
+				totalLineNum++;
+				countChar += MbParsingConstants.FIRST_FILE_STRING_SIZE + 2;
+			}
 
 			List<RegistryRecord> recordStack = CollectionUtils.list();
 			long iterRecordNum = 0;
@@ -119,9 +124,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					break;
 				}
 				countChar += line.length() + 2;
-				if (totalLineNum == 0) {
-
-				} else if (totalLineNum == 1) {
+				if (totalLineNum == 1) {
 					parseHeader(line, registries);
 				} else if (line.startsWith(MbParsingConstants.LAST_FILE_STRING_BEGIN)) {
 					infoRegistry.setRecordsNumber(totalRecordNum);

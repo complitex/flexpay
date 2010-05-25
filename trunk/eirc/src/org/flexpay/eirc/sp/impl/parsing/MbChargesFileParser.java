@@ -117,19 +117,23 @@ public class MbChargesFileParser extends MbFileParser {
 
 		int countChar = 0;
 
+		String line = null;
 		try {
+			if (totalLineNum == 0) {
+				reader.skip(MbParsingConstants.FIRST_FILE_STRING_SIZE + 2);
+				totalLineNum++;
+				countChar += MbParsingConstants.FIRST_FILE_STRING_SIZE + 2;
+			}
 			do {
-				String line = reader.readLine();
-				//log.debug("totalLineNum={}, line: {}", new Object[]{totalLineNum, line});
+				line = reader.readLine();
+				log.debug("totalLineNum={}, line: {}", new Object[]{totalLineNum, line});
 				if (line == null) {
 					log.debug("End of file, lineNum = {}", totalLineNum);
 					countChar = -1;
 					break;
 				}
 				countChar += line.length() + 2;
-				if (totalLineNum == 0) {
-
-				} else if (totalLineNum == 1) {
+				if (totalLineNum == 1) {
 					parseHeader(line, registry);
 				} else if (line.startsWith(MbParsingConstants.LAST_FILE_STRING_BEGIN)) {
 					registry.setRecordsNumber(totalRecordNum);
@@ -147,6 +151,9 @@ public class MbChargesFileParser extends MbFileParser {
 
 		} catch (IOException e) {
 			throw new FlexPayException("Error reading file ", e);
+		} catch (Throwable e) {
+			log.error("Exception in line {}: {}", totalLineNum, line);
+			throw new FlexPayException(e);
 		}
 
 		properties.put(ParserParameterConstants.PARAM_TOTAL_LINE_NUM, totalLineNum);
