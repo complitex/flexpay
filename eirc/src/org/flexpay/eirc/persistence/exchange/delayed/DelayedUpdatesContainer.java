@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class DelayedUpdatesContainer implements DelayedUpdate {
 
 	private List<DelayedUpdate> updates = CollectionUtils.list();
-	private Set<DelayedUpdate> updatesSet = CollectionUtils.set();
+	private Set<DelayedUpdate> updatesSet = new LinkedHashSet<DelayedUpdate>();
 
 	/**
 	 * Perform storage update
