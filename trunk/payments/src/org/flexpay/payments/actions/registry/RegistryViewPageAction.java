@@ -52,6 +52,7 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 			addActionError(getText("payments.error.registry.cant_get_registry"));
 			return REDIRECT_ERROR;
 		}
+		registryService.checkRegistryErrorsNumber(registry);
 
 		if (log.isDebugEnabled()) {
 			watch.stop();
