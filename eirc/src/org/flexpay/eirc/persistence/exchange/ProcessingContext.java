@@ -123,8 +123,7 @@ public class ProcessingContext {
 			return;
 		}
 		if (update instanceof DelayedUpdatesContainer) {
-			List<DelayedUpdate> updates = ((DelayedUpdatesContainer) update).getUpdates();
-			for (DelayedUpdate childUpdate : updates) {
+			for (DelayedUpdate childUpdate : ((DelayedUpdatesContainer) update).getUpdates()) {
 				addUpdate(childUpdate);
 			}
 			return;

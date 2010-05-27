@@ -226,15 +226,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			}
 			RegistryRecord record = newRecord(registry, fields, serviceCode);
 
-			// check if consumer already exists and does not create account
-			EircRegistryRecordProperties recProps = (EircRegistryRecordProperties) record.getProperties();
-			Consumer consumer = consumerService.findConsumer(record.getPersonalAccountExt(), recProps.getServiceStub());
-			if (consumer == null) {
-				log.debug("No consumer found, adding creation record {}", record.getPersonalAccountExt());
-				addCreateAccountContainer(record, fields);
-			} else {
-				recProps.setConsumer(consumer);
-			}
+			//In processing operation check if consumer already exists and does not create account
+			addCreateAccountContainer(record, fields);
 
 			setInfoContainers(record, fields);
 			if (!record.getContainers().isEmpty()) {

@@ -13,8 +13,6 @@ import java.util.List;
  * Updates container holds a set of delayed updates
  */
 public class DelayedUpdatesContainer implements DelayedUpdate {
-
-	private List<DelayedUpdate> updates = CollectionUtils.list();
 	private Set<DelayedUpdate> updatesSet = new LinkedHashSet<DelayedUpdate>();
 
 	/**
@@ -28,13 +26,13 @@ public class DelayedUpdatesContainer implements DelayedUpdate {
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
 
-		for (DelayedUpdate update : updates) {
+		for (DelayedUpdate update : updatesSet) {
 			update.doUpdate();
 		}
 	}
 
-	public List<DelayedUpdate> getUpdates() {
-		return updates;
+	public Set<DelayedUpdate> getUpdates() {
+		return updatesSet;
 	}
 
 	public void addUpdate(DelayedUpdate update) {
@@ -48,7 +46,6 @@ public class DelayedUpdatesContainer implements DelayedUpdate {
 
 		// if update already there nothing to do, else save operations order
 		if (!updatesSet.contains(update)) {
-			updates.add(update);
 			updatesSet.add(update);
 		}
 	}

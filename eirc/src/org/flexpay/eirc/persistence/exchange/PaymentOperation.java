@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.delayed.PaymentOperationDelayedUpdate;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.common.exception.FlexPayException;
@@ -46,6 +48,9 @@ public abstract class PaymentOperation extends ContainerOperation {
 	@Override
 	public DelayedUpdate process(@NotNull ProcessingContext context)
 			throws FlexPayException, FlexPayExceptionContainer {
+		if (!validate(context)) {
+			return DelayedUpdateNope.INSTANCE;
+		}
 
 		PaymentOperationDelayedUpdate update = getUpdate(context);
 
@@ -62,8 +67,7 @@ public abstract class PaymentOperation extends ContainerOperation {
         setDocumentType(context, document);
         document.setDocumentStatus(factory.getDocumentStatusService().read(DocumentStatus.REGISTERED));
         document.setSumm(record.getAmount());
-        document.setService(factory.getConsumerService().findService(
-                props.getServiceProviderStub(), record.getServiceCode()));
+        document.setService(((EircRegistryRecordProperties)context.getCurrentRecord().getProperties()).getService());
         document.setCreditorOrganization(props.getSender());
         document.setDebtorOrganization(props.getRecipient());
         document.setDebtorId(record.getPersonalAccountExt());
@@ -154,6 +158,14 @@ public abstract class PaymentOperation extends ContainerOperation {
 		}
 
 		throw new FlexPayException("Invalid registry type for payments container: #" + type.getCode());
+	}
+
+	private boolean validate(ProcessingContext context) throws FlexPayException {
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) context.getCurrentRecord().getProperties();
+		if (props.getService() == null) {
+			throw new FlexPayException("Cannot create consumer without service set");
+		}
+		return true;
 	}
 
     abstract Long getOperationId(ProcessingContext context);
