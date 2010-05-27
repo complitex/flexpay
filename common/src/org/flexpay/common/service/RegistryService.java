@@ -85,4 +85,11 @@ public interface RegistryService {
 	 * @return number of registries which corresponds following parameters
 	 */
 	Long getRegistriesCount(int typeCode, Long recipientCode, Date from, Date till);
+
+	/**
+	 * Return number of registry errors and update registry in field {@link org.flexpay.common.persistence.registry.Registry#errorsNumber}
+	 * @param registry SpRegistry
+	 * @return number of registry errors
+	 */
+	int checkRegistryErrorsNumber(@NotNull Registry registry);
 }

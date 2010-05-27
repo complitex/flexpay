@@ -88,11 +88,6 @@ public class RegistryServiceImpl implements RegistryService {
 			return null;
 		}
 
-		if (registry.errorsNumberNotInit()) {
-			registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
-			registryDao.update(registry);
-		}
-
 		return registry;
 	}
 
@@ -166,6 +161,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
+	@Override
 	public Collection<Registry> findObjects(@NotNull Set<Long> objectIds) {
 		return registryDaoExt.findRegistries(objectIds);
 	}
@@ -177,6 +173,20 @@ public class RegistryServiceImpl implements RegistryService {
 	public Long getRegistriesCount(int typeCode, Long recipientCode, Date from, Date till) {
 		
 		return (Long) (registryDao.findRegistriesCount(typeCode, recipientCode, from, till)).get(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int checkRegistryErrorsNumber(@NotNull Registry registry) {
+		int errorsNumber = registryRecordService.getErrorsNumber(registry);
+		if (registry.errorsNumberNotInit() || errorsNumber != registry.getErrorsNumber()) {
+			registry.setErrorsNumber(errorsNumber);
+			registryDao.update(registry);
+		}
+
+		return errorsNumber;
 	}
 
 	@Required
