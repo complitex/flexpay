@@ -94,7 +94,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		consumer.setExternalAccountNumber(record.getPersonalAccountExt());
 		consumer.setBeginDate(changeApplyingDate);
 		consumer.setEndDate(getFutureInfinite());
-		consumer.setService(findService(registry));
+		consumer.setService(props.getService());
 		Consumer base = props.getConsumer();
 		consumer.setEircAccount(base.getEircAccount());
 
@@ -170,6 +170,10 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 
 		if (props.getPerson() == null || consumer.getResponsiblePerson() == null) {
 			log.warn("Creating sub consumer without person set");
+		}
+
+		if (props.getService() == null) {
+			throw new FlexPayException("Cannot create consumer without service set");
 		}
 
 		// add short consumer correction

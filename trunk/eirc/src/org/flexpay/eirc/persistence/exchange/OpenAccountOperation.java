@@ -74,7 +74,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setExternalAccountNumber(record.getPersonalAccountExt());
 		consumer.setBeginDate(changeApplyingDate);
 		consumer.setEndDate(getFutureInfinite());
-		consumer.setService(findService(registry, record));
+		consumer.setService(props.getService());
 		consumer.setEircAccount(account);
 		consumer.setConsumerInfo(info);
 
@@ -120,19 +120,6 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 
 		// add full consumer correction
 		container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, data.getFullConsumerId(), sd));
-	}
-
-	private Service findService(Registry registry, RegistryRecord record) throws FlexPayException {
-
-		ConsumerService consumerService = factory.getConsumerService();
-		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		Service service = consumerService.findService(props.getServiceProviderStub(), record.getServiceCode());
-		if (service == null) {
-			throw new FlexPayException("Cannot find service for provider " + props.getServiceProviderStub() +
-									   " and code: " + record.getServiceCode());
-		}
-
-		return service;
 	}
 
 	/**
@@ -198,6 +185,10 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 
 		if (props.getPerson() == null) {
 			log.warn("Creating account without person set");
+		}
+
+		if (props.getService() == null) {
+			throw new FlexPayException("Cannot create consumer without service set");
 		}
 
 		log.debug("Creating consumer: {}", record);
