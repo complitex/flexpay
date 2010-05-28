@@ -125,14 +125,16 @@ public class QuittanceInfoBuilder {
             Service service = consumer.getService();
 
             ServiceDetails serviceDetails = new ServiceDetails();
-            serviceDetails.setServiceId(service.getId());
+            // Exchange serviceId by serviceTypeId in responces
+            // serviceDetails.setServiceId(service.getId());
+            serviceDetails.setServiceId(service.getServiceType().getId());
             serviceDetails.setServiceName(getTranslation(service.getDescriptions()).getName());
-            serviceDetails.setIncomingBalance(details.getIncomingBalance());
-            serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
             serviceDetails.setAmount(details.getAmount().setScale(2));
             serviceDetails.setServiceProviderAccount(consumer.getAttribute(attributeTypeService.readByCode(ConsumerAttributes.ATTR_ERC_ACCOUNT)).getStringValue());
 
             if (infoType == DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST) {
+                serviceDetails.setIncomingBalance(details.getIncomingBalance());
+                serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
                 serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
                 serviceDetails.setExpence(details.getExpence().setScale(2));
                 serviceDetails.setRate(details.getRate().setScale(2));
