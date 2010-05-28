@@ -207,11 +207,12 @@
 		where c.status=0 and c.externalAccountNumber=? and c.service.id=?
 	</query>
 
+    <!-- NOTE: Exchange c.service.id by c.service.serviceType.id for search by service type -->
     <query name="Consumer.findConsumersByERCAccountAndService">
         select distinct c
         from Consumer c
             left join c.attributes attr
-        where c.status=0 and attr.stringValue=? and c.service.id=?
+        where c.status=0 and attr.stringValue=? and c.service.serviceType.id=?
     </query>
 
     <query name="Consumer.findConsumersByERCAccount">
