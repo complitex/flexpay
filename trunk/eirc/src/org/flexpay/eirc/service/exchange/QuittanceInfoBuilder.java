@@ -1,7 +1,8 @@
 package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.*;
+import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.eirc.persistence.Consumer;
@@ -17,7 +18,6 @@ import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.payments.actions.request.data.DebtsRequest;
-import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceInfo;
@@ -45,11 +45,6 @@ public class QuittanceInfoBuilder {
     private QuittanceNumberService quittanceNumberService;
     private MasterIndexService masterIndexService;
     private ApartmentService apartmentService;
-    private BuildingService buildingService;
-    private StreetService streetService;
-    private TownService townService;
-    private RegionService regionService;
-    private CountryService countryService;
     private QuittancePaymentService quittancePaymentService;
     private ConsumerAttributeTypeService attributeTypeService;
     private SPService spService;
@@ -79,7 +74,6 @@ public class QuittanceInfoBuilder {
             info.setOrderNumber(q.getOrderNumber());
 
             ConsumerInfo consumerInfo = q.getEircAccount().getConsumerInfo();
-
             Apartment apartment = q.getEircAccount().getApartment();
 
             if (apartment != null) {
@@ -114,8 +108,8 @@ public class QuittanceInfoBuilder {
             quittanceDetailses = quittanceService.getQuittanceDetailsByQuittanceId(stub);
         }
 
-        List<ServiceDetails> detailses = list();
-        // prepare summs to pay
+        List<ServiceDetails> serviceDetailses = list();
+        // prepare sum to pay
         if (log.isDebugEnabled()) {
             log.debug("Total detailses: {}", quittanceDetailses.size());
         }
@@ -123,6 +117,7 @@ public class QuittanceInfoBuilder {
 
             Consumer consumer = details.getConsumer();
             Service service = consumer.getService();
+            log.debug("Building quittanceDetails for service {}", service);
 
             ServiceDetails serviceDetails = new ServiceDetails();
             // Exchange serviceId by serviceTypeId in responces
@@ -154,62 +149,72 @@ public class QuittanceInfoBuilder {
             setAddress2(serviceDetails, consumer.getApartmentStub());
 //            serviceDetails.setRoomNumber("");
 
-            detailses.add(serviceDetails);
+            serviceDetailses.add(serviceDetails);
         }
 
-        info.setDetailses(detailses.toArray(new ServiceDetails[detailses.size()]));
+        info.setDetailses(serviceDetailses.toArray(new ServiceDetails[serviceDetailses.size()]));
 
         log.debug("QuittanceInfo: {}", info);
 
         return info;
     }
 
-    private void setAddress2(ServiceDetails serviceDetails, Stub<Apartment> apartmentStub) {
-        Apartment apartment = apartmentService.readFull(apartmentStub);
+    private void setAddress2(ServiceDetails serviceDetails, Stub<Apartment> apartmentStub) throws FlexPayException {
+
+        Apartment apartment = apartmentService.readFullWithHierarchy(apartmentStub);
+        if (apartment == null) {
+            log.error("Can't get apartment with id {} from DB", apartmentStub.getId());
+            throw new FlexPayException("Internal error. Can't get apartment from DB");
+        }
+
         serviceDetails.setApartmentNumber(apartment.getNumber());
 
-        Building building = buildingService.readFull(apartment.getBuildingStub());
-        BuildingAddress buildingAddress = buildingService.readFullAddress(stub(building.getDefaultBuildings()));
+        BuildingAddress buildingAddress = apartment.getBuilding().getDefaultBuildings();
         serviceDetails.setBuildingBulk(buildingAddress.getBulk());
         serviceDetails.setBuildingNumber(buildingAddress.getNumber());
 
-        Street street = streetService.readFull(buildingAddress.getStreetStub());
+        Street street = buildingAddress.getStreet();
         serviceDetails.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
         serviceDetails.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
 
-        Town town = townService.readFull(street.getTownStub());
+        Town town = street.getTown();
         serviceDetails.setTownType(getTranslation(town.getCurrentType().getTranslations()).getShortName());
         serviceDetails.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
 
-        Region region = regionService.readFull(town.getRegionStub());
+        Region region = town.getRegion();
         serviceDetails.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
 
-        Country country = countryService.readFull(region.getCountryStub());
+        Country country = region.getCountry();
         serviceDetails.setCountry(getTranslation(country.getTranslations()).getName());
 
     }
 
-    private void setAddress1(QuittanceInfo info, Stub<Apartment> apartmentStub) {
-        Apartment apartment = apartmentService.readFull(apartmentStub);
+    private void setAddress1(QuittanceInfo info, Stub<Apartment> apartmentStub) throws FlexPayException {
+
+        Apartment apartment = apartmentService.readFullWithHierarchy(apartmentStub);
+        if (apartment == null) {
+            log.error("Can't get apartment with id {} from DB", apartmentStub.getId());
+            throw new FlexPayException("Internal error. Can't get apartment from DB");
+        }
+
         info.setApartmentNumber(apartment.getNumber());
 
-        Building building = buildingService.readFull(apartment.getBuildingStub());
-        BuildingAddress buildingAddress = buildingService.readFullAddress(stub(building.getDefaultBuildings()));
+        BuildingAddress buildingAddress = apartment.getBuilding().getDefaultBuildings();
         info.setBuildingBulk(buildingAddress.getBulk());
         info.setBuildingNumber(buildingAddress.getNumber());
 
-        Street street = streetService.readFull(buildingAddress.getStreetStub());
+        Street street = buildingAddress.getStreet();
         info.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
         info.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
 
-        Town town = townService.readFull(street.getTownStub());
+        Town town = street.getTown();
         info.setTownType(getTranslation(town.getCurrentType().getTranslations()).getShortName());
         info.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
 
-        Region region = regionService.readFull(town.getRegionStub());
+        Region region = town.getRegion();
         info.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
 
-        Country country = countryService.readFull(region.getCountryStub());
+        Country country = region.getCountry();
         info.setCountry(getTranslation(country.getTranslations()).getName());
 
     }
@@ -273,31 +278,6 @@ public class QuittanceInfoBuilder {
     private Service getService(QuittanceDetails qd) {
         Consumer consumer = qd.getConsumer();
         return spService.readFull(consumer.getServiceStub());
-    }
-
-    @Required
-    public void setRegionService(RegionService regionService) {
-        this.regionService = regionService;
-    }
-
-    @Required
-    public void setCountryService(CountryService countryService) {
-        this.countryService = countryService;
-    }
-
-    @Required
-    public void setBuildingService(BuildingService buildingService) {
-        this.buildingService = buildingService;
-    }
-
-    @Required
-    public void setStreetService(StreetService streetService) {
-        this.streetService = streetService;
-    }
-
-    @Required
-    public void setTownService(TownService townService) {
-        this.townService = townService;
     }
 
     @Required

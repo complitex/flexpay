@@ -30,6 +30,16 @@ public interface ApartmentService {
 	@Nullable
 	Apartment readFull(@NotNull Stub<Apartment> apartmentStub);
 
+    /**
+     * Read apartment with full hirarchy and names
+     *
+     * @param apartmentStub Apartment stub
+     * @return Object if found, or <code>null</code> otherwise
+     */
+    @Secured ({Roles.APARTMENT_READ})
+    @Nullable
+    Apartment readFullWithHierarchy(@NotNull Stub<Apartment> apartmentStub);
+
 	/**
 	 * Read apartments collection by theirs ids
 	 *
