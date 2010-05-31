@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ApartmentDao extends GenericDao<Apartment, Long> {
 
+    List<Apartment> findWithFullHierarchyAndNames(Long apartmentId);
+
 	/**
 	 * Find apartments in the building
 	 *

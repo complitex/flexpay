@@ -57,7 +57,19 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		return apartmentDao.readFull(apartmentStub.getId());
 	}
 
-	/**
+    /**
+     * Read apartment with full hirarchy and names
+     *
+     * @param apartmentStub Apartment stub
+     * @return Object if found, or <code>null</code> otherwise
+     */
+    @Override
+    public Apartment readFullWithHierarchy(@NotNull Stub<Apartment> apartmentStub) {
+        List<Apartment> apartments = apartmentDao.findWithFullHierarchyAndNames(apartmentStub.getId());
+        return apartments.isEmpty() ? null : apartments.get(0);
+    }
+
+    /**
 	 * Read apartments collection by theirs ids
 	 *
  	 * @param apartmentIds Apartment ids
