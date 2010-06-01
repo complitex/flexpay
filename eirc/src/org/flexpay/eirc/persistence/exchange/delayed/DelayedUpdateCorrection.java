@@ -2,7 +2,6 @@ package org.flexpay.eirc.persistence.exchange.delayed;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
@@ -12,12 +11,16 @@ import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 public class DelayedUpdateCorrection implements DelayedUpdate {
 
 	private CorrectionsService service;
-	private DataCorrection dc;
+	private DomainObject object;
+	private String externalId;
+	private Stub<DataSourceDescription> sd;
 
 	public DelayedUpdateCorrection(CorrectionsService service, DomainObject object,
 								   String externalId, Stub<DataSourceDescription> sd) {
 		this.service = service;
-		this.dc = service.getStub(externalId, object, sd);
+		this.object = object;
+		this.externalId = externalId;
+		this.sd = sd;
 	}
 
 	/**
@@ -30,7 +33,7 @@ public class DelayedUpdateCorrection implements DelayedUpdate {
 	 */
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
-		service.save(dc);
+		service.save(service.getStub(externalId, object, sd));
 	}
 
 	@Override
@@ -40,13 +43,18 @@ public class DelayedUpdateCorrection implements DelayedUpdate {
 
 		DelayedUpdateCorrection that = (DelayedUpdateCorrection) o;
 
-		if (dc != null ? !dc.equals(that.dc) : that.dc != null) return false;
+		if (externalId != null ? !externalId.equals(that.externalId) : that.externalId != null) return false;
+		if (object != null ? !object.equals(that.object) : that.object != null) return false;
+		if (sd != null ? !sd.equals(that.sd) : that.sd != null) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return dc != null ? dc.hashCode() : 0;
+		int result = object != null ? object.hashCode() : 0;
+		result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
+		result = 31 * result + (sd != null ? sd.hashCode() : 0);
+		return result;
 	}
 }
