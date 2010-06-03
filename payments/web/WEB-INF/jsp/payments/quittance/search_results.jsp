@@ -123,10 +123,9 @@
                                           '"<s:property value="getApartmentAddress(#qi)" />";' +
                                           '"<s:property value="getPersonFio(#qi)" />";' +
                                           '"<s:property value="getMBServiceCode(serviceMasterIndex)" />"'
-                    }<s:property value="quittanceInfos.length != #nQI.index && detailses.length != status.index ? ',' : ''" />
+                    }<s:property value="quittanceInfos.length - 1 == #nQI.index && detailses.length - 1 == #status.index ? '' : ','" />
                 </s:iterator>
             </s:iterator>
-
         ]);
         FPP.createFieldChain();
         FPP.endisPayment(false);
