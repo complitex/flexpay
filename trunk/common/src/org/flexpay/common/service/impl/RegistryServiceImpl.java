@@ -80,7 +80,6 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	@Nullable
-	@Transactional (readOnly = false)
 	public Registry read(@NotNull Stub<Registry> stub) {
 		Registry registry = registryDao.readFull(stub.getId());
 		if (registry == null) {
@@ -178,6 +177,7 @@ public class RegistryServiceImpl implements RegistryService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Transactional (readOnly = false)
 	@Override
 	public int checkRegistryErrorsNumber(@NotNull Registry registry) {
 		int errorsNumber = registryRecordService.getErrorsNumber(registry);
