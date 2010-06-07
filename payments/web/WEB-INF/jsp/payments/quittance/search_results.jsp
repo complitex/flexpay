@@ -129,7 +129,6 @@
         ]);
         FPP.createFieldChain();
         FPP.endisPayment(false);
-
     });
 
     function preProcessPaymentValue(fieldId) {

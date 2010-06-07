@@ -28,16 +28,16 @@
 <form id="inputForm">
     <table cellspacing="2" cellpadding="2" width="80%">
         <tr>
-            <td width="30%" nowrap="nowrap">
+            <td width="30%" nowrap>
                 <s:text name="year" />&nbsp;<s:select id="year" name="year"
                           required="true"
                           list="#{(curYear - 1):(curYear - 1),curYear:curYear}"
                           value="curYear" />
             </td>
-            <td width="30%" nowrap="nowrap">
+            <td width="30%" nowrap>
                 <s:text name="month" />&nbsp;<s:select name="month" list="months" value="curMonth" required="true" />
             </td>
-            <td align="right" nowrap="nowrap">
+            <td align="right" nowrap>
                 <s:text name="sz.oszn" />&nbsp;<s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
             </td>
         </tr>

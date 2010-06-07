@@ -5,18 +5,21 @@ import java.util.Date;
 
 public class BeginTimeFilter extends TimeFilter {
 
-	public BeginTimeFilter() {
-		hours = 0;
-		minutes = 0;
-		seconds = 0;
+    public BeginTimeFilter() {
+        initDefaults();
+    }
+
+	public BeginTimeFilter(boolean withSec) {
+        this.withSec = withSec;
+        initDefaults();
 	}
 
-	public BeginTimeFilter(Date dt) {
-		super(dt);
+	public BeginTimeFilter(Date dt, boolean withSec) {
+		super(dt, withSec);
 	}
 
-	public BeginTimeFilter(Calendar calendar) {
-		super(calendar);
+	public BeginTimeFilter(Calendar calendar, boolean withSec) {
+		super(calendar, withSec);
 	}
 
 	@Override

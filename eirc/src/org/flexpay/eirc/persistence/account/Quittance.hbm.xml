@@ -215,10 +215,10 @@
     </query>
 
     <query name="Quittance.findQuittances">
-        select distinct q
         from Quittance q
         	inner join fetch q.eircAccount a
-        where a.id in (:list_1)
+            left join fetch a.consumers c
+        where c.id in (:list_1)
         order by q.dateFrom desc, q.orderNumber desc
     </query>
 

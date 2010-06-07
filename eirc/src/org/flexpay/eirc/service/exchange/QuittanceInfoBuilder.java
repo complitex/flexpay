@@ -125,7 +125,7 @@ public class QuittanceInfoBuilder {
             serviceDetails.setServiceId(service.getServiceType().getId());
             serviceDetails.setServiceName(getTranslation(service.getDescriptions()).getName());
             serviceDetails.setAmount(details.getAmount().setScale(2));
-            serviceDetails.setServiceProviderAccount(consumer.getAttribute(attributeTypeService.readByCode(ConsumerAttributes.ATTR_ERC_ACCOUNT)).getStringValue());
+            serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
 
             if (infoType == DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 serviceDetails.setIncomingBalance(details.getIncomingBalance());

@@ -5,13 +5,14 @@
 </s:if><s:else>
     <%@include file="/WEB-INF/jsp/common/includes/jquery_timeentry.jsp"%>
 
-    <s:textfield name="endTimeFilter.stringDate" id="endTimeFilter" readonly="true" size="5" cssStyle="width:40px;" />
+    <s:textfield name="endTimeFilter.stringDate" id="endTimeFilter" readonly="true" size="8" cssStyle="width:55px;" />
 
     <script type="text/javascript">
         $("#endTimeFilter").ready(function() {
             $("#endTimeFilter").timeEntry({
                 spinnerImage:FP.base + "/resources/common/js/jquery/timeentry/spinnerDefault.png",
-                show24Hours:true
+                show24Hours:true,
+                showSeconds:true
             });
         });
     </script>

@@ -1,5 +1,6 @@
 package org.flexpay.eirc.service.impl;
 
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -9,6 +10,7 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +20,9 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 @Transactional (readOnly = true)
 public class ConsumerServiceImpl implements ConsumerService {
@@ -104,61 +109,44 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * Try to find consumer by external account number and service
 	 *
 	 * @param accountNumber External account number
-	 * @param serviceStub   Service stub
-	 * @return Consumer if found, or <code>null</code> otherwise
+	 * @param serviceTypeStub Service type stub
+     * @return found Consumers
 	 */
     @Nullable
 	@Override
-	public Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub) {
+	public List<Consumer> findConsumersByExAccountAndServiceType(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceTypeStub) {
 
-		List<Consumer> consumers = consumerDao.findConsumersByAccountAndService(accountNumber, serviceStub.getId());
-		if (consumers.isEmpty()) {
-			return null;
-		}
+		List<Consumer> consumers = consumerDao.findConsumersByAccountAndServiceType(accountNumber, serviceTypeStub.getId());
 
 		if (consumers.size() > 1) {
-			log.info("Found several consumers by service {} and external account {}", serviceStub, accountNumber);
+			log.info("Found several consumers by service type {} and external account {}", serviceTypeStub, accountNumber);
 		}
 
-		return consumers.get(0);
+		return consumers;
 	}
 
     /**
-     * Try to find consumer by ERC account number and service
+     * Try to find consumer by external account number
      *
-     * @param ercAccount ERC account number
-     * @param serviceStub   Service stub
-     * @return Consumer if found, or <code>null</code> otherwise
-     */
-    @Nullable
-    @Override
-    public Consumer findConsumerByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<Service> serviceStub) {
-
-        List<Consumer> consumers = consumerDao.findConsumersByERCAccountAndService(ercAccount, serviceStub.getId());
-        if (consumers.isEmpty()) {
-            return null;
-        }
-
-        if (consumers.size() > 1) {
-            log.info("Found several consumers by service {} and ERC account {}", serviceStub, ercAccount);
-        }
-
-        return consumers.get(0);
-    }
-
-    /**
-     * Try to find consumer by ERC account number
-     *
-     * @param ercAccount ERC account number
+     * @param accountNumber external account number
      * @return found Consumers
      */
-    @NotNull
     @Override
-    public List<Consumer> findConsumersByERCAccount(@NotNull String ercAccount) {
-        return consumerDao.findConsumersByERCAccount(ercAccount);
+    public List<Consumer> findConsumersByExAccount(@NotNull String accountNumber) {
+        return consumerDao.findConsumersByAccount(accountNumber);
     }
 
-	@Required
+    @NotNull
+    @Override
+    public List<Consumer> findConsumersByApartment(@NotNull Set<Stub<Apartment>> apartmentStubs) {
+        Set<Long> apartmentIds = set();
+        for (Stub<Apartment> stub : apartmentStubs) {
+            apartmentIds.add(stub.getId());
+        }
+        return consumerDao.findConsumersByApartments(apartmentIds);
+    }
+
+    @Required
 	public void setConsumerDao(ConsumerDao consumerDao) {
 		this.consumerDao = consumerDao;
 	}

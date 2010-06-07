@@ -2,13 +2,14 @@ package org.flexpay.eirc.dao.impl;
 
 import org.flexpay.common.process.job.JobExecutionContext;
 import org.flexpay.common.process.job.JobExecutionContextHolder;
-import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.util.Date;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
 
 public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoExt {
 
@@ -20,6 +21,7 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 	 * @param options Operation options
 	 * @return number of generated quittances
 	 */
+    @Override
 	public long createQuittances(CreateQuittancesOptions options) {
 
 		log.debug("Creating quittances: {}", options);
@@ -59,11 +61,9 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 			}
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Generated quittances statistics.\nTotal quittances: {}\nTotal details: {}\n" +
-					 "Total quittance numbers updated: {}\nTotal empty quittances deleted: {}",
-					new Object[] {count, detailsCount, updatedCount, emptyQuittancesDeleted});
-		}
+        log.info("Generated quittances statistics.\nTotal quittances: {}\nTotal details: {}\n" +
+                 "Total quittance numbers updated: {}\nTotal empty quittances deleted: {}",
+                new Object[] {count, detailsCount, updatedCount, emptyQuittancesDeleted});
 
 		return count;
 	}
@@ -129,4 +129,5 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 						   "where qd.id is null";
 		return (long) getJdbcTemplate().update(deleteSQL);
 	}
+
 }

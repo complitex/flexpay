@@ -2,7 +2,9 @@ package org.flexpay.common.actions.processing;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ProcessState;
@@ -10,25 +12,29 @@ import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.filter.ProcessStateFilter;
 import org.flexpay.common.process.filter.ProcessStateObject;
 import org.flexpay.common.process.sorter.*;
-import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class ProcessesListAction extends FPActionWithPagerSupport<Process> implements InitializingBean {
 
-	private List<Process> processes = CollectionUtils.list();
+	private List<Process> processes = list();
 
 	private ProcessSorterByName processSorterByName = new ProcessSorterByName();
 	private ProcessSorterByStartDate processSorterByStartDate = new ProcessSorterByStartDate();
 	private ProcessSorterByEndDate processSorterByEndDate = new ProcessSorterByEndDate();
 	private ProcessSorterByState processSorterByState = new ProcessSorterByState();
 
-	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private EndDateFilter endDateFilter = new EndDateFilter();
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(new Date());
+	private EndDateFilter endDateFilter = new EndDateFilter(new Date());
+    private BeginTimeFilter beginTimeFilter = new BeginTimeFilter(false);
+    private EndTimeFilter endTimeFilter = new EndTimeFilter(false);
 	private ProcessStateFilter processStateFilter = new ProcessStateFilter();
 	private ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
@@ -53,13 +59,18 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 
 	private List<Process> processes() {
 
-		log.debug("beginDateFilter = {}\nendDateFilter = {}", beginDateFilter, endDateFilter);
+		log.debug("beginDateFilter = {}", beginDateFilter);
+        log.debug("beginTimeFilter = {}", beginTimeFilter);
+        log.debug("endDateFilter = {}", endDateFilter);
+        log.debug("endTimeFilter = {}", endTimeFilter);
 		log.debug("processStateFilter = {}\nprocessNameFilter = {}", processStateFilter, processNameFilter);
 
-		Date startFrom = beginDateFilter.dateIsNotEmpty() ? beginDateFilter.getDate() : null;
-		Date endBefore = endDateFilter.dateIsNotEmpty() ? endDateFilter.getDate() : null;
-
-		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endBefore,
+        Date startFrom = beginTimeFilter.setTime(beginDateFilter.getDate());
+        Date endBefore = endTimeFilter.setTime(endDateFilter.getDate());
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime(endBefore);
+        endCal.set(Calendar.SECOND, 59);
+		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endCal.getTime(),
 				processStateFilter.getProcessState(), processNameFilter.getSelectedName());
 	}
 
@@ -122,6 +133,14 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 	public void setEndDateFilter(EndDateFilter endDateFilter) {
 		this.endDateFilter = endDateFilter;
 	}
+
+    public void setBeginTimeFilter(BeginTimeFilter beginTimeFilter) {
+        this.beginTimeFilter = beginTimeFilter;
+    }
+
+    public void setEndTimeFilter(EndTimeFilter endTimeFilter) {
+        this.endTimeFilter = endTimeFilter;
+    }
 
 	public void setProcessStateFilter(ProcessStateFilter processStateFilter) {
 		this.processStateFilter = processStateFilter;

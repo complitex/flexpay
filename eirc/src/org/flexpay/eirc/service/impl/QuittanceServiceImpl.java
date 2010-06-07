@@ -4,7 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.dao.EircAccountDao;
+import org.flexpay.eirc.dao.ConsumerDao;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
@@ -32,11 +32,11 @@ public class QuittanceServiceImpl implements QuittanceService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-    private EircAccountDao eircAccountDao;
 	private QuittanceDetailsDao quittanceDetailsDao;
 	private QuittanceDao quittanceDao;
 	private QuittanceDaoExt quittanceDaoExt;
 	private QuittanceNumberService quittanceNumberService;
+    private ConsumerDao consumerDao;
 
 	/**
 	 * Create or update a QuittanceDetails record
@@ -123,12 +123,12 @@ public class QuittanceServiceImpl implements QuittanceService {
 
     @NotNull
     @Override
-    public List<Quittance> getQuittancesByEircAccounts(@NotNull List<Consumer> consumers) {
-        Set<Long> eircAccountIds = set();
+    public List<Quittance> getQuittances(@NotNull List<Consumer> consumers) {
+        Set<Long> consumerIds = set();
         for (Consumer consumer : consumers) {
-            eircAccountIds.add(consumer.getEircAccountStub().getId());
+            consumerIds.add(consumer.getId());
         }
-        return quittanceDao.findQuittances(eircAccountIds);
+        return quittanceDao.findQuittances(consumerIds);
     }
 
     @NotNull
@@ -138,15 +138,8 @@ public class QuittanceServiceImpl implements QuittanceService {
         for (Consumer consumer : consumers) {
             apartmentIds.add(consumer.getApartmentStub().getId());
         }
-        List<EircAccount> accounts = eircAccountDao.findByApartments(apartmentIds);
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} eirc accounts by {} apartmentIds", accounts.size(), apartmentIds.size());
-        }
-        Set<Long> eircAccountIds = set();
-        for (EircAccount account : accounts) {
-            eircAccountIds.add(account.getId());
-        }
-        return quittanceDao.findQuittances(eircAccountIds);
+        List<Consumer> consumers1 = consumerDao.findConsumersByApartments(apartmentIds);
+        return getQuittances(consumers1);
     }
 
     @NotNull
@@ -176,7 +169,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
     @Required
-    public void setEircAccountDao(EircAccountDao eircAccountDao) {
-        this.eircAccountDao = eircAccountDao;
+    public void setConsumerDao(ConsumerDao consumerDao) {
+        this.consumerDao = consumerDao;
     }
 }

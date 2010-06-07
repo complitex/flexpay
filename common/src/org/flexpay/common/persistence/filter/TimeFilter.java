@@ -16,12 +16,16 @@ public abstract class TimeFilter extends ObjectFilter {
 	protected int hours;
 	protected int minutes;
 	protected int seconds;
-	private static final String TIME_FORMAT = "HH:mm:ss";
+    protected boolean withSec = true;
+	private static final String TIME_FORMAT_WITH_SEC = "HH:mm:ss";
+    private static final String TIME_FORMAT = "HH:mm";
 
 	protected TimeFilter() {
 	}
 
-	public TimeFilter(Date dt) {
+	public TimeFilter(Date dt, boolean withSec) {
+
+        this.withSec = withSec;
 
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(dt);
@@ -29,7 +33,8 @@ public abstract class TimeFilter extends ObjectFilter {
 		init(calendar);
 	}
 
-	public TimeFilter(Calendar calendar) {
+	public TimeFilter(Calendar calendar, boolean withSec) {
+        this.withSec = withSec;
 		init(calendar);
 	}
 
@@ -54,7 +59,7 @@ public abstract class TimeFilter extends ObjectFilter {
 
 	public String getStringDate() {
 		Calendar calendar = new GregorianCalendar(1900, 1, 1, hours, minutes, seconds);
-		return new SimpleDateFormat(TIME_FORMAT).format(calendar.getTime());
+		return new SimpleDateFormat(withSec ? TIME_FORMAT_WITH_SEC : TIME_FORMAT).format(calendar.getTime());
 	}
 
 	public void setStringDate(String date) {
@@ -63,7 +68,7 @@ public abstract class TimeFilter extends ObjectFilter {
 
 		Calendar calendar = new GregorianCalendar();
 		try {
-			Date dt = new SimpleDateFormat(TIME_FORMAT).parse(date);
+			Date dt = new SimpleDateFormat(withSec ? TIME_FORMAT_WITH_SEC : TIME_FORMAT).parse(date);
 			calendar.setTime(dt);
 			init(calendar);
 		} catch (ParseException ex) {

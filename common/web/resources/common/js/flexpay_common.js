@@ -107,7 +107,7 @@ var FP = {
 	 * @param e Event
 	 */
 	disableEnterKey : function(e) {
-		return e.keyCode != 13;
+		return e.keyCode != this.ENTER_KEY_CODE;
 	},
 
     createShadow : function(id){
@@ -136,7 +136,7 @@ var FP = {
     },
 
     showShadowText : function(shadowId, elementId) {
-        FP.resizeShadow(shadowId, elementId, {visibility: "visible", "background-color":""});
+        FP.resizeShadow(shadowId, elementId, {visibility:"visible", "background-color":""});
     },
 
     showShadow : function(shadowId, elementId) {
