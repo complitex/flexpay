@@ -14,6 +14,7 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 
 @Transactional (readOnly = true)
@@ -108,18 +110,81 @@ public class QuittanceServiceImpl implements QuittanceService {
 		return quittances.get(0);
 	}
 
+    /**
+     * Find quittance by generated number and service type
+     *
+     * @param quittanceNumber Generated quittance number
+     * @param serviceTypeStub service type stub
+     * @return Quittance if found, or <code>null</code> otherwise
+     * @throws org.flexpay.common.exception.FlexPayException
+     *          if <code>quittanceNumber</code> has invalid format
+     */
+    @Nullable
+    @Override
+    public Quittance findByNumberAndServiceType(@NotNull String quittanceNumber, @NotNull Stub<ServiceType> serviceTypeStub) throws FlexPayException {
+
+        QuittanceNumberService.QuittanceNumberInfo info = quittanceNumberService.parseInfo(quittanceNumber);
+        List<Quittance> quittances = quittanceDao.findQuittanceByNumberAndServiceType(
+                info.getAccountNumber(), info.getMonth(), info.getNumber(), serviceTypeStub.getId());
+        if (quittances.isEmpty()) {
+            return null;
+        }
+        if (quittances.size() > 1) {
+            throw new FlexPayException("Duplicate quittances?", "eirc.error.quittance.duplicates", quittanceNumber);
+        }
+
+        return quittances.get(0);
+    }
+
 	/**
 	 * Find quittance for account for current open period
 	 *
-	 * @param stub  account stub to get quittance for
+	 * @param account  account to get quittance for
 	 * @param pager Page
+     *
 	 * @return list of quittance in current open period
 	 */
 	@NotNull
     @Override
-	public List<Quittance> getLatestAccountQuittances(@NotNull Stub<EircAccount> stub, Page<Quittance> pager) {
-		return quittanceDao.findAccountQuittances(stub.getId(), pager);
+	public List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, Page<Quittance> pager) {
+		return getLatestAccountsQuittances(list(account), pager);
 	}
+
+    /**
+     * Find quittance for account for current open period by service type
+     *
+     * @param account  account to get quittance for
+     * @param serviceTypeStub service type stub
+     * @param pager Page
+     *
+     * @return list of quittance in current open period
+     */
+    @NotNull
+    @Override
+    public List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, @NotNull Stub<ServiceType> serviceTypeStub, Page<Quittance> pager) {
+        return getLatestAccountsQuittances(list(account), serviceTypeStub, pager);
+    }
+
+
+    @NotNull
+    @Override
+    public List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, Page<Quittance> pager) {
+        Set<Long> accountIds = set();
+        for (EircAccount account : accounts) {
+            accountIds.add(account.getId());
+        }
+        return quittanceDao.findQuittancesByEIRCAccounts(accountIds, pager);
+    }
+
+    @NotNull
+    @Override
+    public List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, @NotNull Stub<ServiceType> serviceTypeStub, Page<Quittance> pager) {
+        Set<Long> accountIds = set();
+        for (EircAccount account : accounts) {
+            accountIds.add(account.getId());
+        }
+        return quittanceDao.findQuittancesByEIRCAccountsAndServiceType(accountIds, serviceTypeStub.getId(), pager);
+    }
 
     @NotNull
     @Override

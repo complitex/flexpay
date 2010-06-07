@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class QuittanceDetailsResponse extends DetailsResponse implements Serializable {
 
-	private QuittanceInfo[] infos;
+	private QuittanceInfo[] infos = {};
 
 	public QuittanceInfo[] getInfos() {
 		return infos;

@@ -100,7 +100,7 @@ public class QuittanceSearchByAddressAction extends ApartmentFilterDependent2Act
 	public Quittance getAccountQuittance(Long accountId) {
 
 		List<Quittance> quittances = quittanceService.getLatestAccountQuittances(
-				new Stub<EircAccount>(accountId), new Page<Quittance>());
+				new EircAccount(accountId), new Page<Quittance>());
 		if (quittances.isEmpty()) {
 			return null;
 		}

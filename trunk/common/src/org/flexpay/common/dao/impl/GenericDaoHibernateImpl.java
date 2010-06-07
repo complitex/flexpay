@@ -65,19 +65,23 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	}
 
 	@NotNull
+    @Override
 	public PK create(@NotNull T o) {
 		return (PK) hibernateTemplate.save(o);
 	}
 
 	@Nullable
+    @Override
 	public T read(@NotNull PK id) {
 		return (T) hibernateTemplate.get(type, id);
 	}
 
 	@Nullable
+    @Override
 	public T readFull(@NotNull final PK id) {
 		final String queryName = type.getSimpleName() + ".readFull";
 		return (T) hibernateTemplate.execute(new HibernateCallback() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
 				queryObject.setParameter(0, id);
@@ -101,6 +105,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		}
 		final String queryName = type.getSimpleName() + ".readFullCollection";
 		List<T> result = (List<T>) hibernateTemplate.execute(new HibernateCallback() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query query = session.getNamedQuery(queryName);
 				query.setParameterList("ids", ids);
@@ -127,6 +132,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		return result;
 	}
 
+    @Override
 	public void update(@NotNull T o) {
 		hibernateTemplate.update(o);
 	}
@@ -136,18 +142,22 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		return (T) hibernateTemplate.merge(object);
 	}
 
+    @Override
 	public void delete(@NotNull T o) {
 		hibernateTemplate.delete(o);
 	}
 
+    @Override
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
 		return (List<T>) findByNamedQuery(queryName, queryArgs);
 	}
 
+    @Override
 	public Integer executeUpdate(Method method, final Object[] values) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
 		return (Integer) hibernateTemplate.execute(new HibernateCallback() {
+            @Override
 			public Integer doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
 				for (int i = 0; i < values.length; i++) {
@@ -160,6 +170,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	private List<?> findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
 		return hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
 				Query queryCount = getCountQuery(session, queryName);
@@ -170,7 +181,6 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 				if (values != null) {
 					int nNamedParam = 1;
 					for (int i = 0, fix = 0; i < values.length; i++) {
-
 						// handle page parameter
 						if (values[i] instanceof Page) {
 							if (pageParam != null || range != null) {
@@ -220,7 +230,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 							}
 							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							if (queryCount != null) {
-								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+								queryCount.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							if (queryStats != null) {
 								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
@@ -239,7 +249,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 							}
 							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							if (queryCount != null) {
-								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+								queryCount.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							if (queryStats != null) {
 								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
@@ -340,18 +350,6 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		return queryName + ".stats";
 	}
 
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
-	}
-
-	public FinderNamingStrategy getNamingStrategy() {
-		return namingStrategy;
-	}
-
-	public void setNamingStrategy(FinderNamingStrategy namingStrategy) {
-		this.namingStrategy = namingStrategy;
-	}
-
 	public FinderArgumentTypeFactory getArgumentTypeFactory() {
 		return argumentTypeFactory;
 	}
@@ -359,5 +357,17 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	public void setArgumentTypeFactory(FinderArgumentTypeFactory argumentTypeFactory) {
 		this.argumentTypeFactory = argumentTypeFactory;
 	}
+
+    public FinderNamingStrategy getNamingStrategy() {
+        return namingStrategy;
+    }
+
+    public void setNamingStrategy(FinderNamingStrategy namingStrategy) {
+        this.namingStrategy = namingStrategy;
+    }
+
+    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+        this.hibernateTemplate = hibernateTemplate;
+    }
 
 }
