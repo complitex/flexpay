@@ -86,11 +86,10 @@ public class QuittancePayerImpl implements QuittancePayer {
             } else {
                 operationService.update(oper);
             }
+            log.debug("Operation created");
         } else {
-            log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
+            log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
         }
-
-        log.debug("Operation created");
 
         PayInfoResponse response = new PayInfoResponse();
 
@@ -144,9 +143,9 @@ public class QuittancePayerImpl implements QuittancePayer {
 
             ServicePayInfo servicePayInfo = new ServicePayInfo();
             InfoRequest infoRequest = serviceProviderAccountNumberRequest(spDetails.getServiceId() + ":" + spDetails.getServiceProviderAccount(), SEARCH_QUITTANCE_DEBT_REQUEST);
-
+            log.debug("infoRequest = {}", infoRequest);
             QuittanceDetailsResponse quittanceDetailsResponse = quittanceDetailsFinder.findQuittance(infoRequest);
-            if (quittanceDetailsResponse.getInfos().length == 0) {
+            if (quittanceDetailsResponse.getInfos() == null || quittanceDetailsResponse.getInfos().length == 0) {
                 log.info("Cant't find quittances by serviceId and spAccountNumber ({}, {})", spDetails.getServiceId(), spDetails.getServiceProviderAccount());
                 servicePayInfo.setServiceStatusCode(11);
                 continue;

@@ -30,7 +30,7 @@ public class ResponseUtil {
 
     public static String buildPayResponse(PayInfoResponse payInfoResponse, String requestId, String statusCode, String statusMessage) throws FlexPayException {
 
-        log.debug("Building pay response: requestId = {}, statucCode = {}, statusMessage = {}", new Object[] {requestId, statusCode, statusMessage});
+        log.debug("Building pay response: requestId = {}, statusCode = {}, statusMessage = {}", new Object[] {requestId, statusCode, statusMessage});
 
         Signature signature = initSignature();
 
@@ -71,7 +71,7 @@ public class ResponseUtil {
 
 	public static String buildSearchResponse(QuittanceDetailsResponse quittanceDetailsResponse, String requestId, Integer requestType, String statusCode, String statusMessage) throws FlexPayException {
 
-        log.debug("Building search response: requestId = {}, requestType = {}, statucCode = {}, statusMessage = {}", new Object[] {requestId, requestType, statusCode, statusMessage});
+        log.debug("Building search response: requestId = {}, requestType = {}, statusCode = {}, statusMessage = {}", new Object[] {requestId, requestType, statusCode, statusMessage});
 
 		Signature signature = initSignature();
 

@@ -116,6 +116,7 @@
             <s:iterator value="quittanceInfos" id="qi" status="nQI">
                 <s:iterator value="detailses" status="status">
                     <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}" />
+                    //<s:property value="#serviceId" />
                     {
                             index: "<s:property value="getServiceFullIndex(#nQI.index, #serviceId)" />",
                             content: '"<s:property value="%{getErcAccount(attributes)" />";' +

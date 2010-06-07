@@ -178,6 +178,18 @@
 		where a.accountNumber=? and month(q.dateTill)=month(?) and q.orderNumber=? 
 	]]></query>
 
+    <query name="Quittance.findQuittanceByNumberAndServiceType"><![CDATA[
+        select distinct q
+        from Quittance q
+            inner join q.eircAccount a
+			left join fetch q.quittanceDetailsQuittances qdq
+			left join fetch qdq.quittanceDetails qd
+			left join fetch qd.consumer c
+			left join fetch c.service s
+        where a.accountNumber=? and month(q.dateTill)=month(?) and q.orderNumber=?
+            and s.serviceType.id=?
+    ]]></query>
+
 	<query name="Quittance.readFull"><![CDATA[
 		select distinct q
 		from Quittance q
@@ -199,19 +211,42 @@
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
 
-    <query name="Quittance.findAccountQuittances">
+    <query name="Quittance.findQuittancesByEIRCAccounts">
         select distinct q
         from Quittance q
         	inner join fetch q.eircAccount a
-        where a.id=?
+        where a.id in (:list_1)
         order by q.dateFrom desc, q.orderNumber desc
     </query>
 
-    <query name="Quittance.findAccountQuittances.count">
+    <query name="Quittance.findQuittancesByEIRCAccounts.count">
         select count(q)
         from Quittance q
         	inner join q.eircAccount a
-        where a.id=?
+        where a.id in (:list_1)
+    </query>
+
+    <query name="Quittance.findQuittancesByEIRCAccountsAndServiceType">
+        select distinct q
+        from Quittance q
+        	inner join fetch q.eircAccount a
+            left join fetch q.quittanceDetailsQuittances qdq
+            left join fetch qdq.quittanceDetails qd
+            left join fetch qd.consumer c
+            left join fetch c.service s
+        where s.serviceType.id=? and a.id in (:list_1)
+        order by q.dateFrom desc, q.orderNumber desc
+    </query>
+
+    <query name="Quittance.findQuittancesByEIRCAccountsAndServiceType.count">
+        select count(q)
+        from Quittance q
+        	inner join q.eircAccount a
+            left join q.quittanceDetailsQuittances qdq
+            left join qdq.quittanceDetails qd
+            left join qd.consumer c
+            left join c.service s
+        where s.serviceType.id=? and a.id in (:list_1)
     </query>
 
     <query name="Quittance.findQuittances">

@@ -19,12 +19,30 @@ public interface QuittanceDao extends GenericDao<Quittance, Long> {
 	 * @param accountNumber Eirc account number quittance was generated for
 	 * @param month		 Month the quittance was generated for
 	 * @param number		Order of quittance in specified month
+     *
 	 * @return List of quittances, possibly empty, usuals case is one quittance list
 	 */
 	@NotNull
 	List<Quittance> findQuittanceByNumber(String accountNumber, Date month, Integer number);
 
-	List<Quittance> findAccountQuittances(Long accountId, Page<Quittance> pager);
+    /**
+     * Get quittance by account number, till date, order number and service type id
+     *
+     * @param accountNumber Eirc account number quittance was generated for
+     * @param month		 Month the quittance was generated for
+     * @param number		Order of quittance in specified month
+     * @param serviceTypeId service type id
+     *
+     * @return List of quittances, possibly empty, usuals case is one quittance list
+     */
+    @NotNull
+    List<Quittance> findQuittanceByNumberAndServiceType(String accountNumber, Date month, Integer number, Long serviceTypeId);
+
+    @NotNull
+	List<Quittance> findQuittancesByEIRCAccounts(Collection<Long> accountIds, Page<Quittance> pager);
+
+    @NotNull
+    List<Quittance> findQuittancesByEIRCAccountsAndServiceType(Collection<Long> accountIds, Long serviceTypeId, Page<Quittance> pager);
 
     List<Quittance> findQuittances(Collection<Long> consumerIds);
 

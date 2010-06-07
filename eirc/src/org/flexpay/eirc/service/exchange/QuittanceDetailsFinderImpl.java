@@ -62,14 +62,14 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
 		QuittanceDetailsResponse response;
 		switch (request.getType()) {
+            case TYPE_ACCOUNT_NUMBER:
+                response = findByAccountNumber(requestStr, request.getDebtInfoType());
+                break;
 			case TYPE_QUITTANCE_NUMBER:
 				response = findByQuittanceNumber(requestStr, request.getDebtInfoType());
 				break;
-			case TYPE_ACCOUNT_NUMBER:
-				response = findByAccountNumber(requestStr, request.getDebtInfoType());
-				break;
 			case TYPE_APARTMENT_NUMBER:
-				response = findByApartmentReference(requestStr, request.getDebtInfoType());
+				response = findByApartment(requestStr, request.getDebtInfoType());
 				break;
             case TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER:
                 response = findByServiceProviderAccountNumber(requestStr, request.getDebtInfoType());
@@ -87,109 +87,124 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 		return response;
 	}
 
-    private QuittanceDetailsResponse findByQuittanceNumber(String quittanceNumber, int requestType) {
+    private QuittanceDetailsResponse findByAccountNumber(@NotNull String request, int requestType) {
 
-        if (isBlank(quittanceNumber)) {
+        try {
+
+            String[] reqMas = request.split(":");
+            EircAccount account = accountService.findAccount(reqMas.length > 1 ? reqMas[1] : reqMas[0]);
+            if (account == null) {
+                return getError(STATUS_ACCOUNT_NOT_FOUND);
+            }
+            List<Quittance> quittances;
+            if (reqMas.length > 1) {
+                try {
+                    quittances = quittanceService.getLatestAccountQuittances(account, new Stub<ServiceType>(Long.parseLong(reqMas[0])), new Page<Quittance>(10000));
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect number in request");
+                    throw new FlexPayException("Incorrect number in request");
+                }
+            } else {
+                quittances = quittanceService.getLatestAccountQuittances(account, new Page<Quittance>(10000));
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Found {} quittances", quittances.size());
+            }
+            if (quittances.isEmpty()) {
+                return getError(STATUS_QUITTANCE_NOT_FOUND);
+            }
+
+            return buildResponse(quittances, requestType);
+        } catch (Exception ex) {
+            log.error("Failed building quittance info", ex);
+            return getError(STATUS_INTERNAL_ERROR);
+        }
+
+    }
+
+    private QuittanceDetailsResponse findByQuittanceNumber(@NotNull String request, int requestType) {
+
+        if (isBlank(request)) {
             return getError(STATUS_INVALID_QUITTANCE_NUMBER);
         }
 
         try {
-            Quittance quittance = quittanceService.findByNumber(quittanceNumber);
+
+            String[] reqMas = request.split(":");
+            Quittance quittance;
+            if (reqMas.length > 1) {
+                try {
+                    quittance = quittanceService.findByNumberAndServiceType(reqMas[1], new Stub<ServiceType>(Long.parseLong(reqMas[0])));
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect number in request");
+                    throw new FlexPayException("Incorrect number in request");
+                }
+            } else {
+                quittance = quittanceService.findByNumber(reqMas[0]);
+            }
             if (quittance == null) {
                 return getError(STATUS_QUITTANCE_NOT_FOUND);
             }
 
-            QuittanceInfo info = getInfo(quittance, requestType);
-
-            QuittanceDetailsResponse response = new QuittanceDetailsResponse();
-            response.setStatusCode(STATUS_SUCCESS);
-            QuittanceInfo[] infos = {info};
-            response.setInfos(infos);
-            return response;
-        } catch (FlexPayException ex) {
-            return getError(STATUS_QUITTANCE_NOT_FOUND);
+            return buildResponse(list(quittance), requestType);
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
             return getError(STATUS_INTERNAL_ERROR);
         }
     }
 
-	private QuittanceDetailsResponse findByApartmentReference(String apartmentMasterIndex, int requestType) {
+	private QuittanceDetailsResponse findByApartment(@NotNull String request, int requestType) {
 
-		Stub<Apartment> stub = correctionsService.findCorrection(
-				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
-		if (stub == null) {
-			// todo remove this hack
-			try {
-				Long stubId = Long.parseLong(apartmentMasterIndex, 10);
-				if (apartmentMasterIndex.equals(stubId.toString()) && stubId > 0) {
-					stub = new Stub<Apartment>(stubId);
-				}
-			} catch (NumberFormatException ex) {
-				log.debug("Master index is looking like a real master index, but not found");
-			}
-		}
-		if (stub == null) {
-			log.debug("No apartment found by master index {}", apartmentMasterIndex);
-			return getError(STATUS_APARTMENT_NOT_FOUND);
-		}
+        String[] reqMas = request.split(":");
+        String apartmentMasterIndex = reqMas.length > 1 ? reqMas[1] : reqMas[0];
+        try {
+            Stub<Apartment> stub = correctionsService.findCorrection(
+                    apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
+            if (stub == null) {
+                // todo remove this hack
+                try {
+                    Long stubId = Long.parseLong(apartmentMasterIndex, 10);
+                    if (apartmentMasterIndex.equals(stubId.toString()) && stubId > 0) {
+                        stub = new Stub<Apartment>(stubId);
+                    }
+                } catch (NumberFormatException ex) {
+                    log.debug("Master index is looking like a real master index, but not found");
+                }
+            }
+            if (stub == null) {
+                log.debug("No apartment found by master index {}", apartmentMasterIndex);
+                return getError(STATUS_APARTMENT_NOT_FOUND);
+            }
 
-		ApartmentFilter filter = new ApartmentFilter(stub.getId());
-		List<EircAccount> accounts = accountService.findAccounts(arrayStack(filter), new Page<EircAccount>(1000));
-		if (accounts.isEmpty()) {
-			return getError(STATUS_ACCOUNT_NOT_FOUND);
-		}
+            ApartmentFilter filter = new ApartmentFilter(stub.getId());
+            List<EircAccount> accounts = accountService.findAccounts(arrayStack(filter), new Page<EircAccount>(1000));
+            if (accounts.isEmpty()) {
+                return getError(STATUS_ACCOUNT_NOT_FOUND);
+            }
 
-		List<QuittanceInfo> infos = list();
-		for (EircAccount account : accounts) {
+            List<Quittance> quittances;
+            if (reqMas.length > 1) {
+                try {
+                    quittances = quittanceService.getLatestAccountsQuittances(accounts, new Stub<ServiceType>(Long.parseLong(reqMas[0])), new Page<Quittance>(10000));
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect number in request");
+                    throw new FlexPayException("Incorrect number in request");
+                }
+            } else {
+                quittances = quittanceService.getLatestAccountsQuittances(accounts, new Page<Quittance>(10000));
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Found {} quittances", quittances.size());
+            }
+            if (quittances.isEmpty()) {
+                return getError(STATUS_QUITTANCE_NOT_FOUND);
+            }
 
-			List<Quittance> quittances = quittanceService.getLatestAccountQuittances(stub(account), new Page<Quittance>());
-			if (quittances.isEmpty()) {
-				continue;
-			}
-
-			try {
-				QuittanceInfo info = getInfo(quittances.get(0), requestType);
-				infos.add(info);
-			} catch (Exception ex) {
-				log.error("Failed building quittance info", ex);
-			}
-		}
-		if (infos.isEmpty()) {
-			return getError(STATUS_QUITTANCE_NOT_FOUND);
-		}
-
-		QuittanceDetailsResponse response = new QuittanceDetailsResponse();
-		response.setInfos(infos.toArray(new QuittanceInfo[infos.size()]));
-		response.setStatusCode(STATUS_SUCCESS);
-		return response;
-	}
-
-	private QuittanceDetailsResponse findByAccountNumber(String accountNumber, int requestType) {
-
-		EircAccount account = accountService.findAccount(accountNumber);
-		if (account == null) {
-			return getError(STATUS_ACCOUNT_NOT_FOUND);
-		}
-
-		QuittanceDetailsResponse response = new QuittanceDetailsResponse();
-
-		List<Quittance> quittances = quittanceService.getLatestAccountQuittances(stub(account), new Page<Quittance>());
-		if (quittances.isEmpty()) {
-			return getError(STATUS_QUITTANCE_NOT_FOUND);
-		}
-
-		try {
-			QuittanceInfo info = getInfo(quittances.get(0), requestType);
-			response.setInfos(new QuittanceInfo[] {info});
-			response.setStatusCode(STATUS_SUCCESS);
-			return response;
-		} catch (Exception ex) {
-			log.error("Failed building quittance info", ex);
-			response = getError(STATUS_INTERNAL_ERROR);
-		}
-
-		return response;
+            return buildResponse(quittances, requestType);
+        } catch (Exception ex) {
+            log.error("Failed building quittance info", ex);
+            return getError(STATUS_INTERNAL_ERROR);
+        }
 	}
 
     private QuittanceDetailsResponse findByServiceProviderAccountNumber(@NotNull String request, int requestType) {
@@ -264,7 +279,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             List<QuittanceInfo> infos = list();
 
             for (Quittance quittance : quittances) {
-                infos.add(getInfo(quittance, requestType));
+                infos.add(quittanceInfoBuilder.buildInfo(stub(quittance), requestType));
             }
             response.setInfos(infos.toArray(new QuittanceInfo[infos.size()]));
             response.setStatusCode(STATUS_SUCCESS);
@@ -276,10 +291,6 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         return response;
 
     }
-
-	private QuittanceInfo getInfo(Quittance q, int requestType) throws Exception {
-    	return quittanceInfoBuilder.buildInfo(stub(q), requestType);
-	}
 
 	private QuittanceDetailsResponse getError(int code) {
 		QuittanceDetailsResponse response = new QuittanceDetailsResponse();
