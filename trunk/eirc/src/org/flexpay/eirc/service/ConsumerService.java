@@ -1,14 +1,17 @@
 package org.flexpay.eirc.service;
 
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.payments.persistence.Service;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ConsumerService {
 
@@ -56,33 +59,32 @@ public interface ConsumerService {
 	@Nullable
 	Consumer read(@NotNull Stub<Consumer> stub);
 
-	/**
-	 * Try to find consumer by external account number and service
-	 *
-	 * @param accountNumber External account number
-	 * @param serviceStub Service stub
-	 * @return Consumer if found, or <code>null</code> otherwise
-	 */
-	@Nullable
-	Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub);
-
     /**
-     * Try to find consumer by ERC account number and service
+     * Try to find consumer by external account number and service
      *
-     * @param ercAccount ERC account number
-     * @param serviceStub   Service stub
+     * @param accountNumber External account number
+     * @param serviceTypeStub   Service type stub
      * @return Consumer if found, or <code>null</code> otherwise
      */
     @Nullable
-    Consumer findConsumerByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<Service> serviceStub);
+    List<Consumer> findConsumersByExAccountAndServiceType(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceTypeStub);
 
     /**
-     * Try to find consumers by ERC account number
+     * Try to find consumer by external account number
      *
-     * @param ercAccount ERC account number
+     * @param accountNumber External account number
+     * @return Consumer if found, or <code>null</code> otherwise
+     */
+    @Nullable
+    List<Consumer> findConsumersByExAccount(@NotNull String accountNumber);
+
+    /**
+     * Try to find consumers by apartments
+     *
+     * @param apartmentStubs apartment stubs
      * @return found Consumers
      */
     @NotNull
-    List<Consumer> findConsumersByERCAccount(@NotNull String ercAccount);
+    List<Consumer> findConsumersByApartment(@NotNull Set<Stub<Apartment>> apartmentStubs);
 
 }

@@ -28,7 +28,7 @@
 <form id="inputForm">
     <table cellspacing="2" cellpadding="2" width="80%">
         <tr>
-            <td nowrap="nowrap">
+            <td nowrap>
                 <s:text name="eirc.file" />&nbsp;<s:file name="upload" label="File" required="true" size="75" />
             </td>
         </tr>

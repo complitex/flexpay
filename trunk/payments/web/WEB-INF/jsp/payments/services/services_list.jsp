@@ -32,7 +32,7 @@
             <td class="col" width="1%">
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
-            <td class="col" nowrap="nowrap">
+            <td class="col" nowrap>
                 <s:if test="isSubService()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s:if>
                 <a href="<s:url action="serviceView" includeParams="none"><s:param name="service.id" value="id" /></s:url>">
                     <s:property value="getTranslationName(serviceType.typeNames)" />

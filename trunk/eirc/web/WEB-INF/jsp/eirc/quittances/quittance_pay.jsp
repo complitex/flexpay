@@ -243,7 +243,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" nowrap="nowrap"><s:text name="eirc.quittances.quittance_pay.service" /></td>
+			<td class="th" nowrap><s:text name="eirc.quittances.quittance_pay.service" /></td>
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.service_supplier" /></td>
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.payable" /></td>
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.payed" /></td>
@@ -258,7 +258,7 @@
 				<td class="col" align="right">
                     <s:property value="%{#status.index + 1}"/>
 				</td>
-				<td class="col" nowrap="nowrap">
+				<td class="col" nowrap>
 					<s:if test="%{#qd.consumer.service.isSubService()}">&nbsp;&nbsp;&nbsp;<i><s:property
 							value="%{getServiceName(#qd)}" /></i></s:if>
 					<s:else><s:property value="%{getServiceName(#qd)}" />

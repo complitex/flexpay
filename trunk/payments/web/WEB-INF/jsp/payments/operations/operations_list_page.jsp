@@ -19,9 +19,9 @@
     </sec:authorize>
     <tr>
         <td><s:text name="payments.operations.list.time_from"/></td>
-        <td><%@include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp"%></td>
+        <td><%@include file="/WEB-INF/jsp/common/filter/begin_time_with_sec_filter.jsp"%></td>
         <td><s:text name="payments.operations.list.time_till"/></td>
-        <td><%@include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp"%></td>
+        <td><%@include file="/WEB-INF/jsp/common/filter/end_time_with_sec_filter.jsp"%></td>
     </tr>
     <tr>
         <td><s:text name="payments.operations.list.summ_from" /></td>
@@ -52,8 +52,10 @@
             action:"<s:url action="operationsListAjax" includeParams="none"/>",
             params: {
                 "cashbox.id":<s:property value="cashbox.id" />,
-                "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").get(0).value,
-                "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").get(0).value,
+                <sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
+                    "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").get(0).value,
+                    "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").get(0).value,
+                </sec:authorize>
                 "beginTimeFilter.stringDate":$("input[name=beginTimeFilter.stringDate]").get(0).value,
                 "endTimeFilter.stringDate":$("input[name=endTimeFilter.stringDate]").get(0).value,
                 "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").get(0).value,

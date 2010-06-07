@@ -4,6 +4,7 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.Consumer;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,23 +31,22 @@ public interface ConsumerDao extends GenericDao<Consumer, Long> {
 	 * @param serviceId	 Service id
 	 * @return List of found consumers
 	 */
-	List<Consumer> findConsumersByAccountAndService(String accountNumber, Long serviceId);
+	List<Consumer> findConsumersByAccountAndServiceType(String accountNumber, Long serviceId);
 
     /**
-     * Find consumer by ERC account number and service
+     * Find consumer by external account number
      *
-     * @param ercAccount ERC account
-     * @param serviceId Service id
+     * @param accountNumber Extrernal account number
      * @return List of found consumers
      */
-    List<Consumer> findConsumersByERCAccountAndService(String ercAccount, Long serviceId);
+    List<Consumer> findConsumersByAccount(String accountNumber);
 
     /**
-     * Find consumer by ERC account number
+     * Find consumer by apartment ids
      *
-     * @param ercAccount ERC account
+     * @param apartmentIds apartment ids
      * @return List of found consumers
      */
-    List<Consumer> findConsumersByERCAccount(String ercAccount);
+    List<Consumer> findConsumersByApartments(Collection<Long> apartmentIds);
 
 }

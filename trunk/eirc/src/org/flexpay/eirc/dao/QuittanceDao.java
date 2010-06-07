@@ -26,6 +26,6 @@ public interface QuittanceDao extends GenericDao<Quittance, Long> {
 
 	List<Quittance> findAccountQuittances(Long accountId, Page<Quittance> pager);
 
-    List<Quittance> findQuittances(Collection<Long> accountIds);
+    List<Quittance> findQuittances(Collection<Long> consumerIds);
 
 }

@@ -134,12 +134,12 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
             <td width="415" bgcolor="#ffffff" valign="top"><img src="<%= ServiceURI %>/images/dot.gif" width="30" height="1" alt="" />
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td nowrap="nowrap" colspan="2" align="center">
+                  <td nowrap colspan="2" align="center">
                       <img src="<%= ServiceURI %>/images/logo.gif" alt="FlexPay" />                                
                   </td>
                 </tr>
                 <tr>
-                  <td nowrap="nowrap" colspan="2">&nbsp;</td>
+                  <td nowrap colspan="2">&nbsp;</td>
                 </tr>
 
 
@@ -147,7 +147,7 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
 
         <!-- Header display -->
         <tr>
-        <td nowrap="nowrap" colspan="2" align="center"><div class="logTxtSvrNam">                    
+        <td nowrap colspan="2" align="center"><div class="logTxtSvrNam">
         <jato:content name="ContentStaticTextHeader">
             <jato:getDisplayFieldValue name='StaticTextHeader'
                 defaultValue='Authentication' fireDisplayEvents='true'
@@ -156,7 +156,7 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
         </div></td>
         </tr>
         <tr>
-          <td nowrap="nowrap" colspan="2">&nbsp;</td>
+          <td nowrap colspan="2">&nbsp;</td>
         </tr>
         <!-- End of Header display -->      
   
@@ -175,7 +175,7 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
         <form name="frm<jato:text name="txtIndex" />" action="blank"
             onSubmit="defaultSubmit(); return false;" method="post">
 
-        <td nowrap="nowrap"><div class="logLbl">
+        <td nowrap><div class="logLbl">
             <jato:content name="isRequired">
             <img src="<%= ServiceURI %>/images/required.gif" alt="Required Field" 
             title="Required Field" width="7" height="14" />
@@ -203,7 +203,7 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
         <form name="frm<jato:text name="txtIndex" />" action="blank"
             onSubmit="defaultSubmit(); return false;" method="post">
 
-        <td nowrap="nowrap"><div class="logLbl">
+        <td nowrap><div class="logLbl">
             <jato:content name="isRequired">
             <img src="<%= ServiceURI %>/images/required.gif" alt="Required Field" 
             title="Required Field" width="7" height="14" />
@@ -231,7 +231,7 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
         <form name="frm<jato:text name="txtIndex" />" action="blank"
             onSubmit="defaultSubmit(); return false;" method="post">
 
-        <td nowrap="nowrap"><div class="logLbl">
+        <td nowrap><div class="logLbl">
             <jato:content name="isRequired">
             <img src="<%= ServiceURI %>/images/required.gif" alt="Required Field" 
             title="Required Field" width="7" height="14" />

@@ -72,7 +72,7 @@ public interface QuittanceService {
      */
     @Secured (Roles.QUITTANCE_READ)
     @NotNull
-    List<Quittance> getQuittancesByEircAccounts(@NotNull List<Consumer> consumers);
+    List<Quittance> getQuittances(@NotNull List<Consumer> consumers);
 
     /**
      * Find quittance by list of consumers

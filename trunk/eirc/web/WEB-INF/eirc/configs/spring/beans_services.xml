@@ -145,8 +145,8 @@
 
 	<bean id="quittanceService"
 		  class="org.flexpay.eirc.service.impl.QuittanceServiceImpl"
-          p:eircAccountDao-ref="eircAccountDao"
 		  p:quittanceNumberService-ref="quittanceNumberService"
+          p:consumerDao-ref="consumerDao"
 		  p:quittanceDetailsDao-ref="quittanceDetailsDao"
 		  p:quittanceDaoExt-ref="quittanceDaoExt"
 		  p:quittanceDao-ref="quittanceDao" />

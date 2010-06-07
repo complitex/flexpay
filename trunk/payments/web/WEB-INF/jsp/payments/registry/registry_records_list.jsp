@@ -41,7 +41,7 @@
                 </s:else>
             </td>
             <td class="col"><s:property value="personalAccountExt" /></td>
-            <td class="col" nowrap="nowrap">
+            <td class="col" nowrap>
                 <s:if test="streetType != null && streetName != null && (buildingNum != null || buildingBulkNum != null) && apartmentNum != null">
                     <s:if test="buildingNum != null && buildingBulkNum != null">
                         <s:set name="addressVal" value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}" />

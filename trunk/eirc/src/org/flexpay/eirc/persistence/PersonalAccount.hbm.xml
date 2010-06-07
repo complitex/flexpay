@@ -201,25 +201,23 @@
 		where p.id=? and c.externalAccountNumber=? and s.externalCode=?
 	</query>
 
-	<query name="Consumer.findConsumersByAccountAndService">
+	<query name="Consumer.findConsumersByAccountAndServiceType">
 		select distinct c
 		from Consumer c
-		where c.status=0 and c.externalAccountNumber=? and c.service.id=?
+		where c.status=0 and c.externalAccountNumber=?
+            and c.service.serviceType.id=?
 	</query>
 
-    <!-- NOTE: Exchange c.service.id by c.service.serviceType.id for search by service type -->
-    <query name="Consumer.findConsumersByERCAccountAndService">
+    <query name="Consumer.findConsumersByAccount">
         select distinct c
         from Consumer c
-            left join c.attributes attr
-        where c.status=0 and attr.stringValue=? and c.service.serviceType.id=?
+        where c.status=0 and c.externalAccountNumber=?
     </query>
 
-    <query name="Consumer.findConsumersByERCAccount">
+    <query name="Consumer.findConsumersByApartments">
         select distinct c
         from Consumer c
-            left join c.attributes a
-        where c.status=0 and a.stringValue=?
+        where c.status=0 and c.apartment.id in (:list_1)
     </query>
 
 	<query name="Consumer.readFull">
@@ -347,6 +345,7 @@
         select distinct a
         from EircAccount a
             left join fetch a.apartment aa
+            left join fetch a.consumers
         where a.status=0 and aa.id=?
     </query>
 

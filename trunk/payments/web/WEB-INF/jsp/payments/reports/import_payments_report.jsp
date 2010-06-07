@@ -21,14 +21,14 @@
 			<td>
 				<s:text name="payments.report.generate.date_from" />
 				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%>
-				<%@include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp"%>
+				<%@include file="/WEB-INF/jsp/common/filter/begin_time_with_sec_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<s:text name="payments.report.generate.date_till" />
 				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
-				<%@include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp"%>
+				<%@include file="/WEB-INF/jsp/common/filter/end_time_with_sec_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>

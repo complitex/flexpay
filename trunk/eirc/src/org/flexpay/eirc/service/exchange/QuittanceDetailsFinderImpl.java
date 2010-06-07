@@ -14,7 +14,7 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.Security;
-import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.quittance.InfoRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.persistence.quittance.QuittanceInfo;
@@ -199,7 +199,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             return getError(STATUS_ACCOUNT_NOT_FOUND);
         }
 
-        List<Quittance> quittances = quittanceService.getQuittancesByEircAccounts(consumers);
+        List<Quittance> quittances = quittanceService.getQuittances(consumers);
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
         }
@@ -230,27 +230,22 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
     private List<Consumer> getConsumers(@NotNull String request) {
 
-        List<Consumer> consumers = list();
+        List<Consumer> consumers;
 
         String[] reqMas = request.split(":");
         if (reqMas.length > 1) {
             try {
-                Consumer consumer = consumerService.findConsumerByERCAccountAndService(reqMas[1], new Stub<Service>(Long.parseLong(reqMas[0])));
-                if (consumer == null) {
-                    log.debug("Consumers not found");
-                    return null;
-                }
-                consumers.add(consumer);
+                consumers = consumerService.findConsumersByExAccountAndServiceType(reqMas[1], new Stub<ServiceType>(Long.parseLong(reqMas[0])));
             } catch (NumberFormatException e) {
-                log.debug("Incorrect numebr in request");
+                log.debug("Incorrect number in request");
                 return null;
             }
         } else {
-            consumers = consumerService.findConsumersByERCAccount(reqMas[0]);
-            if (consumers.isEmpty()) {
-                log.debug("Consumers not found");
-                return null;
-            }
+            consumers = consumerService.findConsumersByExAccount(reqMas[0]);
+        }
+        if (consumers.isEmpty()) {
+            log.debug("Consumers not found");
+            return null;
         }
 
         if (log.isDebugEnabled()) {

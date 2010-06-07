@@ -3,28 +3,29 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td nowrap="nowrap">
+        <td nowrap>
             <s:text name="common.processing.process.filter.start_date" />
             <%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%>
+            <%@include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp"%>
         </td>
-        <td nowrap="nowrap">
+        <td nowrap>
             <s:text name="common.processing.process.filter.end_date" />
             <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
+            <%@include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp"%>
         </td>
         <td>
             <input type="button" class="btn-exit" value="<s:text name="common.show"/>" onclick="pagerAjax();" />
         </td>
     </tr>
     <tr>
-        <td nowrap="nowrap">
+        <td nowrap>
             <s:text name="common.processing.process.filter.name" />
             <%@include file="/WEB-INF/jsp/common/processing/filters/process_name_filter.jsp"%>
         </td>
-        <td nowrap="nowrap">
+        <td nowrap colspan="2">
             <s:text name="common.processing.process.filter.state" />
             <%@include file="/WEB-INF/jsp/common/processing/filters/process_state_filter.jsp"%>
         </td>
-        <td>&nbsp;</td>
     </tr>
 </table>
 
@@ -38,16 +39,18 @@
 
     $(function() {
         FP.pagerAjax(null, {
-            action:"<s:url action="processesListAjax" includeParams="none"/>"
+            action:"<s:url action="processesListAjax" includeParams="none" />"
         });
     });
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="processesListAjax" includeParams="none"/>",
+            action:"<s:url action="processesListAjax" includeParams="none" />",
             params:{
                 "beginDateFilter.stringDate": $("#beginDateFilter").val(),
                 "endDateFilter.stringDate": $("#endDateFilter").val(),
+                "beginTimeFilter.stringDate": $("#beginTimeFilter").val(),
+                "endTimeFilter.stringDate": $("#endTimeFilter").val(),
                 "processNameFilter.selectedId": $("#processNameFilter").val(),
                 "processStateFilter.selectedId": $("#processStateFilter").val(),
                 "processSorterByName.active": $("#processSorterByNameActive").val(),
