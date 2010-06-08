@@ -3,10 +3,14 @@ package org.flexpay.payments.persistence.quittance;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.payments.actions.request.data.DebtsRequest;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
 public class InfoRequest implements Serializable {
+
+    private final static Logger log = LoggerFactory.getLogger(InfoRequest.class);
 
     /**
      * Quittance details should be searched by account number
@@ -28,6 +32,10 @@ public class InfoRequest implements Serializable {
      * Quittance details should be searched by address calculated by the personal account number of service provider
      */
     public static final int TYPE_ADDRESS = 5;
+    /**
+     * Quittance details should be search with number 4 or search with number 5
+     */
+    public static final int TYPE_COMBINED = 6;
 
     protected String requestId;
     protected String request;
@@ -125,6 +133,24 @@ public class InfoRequest implements Serializable {
      */
     public static InfoRequest addressRequest(@NotNull String address, int debtInfoType) {
         return new InfoRequest(address, TYPE_ADDRESS, debtInfoType);
+    }
+
+    /**
+     * Create request from combined request
+     *
+     * @param request request string
+     * @param debtInfoType debtInfoType
+     * @return Request object
+     */
+    public static InfoRequest combinedRequest(@NotNull String request, int debtInfoType) {
+        String[] req = request.split(":");
+        String num = req.length > 1 ? req[1] : req[0];
+        if (num.startsWith("10") && num.length() == 9) {
+            log.debug("!new combined request (5)");
+            return new InfoRequest(request, TYPE_COMBINED, debtInfoType);
+        }
+        log.debug("!new service provider request (4)");
+        return new InfoRequest(request, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER, debtInfoType);
     }
 
     @Override

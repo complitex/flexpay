@@ -146,6 +146,38 @@ public class ConsumerServiceImpl implements ConsumerService {
         return consumerDao.findConsumersByApartments(apartmentIds);
     }
 
+    /**
+     * Try to find consumer by ERC account number and service type
+     *
+     * @param ercAccount ERC account number
+     * @param serviceTypeStub   Service type stub
+     * @return found Consumers
+     */
+    @NotNull
+    @Override
+    public List<Consumer> findConsumersByERCAccountAndServiceType(@NotNull String ercAccount, @NotNull Stub<ServiceType> serviceTypeStub) {
+
+        List<Consumer> consumers = consumerDao.findConsumersByERCAccountAndServiceType(ercAccount, serviceTypeStub.getId());
+
+        if (consumers.size() > 1) {
+            log.info("Found several consumers by service type {} and ERC account {}", serviceTypeStub, ercAccount);
+        }
+
+        return consumers;
+    }
+
+    /**
+     * Try to find consumer by ERC account number
+     *
+     * @param ercAccount ERC account number
+     * @return found Consumers
+     */
+    @NotNull
+    @Override
+    public List<Consumer> findConsumersByERCAccount(@NotNull String ercAccount) {
+        return consumerDao.findConsumersByERCAccount(ercAccount);
+    }
+
     @Required
 	public void setConsumerDao(ConsumerDao consumerDao) {
 		this.consumerDao = consumerDao;

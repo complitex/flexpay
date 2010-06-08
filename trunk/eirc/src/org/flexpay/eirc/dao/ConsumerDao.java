@@ -49,4 +49,21 @@ public interface ConsumerDao extends GenericDao<Consumer, Long> {
      */
     List<Consumer> findConsumersByApartments(Collection<Long> apartmentIds);
 
+    /**
+     * Find consumer by ERC account number and service
+     *
+     * @param ercAccount ERC account
+     * @param serviceTypeId Service type id
+     * @return List of found consumers
+     */
+    List<Consumer> findConsumersByERCAccountAndServiceType(String ercAccount, Long serviceTypeId);
+
+    /**
+     * Find consumer by ERC account number
+     *
+     * @param ercAccount ERC account
+     * @return List of found consumers
+     */
+    List<Consumer> findConsumersByERCAccount(String ercAccount);
+
 }
