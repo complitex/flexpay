@@ -77,6 +77,9 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             case TYPE_ADDRESS:
                 response = findByAddress(requestStr, request.getDebtInfoType());
                 break;
+            case TYPE_COMBINED:
+                response = findByCombined(requestStr, request.getDebtInfoType());
+                break;
 			default:
 				response = getError(STATUS_UNKNOWN_REQUEST);
 		}
@@ -230,6 +233,40 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         List<Consumer> consumers = getConsumers(request);
         if (consumers == null) {
             return getError(STATUS_ACCOUNT_NOT_FOUND);
+        }
+
+        List<Quittance> quittances = quittanceService.getQuittancesByApartments(consumers);
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} quittances", quittances.size());
+        }
+        if (quittances.isEmpty()) {
+            return getError(STATUS_QUITTANCE_NOT_FOUND);
+        }
+
+        return buildResponse(quittances, requestType);
+    }
+
+    private QuittanceDetailsResponse findByCombined(@NotNull String request, int requestType) {
+
+        List<Consumer> consumers;
+        String[] reqMas = request.split(":");
+        if (reqMas.length > 1) {
+            try {
+                consumers = consumerService.findConsumersByERCAccountAndServiceType(reqMas[1], new Stub<ServiceType>(Long.parseLong(reqMas[0])));
+            } catch (NumberFormatException e) {
+                log.debug("Incorrect number in request");
+                return getError(STATUS_INTERNAL_ERROR);
+            }
+        } else {
+            consumers = consumerService.findConsumersByERCAccount(reqMas[0]);
+        }
+        if (consumers.isEmpty()) {
+            log.debug("Consumers not found");
+            return getError(STATUS_ACCOUNT_NOT_FOUND);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} consumers", consumers.size());
         }
 
         List<Quittance> quittances = quittanceService.getQuittancesByApartments(consumers);

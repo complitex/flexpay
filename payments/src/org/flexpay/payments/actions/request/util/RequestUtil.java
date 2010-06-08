@@ -101,7 +101,8 @@ public class RequestUtil {
                     || searchType == TYPE_QUITTANCE_NUMBER
                     || searchType == TYPE_APARTMENT_NUMBER
                     || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER
-                    || searchType == TYPE_ADDRESS;
+                    || searchType == TYPE_ADDRESS
+                    || searchType == TYPE_COMBINED;
         } else if (reqType == PAY_DEBT_REQUEST) {
             BigDecimal sum = new BigDecimal(0);
             for (ServicePayDetails spd : request.getPayDebt().getServicePayDetails()) {
@@ -130,6 +131,8 @@ public class RequestUtil {
             return serviceProviderAccountNumberRequest(searchCriteria, request.getDebtRequestType());
         } else if (TYPE_ADDRESS == searchType) {
             return addressRequest(searchCriteria, request.getDebtRequestType());
+        } else if (TYPE_COMBINED == searchType) {
+            return combinedRequest(searchCriteria, request.getDebtRequestType());
         }
 
 		return null;
