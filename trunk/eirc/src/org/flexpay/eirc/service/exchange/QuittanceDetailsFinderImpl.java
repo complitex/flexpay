@@ -110,13 +110,6 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             } else {
                 quittances = quittanceService.getLatestAccountQuittances(account, new Page<Quittance>(10000));
             }
-            if (log.isDebugEnabled()) {
-                log.debug("Found {} quittances", quittances.size());
-            }
-            if (quittances.isEmpty()) {
-                return getError(STATUS_QUITTANCE_NOT_FOUND);
-            }
-
             return buildResponse(quittances, requestType);
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
@@ -196,14 +189,9 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             } else {
                 quittances = quittanceService.getLatestAccountsQuittances(accounts, new Page<Quittance>(10000));
             }
-            if (log.isDebugEnabled()) {
-                log.debug("Found {} quittances", quittances.size());
-            }
-            if (quittances.isEmpty()) {
-                return getError(STATUS_QUITTANCE_NOT_FOUND);
-            }
 
             return buildResponse(quittances, requestType);
+
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
             return getError(STATUS_INTERNAL_ERROR);
@@ -212,90 +200,70 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
     private QuittanceDetailsResponse findByServiceProviderAccountNumber(@NotNull String request, int requestType) {
 
-        List<Consumer> consumers = getConsumers(request);
+        List<Consumer> consumers = getConsumers(request, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER);
         if (consumers == null) {
             return getError(STATUS_ACCOUNT_NOT_FOUND);
         }
 
         List<Quittance> quittances = quittanceService.getQuittances(consumers);
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} quittances", quittances.size());
-        }
-        if (quittances.isEmpty()) {
-            return getError(STATUS_QUITTANCE_NOT_FOUND);
-        }
-
         return buildResponse(quittances, requestType);
     }
 
     private QuittanceDetailsResponse findByAddress(@NotNull String request, int requestType) {
 
-        List<Consumer> consumers = getConsumers(request);
+        List<Consumer> consumers = getConsumers(request, TYPE_ADDRESS);
         if (consumers == null) {
             return getError(STATUS_ACCOUNT_NOT_FOUND);
         }
 
         List<Quittance> quittances = quittanceService.getQuittancesByApartments(consumers);
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} quittances", quittances.size());
-        }
-        if (quittances.isEmpty()) {
-            return getError(STATUS_QUITTANCE_NOT_FOUND);
-        }
-
         return buildResponse(quittances, requestType);
     }
 
     private QuittanceDetailsResponse findByCombined(@NotNull String request, int requestType) {
 
-        List<Consumer> consumers;
-        String[] reqMas = request.split(":");
-        if (reqMas.length > 1) {
-            try {
-                consumers = consumerService.findConsumersByERCAccountAndServiceType(reqMas[1], new Stub<ServiceType>(Long.parseLong(reqMas[0])));
-            } catch (NumberFormatException e) {
-                log.debug("Incorrect number in request");
-                return getError(STATUS_INTERNAL_ERROR);
-            }
-        } else {
-            consumers = consumerService.findConsumersByERCAccount(reqMas[0]);
-        }
-        if (consumers.isEmpty()) {
-            log.debug("Consumers not found");
+        List<Consumer> consumers = getConsumers(request, TYPE_COMBINED);
+        if (consumers == null) {
             return getError(STATUS_ACCOUNT_NOT_FOUND);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} consumers", consumers.size());
-        }
-
         List<Quittance> quittances = quittanceService.getQuittancesByApartments(consumers);
-        if (log.isDebugEnabled()) {
-            log.debug("Found {} quittances", quittances.size());
-        }
-        if (quittances.isEmpty()) {
-            return getError(STATUS_QUITTANCE_NOT_FOUND);
-        }
-
         return buildResponse(quittances, requestType);
     }
 
-    private List<Consumer> getConsumers(@NotNull String request) {
+    private List<Consumer> getConsumers(@NotNull String request, int searchType) {
 
         List<Consumer> consumers;
 
         String[] reqMas = request.split(":");
         if (reqMas.length > 1) {
             try {
-                consumers = consumerService.findConsumersByExAccountAndServiceType(reqMas[1], new Stub<ServiceType>(Long.parseLong(reqMas[0])));
+                Stub<ServiceType> serviceTypeStub = new Stub<ServiceType>(Long.parseLong(reqMas[0]));
+                String account = reqMas[1];
+                if (searchType == TYPE_COMBINED) {
+                    consumers = consumerService.findConsumersByERCAccountAndServiceType(account, serviceTypeStub);
+                } else if (searchType == TYPE_ADDRESS || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER) {
+                    consumers = consumerService.findConsumersByExAccountAndServiceType(account, serviceTypeStub);
+                } else {
+                    log.debug("Incorrect requestType");
+                    return null;
+                }
             } catch (NumberFormatException e) {
                 log.debug("Incorrect number in request");
                 return null;
             }
         } else {
-            consumers = consumerService.findConsumersByExAccount(reqMas[0]);
+            String account = reqMas[0];
+            if (searchType == TYPE_COMBINED) {
+                consumers = consumerService.findConsumersByERCAccount(account);
+            } else if (searchType == TYPE_ADDRESS || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER) {
+                consumers = consumerService.findConsumersByExAccount(account);
+            } else {
+                log.debug("Incorrect requestType");
+                return null;
+            }
         }
-        if (consumers.isEmpty()) {
+        if (consumers == null || consumers.isEmpty()) {
             log.debug("Consumers not found");
             return null;
         }
@@ -309,6 +277,13 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
     }
 
     private QuittanceDetailsResponse buildResponse(@NotNull List<Quittance> quittances, int requestType) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} quittances", quittances.size());
+        }
+        if (quittances.isEmpty()) {
+            return getError(STATUS_QUITTANCE_NOT_FOUND);
+        }
 
         QuittanceDetailsResponse response = new QuittanceDetailsResponse();
 
