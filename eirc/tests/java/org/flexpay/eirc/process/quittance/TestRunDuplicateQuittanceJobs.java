@@ -9,7 +9,7 @@ import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,9 +47,9 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 		thr1.join();
 		thr2.join();
 
-		assertEquals("First process failed", ProcessState.COMPLITED, pw1.getProcess().getProcessState());
+		assertEquals("First process failed", ProcessState.COMPLETED, pw1.getProcess().getProcessState());
 		// Second process should be killed by voters
-		assertEquals("Second process failed", ProcessState.COMPLITED_WITH_ERRORS, pw2.getProcess().getProcessState());
+		assertEquals("Second process failed", ProcessState.COMPLETED_WITH_ERRORS, pw2.getProcess().getProcessState());
 	}
 
 	@Test
@@ -75,8 +75,8 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 		thr2.start();
 		thr2.join();
 
-		assertEquals("First process failed", ProcessState.COMPLITED, pw1.getProcess().getProcessState());
-		assertEquals("Second process failed", ProcessState.COMPLITED, pw2.getProcess().getProcessState());
+		assertEquals("First process failed", ProcessState.COMPLETED, pw1.getProcess().getProcessState());
+		assertEquals("Second process failed", ProcessState.COMPLETED, pw2.getProcess().getProcessState());
 	}
 
 	@Test
@@ -101,10 +101,10 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 		thr1.join();
 		thr2.join();
 
-		assertEquals("First process failed", ProcessState.COMPLITED, pw1.getProcess().getProcessState());
+		assertEquals("First process failed", ProcessState.COMPLETED, pw1.getProcess().getProcessState());
 
 		// Second process should wait for the first completion
-		assertEquals("Second process failed", ProcessState.COMPLITED, pw2.getProcess().getProcessState());
+		assertEquals("Second process failed", ProcessState.COMPLETED, pw2.getProcess().getProcessState());
 	}
 
 	private final class ProcessWaiter implements Runnable {

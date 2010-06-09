@@ -18,10 +18,8 @@ public class ProcessesListPageAction extends FPActionSupport implements Initiali
 
 	private ProcessStateFilter processStateFilter = new ProcessStateFilter();
 	private ProcessNameFilter processNameFilter = new ProcessNameFilter();
-    private BeginDateFilter beginDateFilter = new BeginDateFilter(now());
-    private EndDateFilter endDateFilter = new EndDateFilter(now());
-    private BeginTimeFilter beginTimeFilter = new BeginTimeFilter(false);
-    private EndTimeFilter endTimeFilter = new EndTimeFilter(false);
+    private BeginDateFilter beginDateFilter = new BeginDateFilter();
+    private EndDateFilter endDateFilter = new EndDateFilter();
 
 	private ProcessManager processManager;
 
@@ -59,14 +57,6 @@ public class ProcessesListPageAction extends FPActionSupport implements Initiali
 
     public EndDateFilter getEndDateFilter() {
         return endDateFilter;
-    }
-
-    public BeginTimeFilter getBeginTimeFilter() {
-        return beginTimeFilter;
-    }
-
-    public EndTimeFilter getEndTimeFilter() {
-        return endTimeFilter;
     }
 
 	@Required

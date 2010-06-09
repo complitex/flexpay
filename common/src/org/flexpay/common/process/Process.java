@@ -82,7 +82,7 @@ public class Process {
 			} else if (processEndDate == null) {
 				return ProcessState.RUNING;
 			} else {
-				return ProcessState.COMPLITED;
+				return ProcessState.COMPLETED;
 			}
 		} else {
 			return processState;
