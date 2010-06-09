@@ -140,7 +140,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                 if (process != null && process.getProcessState().isCompleted()) {
                     log.debug("Process {} completed: {} ", processId, process.getParameters());
 
-                    Long registryId = afterComplitedProcess(process);
+                    Long registryId = afterCompletedProcess(process);
 
                     if (registryId != null) {
                         registryIds.add(registryId);
@@ -159,7 +159,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         return registryIds;
     }
 
-    private Long afterComplitedProcess(Process process) {
+    private Long afterCompletedProcess(Process process) {
         Map<Serializable, Serializable> parameters = process.getParameters();
 
         String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);

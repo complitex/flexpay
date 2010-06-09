@@ -6,12 +6,10 @@
         <td nowrap>
             <s:text name="common.processing.process.filter.start_date" />
             <%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%>
-            <%@include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp"%>
         </td>
         <td nowrap>
             <s:text name="common.processing.process.filter.end_date" />
             <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
-            <%@include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp"%>
         </td>
         <td>
             <input type="button" class="btn-exit" value="<s:text name="common.show"/>" onclick="pagerAjax();" />
@@ -49,8 +47,6 @@
             params:{
                 "beginDateFilter.stringDate": $("#beginDateFilter").val(),
                 "endDateFilter.stringDate": $("#endDateFilter").val(),
-                "beginTimeFilter.stringDate": $("#beginTimeFilter").val(),
-                "endTimeFilter.stringDate": $("#endTimeFilter").val(),
                 "processNameFilter.selectedId": $("#processNameFilter").val(),
                 "processStateFilter.selectedId": $("#processStateFilter").val(),
                 "processSorterByName.active": $("#processSorterByNameActive").val(),

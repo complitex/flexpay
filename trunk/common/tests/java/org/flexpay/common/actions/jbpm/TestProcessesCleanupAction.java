@@ -55,7 +55,7 @@ public class TestProcessesCleanupAction extends SpringBeanAwareTestCase {
 
 		org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(processId);
 		assertNotNull("Process not found", process);
-		assertEquals("Invalid process state", ProcessState.COMPLITED, process.getProcessState());
+		assertEquals("Invalid process state", ProcessState.COMPLETED, process.getProcessState());
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class TestProcessesCleanupAction extends SpringBeanAwareTestCase {
 
 		org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(processId);
 		assertNotNull("Process not found", process);
-		assertEquals("Invalid process state", ProcessState.COMPLITED, process.getProcessState());
+		assertEquals("Invalid process state", ProcessState.COMPLETED, process.getProcessState());
 	}
 
 	@Before

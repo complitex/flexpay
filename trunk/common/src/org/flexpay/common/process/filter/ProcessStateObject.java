@@ -30,9 +30,9 @@ public class ProcessStateObject {
 	public static ProcessStateObject getByProcessState(ProcessState state) {
 
 		switch (state) {
-			case COMPLITED:
+			case COMPLETED:
 				return completedState;
-			case COMPLITED_WITH_ERRORS:
+			case COMPLETED_WITH_ERRORS:
 				return completedWithErrorsState;
 			case RUNING:
 				return runningState;
@@ -56,9 +56,9 @@ public class ProcessStateObject {
 
 		switch (processObjectId.intValue()) {
 			case 1:
-				return ProcessState.COMPLITED;
+				return ProcessState.COMPLETED;
 			case 2:
-				return ProcessState.COMPLITED_WITH_ERRORS;
+				return ProcessState.COMPLETED_WITH_ERRORS;
 			case 3:
 				return ProcessState.WAITING;
 			case 4:

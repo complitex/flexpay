@@ -24,15 +24,12 @@ public class BeginDateFilter extends DateFilterBase {
 
 	@Override
 	public void setDate(Date date) {
-		if (date == null || date.compareTo(getEmptyDate()) < 0) {
-			beginDate = getEmptyDate();
-		}
-		beginDate = date;
+        beginDate = date == null || date.compareTo(getEmptyDate()) <= 0 ? getEmptyDate() : date;
 	}
 
 	@Override
 	protected Date getEmptyDate() {
-		return ApplicationConfig.getFutureInfinite();
+		return ApplicationConfig.getPastInfinite();
 	}
 
 	@Override

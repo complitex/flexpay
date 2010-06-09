@@ -25,24 +25,30 @@ public class FooProcessManagerImpl implements ProcessManager {
 
 	private static final FooProcessManagerImpl instance = new FooProcessManagerImpl();
 
+    @Override
 	public long deployProcessDefinition(String name, boolean replace) throws ProcessDefinitionException {
 		return 0;
 	}
 
+    @Override
 	public long deployProcessDefinition(ProcessDefinition definition, boolean replace) {
 		return 0;
 	}
 
+    @Override
 	public long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException {
 		return 0;
 	}
 
+    @Override
 	public void deleteProcessInstance(Process process) {
 	}
 
+    @Override
 	public void deleteProcessInstances(List<Process> processes) {
 	}
 
+    @Override
 	public void deleteProcessInstances(Set<Long> processIds) {
 	}
 
@@ -50,13 +56,16 @@ public class FooProcessManagerImpl implements ProcessManager {
 	public void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter) {
 	}
 
+    @Override
 	public void join(long processId) throws InterruptedException {
 	}
 
+    @Override
 	public long createProcess(@NotNull String definitionName, Map<Serializable, Serializable> parameters) {
 		return 0;
 	}
 
+    @Override
 	public List<Process> getProcesses() {
 		return null;
 	}
@@ -67,6 +76,7 @@ public class FooProcessManagerImpl implements ProcessManager {
 	 * @param pager pager
 	 * @return Process list
 	 */
+    @Override
 	public List<Process> getProcesses(Page<Process> pager) {
 		return null;
 	}
@@ -82,6 +92,7 @@ public class FooProcessManagerImpl implements ProcessManager {
 	 * @param name		  name allowed by filter (if null will not be used)
 	 * @return Process list
 	 */
+    @Override
 	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state, String name) {
 		return null;
 	}
@@ -91,39 +102,36 @@ public class FooProcessManagerImpl implements ProcessManager {
 	 *
 	 * @return list which contains unique names of all the processes in the system
 	 */
+    @Override
 	public List<String> getAllProcessNames() {
 		return null;
 	}
 
+    @Override
 	public List<TaskInstance> getRunningTasks() {
 		return null;
 	}
 
+    @Override
 	public void taskCompleted(Long taskId, Map<Serializable, Serializable> parameters, String transition) {
 	}
 
 	@NotNull
+    @Override
 	public Process getProcessInstanceInfo(@NotNull Long processId) {
 		return null;
 	}
 
+    @Override
 	public void setDefinitionPaths(List<String> definitionPaths) {
 	}
 
+    @Override
 	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters) {
 	}
 
 	public static FooProcessManagerImpl getInstance() {
 		return instance;
-	}
-
-	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
-	}
-
-	public void setRescanFrequency(String rescanFrequency) {
-	}
-
-	public void setTaskRepeatLimit(String taskRepeatLimit) {
 	}
 
 	public void start() {
@@ -132,15 +140,27 @@ public class FooProcessManagerImpl implements ProcessManager {
 	public void stop() {
 	}
 
+    @Override
 	public ProcessInstance getProcessInstance(@NotNull Long processInstanceId) {
 		return null;
 	}
 
+    @Override
 	public <T> T execute(@NotNull ContextCallback<T> callback) {
 		return null;
 	}
 
+    @Override
 	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
 		return null;
 	}
+
+    public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
+    }
+
+    public void setRescanFrequency(String rescanFrequency) {
+    }
+
+    public void setTaskRepeatLimit(String taskRepeatLimit) {
+    }
 }

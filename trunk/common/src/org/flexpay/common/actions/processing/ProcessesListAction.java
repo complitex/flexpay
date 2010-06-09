@@ -31,10 +31,8 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 	private ProcessSorterByEndDate processSorterByEndDate = new ProcessSorterByEndDate();
 	private ProcessSorterByState processSorterByState = new ProcessSorterByState();
 
-	private BeginDateFilter beginDateFilter = new BeginDateFilter(new Date());
-	private EndDateFilter endDateFilter = new EndDateFilter(new Date());
-    private BeginTimeFilter beginTimeFilter = new BeginTimeFilter(false);
-    private EndTimeFilter endTimeFilter = new EndTimeFilter(false);
+	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ProcessStateFilter processStateFilter = new ProcessStateFilter();
 	private ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
@@ -57,20 +55,21 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		return SUCCESS;
 	}
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        processNameFilter.setProcessManager(processManager);
+    }
+
 	private List<Process> processes() {
 
-		log.debug("beginDateFilter = {}", beginDateFilter);
-        log.debug("beginTimeFilter = {}", beginTimeFilter);
-        log.debug("endDateFilter = {}", endDateFilter);
-        log.debug("endTimeFilter = {}", endTimeFilter);
-		log.debug("processStateFilter = {}\nprocessNameFilter = {}", processStateFilter, processNameFilter);
+        log.debug("processStateFilter = {}\nprocessNameFilter = {}", processStateFilter, processNameFilter);
 
-        Date startFrom = beginTimeFilter.setTime(beginDateFilter.getDate());
-        Date endBefore = endTimeFilter.setTime(endDateFilter.getDate());
-        Calendar endCal = Calendar.getInstance();
-        endCal.setTime(endBefore);
-        endCal.set(Calendar.SECOND, 59);
-		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endCal.getTime(),
+        Date startFrom = beginDateFilter.dateIsNotEmpty() ? beginDateFilter.getDate() : null;
+		Date endBefore = endDateFilter.dateIsNotEmpty() ? endDateFilter.getDate() : null;
+
+        log.debug("startFrom = {}", startFrom);
+        log.debug("endBefore = {}", endBefore);
+		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endBefore,
 				processStateFilter.getProcessState(), processNameFilter.getSelectedName());
 	}
 
@@ -134,25 +133,12 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		this.endDateFilter = endDateFilter;
 	}
 
-    public void setBeginTimeFilter(BeginTimeFilter beginTimeFilter) {
-        this.beginTimeFilter = beginTimeFilter;
-    }
-
-    public void setEndTimeFilter(EndTimeFilter endTimeFilter) {
-        this.endTimeFilter = endTimeFilter;
-    }
-
 	public void setProcessStateFilter(ProcessStateFilter processStateFilter) {
 		this.processStateFilter = processStateFilter;
 	}
 
 	public void setProcessNameFilter(ProcessNameFilter processNameFilter) {
 		this.processNameFilter = processNameFilter;
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		processNameFilter.setProcessManager(processManager);
 	}
 
 	@Required

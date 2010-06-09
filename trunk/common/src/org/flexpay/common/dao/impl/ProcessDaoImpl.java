@@ -10,8 +10,6 @@ import org.flexpay.common.process.ProcessManagerImpl;
 import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.sorter.ProcessSorter;
-import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -25,9 +23,12 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.*;
 
 /**
  * Hibernate-based implementation of {@link org.flexpay.common.dao.ProcessDao}
@@ -38,9 +39,7 @@ public class ProcessDaoImpl implements ProcessDao {
 
 	private HibernateTemplate hibernateTemplate;
 
-	/**
-	 * {@inheritDoc}
-	 */
+    @Override
 	public List<Process> findProcesses(ProcessSorter sorter, final Page<Process> pager, Date startFrom, Date endBefore,
 									   ProcessState state, String name) {
 
@@ -89,7 +88,7 @@ public class ProcessDaoImpl implements ProcessDao {
 
 		if (state != null) {
 			switch (state) {
-				case COMPLITED:
+				case COMPLETED:
 					appendHqlWhereClause(whereClause, "pi.end is not null");
 					break;
 				case RUNING:
@@ -98,7 +97,7 @@ public class ProcessDaoImpl implements ProcessDao {
 				case WAITING:
 					appendHqlWhereClause(whereClause, "pi.start is null");
 					break;
-				case COMPLITED_WITH_ERRORS:
+				case COMPLETED_WITH_ERRORS:
 					// how to deal with this state?
 					break;
 				default:
@@ -107,11 +106,11 @@ public class ProcessDaoImpl implements ProcessDao {
 		}
 
 		if (startFrom != null && state != ProcessState.WAITING) {
-			appendHqlWhereClause(whereClause, "pi.start > :startFrom");
+			appendHqlWhereClause(whereClause, "pi.start >= :startFrom");
 		}
 
 		if (endBefore != null && state != ProcessState.RUNING) {
-			appendHqlWhereClause(whereClause, "pi.end < :endBefore");
+			appendHqlWhereClause(whereClause, "pi.end <= :endBefore");
 		}
 
 		if (whereClause.length() > 0) {
@@ -150,12 +149,13 @@ public class ProcessDaoImpl implements ProcessDao {
 		}
 
 		if (startFrom != null && state != ProcessState.WAITING) {
-			query.setDate("startFrom", startFrom);
+			query.setTimestamp("startFrom", startFrom);
 		}
 
 		if (endBefore != null && state != ProcessState.RUNING) {
-			query.setDate("endBefore", endBefore);
+			query.setTimestamp("endBefore", endBefore);
 		}
+
 	}
 
 	@SuppressWarnings ({"unchecked"})
@@ -164,6 +164,7 @@ public class ProcessDaoImpl implements ProcessDao {
 														   final String name) {
 
 		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
 			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
 				Query query = session.createQuery(hql.toString());
 				setQueryParameters(query, state, startFrom, endBefore, name);
@@ -179,6 +180,7 @@ public class ProcessDaoImpl implements ProcessDao {
 														  final String name) {
 
 		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
 			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
 
 				// getting total elements number for pager
@@ -198,16 +200,15 @@ public class ProcessDaoImpl implements ProcessDao {
 	}
 
 	private List<Process> convert(List<ProcessInstance> instances) {
-		List<Process> processes = CollectionUtils.list();
+		List<Process> processes = list();
 		for (ProcessInstance processInstance : instances) {
 			processes.add(getProcessInfo(processInstance.getId()));
 		}
+
 		return processes;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    @Override
 	public Process getProcessInfoWithVariables(ProcessInstance processInstance) {
 
 		Process process = getProcessInfo(processInstance);
@@ -215,7 +216,7 @@ public class ProcessDaoImpl implements ProcessDao {
 		@SuppressWarnings ({"unchecked"})
 		Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
 		if (parameters == null) {
-			parameters = CollectionUtils.map();
+			parameters = map();
 		}
 		process.setParameters(parameters);
 
@@ -312,10 +313,8 @@ public class ProcessDaoImpl implements ProcessDao {
 		});
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<String> findAllProcessNames() {
 		return (List<String>) hibernateTemplate.findByNamedQuery("Process.findAllProcessNames");
 	}

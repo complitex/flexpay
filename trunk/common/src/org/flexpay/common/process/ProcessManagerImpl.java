@@ -451,7 +451,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		processInstance.end();
 		task.end(Job.RESULT_ERROR);
 		//set status to failed
-		contextInstance.setVariable(Job.RESULT_ERROR, ProcessState.COMPLITED_WITH_ERRORS);
+		contextInstance.setVariable(Job.RESULT_ERROR, ProcessState.COMPLETED_WITH_ERRORS);
 		//remove from runningTasks tasks
 		runningTaskIds.remove(task.getId());
 	}
@@ -571,8 +571,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 	}
 
-	@Override
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<TaskInstance> getRunningTasks() {
 
 		return execute(new ContextCallback<List<TaskInstance>>() {
