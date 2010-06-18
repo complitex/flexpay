@@ -160,17 +160,6 @@
         where qdq.quittance.id=?
     ]]></query>
 
-	<query name="Quittance.findObjectsByEircAccountAndDateTill">
-		from Quittance q
-		where q.eircAccount.id=? and q.dateTill=?
-	</query>
-
-	<query name="Quittance.findObjectsByEircAccountAndDateTill.count">
-		select count(*)
-        from Quittance q
-        where q.eircAccount.id=? and q.dateTill=?
-	</query>
-
 	<query name="Quittance.findQuittanceByNumber"><![CDATA[
 		select distinct q
 		from Quittance q
@@ -210,51 +199,5 @@
 		where q.id=?
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
-
-    <query name="Quittance.findQuittancesByEIRCAccounts">
-        select distinct q
-        from Quittance q
-        	inner join fetch q.eircAccount a
-        where a.id in (:list_1)
-        order by q.dateFrom desc, q.orderNumber desc
-    </query>
-
-    <query name="Quittance.findQuittancesByEIRCAccounts.count">
-        select count(q)
-        from Quittance q
-        	inner join q.eircAccount a
-        where a.id in (:list_1)
-    </query>
-
-    <query name="Quittance.findQuittancesByEIRCAccountsAndServiceType">
-        select distinct q
-        from Quittance q
-        	inner join fetch q.eircAccount a
-            left join fetch q.quittanceDetailsQuittances qdq
-            left join fetch qdq.quittanceDetails qd
-            left join fetch qd.consumer c
-            left join fetch c.service s
-        where s.serviceType.id=? and a.id in (:list_1)
-        order by q.dateFrom desc, q.orderNumber desc
-    </query>
-
-    <query name="Quittance.findQuittancesByEIRCAccountsAndServiceType.count">
-        select count(q)
-        from Quittance q
-        	inner join q.eircAccount a
-            left join q.quittanceDetailsQuittances qdq
-            left join qdq.quittanceDetails qd
-            left join qd.consumer c
-            left join c.service s
-        where s.serviceType.id=? and a.id in (:list_1)
-    </query>
-
-    <query name="Quittance.findQuittances">
-        from Quittance q
-        	inner join fetch q.eircAccount a
-            left join fetch a.consumers c
-        where c.id in (:list_1)
-        order by q.dateFrom desc, q.orderNumber desc
-    </query>
 
 </hibernate-mapping>

@@ -1,32 +1,32 @@
-package org.flexpay.payments.actions.request.data;
+package org.flexpay.payments.actions.request.data.request;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.payments.actions.request.data.request.data.DebtInfo;
+import org.flexpay.payments.actions.request.data.request.data.PayDebt;
+import org.flexpay.payments.actions.request.data.request.data.ReversalPay;
 
 public class DebtsRequest {
 
-    public final static int SEARCH_QUITTANCE_DEBT_REQUEST = 1;
-    public final static int SEARCH_DEBT_REQUEST = 2;
-    public final static int PAY_DEBT_REQUEST = 3;
-
 	private DebtInfo debtInfo;
     private PayDebt payDebt;
+    private ReversalPay reversalPay;
     private String login;
     private String signature;
 
-    private int debtRequestType = SEARCH_QUITTANCE_DEBT_REQUEST;
+    private RequestType requestType = RequestType.SEARCH_QUITTANCE_DEBT_REQUEST;
 
     public DebtInfo getDebtInfo() {
         return debtInfo;
     }
 
     public void setDebtInfo(DebtInfo debtInfo) {
-        debtRequestType = SEARCH_DEBT_REQUEST;
+        requestType = RequestType.SEARCH_DEBT_REQUEST;
         this.debtInfo = debtInfo;
     }
 
     public void setQuittanceDebtInfo(DebtInfo debtInfo) {
-        debtRequestType = SEARCH_QUITTANCE_DEBT_REQUEST;
+        requestType = RequestType.SEARCH_QUITTANCE_DEBT_REQUEST;
         this.debtInfo = debtInfo;
     }
 
@@ -35,8 +35,17 @@ public class DebtsRequest {
     }
 
     public void setPayDebt(PayDebt payDebt) {
-        debtRequestType = PAY_DEBT_REQUEST;
+        requestType = RequestType.PAY_DEBT_REQUEST;
         this.payDebt = payDebt;
+    }
+
+    public ReversalPay getReversalPay() {
+        return reversalPay;
+    }
+
+    public void setReversalPay(ReversalPay reversalPay) {
+        requestType = RequestType.REVERSAL_PAY_REQUEST;
+        this.reversalPay = reversalPay;
     }
 
     public String getLogin() {
@@ -55,12 +64,12 @@ public class DebtsRequest {
         this.signature = signature;
     }
 
-    public int getDebtRequestType() {
-        return debtRequestType;
+    public RequestType getRequestType() {
+        return requestType;
     }
 
-    public void setDebtRequestType(int debtRequestType) {
-        this.debtRequestType = debtRequestType;
+    public void setRequestType(RequestType requestType) {
+        this.requestType = requestType;
     }
 
     @Override
@@ -68,9 +77,10 @@ public class DebtsRequest {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("debtInfo", debtInfo).
                 append("payDebt", payDebt).
+                append("reversalPay", reversalPay).
                 append("login", login).
                 append("signature", signature).
-                append("debtRequestType", debtRequestType).
+                append("requestType", requestType).
                 toString();
     }
 }

@@ -1,12 +1,12 @@
-package org.flexpay.payments.persistence.quittance;
+package org.flexpay.payments.actions.request.data.request;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.payments.actions.request.data.DebtsRequest;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class InfoRequest implements Serializable {
 
@@ -37,15 +37,17 @@ public class InfoRequest implements Serializable {
      */
     public static final int TYPE_COMBINED = 6;
 
-    protected String requestId;
-    protected String request;
-    protected int type = DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST;
-    private int debtInfoType;
+    private String requestId;
+    private String request;
+    private Locale locale = Locale.ENGLISH;
+    private int type;
+    private RequestType debtInfoType = RequestType.SEARCH_QUITTANCE_DEBT_REQUEST;
 
-    private InfoRequest(String request, int type, int debtInfoType) {
+    private InfoRequest(String request, int type, RequestType debtInfoType, Locale locale) {
         this.request = request;
         this.type = type;
         this.debtInfoType = debtInfoType;
+        this.locale = locale;
     }
 
     public String getRequest() {
@@ -72,12 +74,20 @@ public class InfoRequest implements Serializable {
         this.requestId = requestId;
     }
 
-    public Integer getDebtInfoType() {
+    public RequestType getDebtInfoType() {
         return debtInfoType;
     }
 
-    public void setDebtInfoType(Integer debtInfoType) {
+    public void setDebtInfoType(RequestType debtInfoType) {
         this.debtInfoType = debtInfoType;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     /**
@@ -87,8 +97,8 @@ public class InfoRequest implements Serializable {
      * @param debtInfoType debtInfoType
      * @return Request object
      */
-    public static InfoRequest accountNumberRequest(@NotNull String accountNumber, int debtInfoType) {
-        return new InfoRequest(accountNumber, TYPE_ACCOUNT_NUMBER, debtInfoType);
+    public static InfoRequest accountNumberRequest(@NotNull String accountNumber, RequestType debtInfoType, Locale locale) {
+        return new InfoRequest(accountNumber, TYPE_ACCOUNT_NUMBER, debtInfoType, locale);
     }
 
     /**
@@ -98,8 +108,8 @@ public class InfoRequest implements Serializable {
      * @param debtInfoType debtInfoType
      * @return Request object
      */
-    public static InfoRequest quittanceNumberRequest(@NotNull String quittanceNumber, int debtInfoType) {
-        return new InfoRequest(quittanceNumber, TYPE_QUITTANCE_NUMBER, debtInfoType);
+    public static InfoRequest quittanceNumberRequest(@NotNull String quittanceNumber, RequestType debtInfoType, Locale locale) {
+        return new InfoRequest(quittanceNumber, TYPE_QUITTANCE_NUMBER, debtInfoType, locale);
     }
 
     /**
@@ -109,8 +119,8 @@ public class InfoRequest implements Serializable {
      * @param debtInfoType debtInfoType
      * @return Request object
      */
-    public static InfoRequest apartmentNumberRequest(@NotNull String apartmentNumber, int debtInfoType) {
-        return new InfoRequest(apartmentNumber, TYPE_APARTMENT_NUMBER, debtInfoType);
+    public static InfoRequest apartmentNumberRequest(@NotNull String apartmentNumber, RequestType debtInfoType, Locale locale) {
+        return new InfoRequest(apartmentNumber, TYPE_APARTMENT_NUMBER, debtInfoType, locale);
     }
 
     /**
@@ -120,8 +130,8 @@ public class InfoRequest implements Serializable {
      * @param debtInfoType debtInfoType
      * @return Request object
      */
-    public static InfoRequest serviceProviderAccountNumberRequest(@NotNull String seviceProviderAccountNumber, int debtInfoType) {
-        return new InfoRequest(seviceProviderAccountNumber, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER, debtInfoType);
+    public static InfoRequest serviceProviderAccountNumberRequest(@NotNull String seviceProviderAccountNumber, RequestType debtInfoType, Locale locale) {
+        return new InfoRequest(seviceProviderAccountNumber, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER, debtInfoType, locale);
     }
 
     /**
@@ -131,8 +141,8 @@ public class InfoRequest implements Serializable {
      * @param debtInfoType debtInfoType
      * @return Request object
      */
-    public static InfoRequest addressRequest(@NotNull String address, int debtInfoType) {
-        return new InfoRequest(address, TYPE_ADDRESS, debtInfoType);
+    public static InfoRequest addressRequest(@NotNull String address, RequestType debtInfoType, Locale locale) {
+        return new InfoRequest(address, TYPE_ADDRESS, debtInfoType, locale);
     }
 
     /**
@@ -142,15 +152,15 @@ public class InfoRequest implements Serializable {
      * @param debtInfoType debtInfoType
      * @return Request object
      */
-    public static InfoRequest combinedRequest(@NotNull String request, int debtInfoType) {
+    public static InfoRequest combinedRequest(@NotNull String request, RequestType debtInfoType, Locale locale) {
         String[] req = request.split(":");
         String num = req.length > 1 ? req[1] : req[0];
         if (num.startsWith("10") && num.length() == 9) {
             log.debug("!new combined request (5)");
-            return new InfoRequest(request, TYPE_COMBINED, debtInfoType);
+            return new InfoRequest(request, TYPE_COMBINED, debtInfoType, locale);
         }
         log.debug("!new service provider request (4)");
-        return new InfoRequest(request, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER, debtInfoType);
+        return new InfoRequest(request, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER, debtInfoType, locale);
     }
 
     @Override

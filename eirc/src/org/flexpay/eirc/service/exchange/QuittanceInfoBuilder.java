@@ -17,11 +17,11 @@ import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.payments.actions.request.data.DebtsRequest;
+import org.flexpay.payments.actions.request.data.request.RequestType;
+import org.flexpay.payments.actions.request.data.response.data.ConsumerAttributes;
+import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
+import org.flexpay.payments.actions.request.data.response.data.ServiceDetails;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
-import org.flexpay.payments.persistence.quittance.QuittanceInfo;
-import org.flexpay.payments.persistence.quittance.ServiceDetails;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
@@ -50,7 +51,7 @@ public class QuittanceInfoBuilder {
     private SPService spService;
 
     @Nullable
-    public QuittanceInfo buildInfo(Stub<Quittance> stub, int infoType) throws Exception {
+    public QuittanceInfo buildInfo(Stub<Quittance> stub, RequestType infoType, Locale locale) throws Exception {
 
         List<QuittanceDetails> quittanceDetailses;
         List<QuittancePayment> payments = list();
@@ -59,7 +60,7 @@ public class QuittanceInfoBuilder {
 
         log.debug("infoType = {}", infoType);
 
-        if (infoType == DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST) {
+        if (infoType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
 
             Quittance q = quittanceService.readFull(stub);
             if (q == null) {
@@ -79,12 +80,12 @@ public class QuittanceInfoBuilder {
             if (apartment != null) {
                 Stub<Apartment> apartmentStub = stub(apartment);
                 info.setApartmentMasterIndex(masterIndexService.getMasterIndex(apartment));
-                setAddress1(info, apartmentStub);
+                setAddress1(info, apartmentStub, locale);
             } else {
                 Iterator<Consumer> it = consumerInfo.getConsumers().iterator();
                 if (it.hasNext()) {
                     Consumer consumer = it.next();
-                    setAddress1(info, consumer.getApartmentStub());
+                    setAddress1(info, consumer.getApartmentStub(), locale);
                 }
             }
 
@@ -120,14 +121,12 @@ public class QuittanceInfoBuilder {
             log.debug("Building quittanceDetails for service {}", service);
 
             ServiceDetails serviceDetails = new ServiceDetails();
-            // Exchange serviceId by serviceTypeId in responces
-            // serviceDetails.setServiceId(service.getId());
             serviceDetails.setServiceId(service.getServiceType().getId());
-            serviceDetails.setServiceName(getTranslation(service.getDescriptions()).getName());
+            serviceDetails.setServiceName(getTranslation(service.getDescriptions(), locale).getName());
             serviceDetails.setAmount(details.getAmount().setScale(2));
             serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
 
-            if (infoType == DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST) {
+            if (infoType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 serviceDetails.setIncomingBalance(details.getIncomingBalance());
                 serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
                 serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
@@ -146,7 +145,7 @@ public class QuittanceInfoBuilder {
             serviceDetails.setMiddleName(cinfo.getMiddleName());
             serviceDetails.setLastName(cinfo.getLastName());
             //TODO: Пока что непонятно откуда брать apartment, в темповом режиме берем из consumer'а
-            setAddress2(serviceDetails, consumer.getApartmentStub());
+            setAddress2(serviceDetails, consumer.getApartmentStub(), locale);
 //            serviceDetails.setRoomNumber("");
 
             serviceDetailses.add(serviceDetails);
@@ -159,7 +158,7 @@ public class QuittanceInfoBuilder {
         return info;
     }
 
-    private void setAddress2(ServiceDetails serviceDetails, Stub<Apartment> apartmentStub) throws FlexPayException {
+    private void setAddress2(ServiceDetails serviceDetails, Stub<Apartment> apartmentStub, Locale locale) throws FlexPayException {
 
         Apartment apartment = apartmentService.readFullWithHierarchy(apartmentStub);
         if (apartment == null) {
@@ -174,22 +173,22 @@ public class QuittanceInfoBuilder {
         serviceDetails.setBuildingNumber(buildingAddress.getNumber());
 
         Street street = buildingAddress.getStreet();
-        serviceDetails.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
-        serviceDetails.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
+        serviceDetails.setStreetType(getTranslation(street.getCurrentType().getTranslations(), locale).getShortName());
+        serviceDetails.setStreetName(getTranslation(street.getCurrentName().getTranslations(), locale).getName());
 
         Town town = street.getTown();
-        serviceDetails.setTownType(getTranslation(town.getCurrentType().getTranslations()).getShortName());
-        serviceDetails.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
+        serviceDetails.setTownType(getTranslation(town.getCurrentType().getTranslations(), locale).getShortName());
+        serviceDetails.setTownName(getTranslation(town.getCurrentName().getTranslations(), locale).getName());
 
         Region region = town.getRegion();
-        serviceDetails.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
+        serviceDetails.setRegion(getTranslation(region.getCurrentName().getTranslations(), locale).getName());
 
         Country country = region.getCountry();
-        serviceDetails.setCountry(getTranslation(country.getTranslations()).getName());
+        serviceDetails.setCountry(getTranslation(country.getTranslations(), locale).getName());
 
     }
 
-    private void setAddress1(QuittanceInfo info, Stub<Apartment> apartmentStub) throws FlexPayException {
+    private void setAddress1(QuittanceInfo info, Stub<Apartment> apartmentStub, Locale locale) throws FlexPayException {
 
         Apartment apartment = apartmentService.readFullWithHierarchy(apartmentStub);
         if (apartment == null) {
@@ -204,18 +203,18 @@ public class QuittanceInfoBuilder {
         info.setBuildingNumber(buildingAddress.getNumber());
 
         Street street = buildingAddress.getStreet();
-        info.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
-        info.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
+        info.setStreetType(getTranslation(street.getCurrentType().getTranslations(), locale).getShortName());
+        info.setStreetName(getTranslation(street.getCurrentName().getTranslations(), locale).getName());
 
         Town town = street.getTown();
-        info.setTownType(getTranslation(town.getCurrentType().getTranslations()).getShortName());
-        info.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
+        info.setTownType(getTranslation(town.getCurrentType().getTranslations(), locale).getShortName());
+        info.setTownName(getTranslation(town.getCurrentName().getTranslations(), locale).getName());
 
         Region region = town.getRegion();
-        info.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
+        info.setRegion(getTranslation(region.getCurrentName().getTranslations(), locale).getName());
 
         Country country = region.getCountry();
-        info.setCountry(getTranslation(country.getTranslations()).getName());
+        info.setCountry(getTranslation(country.getTranslations(), locale).getName());
 
     }
 

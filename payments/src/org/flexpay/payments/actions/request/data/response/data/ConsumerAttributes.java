@@ -1,4 +1,4 @@
-package org.flexpay.payments.persistence.quittance;
+package org.flexpay.payments.actions.request.data.response.data;
 
 import java.util.List;
 

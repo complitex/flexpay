@@ -46,7 +46,7 @@
 
 	<bean id="quittanceDaoExt"
 		  class="org.flexpay.eirc.dao.impl.QuittanceDaoExtImpl"
-		  p:jdbcTemplate-ref="jdbcTemplate" />
+          p:dataSource-ref="dataSource" />
 
 	<bean id="quittanceReportDao"
 		  class="org.flexpay.eirc.dao.impl.QuittanceReportDaoImpl"

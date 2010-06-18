@@ -25,6 +25,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	 *
 	 * @param correction DataCorrection
 	 */
+    @Override
 	public void save(DataCorrection correction) {
 		hibernateTemplate.merge(correction);
 	}
@@ -34,6 +35,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	 *
 	 * @param correction DataCorrection
 	 */
+    @Override
 	public void delete(DataCorrection correction) {
 		hibernateTemplate.delete(correction);
 	}
@@ -48,6 +50,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	 * @return DomainObject
 	 */
 	@Nullable
+    @Override
 	public <T extends DomainObject> Stub<T> findCorrection(String externalId, int type,
 														   final Class<T> cls, Stub<DataSourceDescription> sd) {
 
@@ -68,17 +71,20 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	 * @param sd		 DataSourceDescription
 	 * @return DomainObject
 	 */
+    @Override
 	public boolean existsCorrection(final String externalId, final int type,
 									final Stub<DataSourceDescription> sd) {
 		return getInternalId(externalId, type, sd) != null;
 	}
 
+    @Override
 	public DataCorrection findCorrection(final String externalId, final int type, final Stub<DataSourceDescription> sd) {
 
 		Object[] params = {externalId, type, sd.getId()};
 		List<?> result = getJdbcTemplate().query("select id, internal_object_id from common_data_corrections_tbl " +
 												 "where external_object_id=? and object_type=? and data_source_description_id=?",
 				params, new RowMapper() {
+                    @Override
 					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 						DataCorrection correction = new DataCorrection();
 						correction.setId(rs.getLong("id"));
@@ -115,6 +121,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	}
 
 	@Nullable
+    @Override
 	public String getExternalId(final Long internalId, final int type,
 								final Long dataSourceDescriptionId) {
 

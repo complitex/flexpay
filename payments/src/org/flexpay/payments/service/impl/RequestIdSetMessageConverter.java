@@ -1,6 +1,6 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;

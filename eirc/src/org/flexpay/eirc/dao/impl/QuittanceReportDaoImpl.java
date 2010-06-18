@@ -12,6 +12,7 @@ import java.util.List;
 public class QuittanceReportDaoImpl extends JdbcDaoSupport implements QuittanceReportDao {
 
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<Object[]> listPrintInfos(Long serviceOrganizationId, Date begin, Date end) {
 		Object params[] = {serviceOrganizationId, begin, end};
 		return getJdbcTemplate().query(
@@ -23,6 +24,7 @@ public class QuittanceReportDaoImpl extends JdbcDaoSupport implements QuittanceR
 				"where b.eirc_service_organization_id=? and q.date_from>=? and q.date_till<=? " +
 				"order by b.id, a.id, a.account_number, q.order_number desc",
 				params, new RowMapper() {
+                    @Override
 					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 						return new Object[]{
 								rs.getLong(1), // quittance id

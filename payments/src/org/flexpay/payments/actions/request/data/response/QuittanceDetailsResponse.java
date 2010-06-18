@@ -1,14 +1,15 @@
-package org.flexpay.payments.persistence.quittance;
+package org.flexpay.payments.actions.request.data.response;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
 
 import java.io.Serializable;
 
 /**
  * Response for quittance details request from external system
  */
-public class QuittanceDetailsResponse extends DetailsResponse implements Serializable {
+public class QuittanceDetailsResponse extends SimpleResponse implements Serializable {
 
 	private QuittanceInfo[] infos = {};
 
@@ -24,8 +25,7 @@ public class QuittanceDetailsResponse extends DetailsResponse implements Seriali
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("requestId", requestId).
-                append("statusCode", statusCode).
-                append("statusMessage", statusMessage).
+                append("status", status).
                 append("infos", infos).
                 toString();
     }

@@ -71,49 +71,45 @@ public interface QuittanceService {
 	 * Find quittance for account for current open period
 	 *
 	 * @param account  account to get quittance for
-	 * @param pager Page
 	 * @return list of quittance in current open period
 	 */
 	@Secured (Roles.QUITTANCE_READ)
 	@NotNull
-	List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, Page<Quittance> pager);
+	List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account);
 
     /**
      * Find quittance for account for current open period by service type
      *
      * @param account  account to get quittance for
      * @param serviceTypeStub service type stub
-     * @param pager Page
      *
      * @return list of quittance in current open period
      */
     @Secured (Roles.QUITTANCE_READ)
     @NotNull
-    List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, @NotNull Stub<ServiceType> serviceTypeStub, Page<Quittance> pager);
+    List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, @NotNull Stub<ServiceType> serviceTypeStub);
 
     /**
      * Find quittance for accounts for current open period
      *
      * @param accounts  accounts to get quittance for
-     * @param pager Page
      * @return list of quittance in current open period
      */
     @Secured (Roles.QUITTANCE_READ)
     @NotNull
-    List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, Page<Quittance> pager);
+    List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts);
 
     /**
      * Find quittance for accounts for current open period by service type
      *
      * @param accounts  accounts to get quittance for
      * @param serviceTypeStub service type stub
-     * @param pager Page
      *
      * @return list of quittance in current open period
      */
     @Secured (Roles.QUITTANCE_READ)
     @NotNull
-    List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, @NotNull Stub<ServiceType> serviceTypeStub, Page<Quittance> pager);
+    List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, @NotNull Stub<ServiceType> serviceTypeStub);
 
     /**
      * Find quittance by list of consumers

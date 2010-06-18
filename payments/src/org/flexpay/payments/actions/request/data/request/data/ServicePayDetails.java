@@ -1,23 +1,19 @@
-package org.flexpay.payments.persistence.quittance;
+package org.flexpay.payments.actions.request.data.request.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.persistence.Service;
-
-import java.math.BigDecimal;
 
 public class ServicePayDetails {
 
-    private Long serviceId;
+    private String serviceId;
     private String serviceProviderAccount;
-    private BigDecimal paySum;
+    private String paySum;
 
-    public Long getServiceId() {
+    public String getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -29,11 +25,11 @@ public class ServicePayDetails {
         this.serviceProviderAccount = serviceProviderAccount;
     }
 
-    public BigDecimal getPaySum() {
+    public String getPaySum() {
         return paySum;
     }
 
-    public void setPaySum(BigDecimal paySum) {
+    public void setPaySum(String paySum) {
         this.paySum = paySum;
     }
 

@@ -1,19 +1,21 @@
-package org.flexpay.payments.actions.request.data;
+package org.flexpay.payments.actions.request.data.response.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.math.BigDecimal;
+
 public class ServicePayDetails {
 
-    private String serviceId;
+    private Long serviceId;
     private String serviceProviderAccount;
-    private String paySum;
+    private BigDecimal paySum;
 
-    public String getServiceId() {
+    public Long getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(String serviceId) {
+    public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -25,11 +27,11 @@ public class ServicePayDetails {
         this.serviceProviderAccount = serviceProviderAccount;
     }
 
-    public String getPaySum() {
+    public BigDecimal getPaySum() {
         return paySum;
     }
 
-    public void setPaySum(String paySum) {
+    public void setPaySum(BigDecimal paySum) {
         this.paySum = paySum;
     }
 

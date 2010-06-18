@@ -1,7 +1,8 @@
-package org.flexpay.payments.persistence.quittance;
+package org.flexpay.payments.actions.request.data.response.data;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -273,7 +274,7 @@ public class QuittanceInfo implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("quittanceNumber", quittanceNumber).
                 append("accountNumber", accountNumber).
                 append("creationDate", creationDate).

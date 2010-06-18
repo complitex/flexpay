@@ -20,7 +20,7 @@ public interface ConsumerDaoExt {
 	 * @param apartmentId   Apartment id
 	 * @return list of consumers
 	 */
-	List<Consumer> findConsumers(Page pager, Long personId, Long serviceId, String accountNumber, Long apartmentId);
+	List<Consumer> findConsumers(Page<?> pager, Long personId, Long serviceId, String accountNumber, Long apartmentId);
 
 	/**
 	 * Find Consumer by provider identifier, account number and service type code

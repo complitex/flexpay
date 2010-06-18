@@ -1,8 +1,9 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.payments.persistence.quittance.InfoRequest;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.request.InfoRequest;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.response.Status;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 
 		if (response == null) {
 			response = new QuittanceDetailsResponse();
-			response.setStatusCode(QuittanceDetailsResponse.STATUS_RECIEVE_TIMEOUT);
+			response.setStatus(Status.RECIEVE_TIMEOUT);
 		}
 
 		return response;

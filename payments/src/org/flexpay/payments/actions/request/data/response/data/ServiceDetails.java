@@ -1,4 +1,4 @@
-package org.flexpay.payments.persistence.quittance;
+package org.flexpay.payments.actions.request.data.response.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -266,7 +266,7 @@ public class ServiceDetails implements Serializable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
                 append("serviceId", serviceId).
                 append("serviceName", serviceName).
                 append("incomingBalance", incomingBalance).

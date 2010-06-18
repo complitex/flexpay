@@ -6,14 +6,15 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import org.flexpay.payments.actions.request.data.DebtsRequest;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.request.DebtsRequest;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.response.Status;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import static org.flexpay.payments.persistence.quittance.InfoRequest.quittanceNumberRequest;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.quittanceNumberRequest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -58,6 +59,6 @@ public class TestQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 
-		assertEquals("Invalid response", QuittanceDetailsResponse.STATUS_SUCCESS, response.getStatusCode());
+		assertEquals("Invalid response", Status.SUCCESS.getCode(), response.getStatus().getCode());
 	}
 }

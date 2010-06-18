@@ -240,11 +240,12 @@
 		</property>
 	</bean>
 
-    <bean id="quittancePayer"
-          class="org.flexpay.payments.service.impl.QuittancePayerImpl"
+    <bean id="outerRequestService"
+          class="org.flexpay.payments.service.impl.OuterRequestServiceImpl"
           p:documentStatusService-ref="documentStatusService"
           p:documentTypeService-ref="documentTypeService"
           p:documentAdditionTypeService-ref="documentAdditionTypeService"
+          p:documentService-ref="documentService"
           p:operationLevelService-ref="operationLevelService"
           p:operationStatusService-ref="operationStatusService"
           p:operationTypeService-ref="operationTypeService"

@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface QuittanceDao extends GenericDao<Quittance, Long> {
 
-	List<Quittance> findObjectsByEircAccountAndDateTill(Page<Quittance> pager, Long eircAccountId, Date dateTill);
-
 	/**
 	 * Get quittance by account number, till date and order number
 	 *
@@ -37,13 +35,5 @@ public interface QuittanceDao extends GenericDao<Quittance, Long> {
      */
     @NotNull
     List<Quittance> findQuittanceByNumberAndServiceType(String accountNumber, Date month, Integer number, Long serviceTypeId);
-
-    @NotNull
-	List<Quittance> findQuittancesByEIRCAccounts(Collection<Long> accountIds, Page<Quittance> pager);
-
-    @NotNull
-    List<Quittance> findQuittancesByEIRCAccountsAndServiceType(Collection<Long> accountIds, Long serviceTypeId, Page<Quittance> pager);
-
-    List<Quittance> findQuittances(Collection<Long> consumerIds);
 
 }

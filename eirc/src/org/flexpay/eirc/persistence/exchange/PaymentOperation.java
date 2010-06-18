@@ -1,20 +1,19 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.eirc.persistence.exchange.delayed.PaymentOperationDelayedUpdate;
-import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryType;
-import org.flexpay.payments.persistence.*;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
+import org.flexpay.eirc.persistence.exchange.delayed.PaymentOperationDelayedUpdate;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.payments.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
 
 
 public abstract class PaymentOperation extends ContainerOperation {

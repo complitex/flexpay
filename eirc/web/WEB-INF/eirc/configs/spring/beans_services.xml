@@ -204,6 +204,7 @@
 		  p:masterIndexService-ref="masterIndexService"
 		  p:quittanceService-ref="quittanceService"
 		  p:accountService-ref="eircAccountService"
+          p:serviceTypeService-ref="serviceTypeService"
           p:consumerService-ref="consumerService"
 		  p:quittanceInfoBuilder-ref="quittanceInfoBuilder" />
 
