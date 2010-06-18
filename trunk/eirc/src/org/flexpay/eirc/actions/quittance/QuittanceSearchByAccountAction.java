@@ -42,7 +42,7 @@ public class QuittanceSearchByAccountAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		List<Quittance> quittances = quittanceService.getLatestAccountQuittances(account, new Page<Quittance>());
+		List<Quittance> quittances = quittanceService.getLatestAccountQuittances(account);
 		if (quittances.isEmpty()) {
 			addActionError(getText("eirc.error.quittance.no_for_account"));
 			return INPUT;

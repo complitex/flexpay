@@ -3,15 +3,23 @@ package org.flexpay.eirc.dao.impl;
 import org.flexpay.common.process.job.JobExecutionContext;
 import org.flexpay.common.process.job.JobExecutionContextHolder;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.ar;
 
-public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoExt {
+public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements QuittanceDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -130,4 +138,81 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 		return (long) getJdbcTemplate().update(deleteSQL);
 	}
 
+    @NotNull
+    @Override
+    public List<Quittance> findQuittancesByEIRCAccounts(Collection<Long> accountIds) {
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("accountIds", accountIds);
+
+        return getSimpleJdbcTemplate().query("select id " +
+                           "from eirc_quittances_tbl q " +
+                           "    inner join (" +
+                           "        select q1.eirc_account_id, max(q1.order_number) as maxOrderNumber, max(q1.date_from) as maxDateFrom " +
+                           "        from eirc_quittances_tbl q1 " +
+                           "        where q1.eirc_account_id in (:accountIds) " +
+                           "        group by q1.eirc_account_id " +
+                           "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
+                           "order by q.date_from desc",	new ParameterizedRowMapper<Quittance>() {
+                            @Override
+                            public Quittance mapRow(ResultSet rs, int i) throws SQLException {
+                                log.debug("ResultSet = {}", rs);
+                                return new Quittance(rs.getLong("id"));
+                            }
+                        }, parameters);
+    }
+
+    @NotNull
+    @Override
+    public List<Quittance> findQuittancesByEIRCAccountsAndServiceType(Collection<Long> accountIds, Long serviceTypeId) {
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("accountIds", accountIds);
+        parameters.addValue("serviceTypeId", serviceTypeId);
+
+        return getSimpleJdbcTemplate().query("select id " +
+                           "from eirc_quittances_tbl q " +
+                           "    inner join (" +
+                           "        select q1.eirc_account_id, max(q1.order_number) as maxOrderNumber, max(q1.date_from) as maxDateFrom " +
+                           "        from eirc_quittances_tbl q1 " +
+                           "            inner join eirc_eirc_accounts_tbl a on q1.eirc_account_id=a.id " +
+                           "            left join eirc_quittance_details_quittances_tbl qdq on q.id=qdq.quittance_id " +
+                           "            left join eirc_quittance_details_tbl qd on qd.id=qdq.quittance_details_id " +
+                           "            left join eirc_consumers_tbl c on c.id=qd.consumer_id " +
+                           "            left join payments_services_tbl s on s.id=c.service_id " +
+                           "        where q1.eirc_account_id in (:accountIds) and s.type_id=:serviceTypeId " +
+                           "        group by q1.eirc_account_id " +
+                           "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
+                           "order by q.date_from desc", new ParameterizedRowMapper<Quittance>() {
+                            @Override
+                            public Quittance mapRow(ResultSet rs, int i) throws SQLException {
+                                log.debug("ResultSet = {}", rs);
+                                return new Quittance(rs.getLong("id"));
+                            }
+                        }, parameters);
+    }
+
+    @Override
+    public List<Quittance> findQuittances(Collection<Long> consumerIds) {
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("consumerIds", consumerIds);
+
+        return getSimpleJdbcTemplate().query("select id " +
+                           "from eirc_quittances_tbl q " +
+                           "    inner join (" +
+                           "        select q1.eirc_account_id, max(q1.order_number) as maxOrderNumber, max(q1.date_from) as maxDateFrom " +
+                           "        from eirc_quittances_tbl q1 " +
+                           "            inner join eirc_eirc_accounts_tbl a on q1.eirc_account_id=a.id " +
+                           "        where a.consumer_info_id in (:consumerIds) " +
+                           "        group by q1.eirc_account_id " +
+                           "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
+                           "order by q.date_from desc", new ParameterizedRowMapper<Quittance>() {
+                            @Override
+                            public Quittance mapRow(ResultSet rs, int i) throws SQLException {
+                                log.debug("ResultSet = {}", rs);
+                                return new Quittance(rs.getLong("id"));
+                            }
+                        }, parameters);
+    }
 }

@@ -24,7 +24,7 @@
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
         <td class="<s:if test="districtSorter.activated">th_s</s:if><s:else>th</s:else>" width="63%">
-            <%@include file="../sorters/district_sorter_header.jsp"%>
+            <%@include file="/WEB-INF/jsp/ab/sorters/district_sorter_header.jsp"%>
         </td>
         <td class="th" width="35%">&nbsp;</td>
     </tr>

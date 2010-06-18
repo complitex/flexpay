@@ -245,11 +245,11 @@ public abstract class MessageResources implements Serializable {
             locale = defaultLocale;
         }
 
-        MessageFormat format = null;
+        MessageFormat format;
         String formatKey = messageKey(locale, key);
 
         synchronized (formats) {
-            format = (MessageFormat) formats.get(formatKey);
+            format = formats.get(formatKey);
             if (format == null) {
                 String formatString = getMessage(locale, key);
 

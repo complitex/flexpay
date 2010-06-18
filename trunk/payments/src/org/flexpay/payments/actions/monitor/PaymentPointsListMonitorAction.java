@@ -70,7 +70,9 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
             Date startDate = now();
             Date finishDate = new Date();
-            log.debug("Start date={} {}, finish date={} {}", new Object[] {format(startDate), formatTime.format(startDate), format(finishDate), formatTime.format(finishDate)});
+            if (log.isDebugEnabled()) {
+                log.debug("Start date={} {}, finish date={} {}", new Object[] {format(startDate), formatTime.format(startDate), format(finishDate), formatTime.format(finishDate)});
+            }
             
             String status = null;
             if (paymentPoint.getTradingDayProcessInstanceId() != null && paymentPoint.getTradingDayProcessInstanceId() > 0) {
@@ -123,13 +125,13 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
     }
 
     private BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
-        BigDecimal summ = BigDecimal.ZERO;
+        BigDecimal sum = BigDecimal.ZERO;
         for (OperationTypeStatistics stats : typeStatisticses) {
             if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-                summ = summ.add(stats.getSumm());
+                sum = sum.add(stats.getSumm());
             }
         }
-        return summ;
+        return sum;
     }
 
     @NotNull

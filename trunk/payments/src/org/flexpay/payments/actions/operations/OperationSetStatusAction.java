@@ -63,8 +63,8 @@ public class OperationSetStatusAction extends OperatorAWPActionSupport {
 		}
 
 		// setting documents status
+        DocumentStatus documentStatus = documentStatusService.read(status);
 		for (Document document : operation.getDocuments()) {
-			DocumentStatus documentStatus = documentStatusService.read(status);
 			document.setDocumentStatus(documentStatus);
 			if (document.isNew()) {
 				documentService.create(document);

@@ -339,13 +339,12 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 		this.session = session;
 	}
 
-	public void setCrumbNameKey(String crumbNameKey) {
-		this.crumbNameKey = crumbNameKey;
-	}
-
 	protected Language getLanguage() {
 		Locale locale = getUserPreferences().getLocale();
 		return LanguageUtil.getLanguage(locale);
 	}
 
+    public void setCrumbNameKey(String crumbNameKey) {
+        this.crumbNameKey = crumbNameKey;
+    }
 }

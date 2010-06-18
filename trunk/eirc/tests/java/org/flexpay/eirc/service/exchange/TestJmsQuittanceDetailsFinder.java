@@ -5,11 +5,11 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.flexpay.payments.persistence.quittance.InfoRequest.apartmentNumberRequest;
-import static org.flexpay.payments.persistence.quittance.InfoRequest.quittanceNumberRequest;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.apartmentNumberRequest;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.quittanceNumberRequest;
 
-import org.flexpay.payments.actions.request.data.DebtsRequest;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.request.DebtsRequest;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -60,6 +60,7 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 			this.number = number;
 		}
 
+        @Override
 		public void run() {
 			response = detailsFinder.findQuittance(quittanceNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
 		}

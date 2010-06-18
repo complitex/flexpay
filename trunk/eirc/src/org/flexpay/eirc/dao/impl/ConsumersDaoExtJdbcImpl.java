@@ -25,11 +25,13 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
 	 * @param apartmentId   Apartment id
 	 * @return list of consumers
 	 */
-	public List<Consumer> findConsumers(Page pager, Long personId, Long serviceId, String accountNumber, Long apartmentId) {
+    @Override
+	public List<Consumer> findConsumers(Page<?> pager, Long personId, Long serviceId, String accountNumber, Long apartmentId) {
 		return getSimpleJdbcTemplate().query(
 				"select id from eirc_consumers_tbl " +
 				"where person_id=? and service_id=? and external_account_number=? and apartment_id=?",
 				new ParameterizedRowMapper<Consumer>() {
+                    @Override
 					public Consumer mapRow(ResultSet rs, int i) throws SQLException {
 						return new Consumer(rs.getLong("id"));
 					}
@@ -44,9 +46,10 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
 	 * @param code		  Service type code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Consumer findConsumerByTypeCode(Long providerId, String accountNumber, Long code) {
 		Object[] params = {providerId, accountNumber, code};
-		List results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByServiceTypeCode", params);
+		List<?> results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByServiceTypeCode", params);
 		return results.isEmpty() ? null : (Consumer) results.get(0);
 	}
 
@@ -58,9 +61,10 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
 	 * @param code		  Service provider external code code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Consumer findConsumerByProviderServiceCode(Long providerId, String accountNumber, String code) {
 		Object[] params = {providerId, accountNumber, code};
-		List results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByProviderServiceCode", params);
+		List<?> results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByProviderServiceCode", params);
 		return results.isEmpty() ? null : (Consumer) results.get(0);
 	}
 

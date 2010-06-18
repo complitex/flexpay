@@ -4,7 +4,14 @@ import org.apache.commons.codec.binary.Hex;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.KeyStoreUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.payments.persistence.quittance.*;
+import org.flexpay.payments.actions.request.data.request.RequestType;
+import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.response.SimpleResponse;
+import org.flexpay.payments.actions.request.data.response.Status;
+import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
+import org.flexpay.payments.actions.request.data.response.data.ServiceDetails;
+import org.flexpay.payments.actions.request.data.response.data.ServicePayInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,24 +20,58 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.SignatureException;
-
-import static org.flexpay.payments.actions.request.data.DebtsRequest.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class ResponseUtil {
 
     private final static Logger log = LoggerFactory.getLogger(ResponseUtil.class);
 
-    public static String buildResponse(String requestId, int requestType, String statusCode, String statusMessage) throws FlexPayException {
-        return requestType == PAY_DEBT_REQUEST ? buildPayResponse(requestId, statusCode, statusMessage) : buildSearchResponse(requestId, statusCode, requestType, statusMessage);
+    public static String buildResponse(String requestId, RequestType requestType, Status status, Locale locale) throws FlexPayException {
+        if (requestType == RequestType.PAY_DEBT_REQUEST) {
+            return buildPayResponse(null, requestId, status, locale);
+        } else if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST || requestType == RequestType.SEARCH_DEBT_REQUEST) {
+            return buildSearchResponse(null, requestId, status, requestType, locale);
+        } else if (requestType == RequestType.REVERSAL_PAY_REQUEST) {
+            return buildReversalPayResponse(null, requestId, status, locale);
+        } else {
+            log.warn("Incorrect request type parameter on buildResponse method");
+            throw new FlexPayException("Incorrect request type parameter on buildResponse method");
+        }
     }
 
-    public static String buildPayResponse(String requestId, String statusCode, String statusMessage) throws FlexPayException {
-        return buildPayResponse(null, requestId, statusCode, statusMessage);
+    public static String buildReversalPayResponse(SimpleResponse reversalInfoResponse, String requestId, Status status, Locale locale) throws FlexPayException {
+
+        log.debug("Building reversal info response: requestId = {}, status = {}", requestId, status);
+
+        Signature signature = initSignature();
+
+        StringBuilder response = new StringBuilder();
+        response.append("<response>").
+                append("<reversalInfo>");
+
+        addNonEmptyField(response, "requestId", requestId, signature);
+
+        if (reversalInfoResponse != null) {
+            addNonEmptyField(response, "statusCode", reversalInfoResponse.getStatus().getCode(), signature);
+            addNonEmptyField(response, "statusMessage", getStatusText(reversalInfoResponse.getStatus(), locale), signature);
+        } else {
+            addNonEmptyField(response, "statusCode", status.getCode(), signature);
+            addNonEmptyField(response, "statusMessage", getStatusText(status, locale), signature);
+        }
+
+        response.append("</reversalInfo>");
+        addSignature(response, signature);
+        response.append("</response>");
+
+        log.debug("Reversal info response = {}", response.toString());
+
+        return response.toString();
     }
 
-    public static String buildPayResponse(PayInfoResponse payInfoResponse, String requestId, String statusCode, String statusMessage) throws FlexPayException {
+    public static String buildPayResponse(PayInfoResponse payInfoResponse, String requestId, Status status, Locale locale) throws FlexPayException {
 
-        log.debug("Building pay response: requestId = {}, statusCode = {}, statusMessage = {}", new Object[] {requestId, statusCode, statusMessage});
+        log.debug("Building pay response: requestId = {}, status = {}", requestId, status);
 
         Signature signature = initSignature();
 
@@ -43,17 +84,17 @@ public class ResponseUtil {
         if (payInfoResponse != null) {
 
             addNonEmptyField(response, "operationId", payInfoResponse.getOperationId(), signature);
-            addNonEmptyField(response, "statusCode", payInfoResponse.getStatusCode(), signature);
-            addNonEmptyField(response, "statusMessage", getPayStatusMessage(payInfoResponse.getStatusCode()), signature);
+            addNonEmptyField(response, "statusCode", payInfoResponse.getStatus().getCode(), signature);
+            addNonEmptyField(response, "statusMessage", getStatusText(payInfoResponse.getStatus(), locale), signature);
 
             if (payInfoResponse.getServicePayInfos() != null) {
                 for (ServicePayInfo servicePayInfo : payInfoResponse.getServicePayInfos()) {
-                    addServicePayInfo(response, servicePayInfo, signature);
+                    addServicePayInfo(response, servicePayInfo, signature, locale);
                 }
             }
         } else {
-            addNonEmptyField(response, "statusCode", statusCode, signature);
-            addNonEmptyField(response, "statusMessage", statusMessage, signature);
+            addNonEmptyField(response, "statusCode", status.getCode(), signature);
+            addNonEmptyField(response, "statusMessage", getStatusText(status, locale), signature);
         }
 
         response.append("</payInfo>");
@@ -65,21 +106,17 @@ public class ResponseUtil {
         return response.toString();
     }
 
-    public static String buildSearchResponse(String requestId, String statusCode, Integer requestType, String statusMessage) throws FlexPayException {
-        return buildSearchResponse(null, requestId, requestType, statusCode, statusMessage);
-    }
+	public static String buildSearchResponse(QuittanceDetailsResponse quittanceDetailsResponse, String requestId, Status status, RequestType requestType, Locale locale) throws FlexPayException {
 
-	public static String buildSearchResponse(QuittanceDetailsResponse quittanceDetailsResponse, String requestId, Integer requestType, String statusCode, String statusMessage) throws FlexPayException {
-
-        log.debug("Building search response: requestId = {}, requestType = {}, statusCode = {}, statusMessage = {}", new Object[] {requestId, requestType, statusCode, statusMessage});
+        log.debug("Building search response: requestId = {}, requestType = {}, status = {}", new Object[] {requestId, requestType, status});
 
 		Signature signature = initSignature();
 
 		StringBuilder response = new StringBuilder();
 		response.append("<response>");
-        if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+        if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
             response.append("<quittanceDebtInfo>");
-        } else if (requestType == SEARCH_DEBT_REQUEST) {
+        } else if (requestType == RequestType.SEARCH_DEBT_REQUEST) {
             response.append("<debtInfo>");
         }
 
@@ -87,8 +124,8 @@ public class ResponseUtil {
 
 		if (quittanceDetailsResponse != null) {
 
-			addNonEmptyField(response, "statusCode", quittanceDetailsResponse.getStatusCode(), signature);
-			addNonEmptyField(response, "statusMessage", getSearchStatusMessage(quittanceDetailsResponse.getStatusCode()), signature);
+			addNonEmptyField(response, "statusCode", quittanceDetailsResponse.getStatus().getCode(), signature);
+			addNonEmptyField(response, "statusMessage", getStatusText(quittanceDetailsResponse.getStatus(), locale), signature);
 
             if (quittanceDetailsResponse.getInfos() != null) {
                 for (QuittanceInfo quittanceInfo : quittanceDetailsResponse.getInfos()) {
@@ -96,13 +133,13 @@ public class ResponseUtil {
                 }
             }
 		} else {
-			addNonEmptyField(response, "statusCode", statusCode, signature);
-			addNonEmptyField(response, "statusMessage", statusMessage, signature);
+			addNonEmptyField(response, "statusCode", status.getCode(), signature);
+			addNonEmptyField(response, "statusMessage", getStatusText(status, locale), signature);
 		}
 
-        if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+        if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
             response.append("</quittanceDebtInfo>");
-        } else if (requestType == SEARCH_DEBT_REQUEST) {
+        } else if (requestType == RequestType.SEARCH_DEBT_REQUEST) {
             response.append("</debtInfo>");
         }
 		addSignature(response, signature);
@@ -113,18 +150,18 @@ public class ResponseUtil {
 		return response.toString();
 	}
 
-    private static void addServicePayInfo(StringBuilder response, ServicePayInfo servicePayInfo, Signature signature) throws FlexPayException {
+    private static void addServicePayInfo(StringBuilder response, ServicePayInfo servicePayInfo, Signature signature, Locale locale) throws FlexPayException {
         response.append("<servicePayInfo>");
         addNonEmptyField(response, "serviceId", servicePayInfo.getServiceId(), signature);
         addNonEmptyField(response, "documentId", servicePayInfo.getDocumentId(), signature);
-        addNonEmptyField(response, "serviceStatusCode", servicePayInfo.getServiceStatusCode(), signature);
-        addNonEmptyField(response, "serviceStatusMessage", getServicePayStatusMessage(servicePayInfo.getServiceStatusCode()), signature);
+        addNonEmptyField(response, "serviceStatusCode", servicePayInfo.getServiceStatus().getCode(), signature);
+        addNonEmptyField(response, "serviceStatusMessage", getStatusText(servicePayInfo.getServiceStatus(), locale), signature);
         response.append("</servicePayInfo>");
     }
 
-    private static void addQuittanceInfo(StringBuilder response, QuittanceInfo quittanceInfo, int requestType, Signature signature) throws FlexPayException {
+    private static void addQuittanceInfo(StringBuilder response, QuittanceInfo quittanceInfo, RequestType requestType, Signature signature) throws FlexPayException {
 
-        if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+        if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
             response.append("<quittanceInfo>");
             addNonEmptyField(response, "quittanceNumber", quittanceInfo.getQuittanceNumber(), signature);
             addNonEmptyField(response, "accountNumber", quittanceInfo.getAccountNumber(), signature);
@@ -154,7 +191,7 @@ public class ResponseUtil {
             addNonEmptyField(response, "incomingBalance", serviceDetails.getIncomingBalance(), signature);
             addNonEmptyField(response, "outgoingBalance", serviceDetails.getOutgoingBalance(), signature);
             addNonEmptyField(response, "amount", serviceDetails.getAmount(), signature);
-            if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+            if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 addNonEmptyField(response, "expence", serviceDetails.getExpence(), signature);
                 addNonEmptyField(response, "rate", serviceDetails.getRate(), signature);
                 addNonEmptyField(response, "recalculation", serviceDetails.getRecalculation(), signature);
@@ -167,7 +204,7 @@ public class ResponseUtil {
             addNonEmptyField(response, "personFirstName", serviceDetails.getFirstName(), signature);
             addNonEmptyField(response, "personMiddleName", serviceDetails.getMiddleName(), signature);
             addNonEmptyField(response, "personLastName", serviceDetails.getLastName(), signature);
-            if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+            if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 addNonEmptyField(response, "country", serviceDetails.getCountry(), signature);
                 addNonEmptyField(response, "region", serviceDetails.getRegion(), signature);
             }
@@ -181,7 +218,7 @@ public class ResponseUtil {
             addNonEmptyField(response, "apartmentNumber", serviceDetails.getApartmentNumber(), signature);
             addNonEmptyField(response, "roomNumber", serviceDetails.getRoomNumber(), signature);
 
-            if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+            if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 if (serviceDetails.getAttributes() != null) {
                     for (ServiceDetails.ServiceAttribute serviceAttribute : serviceDetails.getAttributes()) {
                         response.append("<serviceAttribute>");
@@ -194,7 +231,7 @@ public class ResponseUtil {
 
             response.append("</serviceDetails>");
         }
-        if (requestType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+        if (requestType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
             response.append("</quittanceInfo>");
         }
     }
@@ -269,61 +306,8 @@ public class ResponseUtil {
         }
     }
 
-    private static String getSearchStatusMessage(int status) {
-        switch (status) {
-            case DetailsResponse.STATUS_SUCCESS:
-                return "OK";
-            case DetailsResponse.STATUS_ACCOUNT_NOT_FOUND:
-                return "Account not found";
-            case DetailsResponse.STATUS_APARTMENT_NOT_FOUND:
-                return "Apartment not found";
-            case DetailsResponse.STATUS_INTERNAL_ERROR:
-                return "Internal error";
-            case DetailsResponse.STATUS_INVALID_QUITTANCE_NUMBER:
-                return "Invalid quittance number";
-            case DetailsResponse.STATUS_QUITTANCE_NOT_FOUND:
-                return "Quittance not found";
-            case DetailsResponse.STATUS_RECIEVE_TIMEOUT:
-                return "Receive timeout";
-            case DetailsResponse.STATUS_UNKNOWN_REQUEST:
-                return "Unknown request";
-            default:
-                return null;
-        }
-    }
-
-    private static String getPayStatusMessage(int status) {
-        switch (status) {
-            case PayInfoResponse.STATUS_SUCCESS:
-                return "OK";
-            case PayInfoResponse.STATUS_INCORRECT_AUTHENTICATION_DATA:
-                return "Incorrect authentication data";
-            case PayInfoResponse.STATUS_UNKNOWN_REQUEST:
-                return "Unknown request";
-            case PayInfoResponse.STATUS_INTERNAL_ERROR:
-                return "Internal error";
-            case PayInfoResponse.STATUS_RECIEVE_TIMEOUT:
-                return "Receive timeout";
-            case PayInfoResponse.STATUS_REQUEST_IS_NOT_PROCESSED:
-                return "Request is not processed, details of errors found in the structure \"servicePayInfo\"";
-            default:
-                return null;
-        }
-    }
-
-    private static String getServicePayStatusMessage(int status) {
-        switch (status) {
-            case ServicePayInfo.STATUS_SUCCESS:
-                return "OK";
-            case ServicePayInfo.STATUS_ACCOUNT_NOT_FOUND:
-                return "Account not found";
-            case ServicePayInfo.STATUS_SERVICE_NOT_FOUND:
-                return "Service not found";
-            case ServicePayInfo.STATUS_INCORRECT_PAY_SUM:
-                return "Incorrect pay sum";
-            default:
-                return null;
-        }
+    private static String getStatusText(Status status, Locale locale) {
+        return ResourceBundle.getBundle("org/flexpay/payments/i18n/responseStatuses", locale).getString(status.getTextKey());
     }
 
 }

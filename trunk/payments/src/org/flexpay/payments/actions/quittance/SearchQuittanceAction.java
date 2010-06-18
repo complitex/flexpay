@@ -12,9 +12,15 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
-import org.flexpay.payments.actions.request.data.DebtsRequest;
+import org.flexpay.payments.actions.request.data.request.DebtsRequest;
+import org.flexpay.payments.actions.request.data.request.RequestType;
+import org.flexpay.payments.actions.request.data.response.Status;
+import org.flexpay.payments.actions.request.data.response.data.ConsumerAttributes;
+import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.quittance.*;
+import org.flexpay.payments.actions.request.data.request.InfoRequest;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.response.data.ServiceDetails;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -23,10 +29,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.persistence.quittance.DetailsResponse.*;
-import static org.flexpay.payments.persistence.quittance.InfoRequest.*;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.*;
 
 public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
@@ -64,7 +70,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			filterSubservices();
 			filterNegativeSumms();
 		} else {
-			addActionError(getErrorMessage(response.getStatusCode()));
+			addActionError(getStatusText(response.getStatus()));
 		}
 
 		return SUCCESS;
@@ -72,10 +78,12 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
 	private InfoRequest buildQuittanceRequest() throws FlexPayException {
 
+        Locale locale = getUserPreferences().getLocale();
+
 		if (SEARCH_TYPE_EIRC_ACCOUNT.equals(searchType)) {
-			return accountNumberRequest(searchCriteria, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST);
+			return accountNumberRequest(searchCriteria, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, locale);
 		} else if (SEARCH_TYPE_QUITTANCE_NUMBER.equals(searchType)) {
-			return InfoRequest.quittanceNumberRequest(searchCriteria, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST);
+			return InfoRequest.quittanceNumberRequest(searchCriteria, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, locale);
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
 			Apartment apartment = apartmentService.readFull(
 					new Stub<Apartment>(Long.parseLong(searchCriteria)));
@@ -83,7 +91,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			if (indx == null) {
 				throw new FlexPayException("No master index for apartment #" + searchCriteria);
 			}
-			return apartmentNumberRequest(indx, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST);
+			return apartmentNumberRequest(indx, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, locale);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
 									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
@@ -153,23 +161,8 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		return service.isNotSubservice();
 	}
 
-	private String getErrorMessage(int errorCode) {
-		switch (errorCode) {
-			case STATUS_ACCOUNT_NOT_FOUND:
-				return getText("payments.errors.search.account_not_found");
-			case STATUS_APARTMENT_NOT_FOUND:
-				return getText("payments.errors.search.apartment_not_found");
-			case STATUS_INTERNAL_ERROR:
-				return getText("payments.errors.search.internal_error");
-			case STATUS_INVALID_QUITTANCE_NUMBER:
-				return getText("payments.errors.search.invalid_quittance_number");
-			case STATUS_QUITTANCE_NOT_FOUND:
-				return getText("payments.errors.search.debts_not_found");
-			case STATUS_UNKNOWN_REQUEST:
-				return getText("payments.errors.search.unknown_request");
-			default:
-				return getText("payments.errors.search.unknown_error");
-		}
+	private String getStatusText(Status status) {
+        return getText(status.getTextKey());
 	}
 
 	@NotNull

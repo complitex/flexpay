@@ -1,4 +1,4 @@
-package org.flexpay.payments.actions.request.data;
+package org.flexpay.payments.actions.request.data.request.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

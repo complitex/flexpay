@@ -3,12 +3,8 @@ package org.flexpay.payments.actions.request.util;
 import org.apache.commons.codec.binary.Hex;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.KeyStoreUtil;
-import org.flexpay.payments.actions.request.data.DebtInfo;
-import org.flexpay.payments.actions.request.data.DebtsRequest;
-import org.flexpay.payments.actions.request.data.PayDebt;
-import org.flexpay.payments.actions.request.data.ServicePayDetails;
-import org.flexpay.payments.persistence.quittance.InfoRequest;
-import org.flexpay.payments.persistence.quittance.PayRequest;
+import org.flexpay.payments.actions.request.data.request.*;
+import org.flexpay.payments.actions.request.data.request.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +12,9 @@ import java.math.BigDecimal;
 import java.security.KeyStore;
 import java.security.Signature;
 import java.security.cert.Certificate;
+import java.util.Locale;
 
-import static org.flexpay.payments.actions.request.data.DebtsRequest.*;
-import static org.flexpay.payments.persistence.quittance.InfoRequest.*;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.*;
 
 public class RequestUtil {
 
@@ -27,7 +23,7 @@ public class RequestUtil {
     public static boolean authenticate(DebtsRequest request) throws FlexPayException {
 
         String login = request.getLogin();
-        int reqType = request.getDebtRequestType();
+        RequestType reqType = request.getRequestType();
 
         log.debug("login = {}, reqType = {}", login, reqType);
 
@@ -51,14 +47,14 @@ public class RequestUtil {
             Signature signature = Signature.getInstance("SHA1withDSA");
             signature.initVerify(certificate);
 
-            if (reqType == SEARCH_DEBT_REQUEST || reqType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+            if (reqType == RequestType.SEARCH_DEBT_REQUEST || reqType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
                 DebtInfo debtInfo = request.getDebtInfo();
 
                 signature.update(debtInfo.getRequestId().getBytes());
                 signature.update(debtInfo.getSearchType().toString().getBytes());
                 signature.update(debtInfo.getSearchCriteria().getBytes());
 
-            } else if (reqType == PAY_DEBT_REQUEST) {
+            } else if (reqType == RequestType.PAY_DEBT_REQUEST) {
                 PayDebt payDebt = request.getPayDebt();
 
                 signature.update(payDebt.getRequestId().getBytes());
@@ -70,6 +66,12 @@ public class RequestUtil {
                     signature.update(payDetails.getPaySum().getBytes());
                 }
 
+            } else if (reqType == RequestType.REVERSAL_PAY_REQUEST) {
+                ReversalPay reversalPay = request.getReversalPay();
+
+                signature.update(reversalPay.getRequestId().getBytes());
+                signature.update(reversalPay.getOperationId().toString().getBytes());
+                signature.update(reversalPay.getTotalPaySum().getBytes());
             } else {
                 log.warn("Unknown request type");
                 throw new FlexPayException("Unknown request");
@@ -89,11 +91,11 @@ public class RequestUtil {
     }
 
 	public static boolean validate(DebtsRequest request) {
-        int reqType = request.getDebtRequestType();
+        RequestType reqType = request.getRequestType();
 
         log.debug("reqType = {}", reqType);
 
-        if (reqType == SEARCH_DEBT_REQUEST || reqType == SEARCH_QUITTANCE_DEBT_REQUEST) {
+        if (reqType == RequestType.SEARCH_DEBT_REQUEST || reqType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
             int searchType = request.getDebtInfo().getSearchType();
             log.debug("searchType = {}", searchType);
 
@@ -103,58 +105,86 @@ public class RequestUtil {
                     || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER
                     || searchType == TYPE_ADDRESS
                     || searchType == TYPE_COMBINED;
-        } else if (reqType == PAY_DEBT_REQUEST) {
-            BigDecimal sum = new BigDecimal(0);
+        } else if (reqType == RequestType.PAY_DEBT_REQUEST) {
+            BigDecimal sum = new BigDecimal("0.00");
             for (ServicePayDetails spd : request.getPayDebt().getServicePayDetails()) {
                 sum = sum.add(new BigDecimal(spd.getPaySum()));
             }
             log.debug("sum = {}, totalPaySum = {}", sum.toString(), request.getPayDebt().getTotalPaySum());
-            return sum.equals(new BigDecimal(request.getPayDebt().getTotalPaySum()));
+            return sum.setScale(2).equals(new BigDecimal(request.getPayDebt().getTotalPaySum()).setScale(2));
+        } else if (reqType == RequestType.REVERSAL_PAY_REQUEST) {
+            log.debug("operationId = {}, totalPaySum = {}", request.getReversalPay().getOperationId(), request.getReversalPay().getTotalPaySum());
+            return true;
         } else {
             log.warn("Unknown type of request");
             return false;
         }
 	}
 
-	public static InfoRequest convertRequest(DebtsRequest request) {
+	public static InfoRequest createSearchRequest(DebtsRequest request, Locale locale) {
 
-		String searchCriteria = request.getDebtInfo().getSearchCriteria();
-		int searchType = request.getDebtInfo().getSearchType();
+        DebtInfo debtInfo = request.getDebtInfo();
+		String searchCriteria = debtInfo.getSearchCriteria();
+		int searchType = debtInfo.getSearchType();
+        InfoRequest infoRequest;
 
 		if (TYPE_ACCOUNT_NUMBER == searchType) {
-			return accountNumberRequest(searchCriteria, request.getDebtRequestType());
+			infoRequest = accountNumberRequest(searchCriteria, request.getRequestType(), locale);
 		} else if (TYPE_QUITTANCE_NUMBER == searchType) {
-			return quittanceNumberRequest(searchCriteria, request.getDebtRequestType());
+			infoRequest = quittanceNumberRequest(searchCriteria, request.getRequestType(), locale);
 		} else if (TYPE_APARTMENT_NUMBER == searchType) {
-			return apartmentNumberRequest(searchCriteria, request.getDebtRequestType());
+			infoRequest = apartmentNumberRequest(searchCriteria, request.getRequestType(), locale);
         } else if (TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER == searchType) {
-            return serviceProviderAccountNumberRequest(searchCriteria, request.getDebtRequestType());
+            infoRequest = serviceProviderAccountNumberRequest(searchCriteria, request.getRequestType(), locale);
         } else if (TYPE_ADDRESS == searchType) {
-            return addressRequest(searchCriteria, request.getDebtRequestType());
+            infoRequest = addressRequest(searchCriteria, request.getRequestType(), locale);
         } else if (TYPE_COMBINED == searchType) {
-            return combinedRequest(searchCriteria, request.getDebtRequestType());
+            infoRequest = combinedRequest(searchCriteria, request.getRequestType(), locale);
+        } else {
+            log.warn("Unknown search request type - {}", searchType);
+            return null;
         }
+        infoRequest.setRequestId(debtInfo.getRequestId());
 
-		return null;
+		return infoRequest;
 	}
 
-    public static PayRequest createPayRequest(DebtsRequest request) throws FlexPayException {
+    public static PayRequest createPayRequest(DebtsRequest request, Locale locale) throws FlexPayException {
 
         PayDebt payDebt = request.getPayDebt();
 
         PayRequest payRequest = new PayRequest();
         try {
-            payRequest.setTotalToPay(new BigDecimal(payDebt.getTotalPaySum()));
+            payRequest.setTotalToPay(new BigDecimal(payDebt.getTotalPaySum()).setScale(2));
         } catch (NumberFormatException e) {
             log.error("Can't parse totalPaySum {} to BigDecimal", payDebt.getTotalPaySum());
             throw new FlexPayException("Can't parse totalPaySum");
         }
+        payRequest.setRequestId(payDebt.getRequestId());
+        payRequest.setLocale(locale);
 
         for (ServicePayDetails payDetails : payDebt.getServicePayDetails()) {
             payRequest.addServicePayDetails(payDetails.getServiceId(), payDetails.getServiceProviderAccount(), payDetails.getPaySum());
         }
 
         return payRequest;
+    }
+
+    public static ReversalPayRequest createReversalPayRequest(DebtsRequest request) throws FlexPayException {
+
+        ReversalPay reversalPay = request.getReversalPay();
+
+        ReversalPayRequest reversalPayRequest = new ReversalPayRequest();
+        try {
+            reversalPayRequest.setTotalPaySum(new BigDecimal(reversalPay.getTotalPaySum()).setScale(2));
+        } catch (NumberFormatException e) {
+            log.error("Can't parse totalPaySum {} to BigDecimal", reversalPay.getTotalPaySum());
+            throw new FlexPayException("Can't parse totalPaySum");
+        }
+        reversalPayRequest.setRequestId(reversalPay.getRequestId());
+        reversalPayRequest.setOperationId(reversalPay.getOperationId());
+
+        return reversalPayRequest;
     }
 
 }

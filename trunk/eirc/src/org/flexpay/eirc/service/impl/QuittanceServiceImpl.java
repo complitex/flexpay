@@ -140,14 +140,13 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 * Find quittance for account for current open period
 	 *
 	 * @param account  account to get quittance for
-	 * @param pager Page
      *
 	 * @return list of quittance in current open period
 	 */
 	@NotNull
     @Override
-	public List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, Page<Quittance> pager) {
-		return getLatestAccountsQuittances(list(account), pager);
+	public List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account) {
+		return getLatestAccountsQuittances(list(account));
 	}
 
     /**
@@ -155,35 +154,34 @@ public class QuittanceServiceImpl implements QuittanceService {
      *
      * @param account  account to get quittance for
      * @param serviceTypeStub service type stub
-     * @param pager Page
      *
      * @return list of quittance in current open period
      */
     @NotNull
     @Override
-    public List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, @NotNull Stub<ServiceType> serviceTypeStub, Page<Quittance> pager) {
-        return getLatestAccountsQuittances(list(account), serviceTypeStub, pager);
+    public List<Quittance> getLatestAccountQuittances(@NotNull EircAccount account, @NotNull Stub<ServiceType> serviceTypeStub) {
+        return getLatestAccountsQuittances(list(account), serviceTypeStub);
     }
 
 
     @NotNull
     @Override
-    public List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, Page<Quittance> pager) {
+    public List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts) {
         Set<Long> accountIds = set();
         for (EircAccount account : accounts) {
             accountIds.add(account.getId());
         }
-        return quittanceDao.findQuittancesByEIRCAccounts(accountIds, pager);
+        return quittanceDaoExt.findQuittancesByEIRCAccounts(accountIds);
     }
 
     @NotNull
     @Override
-    public List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, @NotNull Stub<ServiceType> serviceTypeStub, Page<Quittance> pager) {
+    public List<Quittance> getLatestAccountsQuittances(@NotNull List<EircAccount> accounts, @NotNull Stub<ServiceType> serviceTypeStub) {
         Set<Long> accountIds = set();
         for (EircAccount account : accounts) {
             accountIds.add(account.getId());
         }
-        return quittanceDao.findQuittancesByEIRCAccountsAndServiceType(accountIds, serviceTypeStub.getId(), pager);
+        return quittanceDaoExt.findQuittancesByEIRCAccountsAndServiceType(accountIds, serviceTypeStub.getId());
     }
 
     @NotNull
@@ -193,7 +191,7 @@ public class QuittanceServiceImpl implements QuittanceService {
         for (Consumer consumer : consumers) {
             consumerIds.add(consumer.getId());
         }
-        return quittanceDao.findQuittances(consumerIds);
+        return quittanceDaoExt.findQuittances(consumerIds);
     }
 
     @NotNull

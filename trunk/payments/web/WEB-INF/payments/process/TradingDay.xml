@@ -74,7 +74,8 @@
         </event>
         <task swimlane="JobManager" />
         <transition to="sendRegistryJob" name="next" />
-        <transition to="JobManagerError" name="error" />
+        <transition to="sendEmailToAdministrator" name="error" />
+        <!--<transition to="JobManagerError" name="error" />-->
         <transition to="AutoModeDecision" name="No registry created"/>
     </task-node>
 
@@ -135,7 +136,9 @@
     </decision>
 
     <task-node name="ViewApproval">
-        <description>Просмотр Оператором сообщения о том что операционный день завершен</description>
+        <description>
+            Просмотр Оператором сообщения о том что операционный день завершен
+        </description>
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
@@ -164,7 +167,8 @@
                 </expression>
             </script>
         </event>
-        <task name="sendEmailToAdministrator" swimlane="JobManager" />
+        <task swimlane="JobManager" />
+        <!--<task name="sendEmailToAdministrator" swimlane="JobManager" />-->
         <transition to="end-state" name="error" />
         <transition to="end-state" name="next" />
     </task-node>

@@ -4,8 +4,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Interface provides functionality to prepare quittances
@@ -19,6 +23,14 @@ public interface QuittanceDaoExt {
 	 * @return number of generated quittances
 	 */
 	long createQuittances(CreateQuittancesOptions options);
+
+    @NotNull
+    List<Quittance> findQuittancesByEIRCAccounts(Collection<Long> accountIds);
+
+    @NotNull
+    List<Quittance> findQuittancesByEIRCAccountsAndServiceType(Collection<Long> accountIds, Long serviceTypeId);
+
+    List<Quittance> findQuittances(Collection<Long> consumerIds);
 
 	/**
 	 * Simple create quittances operation properties container

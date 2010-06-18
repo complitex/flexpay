@@ -16,9 +16,18 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.request.data.request.InfoRequest;
+import org.flexpay.payments.actions.request.data.request.PayRequest;
+import org.flexpay.payments.actions.request.data.request.RequestType;
+import org.flexpay.payments.actions.request.data.request.ReversalPayRequest;
+import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.request.data.response.SimpleResponse;
+import org.flexpay.payments.actions.request.data.response.Status;
+import org.flexpay.payments.actions.request.data.response.data.*;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.persistence.quittance.*;
 import org.flexpay.payments.service.*;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -35,10 +44,9 @@ import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.SecurityUtil.getUserName;
-import static org.flexpay.payments.actions.request.data.DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST;
-import static org.flexpay.payments.persistence.quittance.InfoRequest.serviceProviderAccountNumberRequest;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.serviceProviderAccountNumberRequest;
 
-public class QuittancePayerImpl implements QuittancePayer {
+public class OuterRequestServiceImpl implements OuterRequestService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -47,6 +55,7 @@ public class QuittancePayerImpl implements QuittancePayer {
     private CashboxService cashboxService;
     private DocumentTypeService documentTypeService;
     private DocumentStatusService documentStatusService;
+    private DocumentService documentService;
     private DocumentAdditionTypeService documentAdditionTypeService;
     private OperationLevelService operationLevelService;
     private OperationStatusService operationStatusService;
@@ -58,10 +67,16 @@ public class QuittancePayerImpl implements QuittancePayer {
     private MasterIndexService masterIndexService;
     private PersonService personService;
 
+    @NotNull
+    @Override
+    public QuittanceDetailsResponse findQuittance(InfoRequest request) {
+        return quittanceDetailsFinder.findQuittance(request);
+    }
+
+    @NotNull
     @Override
     public PayInfoResponse quittancePay(PayRequest payRequest) throws FlexPayException {
-
-        Security.authenticatePayer();
+        Security.authenticateOuterRequest();
 
         //TODO: Откуда брать айдишник кассы?
         Cashbox cashbox = new Cashbox();
@@ -70,15 +85,18 @@ public class QuittancePayerImpl implements QuittancePayer {
         log.debug("Created blank operation: {}", oper);
 
         log.debug("Start filling operation");
+        PayInfoResponse response;
 
         try {
-            fillOperation(payRequest, oper);
+            response = fillOperation(payRequest, oper);
         } catch (Exception e) {
             log.error("Error with filling operation", e);
             throw new FlexPayException("Error with filling operation", e);
         }
 
         log.debug("Finish filling operation");
+
+        response.setRequestId(payRequest.getRequestId());
 
         if (isNotEmptyOperation(oper)) {
             if (oper.isNew()) {
@@ -91,21 +109,19 @@ public class QuittancePayerImpl implements QuittancePayer {
             log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
         }
 
-        PayInfoResponse response = new PayInfoResponse();
-
         response.setOperationId(oper.getId());
-        response.setStatusCode(PayInfoResponse.STATUS_SUCCESS);
 
         for (Document document : oper.getDocuments()) {
 
             ServicePayInfo servicePayInfo = new ServicePayInfo();
             servicePayInfo.setServiceId(document.getServiceStub().getId());
-            servicePayInfo.setDocumentId(document.getId());
-            servicePayInfo.setServiceStatusCode(ServicePayInfo.STATUS_SUCCESS);
+            servicePayInfo.setServiceStatus(Status.SUCCESS);
 
             response.addServicePayInfo(servicePayInfo);
 
         }
+
+        response.setStatus(Status.SUCCESS);
 
         return response;
     }
@@ -120,6 +136,10 @@ public class QuittancePayerImpl implements QuittancePayer {
         PayInfoResponse response = new PayInfoResponse();
 
         Cashbox cashbox = cashboxService.read(operation.getCashboxStub());
+        if (cashbox == null) {
+            log.warn("Can't get cashbox with id {} from DB", operation.getCashboxStub().getId());
+            throw new FlexPayException("Can't get cashbox with id " + operation.getCashboxStub().getId() + " from DB");
+        }
 
         Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
         operation.setOperationSumm(payRequest.getTotalToPay());
@@ -142,16 +162,17 @@ public class QuittancePayerImpl implements QuittancePayer {
         for (ServicePayDetails spDetails : payRequest.getServicePayDetails()) {
 
             ServicePayInfo servicePayInfo = new ServicePayInfo();
-            InfoRequest infoRequest = serviceProviderAccountNumberRequest(spDetails.getServiceId() + ":" + spDetails.getServiceProviderAccount(), SEARCH_QUITTANCE_DEBT_REQUEST);
+            InfoRequest infoRequest = serviceProviderAccountNumberRequest(spDetails.getServiceId() + ":" + spDetails.getServiceProviderAccount(), RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, payRequest.getLocale());
             log.debug("infoRequest = {}", infoRequest);
-            QuittanceDetailsResponse quittanceDetailsResponse = quittanceDetailsFinder.findQuittance(infoRequest);
+            QuittanceDetailsResponse quittanceDetailsResponse = findQuittance(infoRequest);
             if (quittanceDetailsResponse.getInfos() == null || quittanceDetailsResponse.getInfos().length == 0) {
                 log.info("Cant't find quittances by serviceId and spAccountNumber ({}, {})", spDetails.getServiceId(), spDetails.getServiceProviderAccount());
-                servicePayInfo.setServiceStatusCode(11);
+                servicePayInfo.setServiceStatus(Status.ACCOUNT_NOT_FOUND);
+                response.setStatus(Status.REQUEST_IS_NOT_PROCESSED);
                 continue;
             }
 
-            Document document = buildDocument(quittanceDetailsResponse.getInfos()[0], spDetails.getPaySum(), cashbox);
+            Document document = buildDocument(quittanceDetailsResponse.getInfos()[0], spDetails.getPaySum(), cashbox, payRequest.getLocale());
 
             if (isEmpty(operation.getAddress())) {
                 operation.setAddress(document.getAddress());
@@ -167,7 +188,7 @@ public class QuittancePayerImpl implements QuittancePayer {
     }
 
     @SuppressWarnings({"unchecked"})
-    private Document buildDocument(QuittanceInfo info, BigDecimal paySum, Cashbox cashbox) throws Exception {
+    private Document buildDocument(QuittanceInfo info, BigDecimal paySum, Cashbox cashbox, Locale locale) throws Exception {
 
         ServiceDetails serviceDetails = info.getDetailses()[0];
         Service service = spService.readFull(new Stub<Service>(serviceDetails.getServiceId()));
@@ -182,7 +203,7 @@ public class QuittancePayerImpl implements QuittancePayer {
         document.setDebtorOrganization(cashbox.getPaymentPoint().getCollector().getOrganization());
         document.setCreditorOrganization(serviceProviderOrganization);
         document.setDebt(serviceDetails.getAmount());
-        document.setAddress(getApartmentAddress(info));
+        document.setAddress(getApartmentAddress(info, locale));
         document.setPayerFIO(stripToEmpty(getPersonFio(info)));
         document.setDebtorId(info.getAccountNumber());
         document.setCreditorId(serviceDetails.getServiceProviderAccount());
@@ -222,13 +243,13 @@ public class QuittancePayerImpl implements QuittancePayer {
         }
     }
 
-    public String getApartmentAddress(QuittanceInfo quittanceInfo) throws Exception {
+    public String getApartmentAddress(QuittanceInfo quittanceInfo, Locale locale) throws Exception {
 
         String apartmentMasterIndex = quittanceInfo.getApartmentMasterIndex();
         if (apartmentMasterIndex != null) {
             Stub<Apartment> stub = correctionsService.findCorrection(apartmentMasterIndex,
                     Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
-            return addressService.getAddress(stub, new Locale("ru"));
+            return addressService.getAddress(stub, locale);
         } else {
             return quittanceInfo.getAddress();
         }
@@ -264,6 +285,50 @@ public class QuittancePayerImpl implements QuittancePayer {
         }
     }
 
+    @NotNull
+    @Override
+    public SimpleResponse refund(ReversalPayRequest request) throws FlexPayException {
+
+        Security.authenticateOuterRequest();
+
+        SimpleResponse response = new SimpleResponse();
+        response.setRequestId(request.getRequestId());
+
+        OperationStatus operationStatus = operationStatusService.read(OperationStatus.RETURNED);
+        Stub<Operation> stub = new Stub<Operation>(request.getOperationId());
+        Operation operation = operationService.read(stub);
+        if (operation == null) {
+            log.warn("Can't get operation with id {} from DB", stub.getId());
+            response.setStatus(Status.INCORRECT_OPERATION_ID);
+            return response;
+        }
+
+        if (!request.getTotalPaySum().equals(operation.getOperationSumm())) {
+            log.warn("Request total pay sum not equals operation sum!");
+            response.setStatus(Status.INCORRECT_PAY_SUM);
+            return response;
+        }
+
+        operation.setOperationStatus(operationStatus);
+
+        DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.RETURNED);
+
+        for (Document document : operation.getDocuments()) {
+            document.setDocumentStatus(documentStatus);
+            if (document.isNew()) {
+                documentService.create(document);
+            } else {
+                documentService.update(document);
+            }
+        }
+
+        operationService.update(operation);
+
+        response.setStatus(Status.SUCCESS);
+
+        return response;
+    }
+
     @Required
     public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
         this.quittanceDetailsFinder = quittanceDetailsFinder;
@@ -287,6 +352,11 @@ public class QuittancePayerImpl implements QuittancePayer {
     @Required
     public void setDocumentStatusService(DocumentStatusService documentStatusService) {
         this.documentStatusService = documentStatusService;
+    }
+
+    @Required
+    public void setDocumentService(DocumentService documentService) {
+        this.documentService = documentService;
     }
 
     @Required
@@ -338,4 +408,5 @@ public class QuittancePayerImpl implements QuittancePayer {
     public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
+
 }

@@ -7,21 +7,22 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.flexpay.httptester.data.PayDebtResponse;
-import org.flexpay.httptester.data.QuittanceInfo;
-import org.flexpay.httptester.data.SearchResponse;
-import org.flexpay.httptester.data.ServiceDetails;
+import org.flexpay.httptester.data.*;
 
 import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.*;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Client {
 
     public static final int REQUEST_TYPE_SEARCH = 1;
     public static final int REQUEST_TYPE_PAY = 2;
+    public static final int REQUEST_TYPE_REFUND = 3;
 
     private static String generateSearchRequest(Properties props) throws Exception {
 
@@ -71,18 +72,47 @@ public class Client {
 
     }
 
+    private static String generateRefundRequest(Properties props) throws Exception {
+
+        Map<String, String> params = new TreeMap<String, String>();
+
+        params.put("alias", props.getProperty("alias"));
+        params.put("requestId", props.getProperty("requestId"));
+        params.put("operationId", props.getProperty("operationId"));
+        params.put("totalPaySum", props.getProperty("totalPaySum"));
+
+        String content = loadRequestTemplate("request_refund.file", props).
+                replaceFirst("@requestId@", params.get("requestId")).
+                replaceFirst("@operationId@", params.get("operationId")).
+                replaceFirst("@totalPaySum@", params.get("totalPaySum")).
+                replaceFirst("@alias@", params.get("alias"));
+
+        String signatureString = buildRefundSignature(loadPrivateKey(props, params.get("alias")), params);
+        content = content.replaceFirst("@signature@", signatureString);
+
+        return content;
+
+    }
+
     private static void executeRequest(int requestType, Properties props, HttpClient httpClient) throws Exception {
 
         String content = "";
         if (requestType == REQUEST_TYPE_SEARCH) {
             content = generateSearchRequest(props);
             System.out.println("Search request:\n" + content);
-        } else {
+        } else if (requestType == REQUEST_TYPE_PAY) {
             content = generatePayRequest(props);
             System.out.println("Pay request:\n" + content);
+        } else if (requestType == REQUEST_TYPE_REFUND) {
+            content = generateRefundRequest(props);
+            System.out.println("Refund request:\n" + content);
+        } else {
+            System.out.println("Incorrect request type");
+            return;
         }
         HttpPost post = new HttpPost(props.getProperty("url"));
         post.setEntity(new StringEntity(content));
+        post.setHeader("Accept-Language", props.getProperty("locale"));
 
         HttpResponse response = httpClient.execute(post);
 
@@ -90,21 +120,18 @@ public class Client {
             Digester digester = initSearchParser();
             SearchResponse parsedResponse = (SearchResponse) digester.parse(response.getEntity().getContent());
             System.out.println("Search response:\n" + parsedResponse);
-            System.out.println(checkSignatureSearch(parsedResponse, props) ? "Search response signature is OK" : "Search response signature is BAD");
-
-/*
-            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String line;
-            while((line = in.readLine()) != null) {
-                System.out.println(line);
-            }
-*/
-
-        } else {
+            System.out.println("Search response signature is " + (checkSignatureSearch(parsedResponse, props) ? "OK" : "BAD"));
+        } else if (requestType == REQUEST_TYPE_PAY) {
             Digester digester = initPayParser();
             PayDebtResponse parsedResponse = (PayDebtResponse) digester.parse(response.getEntity().getContent());
             System.out.println("Pay response:\n" + parsedResponse);
-            System.out.println(checkSignaturePay(parsedResponse, props) ? "Pay response signature is OK" : "Pay response signature is BAD");
+            System.out.println("Pay response signature is " + (checkSignaturePay(parsedResponse, props) ? "OK" : "BAD"));
+        } else {
+            Digester digester = initRefundParser();
+            RefundResponse parsedResponse = (RefundResponse) digester.parse(response.getEntity().getContent());
+            System.out.println("Refund response:\n" + parsedResponse);
+            System.out.println("Refund response signature is " + (checkSignatureRefund(parsedResponse, props) ? "OK" : "BAD"));
+        }
 
 /*
             BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -113,8 +140,6 @@ public class Client {
                 System.out.println(line);
             }
 */
-
-        }
 
     }
 
@@ -124,7 +149,8 @@ public class Client {
         HttpClient httpClient = new DefaultHttpClient();
 
         executeRequest(REQUEST_TYPE_SEARCH, props, httpClient);
-        executeRequest(REQUEST_TYPE_PAY, props, httpClient);
+//        executeRequest(REQUEST_TYPE_PAY, props, httpClient);
+        executeRequest(REQUEST_TYPE_REFUND, props, httpClient);
 
 	}
 
@@ -134,6 +160,18 @@ public class Client {
 		scanner.close();
 		return content;
 	}
+
+    private static String buildRefundSignature(PrivateKey key, Map<String, String> params) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+
+        Signature signature = Signature.getInstance("SHA1withDSA");
+        signature.initSign(key);
+
+        signature.update(params.get("requestId").getBytes());
+        signature.update(params.get("operationId").getBytes());
+        signature.update(params.get("totalPaySum").getBytes());
+
+        return getStringFromBytes(signature.sign());
+    }
 
 	private static String buildPaySignature(PrivateKey key, Map<String, String> params) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 
@@ -194,25 +232,34 @@ public class Client {
 
 	private static Properties loadProperties() throws IOException {
 		Properties props = new Properties();
-		FileInputStream fis = new FileInputStream("org/flexpay/httptester/config.properties");
-		props.load(fis);
-		fis.close();
+        FileReader fr = new FileReader("org/flexpay/httptester/config.properties");
+        try {
+            props.load(fr);
+        } finally {
+            fr.close();
+        }
 		return props;
 	}
 
-	private static void dumpResponseContent(HttpResponse response, Properties props) throws IOException {
+	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
+    private static void dumpResponseContent(HttpResponse response, Properties props) throws IOException {
 		// writing response to console
-		InputStream is = response.getEntity().getContent();
-		Reader reader = new InputStreamReader(is);
-		char[] buf = new char[1024];
-		FileWriter fileWriter = new FileWriter(props.getProperty("response.file"));
+        InputStream is = response.getEntity().getContent();
+        Reader reader = new InputStreamReader(is);
+        FileWriter fileWriter = new FileWriter(props.getProperty("response.file"));
 
-		int n = reader.read(buf);
-		while (n > 0) {
-			fileWriter.write(buf, 0, n);
-			n = reader.read(buf);
-		}
-		fileWriter.close();
+        try {
+            char[] buf = new char[2048];
+
+            int n = reader.read(buf);
+            while (n > 0) {
+                fileWriter.write(buf, 0, n);
+                n = reader.read(buf);
+            }
+        } finally {
+            reader.close();
+            fileWriter.close();
+        }
 	}
 
 	private static String getStringFromBytes(byte[] bytes) {
@@ -237,6 +284,19 @@ public class Client {
         digester.addBeanPropertySetter("response/payInfo/servicePayInfo/documentId", "documentId");
         digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceStatusCode", "statusCode");
         digester.addBeanPropertySetter("response/payInfo/servicePayInfo/serviceStatusMessage", "statusMessage");
+
+        return digester;
+    }
+
+    private static Digester initRefundParser() {
+
+        Digester digester = new Digester();
+
+        digester.addObjectCreate("response", RefundResponse.class);
+        digester.addBeanPropertySetter("response/signature", "signature");
+        digester.addBeanPropertySetter("response/reversalInfo/requestId", "requestId");
+        digester.addBeanPropertySetter("response/reversalInfo/statusCode", "statusCode");
+        digester.addBeanPropertySetter("response/reversalInfo/statusMessage", "statusMessage");
 
         return digester;
     }
@@ -343,6 +403,20 @@ public class Client {
 
 		return digester;
 	}
+
+    private static boolean checkSignatureRefund(RefundResponse response, Properties properties) throws Exception {
+
+        Certificate certificate = loadCertificate(properties);
+
+        Signature signature = Signature.getInstance("SHA1withDSA");
+        signature.initVerify(certificate);
+
+        updateSignature(signature, response.getRequestId());
+        updateSignature(signature, response.getStatusCode());
+        updateSignature(signature, response.getStatusMessage());
+
+        return signature.verify(Hex.decodeHex(response.getSignature().toCharArray()));
+    }
 
     private static boolean checkSignaturePay(PayDebtResponse response, Properties properties) throws Exception {
 

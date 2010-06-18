@@ -21,7 +21,14 @@ public class Quittance extends DomainObject {
 	private EircAccount eircAccount;
 	private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = Collections.emptySet();
 
-	public Date getCreationDate() {
+    public Quittance() {
+    }
+
+    public Quittance(@NotNull Long id) {
+        super(id);
+    }
+
+    public Date getCreationDate() {
 		return creationDate;
 	}
 
