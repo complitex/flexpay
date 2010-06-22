@@ -80,7 +80,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 		}
 
-		correctAttributes();
+        correctAttributes();
 
 		if (isNotSubmit()) {
 
@@ -97,6 +97,10 @@ public class BuildingAddressEditAction extends FPActionSupport {
 				regionFilter = address.getRegion().getId();
 				countryFilter = address.getCountry().getId();
 			}
+
+            for (AddressAttribute attribute : address.getBuildingAttributes()) {
+                attributesMap.put(attribute.getBuildingAttributeType().getId(), attribute.getValue());
+            }
 
 			return INPUT;
 		}
