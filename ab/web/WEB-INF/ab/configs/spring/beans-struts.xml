@@ -216,8 +216,8 @@
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
 		  p:districtService-ref="districtService"
           p:streetService-ref="streetService"
-		  p:crumbNameKey="ab.crumbs.building_address_create"
-		  p:crumbCreateKey="ab.crumbs.building_address_edit"
+          p:crumbCreateKey="ab.crumbs.building_address_create"
+		  p:crumbNameKey="ab.crumbs.building_address_edit"
 		  scope="prototype" />
 
     <bean id="buildingAddressDeleteAction"
