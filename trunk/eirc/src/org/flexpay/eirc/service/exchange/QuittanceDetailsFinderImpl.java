@@ -90,7 +90,6 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 				response = getError(Status.UNKNOWN_REQUEST);
 		}
 		response.setRequestId(request.getRequestId());
-        response.setStatus(Status.SUCCESS);
 
 		log.debug("Response to return: {}", response);
 
