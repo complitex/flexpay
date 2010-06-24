@@ -10,12 +10,12 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2"><s:text name="payments.payment_point" />&nbsp;:&nbsp;<s:property value="name" /></td>
+        <td colspan="2"><s:text name="payments.payment_point" />&nbsp;:&nbsp;<s:property value="paymentPoint.name" /></td>
     </tr>
     <tr>
         <td colspan="2">
             <s:text name="payments.payment_point.detail.payments_count" />&nbsp;:&nbsp;<s:property value="paymentsCount" />&nbsp;&nbsp;&nbsp;
-            <s:text name="payments.payment_point.detail.sum" />&nbsp;:&nbsp;<s:property value="totalSumm" />
+            <s:text name="payments.payment_point.detail.sum" />&nbsp;:&nbsp;<s:property value="totalSum" />
         </td>
     </tr>
 <%--

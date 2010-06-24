@@ -76,7 +76,7 @@ public class QuittancePayAction extends FPActionSupport {
 			return doRedirect();
 		}
 
-		// prepare summs to pay
+		// prepare sums to pay
 		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
 			Service service = details.getConsumer().getService();
 			servicePayments.put(service.getId(), details.getOutgoingBalance());
@@ -99,7 +99,7 @@ public class QuittancePayAction extends FPActionSupport {
 		QuittancePayment payment = new QuittancePayment();
 		payment.setQuittance(quittance);
 		payment.setAmount(totalPayed);
-		BigDecimal summ = new BigDecimal("0.00");
+		BigDecimal sum = new BigDecimal("0.00");
 		boolean hasPartialPayments = false;
 		for (Map.Entry<Long, BigDecimal> entry : servicePayments.entrySet()) {
 			Long serviceId = entry.getKey();
@@ -116,8 +116,8 @@ public class QuittancePayAction extends FPActionSupport {
 			}
 			detailsPayment.setQuittanceDetails(details);
 
-			// check if payed summ is equals or more then needed to pay
-			BigDecimal alreadyPayed = getPayedSumm(details);
+			// check if payed sum is equals or more then needed to pay
+			BigDecimal alreadyPayed = getPayedSum(details);
 			if (alreadyPayed.add(payed).compareTo(details.getOutgoingBalance()) >= 0) {
 				detailsPayment.setPaymentStatus(paymentStatusService.getPayedFullStatus());
 			} else {
@@ -126,12 +126,12 @@ public class QuittancePayAction extends FPActionSupport {
 			}
 
 			payment.addDetailsPayment(detailsPayment);
-			summ = summ.add(payed);
+			sum = sum.add(payed);
 		}
 
-		if (!summ.equals(totalPayed)) {
+		if (!sum.equals(totalPayed)) {
 			ex.addException(new FlexPayException("invalid division",
-					"eirc.error.quittances.pay.invalid_summ_division", summ, totalPayed));
+					"eirc.error.quittances.pay.invalid_sum_division", sum, totalPayed));
 		}
 
 		payment.setPaymentStatus(hasPartialPayments ?
@@ -206,8 +206,8 @@ public class QuittancePayAction extends FPActionSupport {
 
 		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
 			if (!details.getConsumer().getService().isSubService()) {
-				BigDecimal summToPay = details.getOutgoingBalance();
-				if (summToPay.compareTo(getPayedSumm(details)) > 0) {
+				BigDecimal sumToPay = details.getOutgoingBalance();
+				if (sumToPay.compareTo(getPayedSum(details)) > 0) {
 					return false;
 				}
 			}
@@ -218,28 +218,28 @@ public class QuittancePayAction extends FPActionSupport {
 
 	public BigDecimal getTotalPayedBefore() {
 
-		BigDecimal summ = new BigDecimal("0.00");
+		BigDecimal sum = new BigDecimal("0.00");
 		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
 			if (!details.getConsumer().getService().isSubService()) {
-				BigDecimal summPayed = getPayedSumm(details);
-				summ = summ.add(summPayed);
+				BigDecimal sumPayed = getPayedSum(details);
+				sum = sum.add(sumPayed);
 			}
 		}
 
-		return summ;
+		return sum;
 	}
 
 	@NotNull
-	public BigDecimal getPayedSumm(QuittanceDetails qd) {
-		BigDecimal summ = new BigDecimal("0.00");
+	public BigDecimal getPayedSum(QuittanceDetails qd) {
+		BigDecimal sum = new BigDecimal("0.00");
 		for (QuittancePayment payment : payments) {
 			QuittanceDetailsPayment detailsPayment = payment.getPayment(qd);
 			if (detailsPayment != null) {
-				summ = summ.add(detailsPayment.getAmount());
+				sum = sum.add(detailsPayment.getAmount());
 			}
 		}
 
-		return summ;
+		return sum;
 	}
 
 	// set/get form data

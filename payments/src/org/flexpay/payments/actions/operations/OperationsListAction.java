@@ -27,9 +27,11 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 
 public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Operation> implements InitializingBean {
@@ -40,8 +42,8 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
-	private BigDecimal minimalSumm;
-	private BigDecimal maximalSumm;
+	private BigDecimal minimalSum;
+	private BigDecimal maximalSum;
 	private Boolean documentSearch = false;
 
 	private List<Operation> operations = list();
@@ -109,8 +111,8 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 			addActionError(getText("payments.error.operations.list.begin_date_must_be_before_end_date"));
 		}
 
-		if (minimalSumm != null && maximalSumm != null && minimalSumm.compareTo(maximalSumm) > 0) {
-			addActionError(getText("payments.error.operations.list.minimal_summ_must_be_not_greater_than_maximal"));
+		if (minimalSum != null && maximalSum != null && minimalSum.compareTo(maximalSum) > 0) {
+			addActionError(getText("payments.error.operations.list.minimal_sum_must_be_not_greater_than_maximal"));
 		}
 
 		return !hasActionErrors();
@@ -123,11 +125,11 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		if (documentSearch != null && documentSearch) {
 			Date begin = beginDateFilter.getDate();
 			Date end = getEndOfThisDay(endDateFilter.getDate());
-			searchResults = operationService.searchDocuments(stub(cashbox), serviceTypeFilter.getSelectedId(), begin, end, minimalSumm, maximalSumm, getPager());
+			searchResults = operationService.searchDocuments(stub(cashbox), serviceTypeFilter.getSelectedId(), begin, end, minimalSum, maximalSum, getPager());
 			highlightedDocumentIds = list();
 
 			for (Operation operation : searchResults) {
-				List<Document> docs = documentService.searchDocuments(stub(operation), serviceTypeFilter.getSelectedId(), minimalSumm, maximalSumm);
+				List<Document> docs = documentService.searchDocuments(stub(operation), serviceTypeFilter.getSelectedId(), minimalSum, maximalSum);
 				for (Document doc : docs) {
 					highlightedDocumentIds.add(doc.getId());
 				}
@@ -136,12 +138,15 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		} else {
 			Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
 			Date end = endTimeFilter.setTime(endDateFilter.getDate());
-			searchResults = operationService.searchOperations(stub(cashbox), begin, end, minimalSumm, maximalSumm, getPager());
+			searchResults = operationService.searchOperations(stub(cashbox), begin, end, minimalSum, maximalSum, getPager());
 		}
 
+        Set<Long> operationIds = set();
 		for (Operation operation : searchResults) {
-			operations.add(operationService.read(stub(operation)));
+            operationIds.add(operation.getId());
 		}
+
+        operations = operationService.readFull(operationIds, true);
 	}
 
 	@NotNull
@@ -159,12 +164,12 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		return currencyInfoService.getDefaultCurrency().getName(getUserPreferences().getLocale()).getShortName();
 	}
 
-	public BigDecimal getTotalPaymentsSumm() {
-		return getTotalSummForOperations(OperationStatus.REGISTERED);
+	public BigDecimal getTotalPaymentsSum() {
+		return getTotalSumForOperations(OperationStatus.REGISTERED);
 	}
 
-	public BigDecimal getTotalReturnsSumm() {
-		return getTotalSummForOperations(OperationStatus.RETURNED);
+	public BigDecimal getTotalReturnsSum() {
+		return getTotalSumForOperations(OperationStatus.RETURNED);
 	}
 
 	public boolean isOperationCreated(int status) {
@@ -207,16 +212,16 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		return highlightedDocumentIds.contains(document.getId());
 	}
 
-	private BigDecimal getTotalSummForOperations(int statusCode) {
+	private BigDecimal getTotalSumForOperations(int statusCode) {
 
-		BigDecimal summ = new BigDecimal(BigDecimal.ZERO.toBigInteger());
+		BigDecimal sum = new BigDecimal("0.00");
 		for (Operation operation : operations) {
 			if (statusCode == operation.getOperationStatus().getCode()) {
-				summ = summ.add(operation.getOperationSumm());
+				sum = sum.add(operation.getOperationSumm());
 			}
 		}
 
-		return summ;
+		return sum;
 	}
 
 	public List<Long> getHighlightedDocumentIds() {
@@ -235,27 +240,27 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		return operations;
 	}
 
-	public void setMinimalSumm(String minimalSumm) {
-		if (StringUtils.isEmpty(minimalSumm)) {
+	public void setMinimalSum(String minimalSum) {
+		if (StringUtils.isEmpty(minimalSum)) {
 			return;
 		}
 		try {
-			this.minimalSumm = new BigDecimal(minimalSumm);
+			this.minimalSum = new BigDecimal(minimalSum);
 		} catch (NumberFormatException e) {
-			log.warn("Minimal summ is not set because of bad string parameter value");
-			this.minimalSumm = null;
+			log.warn("Minimal sum is not set because of bad string parameter value");
+			this.minimalSum = null;
 		}
 	}
 
-	public void setMaximalSumm(String maximalSumm) {
-		if (StringUtils.isEmpty(maximalSumm)) {
+	public void setMaximalSum(String maximalSum) {
+		if (StringUtils.isEmpty(maximalSum)) {
 			return;
 		}
 		try {
-			this.maximalSumm = new BigDecimal(maximalSumm);
+			this.maximalSum = new BigDecimal(maximalSum);
 		} catch (NumberFormatException e) {
-			log.warn("Maximal summ is not set because of bad string parameter value");
-			this.maximalSumm = null;
+			log.warn("Maximal sum is not set because of bad string parameter value");
+			this.maximalSum = null;
 		}
 	}
 

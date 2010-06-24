@@ -1,16 +1,12 @@
 package org.flexpay.payments.actions.monitor;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
@@ -19,25 +15,23 @@ import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.payments.actions.monitor.MonitorUtils.*;
+import static org.flexpay.payments.actions.monitor.PaymentPointEnableDisableAction.DISABLE;
+import static org.flexpay.payments.actions.monitor.PaymentPointEnableDisableAction.ENABLE;
 
 public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerActionSupport<PaymentPointMonitorContainer> {
-
-    private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
     private List<PaymentPointMonitorContainer> paymentPoints;
 
 	private ProcessManager processManager;
     private PaymentsStatisticsService paymentsStatisticsService;
     private OperationService operationService;
-    private CashboxService cashboxService;
 
     @NotNull
     @Override
@@ -45,19 +39,15 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
         if (!(getUserPreferences() instanceof PaymentsUserPreferences)) {
             log.error("{} is not instanceof {}", getUserPreferences().getClass(), PaymentsUserPreferences.class);
+            addActionError(getText("payments.error.monitor.internal_error"));
             return SUCCESS;
         }
 
-        Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
-        if (paymentCollectorId == null) {
-            log.error("PaymentCollectorId is not defined in preferences of User {} (id = {})", getUserPreferences().getUsername(), getUserPreferences().getId());
+		PaymentCollector paymentCollector = getPaymentCollector();
+		if (paymentCollector == null) {
+            addActionError(getText("payments.error.monitor.cant_get_payment_collector"));
 			return SUCCESS;
         }
-		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
-		if (paymentCollector == null) {
-			log.error("No payment collector found with id {}", paymentCollectorId);
-			return SUCCESS;
-		}
 
 		paymentPoints = list();
 
@@ -65,73 +55,43 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 //        List<PaymentPoint> lPaymentPoints = paymentPointService.listPoints(CollectionUtils.arrayStack(), page);
 //        for (Process process : processes) {
         for (PaymentPoint paymentPoint : paymentCollector.getPaymentPoints()) {
-//            paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
 
             Date startDate = now();
             Date finishDate = new Date();
             if (log.isDebugEnabled()) {
-                log.debug("Start date={} {}, finish date={} {}", new Object[] {format(startDate), formatTime.format(startDate), format(finishDate), formatTime.format(finishDate)});
+                log.debug("Start date={}, finish date={}", formatWithTime(startDate), formatWithTime(finishDate));
             }
             
             String status = null;
             if (paymentPoint.getTradingDayProcessInstanceId() != null && paymentPoint.getTradingDayProcessInstanceId() > 0) {
                 Process process = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+                log.debug("Found process for paymentPoint with id {} : {}", paymentPoint.getId(), process);
                 if (process != null) {
                     status = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
-                    // PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(pointId));
                 }
             }
-            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(stub(paymentPoint), startDate, finishDate);
-            List<Operation> operations = operationService.listLastPaymentOperationsForPaymentPoint(stub(paymentPoint), startDate, finishDate);
-
             container.setId(paymentPoint.getId());
             container.setName(paymentPoint.getName(getLocale()));
-            container.setPaymentsCount(getPaymentsCount(statistics));
-            container.setTotalSumm(String.valueOf(getPaymentsSumm(statistics)));
             container.setStatus(status);
+            container.setAction(paymentPoint.getTradingDayProcessInstanceId() == null ? ENABLE : DISABLE);
 
-            if (paymentPoint.getTradingDayProcessInstanceId() != null) {
-                container.setAction(PaymentPointEnableDisableAction.DISABLE);
-            } else {
-                container.setAction(PaymentPointEnableDisableAction.ENABLE);
-            }
+            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(stub(paymentPoint), startDate, finishDate);
+            container.setPaymentsCount(getPaymentsCount(statistics));
+            container.setTotalSum(String.valueOf(getPaymentsSum(statistics)));
 
-            if (operations != null && !operations.isEmpty()) {
-                Operation operation = operations.get(0);
-                Cashbox operationCashbox = cashboxService.read(stub(operation.getCashbox()));
-                if (operationCashbox != null) {
-					container.setCashierFIO(operation.getCashierFio());
-                    container.setCashBox(operationCashbox.getName(getLocale()));
-                    container.setLastPayment(formatTime.format(operation.getCreationDate()));
-                }
+            Operation operation = operationService.getLastPaymentOperationForPaymentPoint(stub(paymentPoint), startDate, finishDate);
+            if (operation != null) {
+                container.setCashierFIO(operation.getCashierFio());
+                container.setCashBox(operation.getCashbox().getName(getLocale()));
+                container.setLastPayment(formatTime.format(operation.getCreationDate()));
             }
 
             paymentPoints.add(container);
         }
 
         return SUCCESS;
-    }
-
-
-    public Long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
-        Long count = 0L;
-        for (OperationTypeStatistics stats : typeStatisticses) {
-            if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-                count += stats.getCount();
-            }
-        }
-        return count;
-    }
-
-    private BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
-        BigDecimal sum = BigDecimal.ZERO;
-        for (OperationTypeStatistics stats : typeStatisticses) {
-            if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-                sum = sum.add(stats.getSumm());
-            }
-        }
-        return sum;
     }
 
     @NotNull
@@ -152,11 +112,6 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
     @Required
     public void setOperationService(OperationService operationService) {
         this.operationService = operationService;
-    }
-
-    @Required
-    public void setCashboxService(CashboxService cashboxService) {
-        this.cashboxService = cashboxService;
     }
 
 	@Required

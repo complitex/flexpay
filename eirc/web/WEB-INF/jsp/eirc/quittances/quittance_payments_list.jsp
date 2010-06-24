@@ -12,7 +12,7 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="common.summ" /></td>
+        <td class="th"><s:text name="common.sum" /></td>
         <td class="th"><s:text name="orgs.address" /></td>
         <td class="th"><s:text name="ab.person.fio" /></td>
         <td class="th"><s:text name="eirc.eirc_account" /></td>

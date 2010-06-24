@@ -5,7 +5,7 @@
 
     FPP.messages = {
         invalidPayValue : "<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value" />",
-        inputSummIsTooSmall : "<s:text name="payments.quittances.quittance_pay.input_summ_is_too_small" />",
+        inputSummIsTooSmall : "<s:text name="payments.quittances.quittance_pay.input_sum_is_too_small" />",
         createOpServerError : "<s:text name="payments.error.creating_operation_server_error" />",
         clipboardAccessDenided : "<s:text name="payments.errors.clipboard_access_denied" />",
         clipboardCopyError : "<s:text name="payments.errors.clipboard_copy_error" />"

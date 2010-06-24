@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +54,20 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.readFull(operationStub.getId());
 	}
 
-	/**
+    /**
+     * Read operations collection by theirs ids
+     *
+     * @param operationIds Apartment ids
+     * @param preserveOrder Whether to preserve order of objects
+     * @return Found operations
+     */
+    @NotNull
+    @Override
+    public List<Operation> readFull(@NotNull Collection<Long> operationIds, boolean preserveOrder) {
+        return operationDao.readFullCollection(operationIds, preserveOrder);
+    }
+
+    /**
 	 * Save operation
 	 *
 	 * @param operation Operation Object
@@ -110,13 +124,13 @@ public class OperationServiceImpl implements OperationService {
 	}
 
     @Override
-	public List<Operation> listLastPaymentOperationsForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate) {
-		return operationDao.listLastPaymentPointPaymentOperations(paymentPoint.getId(), beginDate, endDate);
+    public Operation getLastPaymentOperationForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate) {
+		return operationDaoExt.getLastPaymentPointPaymentOperation(paymentPoint.getId(), beginDate, endDate);
 	}
 
     @Override
-	public List<Operation> listLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
-		return operationDao.listLastCashboxPaymentOperations(cashbox.getId(), beginDate, endDate);
+	public Operation getLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
+		return operationDaoExt.getLastCashboxPaymentOperation(cashbox.getId(), beginDate, endDate);
 	}
 
     @Override
@@ -153,14 +167,14 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
 	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,
-										   Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
-		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
+										   Date end, BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager) {
+		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSum, maximalSum, pager);
 	}
 
     @Override
-	public List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSumm,
-											BigDecimal maximalSumm, Page<Operation> pager) {
-		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSumm, maximalSumm, pager);
+	public List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSum,
+											BigDecimal maximalSum, Page<Operation> pager) {
+		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSum, maximalSum, pager);
 	}
 
 	/**

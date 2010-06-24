@@ -49,7 +49,7 @@
 			<td class="th"><s:text name="payments.reports.payment_report.service_provider_account" /></td>
 			<td class="th"><s:text name="payments.reports.payment_report.fio" /></td>
 			<td class="th"><s:text name="payments.reports.payment_report.service_type_code" /></td>
-			<td class="th"><s:text name="payments.reports.payment_report.document_summ" /></td>
+			<td class="th"><s:text name="payments.reports.payment_report.document_sum" /></td>
 			<td class="th"><s:text name="payments.reports.payment_report.document_id" /></td>
 		</tr>
 		<s:iterator value="reportContent" status="status">

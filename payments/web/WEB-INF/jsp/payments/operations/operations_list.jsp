@@ -22,13 +22,13 @@
                     <s:param value="pager.getTotalNumberOfElements()" />
                 </s:text>
                 &nbsp;
-                <s:text name="payments.operations.list.total_payments_summ">
-                    <s:param value="getTotalPaymentsSumm()" />
+                <s:text name="payments.operations.list.total_payments_sum">
+                    <s:param value="getTotalPaymentsSum()" />
                     <s:param value="getCurrencyName()" />
                 </s:text>
                 &nbsp;
-                <s:text name="payments.operations.list.total_returns_summ">
-                    <s:param value="getTotalReturnsSumm()" />
+                <s:text name="payments.operations.list.total_returns_sum">
+                    <s:param value="getTotalReturnsSum()" />
                     <s:param value="getCurrencyName()" />
                 </s:text>
             </td>
@@ -51,8 +51,8 @@
             <td class="th"><s:text name="payments.operations.list.creation_date" /></td>
             <td class="th"><s:text name="payments.operations.list.address" /></td>
             <td class="th"><s:text name="payments.operations.list.fio" /></td>
-            <td class="th"><s:text name="payments.operations.list.summ" /></td>
-            <td class="th"><s:text name="payments.operations.list.pay_summ" /></td>
+            <td class="th"><s:text name="payments.operations.list.sum" /></td>
+            <td class="th"><s:text name="payments.operations.list.pay_sum" /></td>
             <td class="th"><s:text name="payments.operations.list.change" /></td>
             <td class="th service_column" style="display:none;"><s:text name="payments.operations.list.service" /></td>
             <td class="th service_provider_column" style="display:none;"><s:text name="payments.operations.list.provider" /></td>
@@ -93,7 +93,7 @@
                         <td>&nbsp;</td>
                         <td><s:property value="address" /></td>
                         <td><s:property value="payerFIO" /></td>
-                        <td><s:property value="summ" /></td>
+                        <td><s:property value="sum" /></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td class="service_column" style="display:none;"><s:property value="service.serviceType.name" /></td>
@@ -114,8 +114,8 @@
                 <td>&nbsp;</td>
                 <td><s:property value="address"/></td>
                 <td><s:property value="payerFIO"/></td>
-                <td><s:property value="operationSumm"/></td>
-                <td><s:property value="operationInputSumm"/></td>
+                <td><s:property value="operationSum"/></td>
+                <td><s:property value="operationInputSum"/></td>
                 <td><s:property value="change"/></td>
                 <td class="service_column" style="display: none;">&nbsp;</td>
                 <td class="service_provider_column" style="display: none;" colspan="2">&nbsp;</td>

@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.jetbrains.annotations.NotNull;
@@ -62,6 +63,17 @@ public interface PaymentPointService {
 	@Secured(Roles.PAYMENT_POINT_READ)
 	@Nullable
 	PaymentPoint read(@NotNull Stub<PaymentPoint> stub);
+
+    /**
+     * Read full payment point info
+     *
+     * @param stubPoint payment point stub
+     * @param stubCollector payment collector stub
+     * @return Payment point if available, or <code>null</code> if not found
+     */
+    @Secured(Roles.PAYMENT_POINT_READ)
+    @Nullable
+    PaymentPoint find(@NotNull Stub<PaymentPoint> stubPoint, @NotNull Stub<PaymentCollector> stubCollector);
 
 	/**
 	 * Read full payment points info

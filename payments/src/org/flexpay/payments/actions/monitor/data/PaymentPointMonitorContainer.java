@@ -9,7 +9,7 @@ public class PaymentPointMonitorContainer {
     private String name;
     private Long paymentsCount;
     private String status;
-    private String totalSumm;
+    private String totalSum;
     private String cashBox;
     private String cashierFIO;
     private String lastPayment;
@@ -47,12 +47,12 @@ public class PaymentPointMonitorContainer {
 		this.status = status;
 	}
 
-	public String getTotalSumm() {
-		return totalSumm;
+	public String getTotalSum() {
+		return totalSum;
 	}
 
-	public void setTotalSumm(String totalSumm) {
-		this.totalSumm = totalSumm;
+	public void setTotalSum(String totalSum) {
+		this.totalSum = totalSum;
 	}
 
 	public String getCashBox() {
@@ -94,7 +94,7 @@ public class PaymentPointMonitorContainer {
 				append("name", name).
 				append("paymentsCount", paymentsCount).
 				append("status", status).
-				append("totalSumm", totalSumm).
+				append("totalSum", totalSum).
 				append("cashBox", cashBox).
 				append("cashierFIO", cashierFIO).
 				append("lastPayment", lastPayment).

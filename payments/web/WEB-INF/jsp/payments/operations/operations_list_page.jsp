@@ -24,10 +24,10 @@
         <td><%@include file="/WEB-INF/jsp/common/filter/end_time_with_sec_filter.jsp"%></td>
     </tr>
     <tr>
-        <td><s:text name="payments.operations.list.summ_from" /></td>
-        <td><s:textfield name="minimalSumm" /></td>
-        <td><s:text name="payments.operations.list.summ_up_to" /></td>
-        <td><s:textfield name="maximalSumm" /></td>
+        <td><s:text name="payments.operations.list.sum_from" /></td>
+        <td><s:textfield name="minimalSum" /></td>
+        <td><s:text name="payments.operations.list.sum_up_to" /></td>
+        <td><s:textfield name="maximalSum" /></td>
     </tr>
     <tr>
         <td><s:text name="payments.operations.list.service_type" /></td>
@@ -59,8 +59,8 @@
                 "beginTimeFilter.stringDate":$("input[name=beginTimeFilter.stringDate]").get(0).value,
                 "endTimeFilter.stringDate":$("input[name=endTimeFilter.stringDate]").get(0).value,
                 "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").get(0).value,
-                minimalSumm:$("input[name=minimalSumm]").get(0).value,
-                maximalSumm:$("input[name=maximalSumm]").get(0).value,
+                minimalSum:$("input[name=minimalSum]").get(0).value,
+                maximalSum:$("input[name=maximalSum]").get(0).value,
                 documentSearch:$("input[name=documentSearch]").get(0).value,
             }
         });

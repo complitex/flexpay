@@ -129,7 +129,7 @@
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.operation.report.table.payment_summ}]]> + "\n" + <![CDATA[$R{payment.operation.report.table.counter_value}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.operation.report.table.payment_sum}]]> + "\n" + <![CDATA[$R{payment.operation.report.table.counter_value}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="1" y="45" width="535" height="15"/>

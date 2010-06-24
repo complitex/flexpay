@@ -23,7 +23,7 @@ var FPP = {
         var paymentInputs = $("input[id^=payments_]").each(function() {
             FPP.fieldChain.push(this.id);
         });
-        // adding total input summ field to field chain
+        // adding total input sum field to field chain
         FPP.fieldChain.push("inputSumm");
 
         // setting focus to the first payments field

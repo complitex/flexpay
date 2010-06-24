@@ -81,8 +81,8 @@ public class DocumentServiceImpl implements DocumentService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
-		return documentDaoExt.searchDocuments(operation, serviceTypeId, minimalSumm, maximalSumm);
+	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum) {
+		return documentDaoExt.searchDocuments(operation, serviceTypeId, minimalSum, maximalSum);
 	}
 
 	/**

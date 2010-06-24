@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 
-public class SummUtil {
+public class SumUtil {
 
 	public static BigDecimal addNonNegative(@NotNull BigDecimal current, @NotNull BigDecimal val) {
 
@@ -22,7 +22,7 @@ public class SummUtil {
 	 *
 	 * @param current Current value
 	 * @param val	 Value to add
-	 * @return summ of current and value
+	 * @return sum of current and value
 	 */
 	public static BigDecimal addNegative(@NotNull BigDecimal current, @NotNull BigDecimal val) {
 		if (current.compareTo(BigDecimal.ZERO) <= 0) {

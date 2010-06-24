@@ -19,17 +19,17 @@ public class ServicePaymentsStatistics {
 	public ServicePaymentsStatistics(
 			Long organizationId,
 			Long serviceId,
-			BigDecimal payedCacheSumm,
-			BigDecimal payedCachelessSumm,
-			BigDecimal returnedCacheSumm,
-			BigDecimal returnedCachelessSumm) {
+			BigDecimal payedCacheSum,
+			BigDecimal payedCachelessSum,
+			BigDecimal returnedCacheSum,
+			BigDecimal returnedCachelessSum) {
 
 		this.organizationId = organizationId;
 		this.serviceId = serviceId;
-		this.payedCacheSumm = payedCacheSumm;
-		this.payedCachelessSumm = payedCachelessSumm;
-		this.returnedCacheSumm = returnedCacheSumm;
-		this.returnedCachelessSumm = returnedCachelessSumm;
+		this.payedCacheSumm = payedCacheSum;
+		this.payedCachelessSumm = payedCachelessSum;
+		this.returnedCacheSumm = returnedCacheSum;
+		this.returnedCachelessSumm = returnedCachelessSum;
 	}
 
 	public Long getOrganizationId() {
@@ -85,10 +85,10 @@ public class ServicePaymentsStatistics {
 		return new ToStringBuilder(this).
 				append("organizationId", organizationId).
 				append("serviceId", serviceId).
-				append("payedCacheSumm", payedCacheSumm).
-				append("payedCachelessSumm", payedCachelessSumm).
-				append("returnedCacheSumm", returnedCacheSumm).
-				append("returnedCachelessSumm", returnedCachelessSumm).
+				append("payedCacheSum", payedCacheSumm).
+				append("payedCachelessSum", payedCachelessSumm).
+				append("returnedCacheSum", returnedCacheSumm).
+				append("returnedCachelessSum", returnedCachelessSumm).
 				toString();
 	}
 

@@ -4,27 +4,24 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
-import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.payments.actions.monitor.MonitorUtils.formatTime;
+import static org.flexpay.payments.actions.monitor.MonitorUtils.getPaymentsSum;
 
 public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport {
     
-    public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
-
 	private PaymentPoint paymentPoint = new PaymentPoint();
     private Long paymentsCount;
-    private String totalSumm;
+    private String totalSum;
 	private String updated;
 
     private PaymentPointService paymentPointService;
@@ -56,33 +53,13 @@ public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport 
 		Date finishDate = new Date();
 
 		List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(stub, startDate, finishDate);
-		paymentsCount = getPaymentsCount(statistics);
-		totalSumm = String.valueOf(getPaymentsSumm(statistics));
+		paymentsCount = MonitorUtils.getPaymentsCount(statistics);
+		totalSum = getPaymentsSum(statistics).toString();
 
         updated = formatTime.format(new Date());
 
         return SUCCESS;
     }    
-
-    public static Long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
-		Long count = 0L;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-				count += stats.getCount();
-			}
-		}
-		return count;
-	}
-
-	public static BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
-		BigDecimal summ = new BigDecimal("0.00");
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-				summ = summ.add(stats.getSumm());
-			}
-		}
-		return summ;
-	}
 
 	@NotNull
     @Override
@@ -102,8 +79,8 @@ public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport 
 		this.paymentPoint = paymentPoint;
 	}
 
-	public String getTotalSumm() {
-        return totalSumm;
+	public String getTotalSum() {
+        return totalSum;
     }
 
     public String getUpdated() {

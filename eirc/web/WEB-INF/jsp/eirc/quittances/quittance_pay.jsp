@@ -8,7 +8,7 @@
 		return value.replace(",", ".");
 	}
 
-	// summ update
+	// sum update
 	function updateTotalPay() {
 		var total = 0.00;
 		var elements = $("input[id^=demoQuittancePayForm_servicePayments_]");
@@ -147,65 +147,66 @@
 	var DETAILS = $.protify([]);
 
 	function divideAscending() {
-		var totalSumm = dotted2Int($("#demoQuittancePayForm_totalPayed").val());
-		var sortBySumm = DETAILS.sort(function (qd1, qd2) {
+		var totalSum = dotted2Int($("#demoQuittancePayForm_totalPayed").val());
+		var sortBySum = DETAILS.sort(function (qd1, qd2) {
 			return qd2.toPay - qd1.toPay;
 		});
 
-		var summs = {};
+		var sums = {};
 
-		// set summs to zero
-		for (var i = 0; i < sortBySumm.length; ++i) {
-			var qd = sortBySumm[i];
-			summs[qd.serviceId] = 0;
+		// set sums to zero
+		for (var i = 0; i < sortBySum.length; ++i) {
+			var qd = sortBySum[i];
+			sums[qd.serviceId] = 0;
 		}
 
-		// divide summs
-		while (totalSumm > 0) {
-			for (i = 0; i < sortBySumm.length && totalSumm > 0; ++i) {
-				qd = sortBySumm[i];
-				var nextSumm = totalSumm >= qd.toPay ? qd.toPay : totalSumm;
-				summs[qd.serviceId] += nextSumm;
-				totalSumm -= nextSumm;
+		// divide sums
+		while (totalSum > 0) {
+			for (i = 0; i < sortBySum.length && totalSum > 0; ++i) {
+				qd = sortBySum[i];
+				var nextSum = totalSum >= qd.toPay ? qd.toPay : totalSum;
+				sums[qd.serviceId] += nextSum;
+				totalSum -= nextSum;
 			}
 		}
 
-		// set summs to their values
-		for (var serviceId in summs) {
-			$("#demoQuittancePayForm_servicePayments_" + serviceId + "_").val(int2Dotted(summs[serviceId]));
+		// set sums to their values
+		for (var serviceId in sums) {
+			$("#demoQuittancePayForm_servicePayments_" + serviceId + "_").val(int2Dotted(sums[serviceId]));
 		}
 	}
+
 	function divideByRatio() {
-		var totalSumm = dotted2Int($("#demoQuittancePayForm_totalPayed").val());
-		var nonZeroSumms = DETAILS.findAll(function (qd) {
+		var totalSum = dotted2Int($("#demoQuittancePayForm_totalPayed").val());
+		var nonZeroSums = DETAILS.findAll(function (qd) {
 			return qd.toPay > 0;
 		});
 
-		var summs = {};
-		// set summs to zero
+		var sums = {};
+		// set sums to zero
 		DETAILS.each(function (qd) {
-			summs[qd.serviceId] = 0;
+			sums[qd.serviceId] = 0;
 		});
 
-		var last = nonZeroSumms.last();
-		var summ = 0;
+		var last = nonZeroSums.last();
+		var sum = 0;
 		var totalToPay = dotted2Int('<s:property value="%{getTotalPayable()}" />');
-		nonZeroSumms.each(function (qd) {
+		nonZeroSums.each(function (qd) {
 			if (qd.id != last.id) {
 				// http://msmvps.com/blogs/rexiology/archive/2006/01/09/80628.aspx
 				// cast float to integer trick
-				var nextSumm = (totalSumm * qd.toPay) / totalToPay | 0;
-				summ += nextSumm;
-				summs[qd.serviceId] = nextSumm;
+				var nextSum = (totalSum * qd.toPay) / totalToPay | 0;
+				sum += nextSum;
+				sums[qd.serviceId] = nextSum;
 			}
 		});
 
-		// set last element summ
-		summs[last.serviceId] = totalSumm - summ;
+		// set last element sum
+		sums[last.serviceId] = totalSum - sum;
 
-		// set summs to their values
-		for (var serviceId in summs) {
-			$("#demoQuittancePayForm_servicePayments_" + serviceId + "_").val(int2Dotted(summs[serviceId]));
+		// set sums to their values
+		for (var serviceId in sums) {
+			$("#demoQuittancePayForm_servicePayments_" + serviceId + "_").val(int2Dotted(sums[serviceId]));
 		}
 	}
 </script>
@@ -270,13 +271,13 @@
 									"<s:property value="%{getServiceName(#qd)}" />",
 									"<s:property value="%{getServiceProviderName(#qd)}" />",
 									"<s:property value="%{#qd.outgoingBalance}" />",
-									"<s:property value="%{getPayedSumm(#qd)}" />"));
+									"<s:property value="%{getPayedSum(#qd)}" />"));
 						</script>
 					</s:else>
 				</td>
 				<td class="col"><s:property value="%{getServiceProviderName(#qd)}" /></td>
-				<td class="col" id="paySumm_<s:property value="%{#qd.id}" />"><s:property value="%{#qd.outgoingBalance}" /></td>
-				<td class="col"><s:property value="%{getPayedSumm(#qd)}" /></td>
+				<td class="col" id="paySum_<s:property value="%{#qd.id}" />"><s:property value="%{#qd.outgoingBalance}" /></td>
+				<td class="col"><s:property value="%{getPayedSum(#qd)}" /></td>
 				<td class="col">
 					<s:if test="%{!#qd.consumer.service.isSubService()}">
 						<s:textfield name="servicePayments[%{#qd.consumer.service.id}]" value="%{getPayable(#qd)}"

@@ -1,17 +1,15 @@
 package org.flexpay.payments.actions.monitor;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PaymentPointsListMonitorPageAction extends AccountantAWPActionSupport {
+import static org.flexpay.payments.actions.monitor.MonitorUtils.formatTime;
 
-	private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+public class PaymentPointsListMonitorPageAction extends AccountantAWPActionSupport {
 
     private String updated;
 
@@ -24,14 +22,8 @@ public class PaymentPointsListMonitorPageAction extends AccountantAWPActionSuppo
 			return ERROR;
 		}
 
-		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
-		if (paymentCollectorId == null) {
-			log.error("PaymentCollectorId is not defined in preferences of User {} (id = {})", getUserPreferences().getUsername(), getUserPreferences().getId());
-			return ERROR;
-		}
-		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+		PaymentCollector paymentCollector = getPaymentCollector();
 		if (paymentCollector == null) {
-			log.error("No payment collector found with id {}", paymentCollectorId);
 			return ERROR;
 		}
 

@@ -67,7 +67,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 				operationService.update(operation);
 			}
 		} else {
-			log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
+			log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
 		}
 
 		return REDIRECT_SUCCESS;
@@ -95,17 +95,17 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private boolean validateOperation(Operation operation) {
 
-		BigDecimal totalSumm = operation.getOperationSumm();
-		BigDecimal inputSumm = operation.getOperationInputSumm();
-		BigDecimal changeSumm = operation.getChange();
+		BigDecimal totalSum = operation.getOperationSumm();
+		BigDecimal inputSum = operation.getOperationInputSumm();
+		BigDecimal changeSum = operation.getChange();
 
-		BigDecimal summ = totalSumm.add(changeSumm);
+		BigDecimal sum = totalSum.add(changeSum);
 
-		if (inputSumm == null || totalSumm == null || changeSumm == null) {
+		if (inputSum == null || totalSum == null || changeSum == null) {
 			return false;
 		}
 
-		return inputSumm.compareTo(summ) == 0;
+		return inputSum.compareTo(sum) == 0;
 
 	}
 

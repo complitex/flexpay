@@ -5,7 +5,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
-import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
+import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNonNegative;
 import org.flexpay.eirc.process.quittance.report.ServiceTotals;
 import org.flexpay.eirc.process.quittance.report.ServiceTotalsComparator;
 
@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 /**
- * Container for all necessary Quittance information with calculated summs, service
+ * Container for all necessary Quittance information with calculated sums, service
  * tariffs, subsidies, etc
  */
 public class QuittancePrintInfo implements Cloneable, Serializable {
@@ -87,7 +87,7 @@ public class QuittancePrintInfo implements Cloneable, Serializable {
 		this.quittanceNumber = quittanceNumber;
 	}
 
-	public String getQuittanceNumberWithSumm() {
+	public String getQuittanceNumberWithSum() {
 		return getQuittanceNumber() + ";" + DECIMAL_FORMAT.format(getOutgoingBalance());
 	}
 

@@ -64,57 +64,57 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 														int documentTypeCode, int documentStatusCode);
 
 	/**
-	 * Returns summ of payments for service in the cashbox for the period
+	 * Returns sum of payments for service in the cashbox for the period
 	 *
 	 * @param cashboxId	   cashbox id
 	 * @param statusCode	  payment status code
 	 * @param serviceTypeCode service type code
 	 * @param beginDate	   begin date
 	 * @param endDate		 end date
-	 * @return summ of payments for service in the cashbox
+	 * @return sum of payments for service in the cashbox
 	 */
 	List findCashboxServiceSumm(Long cashboxId, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns summ of payments in the cashbox for the period
+	 * Returns sum of payments in the cashbox for the period
 	 *
 	 * @param cashboxId  cashbox id
 	 * @param statusCode payment status code
 	 * @param beginDate  begin date
 	 * @param endDate	end date
-	 * @return summ of payments in the cashbox
+	 * @return sum of payments in the cashbox
 	 */
 	List findCashboxTotalSumm(Long cashboxId, int statusCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns summ of service payments in the payment point for the period
+	 * Returns sum of service payments in the payment point for the period
 	 *
 	 * @param paymentPointId  payment point id
 	 * @param statusCode	  payment status code
 	 * @param serviceTypeCode service type code
 	 * @param beginDate	   begin date
 	 * @param endDate		 end date
-	 * @return summ of service payments in the payment point for the period
+	 * @return sum of service payments in the payment point for the period
 	 */
 	List findPaymentPointServiceSumm(Long paymentPointId, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns total summ of payments in cashbox for the period
+	 * Returns total sum of payments in cashbox for the period
 	 *
 	 * @param paymentPointId payment point id
 	 * @param statusCode	 payment status code
 	 * @param beginDate	  begin date
 	 * @param endDate		end date
-	 * @return total summ of payments in cashbox for the period
+	 * @return total sum of payments in cashbox for the period
 	 */
 	List findPaymentPointTotalSumm(Long paymentPointId, int statusCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns summ of service payment in operation
+	 * Returns sum of service payment in operation
 	 *
 	 * @param operationId	 operation id
 	 * @param serviceTypeCode service type code
-	 * @return summ of service payment in operation
+	 * @return sum of service payment in operation
 	 */
 	List findOperationServiceSumm(Long operationId, int serviceTypeCode);
 }

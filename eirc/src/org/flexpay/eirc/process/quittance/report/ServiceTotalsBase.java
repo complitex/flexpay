@@ -4,8 +4,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.payments.persistence.ServiceType;
-import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNegative;
-import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
+import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNegative;
+import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNonNegative;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -65,7 +65,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to expence
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addExpence(@NotNull BigDecimal amount) {
 		expence = addNonNegative(expence, amount);
@@ -86,7 +86,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to charges
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addCharges(@NotNull BigDecimal amount) {
 		charges = addNonNegative(charges, amount);
@@ -99,7 +99,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to recalculation
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addRecalculation(BigDecimal amount) {
 		recalculation = addNonNegative(recalculation, amount);
@@ -112,7 +112,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to charges
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addPrivilege(BigDecimal amount) {
 		privilege = addNonNegative(privilege, amount);
@@ -125,7 +125,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to subsidy
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addSubsidy(@NotNull BigDecimal amount) {
 		subsidy = addNonNegative(subsidy, amount);
@@ -136,9 +136,9 @@ public abstract class ServiceTotalsBase implements Serializable {
 	}
 
 	/**
-	 * Add amount to payed summ
+	 * Add amount to payed sum
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addPayed(BigDecimal amount) {
 		payed = addNonNegative(payed, amount);
@@ -151,7 +151,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to outgoing debt
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addIncomingDebt(@NotNull BigDecimal amount) {
 		incomingDebt = addNegative(incomingDebt, amount);
@@ -164,7 +164,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	/**
 	 * Add amount to outgoing debt
 	 *
-	 * @param amount Summ to add
+	 * @param amount Sum to add
 	 */
 	public void addOutgoingDebt(@NotNull BigDecimal amount) {
 		outgoingDebt = addNegative(outgoingDebt, amount);

@@ -18,19 +18,15 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.DateUtil.now;
-import static org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction.getPaymentsCount;
-import static org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction.getPaymentsSumm;
+import static org.flexpay.payments.actions.monitor.MonitorUtils.*;
 
 public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActionSupport<CashboxMonitorContainer> implements InitializingBean {
-
-	private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
 	private PaymentPoint paymentPoint = new PaymentPoint();
 	private List<CashboxMonitorContainer> cashboxes = list();
@@ -69,22 +65,26 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 
 		Date startDate = now();
 		Date finishDate = new Date();
+        if (log.isDebugEnabled()) {
+            log.debug("Start date={}, finish date={}", formatWithTime(startDate), formatWithTime(finishDate));
+        }
 
 		List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
 		for (Cashbox cashbox : cbs) {
-			List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypeCashboxStatistics(stub(cashbox), startDate, finishDate);
-			List<Operation> operations = operationService.listLastPaymentOperationsForCashbox(stub(cashbox), startDate, finishDate);
-			boolean hasOperations = operations != null && !operations.isEmpty();
-			String lastPayment = hasOperations ? formatTime.format(operations.get(0).getCreationDate()) : null;
-			String cashierFio = hasOperations ? operations.get(0).getCashierFio() : null;
 
 			CashboxMonitorContainer container = new CashboxMonitorContainer();
 			container.setId(cashbox.getId());
 			container.setCashbox(cashbox.getName(getLocale()));
-			container.setCashierFIO(cashierFio);
-			container.setLastPayment(lastPayment);
+
+            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypeCashboxStatistics(stub(cashbox), startDate, finishDate);
 			container.setPaymentsCount(getPaymentsCount(statistics));
-			container.setTotalSumm(String.valueOf(getPaymentsSumm(statistics)));
+			container.setTotalSum(String.valueOf(getPaymentsSum(statistics)));
+
+            Operation operation = operationService.getLastPaymentOperationsForCashbox(stub(cashbox), startDate, finishDate);
+            if (operation != null) {
+                container.setCashierFIO(operation.getCashierFio());
+                container.setLastPayment(formatTime.format(operation.getCreationDate()));
+            }
 
 			cashboxes.add(container);
 		}
