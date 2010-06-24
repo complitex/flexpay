@@ -44,6 +44,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @return empty temporal
 	 */
+    @Override
 	protected StreetNameTemporal getEmptyTemporal() {
 		return new StreetNameTemporal(this);
 	}

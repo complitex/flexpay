@@ -36,15 +36,17 @@ public class DistrictDaoExtImpl extends HibernateDaoSupport implements DistrictD
 		final StringBuilder cnthql = new StringBuilder();
 		final StringBuilder hql = new StringBuilder();
 
-		cnthql.append("select count(d) from District d ");
-		hql.append("select distinct d from District d ");
+		cnthql.append("select count(d) from District d ").
+                append(" left join d.nameTemporals t ");
+		hql.append("select distinct d from District d ").
+                append(" left join d.nameTemporals t ");
 		sorter.setFrom(hql);
 
 		StringBuilder whereClause = new StringBuilder();
-		whereClause.append(" where d.parent.id=").append(townId).append(" and d.status=").append(District.STATUS_ACTIVE);
+		whereClause.append(" where d.parent.id=").append(townId).append(" and d.status=").append(District.STATUS_ACTIVE).append(" and t.end='2100-12-31'");
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
-		cnthql.append(" where d.parent.id=").append(townId).append(" and d.status=").append(District.STATUS_ACTIVE);
+		cnthql.append(" where d.parent.id=").append(townId).append(" and d.status=").append(District.STATUS_ACTIVE).append(" and t.end='2100-12-31'");
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);
@@ -53,6 +55,7 @@ public class DistrictDaoExtImpl extends HibernateDaoSupport implements DistrictD
 		}
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
+            @Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cnthql.toString());
 				Long count = (Long) cntQuery.uniqueResult();
