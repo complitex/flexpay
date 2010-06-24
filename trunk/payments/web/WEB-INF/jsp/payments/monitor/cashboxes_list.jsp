@@ -28,7 +28,7 @@
                     <s:property value="cashbox" />
                 </a>
             </td>
-            <td><s:property value="totalSumm" /></td>
+            <td><s:property value="totalSum" /></td>
             <td><s:property value="cashierFIO" /></td>
             <td><s:property value="lastPayment" /></td>
             <td><s:property value="paymentsCount" /></td>

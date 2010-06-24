@@ -117,7 +117,13 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		return paymentPointDao.readFull(stub.getId());
 	}
 
-	/**
+    @Override
+    public PaymentPoint find(@NotNull Stub<PaymentPoint> stubPoint, @NotNull Stub<PaymentCollector> stubCollector) {
+        List<PaymentPoint> paymentPoints = paymentPointDao.findByIdAndCollectorId(stubPoint.getId(), stubCollector.getId());
+        return paymentPoints == null || paymentPoints.isEmpty() ? null : paymentPoints.get(0);
+    }
+
+    /**
 	 * Read full payment points info
 	 *
 	 * @param ids		   payment point identifiers

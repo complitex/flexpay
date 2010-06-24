@@ -118,6 +118,14 @@
 		where p.id in (:ids)
 	</query>
 
+    <query name="PaymentPoint.findByIdAndCollectorId">
+        select distinct p
+        from PaymentPoint p
+            left join fetch p.names
+            inner join fetch p.collector
+        where p.id=? and p.collector.id=?
+    </query>
+
     <query name="PaymentPoint.listPaymentPointsWithTradingDay">
         select distinct o
 		from PaymentPoint o

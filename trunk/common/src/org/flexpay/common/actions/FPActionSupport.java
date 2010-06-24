@@ -328,6 +328,11 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 		return "-".equals(dt) ? "" : dt;
 	}
 
+    public String formatWithTime(Date date) {
+        String dt = DateUtil.formatWithTime(date);
+        return "-".equals(dt) ? "" : dt;
+    }
+
 	/**
 	 * Sets the Map of session attributes in the implementing class.
 	 *

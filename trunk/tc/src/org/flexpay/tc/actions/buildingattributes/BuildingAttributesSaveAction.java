@@ -174,13 +174,13 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 				realTotal = realTotal.add(nonCategory).add(firstCategory).add(secondCategory).add(thirdCategory);
 
 				if (realTotal.compareTo(userTotal) != 0) {
-					addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square_bad_summ"));
+					addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square_bad_sum"));
 				}
 			} catch (NumberFormatException nfe) {
-				log.debug("Not all near house squares are valid. Total summ check is skipped.");
+				log.debug("Not all near house squares are valid. Total sum check is skipped.");
 			}
 		} else {
-			log.debug("Not all near house squares are present. Total summ check is skipped.");
+			log.debug("Not all near house squares are present. Total sum check is skipped.");
 		}
 
 		return !hasActionErrors();

@@ -101,7 +101,7 @@
 	<field name="operationDate" class="java.util.Date"/>
 	<field name="fullQuittanceInfo" class="java.lang.String"/>
 	<field name="outgoingBalanceDigits" class="java.lang.String[]"/>
-	<field name="quittanceNumberWithSumm" class="java.lang.String"/>
+	<field name="quittanceNumberWithSum" class="java.lang.String"/>
 	<field name="quittanceId" class="java.lang.Long"/>
 	<field name="notEmptyInfo" class="java.lang.Boolean"/>
 
@@ -911,7 +911,7 @@
 						key="barcode-1"/>
 					<box></box>
 					<graphicElement stretchType="NoStretch" fill="Solid" />
-					<imageExpression class="net.sf.jasperreports.engine.JRRenderable"><![CDATA[new org.flexpay.common.service.reporting.BarbecueRenderer(net.sourceforge.barbecue.BarcodeFactory.createEAN128($F{quittanceNumberWithSumm}), false)]]></imageExpression>
+					<imageExpression class="net.sf.jasperreports.engine.JRRenderable"><![CDATA[new org.flexpay.common.service.reporting.BarbecueRenderer(net.sourceforge.barbecue.BarcodeFactory.createEAN128($F{quittanceNumberWithSum}), false)]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement

@@ -20,8 +20,8 @@
         <td class="th"><s:text name="eirc.quittance.packet.creation_date" /></td>
         <td class="th"><s:text name="eirc.quittance.packet.begin_date" /></td>
         <td class="th"><s:text name="eirc.quittance.packet.close_date" /></td>
-        <td class="th"><s:text name="eirc.quittance.packet.control_overall_summ" /></td>
-        <td class="th"><s:text name="eirc.quittance.packet.overall_summ" /></td>
+        <td class="th"><s:text name="eirc.quittance.packet.control_overall_sum" /></td>
+        <td class="th"><s:text name="eirc.quittance.packet.overall_sum" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="packets" status="status">

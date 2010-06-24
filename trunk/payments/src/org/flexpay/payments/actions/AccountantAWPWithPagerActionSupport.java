@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 public abstract class AccountantAWPWithPagerActionSupport<T> extends FPActionWithPagerSupport<T> {
 
-	// required services
 	protected PaymentCollectorService paymentCollectorService;
 
 	public String getPaymentCollectorInfoString() {
@@ -22,14 +21,22 @@ public abstract class AccountantAWPWithPagerActionSupport<T> extends FPActionWit
 		return paymentCollector.getName(getUserPreferences().getLocale());
 	}
 
-	private PaymentCollector getPaymentCollector() {
+	public PaymentCollector getPaymentCollector() {
 
 		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
 		if (paymentCollectorId == null) {
 			return null;
 		}
 
-		return paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+        PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+        if (paymentCollector == null) {
+            log.error("No payment collector found with id {}", paymentCollectorId);
+            return null;
+        } else if (paymentCollector.isNotActive()) {
+            log.warn("Payment collector with id {} is not active", paymentCollectorId);
+        }
+
+		return paymentCollector;
 	}
 
 	@Required

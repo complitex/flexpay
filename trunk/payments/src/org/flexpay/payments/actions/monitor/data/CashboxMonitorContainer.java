@@ -7,7 +7,7 @@ public class CashboxMonitorContainer {
 
     private Long id;
     private String cashbox;
-    private String totalSumm;
+    private String totalSum;
     private String cashierFIO;
     private String lastPayment;
     private Long paymentsCount;
@@ -28,12 +28,12 @@ public class CashboxMonitorContainer {
         this.cashbox = cashbox;
     }
 
-    public String getTotalSumm() {
-        return totalSumm;
+    public String getTotalSum() {
+        return totalSum;
     }
 
-    public void setTotalSumm(String totalSumm) {
-        this.totalSumm = totalSumm;
+    public void setTotalSum(String totalSum) {
+        this.totalSum = totalSum;
     }
 
     public String getCashierFIO() {
@@ -65,7 +65,7 @@ public class CashboxMonitorContainer {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", id).
 				append("cashbox", cashbox).
-				append("totalSumm", totalSumm).
+				append("totalSum", totalSum).
 				append("cashierFIO", cashierFIO).
 				append("lastPayment", lastPayment).
 				append("paymentsCount", paymentsCount).

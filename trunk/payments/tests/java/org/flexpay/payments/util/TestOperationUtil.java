@@ -11,15 +11,15 @@ import org.jetbrains.annotations.Nullable;
 
 public interface TestOperationUtil {
     @Nullable
-    Operation create(@NotNull PaymentPoint paymentPoint, long summ);
+    Operation create(@NotNull PaymentPoint paymentPoint, long sum);
 
     @Nullable
-    Operation create(@NotNull Cashbox cashbox, long summ);
+    Operation create(@NotNull Cashbox cashbox, long sum);
 
     @Nullable
     Document addDocument(@NotNull Operation operation,
                          @NotNull Service service,
-                         long summ);
+                         long sum);
 
     void delete(@NotNull Operation operation);
 }

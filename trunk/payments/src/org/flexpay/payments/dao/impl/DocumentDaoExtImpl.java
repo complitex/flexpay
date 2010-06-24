@@ -22,10 +22,10 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@Override
-	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT doc FROM Document doc ");
-		hql.append(getFilterHql(operation, serviceTypeId, minimalSumm, maximalSumm));
+		hql.append(getFilterHql(operation, serviceTypeId, minimalSum, maximalSum));
 
 		return (List<Document>) getHibernateTemplate().executeFind(new HibernateCallback() {
 			@Override
@@ -37,7 +37,7 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 		});
 	}
 
-	private StringBuilder getFilterHql(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+	private StringBuilder getFilterHql(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum) {
 
 		StringBuilder filterHql = new StringBuilder(" WHERE doc.operation.id = ");
 		filterHql.append(operation.getId());
@@ -47,14 +47,14 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 			filterHql.append(serviceTypeId);
 		}
 
-		if (minimalSumm != null) {
+		if (minimalSum != null) {
 			filterHql.append(" AND doc.summ >= ");
-			filterHql.append(minimalSumm);
+			filterHql.append(minimalSum);
 		}
 
-		if (maximalSumm != null) {
+		if (maximalSum != null) {
 			filterHql.append(" AND doc.summ <= ");
-			filterHql.append(maximalSumm);
+			filterHql.append(maximalSum);
 		}
 
 		return filterHql;

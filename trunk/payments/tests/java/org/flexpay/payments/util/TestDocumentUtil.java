@@ -13,7 +13,7 @@ public interface TestDocumentUtil {
                     @NotNull Organization collectorOrganization,
                     @NotNull Operation operation,
                     @NotNull Service service,
-                    long summ);
+                    long sum);
 
     void delete(@NotNull Document document);
 }

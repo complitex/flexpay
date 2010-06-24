@@ -15,10 +15,10 @@ public interface DocumentDaoExt {
 	 *
 	 * @param operation	 owner operation
 	 * @param serviceTypeId documnent service type id
-	 * @param minimalSumm   minimal document summ
-	 * @param maximalSumm   maximal document summ
+	 * @param minimalSum   minimal document sum
+	 * @param maximalSum   maximal document sum
 	 * @return list of operation documents which suits search criterias
 	 */
-	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
+	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum);
 
 }

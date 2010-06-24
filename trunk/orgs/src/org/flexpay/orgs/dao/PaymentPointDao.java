@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface PaymentPointDao extends GenericDao<PaymentPoint, Long> {
 
+    List<PaymentPoint> findByIdAndCollectorId(Long paymentPointId, Long paymentCollectorId);
+
 	List<PaymentPoint> listPoints(Page<PaymentPoint> pager);
 
 	List<PaymentPoint> listCollectorPoints(Long collectorId, Page<PaymentPoint> pager);

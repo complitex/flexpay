@@ -63,7 +63,7 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 			OperationTypeStatistics stats = new OperationTypeStatistics();
 			stats.setOperationTypeCode((Integer) row[0]);
 			stats.setCount((Long) row[1]);
-			stats.setSumm((BigDecimal) row[2]);
+			stats.setSum((BigDecimal) row[2]);
 			result.add(stats);
 		}
 
@@ -90,7 +90,7 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 			OperationTypeStatistics stats = new OperationTypeStatistics();
 			stats.setOperationTypeCode((Integer) row[0]);
 			stats.setCount((Long) row[1]);
-			stats.setSumm((BigDecimal) row[2]);
+			stats.setSum((BigDecimal) row[2]);
 			result.add(stats);
 		}
 
@@ -117,7 +117,7 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 			OperationTypeStatistics stats = new OperationTypeStatistics();
 			stats.setOperationTypeCode((Integer) row[0]);
 			stats.setCount((Long) row[1]);
-			stats.setSumm((BigDecimal) row[2]);
+			stats.setSum((BigDecimal) row[2]);
 			result.add(stats);
 		}
 

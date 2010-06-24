@@ -32,7 +32,7 @@
             </td>
             <td><s:property value="paymentsCount" /></td>
             <td><s:property value="status" /></td>
-            <td><s:property value="totalSumm" /></td>
+            <td><s:property value="totalSum" /></td>
             <td><s:property value="cashBox" /></td>
             <td><s:property value="cashierFIO" /></td>
             <td><s:property value="lastPayment" /></td>

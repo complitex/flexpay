@@ -91,7 +91,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 
 	private void addRegistryRecords(DateRange range, List<Document> documents, Registry registry) throws FlexPayException {
 
-		BigDecimal totalSumm = new BigDecimal(0);
+		BigDecimal totalSum = new BigDecimal(0);
 		Long recordsNumber = 0L;
 		Long errorsNumber = 0L;
 		Date fromDate = range.getEnd();
@@ -116,7 +116,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 
 			try {
 				registryRecordService.create(record);
-				totalSumm = totalSumm.add(document.getSumm());
+				totalSum = totalSum.add(document.getSumm());
 				recordsNumber++;
 			} catch (FlexPayException e) {
 				errorsNumber++;
@@ -124,11 +124,11 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 			}
 		}
 
-		updateRegistry(registry, fromDate, tillDate, totalSumm, recordsNumber, errorsNumber);
+		updateRegistry(registry, fromDate, tillDate, totalSum, recordsNumber, errorsNumber);
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
 
 		log.info("Created db registry: id = {}, recordsNumber = {}, amount = {}",
-				new Object[]{registry.getId(), recordsNumber, totalSumm});
+				new Object[]{registry.getId(), recordsNumber, totalSum});
 	}
 
 	private void fillRegistryData(@NotNull ServiceProvider provider, @NotNull Organization registerer,
@@ -189,11 +189,11 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		}
 	}
 
-	private void updateRegistry(Registry registry, Date fromDate, Date tillDate, BigDecimal totalSumm, Long recordsNumber, Long errorsNumber) {
+	private void updateRegistry(Registry registry, Date fromDate, Date tillDate, BigDecimal totalSum, Long recordsNumber, Long errorsNumber) {
 
 		registry.setFromDate(fromDate);
 		registry.setTillDate(tillDate);
-		registry.setAmount(totalSumm);
+		registry.setAmount(totalSum);
 		registry.setRecordsNumber(recordsNumber);
 		registry.setErrorsNumber(errorsNumber.intValue());
 	}

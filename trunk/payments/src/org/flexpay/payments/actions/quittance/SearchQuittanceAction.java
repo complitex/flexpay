@@ -68,7 +68,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		if (response.isSuccess()) {
 			quittanceInfos = response.getInfos();
 			filterSubservices();
-			filterNegativeSumms();
+			filterNegativeSums();
 		} else {
 			addActionError(getStatusText(response.getStatus()));
 		}
@@ -99,7 +99,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	}
 
 	// eliminates services with non-positive outgoing balances
-	private void filterNegativeSumms() {
+	private void filterNegativeSums() {
 
 		List<QuittanceInfo> filteredInfos = list();
 		for (QuittanceInfo info : quittanceInfos) {

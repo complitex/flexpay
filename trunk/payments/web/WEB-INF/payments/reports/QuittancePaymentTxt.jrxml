@@ -117,7 +117,7 @@
 			<textField>
 				<reportElement positionType="Float" mode="Transparent" x="456" y="60" width="70" height="11"/>
 				<textElement textAlignment="Justified" markup="html"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["|" + $R{payment.operation.report.table.payment_summ}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["|" + $R{payment.operation.report.table.payment_sum}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement positionType="Float" mode="Transparent" x="456" y="70" width="70" height="11"/>

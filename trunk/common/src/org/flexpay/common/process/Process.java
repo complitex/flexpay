@@ -1,10 +1,13 @@
 package org.flexpay.common.process;
 
-import static org.flexpay.common.util.CollectionUtils.map;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class Process {
 
@@ -108,4 +111,19 @@ public class Process {
 	public void setProcessDefenitionVersion(long processDefenitionVersion) {
 		this.processDefenitionVersion = processDefenitionVersion;
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("id", id).
+                append("logFileName", logFileName).
+                append("processStartDate", processStartDate).
+                append("processEndDate", processEndDate).
+                append("processState", processState).
+                append("processDefinitionName", processDefinitionName).
+                append("processInstaceId", processInstaceId).
+                append("processDefenitionVersion", processDefenitionVersion).
+                append("parameters", parameters).
+                toString();
+    }
 }

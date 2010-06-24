@@ -41,7 +41,7 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
     private TestDocumentUtil documentUtil;
 
     @Override
-    public Operation create(@NotNull PaymentPoint paymentPoint, long summ) {
+    public Operation create(@NotNull PaymentPoint paymentPoint, long sum) {
         OperationType operationType = null;
         OperationLevel operationLevel = null;
         OperationStatus operationStatus = null;
@@ -58,7 +58,7 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
         }
 
         Operation operation = new Operation();
-		operation.setOperationSumm(new BigDecimal(summ));
+		operation.setOperationSumm(new BigDecimal(sum));
 		operation.setCreatorUserName("test");
 		operation.setCreationDate(new Date());
 		operation.setOperationType(operationType);
@@ -77,8 +77,8 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
 
     @Nullable
     @Override
-    public Operation create(@NotNull Cashbox cashbox, long summ) {
-        Operation operation = create(cashbox.getPaymentPoint(), summ);
+    public Operation create(@NotNull Cashbox cashbox, long sum) {
+        Operation operation = create(cashbox.getPaymentPoint(), sum);
         if (operation != null) {
             operation.setCashbox(cashbox);
             operationService.update(operation);
@@ -88,9 +88,9 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
 
     @Nullable
     @Override
-    public Document addDocument(@NotNull Operation operation, @NotNull Service service, long summ) {
+    public Document addDocument(@NotNull Operation operation, @NotNull Service service, long sum) {
         Document document = documentUtil.create(service.getServiceProvider().getOrganization(),
-                            operation.getRegisterOrganization(), operation, service, summ);
+                            operation.getRegisterOrganization(), operation, service, sum);
         operation.addDocument(document);
         operationService.update(operation);
 

@@ -31,8 +31,8 @@
 			<td class="col"><s:textfield name="packet.controlQuittanciesNumber" /></td>
 		</tr>
 		<tr valign="middle" class="col">
-			<td class="col"><s:text name="eirc.quittance.packet.control_overall_summ" />:</td>
-			<td class="col"><s:textfield name="packet.controlOverallSumm" /></td>
+			<td class="col"><s:text name="eirc.quittance.packet.control_overall_sum" />:</td>
+			<td class="col"><s:textfield name="packet.controlOverallSum" /></td>
 		</tr>
 		<tr valign="middle" class="col">
 			<td class="col"><s:text name="eirc.quittance.packet.quittances_number" />:</td>
@@ -41,10 +41,10 @@
 				<s:property value="packet.quittanciesNumber" /></td>
 		</tr>
 		<tr valign="middle" class="col">
-			<td class="col"><s:text name="eirc.quittance.packet.overall_summ" />:</td>
+			<td class="col"><s:text name="eirc.quittance.packet.overall_sum" />:</td>
 			<td class="col">
-				<s:hidden name="packet.overallSumm" />
-				<s:property value="packet.overallSumm" />
+				<s:hidden name="packet.overallSum" />
+				<s:property value="packet.overallSum" />
             </td>
 		</tr>
 		<tr valign="middle" class="col">

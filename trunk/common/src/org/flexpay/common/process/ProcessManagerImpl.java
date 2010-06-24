@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.map;
+
 /**
  * Process manager allows to create and maintain processes life cycle
  */
@@ -362,7 +364,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		if (parameters != null) {
 			params = parameters;
 		} else {
-			params = CollectionUtils.map();
+			params = map();
 		}
 
 		params.put(PARAM_SECURITY_CONTEXT, SecurityContextHolder.getContext().getAuthentication());

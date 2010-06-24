@@ -168,7 +168,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.payment_summ_total}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.payment_sum_total}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="192" y="59" width="315" height="14"/>
@@ -180,7 +180,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.summs}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.sums}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="192" y="73" width="45" height="25"/>
@@ -443,7 +443,7 @@
 			<textField>
 				<reportElement x="65" y="20" width="63" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.total_summ}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.total_sum}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="65" y="40" width="120" height="20"/>

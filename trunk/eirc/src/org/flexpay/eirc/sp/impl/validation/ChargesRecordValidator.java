@@ -37,7 +37,7 @@ public class ChargesRecordValidator extends MessageValidatorWithContext<String> 
         }
 
         if (!longValidator.validate(fields[1])) {
-            addErrorMessage("Can't parse charges summ {}", fields[1]);
+            addErrorMessage("Can't parse charges sum {}", fields[1]);
             return false;
         }
         Long income = (Long)context.getParam().get(LongValidator.LONG_VALUE);
@@ -49,7 +49,7 @@ public class ChargesRecordValidator extends MessageValidatorWithContext<String> 
         context.getParam().put(ValidationConstants.INCOME, sumIncome);
 
         if (!longValidator.validate(fields[2])) {
-            addErrorMessage("Can't parse balance summ {}", fields[2]);
+            addErrorMessage("Can't parse balance sum {}", fields[2]);
             return false;
         }
         Long saldo = (Long)context.getParam().get(LongValidator.LONG_VALUE);

@@ -327,8 +327,8 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData(paymentMounth, TABLE_HEADERS[14].length(), ' '));
 
 		// сумма (значение суммы изначально передаётся в рублях, но должно быть записано в копейках)\
-		int summ = record.getAmount().multiply(new BigDecimal("100")).intValue();
-		infoLine.add(createCellData(String.valueOf(summ), null, ' '));
+		int sum = record.getAmount().multiply(new BigDecimal("100")).intValue();
+		infoLine.add(createCellData(String.valueOf(sum), null, ' '));
 
 		return infoLine.toArray(new String[infoLine.size()]);
 	}

@@ -34,12 +34,12 @@
 	]]></query>
 
     <query name="OperationTypePaymentPointStatistics.collect"><![CDATA[
-		select type.code, count(o), sum(o.operationSumm)
+		select o.operationType.code, count(o), sum(o.operationSumm)
 		from Operation o
-			inner join o.operationStatus status
-			inner join o.operationType type
-		where status.code=2 and o.paymentPoint.id=? and o.creationDate>=? and o.creationDate<=?
-		group by type.code
+		where o.operationStatus.code=2 
+		    and o.paymentPoint.id=?
+		    and o.creationDate>=? and o.creationDate<=?
+		group by o.operationType.code
 	]]></query>
 
     <query name="OperationTypeCashboxStatistics.collect"><![CDATA[

@@ -155,7 +155,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 
 		if (!total.equals(payment.getAmount())) {
 			ex.addException(new FlexPayException("invalid division",
-					"eirc.error.quittances.pay.invalid_summ_division", payment.getAmount(), total));
+					"eirc.error.quittances.pay.invalid_sum_division", payment.getAmount(), total));
 		}
 
 		if (ex.isNotEmpty()) {

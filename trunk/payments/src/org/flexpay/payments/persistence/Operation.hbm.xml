@@ -475,6 +475,21 @@
 		where o.id = ? 
 	</query>
 
+    <query name="Operation.readFullCollection">
+        select distinct o
+        from Operation o
+            left join fetch o.operationStatus status
+            left join fetch o.documents doc
+            left join fetch doc.documentStatus docStatus
+            left join fetch doc.service service
+            left join fetch service.serviceType serviceType
+            left join fetch serviceType.typeNames
+            left join fetch service.serviceProvider serviceProvider
+            left join fetch serviceProvider.organization organization
+            left join fetch organization.names names
+        where o.id in (:ids)
+    </query>
+
 	<query name="Operation.listPaymentOperations"><![CDATA[
 		select distinct o
 		from Operation o
@@ -561,45 +576,23 @@
     <query name="Operation.listLastCashboxPaymentOperations"><![CDATA[
 		select distinct o
 		from Operation o
-            left join fetch o.operationStatus status
-            left join fetch o.operationLevel level
-            left join fetch o.documents doc
-            left join fetch o.cashbox cashbox
-            left join fetch doc.documentStatus docStatus
-            left join fetch doc.documentType docType
-            left join fetch doc.service service
-            left join fetch service.serviceType serviceType
-            left join fetch serviceType.typeNames
-            left join fetch service.serviceProvider serviceProvider
-            left join fetch serviceProvider.organization organization
-            left join fetch organization.names names
 		where o.cashbox.id = ?
-		    and (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ? and o.cashbox.id = op.cashbox.id))
-			and (o.operationType.code in (1, 2, 5, 6))
-			and (status.code <> 3)
-		order by o.creationDate
+		    and o.creationDate >= ? and o.creationDate <= ?
+			and o.operationType.code in (1, 2, 5, 6)
+			and o.operationStatus.code <> 3
+		order by o.creationDate desc
 	]]></query>
 
     <query name="Operation.listLastPaymentPointPaymentOperations"><![CDATA[
 		select distinct o
 		from Operation o
-            left join fetch o.operationStatus status
-            left join fetch o.operationLevel level
-            left join fetch o.documents doc
-            left join fetch o.cashbox cashbox
-            left join fetch doc.documentStatus docStatus
-            left join fetch doc.documentType docType
-            left join fetch doc.service service
-            left join fetch service.serviceType serviceType
-            left join fetch serviceType.typeNames
-            left join fetch service.serviceProvider serviceProvider
-            left join fetch serviceProvider.organization organization
-            left join fetch organization.names names
+            left join fetch o.cashbox c
+            left join fetch c.names
 		where o.paymentPoint.id = ?
-		    and (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ? and o.paymentPoint.id = op.paymentPoint.id ))
-			and (o.operationType.code in (1, 2, 5, 6))
-			and (status.code <> 3)
-		order by o.creationDate
+		    and o.creationDate >= ? and o.creationDate <= ?
+			and o.operationType.code in (1, 2, 5, 6)
+			and o.operationStatus.code <> 3
+		order by o.creationDate desc
 	]]></query>
 
     <query name="Operation.listPaymentsByPaymentPoint"><![CDATA[

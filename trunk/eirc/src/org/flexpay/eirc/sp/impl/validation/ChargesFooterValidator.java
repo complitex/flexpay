@@ -30,13 +30,13 @@ public class ChargesFooterValidator extends MessageValidatorWithContext<String> 
 		}
 
         if (!longValidator.validate(fields[1])) {
-            addErrorMessage("Can not parse income summ in footer {}", fields[1]);
+            addErrorMessage("Can not parse income sum in footer {}", fields[1]);
             return false;
         }
         Long footerSumIncome = (Long)context.getParam().get(LongValidator.LONG_VALUE);
         Long sumIncome = (Long)context.getParam().get(ValidationConstants.INCOME);
         if (!footerSumIncome.equals(sumIncome)) {
-            addErrorMessage("Invalid data in file (total income summ in footer not equals with summ of incomes in all lines - {}, but were {})", new Object[]{footerSumIncome, sumIncome});
+            addErrorMessage("Invalid data in file (total income sum in footer not equals with sum of incomes in all lines - {}, but were {})", new Object[]{footerSumIncome, sumIncome});
             return false;
         }
 
@@ -47,7 +47,7 @@ public class ChargesFooterValidator extends MessageValidatorWithContext<String> 
         Long footerSumSaldo = (Long)context.getParam().get(LongValidator.LONG_VALUE);
         Long sumSaldo = (Long)context.getParam().get(ValidationConstants.SALDO);
         if (!footerSumSaldo.equals(sumSaldo)) {
-            addErrorMessage("Invalid data in file (total saldo summ in footer not equals with summ of saldos in all lines - {}, but were {})", new Object[]{footerSumSaldo, sumSaldo});
+            addErrorMessage("Invalid data in file (total saldo sum in footer not equals with sum of saldos in all lines - {}, but were {})", new Object[]{footerSumSaldo, sumSaldo});
             return false;
         }
 

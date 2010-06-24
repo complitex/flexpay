@@ -33,7 +33,7 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 	public static final String DISABLE = "disable";
 	private static final String PROCESS_DEFINITION_NAME = "TradingDay";
 
-    private PaymentPoint paymentPoint = new PaymentPoint();
+    private PaymentPoint paymentPoint;
 	private String action;
 
 	private ProcessManager processManager;
@@ -48,16 +48,11 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 			return SUCCESS;
 		}
 
-		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
-		if (paymentCollectorId == null) {
-			log.error("PaymentCollectorId is not defined in preferences of User {} (id = {})", getUserPreferences().getUsername(), getUserPreferences().getId());
-			return SUCCESS;
-		}
-		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
-		if (paymentCollector == null) {
-			log.error("No payment collector found with id {}", paymentCollectorId);
-			return SUCCESS;
-		}
+        Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+        if (paymentCollectorId == null) {
+            log.error("PaymentCollectorId is not defined in preferences of User {} (id = {})", getUserPreferences().getUsername(), getUserPreferences().getId());
+            return SUCCESS;
+        }
 
 		if (paymentPoint == null || paymentPoint.isNew()) {
 			log.warn("Incorrect payment point id {}", paymentPoint);
@@ -65,34 +60,28 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 		}
 
 		Stub<PaymentPoint> stub = stub(paymentPoint);
-		paymentPoint = paymentPointService.read(stub);
+		paymentPoint = paymentPointService.find(stub, new Stub<PaymentCollector>(paymentCollectorId));
 		if (paymentPoint == null) {
-			log.warn("Can't get Payment point with id {} from DB", stub.getId());
+			log.warn("Can't get Payment point with id {} for collector with id {} from DB", stub.getId(), paymentCollectorId);
 			return SUCCESS;
 		} else if (paymentPoint.isNotActive()) {
 			log.warn("Payment point with id {} is disabled", stub.getId());
 			return SUCCESS;
 		}
 
-		for (PaymentPoint point : paymentCollector.getPaymentPoints()) {
-
-			if (stub.getId().equals(point.getId())) {
-				if (DISABLE.equals(action) && paymentPoint.getTradingDayProcessInstanceId() != null) {
-					disableTradingDay();
-					addActionMessage(getText("payments.payment_points.list.disable_trading_day", "Disable trading day for {0} payment point", paymentPoint.getName(getLocale())));
-				} else if (ENABLE.equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
-					enableTradingDay(paymentCollector);
-					addActionMessage(getText("payments.payment_points.list.enable_trading_day", "Enable trading day for {0} payment point", paymentPoint.getName(getLocale())));
-				}
-				break;
-			}
-		}
+        if (DISABLE.equals(action) && paymentPoint.getTradingDayProcessInstanceId() != null) {
+            disableTradingDay();
+            addActionMessage(getText("payments.payment_points.list.disable_trading_day", "Disable trading day for {0} payment point", paymentPoint.getName(getLocale())));
+        } else if (ENABLE.equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
+            enableTradingDay();
+            addActionMessage(getText("payments.payment_points.list.enable_trading_day", "Enable trading day for {0} payment point", paymentPoint.getName(getLocale())));
+        }
 
         return SUCCESS;
     }
 
 	@Secured (Roles.TRADING_DAY_ADMIN_ACTION)
-	private void enableTradingDay(PaymentCollector paymentCollector) throws Exception {
+	private void enableTradingDay() throws Exception {
 
 		log.debug("Try enable trading day for payment point {}", paymentPoint.getId());
 
@@ -109,7 +98,7 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 		parameters.put(ExportJobParameterNames.END_DATE, endDate);
 		log.debug("Set endDate {}", endDate);
 
-		Long recipientOrganizationId = paymentCollector.getOrganization().getId();
+		Long recipientOrganizationId = paymentPoint.getCollector().getOrganization().getId();
 		parameters.put(ExportJobParameterNames.ORGANIZATION_ID, recipientOrganizationId);
 		log.debug("Set organizationId {}", recipientOrganizationId);
 

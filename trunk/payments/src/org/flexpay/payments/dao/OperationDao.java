@@ -75,26 +75,4 @@ public interface OperationDao extends GenericDao<Operation, Long> {
      */
     List<Operation> listLastPaymentOperations(Date beginDate, Date endDate);
 
-    /**
-     * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
-     * NOTE: operations with status DELETED are not included!
-     *
-     * @param cashboxId cash box id
-     * @param beginDate lower bound for operation creation date
-     * @param endDate higher bound for operation creation date
-     * @return list of operations
-     */
-    List<Operation> listLastCashboxPaymentOperations(Long cashboxId, Date beginDate, Date endDate);
-
-    /**
-     * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
-     * NOTE: operations with status DELETED are not included!
-     *
-     * @param paymentPointId payment point id
-     * @param beginDate lower bound for operation creation date
-     * @param endDate higher bound for operation creation date
-     * @return list of operations
-     */
-    List<Operation> listLastPaymentPointPaymentOperations(Long paymentPointId, Date beginDate, Date endDate);
-
 }

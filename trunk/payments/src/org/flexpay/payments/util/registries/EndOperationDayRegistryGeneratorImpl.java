@@ -75,7 +75,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 		registry = registryService.create(registry);
 
-		BigDecimal totalSumm = BigDecimal.ZERO;
+		BigDecimal totalSum = new BigDecimal("0.00");
 
 		RegistryRecordStatus recordStatus = registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
 
@@ -121,10 +121,10 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setApartmentNum(StringUtils.stripToEmpty(document.getApartmentNumber()));
 
 				RegistryRecordContainer container = new RegistryRecordContainer();
-				BigDecimal summ = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
-				record.setAmount(summ);
+				BigDecimal sum = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
+				record.setAmount(sum);
 
-				totalSumm = totalSumm.add(summ);
+				totalSum = totalSum.add(sum);
 				container.setData(BANK_PAYMENT_CONTAINER_CODE + CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(paymentPoint.getId()) + CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(operation.getId()) + CONTAINER_BODY_SEPARATOR +
@@ -156,7 +156,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 			registry.setFromDate(minDate == null ? new Date() : minDate);
 			registry.setTillDate(maxDate == null ? new Date() : maxDate);
 			registry.setRecordsNumber(recordsNum);
-			registry.setAmount(totalSumm);
+			registry.setAmount(totalSum);
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
 			registry = registryService.update(registry);
 

@@ -58,12 +58,12 @@ public interface DocumentService {
 	 *
 	 * @param operation	 owner operation
 	 * @param serviceTypeId documnent service type id
-	 * @param minimalSumm   minimal document summ
-	 * @param maximalSumm   maximal document summ
+	 * @param minimalSum   minimal document sum
+	 * @param maximalSum   maximal document sum
 	 * @return list of operation documents which suits search criterias
 	 */
 	@Secured (Roles.DOCUMENT_READ)
-	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
+	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum);
 
 	/**
 	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
@@ -115,57 +115,57 @@ public interface DocumentService {
 										  @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
 
 	/**
-	 * Returns summ of payments for service in the cashbox for the period
+	 * Returns sum of payments for service in the cashbox for the period
 	 *
 	 * @param cashboxStub	 cashbox stub
 	 * @param statusCode	  payment status code
 	 * @param serviceTypeCode service type code
 	 * @param beginDate	   begin date
 	 * @param endDate		 end date
-	 * @return summ of payments for service in the cashbox
+	 * @return sum of payments for service in the cashbox
 	 */
 	BigDecimal getCashboxServiceSumm(Stub<Cashbox> cashboxStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns summ of payments in the cashbox for the period
+	 * Returns sum of payments in the cashbox for the period
 	 *
 	 * @param cashboxStub cashbox stub
 	 * @param statusCode  payment status code
 	 * @param beginDate   begin date
 	 * @param endDate	 end date
-	 * @return summ of payments in the cashbox
+	 * @return sum of payments in the cashbox
 	 */
 	BigDecimal getCashboxTotalSumm(Stub<Cashbox> cashboxStub, int statusCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns summ of service payments in the payment point for the period
+	 * Returns sum of service payments in the payment point for the period
 	 *
 	 * @param paymentPointStub payment point stub
 	 * @param statusCode	   payment status code
 	 * @param serviceTypeCode  service type code
 	 * @param beginDate		begin date
 	 * @param endDate		  end date
-	 * @return summ of service payments in the payment point for the period
+	 * @return sum of service payments in the payment point for the period
 	 */
 	BigDecimal getPaymentPointServiceSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns total summ of payments in cashbox for the period
+	 * Returns total sum of payments in cashbox for the period
 	 *
 	 * @param paymentPointStub payment point stub
 	 * @param statusCode	   payment status code
 	 * @param beginDate		begin date
 	 * @param endDate		  end date
-	 * @return total summ of payments in cashbox for the period
+	 * @return total sum of payments in cashbox for the period
 	 */
 	BigDecimal getPaymentPointTotalSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, Date beginDate, Date endDate);
 
 	/**
-	 * Returns summ of service payment in operation
+	 * Returns sum of service payment in operation
 	 *
 	 * @param operationStub   operation stub
 	 * @param serviceTypeCode service type code
-	 * @return summ of service payment in operation
+	 * @return sum of service payment in operation
 	 */
 	BigDecimal getOperationServiceSumm(Stub<Operation> operationStub, int serviceTypeCode);
 }

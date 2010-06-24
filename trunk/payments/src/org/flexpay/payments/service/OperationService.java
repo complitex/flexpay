@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,17 @@ public interface OperationService {
 	@Secured (Roles.OPERATION_READ)
 	@Nullable
 	Operation read(@NotNull Stub<Operation> operationStub);
+
+    /**
+     * Read operations collection by theirs ids
+     *
+     * @param operationIds Apartment ids
+     * @param preserveOrder Whether to preserve order of objects
+     * @return Found operations
+     */
+    @Secured ({Roles.OPERATION_READ})
+    @NotNull
+    List<Operation> readFull(@NotNull Collection<Long> operationIds, boolean preserveOrder);
 
 	/**
 	 * Save operation
@@ -95,7 +107,7 @@ public interface OperationService {
 	 * @return list of operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listLastPaymentOperationsForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate);
+	Operation getLastPaymentOperationForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate);
 
 	/**
 	 * List last operations which have been created between <code>beginDate</code> and <code>endDate</code> NOTE:
@@ -107,7 +119,7 @@ public interface OperationService {
 	 * @return list of operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
+	Operation getLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
@@ -166,14 +178,14 @@ public interface OperationService {
 	 * @param serviceTypeId document service type id
 	 * @param begin		 lower bound for document creation date
 	 * @param end		   upper bound for document creation date
-	 * @param minimalSumm   minimal summ of document
-	 * @param maximalSumm   maximal summ of document
+	 * @param minimalSum   minimal sum of document
+	 * @param maximalSum   maximal sum of document
 	 * @param pager		 pager (used for operations!)
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
 	List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
-									BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+									BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager);
 
 	/**
 	 * Returns list of operations suitable to search criterias
@@ -181,14 +193,14 @@ public interface OperationService {
 	 * @param cashbox	 cash box which registered operation
 	 * @param begin	   lower bound for operation creation date
 	 * @param end		 upper bound for operation creation date
-	 * @param minimalSumm minimal operation summ
-	 * @param maximalSumm maximal operation summ
+	 * @param minimalSum minimal operation sum
+	 * @param maximalSum maximal operation sum
 	 * @param pager	   pager
 	 * @return list of operations suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
 	List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end,
-									 BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+									 BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager);
 
 	/**
 	 * Creates new operation with no data and BLANK state

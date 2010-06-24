@@ -35,7 +35,7 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
                            @NotNull Organization collectorOrganization,
                            @NotNull Operation operation,
                            @NotNull Service service,
-                           long summ) {
+                           long sum) {
         //get document type
         DocumentType documentType = null;
         try {
@@ -60,7 +60,7 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
         }
 
         Document document = new Document();
-		document.setSumm(new BigDecimal(summ));
+		document.setSumm(new BigDecimal(sum));
 		document.setDocumentStatus(documentStatus);
 		document.setOperation(operation);
 		document.setCreditorOrganization(serviceProviderOrganization);

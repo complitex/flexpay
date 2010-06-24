@@ -31,7 +31,6 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
 	private String actionName;
 
-	// form data
 	private QuittanceInfo quittanceInfo = new QuittanceInfo();
 	private Map<String, BigDecimal> payments = map();
 	private Map<String, String> serviceProviderAccounts = map();
