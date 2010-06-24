@@ -42,21 +42,29 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 
 		cnthql.append("select count(s) from Street s ").
 				append(" left join s.nameTemporals t").
-				append(" left join t.value.translations tr");
+				append(" left join t.value.translations tr").
+                append(" left join s.typeTemporals tt");
 		hql.append("select distinct s from Street s ").
 				append(" left join fetch s.nameTemporals t").
 				append(" left join fetch t.value v").
-				append(" left join fetch v.translations tr");
+				append(" left join fetch v.translations tr").
+                append(" left join fetch s.typeTemporals tt");
 		sorter.setFrom(hql);
 
 		StringBuilder whereClause = new StringBuilder();
-		whereClause.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
+		whereClause.append(" where s.parent.id=").append(townId).
+                append(" and s.status=").append(Street.STATUS_ACTIVE).
+                append(" and t.end='2100-12-31'").
+                append(" and (tt is null or tt.end ='2100-12-31')");
 		if (!QUERY_ALL.equals(query)) {
 			whereClause.append(" and upper(tr.name) like '").append(query).append("'").append(" and tr.lang.id=").append(languageId);
 		}
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
-		cnthql.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
+		cnthql.append(" where s.parent.id=").append(townId).
+                append(" and s.status=").append(Street.STATUS_ACTIVE).
+                append(" and t.end='2100-12-31'").
+                append(" and (tt is null or tt.end ='2100-12-31')");
 		if (!QUERY_ALL.equals(query)) {
 			cnthql.append(" and upper(tr.name) like '").append(query).append("'").append(" and tr.lang.id=").append(languageId);
 		}

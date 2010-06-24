@@ -35,10 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @Transactional (readOnly = true)
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
@@ -95,7 +92,11 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			@Override
 			public void copy(Street from, Street to) {
 				log.debug("Copying type from street #{}, to street #{} ", from.getId(), to.getId());
-				to.setTypeTemporals(from.getTypeTemporals());
+                SortedSet<StreetTypeTemporal> types = from.getTypeTemporals();
+				to.setTypeTemporals(types);
+                if (types.isEmpty()) {
+                    log.warn("Warning! Type for street with id {} is not available!!!!", from.getId());
+                }
 				++counter[0];
 			}
 		});

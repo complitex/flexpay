@@ -117,46 +117,58 @@
             left join fetch v.translations tr
             left join fetch s.typeTemporals tt
             left join fetch tt.value tv
-            left join fetch tv.translations ttr
-		where t.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
-		    and s.status=? and s.parent.id=?
+            left join fetch tv.translations
+		where t.end='2100-12-31'
+            and (tt is null or tt.end ='2100-12-31')
+		    and s.status=?
+            and s.parent.id=?
 	</query>
 
 	<query name="Street.findObjects.count">
 		select count(*)
 		from Street s
-		where s.status=? and s.parent.id=?
+		where s.status=?
+            and s.parent.id=?
 	</query>
 
 	<query name="Street.readFull">
 		select distinct s
 		from Street s
 			join fetch s.parent
+            left join fetch s.typeTemporals tt
 			left join fetch s.nameTemporals t
 			left join fetch t.value v
 			left join fetch v.translations tr
             left join fetch s.streetDistricts sd
-            left join fetch sd.district d
-		where s.id=? and t.invalidDate='2100-12-31'
+            left join fetch sd.district
+		where s.id=?
+            and t.end='2100-12-31'
+            and (tt is null or tt.end ='2100-12-31')
 	</query>
 
     <query name="Street.readFullCollection">
         select distinct s
         from Street s
             join fetch s.parent
+            left join fetch s.typeTemporals tt
             left join fetch s.nameTemporals t
             left join fetch t.value v
-            left join fetch v.translations tr
-        where s.id in (:ids) and s.status=0 and t.invalidDate='2100-12-31'
+            left join fetch v.translations
+        where s.id in (:ids)
+            and s.status=0
+            and t.end='2100-12-31'
+            and (tt is null or tt.end='2100-12-31')
     </query>
 
     <query name="Street.findWithTypes">
         select distinct s
         from Street s
-            left join fetch s.typeTemporals t
-            left join fetch t.value v
-            left join fetch v.translations tr
-        where s.id in (:list_1) and s.status=0 and t.invalidDate='2100-12-31'
+            left join fetch s.typeTemporals tt
+            left join fetch tt.value v
+            left join fetch v.translations
+        where s.id in (:list_1)
+            and s.status=0
+            and (tt is null or tt.end ='2100-12-31')
     </query>
 
 	<query name="Street.findTypeTemporals">
@@ -164,7 +176,9 @@
 		from StreetTypeTemporal stt
 			left join fetch stt.value v
 			left join fetch v.translations
-		where stt.object.id=? and stt.object.status=0 and stt.invalidDate='2100-12-31'
+		where stt.object.id=?
+            and stt.object.status=0
+            and stt.end='2100-12-31'
 		order by stt.createDate 
 	</query>
 
@@ -176,7 +190,7 @@
 			left join fetch d.nameTemporals dt
 			left join fetch dt.value dv
 			left join fetch dv.translations
-		where s.id=? and s.status=0 and dt.invalidDate='2100-12-31'
+		where s.id=? and s.status=0 and dt.end='2100-12-31'
 	</query>
 
 	<query name="Street.findSimpleByTown.stats">
@@ -199,8 +213,8 @@
             left join v.translations tr
             left join s.typeTemporals tt
 		where s.status=0 and s.parent.id=?
-			and t.invalidDate='2100-12-31' and upper(tr.name)=?
-			and tt.invalidDate='2100-12-31' and tt.value.id=?
+			and t.end='2100-12-31' and upper(tr.name)=?
+			and tt.end='2100-12-31' and tt.value.id=?
 	</query>
 
     <query name="Street.findByParentAndQuery">
@@ -212,8 +226,9 @@
             left join fetch s.typeTemporals tt
             left join fetch tt.value tv
             left join fetch tv.translations ttr
-        where s.status=0 and t.invalidDate='2100-12-31'
-              and s.parent.id=? and upper(tr.name) like ?
+        where s.status=0 and t.end='2100-12-31'
+            and (tt is null or tt.end ='2100-12-31')
+            and s.parent.id=? and upper(tr.name) like ?
     </query>
 
     <query name="Street.findByTownAndNameAndTypeAndLanguage">
@@ -223,7 +238,8 @@
             left join t.value v
             left join v.translations tr
             left join s.typeTemporals tt
-        where s.status=0 and t.invalidDate='2100-12-31'
+        where s.status=0 and t.end='2100-12-31'
+            and (tt is null or tt.end ='2100-12-31')
             and s.parent.id=? and tr.name=?
             and tt.value.id=? and tr.lang.id=?
     </query>
@@ -273,7 +289,9 @@
             left join fetch v.translations tr
             left join fetch s.streetDistricts sd
             left join fetch sd.district
-        where s.id=? and nt.invalidDate='2100-12-31'
+            left join s.typeTemporals tt
+        where s.id=? and nt.end='2100-12-31'
+            and (tt is null or tt.end ='2100-12-31')
     </query>
 
     <query name="StreetName.readFull">
