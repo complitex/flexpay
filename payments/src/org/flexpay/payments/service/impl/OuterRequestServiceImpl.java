@@ -112,16 +112,13 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         response.setOperationId(oper.getId());
 
         for (Document document : oper.getDocuments()) {
-
-            ServicePayInfo servicePayInfo = new ServicePayInfo();
-            servicePayInfo.setServiceId(document.getServiceStub().getId());
-            servicePayInfo.setServiceStatus(Status.SUCCESS);
-
-            response.addServicePayInfo(servicePayInfo);
-
+            for (ServicePayInfo info : response.getServicePayInfos()) {
+                if (info.getServiceId().equals(document.getService().getId())) {
+                    info.setDocumentId(document.getId());
+                    break;
+                }
+            }
         }
-
-        response.setStatus(Status.SUCCESS);
 
         return response;
     }
@@ -134,6 +131,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private PayInfoResponse fillOperation(PayRequest payRequest, Operation operation) throws Exception {
 
         PayInfoResponse response = new PayInfoResponse();
+        response.setStatus(Status.SUCCESS);
 
         Cashbox cashbox = cashboxService.read(operation.getCashboxStub());
         if (cashbox == null) {
@@ -162,12 +160,16 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         for (ServicePayDetails spDetails : payRequest.getServicePayDetails()) {
 
             ServicePayInfo servicePayInfo = new ServicePayInfo();
+            servicePayInfo.setServiceStatus(Status.SUCCESS);
+
             InfoRequest infoRequest = serviceProviderAccountNumberRequest(spDetails.getServiceId() + ":" + spDetails.getServiceProviderAccount(), RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, payRequest.getLocale());
             log.debug("infoRequest = {}", infoRequest);
             QuittanceDetailsResponse quittanceDetailsResponse = findQuittance(infoRequest);
             if (quittanceDetailsResponse.getInfos() == null || quittanceDetailsResponse.getInfos().length == 0) {
                 log.info("Cant't find quittances by serviceId and spAccountNumber ({}, {})", spDetails.getServiceId(), spDetails.getServiceProviderAccount());
-                servicePayInfo.setServiceStatus(Status.ACCOUNT_NOT_FOUND);
+                servicePayInfo.setServiceStatus(quittanceDetailsResponse.getStatus());
+                servicePayInfo.setServiceId(spDetails.getServiceId());
+                response.addServicePayInfo(servicePayInfo);
                 response.setStatus(Status.REQUEST_IS_NOT_PROCESSED);
                 continue;
             }
@@ -181,6 +183,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
             if (isNotZero(document.getSumm())) {
                 operation.addDocument(document);
+                servicePayInfo.setServiceId(document.getServiceStub().getId());
+                response.addServicePayInfo(servicePayInfo);
             }
         }
 

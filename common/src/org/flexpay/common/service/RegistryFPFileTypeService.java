@@ -1,7 +1,11 @@
 package org.flexpay.common.service;
 
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface RegistryFPFileTypeService {
     /**
@@ -20,4 +24,14 @@ public interface RegistryFPFileTypeService {
      */
     @Nullable
     RegistryFPFileType findByCode(int code);
+
+    /**
+     * Read list of RegistryFPFileType by codes
+     *
+     * @param codes codes of type
+     * @return found RegistryFPFileTypes
+     */
+    @NotNull
+    List<RegistryFPFileType> findByCodes(@NotNull Collection<Integer> codes);
+
 }

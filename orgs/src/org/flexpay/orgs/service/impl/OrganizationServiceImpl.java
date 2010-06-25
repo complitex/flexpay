@@ -1,29 +1,31 @@
 package org.flexpay.orgs.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.DataSourceDescriptionDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DataSourceDescription;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.orgs.dao.OrganizationDao;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.OrganizationDescription;
 import org.flexpay.orgs.persistence.OrganizationName;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.service.OrganizationService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class OrganizationServiceImpl implements OrganizationService {
@@ -42,15 +44,23 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 * @param stub Organization stub
 	 * @return Organization if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Organization readFull(Stub<Organization> stub) {
 		return organizationDao.readFull(stub.getId());
 	}
 
-	/**
+    @NotNull
+    @Override
+    public List<Organization> readFull(@NotNull Collection<Long> organizationIds, boolean preserveOrder) {
+        return organizationDao.readFullCollection(organizationIds, preserveOrder);
+    }
+
+    /**
 	 * Initialize organizations filter
 	 *
 	 * @param organizationFilter Filter to initialize
 	 */
+    @Override
 	public void initFilter(OrganizationFilter organizationFilter) {
 		List<Organization> organizations = organizationDao.findAllOrganizations();
 		organizationFilter.setOrganizations(organizations);
@@ -59,6 +69,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public List<Organization> listOrganizations(Page<Organization> pager) {
 		return organizationDao.findOrganizations(pager);
 	}
@@ -76,6 +87,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public List<Organization> listOrganizationsWithCollectors() {
 		return organizationDao.findOrganizationsWithCollectors();
 	}
@@ -86,6 +98,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 * @param objectIds Organizations identifiers to disable
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void disable(Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			Organization organization = organizationDao.read(id);
@@ -102,6 +115,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Transactional (readOnly = false)
 	@NotNull
+    @Override
 	public Organization create(@NotNull Organization organization) throws FlexPayExceptionContainer {
 		validate(organization);
 
@@ -130,6 +144,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	@NotNull
+    @Override
 	public Organization update(@NotNull Organization organization) throws FlexPayExceptionContainer {
 		validate(organization);
 
@@ -151,6 +166,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 * @param organizationStub organization stub
 	 */
     @Transactional (readOnly = false)
+    @Override
 	public void delete(@NotNull Stub<Organization> organizationStub) {
 		Organization organization = organizationDao.read(organizationStub.getId());
 
