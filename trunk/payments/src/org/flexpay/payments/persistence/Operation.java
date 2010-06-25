@@ -267,8 +267,8 @@ public class Operation extends DomainObject {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
-				append("operationInputSumm", operationInputSumm).
-				append("operationSumm", operationSumm).
+				append("operationInputSum", operationInputSumm).
+				append("operationSum", operationSumm).
 				append("change", change).
 				append("creationDate", creationDate).
 				append("creatorUserName", creatorUserName).

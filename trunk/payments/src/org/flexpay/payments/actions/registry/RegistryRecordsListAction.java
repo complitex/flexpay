@@ -88,7 +88,6 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
 		ServiceType type = serviceTypeService.read(stub(typeStub));
-		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return getTranslationName(type.getTypeNames());
 	}
 

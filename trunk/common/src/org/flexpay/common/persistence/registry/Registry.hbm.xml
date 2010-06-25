@@ -485,4 +485,9 @@
         where t.code=?
 	</query>
 
+    <query name="RegistryFPFileType.findByCodes">
+		from RegistryFPFileType t
+        where t.code in (:list_1)
+	</query>
+
 </hibernate-mapping>

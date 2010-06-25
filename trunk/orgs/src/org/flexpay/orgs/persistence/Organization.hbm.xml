@@ -125,7 +125,7 @@
 	<query name="Organization.findAllOrganizations">
 		select distinct o
 		from Organization o
-		left join fetch o.names
+		    left join fetch o.names
 <!--		left join fetch o.descriptions -->
 		where o.status=0
 	</query>
@@ -133,10 +133,18 @@
 	<query name="Organization.readFull">
 		select distinct o
 		from Organization o
-		left join fetch o.names
-		left join fetch o.descriptions
+            left join fetch o.names
+            left join fetch o.descriptions
 		where o.id=?
 	</query>
+
+    <query name="Organization.readFullCollection">
+        select distinct o
+        from Organization o
+            left join fetch o.names
+            left join fetch o.descriptions
+        where o.id in (:ids)
+    </query>
 
 	<query name="Organization.findOrganizations.count">
 		select count(*)
@@ -147,16 +155,16 @@
 	<query name="Organization.findOrganizations">
 		select distinct o
 		from Organization o
-		left join fetch o.names
-		left join fetch o.descriptions
+            left join fetch o.names
+            left join fetch o.descriptions
 		where o.status=0
 	</query>
 
 	<query name="Organization.findOrganizationsWithCollectors">
 		select distinct o
 		from Organization o
-		left join fetch o.names
-		left join fetch o.paymentCollectors paymentCollector
+            left join fetch o.names
+            left join fetch o.paymentCollectors paymentCollector
 		where o.status = 0 and paymentCollector.status = 0
 	</query>
 

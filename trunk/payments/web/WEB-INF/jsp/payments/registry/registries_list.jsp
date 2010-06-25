@@ -33,10 +33,10 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col"><s:date name="creationDate" format="yyyy/MM/dd" /></td>
-            <td class="col"><s:property value="getTranslationName(getSenderOrg(properties).names)" /></td>
-            <td class="col"><s:property value="getTranslationName(getRecipientOrg((properties)).names)" /></td>
+            <td class="col"><s:property value="getTranslationName(getSenderOrg(orgs, properties).names)" /></td>
+            <td class="col"><s:property value="getTranslationName(getRecipientOrg(orgs, properties).names)" /></td>
             <td class="col"><s:text name="%{registryType.i18nName}" /></td>
-            <td class="col"><s:date name="spFile.creationDate" format="yyyy/MM/dd HH:mm:ss" /></td>
+            <td class="col"><s:date name="files.get(mbType).creationDate" format="yyyy/MM/dd HH:mm:ss" /></td>
             <td class="col"><s:property value="recordsNumber" /></td>
             <td class="col"><s:text name="%{registryStatus.i18nName}" /></td>
             <td class="col">
@@ -50,13 +50,13 @@
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url value="/download/%{getRegistryFileInMBFormat(files).id}.registry" includeParams="none" />">
-                    <s:property value="getRegistryFileInMBFormat(files).originalName" />
+                <a href="<s:url value="/download/%{files.get(mbType).id}.registry" includeParams="none" />">
+                    <s:property value="files.get(mbType).originalName" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url value="/download/%{getRegistryFileInFPFormat(files).id}.registry" includeParams="none" />">
-                    <s:property value="getRegistryFileInFPFormat(files).originalName" />
+                <a href="<s:url value="/download/%{files.get(fpType).id}.registry" includeParams="none" />">
+                    <s:property value="files.get(fpType).originalName" />
                 </a>
             </td>
         </tr>

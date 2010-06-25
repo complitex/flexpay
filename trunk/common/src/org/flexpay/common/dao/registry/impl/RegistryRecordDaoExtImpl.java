@@ -37,6 +37,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @return list of records
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<RegistryRecord> listRecordsForImport(Long id, Long minId, Long maxId) {
 		Object[] params = {id, minId, maxId};
 		StopWatch watch = new StopWatch();
@@ -60,6 +61,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @return list of registry records
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 											  RegistryRecordStatusFilter recordStatusFilter,
 											  final Page<RegistryRecord> pager) {
@@ -95,6 +97,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 		selectSql.append(fromWhereClause);
 
 		final List ids = getHibernateTemplate().executeFind(new HibernateCallback() {
+            @Override
 			public List doInHibernate(Session session) throws HibernateException {
 				log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
 
@@ -156,10 +159,12 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @param registryId Registry to count errors for
 	 * @return number of errors
 	 */
+    @Override
 	public int getErrorsNumber(final Long registryId) {
 		Number count = (Number) getHibernateTemplate().execute(new HibernateCallback() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
-				return session.createQuery("select count(r.id) from RegistryRecord r where r.registry.id=? and r.importError is not null")
+				return session.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0")
 						.setLong(0, registryId).uniqueResult();
 			}
 		});
@@ -173,8 +178,10 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @return collection of registries
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from RegistryRecord r " +
 										   "inner join fetch r.properties " +
@@ -199,6 +206,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @return Minimum-Maximum pair
 	 */
 	@NotNull
+    @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
 		List<?> result = getHibernateTemplate()
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForProcessing", registryId);
@@ -219,6 +227,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @return Minimum-Maximum pair
 	 */
 	@NotNull
+    @Override
 	public Long[] getMinMaxIdsForImporting(@NotNull Long registryId) {
 		List<?> result = getHibernateTemplate()
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForImporting", registryId);

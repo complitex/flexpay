@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +24,17 @@ public interface OrganizationService {
 	@Secured (Roles.ORGANIZATION_READ)
 	@Nullable
 	Organization readFull(Stub<Organization> stub);
+
+    /**
+     * Read organizations collection by theirs ids
+     *
+     * @param organizationIds Organization ids
+     * @param preserveOrder Whether to preserve order of objects
+     * @return Found organizations
+     */
+    @Secured ({Roles.ORGANIZATION_READ})
+    @NotNull
+    List<Organization> readFull(@NotNull Collection<Long> organizationIds, boolean preserveOrder);
 
 	/**
 	 * Initialize organizations filter
