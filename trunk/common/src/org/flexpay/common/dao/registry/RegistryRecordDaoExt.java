@@ -60,6 +60,16 @@ public interface RegistryRecordDaoExt {
 	Long[] getMinMaxIdsForProcessing(@NotNull Long registryId);
 
 	/**
+	 * Get minimum and maximum record ids for processing
+	 *
+	 * @param registryId Registry identifier to process
+	 * @param constraintMinId Constraint on registry record id
+	 * @return Minimum-Maximum pair
+	 */
+	@NotNull
+	Long[] getMinMaxIdsForProcessing(@NotNull Long registryId, @NotNull Long constraintMinId);
+
+	/**
 	 * Get minimum and maximum record ids for importing
 	 *
 	 * @param registryId Registry identifier to import

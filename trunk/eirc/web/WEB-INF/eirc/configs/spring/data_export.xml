@@ -47,6 +47,23 @@
 		  p:importUtil-ref="eircImportUtil"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO" />
 
+	<bean id="importServiceEircTx2" parent="importServiceAb"
+		  class="org.flexpay.eirc.service.importexport.EircImportServiceTx2Impl"
+		  p:importConsumerService-ref="importConsumerDataTx" />
+
+	<bean id="importConsumerDataTx"
+		  class="org.flexpay.eirc.service.importexport.EircImportConsumerDataTxImpl"
+		  p:consumerService-ref="consumerService"
+		  p:importUtil-ref="eircImportUtil"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:errorsSupport-ref="importErrorSupport"
+		  p:rawConsumersDataSource-ref="consumersDataSource"
+		  p:apartmentService-ref="apartmentService"
+		  p:correctionsService-ref="correctionsService"
+		  p:streetTypeService-ref="streetTypeService"
+		  p:buildingService-ref="buildingService" />
+
 	<bean id="importServiceEirc"
 		  class="org.flexpay.eirc.service.importexport.EircImportService"
 		  p:eircImportServiceTx-ref="importServiceEircTx"

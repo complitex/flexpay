@@ -309,7 +309,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @param context ProcessingContext
 	 * @throws Exception if failure occurs
 	 */
-	private void processHeader(ProcessingContext context) throws Exception {
+	public void processHeader(ProcessingContext context) throws Exception {
 
 		// process header containers
 		try {

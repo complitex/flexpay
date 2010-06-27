@@ -63,7 +63,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 			return consumerDaoExt.findConsumerByProviderServiceCode(
 					serviceProviderStub.getId(), accountNumber, serviceCode.substring(1));
 		}
-		return consumerDaoExt.findConsumerByTypeCode(serviceProviderStub.getId(), accountNumber, Long.valueOf(serviceCode));
+		return consumerDaoExt.findConsumerByService(accountNumber, Long.valueOf(serviceCode));
 	}
 
 	/**

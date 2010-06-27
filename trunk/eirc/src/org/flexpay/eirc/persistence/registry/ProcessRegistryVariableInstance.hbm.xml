@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence.registry">
+
+	<class name="ProcessRegistryVariableInstance" table="eirc_process_registry_variable_instance_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" column="version" access="field" />
+		<property name="processId" column="process_id" unique="true" not-null="true" />
+		<many-to-one name="registry" foreign-key="FK_common_registry_tbl_process_variable_instance_id" class="org.flexpay.common.persistence.registry.Registry">
+			<column name="registry_id" not-null="true">
+				<comment>Processing registry</comment>
+			</column>
+		</many-to-one>
+		<property name="charPoint" column="char_point" />
+		<property name="lastProcessedRegistryRecord" column="last_processed_registry_record" />
+		<property name="processedCountLines" column="processed_count_lines" />
+		<property name="processedCountRecords" column="processed_count_records" />
+	</class>
+
+	<query name="ProcessRegistryVariableInstance.readFull">
+		select distinct rrvi
+			from ProcessRegistryVariableInstance rrvi
+			inner join fetch rrvi.registry
+		where rrvi.id=?
+	</query>
+
+	<query name="ProcessRegistryVariableInstance.findByProcessId">
+		select distinct rrvi
+			from ProcessRegistryVariableInstance rrvi
+			inner join fetch rrvi.registry
+		where rrvi.processId=?
+	</query>
+
+</hibernate-mapping>

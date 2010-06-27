@@ -1,7 +1,10 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
@@ -9,15 +12,19 @@ import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProcessingContext {
 
 	private Registry registry;
+	private Stub<DataSourceDescription> sd;
+	private Map<String, List<Street>> nameStreetMap;
 	private boolean processingStarted = false;
 	private boolean processingEnded = false;
 	private List<RegistryRecord> operationRecords = CollectionUtils.list();
 	private List<DelayedUpdate> currentRecordUpdates = CollectionUtils.list();
 	private List<DelayedUpdate> operationUpdates = CollectionUtils.list();
+	private DelayedUpdatesContainer correctionUpdates = new DelayedUpdatesContainer();
 
 	private RegistryRecord currentRecord;
 
@@ -30,6 +37,7 @@ public class ProcessingContext {
 		operationRecords.clear();
 		currentRecordUpdates.clear();
 		operationUpdates.clear();
+		correctionUpdates.getUpdates().clear();
 	}
 
 	public Registry getRegistry() {
@@ -62,7 +70,9 @@ public class ProcessingContext {
 
 	public void setCurrentRecord(RegistryRecord currentRecord) throws FlexPayException {
 		this.currentRecord = currentRecord;
-		operationRecords.add(currentRecord);
+		if (currentRecord != null) {
+			operationRecords.add(currentRecord);
+		}
 		operationUpdates.addAll(currentRecordUpdates);
 
 		visitCurrentRecordUpdates(new DelayedUpdateVisitor() {
@@ -75,10 +85,12 @@ public class ProcessingContext {
 		});
 
 		currentRecordUpdates.clear();
-
 	}
 
 	public void failedRecord(RegistryRecord failedRecord) {
+		if (failedRecord.equals(currentRecord)) {
+			currentRecord = null;
+		}
 		operationRecords.remove(failedRecord);
 	}
 
@@ -86,7 +98,11 @@ public class ProcessingContext {
 		return operationRecords;
 	}
 
-    public void setSourceInstanceId(String sourceInstanceId) {
+	public DelayedUpdatesContainer getCorrectionUpdates() {
+		return correctionUpdates;
+	}
+
+	public void setSourceInstanceId(String sourceInstanceId) {
         this.sourceInstanceId = sourceInstanceId;
     }
 
@@ -94,13 +110,30 @@ public class ProcessingContext {
         return sourceInstanceId;
     }
 
-    public void doUpdate() throws FlexPayExceptionContainer, FlexPayException {
+	public Stub<DataSourceDescription> getSd() {
+		return sd;
+	}
+
+	public void setSd(Stub<DataSourceDescription> sd) {
+		this.sd = sd;
+	}
+
+	public Map<String, List<Street>> getNameStreetMap() {
+		return nameStreetMap;
+	}
+
+	public void setNameStreetMap(Map<String, List<Street>> nameStreetMap) {
+		this.nameStreetMap = nameStreetMap;
+	}
+
+	public void doUpdate() throws FlexPayExceptionContainer, FlexPayException {
 		for (DelayedUpdate update : operationUpdates) {
 			update.doUpdate();
 		}
 		for (DelayedUpdate update : currentRecordUpdates) {
 			update.doUpdate();
 		}
+		correctionUpdates.doUpdate();
 	}
 
 	public void visitCurrentRecordUpdates(DelayedUpdateVisitor visitor) throws FlexPayException {
@@ -122,12 +155,14 @@ public class ProcessingContext {
 		if (update == DelayedUpdateNope.INSTANCE) {
 			return;
 		}
+		/*
 		if (update instanceof DelayedUpdatesContainer) {
 			for (DelayedUpdate childUpdate : ((DelayedUpdatesContainer) update).getUpdates()) {
 				addUpdate(childUpdate);
 			}
 			return;
 		}
+		*/
 		currentRecordUpdates.add(update);
 	}
 

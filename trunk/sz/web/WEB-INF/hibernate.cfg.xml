@@ -79,6 +79,7 @@
 		<mapping resource="org/flexpay/eirc/persistence/consumer/ConsumerAttributeType.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/ServiceOrganizationBase.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/registry/RegistryExt.hbm.xml" />
+		<mapping resource="org/flexpay/eirc/persistence/registry/ProcessRegistryVariableInstance.hbm.xml" />
 
 		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />
 		<mapping resource="org/flexpay/sz/persistence/CharacteristicRecord.hbm.xml" />

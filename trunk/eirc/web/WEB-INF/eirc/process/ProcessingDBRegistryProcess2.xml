@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="ProcessingDBRegistryProcess2"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
+
+	<swimlane name="worker">
+		<assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
+	</swimlane>
+
+	<start-state name="start">
+		<transition to="processRegistryJob" />
+		<event type="node-leave">
+			<script>
+				<variable mapped-name="range" access="write" name="range" />
+				<expression>
+                    range = new org.flexpay.common.dao.paging.FetchRange(1000);
+                </expression>
+			</script>
+		</event>
+	</start-state>
+
+	<task-node name="processRegistryJob">
+		<task swimlane="worker" blocking="no" />
+		<transition name="next" to="end" />
+		<transition name="error" to="EndRegistryProcessing" />
+	</task-node>
+
+	<decision name="EndRegistryProcessing">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
+        <transition name="next" to="end" />
+        <transition name="error" to="end" />
+        <event type="node-enter">
+            <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+                <targetBean>endRegistryProcessingActionHandler</targetBean>
+                <factoryKey>jbpmConfiguration</factoryKey>
+            </action>
+        </event>
+    </decision>
+
+	<end-state name="end" />
+
+</process-definition>

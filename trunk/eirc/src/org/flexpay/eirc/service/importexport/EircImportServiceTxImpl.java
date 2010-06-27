@@ -34,14 +34,11 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 
 	private StopWatch readRawDataBatchWatch = new StopWatch();
 	private StopWatch setPersonWatch = new StopWatch();
-	private StopWatch setConsumerCorrectionWatch = new StopWatch();
 	private StopWatch findServiceWatch = new StopWatch();
 	private StopWatch findApartmentWatch = new StopWatch();
-	private StopWatch findConsumerCorrectionWatch = new StopWatch();
 	private StopWatch findConsumerWatch = new StopWatch();
 	private StopWatch stackWatch = new StopWatch();
 
-	@Transactional (readOnly = false)
 	@Override
 	public boolean processBatch(long[] counters, boolean inited,
 								Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource,
@@ -78,16 +75,12 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			}
 
 			RegistryRecord record = data.getRegistryRecord();
-			RegistryRecord recordFromStack = (RegistryRecord)getObjectFromStack(record);
-			if (recordFromStack != null) {
-				record = recordFromStack;
-			}
 
 			EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 			if (props.getConsumer() != null) {
 				log.info("Record already has consumer set up");
 				++counters[1];
-				addToStack(record, recordFromStack);
+				addToStack(record);
 				continue;
 			}
 
@@ -96,22 +89,43 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				props.getService() != null) {
 				log.info("Record already have apartment, person and service set");
 				++counters[1];
-				addToStack(record, recordFromStack);
+				addToStack(record);
 				continue;
 			}
 
 			try {
-				findConsumerCorrectionWatch.resume();
-				Stub<Consumer> persistentObj = correctionsService.findCorrection(
-						data.getShortConsumerId(), Consumer.class, sd);
-				findConsumerCorrectionWatch.suspend();
+				// set service if not found
+				EircRegistryProperties regProps = (EircRegistryProperties) record.getRegistry().getProperties();
+				Service service = props.getService();
+				Stub<ServiceProvider> spStub = regProps.getServiceProviderStub();
+				if (service == null) {
+					findServiceWatch.resume();
+					service = consumerService.findService(spStub, data.getServiceCode());
+					findServiceWatch.suspend();
+					if (service == null) {
+						log.warn("Unknown service code: {}", data.getServiceCode());
+						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
+						error.setErrorId("error.eirc.import.service_not_found");
+						setConsumerError(record, error);
 
-				if (persistentObj != null) {
-					log.info("Found existing consumer correction: #{}", data.getExternalSourceId());
+						addToStack(record);
+						continue;
+					}
+
+					props.setService(service);
+				}
+
+				// try to find consumer (correction lost or service code came in a different format?)
+				findConsumerWatch.resume();
+				Consumer consumer = consumerService.findConsumer(regProps.getServiceProviderStub(), data.getAccountNumber(), String.valueOf(service.getId()));
+				findConsumerWatch.suspend();
+
+				if (consumer != null) {
+					log.info("Found existing consumer: #{}", data.getExternalSourceId());
 					// todo do we need to fetch this?
 					++counters[1];
-					props.setConsumer(consumerService.read(persistentObj));
-					addToStack(record, recordFromStack);
+					props.setConsumer(consumer);
+					addToStack(record);
 					continue;
 				}
 
@@ -120,7 +134,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
 					error.setErrorId("error.eirc.import.consumer_not_found");
 					setConsumerError(record, error);
-					addToStack(record, recordFromStack);
+					addToStack(record);
 					continue;
 				}
 
@@ -133,7 +147,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					findApartmentWatch.suspend();
 					if (apartment == null) {
 						// addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-						addToStack(record, recordFromStack);
+						addToStack(record);
 						continue;
 					}
 
@@ -154,42 +168,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				}
 				setPersonWatch.suspend();
 
-				// set service if not found
-				EircRegistryProperties regProps = (EircRegistryProperties) record.getRegistry().getProperties();
-				Service service = props.getService();
-				Stub<ServiceProvider> spStub = regProps.getServiceProviderStub();
-				if (service == null) {
-					findServiceWatch.resume();
-					service = consumerService.findService(spStub, data.getServiceCode());
-					findServiceWatch.suspend();
-					if (service == null) {
-						log.warn("Unknown service code: {}", data.getServiceCode());
-						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
-						error.setErrorId("error.eirc.import.service_not_found");
-						setConsumerError(record, error);
-
-						addToStack(record, recordFromStack);
-						continue;
-					}
-
-					props.setService(service);
-				}
-
-				// try to find consumer (correction lost or service code came in a different format?)
-				findConsumerWatch.resume();
-				Consumer consumer = consumerService.findConsumer(spStub, data.getAccountNumber(), data.getServiceCode());
-				findConsumerWatch.suspend();
-				if (consumer != null) {
-					// consumer found save correction
-					setConsumerCorrectionWatch.resume();
-					DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer, sd);
-					setConsumerCorrectionWatch.suspend();
-
-					addToStack(corr);
-				}
-
-				props.setConsumer(consumer);
-				addToStack(record, recordFromStack);
+				addToStack(record);
 			} catch (Exception e) {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
@@ -218,20 +197,6 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		readRawDataBatchWatch.suspend();
 
 		return result;
-	}
-
-	private void addToStack(DomainObject newObject, DomainObject existObject) {
-		if (existObject == null) {
-			log.debug("Add to stack: {}", newObject);
-			addToStack(newObject);
-		}
-	}
-
-	@Override
-	protected void addToStack(DomainObject object) {
-		if (!objectStackContains(object)) {
-			super.addToStack(object);
-		}
 	}
 
 	@Override
@@ -275,15 +240,6 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
 									Stub<DataSourceDescription> sd, RawConsumerData data,
 									RawDataSource<RawConsumerData> dataSource, RegistryRecord record) throws Exception {
-
-		// try to find by apartment correction
-		log.info("Checking for apartment correction: {}", data.getApartmentId());
-		Stub<Apartment> apartmentById = correctionsService.findCorrection(
-				data.getApartmentId(), Apartment.class, sd);
-		if (apartmentById != null) {
-			log.info("Found apartment correction");
-			return new Apartment(apartmentById);
-		}
 
 		// try to find building and later apartment in it
 		Stub<BuildingAddress> buildingsById = correctionsService.findCorrection(
@@ -425,12 +381,6 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			return null;
 		}
 
-		// Add correction to ease further search
-		Apartment apartment = new Apartment(stub);
-		DataCorrection corr = correctionsService.getStub(data.getApartmentId(), apartment, sd);
-		log.info("Adding apartment correction: {}", data.getApartmentId());
-		addToStack(corr);
-
 		return new Apartment(stub);
 	}
 
@@ -442,10 +392,6 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		initWatch(findServiceWatch);
 
 		initWatch(readRawDataBatchWatch);
-
-		initWatch(setConsumerCorrectionWatch);
-
-		initWatch(findConsumerCorrectionWatch);
 
 		initWatch(findConsumerWatch);
 
@@ -471,17 +417,11 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		setPersonWatch.stop();
 		log.debug("Set person: {}", setPersonWatch);
 
-		setConsumerCorrectionWatch.stop();
-		log.debug("Set consumer correction: {}", setConsumerCorrectionWatch);
-
 		findServiceWatch.stop();
 		log.debug("Find service: {}", findServiceWatch);
 
 		findApartmentWatch.stop();
 		log.debug("Find apartment: {}", findApartmentWatch);
-
-		findConsumerCorrectionWatch.stop();
-		log.debug("Find consumer correction: {}", findConsumerCorrectionWatch);
 
 		findConsumerWatch.stop();
 		log.debug("Find consumer: {}", findConsumerWatch);

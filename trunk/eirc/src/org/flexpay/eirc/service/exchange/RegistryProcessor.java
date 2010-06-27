@@ -73,4 +73,12 @@ public interface RegistryProcessor {
 	 * @throws Exception if failure occurs
 	 */
 	void processRegistry(@NotNull ProcessingContext registry) throws Exception;
+
+	/**
+	 * Run processing on registry header
+	 *
+	 * @param context ProcessingContext
+	 * @throws Exception if failure occurs
+	 */
+	public void processHeader(ProcessingContext context) throws Exception;
 }

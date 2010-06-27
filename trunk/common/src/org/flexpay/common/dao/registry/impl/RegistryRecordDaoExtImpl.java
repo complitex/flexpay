@@ -47,7 +47,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 				.findByNamedQuery("RegistryRecord.listRecordsForImport", params);
 		watch.stop();
 
-		log.debug("Time spent fetching records for import: {}", watch);
+		log.debug("Time spent fetching records for import: {}, minId={}, maxId={}", new Object[]{watch, minId, maxId});
 		return records;
 	}
 
@@ -209,7 +209,28 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
     @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
 		List<?> result = getHibernateTemplate()
-				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForProcessing", registryId);
+				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats", registryId);
+		Object[] objs = (Object[]) result.get(0);
+
+		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1]);
+		if (minMax[0] == null || minMax[1] == null) {
+			return CollectionUtils.ar(0L, 0L);
+		}
+
+		return minMax;
+	}
+
+	/**
+	 * Get minimum and maximum record ids for processing
+	 *
+	 * @param registryId Registry identifier to process
+	 * @param  restrictionMinId Constraint on registry record id
+	 * @return Minimum-Maximum pair
+	 */
+	@NotNull
+	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId, @NotNull Long restrictionMinId) {
+		List<?> result = getHibernateTemplate()
+				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats.restriction", new Object[]{registryId, restrictionMinId});
 		Object[] objs = (Object[]) result.get(0);
 
 		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1]);

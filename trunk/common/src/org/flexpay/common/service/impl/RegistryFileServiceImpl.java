@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.dao.registry.RegistryFileDaoExt;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
+import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
@@ -25,6 +26,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	private RegistryDao registryDao;
 	private RegistryFileDaoExt registryFileDaoExt;
 	private RegistryRecordDao registryRecordDao;
+	private RegistryRecordDaoExt registryRecordDaoExt;
 
 	private List<ProcessingReadHintsHandlerFactory> readHintsHandlerFactories = CollectionUtils.list();
 
@@ -65,6 +67,29 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 		return records;
 	}
 
+	public FetchRange getFetchRangeForProcessing(@NotNull Stub<Registry> registry, int pageSize, @NotNull Long lastProcessedRegistryRecord) {
+
+		FetchRange range = new FetchRange(pageSize);
+		Long[] stats = registryRecordDaoExt.getMinMaxIdsForProcessing(registry.getId(), lastProcessedRegistryRecord);
+
+		range.setMinId(stats[0]);
+		range.setMaxId(stats[1]);
+		range.setCount(stats[2].intValue());
+		range.setLowerBound(range.getMinId());
+		range.setUpperBound(range.getLowerBound() != null ? range.getLowerBound() + range.getPageSize() - 1 : null);
+		// validate stats query
+		if (stats[0] != null && stats[1] != null && stats[2] != null) {
+			if (range.getMinId() > range.getMaxId()) {
+				throw new IllegalStateException("minId > maxId, did you specified");
+			}
+			if (range.getMaxId() - range.getMinId() + 1 < range.getCount()) {
+				throw new IllegalStateException("maxId - minId < count, did you specified");
+			}
+		}
+
+		return range;
+	}
+
 	/**
 	 * Check if RegistryFile was loaded
 	 *
@@ -100,4 +125,8 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 		this.registryFileDaoExt = registryFileDaoExt;
 	}
 
+	@Required
+	public void setRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
+		this.registryRecordDaoExt = registryRecordDaoExt;
+	}
 }
