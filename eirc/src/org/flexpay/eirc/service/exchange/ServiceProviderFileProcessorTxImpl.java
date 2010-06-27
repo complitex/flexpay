@@ -1,18 +1,20 @@
 package org.flexpay.eirc.service.exchange;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.flexpay.common.dao.ImportErrorDao;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
+import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.exchange.*;
+import org.flexpay.eirc.service.importexport.EircImportConsumerDataTx;
+import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br />
@@ -26,10 +28,13 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 
 	private ServiceOperationsFactory serviceOperationsFactory;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
+	private EircImportConsumerDataTx importConsumerDataService;
+	private ImportErrorDao errorDao;
 
 	private StopWatch beforeUpdateWatch = new StopWatch();
 	private StopWatch updateWatch = new StopWatch();
-	private StopWatch nextStatusWatch = new StopWatch();
+	private StopWatch getOperationWatch = new StopWatch();
+	private StopWatch processBatchWatch = new StopWatch();
 
 	private OperationWatchContext watchContext = new OperationWatchContext();
 
@@ -40,8 +45,11 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 		updateWatch.start();
 		updateWatch.suspend();
 
-		nextStatusWatch.start();
-		nextStatusWatch.suspend();
+		getOperationWatch.start();
+		getOperationWatch.suspend();
+
+		processBatchWatch.start();
+		processBatchWatch.suspend();
 	}
 
 	/**
@@ -74,16 +82,34 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	public void prepareRecordUpdates(@NotNull ProcessingContext context) throws Exception {
 
 		RegistryRecord record = context.getCurrentRecord();
-		if (!recordWorkflowManager.hasSuccessTransition(record)
-			|| record.getRecordStatus().isProcessedWithError()) {
-
+		if (!recordWorkflowManager.hasSuccessTransition(record)) {
+			context.failedRecord(context.getCurrentRecord());
 			log.debug("Skipping record: {}", record);
 			return;
 		}
 
 		log.debug("Record to process: {}", record);
 
+		processBatchWatch.resume();
+		RawConsumerData data = RawConsumersDataUtil.convert(context.getRegistry(), context.getCurrentRecord());
+		if (!importConsumerDataService.processBatch(context.getSd(), data, context.getNameStreetMap(),
+				context.getCorrectionUpdates())) {
+			context.failedRecord(context.getCurrentRecord());
+			return;
+		}
+		processBatchWatch.suspend();
+
+		record = data.getRegistryRecord();
+		if (!recordWorkflowManager.hasSuccessTransition(record)
+			|| record.getRecordStatus().isProcessedWithError()) {
+			log.debug("Skipping record: {}", record);
+			context.setCurrentRecord(null);
+			return;
+		}
+
+		getOperationWatch.resume();
 		Operation op = serviceOperationsFactory.getOperation(context.getRegistry(), record);
+		getOperationWatch.suspend();
 		DelayedUpdate update = op.process(context, watchContext);
 		context.addUpdate(update);
 	}
@@ -107,23 +133,33 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 			context.doUpdate();
 			updateWatch.suspend();
 
-			nextStatusWatch.resume();
-			recordWorkflowManager.setNextSuccessStatus(context.getOperationRecords());
-			nextStatusWatch.suspend();
-			
-			context.nextOperation();
-
-			printWatch();
+			postUpdated(context);
 		} catch (Exception ex) {
 			log.error("doUpdate failed", ex);
 			throw ex;
 		}
 	}
 
+	@Transactional (readOnly = false)
+	protected void postUpdated(ProcessingContext context) throws FlexPayException {
+
+		for (RegistryRecord record : context.getOperationRecords()) {
+			if (record.getImportError() != null && record.getImportError().isNew()) {
+				errorDao.create(record.getImportError());
+			}
+		}
+
+		context.nextOperation();
+
+		importConsumerDataService.postProcessed();
+
+		printWatch();
+	}
+
 	private void printWatch() {
 		log.debug("Start time: {}", beforeUpdateWatch.getStartTime());
-		log.debug("Operation time: {}, before update time: {}, update time: {}, next status time: {}",
-				new Object[]{watchContext.getOperationProcessWatch(), beforeUpdateWatch, updateWatch, nextStatusWatch});
+		log.debug("Operation time: {}, before update time: {}, update time: {}, process batch: {}",
+				new Object[]{watchContext.getOperationProcessWatch(), beforeUpdateWatch, updateWatch, processBatchWatch});
 	}
 
 	@Required
@@ -134,5 +170,15 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	@Required
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	@Required
+	public void setImportConsumerDataService(EircImportConsumerDataTx importConsumerDataService) {
+		this.importConsumerDataService = importConsumerDataService;
+	}
+
+	@Required
+	public void setErrorDao(ImportErrorDao errorDao) {
+		this.errorDao = errorDao;
 	}
 }

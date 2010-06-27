@@ -1,6 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -15,13 +16,36 @@ import org.flexpay.payments.actions.request.data.response.data.ConsumerAttribute
 import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class SetExternalOrganizationAccountOperation extends AbstractChangePersonalAccountOperation {
 
+	private static final Logger log = LoggerFactory.getLogger(SetExternalOrganizationAccountOperation.class);
+
 	private ServiceOperationsFactory factory;
 	private Long organizationId;
+
+	static private final StopWatch getOrganizationWatch = new StopWatch();
+	static private final StopWatch getConsumerAttributeTypeWatch = new StopWatch();
+	static private final StopWatch setMbAccountNumberWatch = new StopWatch();
+	static private final StopWatch visitUpdatesWatch = new StopWatch();
+
+	static {
+		getOrganizationWatch.start();
+		getOrganizationWatch.suspend();
+
+		getConsumerAttributeTypeWatch.start();
+		getConsumerAttributeTypeWatch.suspend();
+
+		setMbAccountNumberWatch.start();
+		setMbAccountNumberWatch.suspend();
+
+		visitUpdatesWatch.start();
+		visitUpdatesWatch.suspend();
+	}
 
 	public SetExternalOrganizationAccountOperation(ServiceOperationsFactory factory, List<String> datum)
 			throws InvalidContainerException {
@@ -51,18 +75,30 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 	@Override
 	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
 
+		getOrganizationWatch.resume();
 		Organization organization = factory.getOrganizationService().readFull(new Stub<Organization>(organizationId));
+		getOrganizationWatch.suspend();
 		if (organization == null) {
 			throw new FlexPayException("Invalid organization id " + organizationId);
 		}
 
 		// check if needs only to setup document addition
-		if (context.getRegistry().getRegistryType().isPayments()) {
-			return visitUpdates(context, organization);
+		visitUpdatesWatch.resume();
+		try {
+			if (context.getRegistry().getRegistryType().isPayments()) {
+				return visitUpdates(context, organization);
+			}
+		} finally {
+			visitUpdatesWatch.suspend();
 		}
 
-		if (getMbOrganizationStub().sameId(organization)) {
-			return setMbAccountNumber(context.getCurrentRecord());
+		setMbAccountNumberWatch.resume();
+		try {
+			if (getMbOrganizationStub().sameId(organization)) {
+				return setMbAccountNumber(context.getCurrentRecord());
+			}
+		} finally {
+			setMbAccountNumberWatch.suspend();
 		}
 
 		return DelayedUpdateNope.INSTANCE;
@@ -71,8 +107,10 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 	private DelayedUpdate setMbAccountNumber(RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
 
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
+		getConsumerAttributeTypeWatch.resume();
 		ConsumerAttributeTypeBase type = factory.getConsumerAttributeTypeService()
 				.readByCode(ConsumerAttributes.ATTR_ERC_ACCOUNT);
+		getConsumerAttributeTypeWatch.suspend();
 		if (type == null) {
 			throw new FlexPayException("Cannot find attribute " + ConsumerAttributes.ATTR_ERC_ACCOUNT);
 		}
@@ -101,5 +139,10 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 		});
 
 		return DelayedUpdateNope.INSTANCE;
+	}
+
+	public static void printWatch() {
+		log.debug("Time get organization: {}, get consumer attribute type: {}, set Mb account number: {}, visit updates: {}",
+				new Object[]{getOrganizationWatch, getConsumerAttributeTypeWatch, setMbAccountNumberWatch, visitUpdatesWatch});
 	}
 }

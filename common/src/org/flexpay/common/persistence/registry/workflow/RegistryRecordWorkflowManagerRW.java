@@ -32,6 +32,7 @@ public class RegistryRecordWorkflowManagerRW extends RegistryRecordWorkflowManag
 	@Override
 	public void setNextErrorStatus(RegistryRecord record, ImportError error) throws TransitionNotAllowed {
 		super.setNextErrorStatus(record, error);
+		errorDao.create(error);
 	}
 
 	@Transactional (readOnly = false)

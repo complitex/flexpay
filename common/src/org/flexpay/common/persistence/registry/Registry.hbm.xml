@@ -359,14 +359,21 @@
 		from RegistryRecord rr
 			left join rr.registry r
 			left join rr.recordStatus rrs
-		where r.id=? and rrs.code NOT IN (2, 4)
+		where r.id=? and rrs.code <> 4
+	]]></query>
+
+	<query name="RegistryRecord.listRecordsForProcessing.stats.restriction"><![CDATA[
+		select distinct min(rr.id), max(rr.id), count(rr.id)
+		from RegistryRecord rr
+			left join rr.recordStatus rrs
+		where rr.registry.id=? and rrs.code <> 4 and rr.id>?
 	]]></query>
 
 	<query name="RegistryRecord.listRecordsForProcessing.stats"><![CDATA[
 		select distinct min(rr.id), max(rr.id), count(rr.id)
 		from RegistryRecord rr
 			left join rr.recordStatus rrs
-		where rr.registry.id=? and rrs.code NOT IN (2, 4)
+		where rr.registry.id=? and rrs.code <> 4
 	]]></query>
 
 	<query name="RegistryRecord.listRecordsForProcessing"><![CDATA[
@@ -379,7 +386,7 @@
 			left join fetch rr.recordStatus rrs
 			left join fetch rr.importError
 			left join fetch rr.containers
-		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
+		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code <> 4
 	]]></query>
 
     <query name="RegistryRecord.listRecordsForExport.stats">

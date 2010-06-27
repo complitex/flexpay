@@ -30,7 +30,7 @@ public class RegistryHandleError implements HandleError {
 
 	@Override
 	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
-	public void handleError(Throwable t, ProcessingContext context) throws Exception {
+	public ImportError handleError(Throwable t, ProcessingContext context) throws Exception {
 		String code = "eirc.error_code.unknown_error";
 		if (t instanceof FlexPayExceptionContainer) {
 			t = ((FlexPayExceptionContainer) t).getFirstException();
@@ -64,6 +64,7 @@ public class RegistryHandleError implements HandleError {
 			error.setSourceObjectId(String.valueOf(context.getCurrentRecord().getId()));
 			recordWorkflowManager.setNextErrorStatus(context.getCurrentRecord(), error);
 		}
+		return error;
 	}
 
 	@Required

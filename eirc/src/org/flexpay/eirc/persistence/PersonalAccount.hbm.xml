@@ -184,12 +184,9 @@
 	</query>
 
 	<!-- see Service.findServicesByCode query -->
-	<query name="Consumer.findConsumersByServiceTypeCode">
-		select distinct c
-		from Consumer c
-			inner join c.service s
-			inner join s.serviceProvider p
-		where p.id=? and c.externalAccountNumber=? and s.id=?
+	<query name="Consumer.findConsumersByService">
+		from Consumer
+		where externalAccountNumber=? and service.id=?
 	</query>
 
 	<!-- see Service.findServicesByCode query -->

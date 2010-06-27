@@ -11,7 +11,7 @@
 				<variable mapped-name="numberLoop" access="write" name="numberLoop" />
 				<variable name="startTime" mapped-name="startTime" access="write" />
 				<expression>
-                    range = new org.flexpay.common.dao.paging.FetchRange(500);
+                    range = new org.flexpay.common.dao.paging.FetchRange(200);
 					numberLoop = 0;
 					startTime = org.flexpay.common.util.DateUtil.now();
                 </expression>
@@ -36,7 +36,7 @@
 
     <decision name="StartRegistryProcessing">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="RememberProcessState" />
+        <transition name="next" to="ProcessRegistryHeader" />
         <transition name="error" to="EndRegistryProcessing" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
@@ -46,45 +46,13 @@
         </event>
     </decision>
 
-	<task-node name="RememberProcessState">
-		<task name="startThread">
-			<timer duedate="#{startTime}" transition="process"/>
-		</task>
-		<transition name="process" to="ImportConsumers" />
-	</task-node>
-
-	<decision name="ImportConsumers">
-		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="SetRegistryProcessingStatus" />
-        <transition name="error" to="SetRegistryProcessingWithErrorStatus" />
-		<transition name="end" to="end" />
-        <event type="node-enter">
-            <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-                <targetBean>importConsumersActionHandler</targetBean>
-                <factoryKey>jbpmConfiguration</factoryKey>
-            </action>
-        </event>
-    </decision>
-
-	<decision name="SetRegistryProcessingStatus">
+	<decision name="ProcessRegistryHeader">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRecordsRange" />
         <transition name="error" to="EndRegistryProcessing" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-                <targetBean>setNextRegistrySuccessStatusActionHandler</targetBean>
-                <factoryKey>jbpmConfiguration</factoryKey>
-            </action>
-        </event>
-    </decision>
-
-	<decision name="SetRegistryProcessingWithErrorStatus">
-		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="EndRegistryProcessing" />
-        <transition name="error" to="EndRegistryProcessing" />
-        <event type="node-enter">
-            <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-                <targetBean>setNextRegistrySuccessStatusActionHandler</targetBean>
+                <targetBean>processRegistryHeaderActionHandler</targetBean>
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>

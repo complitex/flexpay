@@ -136,4 +136,14 @@
 		</property>
 	</bean>
 
+	<bean id="processRegistryVariableInstanceDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.ProcessRegistryVariableInstanceDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

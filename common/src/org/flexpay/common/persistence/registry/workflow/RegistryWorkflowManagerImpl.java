@@ -12,6 +12,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -46,32 +47,12 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 
 		transitions.put(LOADED_WITH_ERROR, Collections.<Integer>emptyList());
 
-		targets = CollectionUtils.list(START_PROCESSING);
+		targets = CollectionUtils.list(PROCESSING);
 		transitions.put(LOADED, targets);
-
-		targets = CollectionUtils.list(PROCESSING_IMPORT_CONSUMER);
-		transitions.put(START_PROCESSING, targets);
-		processingStates.add(START_PROCESSING);
 
 		targets = CollectionUtils.list(PROCESSED, PROCESSING_WITH_ERROR, PROCESSING_CANCELED);
 		transitions.put(PROCESSING, targets);
 		processingStates.add(PROCESSING);
-
-		targets = CollectionUtils.list(PROCESSED_IMPORT_CONSUMER, PROCESSING_IMPORT_CONSUMER_WITH_ERROR);
-		transitions.put(PROCESSING_IMPORT_CONSUMER, targets);
-		processingStates.add(PROCESSING_IMPORT_CONSUMER);
-
-		targets = CollectionUtils.list(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, PROCESSING_CANCELED);
-		transitions.put(PROCESSING_IMPORT_CONSUMER_WITH_ERROR, targets);
-		processingStates.add(PROCESSING_IMPORT_CONSUMER_WITH_ERROR);
-
-		targets = CollectionUtils.list(PROCESSING, PROCESSING_WITH_ERROR, PROCESSING_CANCELED);
-		transitions.put(PROCESSED_IMPORT_CONSUMER, targets);
-		processingStates.add(PROCESSED_IMPORT_CONSUMER);
-
-		targets = CollectionUtils.list(PROCESSING_WITH_ERROR, PROCESSED_WITH_ERROR);
-		transitions.put(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, targets);
-		processingStates.add(PROCESSED_IMPORT_CONSUMER_WITH_ERROR);
 
 		// allow set processed with errors if there are any not processed records
 		targets = CollectionUtils.list(ROLLBACKING, PROCESSED_WITH_ERROR);
@@ -81,18 +62,18 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		transitions.put(PROCESSING_WITH_ERROR, targets);
 		processingStates.add(PROCESSING_WITH_ERROR);
 
-		targets = CollectionUtils.list(START_PROCESSING, ROLLBACKING);
+		targets = CollectionUtils.list(PROCESSING, ROLLBACKING);
 		transitions.put(PROCESSED_WITH_ERROR, targets);
 		transitionsToProcessing.add(PROCESSED_WITH_ERROR);
 
-		targets = CollectionUtils.list(START_PROCESSING, ROLLBACKING);
+		targets = CollectionUtils.list(PROCESSING, ROLLBACKING);
 		transitions.put(PROCESSING_CANCELED, targets);
 		transitionsToProcessing.add(PROCESSING_CANCELED);
 
 		targets = CollectionUtils.list(ROLLBACKED);
 		transitions.put(ROLLBACKING, targets);
 
-		targets = CollectionUtils.list(START_PROCESSING);
+		targets = CollectionUtils.list(PROCESSING);
 		transitions.put(ROLLBACKED, targets);
 		transitionsToProcessing.add(ROLLBACKED);
 	}
@@ -280,7 +261,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @throws TransitionNotAllowed if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING}
 	 *                              or {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void markProcessingHasError(Registry registry) throws TransitionNotAllowed {
 		Integer code = code(registry);
 		if (!processingStates.contains(code)) {

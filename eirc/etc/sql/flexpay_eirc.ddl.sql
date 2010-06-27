@@ -973,6 +973,18 @@
         primary key (id)
     ) comment='EIRC Personal accounts table';
 
+    create table eirc_process_registry_variable_instance_tbl (
+        id bigint not null auto_increment,
+        version integer not null,
+        process_id bigint not null unique,
+        registry_id bigint not null comment 'Processing registry',
+        char_point bigint,
+        last_processed_registry_record bigint,
+        processed_count_lines integer,
+        processed_count_records integer,
+        primary key (id)
+    );
+
     create table eirc_quittance_details_payments_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
@@ -992,8 +1004,6 @@
 
     create table eirc_quittance_details_tbl (
         id bigint not null auto_increment,
-        consumer_id bigint not null comment 'Consumer reference',
-        registry_record_id bigint not null comment 'Source registry record reference',
         incoming_balance decimal(19,2) comment 'incoming balance',
         outgoing_balance decimal(19,2) comment 'Outgoing balance',
         amount decimal(19,5) comment 'Amount',
@@ -1004,6 +1014,8 @@
         subsidy decimal(19,5) comment 'Subsidy amount',
         payment decimal(19,5) comment 'Payments amount for previous period',
         month datetime not null comment 'Quittance month',
+        consumer_id bigint not null comment 'Consumer reference',
+        registry_record_id bigint not null comment 'Source registry record reference',
         primary key (id)
     ) comment='Service provider quittance details';
 
@@ -1045,12 +1057,12 @@
 
     create table eirc_quittances_tbl (
         id bigint not null auto_increment,
-        service_organization_id bigint not null comment 'Service organization reference',
-        eirc_account_id bigint not null comment 'Eirc account reference',
         order_number integer not null comment 'quittance order number for date till',
         date_from datetime not null comment 'Quittance date from',
         date_till datetime not null comment 'Quittance date till',
         creation_date datetime not null comment 'Quittance creation date',
+        service_organization_id bigint not null comment 'Service organization reference',
+        eirc_account_id bigint not null comment 'Eirc account reference',
         primary key (id)
     ) comment='Quittance';
 
@@ -2308,6 +2320,12 @@
         add constraint FK_eirc_eirc_accounts_consumer_info_id 
         foreign key (consumer_info_id) 
         references eirc_consumer_infos_tbl (id);
+
+    alter table eirc_process_registry_variable_instance_tbl 
+        add index FK_common_registry_tbl_process_variable_instance_id (registry_id), 
+        add constraint FK_common_registry_tbl_process_variable_instance_id 
+        foreign key (registry_id) 
+        references common_registries_tbl (id);
 
     alter table eirc_quittance_details_payments_tbl 
         add index FK_eirc_quittance_details_payments_tbl_payment_status_id (payment_status_id), 

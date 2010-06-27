@@ -24,7 +24,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	private RegistryWorkflowManager registryWorkflowManager;
 
 	private RegistryRecordStatusService statusService;
-	private ImportErrorDao errorDao;
+	protected ImportErrorDao errorDao;
 
 	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
 
@@ -123,7 +123,6 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 		}
 
 		markRegistryAsHavingError(record);
-		errorDao.create(error);
 		record.setImportError(error);
 		setNextStatus(record, allowedCodes.get(1));
 	}

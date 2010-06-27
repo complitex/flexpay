@@ -1,12 +1,12 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
@@ -14,14 +14,10 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.eirc.persistence.exchange.conditions.AccountPersonChangeCondition;
 import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.ConsumerService;
-import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +31,21 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 
 	private static final Logger log = LoggerFactory.getLogger(SetResponsiblePersonOperation.class);
 	private ServiceOperationsFactory factory;
+
+	static private final StopWatch getConsumerWatch = new StopWatch();
+	static private final StopWatch consumerWasProcessedWatch = new StopWatch();
+	static private final StopWatch getEircAccountWatch = new StopWatch();
+
+	static {
+		getConsumerWatch.start();
+		getConsumerWatch.suspend();
+
+		consumerWasProcessedWatch.start();
+		consumerWasProcessedWatch.suspend();
+
+		getEircAccountWatch.start();
+		getEircAccountWatch.suspend();
+	}
 
 	public SetResponsiblePersonOperation(ServiceOperationsFactory factory, List<String> datum)
 			throws InvalidContainerException {
@@ -55,23 +66,35 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
 
 		RegistryRecord record = context.getCurrentRecord();
-		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
+		Consumer consumer;
+		getConsumerWatch.resume();
+		try {
+			consumer = ContainerProcessHelper.getConsumer(record, factory);
+		} finally {
+			getConsumerWatch.suspend();
+		}
+
 		boolean consumerWasProcessed = false;
-		for (RegistryRecord processedRegistryRecord : context.getOperationRecords()) {
-			if (processedRegistryRecord.getProperties() != null &&
-					processedRegistryRecord.getProperties() instanceof EircRegistryRecordProperties) {
+		consumerWasProcessedWatch.resume();
+		try {
+			for (RegistryRecord processedRegistryRecord : context.getOperationRecords()) {
+				if (processedRegistryRecord.getProperties() != null &&
+						processedRegistryRecord.getProperties() instanceof EircRegistryRecordProperties) {
 
-				EircRegistryRecordProperties registryRecordProperties = (EircRegistryRecordProperties) processedRegistryRecord.getProperties();
+					EircRegistryRecordProperties registryRecordProperties = (EircRegistryRecordProperties) processedRegistryRecord.getProperties();
 
-				if (!processedRegistryRecord.equals(record) && registryRecordProperties.hasFullConsumer() &&
-						consumer.equals(registryRecordProperties.getConsumer())) {
-					consumer = registryRecordProperties.getConsumer();
-					((EircRegistryRecordProperties) record.getProperties()).setFullConsumer(consumer);
-					consumerWasProcessed = true;
-					log.debug("Get consumer from processed registry");
-					break;
+					if (!processedRegistryRecord.equals(record) && registryRecordProperties.hasFullConsumer() &&
+							consumer.equals(registryRecordProperties.getConsumer())) {
+						consumer = registryRecordProperties.getConsumer();
+						((EircRegistryRecordProperties) record.getProperties()).setFullConsumer(consumer);
+						consumerWasProcessed = true;
+						log.debug("Get consumer from processed registry");
+						break;
+					}
 				}
 			}
+		} finally {
+			consumerWasProcessedWatch.suspend();
 		}
 
 		// find consumer and set FIO here
@@ -91,39 +114,51 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		}
 
 		log.debug("Updated consumer info first-middle-last names");
+		// todo Person does not use now
+		/*
+		EircAccount eircAccount;
+		getEircAccountWatch.resume();
+		try {
+			EircAccountService accountService = factory.getAccountService();
+			eircAccount = consumer.isEircAccountNew() ? consumer.getEircAccount() :
+									  accountService.readFull(consumer.getEircAccountStub());
+		} finally {
+			getEircAccountWatch.suspend();
+		}
 
-		EircAccountService accountService = factory.getAccountService();
-		EircAccount eircAccount = consumer.isEircAccountNew() ? consumer.getEircAccount() :
-								  accountService.readFull(consumer.getEircAccountStub());
 		if (eircAccount == null) {
 			throw new IllegalStateException("EIRC account not found for consumer #" + consumer.getId());
 		}
 
 		// setup consumers responsible person
+
 		Person person = findResponsiblePerson(record, fName, mName, lName);
 		setupResponsiblePerson(info, person, eircAccount);
+
 		if (!consumerWasProcessed) {
 			saveConsumers(eircAccount, info, container);
 		}
 
-		log.debug("Set responsible person: {}", person);
+//		log.debug("Set responsible person: {}", person);
 
 		// check if need to setup eirc account responsible person
 		AccountPersonChangeCondition condition = factory.getConditionsFactory().getAccountPersonChangeCondition();
 		if (condition.needUpdatePerson(eircAccount, consumer)) {
-			eircAccount.setPerson(person);
+//			eircAccount.setPerson(person);
 			if (!consumerWasProcessed) {
 				container.addUpdate(new DelayedUpdateEircAccount(eircAccount, factory.getAccountService()));
 			}
 		}
-
+              */
+		// todo correction on consumer we not use
 		// update corrections
+		/*
 		Registry registry = context.getRegistry();
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
 		Organization sender = factory.getOrganizationService().readFull(registryProperties.getSenderStub());
 		Stub<DataSourceDescription> sd = sender.sourceDescriptionStub();
 		updateCorrections(info, record, eircAccount, sd, container);
-
+		*/
 		return container;
 	}
 
@@ -208,6 +243,11 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 
 	private void setServiceCode(RawConsumerData data, String serviceCode) {
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, serviceCode);
+	}
+
+	public static void printWatch() {
+		log.debug("Time get consumer: {}, consumer was processed: {}, get eirc account: {}",
+				new Object[]{getConsumerWatch, consumerWasProcessedWatch, getEircAccountWatch});
 	}
 
 }

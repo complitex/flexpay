@@ -102,7 +102,7 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="read">cacheName=orgsFlexpayCache</prop>
+				<prop key="read*">cacheName=orgsFlexpayCache</prop>
 				<prop key="listOrganizations">cacheName=orgsFlexpayCache</prop>
 			</props>
 		</property>
