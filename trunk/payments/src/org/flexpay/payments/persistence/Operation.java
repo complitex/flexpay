@@ -281,7 +281,7 @@ public class Operation extends DomainObject {
 
 	public BigDecimal documentsSumm() {
 
-		BigDecimal summ = BigDecimal.ZERO;
+		BigDecimal summ = new BigDecimal("0.00");
 		for (Document document : documents) {
 			summ = summ.add(document.getSumm());
 		}

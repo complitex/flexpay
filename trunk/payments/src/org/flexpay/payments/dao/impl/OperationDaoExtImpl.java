@@ -3,12 +3,10 @@ package org.flexpay.payments.dao.impl;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +15,8 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import static org.flexpay.common.util.CollectionUtils.map;
 
 public class OperationDaoExtImpl extends HibernateDaoSupport implements OperationDaoExt {
 
@@ -34,7 +27,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, final Long serviceTypeId, final Date begin, final Date end,
                                         final BigDecimal minimalSum, final BigDecimal maximalSum, final Page<Operation> pager) {
 
-		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
+		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder filterHql = getCashboxDocumentSearchHql(serviceTypeId, begin, end, minimalSum, maximalSum);
 		final Long cashboxId = cashbox.getId();
@@ -212,37 +205,35 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
     @SuppressWarnings({"unchecked"})
     @Override
     public Operation getLastPaymentPointPaymentOperation(final Long paymentPointId, final Date beginDate, final Date endDate) {
-        return (Operation) getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback() {
             @Override
-            public Operation doInHibernate(Session session) throws HibernateException {
-
-                List<Operation> results = session.getNamedQuery("Operation.listLastPaymentPointPaymentOperations").
+            public List<Operation> doInHibernate(Session session) throws HibernateException {
+                return session.getNamedQuery("Operation.listLastPaymentPointPaymentOperations").
                         setLong(0, paymentPointId).
-                        setDate(1, beginDate).
-                        setDate(2, endDate).
+                        setTimestamp(1, beginDate).
+                        setTimestamp(2, endDate).
                         setMaxResults(1).list();
-
-                return results.isEmpty() ? null : results.get(0);
             }
         });
+
+        return result.isEmpty() ? null : result.get(0);
     }
 
     @SuppressWarnings({"unchecked"})
     @Override
     public Operation getLastCashboxPaymentOperation(final Long cashboxId, final Date beginDate, final Date endDate) {
-        return (Operation) getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback() {
             @Override
-            public Operation doInHibernate(Session session) throws HibernateException {
-
-                List<Operation> results = session.getNamedQuery("Operation.listLastCashboxPaymentOperations").
+            public List<Operation> doInHibernate(Session session) throws HibernateException {
+                return session.getNamedQuery("Operation.listLastCashboxPaymentOperations").
                         setLong(0, cashboxId).
-                        setDate(1, beginDate).
-                        setDate(2, endDate).
+                        setTimestamp(1, beginDate).
+                        setTimestamp(2, endDate).
                         setMaxResults(1).list();
-
-                return results.isEmpty() ? null : results.get(0);
             }
         });
+
+        return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
@@ -254,7 +245,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	public void deleteAllBlankOperations() {
 		getHibernateTemplate().execute(new HibernateCallback() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Operation.deleteAllBlankOperations").setLong(0, 6).executeUpdate();
 				return null;
 			}

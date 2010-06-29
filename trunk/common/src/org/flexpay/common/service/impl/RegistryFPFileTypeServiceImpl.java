@@ -40,6 +40,7 @@ public class RegistryFPFileTypeServiceImpl implements RegistryFPFileTypeService 
         return findRegistryFPFileTypes.isEmpty() ? null : findRegistryFPFileTypes.get(0);
     }
 
+    @NotNull
     @Override
     public List<RegistryFPFileType> findByCodes(@NotNull Collection<Integer> codes) {
         return registryFPFileTypeDao.findByCodes(codes);

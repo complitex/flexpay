@@ -4,6 +4,7 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.payments.persistence.ServiceType;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ServiceTypeDao extends GenericDao<ServiceType, Long> {
@@ -21,5 +22,7 @@ public interface ServiceTypeDao extends GenericDao<ServiceType, Long> {
 	 * @return list of service types
 	 */
 	List<ServiceType> findAllServiceTypes();
+
+    List<ServiceType> findByCodes(Collection<Integer> codes);
 
 }
