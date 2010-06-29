@@ -1,6 +1,5 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
@@ -24,9 +23,10 @@ import java.util.Set;
 
 import static org.apache.commons.lang.time.DateUtils.addDays;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.persistence.registry.RegistryFPFileType.FP_FORMAT;
+import static org.flexpay.common.persistence.registry.RegistryFPFileType.MB_FORMAT;
 import static org.flexpay.common.util.CollectionUtils.*;
 import static org.flexpay.common.util.DateUtil.*;
-import static org.flexpay.common.persistence.registry.RegistryFPFileType.*;
 
 public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Registry> {
 
@@ -148,13 +148,13 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
         return mbType;
     }
 
-    public Organization getSenderOrg(Map<Long, Organization> orgs, RegistryProperties properties) {
+    public Organization getSenderOrg(RegistryProperties properties) {
 		EircRegistryProperties props = (EircRegistryProperties) properties;
         log.debug("Get sender org with id {}", props.getSenderStub().getId());
 		return orgs.get(props.getSenderStub().getId());
 	}
 
-	public Organization getRecipientOrg(Map<Long, Organization> orgs, RegistryProperties properties) {
+	public Organization getRecipientOrg(RegistryProperties properties) {
 		EircRegistryProperties props = (EircRegistryProperties) properties;
         log.debug("Get recipient org with id {}", props.getRecipientStub().getId());
 		return orgs.get(props.getRecipientStub().getId());

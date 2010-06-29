@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -79,6 +80,16 @@ public interface ServiceTypeService {
 	@Secured (Roles.SERVICE_TYPE_READ)
 	@NotNull
 	ServiceType getServiceType(int code) throws IllegalArgumentException;
+
+    /**
+     * Find service types by its codes
+     *
+     * @param codes Service type codes
+     * @return found service types
+     */
+    @Secured (Roles.SERVICE_TYPE_READ)
+    @NotNull
+    List<ServiceType> getByCodes(Collection<Integer> codes);
 
 	/**
 	 * Initialize filter

@@ -16,14 +16,19 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
 
 	private Registry registry = new Registry();
 	private List<RegistryRecord> records = list();
+    private Map<Integer, ServiceType> types = map();
 
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
@@ -70,6 +75,24 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 			log.debug("Total records found: {}", records.size());
 		}
 
+        if (types == null) {
+            types = map();
+        }
+
+/*
+        Set<Integer> typeCodes = set();
+
+        for (RegistryRecord record : records) {
+            typeCodes.add(Integer.parseInt(record.getServiceCode()));
+        }
+
+        List<ServiceType> typesList = serviceTypeService.getByCodes(typeCodes);
+        for (ServiceType type : typesList) {
+            types.put(type.getCode(), type);
+        }
+*/
+
+
 		return SUCCESS;
 	}
 
@@ -86,9 +109,8 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		return SUCCESS;
 	}
 
-	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = serviceTypeService.read(stub(typeStub));
-		return getTranslationName(type.getTypeNames());
+	public String getServiceTypeName(String typeCode) throws FlexPayException {
+		return getTranslationName(types.get(Integer.parseInt(typeCode)).getTypeNames());
 	}
 
 	public Registry getRegistry() {

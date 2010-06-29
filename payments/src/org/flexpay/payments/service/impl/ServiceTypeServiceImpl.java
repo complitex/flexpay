@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @param objectIds Identifiers of service type to disable
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void disable(Set<Long> objectIds) {
 		log.debug("Disabling service types");
 		for (Long id : objectIds) {
@@ -59,13 +61,13 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @param pager Page
 	 * @return list of Service types for current page
 	 */
+    @Override
 	public List<ServiceType> listServiceTypes(Page<ServiceType> pager) {
-
 		return serviceTypeDao.findServiceTypes(pager);
 	}
 
+    @Override
 	public List<ServiceType> getAllServiceTypes() {
-
 		return serviceTypeDao.findAllServiceTypes();
 	}
 
@@ -75,6 +77,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @param stub Service type stub
 	 * @return ServiceType
 	 */
+    @Override
 	public ServiceType read(@NotNull Stub<ServiceType> stub) {
 		log.debug("Reading service type {}", stub);
 		return serviceTypeDao.readFull(stub.getId());
@@ -88,6 +91,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 *          if validation error occurs
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public ServiceType create(@NotNull ServiceType type) throws FlexPayExceptionContainer {
 
 		validate(type);
@@ -109,6 +113,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+    @Override
 	public ServiceType update(@NotNull ServiceType type) throws FlexPayExceptionContainer {
 
 		validate(type);
@@ -132,6 +137,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(ServiceType type) throws FlexPayExceptionContainer {
+
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		boolean defaultNameFound = false;
@@ -184,6 +190,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
 	@NotNull
+    @Override
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
 
 		log.debug("Getting service type by code {}", code);
@@ -195,12 +202,19 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		return type;
 	}
 
-	/**
+    @NotNull
+    @Override
+    public List<ServiceType> getByCodes(Collection<Integer> codes) {
+        return serviceTypeDao.findByCodes(codes);
+    }
+
+    /**
 	 * Initialize filter
 	 *
 	 * @param serviceTypeFilter Filter to initialize
 	 * @return Filter back
 	 */
+    @Override
 	public ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter) {
 
 		serviceTypeFilter.setServiceTypes(getAllServiceTypes());
