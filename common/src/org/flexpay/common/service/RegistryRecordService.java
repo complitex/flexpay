@@ -60,6 +60,16 @@ public interface RegistryRecordService {
 	List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter,
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
+    /**
+     * List registry records
+     *
+     * @param record	Record for template
+     * @param correctionType Type of correction
+     * @param pager				 Page
+     * @return list of filtered registry records
+     */
+    List<RegistryRecord> listRecords(RegistryRecord record, String correctionType, Page<RegistryRecord> pager);
+
 	/**
 	 * List registry records
 	 *
@@ -85,6 +95,14 @@ public interface RegistryRecordService {
 	 * @throws Exception if failure occurs
 	 */
 	RegistryRecord removeError(RegistryRecord record) throws Exception;
+
+    /**
+     * Set records status to fixed and invalidate error
+     *
+     * @param records Registry records
+     * @throws Exception if failure occurs
+     */
+    void removeError(Collection<RegistryRecord> records) throws Exception;
 
 	/**
 	 * Find registry records by identifiers

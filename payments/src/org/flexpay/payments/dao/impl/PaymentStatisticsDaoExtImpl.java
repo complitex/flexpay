@@ -33,10 +33,10 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 			ServicePaymentsStatistics stats = new ServicePaymentsStatistics();
 			stats.setOrganizationId((Long) row[0]);
 			stats.setServiceId((Long) row[1]);
-			stats.setPayedCacheSumm((BigDecimal) row[2]);
-			stats.setPayedCachelessSumm(BigDecimal.ZERO);
-			stats.setReturnedCacheSumm(BigDecimal.ZERO);
-			stats.setReturnedCachelessSumm(BigDecimal.ZERO);
+			stats.setPayedCacheSum((BigDecimal) row[2]);
+			stats.setPayedCachelessSum(BigDecimal.ZERO);
+			stats.setReturnedCacheSum(BigDecimal.ZERO);
+			stats.setReturnedCachelessSum(BigDecimal.ZERO);
 			result.add(stats);
 		}
 

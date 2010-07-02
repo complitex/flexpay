@@ -8,10 +8,9 @@
 
 	<!-- Data sources -->
 	<bean id="consumersDataSource"
-		  class="org.flexpay.eirc.dao.importexport.RawConsumersDataSource">
-		<property name="registryRecordDao" ref="spRegistryRecordDao" />
-		<property name="registryRecordDaoExt" ref="spRegistryRecordDaoExt" />
-	</bean>
+		  class="org.flexpay.eirc.dao.importexport.RawConsumersDataSource"
+          p:registryRecordDao-ref="spRegistryRecordDao"
+          p:registryRecordDaoExt-ref="spRegistryRecordDaoExt" />
 
 	<bean id="classToTypeRegistryEirc"
 		  autowire-candidate="false"

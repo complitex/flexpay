@@ -13,17 +13,9 @@ public class FlexPayExceptionContainer extends Exception {
 
 	private Collection<FlexPayException> exceptions = new ArrayList<FlexPayException>();
 
-	/**
-	 * Constructs a new FlexPayExceptionContainer.
-	 */
 	public FlexPayExceptionContainer() {
 	}
 
-	/**
-	 * Construct container from a set of exceptions
-	 *
-	 * @param exs Exceptions
-	 */
 	public FlexPayExceptionContainer(FlexPayException... exs) {
 		exceptions.addAll(Arrays.asList(exs));
 	}
@@ -50,20 +42,10 @@ public class FlexPayExceptionContainer extends Exception {
 		}
 	}
 
-	/**
-	 * Setter for property 'exceptions'.
-	 *
-	 * @param exceptions Value to set for property 'exceptions'.
-	 */
 	public void setExceptions(Collection<FlexPayException> exceptions) {
 		this.exceptions = exceptions;
 	}
 
-	/**
-	 * Getter for property 'exceptions'.
-	 *
-	 * @return Value for property 'exceptions'.
-	 */
 	public Collection<FlexPayException> getExceptions() {
 		return exceptions;
 	}

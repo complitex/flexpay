@@ -8,10 +8,10 @@ public class ServicePaymentsStatistics {
 
 	private Long organizationId;
 	private Long serviceId;
-	private BigDecimal payedCacheSumm = BigDecimal.ZERO;
-	private BigDecimal payedCachelessSumm = BigDecimal.ZERO;
-	private BigDecimal returnedCacheSumm = BigDecimal.ZERO;
-	private BigDecimal returnedCachelessSumm = BigDecimal.ZERO;
+	private BigDecimal payedCacheSum = BigDecimal.ZERO;
+	private BigDecimal payedCachelessSum = BigDecimal.ZERO;
+	private BigDecimal returnedCacheSum = BigDecimal.ZERO;
+	private BigDecimal returnedCachelessSum = BigDecimal.ZERO;
 
 	public ServicePaymentsStatistics() {
 	}
@@ -26,10 +26,10 @@ public class ServicePaymentsStatistics {
 
 		this.organizationId = organizationId;
 		this.serviceId = serviceId;
-		this.payedCacheSumm = payedCacheSum;
-		this.payedCachelessSumm = payedCachelessSum;
-		this.returnedCacheSumm = returnedCacheSum;
-		this.returnedCachelessSumm = returnedCachelessSum;
+		this.payedCacheSum = payedCacheSum;
+		this.payedCachelessSum = payedCachelessSum;
+		this.returnedCacheSum = returnedCacheSum;
+		this.returnedCachelessSum = returnedCachelessSum;
 	}
 
 	public Long getOrganizationId() {
@@ -48,36 +48,36 @@ public class ServicePaymentsStatistics {
 		this.serviceId = serviceId;
 	}
 
-	public BigDecimal getPayedCacheSumm() {
-		return payedCacheSumm;
+	public BigDecimal getPayedCacheSum() {
+		return payedCacheSum;
 	}
 
-	public void setPayedCacheSumm(BigDecimal payedCacheSumm) {
-		this.payedCacheSumm = payedCacheSumm;
+	public void setPayedCacheSum(BigDecimal payedCacheSum) {
+		this.payedCacheSum = payedCacheSum;
 	}
 
-	public BigDecimal getPayedCachelessSumm() {
-		return payedCachelessSumm;
+	public BigDecimal getPayedCachelessSum() {
+		return payedCachelessSum;
 	}
 
-	public void setPayedCachelessSumm(BigDecimal payedCachelessSumm) {
-		this.payedCachelessSumm = payedCachelessSumm;
+	public void setPayedCachelessSum(BigDecimal payedCachelessSum) {
+		this.payedCachelessSum = payedCachelessSum;
 	}
 
-	public BigDecimal getReturnedCacheSumm() {
-		return returnedCacheSumm;
+	public BigDecimal getReturnedCacheSum() {
+		return returnedCacheSum;
 	}
 
-	public void setReturnedCacheSumm(BigDecimal returnedCacheSumm) {
-		this.returnedCacheSumm = returnedCacheSumm;
+	public void setReturnedCacheSum(BigDecimal returnedCacheSum) {
+		this.returnedCacheSum = returnedCacheSum;
 	}
 
-	public BigDecimal getReturnedCachelessSumm() {
-		return returnedCachelessSumm;
+	public BigDecimal getReturnedCachelessSum() {
+		return returnedCachelessSum;
 	}
 
-	public void setReturnedCachelessSumm(BigDecimal returnedCachelessSumm) {
-		this.returnedCachelessSumm = returnedCachelessSumm;
+	public void setReturnedCachelessSum(BigDecimal returnedCachelessSum) {
+		this.returnedCachelessSum = returnedCachelessSum;
 	}
 
 	@Override
@@ -85,10 +85,10 @@ public class ServicePaymentsStatistics {
 		return new ToStringBuilder(this).
 				append("organizationId", organizationId).
 				append("serviceId", serviceId).
-				append("payedCacheSum", payedCacheSumm).
-				append("payedCachelessSum", payedCachelessSumm).
-				append("returnedCacheSum", returnedCacheSumm).
-				append("returnedCachelessSum", returnedCachelessSumm).
+				append("payedCacheSum", payedCacheSum).
+				append("payedCachelessSum", payedCachelessSum).
+				append("returnedCacheSum", returnedCacheSum).
+				append("returnedCachelessSum", returnedCachelessSum).
 				toString();
 	}
 

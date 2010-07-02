@@ -246,9 +246,9 @@
 	</bean>
 
 	<bean id="spRegistryRecordDaoExt"
-		  class="org.flexpay.common.dao.registry.impl.RegistryRecordDaoExtImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+		  class="org.flexpay.common.dao.registry.impl.RegistryRecordDaoExtImpl"
+          p:dataSource-ref="dataSource"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<bean id="spRegistryTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
@@ -303,6 +303,10 @@
 	<bean id="registryDaoExt"
 		  class="org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
+
+    <bean id="importErrorDaoExt"
+          class="org.flexpay.common.dao.impl.ImportErrorDaoExtImpl"
+          p:dataSource-ref="dataSource" />
 
 	<bean id="userRoleDao" parent="abstractDao">
 		<property name="proxyInterfaces"

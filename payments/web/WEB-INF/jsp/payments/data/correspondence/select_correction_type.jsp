@@ -15,6 +15,11 @@
     </tr>
     <tr class="cols_1">
         <td class="col">
+            <input type="radio" name="type" onclick="selectType('streetType');" /> <s:text name="ab.street.type" />
+        </td>
+    </tr>
+    <tr class="cols_1">
+        <td class="col">
             <input type="radio" name="type" onclick="selectType('building');" /> <s:text name="ab.building" />
         </td>
     </tr>

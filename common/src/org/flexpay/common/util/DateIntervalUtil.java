@@ -55,8 +55,7 @@ public class DateIntervalUtil {
 	 * @param dateInterval Interval to find candidate in
 	 * @return DateInterval from collection that lays inside the specified one, or <code>null</code> if not found
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	DI getInterval(Collection<DI> intervals, DI dateInterval) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> DI getInterval(Collection<DI> intervals, DI dateInterval) {
 
 		for (DI di : intervals) {
 			if (areIntersecting(di, dateInterval)) {
@@ -106,8 +105,7 @@ public class DateIntervalUtil {
 	 * @param tl TimeLine to check
 	 * @return <code>true</code> if time line is consistent, or <code>false</code> otherwise
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	boolean isValid(TimeLine<T, DI> tl) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> boolean isValid(TimeLine<T, DI> tl) {
 		Date date = ApplicationConfig.getPastInfinite();
 		for (DI di : tl.getIntervals()) {
 			if (!isValid(di)) {
@@ -141,8 +139,7 @@ public class DateIntervalUtil {
 	 * @param di DateInterval
 	 * @return an interval copy
 	 */
-	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	DI copy(DI di) {
+	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> DI copy(DI di) {
 		return di.copy();
 	}
 
@@ -152,8 +149,7 @@ public class DateIntervalUtil {
 	 * @param dis List of intervals to update
 	 * @param di  DateInterval to add
 	 */
-	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	void add(List<DI> dis, DI di) {
+	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> void add(List<DI> dis, DI di) {
 		if (di != null && isValid(di)) {
 			dis.add(di);
 		}
@@ -166,8 +162,8 @@ public class DateIntervalUtil {
 	 * @param diNew New interval
 	 * @return List of intervals as a result of intersection operation
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	List<DI> intersect(DI diOld, DI diNew) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> List<DI> intersect(DI diOld, DI diNew) {
+
 		List<DI> dis = new ArrayList<DI>(3);
 
 		if (!areIntersecting(diOld, diNew)) {
@@ -213,8 +209,7 @@ public class DateIntervalUtil {
 	 * @param tl Time line
 	 * @return Updated timeline of intervals that contains no two serial equal intervals
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	TimeLine<T, DI> joinEqualIntervals(TimeLine<T, DI> tl) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> TimeLine<T, DI> joinEqualIntervals(TimeLine<T, DI> tl) {
 		return new TimeLine<T, DI>(join(tl.getIntervals()));
 	}
 
@@ -224,8 +219,7 @@ public class DateIntervalUtil {
 	 * @param dis List of date intervals
 	 * @return Updated list of intervals that contains no two serial equal intervals
 	 */
-	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	List<DI> join(List<DI> dis) {
+	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> List<DI> join(List<DI> dis) {
 		List<DI> disNew = new ArrayList<DI>(dis.size());
 		DI prev = null;
 		for (DI di : dis) {
@@ -254,8 +248,7 @@ public class DateIntervalUtil {
 	 * @param di DateInterval to add
 	 * @return new time line
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	TimeLine<T, DI> addInterval(TimeLine<T, DI> tl, DI di) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> TimeLine<T, DI> addInterval(TimeLine<T, DI> tl, DI di) {
 		List<DI> tlNew = new ArrayList<DI>();
 		for (DI diOld : tl.getIntervals()) {
 			diOld.invalidate();
@@ -277,8 +270,8 @@ public class DateIntervalUtil {
 	 * @param di DateInterval to delete
 	 * @return new time line
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	TimeLine<T, DI> deleteInterval(TimeLine<T, DI> tl, DI di) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> TimeLine<T, DI> deleteInterval(TimeLine<T, DI> tl, DI di) {
+
 		List<DI> dis = new ArrayList<DI>();
 
 		// if interval covers the whole time line - return time line with empty data
@@ -320,8 +313,7 @@ public class DateIntervalUtil {
 	 * @param newTl the second time line
 	 * @return intervals pairs of time line having no intersections
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	Pair<TimeLine<T, DI>, TimeLine<T, DI>> split(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> Pair<TimeLine<T, DI>, TimeLine<T, DI>> split(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
 		List<DI> disOld = new ArrayList<DI>();
 		List<DI> disNew = new ArrayList<DI>();
 
@@ -382,8 +374,7 @@ public class DateIntervalUtil {
 	 * @param newTl the second time line
 	 * @return List if different interval pairs
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	List<Pair<DI, DI>> diff(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> List<Pair<DI, DI>> diff(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
 		Pair<TimeLine<T, DI>, TimeLine<T, DI>> splittedPair = split(oldTl, newTl);
 		List<Pair<DI, DI>> diffs = new ArrayList<Pair<DI, DI>>();
 		Iterator<DI> itOld = splittedPair.getFirst().getIntervals().iterator();
@@ -405,8 +396,7 @@ public class DateIntervalUtil {
 	 * @param tl TimeLine to invalidate
 	 * @return Invalidated time line
 	 */
-	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	TimeLine<T, DI> invalidate(TimeLine<T, DI> tl) {
+	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> TimeLine<T, DI> invalidate(TimeLine<T, DI> tl) {
 		for (DI di : tl.getIntervals()) {
 			di.invalidate();
 		}
@@ -422,6 +412,6 @@ public class DateIntervalUtil {
 	 */
 	@NotNull
 	public static String[] format(@NotNull DateInterval<?, ?> di) {
-		return new String[]{DateUtil.format(di.getBegin()), DateUtil.format(di.getEnd())};
+		return new String[] {DateUtil.format(di.getBegin()), DateUtil.format(di.getEnd())};
 	}
 }

@@ -105,7 +105,8 @@
 		  factory-method="getRegistryFileService"
 		  p:registryDao-ref="spRegistryDao"
 		  p:registryRecordDao-ref="spRegistryRecordDao"
-		  p:registryFileDaoExt-ref="registryFileDaoExt" />
+		  p:registryFileDaoExt-ref="registryFileDaoExt"
+          p:registryRecordDaoExt-ref="spRegistryRecordDaoExt" />
 
 	<bean id="registryTypeService"
 		  class="org.flexpay.common.service.impl.RegistryTypeServiceImpl"
@@ -147,6 +148,8 @@
 	<bean id="registryRecordWorkflowManagerRW"
 		  class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManagerRW"
 		  parent="registryRecordWorkflowManagerRO"
+          p:errorDaoExt-ref="importErrorDaoExt"
+          p:recordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:recordDao-ref="spRegistryRecordDao" />
 
 	<bean id="registryRecordService"

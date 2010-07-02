@@ -475,7 +475,7 @@
 		where type.code = ?
 	</query>
 
-	<query name="Document.findCashboxServiceSumm"><![CDATA[
+	<query name="Document.findCashboxServiceSum"><![CDATA[
 		select sum(doc.summ)
 		from Document doc
 		where doc.operation.cashbox.id = ?
@@ -485,7 +485,7 @@
 		and doc.operation.registerDate <= ?
 	]]></query>
 
-	<query name="Document.findCashboxTotalSumm"><![CDATA[
+	<query name="Document.findCashboxTotalSum"><![CDATA[
 		select sum(doc.summ)
 		from Document doc
 		where doc.operation.cashbox.id = ?
@@ -494,7 +494,7 @@
 		and doc.operation.registerDate <= ?
 	]]></query>
 
-	<query name="Document.findPaymentPointServiceSumm"><![CDATA[
+	<query name="Document.findPaymentPointServiceSum"><![CDATA[
 		select sum(doc.summ)
 		from Document doc
 		where doc.operation.paymentPoint.id = ?
@@ -504,7 +504,7 @@
 		and doc.operation.registerDate <= ?
 	]]></query>
 
-	<query name="Document.findPaymentPointTotalSumm"><![CDATA[
+	<query name="Document.findPaymentPointTotalSum"><![CDATA[
 		select sum(doc.summ)
 		from Document doc
 		where doc.operation.paymentPoint.id = ?
@@ -513,7 +513,7 @@
 		and doc.operation.registerDate <= ?
 	]]></query>
 
-	<query name="Document.findOperationServiceSumm">
+	<query name="Document.findOperationServiceSum">
 		select doc.summ
 		from Document doc
 		where doc.operation.id = ?

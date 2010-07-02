@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.registry.workflow;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -67,6 +68,9 @@ public interface RegistryRecordWorkflowManager {
 	 *          if success transition is not allowed for some of the records
 	 */
 	void setNextSuccessStatus(Collection<RegistryRecord> records) throws TransitionNotAllowed;
+
+    void setNextStatusForErrorRecords(@NotNull Collection<RegistryRecord> records) throws TransitionNotAllowed;
+
 	/**
 	 * Set record status to fixed and invalidate error
 	 *

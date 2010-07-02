@@ -27,6 +27,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 * @param objId Raw data id
 	 * @return raw data
 	 */
+    @Override
 	public RawConsumerData getById(String objId) {
 		return convert(registryRecordDao.read(Long.parseLong(objId)));
 	}
@@ -34,6 +35,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	/**
 	 * Initialize data source
 	 */
+    @Override
 	public void initialize() {
 		pager = new Page<RegistryRecord>(500, 1);
 		Long[] values = registryRecordDaoExt.getMinMaxIdsForImporting(registry.getId());
@@ -67,6 +69,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	/**
 	 * Release all resources taken
 	 */
+    @Override
 	public void close() {
 	}
 
@@ -76,6 +79,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
+    @Override
 	public boolean hasNext() {
 		if (minMaxIds[0] == null || minMaxIds[1] == null || pager.isLastPage()) {
 			return false;
@@ -103,6 +107,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		return dataIterator.hasNext() && !pager.isLastPage();
 	}
 
+    @Override
 	public List<RawConsumerData> nextPage() {
 
 		if (!dataIterator.hasNext() && !hasNext()) {
@@ -125,6 +130,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		this.registry = registry;
 	}
 
+    @Override
 	protected RawConsumerData convert(RegistryRecord record) {
 		record.setRegistry(registry);
 		return RawConsumersDataUtil.convert(record);

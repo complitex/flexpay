@@ -190,6 +190,7 @@ public class ApplicationConfig implements ResourceLoaderAware {
 		}
 	}
 
+    @Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
 		log.debug("Setting resource loader {}", resourceLoader);
 		ApplicationConfig.resourceLoader = resourceLoader;

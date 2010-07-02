@@ -4,6 +4,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.util.Collection;
@@ -121,6 +122,7 @@ public class LockManager {
 		lockedSessions.clear();
 	}
 
+    @Required
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}

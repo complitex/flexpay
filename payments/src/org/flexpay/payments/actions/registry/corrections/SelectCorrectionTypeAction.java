@@ -11,13 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.persistence.DataCorrection.*;
 
 public class SelectCorrectionTypeAction extends FPActionSupport {
-
-	public final static String CORRECT_TYPE_STREET = "street";
-	public final static String CORRECT_TYPE_BUILDING = "building";
-	public final static String CORRECT_TYPE_APARTMENT = "apartment";
-	public final static String CORRECT_TYPE_PERSON = "person";
 
 	protected ClassToTypeRegistry typeRegistry;
 	private RegistryRecord record = new RegistryRecord();
@@ -48,6 +44,8 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 			int objectType = importError.getObjectType();
 			if (checkStreetType(objectType)) {
 				return "correctStreet";
+            } else if (checkStreetTypeType(objectType)) {
+                return "correctStreetType";
 			} else if (checkBuildingType(objectType)) {
 				return "correctBuilding";
 			} else if (checkApartmentType(objectType)) {
@@ -59,6 +57,8 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 			addActionError(getText("error.registry.record.unsupported_error_type"));
 		} else if (CORRECT_TYPE_STREET.equals(type)) {
 			return "correctStreet";
+        } else if (CORRECT_TYPE_STREET_TYPE.equals(type)) {
+            return "correctStreetType";
 		} else if (CORRECT_TYPE_BUILDING.equals(type)) {
 			return "correctBuilding";
 		} else if (CORRECT_TYPE_APARTMENT.equals(type)) {
@@ -88,7 +88,11 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
     }
 
     protected boolean checkStreetType(int objectType) {
-        return typeRegistry.getType(StreetType.class) == objectType || typeRegistry.getType(Street.class) == objectType;
+        return typeRegistry.getType(Street.class) == objectType;
+    }
+
+    protected boolean checkStreetTypeType(int objectType) {
+        return typeRegistry.getType(StreetType.class) == objectType;
     }
 
 	/**

@@ -1,7 +1,6 @@
 package org.flexpay.common.dao;
 
 import org.flexpay.common.persistence.UserRole;
-import org.flexpay.common.dao.GenericDao;
 
 import java.util.List;
 

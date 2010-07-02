@@ -28,8 +28,8 @@ public class RegistryHandleError implements HandleError {
 
 	private OrganizationService organizationService;
 
-	@Override
 	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
+    @Override
 	public ImportError handleError(Throwable t, ProcessingContext context) throws Exception {
 		String code = "eirc.error_code.unknown_error";
 		if (t instanceof FlexPayExceptionContainer) {

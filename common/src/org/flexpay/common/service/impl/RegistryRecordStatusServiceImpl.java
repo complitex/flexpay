@@ -6,6 +6,7 @@ import org.flexpay.common.service.RegistryRecordStatusService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,8 +15,10 @@ import java.util.List;
 public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private RegistryRecordStatusDao registryRecordStatusDao;
 
+    @Override
 	public RegistryRecordStatus findByCode(int code) {
 
 		log.debug("Finding status by code: {}", code);
@@ -41,6 +44,7 @@ public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusServ
 		return registryRecordStatusDao.findAll();
 	}
 
+    @Required
 	public void setSpRegistryRecordStatusDao(RegistryRecordStatusDao registryRecordStatusDao) {
 		this.registryRecordStatusDao = registryRecordStatusDao;
 	}

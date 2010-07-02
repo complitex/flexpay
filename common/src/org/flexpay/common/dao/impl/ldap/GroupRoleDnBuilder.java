@@ -2,8 +2,8 @@ package org.flexpay.common.dao.impl.ldap;
 
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DistinguishedName;
-import org.springframework.ldap.filter.Filter;
 import org.springframework.ldap.filter.EqualsFilter;
+import org.springframework.ldap.filter.Filter;
 
 import javax.naming.Name;
 

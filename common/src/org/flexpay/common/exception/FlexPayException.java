@@ -74,20 +74,10 @@ public class FlexPayException extends Exception {
 		super(message, cause);
 	}
 
-	/**
-	 * Getter for property 'errorKey'.
-	 *
-	 * @return Value for property 'errorKey'.
-	 */
 	public String getErrorKey() {
 		return errorKey;
 	}
 
-	/**
-	 * Getter for property 'params'.
-	 *
-	 * @return Value for property 'params'.
-	 */
 	public String[] getParams() {
 		return params;
 	}

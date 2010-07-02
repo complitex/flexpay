@@ -151,6 +151,17 @@ public class RawConsumerData extends RawData<Consumer> {
 				.toString();
 	}
 
+    /**
+     * Get correction id for street type
+     *
+     * @return Correction ID for street
+     */
+    public String getStreetTypeId() {
+        return new StringBuilder()
+                .append(getAddressStreetType())
+                .toString();
+    }
+
 	/**
 	 * Get correction id for consumer, includes Account number | service code
 	 *

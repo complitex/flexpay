@@ -3,11 +3,12 @@ package org.flexpay.common.util;
 import java.math.BigDecimal;
 
 public class BigDecimalFormat {
+
 	// Returns the BigDecimal value n with trailing
 	// zeroes removed.
 	public static BigDecimal trim(BigDecimal n) {
 		try {
-			while (true) {
+			for (;;) {
 				n = n.setScale(n.scale() - 1);
 			}
 		} catch (ArithmeticException e) {

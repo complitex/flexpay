@@ -8,6 +8,12 @@ import static org.flexpay.common.persistence.Stub.stub;
 
 public class DataCorrection extends DomainObject {
 
+    public final static String CORRECT_TYPE_STREET = "street";
+    public final static String CORRECT_TYPE_STREET_TYPE = "streetType";
+    public final static String CORRECT_TYPE_BUILDING = "building";
+    public final static String CORRECT_TYPE_APARTMENT = "apartment";
+    public final static String CORRECT_TYPE_PERSON = "person";
+
 	private String externalId;
 	private Long internalObjectId;
 	private int objectType;
@@ -60,6 +66,10 @@ public class DataCorrection extends DomainObject {
 		this.objectType = objectType;
 	}
 
+    public int getStringType() {
+        return objectType;
+    }
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
@@ -73,18 +83,30 @@ public class DataCorrection extends DomainObject {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+            return true;
+        }
+		if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+		if (!super.equals(o)) {
+            return false;
+        }
 
 		DataCorrection that = (DataCorrection) o;
 
-		if (objectType != that.objectType) return false;
-		if (dataSourceDescription != null ? !dataSourceDescription.equals(that.dataSourceDescription) : that.dataSourceDescription != null)
-			return false;
-		if (externalId != null ? !externalId.equals(that.externalId) : that.externalId != null) return false;
-		if (internalObjectId != null ? !internalObjectId.equals(that.internalObjectId) : that.internalObjectId != null)
-			return false;
+		if (objectType != that.objectType) {
+            return false;
+        }
+		if (dataSourceDescription != null ? !dataSourceDescription.equals(that.dataSourceDescription) : that.dataSourceDescription != null) {
+            return false;
+        }
+		if (externalId != null ? !externalId.equals(that.externalId) : that.externalId != null) {
+            return false;
+        }
+		if (internalObjectId != null ? !internalObjectId.equals(that.internalObjectId) : that.internalObjectId != null) {
+            return false;
+        }
 
 		return true;
 	}

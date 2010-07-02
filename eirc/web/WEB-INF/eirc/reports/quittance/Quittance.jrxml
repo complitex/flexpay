@@ -383,7 +383,7 @@
 						y="68"
 						width="103"
 						height="151"
-						key="subreport-services-summs"
+						key="subreport-services-sums"
 						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>

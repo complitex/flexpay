@@ -645,7 +645,7 @@ public class ImportServiceImpl implements ImportService {
 	}
 
 	@Required
-	public void setStreetDataConverter(DataConverter streetDataConverter) {
+	public void setStreetDataConverter(DataConverter<?, ?> streetDataConverter) {
 		this.streetDataConverter = streetDataConverter;
 	}
 

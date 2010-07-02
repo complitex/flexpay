@@ -1,7 +1,5 @@
 package org.flexpay.common.util.config;
 
-import org.flexpay.common.util.config.UserPreferences;
-
 public interface UserPreferencesFactory {
 
 	/**

@@ -26,7 +26,7 @@ public class Apartment extends DomainObjectWithStatus {
 	protected Apartment() {
 	}
 
-	public Apartment(@NotNull Long id) {
+	public Apartment(Long id) {
 		super(id);
 	}
 

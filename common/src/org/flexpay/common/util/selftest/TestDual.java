@@ -1,5 +1,6 @@
 package org.flexpay.common.util.selftest;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -15,6 +16,7 @@ public class TestDual {
 		}
 	}
 
+    @Required
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}

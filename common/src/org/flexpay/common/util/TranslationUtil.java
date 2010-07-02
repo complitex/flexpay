@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +12,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class TranslationUtil {
 

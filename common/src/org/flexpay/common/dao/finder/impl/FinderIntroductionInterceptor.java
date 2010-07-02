@@ -12,6 +12,7 @@ import org.springframework.aop.IntroductionInterceptor;
  */
 public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 
+    @Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
 		FinderExecutor executor = (FinderExecutor) methodInvocation.getThis();
@@ -40,6 +41,7 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 		}
 	}
 
+    @Override
 	public boolean implementsInterface(Class intf) {
 		return intf.isInterface() && (FinderExecutor.class.isAssignableFrom(intf) || MethodExecutor.class.isAssignableFrom(intf));
 	}
