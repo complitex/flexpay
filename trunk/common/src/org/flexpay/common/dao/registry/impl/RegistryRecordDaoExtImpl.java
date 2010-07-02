@@ -1,14 +1,15 @@
 package org.flexpay.common.dao.registry.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.transform;
 import org.flexpay.common.util.transform.Number2LongTransformer;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -16,17 +17,24 @@ import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements RegistryRecordDaoExt {
+import static org.flexpay.common.persistence.DataCorrection.*;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.transform;
+
+public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements RegistryRecordDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+
+    private HibernateTemplate hibernateTemplate;
 
 	/**
 	 * List registry records for import operation
@@ -43,7 +51,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 		StopWatch watch = new StopWatch();
 
 		watch.start();
-		List<RegistryRecord> records = getHibernateTemplate()
+		List<RegistryRecord> records = hibernateTemplate
 				.findByNamedQuery("RegistryRecord.listRecordsForImport", params);
 		watch.stop();
 
@@ -96,7 +104,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 									   new StringBuilder("select records_number from common_registries_tbl where id=?");
 		selectSql.append(fromWhereClause);
 
-		final List ids = getHibernateTemplate().executeFind(new HibernateCallback() {
+		final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
             @Override
 			public List doInHibernate(Session session) throws HibernateException {
 				log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
@@ -131,9 +139,9 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<RegistryRecord> result = getHibernateTemplate().executeFind(new HibernateCallback() {
+		List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery("RegistryRecord.listRecordsDetails")
 						.setParameterList("ids", transform(ids, new Number2LongTransformer()))
 						.list();
@@ -145,6 +153,154 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 
 		return result;
 	}
+
+    private void getCorrectionCriteria(StringBuilder fromWhereClause, List<Object> params, RegistryRecord record, String type) throws FlexPayException {
+
+        String corCity = "and city=? ";
+        String corStreetType = "and street_type=? ";
+        String corStreet = "and street_name=? ";
+        String corBuilding = "and building_number=? and bulk_number=? ";
+        String corApartment = "and apartment_number=? ";
+        String corPerson = "and first_name=? and middle_name=? and last_name=? ";
+
+        if (!CORRECT_TYPE_STREET_TYPE.equals(type)) {
+            fromWhereClause.append(corCity);
+            params.add(record.getCity());
+        }
+
+        if (CORRECT_TYPE_STREET_TYPE.equals(type)) {
+            fromWhereClause.append(corStreetType);
+            params.add(record.getStreetType());
+        } else if (CORRECT_TYPE_STREET.equals(type)) {
+            fromWhereClause.append(corStreetType).append(corStreet);
+            params.add(record.getStreetType());
+            params.add(record.getStreetName());
+        } else if (CORRECT_TYPE_BUILDING.equals(type)) {
+            fromWhereClause.append(corStreetType).append(corStreet).append(corBuilding);
+            params.add(record.getStreetType());
+            params.add(record.getStreetName());
+            params.add(record.getBuildingNum());
+            params.add(record.getBuildingBulkNum());
+        } else if (CORRECT_TYPE_APARTMENT.equals(type)) {
+            fromWhereClause.append(corStreetType).append(corStreet).append(corBuilding).append(corApartment);
+            params.add(record.getStreetType());
+            params.add(record.getStreetName());
+            params.add(record.getBuildingNum());
+            params.add(record.getBuildingBulkNum());
+            params.add(record.getApartmentNum());
+        } else if (CORRECT_TYPE_PERSON.equals(type)) {
+            fromWhereClause.append(corStreetType).append(corStreet).append(corBuilding).append(corApartment).append(corPerson);
+            params.add(record.getStreetType());
+            params.add(record.getStreetName());
+            params.add(record.getBuildingNum());
+            params.add(record.getBuildingBulkNum());
+            params.add(record.getFirstName());
+            params.add(record.getMiddleName());
+            params.add(record.getLastName());
+        } else {
+            log.warn("Incorrect type parameter {}", type);
+            throw new FlexPayException("Incorrect correction type", "payments.error.registry.incorrect_correction_type");
+        }
+
+    }
+
+    @SuppressWarnings ({"unchecked"})
+    @Override
+    public List<RegistryRecord> findRecordsWithThisError(RegistryRecord record, String correctionType, final Page<RegistryRecord> pager) {
+
+        final StringBuilder selectSql = new StringBuilder("select id ");
+        final StringBuilder sqlCount = new StringBuilder("select count(1) ");
+        StringBuilder fromWhereClause = new StringBuilder(
+                "from common_registry_records_tbl use index (I_registry_status, I_registry_errortype) " +
+                "where registry_id=? ");
+
+
+        final List<Object> params = list();
+        params.add(record.getRegistry().getId());
+
+        try {
+            getCorrectionCriteria(fromWhereClause, params, record, correctionType);
+        } catch (FlexPayException e) {
+            log.error("Incorrect correction type", e);
+            return list();
+        }
+
+        fromWhereClause.append("and record_status_id=? ");
+        params.add(record.getRecordStatus().getId());
+        fromWhereClause.append("and import_error_type=? ");
+        params.add(record.getImportErrorType());
+
+        selectSql.append(fromWhereClause);
+        sqlCount.append(fromWhereClause);
+
+        final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
+            public List doInHibernate(Session session) throws HibernateException {
+                log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
+
+                StopWatch watch = new StopWatch();
+
+                if (pager.getTotalNumberOfElements() <= 0) {
+                    if (log.isDebugEnabled()) {
+                        watch.start();
+                    }
+
+                    Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
+                    if (count == null) {
+                        count = 0;
+                    }
+                    if (log.isDebugEnabled()) {
+                        watch.stop();
+                        log.debug("Time spent for count query: {}", watch);
+                        watch.reset();
+                    }
+
+                    pager.setTotalElements(count.intValue());
+                }
+                pager.setPageNumber(1);
+
+
+                if (log.isDebugEnabled()) {
+                    watch.start();
+                }
+
+                List result = setParameters(session.createSQLQuery(selectSql.toString()), params)
+                        .setMaxResults(pager.getPageSize())
+                        .list();
+
+                if (log.isDebugEnabled()) {
+                    watch.stop();
+                    log.debug("Time spent for listing: {}", watch);
+                }
+
+                return result;
+            }
+        });
+
+        if (ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        StopWatch watch = new StopWatch();
+        if (log.isDebugEnabled()) {
+            watch.start();
+        }
+        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
+            public Object doInHibernate(Session session) throws HibernateException {
+                return session.getNamedQuery("RegistryRecord.listRecordsDetails")
+                        .setParameterList("ids", transform(ids, new Number2LongTransformer()))
+                        .list();
+            }
+        });
+
+        if (log.isDebugEnabled()) {
+            watch.stop();
+            log.debug("Time spent for listRecordsDetails: {}", watch);
+        }
+
+        return result;
+    }
 
 	private Query setParameters(Query query, List<Object> params) {
 		for (int n = 0; n < params.size(); ++n) {
@@ -161,7 +317,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 */
     @Override
 	public int getErrorsNumber(final Long registryId) {
-		Number count = (Number) getHibernateTemplate().execute(new HibernateCallback() {
+		Number count = (Number) hibernateTemplate.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0")
@@ -180,7 +336,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		return hibernateTemplate.executeFind(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from RegistryRecord r " +
@@ -199,7 +355,28 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 		});
 	}
 
-	/**
+    @Override
+    public void updateErrorStatus(Collection<Long> recordIds, RegistryRecordStatus newStatus) {
+
+        String idsList = StringUtils.join(recordIds, ", ");
+
+        StopWatch watch = new StopWatch();
+        if (log.isDebugEnabled()) {
+            watch.start();
+        }
+
+        int updated = getSimpleJdbcTemplate().update(
+                "update common_registry_records_tbl r set r.import_error_id=null, r.import_error_type=null, record_status_id=" + newStatus.getId() + " where r.id in (" + idsList + ")");
+
+        if (log.isDebugEnabled()) {
+            watch.stop();
+            log.debug("Updated {} records", updated);
+            log.debug("Time spent for disable errors query: {}", watch);
+        }
+
+    }
+
+    /**
 	 * Get minimum and maximum record ids for processing
 	 *
 	 * @param registryId Registry identifier to process
@@ -208,7 +385,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@NotNull
     @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
-		List<?> result = getHibernateTemplate()
+		List<?> result = hibernateTemplate
 				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
@@ -228,8 +405,9 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @return Minimum-Maximum pair
 	 */
 	@NotNull
+    @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId, @NotNull Long restrictionMinId) {
-		List<?> result = getHibernateTemplate()
+		List<?> result = hibernateTemplate
 				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats.restriction", new Object[]{registryId, restrictionMinId});
 		Object[] objs = (Object[]) result.get(0);
 
@@ -250,7 +428,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@NotNull
     @Override
 	public Long[] getMinMaxIdsForImporting(@NotNull Long registryId) {
-		List<?> result = getHibernateTemplate()
+		List<?> result = hibernateTemplate
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForImporting", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
@@ -261,4 +439,9 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 
 		return minMax;
 	}
+
+    @Required
+    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+        this.hibernateTemplate = hibernateTemplate;
+    }
 }

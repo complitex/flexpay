@@ -7,5 +7,7 @@ import org.hibernate.type.Type;
  * implementation
  */
 public interface FinderArgumentTypeFactory {
+
 	Type getArgumentType(Object arg);
+
 }

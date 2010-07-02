@@ -2,6 +2,7 @@ package org.flexpay.common.util.jms.openmq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.jms.ConnectionFactory;
 import java.util.Enumeration;
@@ -12,10 +13,6 @@ public class MQConnectionFactoryFactory {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private Properties props;
-
-	public void setProperties(Properties props) {
-		this.props = props;
-	}
 
 	public ConnectionFactory createConnectionFactory() {
 		com.sun.messaging.ConnectionFactory cf = new com.sun.messaging.ConnectionFactory();
@@ -32,4 +29,10 @@ public class MQConnectionFactoryFactory {
 		}
 		return cf;
 	}
+
+    @Required
+    public void setProperties(Properties props) {
+        this.props = props;
+    }
+
 }

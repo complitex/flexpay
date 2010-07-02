@@ -1,5 +1,11 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<s:if test="streetType != null && streetName != null && (buildingNum != null || buildingBulkNum != null) && apartmentNum != null">
+    <s:set name="addressVal" value="%{record.streetType + ' ' + record.streetName + ', ' + (record.buildingNum != null ? record.buildingNum : '') + (record.buildingBulkNum != null ? ' ' + record.buildingBulkNum : '') + ', ' + record.apartmentNum}" />
+</s:if><s:else>
+    <s:set name="addressVal" value="" />
+</s:else>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr class="cols_1">
 		<td class="col">
@@ -11,8 +17,7 @@
 	</tr>
 	<tr class="cols_1">
 		<td class="col">
-            <strong><s:text name="eirc.registry.record.address" />:</strong> <s:property value="record.streetType" /> <s:property value="record.streetName" />,
-            <s:property value="record.buildingNum" /> <s:property value="record.buildingBulkNum" />, <s:property value="record.apartmentNum" />
+            <strong><s:text name="eirc.registry.record.address" />:</strong> <s:property value="#addressVal" />
         </td>
 		<td class="col">
             <strong><s:text name="eirc.registry.record.fio" />:</strong>

@@ -2,8 +2,8 @@ package org.flexpay.common.util;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class which provides validation functionality 

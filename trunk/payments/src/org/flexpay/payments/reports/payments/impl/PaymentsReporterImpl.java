@@ -451,13 +451,13 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		paymentDetails.setDivisionName("");
 		paymentDetails.setDivisionAddress("");
 		paymentDetails.setObjectId(operationStub.getId());
-		paymentDetails.setPaymentKvartplata(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_KVARTPLATA));
-		paymentDetails.setPaymentDogs(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_DOGS));
-		paymentDetails.setPaymentGarage(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_GARAGE));
-		paymentDetails.setPaymentWarming(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_WARMING));
-		paymentDetails.setPaymentHotWater(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_HOT_WATER));
-		paymentDetails.setPaymentColdWater(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_COLD_WATER));
-		paymentDetails.setPaymentSewer(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_SEWER));
+		paymentDetails.setPaymentKvartplata(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_KVARTPLATA));
+		paymentDetails.setPaymentDogs(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_DOGS));
+		paymentDetails.setPaymentGarage(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_GARAGE));
+		paymentDetails.setPaymentWarming(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_WARMING));
+		paymentDetails.setPaymentHotWater(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_HOT_WATER));
+		paymentDetails.setPaymentColdWater(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_COLD_WATER));
+		paymentDetails.setPaymentSewer(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_SEWER));
 		paymentDetails.setSumm(operation.getOperationSumm());
 
 		return paymentDetails;
@@ -472,14 +472,14 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		paymentDetails.setDivisionName(cashbox.getName(locale));
 		paymentDetails.setDivisionAddress("");
 		paymentDetails.setObjectId(cashboxStub.getId());
-		paymentDetails.setPaymentKvartplata(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_KVARTPLATA, beginDate, endDate));
-		paymentDetails.setPaymentDogs(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_DOGS, beginDate, endDate));
-		paymentDetails.setPaymentGarage(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_GARAGE, beginDate, endDate));
-		paymentDetails.setPaymentWarming(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_WARMING, beginDate, endDate));
-		paymentDetails.setPaymentHotWater(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
-		paymentDetails.setPaymentColdWater(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
-		paymentDetails.setPaymentSewer(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
-		paymentDetails.setSumm(documentService.getCashboxTotalSumm(cashboxStub, status, beginDate, endDate));
+		paymentDetails.setPaymentKvartplata(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_KVARTPLATA, beginDate, endDate));
+		paymentDetails.setPaymentDogs(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_DOGS, beginDate, endDate));
+		paymentDetails.setPaymentGarage(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_GARAGE, beginDate, endDate));
+		paymentDetails.setPaymentWarming(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_WARMING, beginDate, endDate));
+		paymentDetails.setPaymentHotWater(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
+		paymentDetails.setPaymentColdWater(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
+		paymentDetails.setPaymentSewer(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
+		paymentDetails.setSumm(documentService.getCashboxTotalSum(cashboxStub, status, beginDate, endDate));
 
 		return paymentDetails;
 	}
@@ -493,14 +493,14 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		paymentDetails.setDivisionName(paymentPoint.getName(locale));
 		paymentDetails.setDivisionAddress(paymentPoint.getAddress());
 		paymentDetails.setObjectId(paymentPointStub.getId());
-		paymentDetails.setPaymentKvartplata(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_KVARTPLATA, beginDate, endDate));
-		paymentDetails.setPaymentDogs(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_DOGS, beginDate, endDate));
-		paymentDetails.setPaymentGarage(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_GARAGE, beginDate, endDate));
-		paymentDetails.setPaymentWarming(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_WARMING, beginDate, endDate));
-		paymentDetails.setPaymentHotWater(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
-		paymentDetails.setPaymentColdWater(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
-		paymentDetails.setPaymentSewer(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
-		paymentDetails.setSumm(documentService.getPaymentPointTotalSumm(paymentPointStub, status, beginDate, endDate));
+		paymentDetails.setPaymentKvartplata(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_KVARTPLATA, beginDate, endDate));
+		paymentDetails.setPaymentDogs(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_DOGS, beginDate, endDate));
+		paymentDetails.setPaymentGarage(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_GARAGE, beginDate, endDate));
+		paymentDetails.setPaymentWarming(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_WARMING, beginDate, endDate));
+		paymentDetails.setPaymentHotWater(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
+		paymentDetails.setPaymentColdWater(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
+		paymentDetails.setPaymentSewer(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
+		paymentDetails.setSumm(documentService.getPaymentPointTotalSum(paymentPointStub, status, beginDate, endDate));
 
 		return paymentDetails;
 	}

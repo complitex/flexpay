@@ -5,10 +5,10 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.Collections;
 import java.util.List;

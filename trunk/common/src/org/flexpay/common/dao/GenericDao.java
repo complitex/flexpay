@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The basic GenericDao interface with CRUD methods Finders are added with interface inheritance <br /> and AOP

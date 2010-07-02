@@ -7,6 +7,8 @@ import org.hibernate.type.Type;
  * Maps Enums to a custom Hibernate user type
  */
 public class SimpleFinderArgumentTypeFactory implements FinderArgumentTypeFactory {
+
+    @Override
 	public Type getArgumentType(Object arg) {
 //        if(arg instanceof Enum)
 //        {

@@ -127,11 +127,11 @@ var FPP = {
             });
         });
 
-        var inputSumm = $("#inputSumm");
+        var inputSum = $("#inputSumm");
         var printBut = $("#printQuittanceButton");
         var payBut = $("#payQuittanceButton");
 
-        inputSumm.focus(function(event) {
+        inputSum.focus(function(event) {
             FPP.setCurrentFieldIndex(event);
         }).keypress(function(event) {
             FPP.updateCurrentFieldIndex(event);
@@ -140,7 +140,7 @@ var FPP = {
         printBut.keypress(function(event) {
             if (event.keyCode == FP.TAB_KEY_CODE) {
                 if (event.shiftKey) {
-                    inputSumm.focus();
+                    inputSum.focus();
                 } else {
                     if (FPP.paymentEnabled) {
                         printBut.focus();
@@ -269,13 +269,13 @@ var FPP = {
             return true;
         }
 
-        var totalPaySumm = FPP.dotted2Int(totalValue);
-        var inputSumm = FPP.dotted2Int(inputValue);
-        return FPP.validateValue("inputSumm", totalPaySumm > inputSumm ? FPP.messages.inputSummIsTooSmall : null);
+        var totalPaySum = FPP.dotted2Int(totalValue);
+        var inputSum = FPP.dotted2Int(inputValue);
+        return FPP.validateValue("inputSumm", totalPaySum > inputSum ? FPP.messages.inputSummIsTooSmall : null);
     },
 
     updateTotal : function () {
-        var totalSumm = 0;
+        var totalSum = 0;
         var total = $("#totalToPay");
         var input = $("#inputSumm");
         var change = $("#changeSumm");
@@ -289,11 +289,11 @@ var FPP = {
                 return;
             }
 
-            totalSumm += FPP.dotted2Int(val);
+            totalSum += FPP.dotted2Int(val);
         });
 
-        total.val(FPP.int2Dotted(totalSumm));
-        input.val(FPP.int2Dotted(totalSumm));
+        total.val(FPP.int2Dotted(totalSum));
+        input.val(FPP.int2Dotted(totalSum));
         FPP.validateInputValue();
         change.val("0.00");
     },
@@ -308,14 +308,14 @@ var FPP = {
             return;
         }
 
-        var changeSumm = FPP.dotted2Int(inputValue) - FPP.dotted2Int(totalValue);
+        var changeSum = FPP.dotted2Int(inputValue) - FPP.dotted2Int(totalValue);
 
-        if (changeSumm < 0) {
+        if (changeSum < 0) {
             change.val("");
             return;
         }
 
-        change.val(FPP.int2Dotted(changeSumm));
+        change.val(FPP.int2Dotted(changeSum));
     },
 
     doPayQuittance : function () {

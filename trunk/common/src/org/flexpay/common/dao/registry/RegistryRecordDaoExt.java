@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -33,6 +34,8 @@ public interface RegistryRecordDaoExt {
 	List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
+    List<RegistryRecord> findRecordsWithThisError(RegistryRecord record, String correctionType, Page<RegistryRecord> pager);
+
 	/**
 	 * Find registries by identifiers
 	 *
@@ -42,6 +45,7 @@ public interface RegistryRecordDaoExt {
 	 */
 	List<RegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);
 
+    void updateErrorStatus(Collection<Long> recordIds, RegistryRecordStatus newStatus);
 
 	/**
 	 * Count number of error in registry

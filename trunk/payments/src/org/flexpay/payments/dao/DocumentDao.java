@@ -73,7 +73,7 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * @param endDate		 end date
 	 * @return sum of payments for service in the cashbox
 	 */
-	List findCashboxServiceSumm(Long cashboxId, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
+	List findCashboxServiceSum(Long cashboxId, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns sum of payments in the cashbox for the period
@@ -84,7 +84,7 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * @param endDate	end date
 	 * @return sum of payments in the cashbox
 	 */
-	List findCashboxTotalSumm(Long cashboxId, int statusCode, Date beginDate, Date endDate);
+	List findCashboxTotalSum(Long cashboxId, int statusCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns sum of service payments in the payment point for the period
@@ -96,7 +96,7 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * @param endDate		 end date
 	 * @return sum of service payments in the payment point for the period
 	 */
-	List findPaymentPointServiceSumm(Long paymentPointId, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
+	List findPaymentPointServiceSum(Long paymentPointId, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns total sum of payments in cashbox for the period
@@ -107,7 +107,7 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * @param endDate		end date
 	 * @return total sum of payments in cashbox for the period
 	 */
-	List findPaymentPointTotalSumm(Long paymentPointId, int statusCode, Date beginDate, Date endDate);
+	List findPaymentPointTotalSum(Long paymentPointId, int statusCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns sum of service payment in operation
@@ -116,5 +116,5 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * @param serviceTypeCode service type code
 	 * @return sum of service payment in operation
 	 */
-	List findOperationServiceSumm(Long operationId, int serviceTypeCode);
+	List findOperationServiceSum(Long operationId, int serviceTypeCode);
 }

@@ -5,6 +5,7 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 
 public class ImportErrorTypeFilter extends org.flexpay.common.persistence.filter.ImportErrorTypeFilter {
 
+    @Override
 	public void init(ClassToTypeRegistry typeRegistry) {
 		errorTypes.put(typeRegistry.getType(Street.class), "ab.import.error_type.street");
 		errorTypes.put(typeRegistry.getType(StreetType.class), "ab.import.error_type.street_type");

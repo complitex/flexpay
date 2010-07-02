@@ -36,6 +36,7 @@
 
 		<action name="selectCorrectionType" class="selectCorrectionTypeAction">
 			<result name="input" type="tiles">payments.select_correction_type</result>
+            <result name="correctStreetType" type="tiles">payments.registry.record.correct_address_street_type</result>
             <result name="correctStreet" type="tiles">payments.registry.record.correct_address_street</result>
             <result name="correctBuilding" type="tiles">payments.registry.record.correct_address_building</result>
             <result name="correctApartment" type="tiles">payments.registry.record.correct_address_apartment</result>
@@ -44,6 +45,10 @@
 
         <action name="personsListCorrections" class="personsListAction">
             <result>/WEB-INF/jsp/payments/data/correspondence/persons_list.jsp</result>
+        </action>
+
+        <action name="streetTypesListCorrections" class="streetTypesListAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/street_types_list.jsp</result>
         </action>
 
 		<action name="setCorrection" class="setCorrectionAction">

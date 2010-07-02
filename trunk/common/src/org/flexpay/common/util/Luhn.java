@@ -1,8 +1,8 @@
 package org.flexpay.common.util;
 
-import static org.flexpay.common.util.CollectionUtils.ar;
-
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
 
 /**
  * Util class for Luhn algorithm

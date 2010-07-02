@@ -1,8 +1,8 @@
 package org.flexpay.common.dao;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryConsumptionGroup;
-import org.flexpay.common.dao.paging.Page;
 
 import java.util.List;
 

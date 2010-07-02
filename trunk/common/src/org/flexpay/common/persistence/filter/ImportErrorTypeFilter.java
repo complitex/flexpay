@@ -42,6 +42,7 @@ public class ImportErrorTypeFilter extends ObjectFilter {
 	 *
 	 * @return <code>true</code> if selectedType != {@link #TYPE_ALL}, or <code>false</code> otherwise
 	 */
+    @Override
 	public boolean needFilter() {
 		return !selectedType.equals(TYPE_ALL);
 	}

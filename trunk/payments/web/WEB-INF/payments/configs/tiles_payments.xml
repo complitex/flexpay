@@ -165,6 +165,10 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_address_street.jsp" />
 	</definition>
 
+    <definition name="payments.registry.record.correct_address_street_type" extends="ab.layout.content">
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_address_street_type.jsp" />
+    </definition>
+
 	<definition name="payments.registry.record.correct_person" extends="ab.layout.content">
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_person.jsp" />
 	</definition>

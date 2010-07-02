@@ -1,7 +1,6 @@
 package org.flexpay.common.util.config;
 
 import org.springframework.beans.factory.annotation.Required;
-import org.flexpay.common.util.config.UserPreferences;
 
 public class UserPreferencesFactoryProxy implements UserPreferencesFactory {
 

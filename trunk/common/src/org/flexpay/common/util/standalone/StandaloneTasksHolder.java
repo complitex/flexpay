@@ -1,6 +1,5 @@
 package org.flexpay.common.util.standalone;
 
-import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.quartz.Scheduler;
@@ -15,6 +14,8 @@ import org.springframework.security.userdetails.User;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.flexpay.common.service.Roles.*;
 
 /**
  * Holder for a list of task to run in a standalone application

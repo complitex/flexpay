@@ -1,5 +1,6 @@
 package org.flexpay.payments.actions.registry.corrections;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
@@ -13,6 +14,8 @@ import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 
@@ -59,14 +62,36 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 			return SUCCESS;
 		}
 
-		if (saveCorrection(organization.sourceDescriptionStub()) && record.getImportError() != null) {
-			record = recordService.removeError(record);
-		}
+        if (saveCorrection(record, organization.sourceDescriptionStub()) && record.getImportError() != null) {
+
+            Page<RegistryRecord> pager = new Page<RegistryRecord>(2000);
+            Long recordsCount = 0L;
+
+            for (;;) {
+
+                List<RegistryRecord> records = recordService.listRecords(record, type, pager);
+                int foundRecords = records.size();
+                log.debug("Found {}", pager.getTotalNumberOfElements());
+                log.debug("Processing records from {} to {}", recordsCount, (recordsCount + foundRecords));
+
+                if (records.isEmpty()) {
+                    log.debug("Records list is empty!");
+                    break;
+                }
+
+                recordsCount += foundRecords;
+
+                recordService.removeError(records);
+
+//                log.debug("All records on page {} were processed", pager.getPageNumber());
+
+            }
+        }
 
 		return SUCCESS;
 	}
 
-	protected boolean saveCorrection(Stub<DataSourceDescription> sd) {
+	protected boolean saveCorrection(RegistryRecord record, Stub<DataSourceDescription> sd) {
 		return true;
 	}
 

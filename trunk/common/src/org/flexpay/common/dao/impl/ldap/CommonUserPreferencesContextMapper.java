@@ -19,6 +19,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 
 	private UserRoleService userRoleService;
 
+    @Override
 	public UserPreferences doMapFromContext(DirContextOperations ctx, UserPreferences preferences) {
 
 		preferences.setFullName(ctx.getStringAttribute("cn"));

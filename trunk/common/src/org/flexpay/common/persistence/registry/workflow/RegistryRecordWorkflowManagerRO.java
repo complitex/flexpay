@@ -1,18 +1,21 @@
 package org.flexpay.common.persistence.registry.workflow;
 
 import org.flexpay.common.dao.ImportErrorDao;
-import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import static org.flexpay.common.persistence.registry.RegistryRecordStatus.*;
 import org.flexpay.common.service.RegistryRecordStatusService;
-import org.flexpay.common.util.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
+import static org.flexpay.common.persistence.registry.RegistryRecordStatus.*;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 /**
  * Helper class for registry records workflow
@@ -21,15 +24,15 @@ import java.util.*;
 public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowManager {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private RegistryWorkflowManager registryWorkflowManager;
 
-	private RegistryRecordStatusService statusService;
+	private RegistryWorkflowManager registryWorkflowManager;
+	protected RegistryRecordStatusService statusService;
 	protected ImportErrorDao errorDao;
 
-	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
+	protected Map<Integer, List<Integer>> transitions = map();
 
 	{
-		List<Integer> targets = new ArrayList<Integer>();
+		List<Integer> targets = list();
 		targets.add(PROCESSED);
 		targets.add(PROCESSED_WITH_ERROR);
 		transitions.put(LOADED, targets);
@@ -53,11 +56,12 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param nextStatus Registry status to set up
 	 * @return <code>true</code> if registry processing allowed, or <code>false</code> otherwise
 	 */
+    @Override
 	public boolean canTransit(RegistryRecord record, RegistryRecordStatus nextStatus) {
-
 		return transitions.get(code(record)).contains(nextStatus.getCode());
 	}
 
+    @Override
 	public boolean hasSuccessTransition(RegistryRecord record) {
 		return !transitions.get(code(record)).isEmpty();
 	}
@@ -68,6 +72,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param record Registry record to start
 	 * @throws TransitionNotAllowed if record processing is not possible
 	 */
+    @Override
 	public void startProcessing(RegistryRecord record) throws TransitionNotAllowed {
 		if (!hasSuccessTransition(record)) {
 			throw new TransitionNotAllowed("Registry processing not allowed");
@@ -84,7 +89,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param record Registry Record
 	 * @return record status
 	 */
-	private Integer code(RegistryRecord record) {
+	protected Integer code(RegistryRecord record) {
 		return record.getRecordStatus().getCode();
 	}
 
@@ -94,6 +99,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
+    @Override
 	public void setNextErrorStatus(RegistryRecord record) throws TransitionNotAllowed {
 
 		if (code(record) == PROCESSED_WITH_ERROR) {
@@ -116,6 +122,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param error  ImportError
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
+    @Override
 	public void setNextErrorStatus(RegistryRecord record, ImportError error) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
@@ -140,6 +147,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
+    @Override
 	public void setNextSuccessStatus(RegistryRecord record) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 1) {
@@ -168,13 +176,19 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 		}
 	}
 
-	/**
+    @Override
+    public void setNextStatusForErrorRecords(@NotNull Collection<RegistryRecord> records) throws TransitionNotAllowed {
+        log.info("For this implementation this method not allowed");
+    }
+
+    /**
 	 * Set record status to fixed and invalidate error
 	 *
 	 * @param record Registry record
 	 * @return updated record
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public RegistryRecord removeError(RegistryRecord record) {
 		if (record.getImportError() == null) {
 			return record;
@@ -198,6 +212,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @return SpRegistryRecord back
 	 * @throws TransitionNotAllowed if registry already has a status
 	 */
+    @Override
 	public RegistryRecord setInitialStatus(RegistryRecord record) throws TransitionNotAllowed {
 		if (record.getRecordStatus() != null) {
 			if (code(record) != LOADED) {
@@ -230,6 +245,7 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param status Next status to set
 	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
+    @Override
 	public void setNextStatus(RegistryRecord record, RegistryRecordStatus status) throws TransitionNotAllowed {
 		if (!canTransit(record, status)) {
 			throw new TransitionNotAllowed("Invalid transition request, was " + record.getRecordStatus() + ", requested " + status);
@@ -238,14 +254,17 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 		record.setRecordStatus(status);
 	}
 
+    @Required
 	public void setStatusService(RegistryRecordStatusService statusService) {
 		this.statusService = statusService;
 	}
 
+    @Required
 	public void setErrorDao(ImportErrorDao errorDao) {
 		this.errorDao = errorDao;
 	}
 
+    @Required
 	public void setRegistryWorkflowManager(RegistryWorkflowManager registryWorkflowManager) {
 		this.registryWorkflowManager = registryWorkflowManager;
 	}

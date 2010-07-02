@@ -9,7 +9,10 @@ import java.lang.reflect.Method;
  * method name of the invocation
  */
 public class SimpleFinderNamingStrategy implements FinderNamingStrategy {
+
+    @Override
 	public String queryNameFromMethod(Class findTargetType, Method finderMethod) {
 		return findTargetType.getSimpleName() + "." + finderMethod.getName();
 	}
+
 }

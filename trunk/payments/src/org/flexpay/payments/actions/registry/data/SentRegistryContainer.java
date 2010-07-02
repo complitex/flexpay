@@ -1,6 +1,10 @@
 package org.flexpay.payments.actions.registry.data;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 public class SentRegistryContainer {
+
     private Long id;
     private Long registryId;
     private String dateFrom;
@@ -72,5 +76,19 @@ public class SentRegistryContainer {
 
     public void setServiceProvider(String serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("id", id).
+                append("registryId", registryId).
+                append("dateFrom", dateFrom).
+                append("dateTo", dateTo).
+                append("dateDelivery", dateDelivery).
+                append("typeRegistry", typeRegistry).
+                append("recipient", recipient).
+                append("serviceProvider", serviceProvider).
+                toString();
     }
 }

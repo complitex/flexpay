@@ -2,12 +2,6 @@ package org.flexpay.common.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
-
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
@@ -15,6 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 public class DateUtil {
 

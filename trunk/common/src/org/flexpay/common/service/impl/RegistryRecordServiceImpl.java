@@ -113,7 +113,12 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
-	@Override
+    @Override
+    public List<RegistryRecord> listRecords(RegistryRecord record, String correctionType, Page<RegistryRecord> pager) {
+        return registryRecordDaoExt.findRecordsWithThisError(record, correctionType, pager);
+    }
+
+    @Override
 	public List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range) {
 		return registryRecordDao.listRecordsForExport(registry.getId(), range);
 	}
@@ -143,7 +148,13 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 		return record;
 	}
 
-	/**
+    @Transactional (readOnly = false)
+    @Override
+    public void removeError(Collection<RegistryRecord> records) throws Exception {
+        workflowManager.setNextStatusForErrorRecords(records);
+    }
+
+    /**
 	 * Find registry records by identifiers
 	 *
 	 * @param registry  Registry to get records for

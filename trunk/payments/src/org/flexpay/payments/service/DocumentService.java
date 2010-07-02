@@ -124,7 +124,7 @@ public interface DocumentService {
 	 * @param endDate		 end date
 	 * @return sum of payments for service in the cashbox
 	 */
-	BigDecimal getCashboxServiceSumm(Stub<Cashbox> cashboxStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
+	BigDecimal getCashboxServiceSum(Stub<Cashbox> cashboxStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns sum of payments in the cashbox for the period
@@ -135,7 +135,7 @@ public interface DocumentService {
 	 * @param endDate	 end date
 	 * @return sum of payments in the cashbox
 	 */
-	BigDecimal getCashboxTotalSumm(Stub<Cashbox> cashboxStub, int statusCode, Date beginDate, Date endDate);
+	BigDecimal getCashboxTotalSum(Stub<Cashbox> cashboxStub, int statusCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns sum of service payments in the payment point for the period
@@ -147,7 +147,7 @@ public interface DocumentService {
 	 * @param endDate		  end date
 	 * @return sum of service payments in the payment point for the period
 	 */
-	BigDecimal getPaymentPointServiceSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
+	BigDecimal getPaymentPointServiceSum(Stub<PaymentPoint> paymentPointStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns total sum of payments in cashbox for the period
@@ -158,7 +158,7 @@ public interface DocumentService {
 	 * @param endDate		  end date
 	 * @return total sum of payments in cashbox for the period
 	 */
-	BigDecimal getPaymentPointTotalSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, Date beginDate, Date endDate);
+	BigDecimal getPaymentPointTotalSum(Stub<PaymentPoint> paymentPointStub, int statusCode, Date beginDate, Date endDate);
 
 	/**
 	 * Returns sum of service payment in operation
@@ -167,5 +167,5 @@ public interface DocumentService {
 	 * @param serviceTypeCode service type code
 	 * @return sum of service payment in operation
 	 */
-	BigDecimal getOperationServiceSumm(Stub<Operation> operationStub, int serviceTypeCode);
+	BigDecimal getOperationServiceSum(Stub<Operation> operationStub, int serviceTypeCode);
 }

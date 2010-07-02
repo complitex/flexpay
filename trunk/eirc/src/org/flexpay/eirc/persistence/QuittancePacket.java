@@ -146,9 +146,9 @@ public class QuittancePacket extends DomainObjectWithStatus {
 				append("closeDate", closeDate).
 				append("paymentPoint", paymentPoint).
 				append("controlQuittanciesNumber", controlQuittanciesNumber).
-				append("controlOverallSumm", controlOverallSumm).
+				append("controlOverallSum", controlOverallSumm).
 				append("quittanciesNumber", quittanciesNumber).
-				append("overallSumm", overallSumm).
+				append("overallSum", overallSumm).
 				append("creatorUserName", creatorUserName).
 				append("closerUserName", closerUserName).
 				toString();

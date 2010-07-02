@@ -15,7 +15,7 @@ public class Page<E> implements Serializable {
 	private int pageSize = 20;
 	private int pageNumber = 0;
 
-	private transient int totalElements;
+	private transient int totalElements = 0;
 	private transient List<E> elements = Collections.emptyList();
 
 	public Page() {

@@ -39,6 +39,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return created Registry object
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public Registry create(Registry registry) throws FlexPayException {
 
 		validate(registry);
@@ -61,6 +62,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return List of SpRegistry objects for pager
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public List<Registry> findObjects(Page<Registry> pager, Long spFileId) {
 		return registryDao.findObjects(pager, spFileId);
 	}
@@ -80,6 +82,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	@Nullable
+    @Override
 	public Registry read(@NotNull Stub<Registry> stub) {
 		Registry registry = registryDao.readFull(stub.getId());
 		if (registry == null) {
@@ -96,6 +99,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param stub Registry stub
 	 * @return Registry if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Registry readWithContainers(@NotNull Stub<Registry> stub) {
 		List<Registry> registries = registryDao.listRegistryWithContainers(stub.getId());
 		if (registries.isEmpty()) {
@@ -114,6 +118,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 *          if SpRegistry object is invalid
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public Registry update(Registry registry) throws FlexPayException {
 
 		validate(registry);
@@ -140,6 +145,7 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	@Transactional (readOnly = false)
+    @Override
 	public void delete(Registry registry) {
 		registryDao.delete(registry);
 	}
@@ -150,6 +156,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param stub registry stub
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void deleteRecords(Stub<Registry> stub) {
 		registryDao.deleteRecords(stub.getId());
 	}
@@ -170,8 +177,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 */
 	@Override
 	public Long getRegistriesCount(int typeCode, Long recipientCode, Date from, Date till) {
-		
-		return (Long) (registryDao.findRegistriesCount(typeCode, recipientCode, from, till)).get(0);
+		return (Long) registryDao.findRegistriesCount(typeCode, recipientCode, from, till).get(0);
 	}
 
 	/**
