@@ -133,7 +133,7 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 
 	public void setTillDate(String dt) {
 		tillDate = getEndOfThisDay(parseDate(dt, now()));
-		log.debug("dt = {}, fromDate = {}", dt, tillDate);
+		log.debug("dt = {}, tillDate = {}", dt, tillDate);
 	}
 
     public Map<Long, Organization> getOrgs() {
@@ -147,18 +147,6 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
     public RegistryFPFileType getMbType() {
         return mbType;
     }
-
-    public Organization getSenderOrg(RegistryProperties properties) {
-		EircRegistryProperties props = (EircRegistryProperties) properties;
-        log.debug("Get sender org with id {}", props.getSenderStub().getId());
-		return orgs.get(props.getSenderStub().getId());
-	}
-
-	public Organization getRecipientOrg(RegistryProperties properties) {
-		EircRegistryProperties props = (EircRegistryProperties) properties;
-        log.debug("Get recipient org with id {}", props.getRecipientStub().getId());
-		return orgs.get(props.getRecipientStub().getId());
-	}
 
 	@Required
 	public void setEircRegistryService(EircRegistryService eircRegistryService) {

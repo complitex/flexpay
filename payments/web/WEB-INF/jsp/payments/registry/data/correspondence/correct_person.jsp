@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
-<%@include file="/WEB-INF/jsp/payments/data/registry_record_info.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/registry/data/registry_record_info.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>

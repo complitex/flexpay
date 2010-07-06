@@ -9,13 +9,20 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class RegistryViewPageAction extends AccountantAWPActionSupport {
 
@@ -23,7 +30,9 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
+    private Map<Long, Organization> orgs = map();
 
+    private OrganizationService organizationService;
 	private RegistryService registryService;
 	private ServiceTypeService serviceTypeService;
 	private RegistryRecordStatusService recordStatusService;
@@ -52,7 +61,6 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 			addActionError(getText("payments.error.registry.cant_get_registry"));
 			return REDIRECT_ERROR;
 		}
-		registryService.checkRegistryErrorsNumber(registry);
 
 		if (log.isDebugEnabled()) {
 			watch.stop();
@@ -68,6 +76,15 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 			watch.stop();
 			log.debug("Import error type filter init: {}", watch);
 		}
+
+        if (orgs == null) {
+            orgs = map();
+        }
+
+        List<Organization> orgsList = organizationService.readFull(list(registry.getRecipientCode(), registry.getSenderCode()), false);
+        for (Organization organization : orgsList) {
+            orgs.put(organization.getId(), organization);
+        }
 
 		return SUCCESS;
 	}
@@ -109,7 +126,16 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 		return recordStatusFilter;
 	}
 
-	@Required
+    public Map<Long, Organization> getOrgs() {
+        return orgs;
+    }
+
+    @Required
+    public void setOrganizationService(OrganizationService organizationService) {
+        this.organizationService = organizationService;
+    }
+
+    @Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}

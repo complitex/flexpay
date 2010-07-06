@@ -93,7 +93,7 @@ public class RegistryServiceImpl implements RegistryService {
 		return registry;
 	}
 
-	/**
+    /**
 	 * Read Registry with containers included
 	 *
 	 * @param stub Registry stub
@@ -102,11 +102,7 @@ public class RegistryServiceImpl implements RegistryService {
     @Override
 	public Registry readWithContainers(@NotNull Stub<Registry> stub) {
 		List<Registry> registries = registryDao.listRegistryWithContainers(stub.getId());
-		if (registries.isEmpty()) {
-			return null;
-		}
-
-		return registries.get(0);
+		return registries.isEmpty() ? null : registries.get(0);
 	}
 
 	/**

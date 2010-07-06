@@ -140,7 +140,7 @@
 	</definition>
 
     <definition name="payments.registry.annotation" extends="payments.registry">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/edit_registry_annotation.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_edit_annotation.jsp" />
 	</definition>
 
     <definition name="payments.registry.delivery_history" extends="payments.accountant">
@@ -150,27 +150,27 @@
 
 	<!-- Registry record corrections -->
 	<definition name="payments.select_correction_type" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/select_correction_type.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/data/correspondence/select_correction_type.jsp" />
 	</definition>
 
 	<definition name="payments.registry.record.correct_address_apartment" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_address_apartment.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/data/correspondence/correct_address_apartment.jsp" />
 	</definition>
 
 	<definition name="payments.registry.record.correct_address_building" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_address_building.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/data/correspondence/correct_address_building.jsp" />
 	</definition>
 
 	<definition name="payments.registry.record.correct_address_street" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_address_street.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/data/correspondence/correct_address_street.jsp" />
 	</definition>
 
     <definition name="payments.registry.record.correct_address_street_type" extends="ab.layout.content">
-        <put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_address_street_type.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/registry/data/correspondence/correct_address_street_type.jsp" />
     </definition>
 
 	<definition name="payments.registry.record.correct_person" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_person.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/data/correspondence/correct_person.jsp" />
 	</definition>
 
     <!-- payment point list definitions -->
