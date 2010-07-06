@@ -28,6 +28,8 @@
 		  p:crumbNameKey="payments.crumbs.registry_view"
 		  p:registryService-ref="registryService"
 		  p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:organizationService-ref="organizationService"
+          p:paymentCollectorService-ref="paymentCollectorService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:recordStatusService-ref="registryRecordStatusService"
           scope="prototype"  />
@@ -35,6 +37,7 @@
     <bean id="registryRecordsListAction"
           class="org.flexpay.payments.actions.registry.RegistryRecordsListAction"
           p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:paymentCollectorService-ref="paymentCollectorService"
           p:serviceTypeService-ref="serviceTypeService"
           p:registryRecordService-ref="registryRecordService"
           scope="prototype"  />

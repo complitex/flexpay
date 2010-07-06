@@ -352,6 +352,12 @@
           p:registryTypeService-ref="registryTypeService"
           scope="prototype" />
 
+    <bean id="checkRegistryErrorsNumberAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.registry.CheckRegistryErrorsNumberAction"
+          p:registryService-ref="registryService"
+          scope="prototype" />
+
     <bean id="registriesListAction"
 		  parent="accountantAWPWithPagerAction"
           class="org.flexpay.payments.actions.registry.RegistriesListAction"

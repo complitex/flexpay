@@ -15,28 +15,28 @@ import java.util.Set;
 public interface RegistryService {
 
 	/**
-	 * Create SpRegistry
+	 * Create Registry
 	 *
-	 * @param registry SpRegistry
-	 * @return created SpRegistry object
+	 * @param registry Registry
+	 * @return created Registry object
 	 * @throws FlexPayException if failure occurs
 	 */
 	Registry create(Registry registry) throws FlexPayException;
 
 	/**
-	 * Get all SpRegistry by spFile id in page mode
+	 * Get all Registry by File id in page mode
 	 *
 	 * @param pager	Page object
-	 * @param spFileId spFile id
-	 * @return List of SpRegistry objects for pager
+	 * @param fileId File id
+	 * @return List of Registry objects for pager
 	 */
-	List<Registry> findObjects(Page<Registry> pager, Long spFileId);
+	List<Registry> findObjects(Page<Registry> pager, Long fileId);
 
 	/**
-	 * Read SpRegistry object by its unique id
+	 * Read Registry object by its unique id
 	 *
 	 * @param stub Registry stub
-	 * @return SpRegistry object, or <code>null</code> if object not found
+	 * @return Registry object, or <code>null</code> if object not found
 	 */
 	@Nullable
 	Registry read(@NotNull Stub<Registry> stub);
@@ -51,11 +51,11 @@ public interface RegistryService {
 	Registry readWithContainers(@NotNull Stub<Registry> stub);
 
 	/**
-	 * Update SpRegistry
+	 * Update Registry
 	 *
-	 * @param registry SpRegistry to update for
-	 * @return Updated SpRegistry object
-	 * @throws FlexPayException if SpRegistry object is invalid
+	 * @param registry Registry to update for
+	 * @return Updated Registry object
+	 * @throws FlexPayException if Registry object is invalid
 	 */
 	Registry update(Registry registry) throws FlexPayException;
 
@@ -78,6 +78,7 @@ public interface RegistryService {
 
 	/**
 	 * Returns number of registries which corresponds following parameters
+     *
 	 * @param typeCode registry type code
 	 * @param recipientCode recipient organization id
 	 * @param from lower bound for createion date
@@ -88,7 +89,8 @@ public interface RegistryService {
 
 	/**
 	 * Return number of registry errors and update registry in field {@link org.flexpay.common.persistence.registry.Registry#errorsNumber}
-	 * @param registry SpRegistry
+     *
+	 * @param registry Registry
 	 * @return number of registry errors
 	 */
 	int checkRegistryErrorsNumber(@NotNull Registry registry);

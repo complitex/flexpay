@@ -33,8 +33,8 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col"><s:date name="creationDate" format="yyyy/MM/dd" /></td>
-            <td class="col"><s:property value="getTranslationName(getSenderOrg(properties).names)" /></td>
-            <td class="col"><s:property value="getTranslationName(getRecipientOrg(properties).names)" /></td>
+            <td class="col"><s:property value="getTranslationName(orgs.get(senderCode).names)" /></td>
+            <td class="col"><s:property value="getTranslationName(orgs.get(recipientCode).names)" /></td>
             <td class="col"><s:text name="%{registryType.i18nName}" /></td>
             <td class="col"><s:date name="files.get(mbType).creationDate" format="yyyy/MM/dd HH:mm:ss" /></td>
             <td class="col"><s:property value="recordsNumber" /></td>

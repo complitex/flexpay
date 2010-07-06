@@ -8,6 +8,7 @@ public class GenerateRegistryAction extends AccountantAWPActionSupport {
 	private Long organizationId;
 
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 
 		// TODO implement
@@ -22,6 +23,7 @@ public class GenerateRegistryAction extends AccountantAWPActionSupport {
 	}
 
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

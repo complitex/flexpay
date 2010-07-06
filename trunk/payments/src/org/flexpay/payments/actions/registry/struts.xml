@@ -14,6 +14,10 @@
             <result type="tiles">payments.registry.list</result>
         </action>
 
+        <action name="checkRegistryErrorsNumber" class="checkRegistryErrorsNumberAction">
+            <result>/WEB-INF/jsp/payments/registry/check_errors_number_response.jsp</result>
+        </action>
+
         <action name="registriesListAjax" class="registriesListAction">
             <result>/WEB-INF/jsp/payments/registry/registries_list.jsp</result>
         </action>
@@ -44,11 +48,11 @@
 		</action>
 
         <action name="personsListCorrections" class="personsListAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/persons_list.jsp</result>
+            <result>/WEB-INF/jsp/payments/registry/data/correspondence/persons_list.jsp</result>
         </action>
 
         <action name="streetTypesListCorrections" class="streetTypesListAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/street_types_list.jsp</result>
+            <result>/WEB-INF/jsp/payments/registry/data/correspondence/street_types_list.jsp</result>
         </action>
 
 		<action name="setCorrection" class="setCorrectionAction">

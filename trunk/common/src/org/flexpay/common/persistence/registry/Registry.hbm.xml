@@ -273,7 +273,7 @@
 		from Registry r
 			left join fetch r.registryType
 			left join fetch r.registryStatus
-			left join fetch r.properties p
+			left join fetch r.properties
 			left join fetch r.containers
 		where r.id=?
         order by r.creationDate desc

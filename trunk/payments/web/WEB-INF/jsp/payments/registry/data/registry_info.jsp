@@ -6,7 +6,7 @@
             <strong><s:text name="eirc.registry.number" />:</strong> <s:property value="registry.registryNumber" />
         </td>
 		<td class="col">
-            <strong><s:text name="eirc.sender" />:</strong> <s:property value="getTranslationName(registry.sender.names)" />
+            <strong><s:text name="eirc.sender" />:</strong> <s:property value="getTranslationName(orgs.get(registry.senderCode).names)" />
         </td>
 	</tr>
 	<tr class="cols_1">
@@ -14,7 +14,7 @@
             <strong><s:text name="eirc.registry_type" />:</strong> <s:text name="%{registry.registryType.i18nName}" />
         </td>
 		<td class="col">
-            <strong><s:text name="eirc.recipient" />:</strong> <s:property value="getTranslationName(registry.recipient.names)" />
+            <strong><s:text name="eirc.recipient" />:</strong> <s:property value="getTranslationName(orgs.get(registry.recipientCode).names)" />
 		</td>
 	</tr>
 	<tr class="cols_1">
@@ -28,10 +28,30 @@
 	</tr>
 	<tr class="cols_1">
 		<td class="col">
-            <strong><s:text name="eirc.registry.errors_number" />:</strong> <s:property value="registry.errorsNumber" />
+            <strong><s:text name="eirc.registry.errors_number" />:</strong> <span id="errorsNumber"></span>
         </td>
 		<td class="col">
             <strong><s:text name="eirc.status" />:</strong> <s:text name="%{registry.registryStatus.i18nName}" />
 		</td>
 	</tr>
 </table>
+
+<script type="text/javascript">
+
+    var $erNum = $("#errorsNumber");
+
+    $erNum.ready(function() {
+
+        $erNum.html("<img src=\"<s:url value="/resources/common/img/indicator.gif" />\" />");
+
+        $.getJSON("<s:url action="checkRegistryErrorsNumber" includeParams="none" />", {"registry.id": <s:property value="registry.id" />},
+            function(data) {
+                $erNum.text(data.errorsNumber);
+                if (data.errorMessage != "") {
+                    $("#messagesBlock").html(data.errorMessage);
+                }
+            })
+    });
+
+
+</script>
