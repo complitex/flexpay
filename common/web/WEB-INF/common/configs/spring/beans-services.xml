@@ -148,7 +148,6 @@
 	<bean id="registryRecordWorkflowManagerRW"
 		  class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManagerRW"
 		  parent="registryRecordWorkflowManagerRO"
-          p:errorDaoExt-ref="importErrorDaoExt"
           p:recordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:recordDao-ref="spRegistryRecordDao" />
 

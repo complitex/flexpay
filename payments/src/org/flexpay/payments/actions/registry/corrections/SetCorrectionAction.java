@@ -71,7 +71,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 
                 List<RegistryRecord> records = recordService.listRecords(record, type, pager);
                 int foundRecords = records.size();
-                log.debug("Found {}", pager.getTotalNumberOfElements());
+                log.debug("Found {}", foundRecords);
                 log.debug("Processing records from {} to {}", recordsCount, (recordsCount + foundRecords));
 
                 if (records.isEmpty()) {
@@ -82,8 +82,6 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
                 recordsCount += foundRecords;
 
                 recordService.removeError(records);
-
-//                log.debug("All records on page {} were processed", pager.getPageNumber());
 
             }
         }

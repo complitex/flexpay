@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public interface ImportErrorDao extends GenericDao<ImportError, Long> {
 	 * @param type Import objects type
 	 * @return list of errors
 	 */
-	List<ImportError> listErrors(Page pager, int type);
+	List<ImportError> listErrors(Page<ImportError> pager, int type);
 
 	/**
 	 * List import errors for data source
@@ -28,7 +29,7 @@ public interface ImportErrorDao extends GenericDao<ImportError, Long> {
 	 * @param type Import objects type
 	 * @return list of errors
 	 */
-	List<ImportError> listDataSourceErrors(Page pager, Long dataSourceId, int type);
+	List<ImportError> listDataSourceErrors(Page<ImportError> pager, Long dataSourceId, int type);
 
 	/**
 	 * List data source decriptions having import errors of specified type

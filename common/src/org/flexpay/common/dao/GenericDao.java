@@ -61,4 +61,6 @@ public interface GenericDao<T, PK extends Serializable> {
 
 	void delete(@NotNull T persistentObject);
 
+    void deleteAll(@NotNull Collection<T> os);
+
 }

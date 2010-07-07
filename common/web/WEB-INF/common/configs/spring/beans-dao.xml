@@ -304,10 +304,6 @@
 		  class="org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-    <bean id="importErrorDaoExt"
-          class="org.flexpay.common.dao.impl.ImportErrorDaoExtImpl"
-          p:dataSource-ref="dataSource" />
-
 	<bean id="userRoleDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.common.dao.UserRoleDao" />
