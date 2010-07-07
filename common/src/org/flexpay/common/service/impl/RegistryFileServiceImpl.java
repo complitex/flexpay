@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional (readOnly = true)
 public class RegistryFileServiceImpl implements RegistryFileService {
@@ -61,6 +62,28 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 		for (ProcessingReadHintsHandlerFactory factory : readHintsHandlerFactories) {
 			if (factory.supports(hints)) {
 				factory.getInstance(registry, range, records).read();
+			}
+		}
+
+		return records;
+	}
+
+	/**
+	 * @{inheritDoc}
+	 */
+	@Override
+	public List<RegistryRecord> getRecordsForProcessing(@NotNull Set<Long> recordIds) {
+
+		List<RegistryRecord> records = registryRecordDao.listRecordsForProcessingCollection(recordIds);
+
+		ReadHints hints = ReadHintsHolder.getHints();
+		if (hints == null) {
+			return records;
+		}
+
+		for (ProcessingReadHintsHandlerFactory factory : readHintsHandlerFactories) {
+			if (factory.supports(hints)) {
+				factory.getInstance(records).read();
 			}
 		}
 

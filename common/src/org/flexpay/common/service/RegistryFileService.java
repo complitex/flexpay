@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RegistryFileService {
 
@@ -27,6 +28,14 @@ public interface RegistryFileService {
 	 * @return list of records
 	 */
 	List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<Registry> registry, FetchRange range);
+
+	/**
+	 * Get registry records for processing
+	 *
+	 * @param recordIds Registry records id
+	 * @return list of records
+	 */
+	List<RegistryRecord> getRecordsForProcessing(Set<Long> recordIds);
 
 	/**
 	 * Get fetch range records for processing if was processing some records

@@ -3,6 +3,7 @@ package org.flexpay.eirc.service.exchange;
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -21,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Precondition for processing file is complete import operation, i.e. all records should already have assigned
  * PersonalAccount.
  */
-@Transactional (readOnly = true)
+@Transactional(readOnly = true)
 public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFileProcessorTx {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -31,20 +33,12 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	private EircImportConsumerDataTx importConsumerDataService;
 	private ImportErrorDao errorDao;
 
-	private StopWatch beforeUpdateWatch = new StopWatch();
-	private StopWatch updateWatch = new StopWatch();
 	private StopWatch getOperationWatch = new StopWatch();
 	private StopWatch processBatchWatch = new StopWatch();
 
 	private OperationWatchContext watchContext = new OperationWatchContext();
 
 	{
-		beforeUpdateWatch.start();
-		beforeUpdateWatch.suspend();
-
-		updateWatch.start();
-		updateWatch.suspend();
-
 		getOperationWatch.start();
 		getOperationWatch.suspend();
 
@@ -58,7 +52,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	 * @param context Processing context
 	 * @throws Exception if failure occurs
 	 */
-	@Transactional (readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void processHeader(@NotNull ProcessingContext context) throws Exception {
 
@@ -77,7 +71,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	 * @param context Processing context
 	 * @throws Exception if failure occurs
 	 */
-	@Transactional (readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void prepareRecordUpdates(@NotNull ProcessingContext context) throws Exception {
 
@@ -90,22 +84,29 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 
 		log.debug("Record to process: {}", record);
 
+		RawConsumerData data;
 		processBatchWatch.resume();
-		RawConsumerData data = RawConsumersDataUtil.convert(context.getRegistry(), context.getCurrentRecord());
-		if (!importConsumerDataService.processBatch(context.getSd(), data, context.getNameStreetMap(),
-				context.getCorrectionUpdates())) {
-			context.failedRecord(context.getCurrentRecord());
-			return;
+		try {
+			data = RawConsumersDataUtil.convert(context.getRegistry(), context.getCurrentRecord());
+
+			if (!importConsumerDataService.processBatch(context.getSd(), data, context.getNameStreetMap(),
+					context.getCorrectionUpdates())) {
+				context.failedRecord(context.getCurrentRecord());
+				return;
+			}
+		} finally {
+			processBatchWatch.suspend();
 		}
-		processBatchWatch.suspend();
 
 		record = data.getRegistryRecord();
 		if (!recordWorkflowManager.hasSuccessTransition(record)
 			|| record.getRecordStatus().isProcessedWithError()) {
-			log.debug("Skipping record: {}", record);
+			log.debug("Skipping record: {}", record.getId());
 			context.setCurrentRecord(null);
 			return;
 		}
+
+		log.debug("Processing record to operate: {}", record.getId());
 
 		getOperationWatch.resume();
 		Operation op = serviceOperationsFactory.getOperation(context.getRegistry(), record);
@@ -121,17 +122,13 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	 * @throws Exception if failure occurs
 	 */
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	public void doUpdate(@NotNull ProcessingContext context) throws Exception {
 
 		try {
-			beforeUpdateWatch.resume();
 			context.beforeUpdate();
-			beforeUpdateWatch.suspend();
 
-			updateWatch.resume();
 			context.doUpdate();
-			updateWatch.suspend();
 
 			postUpdated(context);
 		} catch (Exception ex) {
@@ -140,12 +137,18 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 		}
 	}
 
-	@Transactional (readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	protected void postUpdated(ProcessingContext context) throws FlexPayException {
 
 		for (RegistryRecord record : context.getOperationRecords()) {
-			if (record.getImportError() != null && record.getImportError().isNew()) {
-				errorDao.create(record.getImportError());
+			ImportError error = record.getImportError();
+			if (error != null && error.isNew()) {
+				errorDao.create(error);
+			} else if (error != null && error.isNotActive()) {
+				errorDao.delete(error);
+				record.setImportError(null);
+			} else if (error != null) {
+				errorDao.update(error);
 			}
 		}
 
@@ -157,9 +160,8 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	}
 
 	private void printWatch() {
-		log.debug("Start time: {}", beforeUpdateWatch.getStartTime());
-		log.debug("Operation time: {}, before update time: {}, update time: {}, process batch: {}",
-				new Object[]{watchContext.getOperationProcessWatch(), beforeUpdateWatch, updateWatch, processBatchWatch});
+		log.debug("Get operation time: {}, operation time: {}, process batch: {}",
+				new Object[]{getOperationWatch, watchContext.getOperationProcessWatch(), processBatchWatch});
 	}
 
 	@Required

@@ -77,4 +77,23 @@
 		<property name="personService" ref="personService" />
 	</bean>
 
+	<bean id="processRecordsRangeService"
+		  class="org.flexpay.eirc.service.importexport.impl.ProcessRecordsRangeServiceImpl"
+		  p:handleError-ref="registryHandleError"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+		  p:streetService-ref="streetService"
+		  p:organizationService-ref="organizationService"
+		  p:processorTx-ref="serviceProviderFileProcessorRecordsTx" />
+
+
+	<bean id="processRegistryService"
+		  class="org.flexpay.eirc.service.importexport.impl.ProcessRegistryServiceImpl"
+		  p:processor-ref="registryProcessor"
+		  p:registryService-ref="registryService"
+		  p:registryFileService-ref="registryFileService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:processRecordsRangeService-ref="processRecordsRangeService"
+		  p:transactionManager-ref="transactionManager"
+		  p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService" />
+
 </beans>

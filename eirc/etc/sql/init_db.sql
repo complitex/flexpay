@@ -1,3 +1,10 @@
+-- Add indexes
+alter table eirc_eirc_accounts_tbl
+		add unique index I_eirc_eirc_accounts_account_number (account_number);
+
+alter table eirc_consumer_attributes_tbl
+		add unique index I_stringvalue_begindate_enddate_consumerid_typeid (string_value, begin_date, end_date, consumer_id, type_id);
+
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('eirc');
 SELECT @module_eirc:=last_insert_id();
 

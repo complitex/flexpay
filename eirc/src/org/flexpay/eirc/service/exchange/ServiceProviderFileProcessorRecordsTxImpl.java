@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
@@ -23,7 +24,7 @@ public class ServiceProviderFileProcessorRecordsTxImpl extends ServiceProviderFi
 		updateRecordsWatch.suspend();
 	}
 
-	@Transactional (readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	protected void postUpdated(ProcessingContext context) throws FlexPayException {
 		updateRecordsWatch.resume();
 		log.debug("Start update records");
@@ -34,6 +35,7 @@ public class ServiceProviderFileProcessorRecordsTxImpl extends ServiceProviderFi
 		updateRecordsWatch.suspend();
 
 		super.postUpdated(context);
+		
 		printWatch();
 	}
 

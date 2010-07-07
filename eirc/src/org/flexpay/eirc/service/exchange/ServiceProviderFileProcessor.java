@@ -39,6 +39,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +49,7 @@ import java.util.Set;
 /**
  * Processor of instructions specified by service provider, usually payments, balance notifications, etc.
  */
+@Transactional(readOnly = true)
 public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -74,6 +77,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @param spFile uploaded spFile
 	 * @throws Exception if failure occurs
 	 */
+	@Deprecated
 	public void processFile(@NotNull FPFile spFile) throws Exception {
 
 		log.info("Starting processing file");
@@ -95,6 +99,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Deprecated
 	public void registriesProcess(@NotNull Collection<Registry> registries) throws Exception {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
@@ -123,6 +128,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
+	@Deprecated
 	public void processRegistry(@NotNull ProcessingContext context) throws Exception {
 
 		StopWatch watch = new StopWatch();
@@ -174,6 +180,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	}
 
 	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
+	@Deprecated
 	private void handleError(Throwable t, ProcessingContext context) throws Exception {
 		String code = "eirc.error_code.unknown_error";
 		if (t instanceof FlexPayExceptionContainer) {
@@ -219,6 +226,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
+	@Deprecated
 	public void importConsumers(ProcessingContext context) throws Exception {
 
 		processHeader(context);
@@ -228,6 +236,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		setupRecordsConsumer(context.getRegistry(), rawConsumersDataSource);
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	public void startRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed {
 		if (context.isProcessingStarted()) {
 			return;
@@ -236,6 +245,27 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		context.startProcessing();
 	}
 
+	/**
+	 * Run processing on registry header
+	 *
+	 * @param context ProcessingContext
+	 * @throws Exception if failure occurs
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+	public void processHeader(ProcessingContext context) throws Exception {
+
+		// process header containers
+		try {
+			Operation op = serviceOperationsFactory.getContainerOperation(context.getRegistry());
+			DelayedUpdate update = op.process(context);
+			update.doUpdate();
+		} catch (Exception e) {
+			log.error("Failed constructing container for registry: " + context.getRegistry(), e);
+			throw e;
+		}
+	}
+
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	public void endRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed {
 		if (!context.isProcessingStarted() || context.isProcessingEnded()) {
 			return;
@@ -246,6 +276,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		context.endProcessing();
 	}
 
+	@Deprecated
 	public void processRecords(Registry registry, Set<Long> recordIds) throws Exception {
 
 		ProcessingContext context = new ProcessingContext();
@@ -281,6 +312,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
+	@Deprecated
 	private void setupRecordsConsumers(Registry registry, Set<Long> recordIds) throws Exception {
 
 		Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
@@ -304,31 +336,13 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	}
 
 	/**
-	 * Run processing on registry header
-	 *
-	 * @param context ProcessingContext
-	 * @throws Exception if failure occurs
-	 */
-	public void processHeader(ProcessingContext context) throws Exception {
-
-		// process header containers
-		try {
-			Operation op = serviceOperationsFactory.getContainerOperation(context.getRegistry());
-			DelayedUpdate update = op.process(context);
-			update.doUpdate();
-		} catch (Exception e) {
-			log.error("Failed constructing container for registry: " + context.getRegistry(), e);
-			throw e;
-		}
-	}
-
-	/**
 	 * Set up consumers for records
 	 *
 	 * @param registry			   SpRegistry to process
 	 * @param rawConsumersDataSource Consumers data source
 	 * @throws Exception if failure occurs
 	 */
+	@Deprecated
 	private void setupRecordsConsumer(Registry registry, RawDataSource<RawConsumerData> rawConsumersDataSource)
 			throws Exception {
 
