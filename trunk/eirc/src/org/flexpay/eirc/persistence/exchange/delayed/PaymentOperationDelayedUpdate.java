@@ -2,6 +2,7 @@ package org.flexpay.eirc.persistence.exchange.delayed;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.*;
@@ -88,11 +89,11 @@ public class PaymentOperationDelayedUpdate implements
 	}
 
 	@Override
-	public void setExternalAccount(String accountNumber, Organization org) {
+	public void setExternalAccount(String accountNumber, Stub<Organization> stubOrg) {
 
 		// delay setup of addition till the update is about to be done
 		// in order to remove dependency on containers order
-		updates.add(new ExternalAccountBeforeUpdateSetter(currentRecord, accountNumber, org));
+		updates.add(new ExternalAccountBeforeUpdateSetter(currentRecord, accountNumber, stubOrg));
 	}
 
 	@Override
@@ -113,12 +114,12 @@ public class PaymentOperationDelayedUpdate implements
 
 		private RegistryRecord registryRecord;
 		private String accountNumber;
-		private Organization org;
+		private Stub<Organization> stubOrg;
 
-		private ExternalAccountBeforeUpdateSetter(RegistryRecord registryRecord, String accountNumber, Organization org) {
+		private ExternalAccountBeforeUpdateSetter(RegistryRecord registryRecord, String accountNumber, Stub<Organization> stubOrg) {
 			this.registryRecord = registryRecord;
 			this.accountNumber = accountNumber;
-			this.org = org;
+			this.stubOrg = stubOrg;
 		}
 
 		void doUpdate() throws FlexPayException {
@@ -130,7 +131,7 @@ public class PaymentOperationDelayedUpdate implements
 			}
 
 			// TODO create document addition
-			if (getMbOrganizationStub().sameId(org)) {
+			if (getMbOrganizationStub().equals(stubOrg)) {
 				DocumentAddition addition = new DocumentAddition();
 				addition.setAdditionType(additionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT));
 				addition.setStringValue(accountNumber);

@@ -2,8 +2,13 @@ package org.flexpay.eirc.service.importexport;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.*;
-import org.flexpay.common.persistence.*;
+import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.StreetTypeService;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
@@ -25,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -63,6 +69,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 		initWatch(findConsumerWatch);
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
 	@Override
 	public boolean processBatch(Stub<DataSourceDescription> sd, RawConsumerData data,
 								Map<String, List<Street>> nameObjsMap, DelayedUpdatesContainer delayedUpdates) {
@@ -74,8 +81,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 		}
 
 		try {
-			log.debug("Starting record processing: {}", data.getRegistryRecord());
-			recordWorkflowManager.startProcessing(data.getRegistryRecord());
+			startProcessing(data);
 		} catch (TransitionNotAllowed e) {
 			log.info("Skipping record, processing not allowed: {}", data.getExternalSourceId());
 			return false;
@@ -182,6 +188,13 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 		printWatch();
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
+	private void startProcessing(RawConsumerData data) throws TransitionNotAllowed {
+		log.debug("Starting record processing: {}", data.getRegistryRecord());
+		recordWorkflowManager.startProcessing(data.getRegistryRecord());
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
 	private void setConsumerError(RegistryRecord record, ImportError error) throws Exception {
 		recordWorkflowManager.setNextErrorStatus(record, error);
 	}

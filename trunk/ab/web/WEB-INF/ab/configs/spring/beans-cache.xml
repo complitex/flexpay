@@ -163,6 +163,7 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="readFullAddresses">cacheName=abBuildingFlexpayCache</prop>
+				<prop key="findAddresses">cacheName=abBuildingFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">

@@ -388,9 +388,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats.restriction", new Object[]{registryId, restrictionMinId});
 		Object[] objs = (Object[]) result.get(0);
 
-		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1]);
-		if (minMax[0] == null || minMax[1] == null) {
-			return CollectionUtils.ar(0L, 0L);
+		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1], (Long) objs[2]);
+		if (minMax[0] == null || minMax[1] == null || minMax[2] == null) {
+			return CollectionUtils.ar(0L, 0L, 0L);
 		}
 
 		return minMax;

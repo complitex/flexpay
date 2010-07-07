@@ -1,5 +1,6 @@
 package org.flexpay.common.persistence.registry.workflow;
 
+import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.ImportError;
@@ -26,6 +27,7 @@ public class RegistryRecordWorkflowManagerRW extends RegistryRecordWorkflowManag
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
+	protected ImportErrorDao errorDao;
 	private RegistryRecordDao recordDao;
     private RegistryRecordDaoExt recordDaoExt;
 
@@ -105,7 +107,11 @@ public class RegistryRecordWorkflowManagerRW extends RegistryRecordWorkflowManag
 	@Transactional (readOnly = false)
 	@Override
 	public RegistryRecord removeError(RegistryRecord record) {
-		return super.removeError(record);
+		record = super.removeError(record);
+		errorDao.delete(record.getImportError());
+		record.setImportError(null);
+
+		return record;
 	}
 
 	@Transactional (readOnly = false)
@@ -123,4 +129,9 @@ public class RegistryRecordWorkflowManagerRW extends RegistryRecordWorkflowManag
     public void setRecordDaoExt(RegistryRecordDaoExt recordDaoExt) {
         this.recordDaoExt = recordDaoExt;
     }
+
+	@Required
+	public void setErrorDao(ImportErrorDao errorDao) {
+		this.errorDao = errorDao;
+	}
 }

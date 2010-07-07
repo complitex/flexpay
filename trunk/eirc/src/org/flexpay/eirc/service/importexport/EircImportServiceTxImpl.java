@@ -17,6 +17,7 @@ import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,6 +27,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 @Transactional (readOnly = true)
+@Deprecated
 public class EircImportServiceTxImpl extends ImportServiceImpl implements EircImportServiceTx {
 
 	private ConsumerService consumerService;
@@ -66,8 +68,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			}
 
 			try {
-				log.debug("Starting record processing: {}", data.getRegistryRecord());
-				recordWorkflowManager.startProcessing(data.getRegistryRecord());
+				startProcessing(data);
 			} catch (TransitionNotAllowed e) {
 				log.info("Skipping record, processing not allowed: {}", data.getExternalSourceId());
 				++counters[1];
@@ -178,6 +179,12 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		log.debug("Imported {} records so far", counters[0]);
 
 		return true;
+	}
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	private void startProcessing(RawConsumerData data) throws TransitionNotAllowed {
+		log.debug("Starting record processing: {}", data.getRegistryRecord());
+		recordWorkflowManager.startProcessing(data.getRegistryRecord());
 	}
 
 	private List<RawConsumerData> readRawDataBatch(boolean inited, RawDataSource<RawConsumerData> dataSource) {

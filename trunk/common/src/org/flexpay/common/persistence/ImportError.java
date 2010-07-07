@@ -73,6 +73,15 @@ public class ImportError extends DomainObjectWithStatus {
 		this.errorId = errorId;
 	}
 
+	public void copy(ImportError o) {
+		sourceDescription = o.getSourceDescription();
+		sourceObjectId = o.getSourceObjectId();
+		objectType = o.getObjectType();
+		dataSourceBean = o.getDataSourceBean();
+		errorId = o.getErrorId();
+		super.setStatus(o.getStatus());
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).

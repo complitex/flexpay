@@ -119,14 +119,10 @@
 
 	<bean id="processRecordsRangeActionHandler"
 		  class="org.flexpay.eirc.process.registry.ProcessRecordsRangeActionHandler"
-		  p:processorTx-ref="serviceProviderFileProcessorRecordsTx"
 		  p:registryService-ref="registryService"
-		  p:handleError-ref="registryHandleError"
 		  p:registryFileService-ref="registryFileService"
 		  p:registryRecordService-ref="registryRecordService"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
-		  p:streetService-ref="streetService"
-		  p:organizationService-ref="organizationService"
+		  p:processRecordsRangeService-ref="processRecordsRangeService"
 		  scope="prototype"	/>
 
 	<bean id="endRegistryProcessingActionHandler"
@@ -198,14 +194,11 @@
 
 	<bean id="processRegistryJob"
 		  class="org.flexpay.eirc.process.registry.ProcessRegistryJob"
-		  p:processor-ref="registryProcessor"
-		  p:processorTx-ref="serviceProviderFileProcessorRecordsTx"
 		  p:registryService-ref="registryService"
-		  p:handleError-ref="registryHandleError"
 		  p:registryFileService-ref="registryFileService"
-		  p:registryWorkflowManager-ref="registryWorkflowManager"
-		  p:processRecordsRange-ref="processRecordsRangeActionHandler"
 		  p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService"
+		  p:processRegistryService-ref="processRegistryService"
+		  p:handleError-ref="registryHandleError"
 		  scope="prototype" />
 
 </beans>

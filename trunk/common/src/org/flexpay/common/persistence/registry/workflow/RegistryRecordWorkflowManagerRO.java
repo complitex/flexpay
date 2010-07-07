@@ -27,7 +27,6 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 
 	private RegistryWorkflowManager registryWorkflowManager;
 	protected RegistryRecordStatusService statusService;
-	protected ImportErrorDao errorDao;
 
 	protected Map<Integer, List<Integer>> transitions = map();
 
@@ -130,8 +129,13 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 		}
 
 		markRegistryAsHavingError(record);
-		record.setImportError(error);
 		setNextStatus(record, allowedCodes.get(1));
+		ImportError oldError = record.getImportError();
+		if (oldError != null) {
+			oldError.copy(error);
+		} else {
+			record.setImportError(error);
+		}
 	}
 
 	private void markRegistryAsHavingError(RegistryRecord record) throws TransitionNotAllowed {
@@ -187,7 +191,6 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 	 * @param record Registry record
 	 * @return updated record
 	 */
-	@Transactional (readOnly = false)
     @Override
 	public RegistryRecord removeError(RegistryRecord record) {
 		if (record.getImportError() == null) {
@@ -197,10 +200,6 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 		// disable error
 		ImportError error = record.getImportError();
 		error.disable();
-		errorDao.update(error);
-
-		// remove error and set status to FIXED
-		record.setImportError(null);
 
 		return record;
 	}
@@ -257,11 +256,6 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
     @Required
 	public void setStatusService(RegistryRecordStatusService statusService) {
 		this.statusService = statusService;
-	}
-
-    @Required
-	public void setErrorDao(ImportErrorDao errorDao) {
-		this.errorDao = errorDao;
 	}
 
     @Required

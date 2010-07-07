@@ -29,7 +29,7 @@ public class RegistryRecordsProcessAction extends AccountantAWPActionSupport {
 		contextVariables.put("recordIds", (Serializable) CollectionUtils.list(objectIds));
 		contextVariables.put("registryId", registry.getId());
 
-		processManager.createProcess("ProcessingDBRegistryProcess", contextVariables);
+		processManager.createProcess("ProcessingDBRegistryProcess2", contextVariables);
 
 		addActionMessage(getText("eirc.registry.records.processing_started"));
 

@@ -380,13 +380,20 @@
 		select distinct rr
 		from RegistryRecord rr
 			left join fetch rr.properties
-			left join fetch rr.registry r
-			left join fetch r.properties
-			left join fetch r.registryStatus rs
 			left join fetch rr.recordStatus rrs
 			left join fetch rr.importError
 			left join fetch rr.containers
 		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code <> 4
+	]]></query>
+
+	<query name="RegistryRecord.listRecordsForProcessingCollection"><![CDATA[
+		select distinct rr
+		from RegistryRecord rr
+			left join fetch rr.properties
+			left join fetch rr.recordStatus rrs
+			left join fetch rr.importError
+			left join fetch rr.containers
+		where rrs.code <> 4 and rr.id in (:list_1)
 	]]></query>
 
     <query name="RegistryRecord.listRecordsForExport.stats">

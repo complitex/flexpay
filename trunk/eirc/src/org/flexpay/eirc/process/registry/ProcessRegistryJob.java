@@ -5,59 +5,43 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.eirc.persistence.exchange.ContainerProcessHelper;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
-import org.flexpay.eirc.persistence.exchange.SetExternalOrganizationAccountOperation;
-import org.flexpay.eirc.persistence.exchange.SetResponsiblePersonOperation;
 import org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance;
 import org.flexpay.eirc.process.registry.error.HandleError;
 import org.flexpay.eirc.service.ProcessRegistryVariableInstanceService;
-import org.flexpay.eirc.service.exchange.RegistryProcessor;
-import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTx;
+import org.flexpay.eirc.service.importexport.ProcessRegistryService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.flexpay.common.persistence.Stub.stub;
-
 public class ProcessRegistryJob extends Job {
 
-	private RegistryProcessor processor;
 	private RegistryService registryService;
 	private RegistryFileService registryFileService;
-	private HandleError handleError;
-	private RegistryWorkflowManager registryWorkflowManager;
-	private ProcessRecordsRangeActionHandler processRecordsRange;
 	private ProcessRegistryVariableInstanceService processRegistryVariableInstanceService;
-	private ServiceProviderFileProcessorTx processorTx;
+	private ProcessRegistryService processRegistryService;
+	private HandleError handleError;
 
-	private StopWatch updateWatch = new StopWatch();
-	private StopWatch getRecordsWatch = new StopWatch();
-	private StopWatch processRecordsWatch = new StopWatch();
+	private StopWatch processRegistryRecordRangeWatch = new StopWatch();
 
 	{
-		updateWatch.start();
-		updateWatch.suspend();
-
-		getRecordsWatch.start();
-		getRecordsWatch.suspend();
-
-		processRecordsWatch.start();
-		processRecordsWatch.suspend();
+		processRegistryRecordRangeWatch.start();
+		processRegistryRecordRangeWatch.suspend();
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 		log.debug("start action");
@@ -77,44 +61,63 @@ public class ProcessRegistryJob extends Job {
 			return RESULT_ERROR;
 		}
 
+		List<Long> recordIds = (List<Long>) parameters.get(StartRegistryProcessingActionHandler.RECORD_IDS);
+
 		FetchRange range = (FetchRange) parameters.get(HasMoreRecordActionHandler.RANGE);
 		ProcessRegistryVariableInstance variable = processRegistryVariableInstanceService.findVariable(getProcessId());
-		if (variable != null && variable.getLastProcessedRegistryRecord() != null) {
+
+		if (variable != null && variable.getLastProcessedRegistryRecord() != null && recordIds == null) {
+
 			range = registryFileService.getFetchRangeForProcessing(Stub.stub(registry), range.getPageSize(), variable.getLastProcessedRegistryRecord());
+
+		} if (variable != null && variable.getLastProcessedRegistryRecord() != null && recordIds != null) {
+
+			int idx = recordIds.indexOf(variable.getLastProcessedRegistryRecord());
+			if (idx < 0) {
+				log.warn("Registry record with id={} did not find", variable.getLastProcessedRegistryRecord());
+			} else {
+				recordIds = recordIds.subList(idx + 1, recordIds.size() - 1);
+			}
+		} else if (variable == null) {
+
+			variable = new ProcessRegistryVariableInstance();
+			variable.setRegistry(registry);
+			variable.setProcessId(getProcessId());
 		}
 
-		ProcessingContext context = processRecordsRange.prepareContext(registry);
+		ProcessingContext context = processRegistryService.prepareContext(registry);
 
-		if (processing(range, variable, context)) return RESULT_NEXT;
+		try {
+			variable = prepare(variable, context);
+		} catch (Throwable t) {
+			setError(context, t);
+			return RESULT_ERROR;
+		}
 
-		return RESULT_ERROR;
+		if (variable == null) {
+			return RESULT_NEXT;
+		}
+
+		if (recordIds != null) {
+			if (!processing(recordIds, range.getPageSize(), variable, context)) return  RESULT_ERROR;
+		} else {
+			if (!processing(range, variable, context)) return RESULT_ERROR;
+		}
+
+		if (!processRegistryService.endProcessing(context)) return RESULT_ERROR;
+
+		return RESULT_NEXT;
 	}
 
-	@Transactional(readOnly = true)
-	private boolean processing(FetchRange range, ProcessRegistryVariableInstance variable, ProcessingContext context) {
+	public boolean processing(@NotNull FetchRange range, @NotNull ProcessRegistryVariableInstance variable, @NotNull ProcessingContext context) {
 		try {
-			if (variable == null) {
-				variable = prepare(context);
-			}
-
-			List<RegistryRecord> records;
-			Integer processedCountRecords = variable.getProcessedCountRecords() == null? 0: variable.getProcessedCountRecords();
 			do {
-				getRecordsWatch.resume();
-				records = registryFileService.getRecordsForProcessing(stub(context.getRegistry()), range);
-				getRecordsWatch.suspend();
-
-				processRecordsWatch.resume();
-				if (!processRecordsRange.processRecords(records, context)) {
-					return false;
+				processRegistryRecordRangeWatch.resume();
+				try {
+					if (processRegistryService.processRegistryRecordRange(range, variable, context)) return false;
+				} finally {
+					processRegistryRecordRangeWatch.suspend();
 				}
-				processRecordsWatch.suspend();
-
-				updateWatch.resume();
-				if ((processedCountRecords = doUpdate(variable, context, records, processedCountRecords)) == null) {
-					return false;
-				}
-				updateWatch.suspend();
 				range.nextPage();
 				context.nextOperation();
 
@@ -122,28 +125,61 @@ public class ProcessRegistryJob extends Job {
 				printWatch();
 			} while (range.hasMore());
 
-			if (endProcessing(Stub.stub(context.getRegistry()))) return true;
 		} catch (Throwable t) {
 			setError(context, t);
 		}
+		
 		return false;
 	}
 
-	@Transactional(readOnly = false)
-	private ProcessRegistryVariableInstance prepare(ProcessingContext context) throws Exception {
-		ProcessRegistryVariableInstance variable;
-
-		registryWorkflowManager.startProcessing(context.getRegistry());
-		processor.processHeader(context);
-
-		variable = new ProcessRegistryVariableInstance();
-		variable.setRegistry(context.getRegistry());
-		variable.setProcessId(getProcessId());
-		processRegistryVariableInstanceService.create(variable);
-		return variable;
+	private ProcessRegistryVariableInstance prepare(ProcessRegistryVariableInstance variable, ProcessingContext context) throws Exception {
+		try {
+			if (variable.isNew()) {
+				variable = processRegistryService.prepare(context, variable);
+			}
+			return variable;
+		} catch (TransitionNotAllowed e) {
+			log.debug("Inner error {}", e);
+		}
+		return null;
 	}
 
-	@Transactional(readOnly = false)
+	public boolean processing(@NotNull List<Long> records, int flushCount, @NotNull ProcessRegistryVariableInstance variable, @NotNull ProcessingContext context) {
+		try {
+			while (records.size() > 0) {
+				if (records.size() < flushCount) {
+					flushCount = records.size();
+				}
+				List<Long> currentRecordProcessed = records.subList(0, flushCount - 1);
+
+				processRegistryRecordRangeWatch.resume();
+				try {
+					if (processRegistryService.processRegistryRecordEnumeration(currentRecordProcessed, variable, context)) return false;
+				} finally {
+					processRegistryRecordRangeWatch.suspend();
+				}
+				context.nextOperation();
+
+				if (flushCount == records.size()) {
+					records.clear();
+				} else {
+					records = records.subList(flushCount, records.size() - 1);
+				}
+
+				log.debug("Processed count records: {}", variable.getProcessedCountRecords());
+				printWatch();
+
+			}
+
+			return true;
+		} catch (Throwable t) {
+			setError(context, t);
+		}
+
+		return false;
+	}
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	private void setError(ProcessingContext context, Throwable t) {
 		try {
 			handleError.handleError(t, context);
@@ -152,49 +188,9 @@ public class ProcessRegistryJob extends Job {
 		}
 	}
 
-	@Transactional(readOnly = false)
-	private Integer doUpdate(ProcessRegistryVariableInstance variable, ProcessingContext context, List<RegistryRecord> records, Integer processedCountRecords) {
-		try {
-			processorTx.doUpdate(context);
-		} catch (Exception e) {
-			log.error("Inner error", e);
-			return null;
-		}
-		if (records.size() > 0) {
-			processedCountRecords += records.size();
-			variable.setProcessedCountRecords(processedCountRecords);
-			variable.setLastProcessedRegistryRecord(records.get(records.size() - 1).getId());
-			processRegistryVariableInstanceService.update(variable);
-		}
-		return processedCountRecords;
-	}
-
-	@Transactional(readOnly = false)
-	private boolean endProcessing(@NotNull Stub<Registry> stub) {
-		try {
-			Registry registry = registryService.read(stub);
-
-			registryWorkflowManager.setNextSuccessStatus(registry);
-			registryWorkflowManager.endProcessing(registry);
-
-			return true;
-		} catch (TransitionNotAllowed transitionNotAllowed) {
-			log.error("Inner error", transitionNotAllowed);
-		}
-		return false;
-	}
-
 	private void printWatch() {
-		log.debug("Get records time: {}, full operations time: {}, update time: {}",
-				new Object[]{getRecordsWatch, processRecordsWatch, updateWatch});
-		SetResponsiblePersonOperation.printWatch();
-		SetExternalOrganizationAccountOperation.printWatch();
-		ContainerProcessHelper.printWatch();
-	}
-
-	@Required
-	public void setProcessor(RegistryProcessor processor) {
-		this.processor = processor;
+		log.debug("Time process registry record range: {}", processRegistryRecordRangeWatch);
+		processRegistryService.printWatch();
 	}
 
 	@Required
@@ -203,23 +199,8 @@ public class ProcessRegistryJob extends Job {
 	}
 
 	@Required
-	public void setHandleError(HandleError handleError) {
-		this.handleError = handleError;
-	}
-
-	@Required
-	public void setRegistryWorkflowManager(RegistryWorkflowManager registryWorkflowManager) {
-		this.registryWorkflowManager = registryWorkflowManager;
-	}
-
-	@Required
 	public void setRegistryFileService(RegistryFileService registryFileService) {
 		this.registryFileService = registryFileService;
-	}
-
-	@Required
-	public void setProcessRecordsRange(ProcessRecordsRangeActionHandler processRecordsRange) {
-		this.processRecordsRange = processRecordsRange;
 	}
 
 	@Required
@@ -228,7 +209,12 @@ public class ProcessRegistryJob extends Job {
 	}
 
 	@Required
-	public void setProcessorTx(ServiceProviderFileProcessorTx processorTx) {
-		this.processorTx = processorTx;
+	public void setProcessRegistryService(ProcessRegistryService processRegistryService) {
+		this.processRegistryService = processRegistryService;
+	}
+
+	@Required
+	public void setHandleError(HandleError handleError) {
+		this.handleError = handleError;
 	}
 }
