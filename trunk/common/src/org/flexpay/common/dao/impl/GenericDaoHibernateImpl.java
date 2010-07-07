@@ -148,6 +148,11 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	}
 
     @Override
+	public void deleteAll(@NotNull Collection<T> os) {
+		hibernateTemplate.deleteAll(os);
+	}
+
+    @Override
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
 		return (List<T>) findByNamedQuery(queryName, queryArgs);

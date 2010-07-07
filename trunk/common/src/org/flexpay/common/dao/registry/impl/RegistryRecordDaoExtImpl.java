@@ -209,7 +209,6 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
     public List<RegistryRecord> findRecordsWithThisError(RegistryRecord record, String correctionType, final Page<RegistryRecord> pager) {
 
         final StringBuilder selectSql = new StringBuilder("select id ");
-        final StringBuilder sqlCount = new StringBuilder("select count(1) ");
         StringBuilder fromWhereClause = new StringBuilder(
                 "from common_registry_records_tbl use index (I_registry_status, I_registry_errortype) " +
                 "where registry_id=? ");
@@ -231,35 +230,13 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         params.add(record.getImportErrorType());
 
         selectSql.append(fromWhereClause);
-        sqlCount.append(fromWhereClause);
 
         final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
             @Override
             public List doInHibernate(Session session) throws HibernateException {
-                log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
+                log.debug("Filter records hqls: {}", selectSql);
 
                 StopWatch watch = new StopWatch();
-
-                if (pager.getTotalNumberOfElements() <= 0) {
-                    if (log.isDebugEnabled()) {
-                        watch.start();
-                    }
-
-                    Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
-                    if (count == null) {
-                        count = 0;
-                    }
-                    if (log.isDebugEnabled()) {
-                        watch.stop();
-                        log.debug("Time spent for count query: {}", watch);
-                        watch.reset();
-                    }
-
-                    pager.setTotalElements(count.intValue());
-                }
-                pager.setPageNumber(1);
-
-
                 if (log.isDebugEnabled()) {
                     watch.start();
                 }
@@ -320,7 +297,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 		Number count = (Number) hibernateTemplate.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
-				return session.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0")
+				return session.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0 and rr.importError.status=0")
 						.setLong(0, registryId).uniqueResult();
 			}
 		});
