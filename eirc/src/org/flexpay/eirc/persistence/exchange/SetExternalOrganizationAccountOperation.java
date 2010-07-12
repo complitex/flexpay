@@ -85,22 +85,22 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
 
 		// check if needs only to setup document addition
-		visitUpdatesWatch.resume();
+//		visitUpdatesWatch.resume();
 		try {
 			if (context.getRegistry().getRegistryType().isPayments()) {
 				return visitUpdates(context);
 			}
 		} finally {
-			visitUpdatesWatch.suspend();
+//			visitUpdatesWatch.suspend();
 		}
 
-		setMbAccountNumberWatch.resume();
+//		setMbAccountNumberWatch.resume();
 		try {
 			if (getMbOrganizationStub().getId().equals(organizationId)) {
 				return setMbAccountNumber(context.getCurrentRecord());
 			}
 		} finally {
-			setMbAccountNumberWatch.suspend();
+//			setMbAccountNumberWatch.suspend();
 		}
 
 		return DelayedUpdateNope.INSTANCE;
@@ -108,29 +108,29 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 
 	private DelayedUpdate setMbAccountNumber(RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
 
-		getConsumerWatch.resume();
+//		getConsumerWatch.resume();
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
-		getConsumerWatch.suspend();
+//		getConsumerWatch.suspend();
 
-		getConsumerAttributeTypeWatch.resume();
+//		getConsumerAttributeTypeWatch.resume();
 		ConsumerAttributeTypeBase type = factory.getConsumerAttributeTypeService()
 				.readByCode(ConsumerAttributes.ATTR_ERC_ACCOUNT);
-		getConsumerAttributeTypeWatch.suspend();
+//		getConsumerAttributeTypeWatch.suspend();
 		if (type == null) {
 			throw new FlexPayException("Cannot find attribute " + ConsumerAttributes.ATTR_ERC_ACCOUNT);
 		}
 
-		consumerGetAttributeForDate.resume();
+//		consumerGetAttributeForDate.resume();
 		ConsumerAttribute oldAttr = consumer.getAttributeForDate(type, changeApplyingDate);
-		consumerGetAttributeForDate.suspend();
+//		consumerGetAttributeForDate.suspend();
 
 		if (oldAttr == null || !StringUtils.equals(oldAttr.getStringValue(), newValue)) {
 			ConsumerAttribute attribute = new ConsumerAttribute();
 			attribute.setType(type);
 			attribute.setStringValue(newValue);
-			consumerSetTmpAttributeForDate.resume();
+//			consumerSetTmpAttributeForDate.resume();
 			consumer.setTmpAttributeForDate(attribute, changeApplyingDate);
-			consumerSetTmpAttributeForDate.suspend();
+//			consumerSetTmpAttributeForDate.suspend();
 			return new DelayedUpdateConsumer(consumer, factory.getConsumerService());
 		}
 

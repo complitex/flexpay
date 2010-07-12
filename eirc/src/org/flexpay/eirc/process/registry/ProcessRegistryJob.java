@@ -10,6 +10,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance;
 import org.flexpay.eirc.process.registry.error.HandleError;
@@ -18,6 +19,8 @@ import org.flexpay.eirc.service.importexport.ProcessRegistryService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Executor;
 
 public class ProcessRegistryJob extends Job {
 
@@ -33,6 +38,8 @@ public class ProcessRegistryJob extends Job {
 	private ProcessRegistryVariableInstanceService processRegistryVariableInstanceService;
 	private ProcessRegistryService processRegistryService;
 	private HandleError handleError;
+	private Executor executor;
+	private Set<Long> currentExecuteRange = Collections.synchronizedSet(CollectionUtils.<Long>set());
 
 	private StopWatch processRegistryRecordRangeWatch = new StopWatch();
 
@@ -66,9 +73,10 @@ public class ProcessRegistryJob extends Job {
 		FetchRange range = (FetchRange) parameters.get(HasMoreRecordActionHandler.RANGE);
 		ProcessRegistryVariableInstance variable = processRegistryVariableInstanceService.findVariable(getProcessId());
 
-		if (variable != null && variable.getLastProcessedRegistryRecord() != null && recordIds == null) {
+		if (recordIds == null) {
 
-			range = registryFileService.getFetchRangeForProcessing(Stub.stub(registry), range.getPageSize(), variable.getLastProcessedRegistryRecord());
+			Long lastProcessedRegistryRecord = variable == null || variable.getLastProcessedRegistryRecord() == null? -1L: variable.getLastProcessedRegistryRecord();
+			range = registryFileService.getFetchRangeForProcessing(Stub.stub(registry), range.getPageSize(), lastProcessedRegistryRecord);
 
 		} if (variable != null && variable.getLastProcessedRegistryRecord() != null && recordIds != null) {
 
@@ -78,7 +86,9 @@ public class ProcessRegistryJob extends Job {
 			} else {
 				recordIds = recordIds.subList(idx + 1, recordIds.size() - 1);
 			}
-		} else if (variable == null) {
+		}
+
+		if (variable == null) {
 
 			variable = new ProcessRegistryVariableInstance();
 			variable.setRegistry(registry);
@@ -109,21 +119,68 @@ public class ProcessRegistryJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	public boolean processing(@NotNull FetchRange range, @NotNull ProcessRegistryVariableInstance variable, @NotNull ProcessingContext context) {
+	public boolean processing(@NotNull final FetchRange range, @NotNull final ProcessRegistryVariableInstance variable, @NotNull final ProcessingContext context) {
 		try {
-			do {
-				processRegistryRecordRangeWatch.resume();
-				try {
-					if (processRegistryService.processRegistryRecordRange(range, variable, context)) return false;
-				} finally {
-					processRegistryRecordRangeWatch.suspend();
-				}
-				range.nextPage();
-				context.nextOperation();
+			final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-				log.debug("Processed count records: {}", variable.getProcessedCountRecords());
-				printWatch();
+			processRegistryRecordRangeWatch.resume();
+
+			do {
+
+				log.debug("current page: {}", range);
+				final FetchRange executorRange = new FetchRange(range.getPageSize());
+				executorRange.setMinId(range.getLowerBound());
+				executorRange.setMaxId(range.getUpperBound());
+				executorRange.setLowerBound(range.getLowerBound());
+				executorRange.setUpperBound(range.getUpperBound());
+
+				currentExecuteRange.add(executorRange.getMinId());
+
+				executor.execute(new Runnable() {
+
+					@Override
+					public void run() {
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+						try {
+							ProcessingContext executorContext = new ProcessingContext();
+							executorContext.setRegistry(context.getRegistry());
+							executorContext.setNameStreetMap(context.getNameStreetMap());
+							executorContext.setSd(context.getSd());
+							executorContext.setSourceInstanceId(context.getSourceInstanceId());
+
+							processRegistryService.processRegistryRecordRange(executorRange, variable, executorContext);
+
+							executorContext.nextOperation();
+						} catch (Throwable th) {
+							log.error("Error in thread", th);
+						} finally {
+							currentExecuteRange.remove(executorRange.getMinId());
+						}
+						synchronized (variable) {
+							log.debug("Processed count records: {}", variable.getProcessedCountRecords());
+						}
+						printWatch();
+					}
+
+                });
+				
+				range.nextPage();
+
+				while (currentExecuteRange.size() >= 5) {
+					Thread.sleep(5000);
+				}
+				log.debug("current execute range: {}, size: {}", currentExecuteRange, currentExecuteRange.size());
+
 			} while (range.hasMore());
+
+			while (currentExecuteRange.size() > 0) {
+				Thread.sleep(5000);
+				log.debug("Wait ending rest thread. Current execute range: {}, size: {}", currentExecuteRange, currentExecuteRange.size());
+			}
+
+			processRegistryRecordRangeWatch.suspend();
+
+			return true;
 
 		} catch (Throwable t) {
 			setError(context, t);
@@ -216,5 +273,10 @@ public class ProcessRegistryJob extends Job {
 	@Required
 	public void setHandleError(HandleError handleError) {
 		this.handleError = handleError;
+	}
+
+	@Required
+	public void setExecutor(Executor executor) {
+		this.executor = executor;
 	}
 }

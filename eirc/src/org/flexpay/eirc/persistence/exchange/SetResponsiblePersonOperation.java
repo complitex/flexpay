@@ -67,15 +67,15 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 
 		RegistryRecord record = context.getCurrentRecord();
 		Consumer consumer;
-		getConsumerWatch.resume();
+//		getConsumerWatch.resume();
 		try {
 			consumer = ContainerProcessHelper.getConsumer(record, factory);
 		} finally {
-			getConsumerWatch.suspend();
+//			getConsumerWatch.suspend();
 		}
 
 		boolean consumerWasProcessed = false;
-		consumerWasProcessedWatch.resume();
+//		consumerWasProcessedWatch.resume();
 		try {
 			for (RegistryRecord processedRegistryRecord : context.getOperationRecords()) {
 				if (processedRegistryRecord.getProperties() != null &&
@@ -94,7 +94,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 				}
 			}
 		} finally {
-			consumerWasProcessedWatch.suspend();
+//			consumerWasProcessedWatch.suspend();
 		}
 
 		// find consumer and set FIO here

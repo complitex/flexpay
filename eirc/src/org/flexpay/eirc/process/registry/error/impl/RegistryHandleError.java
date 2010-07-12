@@ -46,9 +46,13 @@ public class RegistryHandleError implements HandleError {
 		ImportError error = new ImportError();
 		error.setErrorId(code);
 		EircRegistryProperties props = (EircRegistryProperties) context.getRegistry().getProperties();
-		Organization sender = organizationService.readFull(props.getSenderStub());
+		Organization sender = props.getSender();
+		sender = organizationService.readFull(props.getSenderStub());
 		if (sender == null) {
-			throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
+			if (sender == null) {
+				throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
+			}
+			props.setSender(sender);
 		}
 		DataSourceDescription sd = sender.getDataSourceDescription();
 		error.setSourceDescription(sd);

@@ -75,9 +75,9 @@ public class ContainerProcessHelper {
 
 		Consumer consumer = getConsumer(record, factory);
 
-		findAttributeTypeWatch.resume();
+//		findAttributeTypeWatch.resume();
 		ApartmentAttributeType attributeType = factory.getApartmentAttributeTypeService().findTypeByName(attributeTypeName);
-		findAttributeTypeWatch.suspend();
+//		findAttributeTypeWatch.suspend();
 		BtiApartment btiApartment = null;
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		if (props.hasFullApartment()) {
@@ -90,9 +90,9 @@ public class ContainerProcessHelper {
 		}
 
 		if (btiApartment == null) {
-			btiApartmentWatch.resume();
+//			btiApartmentWatch.resume();
 			btiApartment = factory.getBtiApartmentService().readWithAttributes(consumer.getApartmentStub());
-			btiApartmentWatch.suspend();
+//			btiApartmentWatch.suspend();
 			if (btiApartment != null) {
 				props.setFullApartment(btiApartment);
 			}
@@ -106,9 +106,9 @@ public class ContainerProcessHelper {
 			attribute = new ApartmentAttribute();
 			attribute.setAttributeType(attributeType);
 			attribute.setStringValue(newValue);
-			setNormalAttributeWatch.resume();
+//			setNormalAttributeWatch.resume();
 			btiApartment.setNormalAttribute(attribute);
-			setNormalAttributeWatch.suspend();
+//			setNormalAttributeWatch.suspend();
 			return new DelayedUpdateApartmentAttributes(btiApartment, factory.getBtiApartmentService());
 		}
 

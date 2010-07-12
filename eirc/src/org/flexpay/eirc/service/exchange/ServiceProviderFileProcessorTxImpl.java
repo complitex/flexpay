@@ -85,7 +85,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 		log.debug("Record to process: {}", record);
 
 		RawConsumerData data;
-		processBatchWatch.resume();
+//		processBatchWatch.resume();
 		try {
 			data = RawConsumersDataUtil.convert(context.getRegistry(), context.getCurrentRecord());
 
@@ -95,7 +95,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 				return;
 			}
 		} finally {
-			processBatchWatch.suspend();
+//			processBatchWatch.suspend();
 		}
 
 		record = data.getRegistryRecord();
@@ -108,10 +108,11 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 
 		log.debug("Processing record to operate: {}", record.getId());
 
-		getOperationWatch.resume();
+//		getOperationWatch.resume();
 		Operation op = serviceOperationsFactory.getOperation(context.getRegistry(), record);
-		getOperationWatch.suspend();
-		DelayedUpdate update = op.process(context, watchContext);
+//		getOperationWatch.suspend();
+//		DelayedUpdate update = op.process(context, watchContext);
+		DelayedUpdate update = op.process(context);
 		context.addUpdate(update);
 	}
 

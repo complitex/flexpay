@@ -60,6 +60,7 @@ public class ProcessRecordsRangeServiceImpl implements ProcessRecordsRangeServic
 		if (sender == null) {
 			throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
 		}
+		props.setSender(sender);
 		context.setSd(sender.sourceDescriptionStub());
 		return context;
 	}
@@ -80,7 +81,9 @@ public class ProcessRecordsRangeServiceImpl implements ProcessRecordsRangeServic
 			} catch (Throwable t) {
 				try {
 					log.debug("Try set next status for record with Id {}, current status {}", record.getId(), record.getRecordStatus());
-					handleError.handleError(t, context);
+					synchronized (context.getRegistry()) {
+						handleError.handleError(t, context);
+					}
 				} catch (Exception e) {
 					log.error("Inner error. Record Id is: " + record.getId(), e);
 					return false;
