@@ -199,6 +199,7 @@
 		  p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService"
 		  p:processRegistryService-ref="processRegistryService"
 		  p:handleError-ref="registryHandleError"
+		  p:executor-ref="taskExecutor"
 		  scope="prototype" />
 
 </beans>

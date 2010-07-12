@@ -111,9 +111,9 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 			Service service = props.getService();
 			Stub<ServiceProvider> spStub = regProps.getServiceProviderStub();
 			if (service == null) {
-				findServiceWatch.resume();
+//				findServiceWatch.resume();
 				service = consumerService.findService(spStub, data.getServiceCode());
-				findServiceWatch.suspend();
+//				findServiceWatch.suspend();
 				if (service == null) {
 					log.warn("Unknown service code: {}", data.getServiceCode());
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
@@ -127,9 +127,9 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 			}
 
 			// try to find consumer (correction lost or service code came in a different format?)
-			findConsumerWatch.resume();
+//			findConsumerWatch.resume();
 			Consumer consumer = consumerService.findConsumer(regProps.getServiceProviderStub(), data.getAccountNumber(), String.valueOf(service.getId()));
-			findConsumerWatch.suspend();
+//			findConsumerWatch.suspend();
 
 			if (consumer != null) {
 				log.info("Found existing consumer: #{}", data.getExternalSourceId());
@@ -150,9 +150,9 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 			// set apartment
 			if (props.getApartment() == null) {
 				// Find apartment
-				findApartmentWatch.resume();
+//				findApartmentWatch.resume();
 				Apartment apartment = findApartment(nameObjsMap, sd, data, record, dataSource, delayedUpdates);
-				findApartmentWatch.suspend();
+//				findApartmentWatch.suspend();
 				if (apartment == null) {
 					// addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
 					return true;
@@ -163,7 +163,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 			}
 
 			// set person
-			setPersonWatch.resume();
+//			setPersonWatch.resume();
 			if (props.getPerson() == null) {
 				Person person = findPerson(sd, data, record, dataSource);
 				if (person != null) {
@@ -173,7 +173,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 					log.info("No person found");
 				}
 			}
-			setPersonWatch.suspend();
+//			setPersonWatch.suspend();
 		} catch (Exception e) {
 			log.error("Failed getting consumer: " + data.toString(), e);
 			throw new RuntimeException(e);
@@ -196,7 +196,9 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 
 	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
 	private void setConsumerError(RegistryRecord record, ImportError error) throws Exception {
-		recordWorkflowManager.setNextErrorStatus(record, error);
+		synchronized (record.getRegistry()) {
+			recordWorkflowManager.setNextErrorStatus(record, error);
+		}
 	}
 
 	@Nullable
