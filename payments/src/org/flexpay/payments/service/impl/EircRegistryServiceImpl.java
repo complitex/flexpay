@@ -21,7 +21,8 @@ public class EircRegistryServiceImpl implements EircRegistryService {
 	private EircRegistryDaoExt eircRegistryDaoExt;
 	private RegistryDao registryDao;
 
-	public List<Registry> findObjects(Collection<ObjectFilter> filters, Page pager) {
+    @Override
+	public List<Registry> findObjects(Collection<ObjectFilter> filters, Page<Registry> pager) {
 		return eircRegistryDaoExt.findRegistries(filters, pager);
 	}
 
@@ -32,6 +33,7 @@ public class EircRegistryServiceImpl implements EircRegistryService {
 	 * @param senderStub	 Sender organization stub
 	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Registry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub) {
 
 		List<Registry> registries = registryDao.findRegistriesByNumber(registryNumber, senderStub.getId());

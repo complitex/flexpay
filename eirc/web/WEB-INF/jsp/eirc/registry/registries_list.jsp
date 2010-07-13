@@ -40,7 +40,7 @@
             <td class="col"><s:property value="recordsNumber" /></td>
             <td class="col"><s:text name="%{registryStatus.i18nName}" /></td>
             <td class="col">
-                <a href="<s:url action="registryView" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
+                <a href="<s:url action="registryView" namespace="/eirc" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
                     <s:text name="common.view" />
                 </a>
             </td>

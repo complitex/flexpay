@@ -24,5 +24,5 @@ public interface FilterHandler {
 	 * @param clause	 Where clause to update
 	 * @return List of parameters
 	 */
-	List<? extends Object> whereClause(ObjectFilter filter, StringBuilder clause);
+	List<?> whereClause(ObjectFilter filter, StringBuilder clause);
 }

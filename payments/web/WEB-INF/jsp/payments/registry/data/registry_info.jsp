@@ -42,7 +42,7 @@
 
     $erNum.ready(function() {
 
-        $erNum.html("<img src=\"<s:url value="/resources/common/img/indicator.gif" />\" />");
+        $erNum.html("<img src=\"<s:url value="/resources/common/img/indicator2.gif" />\" />");
 
         $.getJSON("<s:url action="checkRegistryErrorsNumber" includeParams="none" />", {"registry.id": <s:property value="registry.id" />},
             function(data) {

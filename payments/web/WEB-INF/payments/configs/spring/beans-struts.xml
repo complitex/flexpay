@@ -380,10 +380,17 @@
           p:processManager-ref="processManager"
           scope="prototype" />
     
-    <bean id="changeAnnotationAction"
+    <bean id="registryCommentaryEditAction"
 		  parent="accountantAWPAction"
-          class="org.flexpay.payments.actions.registry.RegistryAnnotationAction"
-          p:crumbNameKey="payments.crumbs.change_annotation"
+          class="org.flexpay.payments.actions.registry.RegistryCommentaryEditAction"
+          p:crumbNameKey="payments.crumbs.registry_commentary_edit"
+          p:registryService-ref="registryService"
+          scope="prototype" />
+
+    <bean id="registryCommentaryViewAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.registry.RegistryCommentaryViewAction"
+          p:crumbNameKey="payments.crumbs.registry_commentary_view"
           p:registryService-ref="registryService"
           scope="prototype" />
 

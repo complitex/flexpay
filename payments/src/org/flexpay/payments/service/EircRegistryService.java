@@ -20,7 +20,7 @@ public interface EircRegistryService {
 	 * @param pager   Page
 	 * @return list of registries matching specified criteria
 	 */
-	List<Registry> findObjects(Collection<ObjectFilter> filters, Page pager);
+	List<Registry> findObjects(Collection<ObjectFilter> filters, Page<Registry> pager);
 
 	/**
 	 * Find registry received from specified sender with a specified number

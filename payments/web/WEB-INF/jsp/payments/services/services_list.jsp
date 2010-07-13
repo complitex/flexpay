@@ -15,7 +15,7 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="payments.service_type.name" /></td>
+        <td class="th"><s:text name="payments.service.name" /></td>
         <td class="th"><s:text name="eirc.service.description" /></td>
         <td class="th"><s:text name="eirc.service.service_provider" /></td>
         <td class="th"><s:text name="payments.service_type.code" /></td>

@@ -23,6 +23,10 @@ import static org.flexpay.common.persistence.Stub.stub;
  */
 public class Operation extends DomainObject {
 
+    private String address;
+    private String payerFIO;
+    private String cashierFio;
+
 	private BigDecimal operationSumm;
 	private BigDecimal operationInputSumm;
 	private BigDecimal change;
@@ -46,10 +50,6 @@ public class Operation extends DomainObject {
 
 	private Operation referenceOperation;
 	private Set<Operation> referencedOperations = Collections.emptySet();
-
-	private String address;
-	private String payerFIO;
-	private String cashierFio;
 
     private Cashbox cashbox;
 

@@ -11,7 +11,7 @@
         </action>
 
         <action name="registriesListAjax" class="registriesListActionEirc">
-            <result>/WEB-INF/jsp/payments/registry/registries_list.jsp</result>
+            <result>/WEB-INF/jsp/eirc/registry/registries_list.jsp</result>
         </action>
 
         <action name="checkRegistryErrorsNumber" class="checkRegistryErrorsNumberAction">
@@ -19,7 +19,7 @@
         </action>
 
         <action name="registryRecordsListAjax" class="registryRecordsListAction">
-            <result>/WEB-INF/jsp/payments/registry/registry_records_list.jsp</result>
+            <result>/WEB-INF/jsp/eirc/registry/registry_records_list.jsp</result>
         </action>
 
 		<action name="registryView" class="registryViewAction">

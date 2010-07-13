@@ -74,10 +74,10 @@
 		<put-attribute name="title" value="eirc.menu34.registries" />
 	</definition>
 	<definition name="eirc.registry.list" extends="eirc.registry">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/registries_list_page.jsp" />
 	</definition>
 	<definition name="eirc.registry.view" extends="eirc.registry">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_view_page.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/registry_view_page.jsp" />
 	</definition>
 
 	<!-- Processing -->

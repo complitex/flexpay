@@ -19,7 +19,7 @@
         <td class="th"><s:text name="eirc.load_date" /></td>
         <td class="th"><s:text name="eirc.records_number" /></td>
         <td class="th"><s:text name="eirc.status" /></td>
-        <td class="th"><s:text name="payments.registry.annotation.change" /></td>
+        <td class="th"><s:text name="payments.registry.commentary.edit" /></td>
         <td class="th">&nbsp;</td>
         <td class="th"><s:text name="eirc.registry.mb.file_download" /></td>
         <td class="th"><s:text name="eirc.registry.fp.file_download" /></td>
@@ -40,12 +40,12 @@
             <td class="col"><s:property value="recordsNumber" /></td>
             <td class="col"><s:text name="%{registryStatus.i18nName}" /></td>
             <td class="col">
-                <a href="<s:url action="changeAnnotation" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
+                <a href="<s:url action="registryCommentaryEdit" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url action="registryView" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
+                <a href="<s:url action="registryView" namespace="/payments" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
                     <s:text name="common.view" />
                 </a>
             </td>
