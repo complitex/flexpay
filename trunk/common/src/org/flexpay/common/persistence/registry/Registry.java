@@ -4,13 +4,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.FPModule;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 /**
  * Registry header for flexpay exchange file
@@ -25,6 +28,7 @@ public class Registry extends DomainObject {
 	private Long senderCode;
 	private Long recipientCode;
 	private BigDecimal amount;
+    private int errorsNumber = -1;
 
 	private RegistryType registryType;
 	private RegistryStatus registryStatus;
@@ -32,13 +36,10 @@ public class Registry extends DomainObject {
 	private RegistryProperties properties;
 
 	private FPModule module;
+    private ImportError importError;
 
-	private List<RegistryContainer> containers = CollectionUtils.list();
-    private Map<RegistryFPFileType, FPFile> files = CollectionUtils.map();
-
-	private ImportError importError;
-
-	private int errorsNumber;
+	private List<RegistryContainer> containers = list();
+    private Map<RegistryFPFileType, FPFile> files = map();
 
 	public Registry() {
 	}
@@ -188,25 +189,24 @@ public class Registry extends DomainObject {
 		this.module = module;
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("registryNumber", registryNumber).
-				append("recordsNumber", recordsNumber).
-				append("creationDate", creationDate).
-				append("fromDate", fromDate).
-				append("tillDate", tillDate).
-				append("senderCode", senderCode).
-				append("recipientCode", recipientCode).
-				append("amount", amount).
-				append("errorsNumber", errorsNumber).
-				toString();
-	}
-
 	public void addContainer(RegistryContainer container) {
 		container.setRegistry(this);
 		container.setOrder(containers.size());
 		containers.add(container);
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("registryNumber", registryNumber).
+                append("recordsNumber", recordsNumber).
+                append("creationDate", creationDate).
+                append("fromDate", fromDate).
+                append("tillDate", tillDate).
+                append("senderCode", senderCode).
+                append("recipientCode", recipientCode).
+                append("amount", amount).
+                append("errorsNumber", errorsNumber).
+                toString();
+    }
 }

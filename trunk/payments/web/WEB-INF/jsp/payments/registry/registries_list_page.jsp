@@ -32,11 +32,11 @@
         FP.pagerAjax(element, {
             action:"<s:url action="registriesListAjax" namespace="/payments" includeParams="none" />",
             params: {
-                "senderOrganizationFilter.selectedId":$("select[name=senderOrganizationFilter.selectedId]").get(0).value,
-                "recipientOrganizationFilter.selectedId":$("select[name=recipientOrganizationFilter.selectedId]").get(0).value,
-                "registryTypeFilter.selectedId":$("select[name=registryTypeFilter.selectedId]").get(0).value,
-                fromDate:$("input[name=fromDate]").get(0).value,
-                tillDate:$("input[name=tillDate]").get(0).value
+                "senderOrganizationFilter.selectedId":$("select[name=senderOrganizationFilter.selectedId]").val(),
+                "recipientOrganizationFilter.selectedId":$("select[name=recipientOrganizationFilter.selectedId]").val(),
+                "registryTypeFilter.selectedId":$("select[name=registryTypeFilter.selectedId]").val(),
+                fromDate:$("input[name=fromDate]").val(),
+                tillDate:$("input[name=tillDate]").val()
             }
         });
     }

@@ -1,10 +1,9 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<s:if test="streetType != null && streetName != null && (buildingNum != null || buildingBulkNum != null) && apartmentNum != null">
-    <s:set name="addressVal" value="%{record.streetType + ' ' + record.streetName + ', ' + (record.buildingNum != null ? record.buildingNum : '') + (record.buildingBulkNum != null ? ' ' + record.buildingBulkNum : '') + ', ' + record.apartmentNum}" />
-</s:if><s:else>
+<s:set name="addressVal" value="%{(record.streetType != null ? record.streetType : '') + ' ' + (record.streetName != null ? record.streetName : '') + ', ' + (record.buildingNum != null ? record.buildingNum : '') + (record.buildingBulkNum != null ? ' ' + record.buildingBulkNum : '') + ', ' + record.apartmentNum}" />
+<s:if test="record.streetType == null && record.streetName == null && (record.buildingNum == null || record.buildingBulkNum == null) && record.apartmentNum == null">
     <s:set name="addressVal" value="" />
-</s:else>
+</s:if>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr class="cols_1">

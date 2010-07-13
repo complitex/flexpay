@@ -6,9 +6,11 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
@@ -21,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.persistence.registry.RegistryContainer.COMMENTARY_CONTAINER_TYPE;
+import static org.flexpay.common.persistence.registry.RegistryContainer.CONTAINER_DATA_DELIMITER;
+import static org.flexpay.common.persistence.registry.RegistryContainer.ESCAPE_SYMBOL;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
 
@@ -31,6 +36,7 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
     private Map<Long, Organization> orgs = map();
+    private boolean haveCommentary = false;
 
     private OrganizationService organizationService;
 	private RegistryService registryService;
@@ -54,13 +60,20 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 		}
 
 		Stub<Registry> stub = stub(registry);
-		registry = registryService.read(stub);
-
+		registry = registryService.readWithContainers(stub);
 		if (registry == null) {
 			log.warn("Can't get registry with id {} from DB", stub.getId());
 			addActionError(getText("payments.error.registry.cant_get_registry"));
 			return REDIRECT_ERROR;
 		}
+
+        for (RegistryContainer registryContainer : registry.getContainers()) {
+            List<String> containerData = StringUtil.splitEscapable(registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
+            if (containerData != null && !containerData.isEmpty() && COMMENTARY_CONTAINER_TYPE.equals(containerData.get(0))) {
+                haveCommentary = true;
+                break;
+            }
+        }
 
 		if (log.isDebugEnabled()) {
 			watch.stop();
@@ -115,7 +128,11 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 		this.registry = registry;
 	}
 
-	public ImportErrorTypeFilter getImportErrorTypeFilter() {
+    public boolean isHaveCommentary() {
+        return haveCommentary;
+    }
+
+    public ImportErrorTypeFilter getImportErrorTypeFilter() {
 		if (importErrorTypeFilter == null) {
 			importErrorTypeFilter = new ImportErrorTypeFilter();
 		}

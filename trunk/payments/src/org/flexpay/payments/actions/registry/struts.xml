@@ -31,11 +31,23 @@
 			<result name="redirectError" type="redirect-action">registriesList</result>
 		</action>
 
-        <action name="changeAnnotation" class="changeAnnotationAction">
-            <result type="tiles">payments.registry.annotation</result>
-            <result name="error" type="tiles">payments.registry.annotation</result>
-            <result name="none" type="redirect-action">registriesList</result>
-            <result name="redirectSuccess" type="redirect-action">registriesList</result>
+        <action name="registryCommentaryEdit" class="registryCommentaryEditAction">
+            <result name="input" type="tiles">payments.registry.commentary.edit</result>
+            <result name="error" type="tiles">payments.registry.commentary.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">registryView</param>
+                <param name="parse">true</param>
+                <param name="registry.id">${registry.id}</param>
+            </result>
+        </action>
+
+        <action name="registryCommentaryView" class="registryCommentaryViewAction">
+            <result name="redirectError" type="redirect-action">
+                <param name="actionName">registryView</param>
+                <param name="parse">true</param>
+                <param name="registry.id">${registry.id}</param>
+            </result>
+            <result name="success" type="tiles">payments.registry.commentary.view</result>
         </action>
 
 		<action name="selectCorrectionType" class="selectCorrectionTypeAction">

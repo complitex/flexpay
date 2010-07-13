@@ -139,8 +139,12 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_view_page.jsp" />
 	</definition>
 
-    <definition name="payments.registry.annotation" extends="payments.registry">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_edit_annotation.jsp" />
+    <definition name="payments.registry.commentary.edit" extends="payments.registry">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_commentary_edit.jsp" />
+	</definition>
+
+    <definition name="payments.registry.commentary.view" extends="payments.registry">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_commentary_view.jsp" />
 	</definition>
 
     <definition name="payments.registry.delivery_history" extends="payments.accountant">
