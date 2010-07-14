@@ -18,7 +18,7 @@
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="eirc.payment_point" />:</td>
             <td class="col">
-                <%@include file="/WEB-INF/jsp/orgs/filters/payment_points_filter.jsp"%>
+                <%@include file="/WEB-INF/jsp/orgs/filters/payment_point_filter.jsp"%>
             </td>
         </tr>
 		<tr valign="middle" class="cols_1">

@@ -1,10 +1,10 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-<s:if test="paymentPointsFilter != null">
+<s:if test="paymentPointFilter != null">
     <tr>
         <td>
-            <%@include file="../filters/payment_points_filter.jsp"%>
+            <%@include file="../filters/payment_point_filter.jsp"%>
         </td>
     </tr>
 </s:if>
@@ -23,9 +23,9 @@
     function pagerAjax(element) {
         FP.pagerAjax(element, {
             action:"<s:url action="cashboxesListAjax" includeParams="none"/>"
-            <s:if test="paymentPointsFilter != null && paymentPointsFilter.selectedId != null && paymentPointsFilter.selectedId > 0">
+            <s:if test="paymentPointFilter != null && paymentPointFilter.selectedId != null && paymentPointFilter.selectedId > 0">
             , params: {
-                "paymentPointsFilter.selectedId":<s:property value="paymentPointsFilter.selectedId" />
+                "paymentPointFilter.selectedId":<s:property value="paymentPointFilter.selectedId" />
             }
             </s:if>
         });

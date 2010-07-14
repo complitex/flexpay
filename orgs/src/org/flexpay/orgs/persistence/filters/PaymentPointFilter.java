@@ -6,11 +6,11 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 import java.util.Collections;
 import java.util.List;
 
-public class PaymentPointsFilter extends PrimaryKeyFilter<PaymentPoint> {
+public class PaymentPointFilter extends PrimaryKeyFilter<PaymentPoint> {
 
 	private List<PaymentPoint> points = Collections.emptyList();
 
-	public PaymentPointsFilter() {
+	public PaymentPointFilter() {
 		super(-1L);
 	}
 

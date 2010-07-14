@@ -50,6 +50,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 				.append("EircRegistryProperties rp ")
 				.append("left join rp.sender sender ")
 				.append("left join rp.recipient recipient ")
+                .append("left join rp.serviceProvider serviceProvider ")
 				.append("where rps.id=rp.id ");
 		final StringBuilder hqlCount = new StringBuilder("select count(r.id) from Registry r ")
 				.append("left join r.properties rps ")
@@ -58,6 +59,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 				.append("EircRegistryProperties rp ")
 				.append("left join rp.sender sender ")
 				.append("left join rp.recipient recipient ")
+                .append("left join rp.serviceProvider serviceProvider ")
 				.append("where rps.id=rp.id ");
 
 		for (ObjectFilter filter : filters) {

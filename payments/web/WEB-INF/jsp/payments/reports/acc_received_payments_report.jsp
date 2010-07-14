@@ -38,7 +38,7 @@
 		<tr>
 			<td>
 				<s:text name="payments.report.acc.received.payment_point" />
-				<%@include file="/WEB-INF/jsp/orgs/filters/payment_points_filter.jsp"%>
+				<%@include file="/WEB-INF/jsp/orgs/filters/payment_point_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>
@@ -91,7 +91,7 @@
                 "beginTimeFilter.stringDate":$("#beginTimeFilter").val(),
                 "endDateFilter.stringDate":$("#endDateFilter").val(),
                 "endTimeFilter.stringDate":$("#endTimeFilter").val(),
-                "paymentPointsFilter.selectedId":$("paymentPointsFilter.selectedId").val(),
+                "paymentPointFilter.selectedId":$("paymentPointFilter.selectedId").val(),
                 "cashboxFilter.selectedId":$("cashboxFilter.selectedId").val(),
                 details:$("#details").val(),
                 format:format,

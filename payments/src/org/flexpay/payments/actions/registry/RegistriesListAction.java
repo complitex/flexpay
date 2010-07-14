@@ -7,8 +7,10 @@ import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.persistence.EircRegistryProperties;
@@ -33,6 +35,7 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 	private SenderOrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
 	private RecipientOrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
+    private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 	private Date fromDate = truncateDay(addDays(now(), -2));
 	private Date tillDate = getEndOfThisDay(now());
 
@@ -59,6 +62,10 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 				new BeginDateFilter(fromDate),
 				new EndDateFilter(tillDate)
 		);
+
+        if (serviceProviderFilter != null && serviceProviderFilter.getSelectedId() != null && serviceProviderFilter.getSelectedId() > 0) {
+            filters.add(serviceProviderFilter);
+        }
 
 		registries = eircRegistryService.findObjects(filters, getPager());
 		if (log.isDebugEnabled()) {
@@ -126,7 +133,11 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 		this.registryTypeFilter = registryTypeFilter;
 	}
 
-	public void setFromDate(String dt) {
+    public void setServiceProviderFilter(ServiceProviderFilter serviceProviderFilter) {
+        this.serviceProviderFilter = serviceProviderFilter;
+    }
+
+    public void setFromDate(String dt) {
 		fromDate = truncateDay(parseDate(dt, currentMonth()));
 		log.debug("dt = {}, fromDate = {}", dt, fromDate);
 	}

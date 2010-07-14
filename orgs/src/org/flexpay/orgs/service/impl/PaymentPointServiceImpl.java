@@ -15,7 +15,7 @@ import org.flexpay.orgs.dao.PaymentPointDao;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPointName;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
@@ -249,11 +249,11 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	/**
 	 * Initialize payment points filter
 	 *
-	 * @param filter PaymentPointsFilter to initialize
+	 * @param filter PaymentPointFilter to initialize
 	 * @return filter back
 	 */
 	@NotNull
-	public PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter) {
+	public PaymentPointFilter initFilter(@NotNull PaymentPointFilter filter) {
 
 		return initFilter(CollectionUtils.arrayStack(), filter);
 	}
@@ -262,11 +262,11 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	 * Initialize payment points filter
 	 *
 	 * @param filters filters stack
-	 * @param filter PaymentPointsFilter to initialize
+	 * @param filter PaymentPointFilter to initialize
 	 * @return filter back
 	 */
 	@NotNull
-	public PaymentPointsFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointsFilter filter) {
+	public PaymentPointFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointFilter filter) {
 		
 		List<PaymentPoint> points = listPoints(filters, new Page<PaymentPoint>(10000, 1));
 		filter.setPoints(points);
