@@ -14,7 +14,7 @@ import org.flexpay.orgs.dao.CashboxDao;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.CashboxNameTranslation;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -155,9 +155,9 @@ public class CashboxServiceImpl implements CashboxService {
 
 		// check if payments collector filter is there
 		ObjectFilter filter = (ObjectFilter) filters.peek();
-		if (filter.needFilter() && filter instanceof PaymentPointsFilter) {
-			PaymentPointsFilter paymentPointsFilter = (PaymentPointsFilter) filter;
-			return cashboxDao.findCashboxesForPaymentPoint(paymentPointsFilter.getSelectedId());
+		if (filter.needFilter() && filter instanceof PaymentPointFilter) {
+			PaymentPointFilter paymentPointFilter = (PaymentPointFilter) filter;
+			return cashboxDao.findCashboxesForPaymentPoint(paymentPointFilter.getSelectedId());
 		}
 
 		return cashboxDao.findCashboxes(new Page<Cashbox>(10000, 1));
@@ -179,9 +179,9 @@ public class CashboxServiceImpl implements CashboxService {
 
 		// check if payments collector filter is there
 		ObjectFilter filter = (ObjectFilter) filters.peek();
-		if (filter.needFilter() && filter instanceof PaymentPointsFilter) {
-			PaymentPointsFilter paymentPointsFilter = (PaymentPointsFilter) filter;
-			return cashboxDao.listCashboxes(paymentPointsFilter.getSelectedId(), pager);
+		if (filter.needFilter() && filter instanceof PaymentPointFilter) {
+			PaymentPointFilter paymentPointFilter = (PaymentPointFilter) filter;
+			return cashboxDao.listCashboxes(paymentPointFilter.getSelectedId(), pager);
 		}
 
 		return cashboxDao.findCashboxes(pager);

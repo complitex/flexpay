@@ -7,7 +7,7 @@ import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.CashboxNameTranslation;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class CashboxEditAction extends FPActionSupport {
 
-	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
+	private PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
 
 	private Cashbox cashbox = new Cashbox();
 	private Map<Long, String> names = map();
@@ -27,8 +27,8 @@ public class CashboxEditAction extends FPActionSupport {
 	private PaymentPointService paymentPointService;
 
 	public CashboxEditAction() {
-		paymentPointsFilter.setAllowEmpty(false);
-		paymentPointsFilter.setNeedAutoChange(false);
+		paymentPointFilter.setAllowEmpty(false);
+		paymentPointFilter.setNeedAutoChange(false);
 	}
 
 	@NotNull
@@ -41,17 +41,17 @@ public class CashboxEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		paymentPointService.initFilter(paymentPointsFilter);
+		paymentPointService.initFilter(paymentPointFilter);
 
 		if (isNotSubmit()) {
 			initNames();
 			if (cashbox.isNotNew()) {
-				paymentPointsFilter.setSelectedId(cashbox.getPaymentPoint().getId());
+				paymentPointFilter.setSelectedId(cashbox.getPaymentPoint().getId());
 			}
 			return INPUT;
 		}
 
-		if (!paymentPointsFilter.needFilter()) {
+		if (!paymentPointFilter.needFilter()) {
 			addActionError(getText("eirc.error.cashbox.no_payment_point"));
 			return INPUT;
 		}
@@ -62,7 +62,7 @@ public class CashboxEditAction extends FPActionSupport {
 			cashbox.setName(new CashboxNameTranslation(value, lang));
 		}
 
-		cashbox.setPaymentPoint(paymentPointService.read(paymentPointsFilter.getSelectedStub()));
+		cashbox.setPaymentPoint(paymentPointService.read(paymentPointFilter.getSelectedStub()));
 
 		if (cashbox.isNew()) {
 			cashboxService.create(cashbox);
@@ -116,12 +116,12 @@ public class CashboxEditAction extends FPActionSupport {
 		this.names = names;
 	}
 
-	public PaymentPointsFilter getPaymentPointsFilter() {
-		return paymentPointsFilter;
+	public PaymentPointFilter getPaymentPointFilter() {
+		return paymentPointFilter;
 	}
 
-	public void setPaymentPointsFilter(PaymentPointsFilter paymentPointsFilter) {
-		this.paymentPointsFilter = paymentPointsFilter;
+	public void setPaymentPointFilter(PaymentPointFilter paymentPointFilter) {
+		this.paymentPointFilter = paymentPointFilter;
 	}
 
 	public void setCrumbCreateKey(String crumbCreateKey) {

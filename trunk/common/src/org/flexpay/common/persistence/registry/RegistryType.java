@@ -28,7 +28,7 @@ public class RegistryType extends DomainObject {
 	static {
 		typeToName.put(TYPE_UNKNOWN, "eirc.registry_type.unknown");
 		typeToName.put(TYPE_SALDO, "eirc.registry_type.saldo");
-		typeToName.put(TYPE_INCOME, "eirc.registry_type.cash_payment");
+		typeToName.put(TYPE_INCOME, "eirc.registry_type.income");
 		typeToName.put(TYPE_MESSAGE, "eirc.registry_type.message");
 		typeToName.put(TYPE_CLOSED_ACCOUNTS, "eirc.registry_type.closed_accounts");
 		typeToName.put(TYPE_INFO, "eirc.registry_type.info");

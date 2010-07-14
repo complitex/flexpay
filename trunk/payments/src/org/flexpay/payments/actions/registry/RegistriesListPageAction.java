@@ -4,10 +4,10 @@ import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
-import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.*;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -23,9 +23,12 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 	private OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
 	private OrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
+    private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 	private Date fromDate = truncateDay(addDays(now(), -2));
 	private Date tillDate = getEndOfThisDay(now());
 
+    private PaymentPointService paymentPointService;
+    private ServiceProviderService serviceProviderService;
 	private OrganizationService organizationService;
 	private RegistryTypeService registryTypeService;
 
@@ -40,6 +43,8 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+
+        serviceProviderService.initServiceProvidersFilter(serviceProviderFilter);
 
 		List<Organization> orgs = organizationService.listOrganizations();
 
@@ -90,7 +95,11 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 		return registryTypeFilter;
 	}
 
-	public String getFromDate() {
+    public ServiceProviderFilter getServiceProviderFilter() {
+        return serviceProviderFilter;
+    }
+
+    public String getFromDate() {
 		return format(fromDate);
 	}
 
@@ -108,4 +117,8 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 		this.registryTypeService = registryTypeService;
 	}
 
+    @Required
+    public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+        this.serviceProviderService = serviceProviderService;
+    }
 }

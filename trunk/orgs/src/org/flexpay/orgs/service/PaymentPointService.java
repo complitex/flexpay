@@ -6,7 +6,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -119,23 +119,23 @@ public interface PaymentPointService {
 	/**
 	 * Initialize payment points filter
 	 *
-	 * @param filter PaymentPointsFilter to initialize
+	 * @param filter PaymentPointFilter to initialize
 	 * @return filter back
 	 */
 	@Secured(Roles.PAYMENT_POINT_READ)
 	@NotNull
-	PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter);
+    PaymentPointFilter initFilter(@NotNull PaymentPointFilter filter);
 
 	/**
 	 * Initialize payment points filter
 	 *
 	 * @param filters filters stack
-	 * @param filter PaymentPointsFilter to initialize
+	 * @param filter PaymentPointFilter to initialize
 	 * @return filter back
 	 */
 	@Secured(Roles.PAYMENT_POINT_READ)
 	@NotNull
-	PaymentPointsFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointsFilter filter);
+    PaymentPointFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointFilter filter);
 
 	@Secured(Roles.PAYMENT_POINT_READ)
 	List<PaymentPoint> findAll();

@@ -1,6 +1,6 @@
 package org.flexpay.payments.actions.cashbox;
 
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class CashboxesListPageAction extends AccountantAWPActionSupport {
 
-	protected PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
+	protected PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
 
 	protected PaymentPointService paymentPointService;
 
@@ -24,9 +24,9 @@ public class CashboxesListPageAction extends AccountantAWPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		paymentPointService.initFilter(paymentPointsFilter);
+		paymentPointService.initFilter(paymentPointFilter);
 
-		paymentPointsFilter.setReadOnly(true);
+		paymentPointFilter.setReadOnly(true);
 
 		return SUCCESS;
 	}
@@ -44,12 +44,12 @@ public class CashboxesListPageAction extends AccountantAWPActionSupport {
 		return SUCCESS;
 	}
 
-	public PaymentPointsFilter getPaymentPointsFilter() {
-		return paymentPointsFilter;
+	public PaymentPointFilter getPaymentPointFilter() {
+		return paymentPointFilter;
 	}
 
-	public void setPaymentPointsFilter(PaymentPointsFilter paymentPointsFilter) {
-		this.paymentPointsFilter = paymentPointsFilter;
+	public void setPaymentPointFilter(PaymentPointFilter paymentPointFilter) {
+		this.paymentPointFilter = paymentPointFilter;
 	}
 
 	@Required

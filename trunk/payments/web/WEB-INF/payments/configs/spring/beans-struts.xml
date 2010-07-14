@@ -350,6 +350,7 @@
           p:crumbNameKey="payments.crumbs.registries_list"
           p:organizationService-ref="organizationService"
           p:registryTypeService-ref="registryTypeService"
+          p:serviceProviderService-ref="serviceProviderService"
           scope="prototype" />
 
     <bean id="checkRegistryErrorsNumberAction"

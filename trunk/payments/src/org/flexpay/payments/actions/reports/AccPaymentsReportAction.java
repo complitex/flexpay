@@ -13,7 +13,7 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
@@ -44,7 +44,7 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
-	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
+	private PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
 	private CashboxFilter cashboxFilter = new CashboxFilter();
 
 	// report file
@@ -173,8 +173,8 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 		request.setDetailsLevel(details);
 
-		if (paymentPointsFilter != null && paymentPointsFilter.needFilter()) {
-			request.setPaymentPointId(paymentPointsFilter.getSelectedId());
+		if (paymentPointFilter != null && paymentPointFilter.needFilter()) {
+			request.setPaymentPointId(paymentPointFilter.getSelectedId());
 		}
 
 		if (cashboxFilter != null && cashboxFilter.needFilter()) {
@@ -192,12 +192,12 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 	@SuppressWarnings ({"unchecked"})
 	private void initFilters() {
 
-		paymentPointsFilter.initFilter(session);
-		paymentPointService.initFilter(paymentPointsFilter);
+		paymentPointFilter.initFilter(session);
+		paymentPointService.initFilter(paymentPointFilter);
 
-		if (paymentPointsFilter.needFilter()) {
+		if (paymentPointFilter.needFilter()) {
 			cashboxFilter.initFilter(session);
-			cashboxService.initFilter(arrayStack(paymentPointsFilter), cashboxFilter);
+			cashboxService.initFilter(arrayStack(paymentPointFilter), cashboxFilter);
 		}
 	}
 
@@ -240,12 +240,12 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		this.endTimeFilter = endTimeFilter;
 	}
 
-	public PaymentPointsFilter getPaymentPointsFilter() {
-		return paymentPointsFilter;
+	public PaymentPointFilter getPaymentPointFilter() {
+		return paymentPointFilter;
 	}
 
-	public void setPaymentPointsFilter(PaymentPointsFilter paymentPointsFilter) {
-		this.paymentPointsFilter = paymentPointsFilter;
+	public void setPaymentPointFilter(PaymentPointFilter paymentPointFilter) {
+		this.paymentPointFilter = paymentPointFilter;
 	}
 
 	public CashboxFilter getCashboxFilter() {

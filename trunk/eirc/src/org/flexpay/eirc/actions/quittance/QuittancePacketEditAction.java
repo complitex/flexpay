@@ -9,10 +9,9 @@ import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.CloseDateFilter;
 import org.flexpay.common.persistence.filter.CreateDateFilter;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.actions.paymentpoint.PaymentPointHelper;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.service.QuittancePacketService;
@@ -25,7 +24,7 @@ public class QuittancePacketEditAction extends FPActionSupport {
 	private CreateDateFilter createDateFilter = new CreateDateFilter();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private CloseDateFilter closeDateFilter = new CloseDateFilter();
-	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
+	private PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
 
 	private String crumbCreateKey;
 	private QuittancePacketService quittancePacketService;
@@ -89,14 +88,14 @@ public class QuittancePacketEditAction extends FPActionSupport {
 
 	private void initFilters() throws Exception {
 
-		paymentPointService.initFilter(paymentPointsFilter);
-		paymentPointsFilter.setAllowEmpty(false);
+		paymentPointService.initFilter(paymentPointFilter);
+		paymentPointFilter.setAllowEmpty(false);
 
 		if (packet.isNew()) {
 			createDateFilter.setDate(now());
 		} else {
 			createDateFilter.setDate(packet.getCreationDate());
-			paymentPointsFilter.setSelectedId(packet.getPaymentPoint().getId());
+			paymentPointFilter.setSelectedId(packet.getPaymentPoint().getId());
 		}
 
 		beginDateFilter.setDate(packet.getBeginDate());
@@ -108,7 +107,7 @@ public class QuittancePacketEditAction extends FPActionSupport {
 
 	private void updatePacket() throws FlexPayExceptionContainer {
 
-		packet.setPaymentPoint(paymentPointService.read(paymentPointsFilter.getSelectedStub()));
+		packet.setPaymentPoint(paymentPointService.read(paymentPointFilter.getSelectedStub()));
 		packet.setCreationDate(createDateFilter.getDate());
 
 		if (packet.isNew()) {
@@ -121,19 +120,19 @@ public class QuittancePacketEditAction extends FPActionSupport {
 
 	private boolean doValidate() {
 		
-		if (paymentPointsFilter == null || !paymentPointsFilter.needFilter()) {
-			log.warn("Incorrect paymentPointsFilter value {}", paymentPointsFilter);
+		if (paymentPointFilter == null || !paymentPointFilter.needFilter()) {
+			log.warn("Incorrect paymentPointFilter value {}", paymentPointFilter);
 			addActionError(getText("eirc.error.quittance_packet.invalid_payment_point"));
 		} else {
-			PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointsFilter.getSelectedId()));
+			PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointFilter.getSelectedId()));
 			if (paymentPoint == null) {
-				log.warn("Can't get payment point with id {} from DB", paymentPointsFilter.getSelectedId());
+				log.warn("Can't get payment point with id {} from DB", paymentPointFilter.getSelectedId());
 				addActionError(getText("eirc.error.quittance_packet.cant_get_payment_point"));
-				paymentPointsFilter.setSelectedId(0L);
+				paymentPointFilter.setSelectedId(0L);
 			} else if (paymentPoint.isNotActive()) {
-				log.warn("Payments point with id {} is disabled", paymentPointsFilter.getSelectedId());
+				log.warn("Payments point with id {} is disabled", paymentPointFilter.getSelectedId());
 				addActionError(getText("eirc.error.quittance_packet.cant_get_payment_point"));
-				paymentPointsFilter.setSelectedId(0L);
+				paymentPointFilter.setSelectedId(0L);
 			}
 		}
 
@@ -204,12 +203,12 @@ public class QuittancePacketEditAction extends FPActionSupport {
 		this.closeDateFilter = closeDateFilter;
 	}
 
-	public PaymentPointsFilter getPaymentPointsFilter() {
-		return paymentPointsFilter;
+	public PaymentPointFilter getPaymentPointFilter() {
+		return paymentPointFilter;
 	}
 
-	public void setPaymentPointsFilter(PaymentPointsFilter paymentPointsFilter) {
-		this.paymentPointsFilter = paymentPointsFilter;
+	public void setPaymentPointFilter(PaymentPointFilter paymentPointFilter) {
+		this.paymentPointFilter = paymentPointFilter;
 	}
 
 	public QuittancePacket getPacket() {

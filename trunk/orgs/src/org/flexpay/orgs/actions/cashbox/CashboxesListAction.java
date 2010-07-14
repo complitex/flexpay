@@ -4,7 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CashboxesListAction extends FPActionWithPagerSupport<Cashbox> {
 
 	protected List<Cashbox> cashboxes = CollectionUtils.list();
-	protected PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
+	protected PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
 
 	protected CashboxService cashboxService;
 
@@ -22,8 +22,8 @@ public class CashboxesListAction extends FPActionWithPagerSupport<Cashbox> {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (paymentPointsFilter != null && paymentPointsFilter.needFilter()) {
-			ArrayStack filters = CollectionUtils.arrayStack(paymentPointsFilter);
+		if (paymentPointFilter != null && paymentPointFilter.needFilter()) {
+			ArrayStack filters = CollectionUtils.arrayStack(paymentPointFilter);
 			cashboxes = cashboxService.listCashboxes(filters, getPager());
 		} else {
 			cashboxes = cashboxService.findObjects(getPager());
@@ -42,12 +42,12 @@ public class CashboxesListAction extends FPActionWithPagerSupport<Cashbox> {
 		return cashboxes;
 	}
 
-	public PaymentPointsFilter getPaymentPointsFilter() {
-		return paymentPointsFilter;
+	public PaymentPointFilter getPaymentPointFilter() {
+		return paymentPointFilter;
 	}
 
-	public void setPaymentPointsFilter(PaymentPointsFilter paymentPointsFilter) {
-		this.paymentPointsFilter = paymentPointsFilter;
+	public void setPaymentPointFilter(PaymentPointFilter paymentPointFilter) {
+		this.paymentPointFilter = paymentPointFilter;
 	}
 
 	@Required
