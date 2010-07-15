@@ -2,7 +2,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td id="filters">
+        <td id="filters" nowrap>
             <%@include file="/WEB-INF/jsp/orgs/filters/sender_organization_filter.jsp"%>
             &nbsp;&nbsp;
             <%@include file="/WEB-INF/jsp/orgs/filters/recipient_organization_filter.jsp"%>
@@ -10,7 +10,7 @@
             <%@include file="/WEB-INF/jsp/payments/filters/registry_type_filter.jsp"%>
             &nbsp;&nbsp;
             <%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%>
-            <br /><br />
+            <br />
             <span class="text">
                 <s:text name="eirc.generated" />&nbsp;
                 <%@include file="/WEB-INF/jsp/payments/filters/date_interval_filter.jsp"%>
@@ -48,6 +48,8 @@
             "senderOrganizationFilter.selectedId":$("select[name=senderOrganizationFilter.selectedId]").val(),
             "recipientOrganizationFilter.selectedId":$("select[name=recipientOrganizationFilter.selectedId]").val(),
             "registryTypeFilter.selectedId":$registryTypeFilter.val(),
+            "registrySorterByCreationDate.active": $("#registrySorterByCreationDateActive").val(),
+            "registrySorterByCreationDate.order": $("#registrySorterByCreationDateOrder").val(),
             fromDate:$("input[name=fromDate]").val(),
             tillDate:$("input[name=tillDate]").val()
         };
@@ -60,6 +62,10 @@
             action:"<s:url action="registriesListAjax" namespace="/payments" includeParams="none" />", 
             params: params
         });
+    }
+
+    function sorterAjax() {
+        pagerAjax();
     }
 
 </script>

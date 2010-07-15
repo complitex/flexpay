@@ -35,10 +35,16 @@
                 "senderOrganizationFilter.selectedId":$("select[name=senderOrganizationFilter.selectedId]").val(),
                 "recipientOrganizationFilter.selectedId":$("select[name=recipientOrganizationFilter.selectedId]").val(),
                 "registryTypeFilter.selectedId":$("select[name=registryTypeFilter.selectedId]").val(),
+                "registrySorterByCreationDate.active": $("#registrySorterByCreationDateActive").val(),
+                "registrySorterByCreationDate.order": $("#registrySorterByCreationDateOrder").val(),
                 fromDate:$("input[name=fromDate]").val(),
                 tillDate:$("input[name=tillDate]").val()
             }
         });
+    }
+
+    function sorterAjax() {
+        pagerAjax();
     }
 
 </script>

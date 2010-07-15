@@ -5,6 +5,7 @@ import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.sorter.RegistrySorter;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.dao.EircRegistryDaoExt;
 import org.flexpay.payments.service.EircRegistryService;
@@ -22,8 +23,8 @@ public class EircRegistryServiceImpl implements EircRegistryService {
 	private RegistryDao registryDao;
 
     @Override
-	public List<Registry> findObjects(Collection<ObjectFilter> filters, Page<Registry> pager) {
-		return eircRegistryDaoExt.findRegistries(filters, pager);
+	public List<Registry> findObjects(RegistrySorter registrySorter, Collection<ObjectFilter> filters, Page<Registry> pager) {
+		return eircRegistryDaoExt.findRegistries(registrySorter, filters, pager);
 	}
 
 	/**

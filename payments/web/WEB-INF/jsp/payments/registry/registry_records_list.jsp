@@ -80,11 +80,14 @@
     <tr>
         <td colspan="11">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
+<%--
             <input type="button" value="<s:text name="eirc.process_selected" />" class="btn-exit" onclick="process();" />
+--%>
         </td>
     </tr>
 </table>
 
+<%--
 <script type="text/javascript">
     function process() {
         var ids = [];
@@ -107,3 +110,4 @@
                 });
     }
 </script>
+--%>
