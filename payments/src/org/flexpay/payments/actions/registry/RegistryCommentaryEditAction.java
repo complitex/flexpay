@@ -2,10 +2,14 @@ package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -14,12 +18,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static org.apache.commons.lang.time.DateUtils.addDays;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.persistence.registry.RegistryContainer.*;
+import static org.flexpay.common.util.DateUtil.*;
+import static org.flexpay.common.util.DateUtil.currentMonth;
+import static org.flexpay.common.util.DateUtil.parseDate;
 
 public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
 
     public static final SimpleDateFormat format = new SimpleDateFormat(COMMENTARY_PAYMENT_DATE_FORMAT);
+
+    public static final String REDIRECT_LIST = "redirectList";
+    public static final String REDIRECT_VIEW = "redirectView";
+
+    private SenderOrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
+    private RecipientOrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
+    private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
+    private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
+    private String fromDate;
+    private String tillDate;
 
     private Registry registry = new Registry();
     private String commentary;
@@ -111,7 +129,15 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
 
             }
 
-            return REDIRECT_SUCCESS;
+            if (senderOrganizationFilter != null && recipientOrganizationFilter != null
+                    && registryTypeFilter != null && serviceProviderFilter != null
+                    && fromDate != null && tillDate != null) {
+
+                return REDIRECT_LIST;
+
+            }
+
+            return REDIRECT_VIEW;
 
         }
 
@@ -171,6 +197,54 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
 
     public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public SenderOrganizationFilter getSenderOrganizationFilter() {
+        return senderOrganizationFilter;
+    }
+
+    public void setSenderOrganizationFilter(SenderOrganizationFilter senderOrganizationFilter) {
+        this.senderOrganizationFilter = senderOrganizationFilter;
+    }
+
+    public RecipientOrganizationFilter getRecipientOrganizationFilter() {
+        return recipientOrganizationFilter;
+    }
+
+    public void setRecipientOrganizationFilter(RecipientOrganizationFilter recipientOrganizationFilter) {
+        this.recipientOrganizationFilter = recipientOrganizationFilter;
+    }
+
+    public RegistryTypeFilter getRegistryTypeFilter() {
+        return registryTypeFilter;
+    }
+
+    public void setRegistryTypeFilter(RegistryTypeFilter registryTypeFilter) {
+        this.registryTypeFilter = registryTypeFilter;
+    }
+
+    public ServiceProviderFilter getServiceProviderFilter() {
+        return serviceProviderFilter;
+    }
+
+    public void setServiceProviderFilter(ServiceProviderFilter serviceProviderFilter) {
+        this.serviceProviderFilter = serviceProviderFilter;
+    }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getTillDate() {
+        return tillDate;
+    }
+
+    public void setTillDate(String tillDate) {
+        this.tillDate = tillDate;
     }
 
     @Required

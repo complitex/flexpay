@@ -24,6 +24,8 @@
         <td class="th"><s:text name="eirc.registry.mb.file_download" /></td>
         <td class="th"><s:text name="eirc.registry.fp.file_download" /></td>
     </tr>
+    <s:set name="fromDate" value="fromDate" />
+    <s:set name="tillDate" value="tillDate" />
     <s:iterator value="registries" status="status">
         <tr valign="middle" class="cols_1">
             <td class="col" width="1%">
@@ -40,9 +42,19 @@
             <td class="col"><s:property value="recordsNumber" /></td>
             <td class="col"><s:text name="%{registryStatus.i18nName}" /></td>
             <td class="col">
-                <a href="<s:url action="registryCommentaryEdit" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
-                    <s:text name="common.edit" />
-                </a>
+                <s:if test="registryType.code == @org.flexpay.common.persistence.registry.RegistryType@TYPE_CASH_PAYMENTS">
+                    <a href="<s:url action="registryCommentaryEdit" includeParams="none">
+                                <s:param name="registry.id" value="id" />
+                                <s:param name="senderOrganizationFilter.selectedId" value="senderOrganizationFilter.selectedId" />
+                                <s:param name="recipientOrganizationFilter.selectedId" value="recipientOrganizationFilter.selectedId" />
+                                <s:param name="registryTypeFilter.selectedId" value="registryTypeFilter.selectedId" />
+                                <s:param name="serviceProviderFilter.selectedId" value="serviceProviderFilter.selectedId" />
+                                <s:param name="fromDate" value="#fromDate" />
+                                <s:param name="tillDate" value="#tillDate" />
+                            </s:url>">
+                        <s:text name="common.edit" />
+                    </a>
+                </s:if>
             </td>
             <td class="col">
                 <a href="<s:url action="registryView" namespace="/payments" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">

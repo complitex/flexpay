@@ -34,20 +34,21 @@
         <action name="registryCommentaryEdit" class="registryCommentaryEditAction">
             <result name="input" type="tiles">payments.registry.commentary.edit</result>
             <result name="error" type="tiles">payments.registry.commentary.edit</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectList" type="redirect-action">
+                <param name="actionName">registriesList</param>
+                <param name="parse">true</param>
+                <param name="senderOrganizationFilter.selectedId">${senderOrganizationFilter.selectedId}</param>
+                <param name="recipientOrganizationFilter.selectedId">${recipientOrganizationFilter.selectedId}</param>
+                <param name="registryTypeFilter.selectedId">${registryTypeFilter.selectedId}</param>
+                <param name="serviceProviderFilter.selectedId">${serviceProviderFilter.selectedId}</param>
+                <param name="fromDate">${fromDate}</param>
+                <param name="tillDate">${tillDate}</param>
+            </result>
+            <result name="redirectView" type="redirect-action">
                 <param name="actionName">registryView</param>
                 <param name="parse">true</param>
                 <param name="registry.id">${registry.id}</param>
             </result>
-        </action>
-
-        <action name="registryCommentaryView" class="registryCommentaryViewAction">
-            <result name="redirectError" type="redirect-action">
-                <param name="actionName">registryView</param>
-                <param name="parse">true</param>
-                <param name="registry.id">${registry.id}</param>
-            </result>
-            <result name="success" type="tiles">payments.registry.commentary.view</result>
         </action>
 
 		<action name="selectCorrectionType" class="selectCorrectionTypeAction">

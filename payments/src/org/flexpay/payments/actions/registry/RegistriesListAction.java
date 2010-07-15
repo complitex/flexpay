@@ -3,17 +3,14 @@ package org.flexpay.payments.actions.registry;
 import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
-import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
-import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -121,25 +118,49 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 		return registries;
 	}
 
-	public void setSenderOrganizationFilter(SenderOrganizationFilter senderOrganizationFilter) {
-		this.senderOrganizationFilter = senderOrganizationFilter;
-	}
+    public SenderOrganizationFilter getSenderOrganizationFilter() {
+        return senderOrganizationFilter;
+    }
 
-	public void setRecipientOrganizationFilter(RecipientOrganizationFilter recipientOrganizationFilter) {
-		this.recipientOrganizationFilter = recipientOrganizationFilter;
-	}
+    public void setSenderOrganizationFilter(SenderOrganizationFilter senderOrganizationFilter) {
+        this.senderOrganizationFilter = senderOrganizationFilter;
+    }
 
-	public void setRegistryTypeFilter(RegistryTypeFilter registryTypeFilter) {
-		this.registryTypeFilter = registryTypeFilter;
-	}
+    public RecipientOrganizationFilter getRecipientOrganizationFilter() {
+        return recipientOrganizationFilter;
+    }
+
+    public void setRecipientOrganizationFilter(RecipientOrganizationFilter recipientOrganizationFilter) {
+        this.recipientOrganizationFilter = recipientOrganizationFilter;
+    }
+
+    public RegistryTypeFilter getRegistryTypeFilter() {
+        return registryTypeFilter;
+    }
+
+    public void setRegistryTypeFilter(RegistryTypeFilter registryTypeFilter) {
+        this.registryTypeFilter = registryTypeFilter;
+    }
+
+    public ServiceProviderFilter getServiceProviderFilter() {
+        return serviceProviderFilter;
+    }
 
     public void setServiceProviderFilter(ServiceProviderFilter serviceProviderFilter) {
         this.serviceProviderFilter = serviceProviderFilter;
     }
 
+    public String getFromDate() {
+        return format(fromDate);
+	}
+
     public void setFromDate(String dt) {
 		fromDate = truncateDay(parseDate(dt, currentMonth()));
 		log.debug("dt = {}, fromDate = {}", dt, fromDate);
+	}
+
+    public String getTillDate() {
+        return format(tillDate);
 	}
 
 	public void setTillDate(String dt) {
