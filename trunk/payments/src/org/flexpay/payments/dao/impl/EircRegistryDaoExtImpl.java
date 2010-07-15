@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.sorter.RegistrySorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.payments.dao.EircRegistryDaoExt;
@@ -34,12 +35,13 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 	/**
 	 * Find registries
 	 *
+     * @param registrySorter registry sorter
 	 * @param filters ObjectFilters
 	 * @param pager   Page
 	 * @return list of registries matching specified criteria
 	 */
 	@Override
-	public List<Registry> findRegistries(Collection<ObjectFilter> filters, final Page<?> pager) {
+	public List<Registry> findRegistries(RegistrySorter registrySorter, Collection<ObjectFilter> filters, final Page<?> pager) {
 
 		final List<Object> params = list();
 		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
@@ -76,6 +78,18 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 				}
 			}
 		}
+
+        hql.append(" order by ");
+
+		if (registrySorter != null) {
+			StringBuilder orderByClause = new StringBuilder();
+			registrySorter.setOrderBy(orderByClause);
+
+			if (orderByClause.length() > 0) {
+				hql.append(orderByClause).append(",");
+			}
+		}
+        hql.append("r.id desc");
 
 		log.debug("Registries list queries: \n{}\n{}", hql, hqlCount);
 

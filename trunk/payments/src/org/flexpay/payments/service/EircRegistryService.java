@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.sorter.RegistrySorter;
 import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,11 +17,12 @@ public interface EircRegistryService {
 	/**
 	 * Find registries
 	 *
+     * @param registrySorter registry sorter
 	 * @param filters ObjectFilters
 	 * @param pager   Page
 	 * @return list of registries matching specified criteria
 	 */
-	List<Registry> findObjects(Collection<ObjectFilter> filters, Page<Registry> pager);
+	List<Registry> findObjects(RegistrySorter registrySorter, Collection<ObjectFilter> filters, Page<Registry> pager);
 
 	/**
 	 * Find registry received from specified sender with a specified number

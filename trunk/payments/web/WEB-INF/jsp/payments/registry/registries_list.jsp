@@ -1,6 +1,10 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
+<script type="text/javascript">
+    FP.switchSorter(["registrySorterByCreationDateButton"]);
+</script>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td colspan="13" align="right">
@@ -12,7 +16,9 @@
         <td class="th">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.date" /></td>
+        <td class="<s:property value="registrySorterByCreationDate.activated ? 'th_s' : 'th'" />" nowrap>
+            <%@include file="/WEB-INF/jsp/payments/sorters/registry_sort_by_creation_date_header.jsp"%>
+        </td>
         <td class="th"><s:text name="eirc.sender" /></td>
         <td class="th"><s:text name="eirc.recipient" /></td>
         <td class="th"><s:text name="eirc.registry_type" /></td>

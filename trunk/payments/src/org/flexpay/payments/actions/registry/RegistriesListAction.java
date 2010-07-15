@@ -3,6 +3,7 @@ package org.flexpay.payments.actions.registry;
 import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
+import org.flexpay.common.persistence.registry.sorter.RegistrySorterByCreationDate;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
@@ -36,6 +37,7 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 	private Date fromDate = truncateDay(addDays(now(), -2));
 	private Date tillDate = getEndOfThisDay(now());
 
+    private RegistrySorterByCreationDate registrySorterByCreationDate = new RegistrySorterByCreationDate();
 	private List<Registry> registries = list();
     private RegistryFPFileType fpType;
     private RegistryFPFileType mbType;
@@ -64,7 +66,7 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
             filters.add(serviceProviderFilter);
         }
 
-		registries = eircRegistryService.findObjects(filters, getPager());
+		registries = eircRegistryService.findObjects(registrySorterByCreationDate.isActivated() ? registrySorterByCreationDate : null, filters, getPager());
 		if (log.isDebugEnabled()) {
 			log.debug("Total registries found: {}", registries.size());
 		}
@@ -156,7 +158,6 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 
     public void setFromDate(String dt) {
 		fromDate = truncateDay(parseDate(dt, currentMonth()));
-		log.debug("dt = {}, fromDate = {}", dt, fromDate);
 	}
 
     public String getTillDate() {
@@ -165,8 +166,15 @@ public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Re
 
 	public void setTillDate(String dt) {
 		tillDate = getEndOfThisDay(parseDate(dt, now()));
-		log.debug("dt = {}, tillDate = {}", dt, tillDate);
 	}
+
+    public RegistrySorterByCreationDate getRegistrySorterByCreationDate() {
+        return registrySorterByCreationDate;
+    }
+
+    public void setRegistrySorterByCreationDate(RegistrySorterByCreationDate registrySorterByCreationDate) {
+        this.registrySorterByCreationDate = registrySorterByCreationDate;
+    }
 
     public Map<Long, Organization> getOrgs() {
         return orgs;
