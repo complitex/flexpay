@@ -32,7 +32,7 @@
 
 
 <ModuleProperties moduleName="DataStore" version="1.0" >
-    <Callbacks length="2" order="1" timeout="120" header="Пожалуйста войдите в систему" >
+    <Callbacks length="2" order="1" timeout="120" header="Пожалуйста, войдите в систему" >
         <NameCallback>
             <Prompt> Имя пользователя: </Prompt>
         </NameCallback>

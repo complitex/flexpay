@@ -8,7 +8,7 @@
     FP.calendars("paymentDate", true);
 
     function doValidate() {
-        if ($("#").value.length > 256) {
+        if ($("#commentary").val().length > 256) {
             alert("<s:property value="getText('payments.error.registry.commentary.commentary_too_long')" />");
             return false;
         }
@@ -17,6 +17,12 @@
 
 <s:form action="registryCommentaryEdit" method="POST">
     <s:hidden name="registry.id" />
+    <s:hidden name="senderOrganizationFilter.selectedId" />
+    <s:hidden name="recipientOrganizationFilter.selectedId" />
+    <s:hidden name="registryTypeFilter.selectedId" />
+    <s:hidden name="serviceProviderFilter.selectedId" />
+    <s:hidden name="fromDate" />
+    <s:hidden name="tillDate" />
     <table>
         <tr>
             <td>
@@ -33,7 +39,7 @@
         <tr>
             <td>
                 <s:text name="payments.registry.commentary" /><br />
-                <s:textarea rows="10" cols="50" name="commentary" /><br/>
+                <s:textarea id="commentary" rows="10" cols="50" name="commentary" /><br/>
             </td>
         </tr>
         <tr>

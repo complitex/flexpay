@@ -2,11 +2,14 @@ package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.filters.*;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +30,6 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 	private Date fromDate = truncateDay(addDays(now(), -2));
 	private Date tillDate = getEndOfThisDay(now());
 
-    private PaymentPointService paymentPointService;
     private ServiceProviderService serviceProviderService;
 	private OrganizationService organizationService;
 	private RegistryTypeService registryTypeService;
@@ -83,29 +85,57 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 		return SUCCESS;
 	}
 
-	public OrganizationFilter getSenderOrganizationFilter() {
-		return senderOrganizationFilter;
-	}
+    public OrganizationFilter getSenderOrganizationFilter() {
+        return senderOrganizationFilter;
+    }
 
-	public OrganizationFilter getRecipientOrganizationFilter() {
-		return recipientOrganizationFilter;
-	}
+    public void setSenderOrganizationFilter(OrganizationFilter senderOrganizationFilter) {
+        this.senderOrganizationFilter = senderOrganizationFilter;
+    }
 
-	public RegistryTypeFilter getRegistryTypeFilter() {
-		return registryTypeFilter;
-	}
+    public OrganizationFilter getRecipientOrganizationFilter() {
+        return recipientOrganizationFilter;
+    }
+
+    public void setRecipientOrganizationFilter(OrganizationFilter recipientOrganizationFilter) {
+        this.recipientOrganizationFilter = recipientOrganizationFilter;
+    }
+
+    public RegistryTypeFilter getRegistryTypeFilter() {
+        return registryTypeFilter;
+    }
+
+    public void setRegistryTypeFilter(RegistryTypeFilter registryTypeFilter) {
+        this.registryTypeFilter = registryTypeFilter;
+    }
 
     public ServiceProviderFilter getServiceProviderFilter() {
         return serviceProviderFilter;
     }
 
+    public void setServiceProviderFilter(ServiceProviderFilter serviceProviderFilter) {
+        this.serviceProviderFilter = serviceProviderFilter;
+    }
+
+    public void setFromDate(String dt) {
+		fromDate = truncateDay(parseDate(dt, currentMonth()));
+	}
+
     public String getFromDate() {
 		return format(fromDate);
 	}
 
+    public void setTillDate(String dt) {
+        tillDate = getEndOfThisDay(parseDate(dt, now()));
+    }
+
 	public String getTillDate() {
 		return format(tillDate);
 	}
+
+    public RegistryType getTypeByCode(Integer code) {
+        return registryTypeService.findByCode(code);
+    }
 
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {

@@ -36,7 +36,9 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
     private Map<Long, Organization> orgs = map();
-    private boolean haveCommentary = false;
+    private String paymentNumber;
+    private String paymentDate;
+    private String commentary;
 
     private OrganizationService organizationService;
 	private RegistryService registryService;
@@ -70,7 +72,9 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
         for (RegistryContainer registryContainer : registry.getContainers()) {
             List<String> containerData = StringUtil.splitEscapable(registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
             if (containerData != null && !containerData.isEmpty() && COMMENTARY_CONTAINER_TYPE.equals(containerData.get(0))) {
-                haveCommentary = true;
+                paymentNumber = containerData.get(1);
+                paymentDate = containerData.get(2);
+                commentary = containerData.get(3);
                 break;
             }
         }
@@ -128,10 +132,6 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 		this.registry = registry;
 	}
 
-    public boolean isHaveCommentary() {
-        return haveCommentary;
-    }
-
     public ImportErrorTypeFilter getImportErrorTypeFilter() {
 		if (importErrorTypeFilter == null) {
 			importErrorTypeFilter = new ImportErrorTypeFilter();
@@ -145,6 +145,18 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 
     public Map<Long, Organization> getOrgs() {
         return orgs;
+    }
+
+    public String getPaymentNumber() {
+        return paymentNumber;
+    }
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public String getCommentary() {
+        return commentary;
     }
 
     @Required

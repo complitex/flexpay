@@ -388,13 +388,6 @@
           p:registryService-ref="registryService"
           scope="prototype" />
 
-    <bean id="registryCommentaryViewAction"
-		  parent="accountantAWPAction"
-          class="org.flexpay.payments.actions.registry.RegistryCommentaryViewAction"
-          p:crumbNameKey="payments.crumbs.registry_commentary_view"
-          p:registryService-ref="registryService"
-          scope="prototype" />
-
     <bean id="registryDeliveryHistorySendAction"
 		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistryDeliveryHistorySendAction"
