@@ -1,6 +1,5 @@
 package org.flexpay.payments.actions.registry;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
@@ -18,12 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.apache.commons.lang.time.DateUtils.addDays;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.persistence.registry.RegistryContainer.*;
-import static org.flexpay.common.util.DateUtil.*;
-import static org.flexpay.common.util.DateUtil.currentMonth;
-import static org.flexpay.common.util.DateUtil.parseDate;
 
 public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
 
@@ -32,10 +28,10 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
     public static final String REDIRECT_LIST = "redirectList";
     public static final String REDIRECT_VIEW = "redirectView";
 
-    private SenderOrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
-    private RecipientOrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
-    private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
-    private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
+    private SenderOrganizationFilter senderOrganizationFilter;
+    private RecipientOrganizationFilter recipientOrganizationFilter;
+    private RegistryTypeFilter registryTypeFilter;
+    private ServiceProviderFilter serviceProviderFilter;
     private String fromDate;
     private String tillDate;
 
@@ -94,7 +90,7 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
                 return INPUT;
             }
 
-            if (!StringUtils.isEmpty(commentary)) {
+            if (isNotBlank(commentary)) {
 
                 String commentaryContainerData = COMMENTARY_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER +
                         paymentNumber + CONTAINER_DATA_DELIMITER +
@@ -130,8 +126,11 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
             }
 
             if (senderOrganizationFilter != null && recipientOrganizationFilter != null
+                    && senderOrganizationFilter.getSelectedId() != null && recipientOrganizationFilter.getSelectedId() != null
                     && registryTypeFilter != null && serviceProviderFilter != null
-                    && fromDate != null && tillDate != null) {
+                    && registryTypeFilter.getSelectedId() != null && serviceProviderFilter.getSelectedId() != null
+                    && isNotBlank(fromDate) && isNotBlank(tillDate)
+                    ) {
 
                 return REDIRECT_LIST;
 
