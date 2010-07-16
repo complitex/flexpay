@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.security.KeyStore;
 import java.security.Signature;
 import java.security.cert.Certificate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import static org.flexpay.payments.actions.request.data.request.InfoRequest.*;
@@ -72,6 +74,16 @@ public class RequestUtil {
                 signature.update(reversalPay.getRequestId().getBytes());
                 signature.update(reversalPay.getOperationId().toString().getBytes());
                 signature.update(reversalPay.getTotalPaySum().getBytes());
+            } else if (reqType == RequestType.REGISTRY_COMMENT_REQUEST) {
+                RegistryComment registryComment = request.getRegistryComment();
+
+                log.debug("registryComment = {}", registryComment);
+
+                signature.update(registryComment.getRequestId().getBytes());
+                signature.update(registryComment.getRegistryId().toString().getBytes());
+                signature.update(registryComment.getOrderNumber().getBytes());
+                signature.update(registryComment.getOrderDate().getBytes());
+                signature.update(registryComment.getOrderComment().getBytes("utf8"));
             } else {
                 log.warn("Unknown request type");
                 throw new FlexPayException("Unknown request");
@@ -114,6 +126,10 @@ public class RequestUtil {
             return sum.setScale(2).equals(new BigDecimal(request.getPayDebt().getTotalPaySum()).setScale(2));
         } else if (reqType == RequestType.REVERSAL_PAY_REQUEST) {
             log.debug("operationId = {}, totalPaySum = {}", request.getReversalPay().getOperationId(), request.getReversalPay().getTotalPaySum());
+            return true;
+        } else if (reqType == RequestType.REGISTRY_COMMENT_REQUEST) {
+            //TODO
+            //log.debug("operationId = {}, totalPaySum = {}", request.getReversalPay().getOperationId(), request.getReversalPay().getTotalPaySum());
             return true;
         } else {
             log.warn("Unknown type of request");
@@ -185,6 +201,26 @@ public class RequestUtil {
         reversalPayRequest.setOperationId(reversalPay.getOperationId());
 
         return reversalPayRequest;
+    }
+
+    public static RegistryCommentRequest createRegistryCommentRequest(DebtsRequest request) throws FlexPayException {
+
+        RegistryComment registryComment = request.getRegistryComment();
+
+        RegistryCommentRequest registryCommentRequest = new RegistryCommentRequest();
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            registryCommentRequest.setOrderDate(format.parse(registryComment.getOrderDate()));
+        } catch (ParseException e) {
+            log.error("Can't parse orderDate {} to Date format", registryComment.getOrderDate());
+            throw new FlexPayException("Can't parse orderDate");
+        }
+        registryCommentRequest.setRequestId(registryComment.getRequestId());
+        registryCommentRequest.setRegistryId(registryComment.getRegistryId());
+        registryCommentRequest.setOrderNumber(registryComment.getOrderNumber());
+        registryCommentRequest.setOrderComment(registryComment.getOrderComment());
+
+        return registryCommentRequest;
     }
 
 }

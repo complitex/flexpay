@@ -23,6 +23,33 @@ public class Client {
     public static final int REQUEST_TYPE_SEARCH = 1;
     public static final int REQUEST_TYPE_PAY = 2;
     public static final int REQUEST_TYPE_REFUND = 3;
+    public static final int REQUEST_TYPE_REGISTRY_COMMENT = 4;
+
+    private static String generateRegistryCommentRequest(Properties props) throws Exception {
+
+        Map<String, String> params = new TreeMap<String, String>();
+
+        params.put("alias", props.getProperty("alias"));
+        params.put("requestId", props.getProperty("requestId"));
+        params.put("registryId", props.getProperty("registryId"));
+        params.put("orderNumber", props.getProperty("orderNumber"));
+        params.put("orderDate", props.getProperty("orderDate"));
+        params.put("orderComment", props.getProperty("orderComment"));
+
+        String content = loadRequestTemplate("request_registry_comment.file", props).
+                replaceFirst("@requestId@", params.get("requestId")).
+                replaceFirst("@registryId@", params.get("registryId")).
+                replaceFirst("@orderNumber@", params.get("orderNumber")).
+                replaceFirst("@orderDate@", params.get("orderDate")).
+                replaceFirst("@orderComment@", params.get("orderComment")).
+                replaceFirst("@alias@", params.get("alias"));
+
+        String signatureString = buildRegistryCommentSignature(loadPrivateKey(props, params.get("alias")), params);
+        content = content.replaceFirst("@signature@", signatureString);
+
+        return content;
+
+    }
 
     private static String generateSearchRequest(Properties props) throws Exception {
 
@@ -106,12 +133,17 @@ public class Client {
         } else if (requestType == REQUEST_TYPE_REFUND) {
             content = generateRefundRequest(props);
             System.out.println("Refund request:\n" + content);
+        } else if (requestType == REQUEST_TYPE_REGISTRY_COMMENT) {
+            content = generateRegistryCommentRequest(props);
+            System.out.println("Registry comment request:\n" + content);
         } else {
             System.out.println("Incorrect request type");
             return;
         }
+        StringEntity entity = new StringEntity(content, "UTF-8");
+        entity.setChunked(true);
         HttpPost post = new HttpPost(props.getProperty("url"));
-        post.setEntity(new StringEntity(content));
+        post.setEntity(entity);
         post.setHeader("Accept-Language", props.getProperty("locale"));
 
         HttpResponse response = httpClient.execute(post);
@@ -126,7 +158,12 @@ public class Client {
             PayDebtResponse parsedResponse = (PayDebtResponse) digester.parse(response.getEntity().getContent());
             System.out.println("Pay response:\n" + parsedResponse);
             System.out.println("Pay response signature is " + (checkSignaturePay(parsedResponse, props) ? "OK" : "BAD"));
-        } else {
+        } else if (requestType == REQUEST_TYPE_REGISTRY_COMMENT) {
+            Digester digester = initRegistryCommentParser();
+            RegistryCommentResponse parsedResponse = (RegistryCommentResponse) digester.parse(response.getEntity().getContent());
+            System.out.println("Registry comment response:\n" + parsedResponse);
+            System.out.println("Registry comment response signature is " + (checkSignatureRegistryComment(parsedResponse, props) ? "OK" : "BAD"));
+        } else if (requestType == REQUEST_TYPE_REFUND) {
             Digester digester = initRefundParser();
             RefundResponse parsedResponse = (RefundResponse) digester.parse(response.getEntity().getContent());
             System.out.println("Refund response:\n" + parsedResponse);
@@ -149,8 +186,9 @@ public class Client {
         HttpClient httpClient = new DefaultHttpClient();
 
 //        executeRequest(REQUEST_TYPE_SEARCH, props, httpClient);
-        executeRequest(REQUEST_TYPE_PAY, props, httpClient);
+//        executeRequest(REQUEST_TYPE_PAY, props, httpClient);
 //        executeRequest(REQUEST_TYPE_REFUND, props, httpClient);
+        executeRequest(REQUEST_TYPE_REGISTRY_COMMENT, props, httpClient);
 
 	}
 
@@ -186,6 +224,20 @@ public class Client {
 
 		return getStringFromBytes(signature.sign());
 	}
+
+    private static String buildRegistryCommentSignature(PrivateKey key, Map<String, String> params) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
+
+        Signature signature = Signature.getInstance("SHA1withDSA");
+        signature.initSign(key);
+
+        signature.update(params.get("requestId").getBytes());
+        signature.update(params.get("registryId").getBytes());
+        signature.update(params.get("orderNumber").getBytes());
+        signature.update(params.get("orderDate").getBytes());
+        signature.update(params.get("orderComment").getBytes("utf8"));
+
+        return getStringFromBytes(signature.sign());
+    }
 
     private static String buildSearchSignature(PrivateKey key, Map<String, String> params) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 
@@ -265,6 +317,19 @@ public class Client {
 	private static String getStringFromBytes(byte[] bytes) {
 		return new String(Hex.encodeHex(bytes));
 	}
+
+    private static Digester initRegistryCommentParser() {
+
+        Digester digester = new Digester();
+
+        digester.addObjectCreate("response", RegistryCommentResponse.class);
+        digester.addBeanPropertySetter("response/signature", "signature");
+        digester.addBeanPropertySetter("response/registryCommentInfo/requestId", "requestId");
+        digester.addBeanPropertySetter("response/registryCommentInfo/statusCode", "statusCode");
+        digester.addBeanPropertySetter("response/registryCommentInfo/statusMessage", "statusMessage");
+
+        return digester;
+    }
 
     private static Digester initPayParser() {
 
@@ -403,6 +468,20 @@ public class Client {
 
 		return digester;
 	}
+
+    private static boolean checkSignatureRegistryComment(RegistryCommentResponse response, Properties properties) throws Exception {
+
+        Certificate certificate = loadCertificate(properties);
+
+        Signature signature = Signature.getInstance("SHA1withDSA");
+        signature.initVerify(certificate);
+
+        updateSignature(signature, response.getRequestId());
+        updateSignature(signature, response.getStatusCode());
+        updateSignature(signature, response.getStatusMessage());
+
+        return signature.verify(Hex.decodeHex(response.getSignature().toCharArray()));
+    }
 
     private static boolean checkSignatureRefund(RefundResponse response, Properties properties) throws Exception {
 

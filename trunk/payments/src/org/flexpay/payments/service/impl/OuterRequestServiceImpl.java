@@ -7,19 +7,20 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.request.data.request.InfoRequest;
-import org.flexpay.payments.actions.request.data.request.PayRequest;
-import org.flexpay.payments.actions.request.data.request.RequestType;
-import org.flexpay.payments.actions.request.data.request.ReversalPayRequest;
+import org.flexpay.payments.actions.request.data.request.*;
 import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
 import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.actions.request.data.response.SimpleResponse;
@@ -33,13 +34,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.stripToEmpty;
+import static org.apache.commons.lang.StringUtils.*;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -66,6 +68,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private CorrectionsService correctionsService;
     private MasterIndexService masterIndexService;
     private PersonService personService;
+    private RegistryService registryService;
 
     @NotNull
     @Override
@@ -331,6 +334,69 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         response.setStatus(Status.SUCCESS);
 
         return response;
+    }
+
+    @NotNull
+    @Override
+    public SimpleResponse addRegistryComment(RegistryCommentRequest request) throws FlexPayException {
+
+        Security.authenticateOuterRequest();
+
+        SimpleResponse response = new SimpleResponse();
+        response.setRequestId(request.getRequestId());
+
+        Stub<Registry> stub = new Stub<Registry>(request.getRegistryId());
+        Registry registry = registryService.readWithContainers(stub);
+        if (registry == null) {
+            log.warn("Can't get registry with id {} from DB", stub.getId());
+            response.setStatus(Status.REGISTRY_NOT_FOUND);
+            return response;
+        }
+
+        List<RegistryContainer> containers = registry.getContainers();
+        RegistryContainer commentaryContainer = null;
+        for (RegistryContainer registryContainer : containers) {
+            List<String> containerData = StringUtil.splitEscapable(
+                    registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
+            if (containerData != null && !containerData.isEmpty() && COMMENTARY_CONTAINER_TYPE.equals(containerData.get(0))) {
+                commentaryContainer = registryContainer;
+                break;
+            }
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat(RegistryContainer.COMMENTARY_PAYMENT_DATE_FORMAT);
+
+        if (commentaryContainer == null) {
+            commentaryContainer = new RegistryContainer();
+            commentaryContainer.setRegistry(registry);
+            containers.add(commentaryContainer);
+        }
+
+        if (isBlank(request.getOrderComment())) {
+            commentaryContainer.setData("");
+        } else {
+
+            commentaryContainer.setData(COMMENTARY_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER +
+                    request.getOrderNumber() + CONTAINER_DATA_DELIMITER +
+                    format.format(request.getOrderDate()) + CONTAINER_DATA_DELIMITER +
+                    request.getOrderComment());
+
+            if (commentaryContainer.getData().length() > CONTAINER_DATA_MAX_SIZE) {
+                log.warn("Commentary length can't be more 256 symbols", stub.getId());
+                response.setStatus(Status.INTERNAL_ERROR);
+                return response;
+            }
+        }
+        registryService.update(registry);
+
+        response.setStatus(Status.SUCCESS);
+
+        return response;
+    }
+
+    @Required
+    public void setRegistryService(RegistryService registryService) {
+        this.registryService = registryService;
     }
 
     @Required

@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.payments.actions.request.data.request.data.DebtInfo;
 import org.flexpay.payments.actions.request.data.request.data.PayDebt;
+import org.flexpay.payments.actions.request.data.request.data.RegistryComment;
 import org.flexpay.payments.actions.request.data.request.data.ReversalPay;
 
 public class DebtsRequest {
@@ -11,6 +12,7 @@ public class DebtsRequest {
 	private DebtInfo debtInfo;
     private PayDebt payDebt;
     private ReversalPay reversalPay;
+    private RegistryComment registryComment;
     private String login;
     private String signature;
 
@@ -48,6 +50,15 @@ public class DebtsRequest {
         this.reversalPay = reversalPay;
     }
 
+    public RegistryComment getRegistryComment() {
+        return registryComment;
+    }
+
+    public void setRegistryComment(RegistryComment registryComment) {
+        requestType = RequestType.REGISTRY_COMMENT_REQUEST;
+        this.registryComment = registryComment;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -78,6 +89,7 @@ public class DebtsRequest {
                 append("debtInfo", debtInfo).
                 append("payDebt", payDebt).
                 append("reversalPay", reversalPay).
+                append("registryComment", registryComment).
                 append("login", login).
                 append("signature", signature).
                 append("requestType", requestType).

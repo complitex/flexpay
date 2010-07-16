@@ -18,7 +18,8 @@ public enum Status {
     INCORRECT_PAY_SUM(17, "payments.outer_request.status.incorrect_pay_sum"),
     REQUEST_IS_NOT_PROCESSED(18, "payments.outer_request.status.request_is_not_processed"),
     INCORRECT_OPERATION_ID(19, "payments.outer_request.status.incorrect_operation_id"),
-    REFUND_IS_NOT_POSSIBLE(20, "payments.outer_request.status.refund_is_not_possible");
+    REFUND_IS_NOT_POSSIBLE(20, "payments.outer_request.status.refund_is_not_possible"),
+    REGISTRY_NOT_FOUND(21, "payments.outer_request.status.registry_not_found");
 
     private int code;
     private String textKey;

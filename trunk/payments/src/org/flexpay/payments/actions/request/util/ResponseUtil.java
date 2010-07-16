@@ -34,10 +34,41 @@ public class ResponseUtil {
             return buildSearchResponse(null, requestId, status, requestType, locale);
         } else if (requestType == RequestType.REVERSAL_PAY_REQUEST) {
             return buildReversalPayResponse(null, requestId, status, locale);
+        } else if (requestType == RequestType.REGISTRY_COMMENT_REQUEST) {
+            return buildRegistryCommentResponse(null, requestId, status, locale);
         } else {
             log.warn("Incorrect request type parameter on buildResponse method");
             throw new FlexPayException("Incorrect request type parameter on buildResponse method");
         }
+    }
+
+    public static String buildRegistryCommentResponse(SimpleResponse registryCommentResponse, String requestId, Status status, Locale locale) throws FlexPayException {
+
+        log.debug("Building registry comment response: requestId = {}, status = {}", requestId, status);
+
+        Signature signature = initSignature();
+
+        StringBuilder response = new StringBuilder();
+        response.append("<response>").
+                append("<registryCommentInfo>");
+
+        addNonEmptyField(response, "requestId", requestId, signature);
+
+        if (registryCommentResponse != null) {
+            addNonEmptyField(response, "statusCode", registryCommentResponse.getStatus().getCode(), signature);
+            addNonEmptyField(response, "statusMessage", getStatusText(registryCommentResponse.getStatus(), locale), signature);
+        } else {
+            addNonEmptyField(response, "statusCode", status.getCode(), signature);
+            addNonEmptyField(response, "statusMessage", getStatusText(status, locale), signature);
+        }
+
+        response.append("</registryCommentInfo>");
+        addSignature(response, signature);
+        response.append("</response>");
+
+        log.debug("Registry comment response = {}", response.toString());
+
+        return response.toString();
     }
 
     public static String buildReversalPayResponse(SimpleResponse reversalInfoResponse, String requestId, Status status, Locale locale) throws FlexPayException {

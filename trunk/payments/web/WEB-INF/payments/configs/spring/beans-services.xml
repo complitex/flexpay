@@ -257,7 +257,8 @@
           p:personService-ref="personService"
           p:operationService-ref="operationService"
           p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
-          p:correctionsService-ref="correctionsService" />
+          p:correctionsService-ref="correctionsService"
+          p:registryService-ref="registryService" />
 
 	<bean id="paymentsUserPreferencesFactory"
 		  autowire-candidate="false"
