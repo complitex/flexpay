@@ -7,7 +7,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td colspan="12">
+        <td colspan="13">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" value="<s:text name="eirc.process" />" class="btn-exit" onclick="process();" />
         </td>
@@ -20,6 +20,7 @@
         <td class="<s:property value="registrySorterByCreationDate.activated ? 'th_s' : 'th'" />" nowrap>
             <%@include file="/WEB-INF/jsp/payments/sorters/registry_sort_by_creation_date_header.jsp"%>
         </td>
+        <td class="th"><s:text name="eirc.registry.number" /></td>
         <td class="th"><s:text name="eirc.sender" /></td>
         <td class="th"><s:text name="eirc.recipient" /></td>
         <td class="th"><s:text name="eirc.registry_type" /></td>
@@ -39,6 +40,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col"><s:date name="creationDate" format="yyyy/MM/dd" /></td>
+            <td class="col"><s:property value="registryNumber" /></td>
             <td class="col"><s:property value="getTranslationName(orgs.get(senderCode).names)" /></td>
             <td class="col"><s:property value="getTranslationName(orgs.get(recipientCode).names)" /></td>
             <td class="col"><s:text name="%{registryType.i18nName}" /></td>
@@ -63,7 +65,7 @@
         </tr>
     </s:iterator>
     <tr>
-        <td colspan="12">
+        <td colspan="13">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" value="<s:text name="eirc.process" />" class="btn-exit" onclick="process();" />
         </td>
