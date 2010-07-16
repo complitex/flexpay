@@ -3,6 +3,7 @@ package org.flexpay.payments.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.payments.actions.request.data.request.InfoRequest;
 import org.flexpay.payments.actions.request.data.request.PayRequest;
+import org.flexpay.payments.actions.request.data.request.RegistryCommentRequest;
 import org.flexpay.payments.actions.request.data.request.ReversalPayRequest;
 import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
 import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
@@ -25,5 +26,8 @@ public interface OuterRequestService {
 
     @NotNull
     SimpleResponse refund(ReversalPayRequest reversalPayRequest) throws FlexPayException;
+
+    @NotNull
+    SimpleResponse addRegistryComment(RegistryCommentRequest registryCommentRequest) throws FlexPayException;
 
 }

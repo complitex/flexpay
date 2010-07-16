@@ -3,10 +3,7 @@ package org.flexpay.payments.actions.request;
 import org.apache.commons.digester.Digester;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.payments.actions.request.data.request.*;
-import org.flexpay.payments.actions.request.data.request.data.DebtInfo;
-import org.flexpay.payments.actions.request.data.request.data.PayDebt;
-import org.flexpay.payments.actions.request.data.request.data.ReversalPay;
-import org.flexpay.payments.actions.request.data.request.data.ServicePayDetails;
+import org.flexpay.payments.actions.request.data.request.data.*;
 import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
 import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.actions.request.data.response.SimpleResponse;
@@ -115,6 +112,11 @@ public class ProcessRequestServlet extends HttpServlet {
                     log.error("Refund is not possible", e);
                     writer.write(buildResponse(requestId, reqType, Status.REFUND_IS_NOT_POSSIBLE, locale));
                 }
+            } else if (reqType == RequestType.REGISTRY_COMMENT_REQUEST) {
+                RegistryCommentRequest registryCommentRequest = createRegistryCommentRequest(request);
+                log.debug("Parsing registry comment request: {}", registryCommentRequest);
+                SimpleResponse response = outerRequestService.addRegistryComment(registryCommentRequest);
+                writer.write(buildRegistryCommentResponse(response, requestId, response.getStatus(), locale));
             } else {
                 log.warn("Can't parse request: Unknown request");
                 throw new FlexPayException("Unknown request");
@@ -141,6 +143,8 @@ public class ProcessRequestServlet extends HttpServlet {
             return request.getPayDebt().getRequestId();
         } else if (reqType == RequestType.REVERSAL_PAY_REQUEST) {
             return request.getReversalPay().getRequestId();
+        } else if (reqType == RequestType.REGISTRY_COMMENT_REQUEST) {
+            return request.getRegistryComment().getRequestId();
         } else {
             log.warn("Unknown request. Response error");
             throw new FlexPayException("Unknown request");
@@ -160,6 +164,8 @@ public class ProcessRequestServlet extends HttpServlet {
         digester.addSetNext("request/payDebt", "setPayDebt");
         digester.addObjectCreate("request/reversalPay", ReversalPay.class);
         digester.addSetNext("request/reversalPay", "setReversalPay");
+        digester.addObjectCreate("request/registryComment", RegistryComment.class);
+        digester.addSetNext("request/registryComment", "setRegistryComment");
         digester.addBeanPropertySetter("*/searchType", "searchType");
         digester.addBeanPropertySetter("*/searchCriteria", "searchCriteria");
         digester.addBeanPropertySetter("*/requestId", "requestId");
@@ -171,6 +177,10 @@ public class ProcessRequestServlet extends HttpServlet {
         digester.addBeanPropertySetter("request/payDebt/servicePayDetails/paySum", "paySum");
         digester.addBeanPropertySetter("request/reversalPay/operationId", "operationId");
         digester.addBeanPropertySetter("request/reversalPay/totalPaySum", "totalPaySum");
+        digester.addBeanPropertySetter("request/registryComment/registryId", "registryId");
+        digester.addBeanPropertySetter("request/registryComment/orderNumber", "orderNumber");
+        digester.addBeanPropertySetter("request/registryComment/orderDate", "orderDate");
+        digester.addBeanPropertySetter("request/registryComment/orderComment", "orderComment");
         digester.addBeanPropertySetter("request/login", "login");
         digester.addBeanPropertySetter("request/signature", "signature");
 
