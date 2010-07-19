@@ -250,6 +250,8 @@
           p:operationStatusService-ref="operationStatusService"
           p:operationTypeService-ref="operationTypeService"
           p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:processManager-ref="processManagerPayments"
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
           p:masterIndexService-ref="masterIndexService"

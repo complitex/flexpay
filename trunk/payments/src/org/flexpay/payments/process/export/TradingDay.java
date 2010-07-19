@@ -104,7 +104,7 @@ public class TradingDay extends QuartzJobBean {
 				String canCreateOrUpdate = (String) context.getProcessInstance(processInstanceId)
 						.getContextInstance().getVariable(CAN_UPDATE_OR_CREATE_OPERATION);
 				logger.debug("CAN_UPDATE_OR_CREATE_OPERATION = {} for process instance id = {}", canCreateOrUpdate, processInstanceId);
-				return new Boolean(canCreateOrUpdate);
+				return Boolean.valueOf(canCreateOrUpdate);
 			}
 		});
 	}
