@@ -42,7 +42,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col"><s:date name="creationDate" format="yyyy/MM/dd" /></td>
-            <td class="col"><s:property value="registryNumber" /></td>
+            <td class="col"><s:property value="id" /></td>
             <td class="col"><s:property value="getTranslationName(orgs.get(senderCode).names)" /></td>
             <td class="col"><s:property value="getTranslationName(orgs.get(recipientCode).names)" /></td>
             <td class="col"><s:text name="%{registryType.i18nName}" /></td>

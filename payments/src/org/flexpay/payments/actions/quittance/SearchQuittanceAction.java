@@ -12,15 +12,14 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
-import org.flexpay.payments.actions.request.data.request.DebtsRequest;
+import org.flexpay.payments.actions.request.data.request.InfoRequest;
 import org.flexpay.payments.actions.request.data.request.RequestType;
+import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.actions.request.data.response.Status;
 import org.flexpay.payments.actions.request.data.response.data.ConsumerAttributes;
 import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.actions.request.data.request.InfoRequest;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.actions.request.data.response.data.ServiceDetails;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -32,7 +31,8 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.*;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.accountNumberRequest;
+import static org.flexpay.payments.actions.request.data.request.InfoRequest.apartmentNumberRequest;
 
 public class SearchQuittanceAction extends OperatorAWPActionSupport {
 

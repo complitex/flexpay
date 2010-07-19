@@ -9,6 +9,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
@@ -17,8 +18,10 @@ import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.request.data.request.*;
 import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
@@ -27,6 +30,7 @@ import org.flexpay.payments.actions.request.data.response.SimpleResponse;
 import org.flexpay.payments.actions.request.data.response.Status;
 import org.flexpay.payments.actions.request.data.response.data.*;
 import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -55,6 +59,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private QuittanceDetailsFinder quittanceDetailsFinder;
     private OperationService operationService;
     private CashboxService cashboxService;
+    private ProcessManager processManager;
+    private PaymentPointService paymentPointService;
     private DocumentTypeService documentTypeService;
     private DocumentStatusService documentStatusService;
     private DocumentService documentService;
@@ -142,7 +148,26 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             throw new FlexPayException("Can't get cashbox with id " + operation.getCashboxStub().getId() + " from DB");
         }
 
-        Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
+        PaymentPoint paymentPoint = paymentPointService.read(cashbox.getPaymentPointStub());
+        if (paymentPoint == null) {
+            log.warn("Can't get payment point with id {} from DB", cashbox.getPaymentPointStub().getId());
+            throw new FlexPayException("Can't get payment point with id " + cashbox.getPaymentPointStub().getId() + " from DB");
+        }
+        final Long paymentProcessId = paymentPoint.getTradingDayProcessInstanceId();
+
+        if (paymentProcessId == null || paymentProcessId == 0) {
+            log.debug("TradingDay process id not found for Payment point id = {}", paymentPoint.getId());
+        } else {
+            log.debug("Found process id {} for cashbox {}", paymentProcessId, cashbox.getId());
+
+            if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+                response.setStatus(Status.REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED);
+                return response;
+            }
+
+        }
+
+        Organization organization = paymentPoint.getCollector().getOrganization();
         operation.setOperationSumm(payRequest.getTotalToPay());
         operation.setOperationInputSumm(payRequest.getTotalToPay());
         operation.setChange(BigDecimal.ZERO);
@@ -392,6 +417,16 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         response.setStatus(Status.SUCCESS);
 
         return response;
+    }
+
+    @Required
+    public void setProcessManager(ProcessManager processManager) {
+        this.processManager = processManager;
+    }
+
+    @Required
+    public void setPaymentPointService(PaymentPointService paymentPointService) {
+        this.paymentPointService = paymentPointService;
     }
 
     @Required
