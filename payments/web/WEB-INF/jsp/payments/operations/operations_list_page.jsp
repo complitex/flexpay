@@ -53,17 +53,23 @@
             params: {
                 "cashbox.id":<s:property value="cashbox.id" />,
                 <sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
-                    "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").get(0).value,
-                    "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").get(0).value,
+                    "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").val(),
+                    "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").val(),
                 </sec:authorize>
-                "beginTimeFilter.stringDate":$("input[name=beginTimeFilter.stringDate]").get(0).value,
-                "endTimeFilter.stringDate":$("input[name=endTimeFilter.stringDate]").get(0).value,
-                "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").get(0).value,
-                minimalSum:$("input[name=minimalSum]").get(0).value,
-                maximalSum:$("input[name=maximalSum]").get(0).value,
-                documentSearch:$("input[name=documentSearch]").get(0).value,
+                "beginTimeFilter.stringDate":$("input[name=beginTimeFilter.stringDate]").val(),
+                "endTimeFilter.stringDate":$("input[name=endTimeFilter.stringDate]").val(),
+                "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").val(),
+                "operationSorterById.active": $("#operationSorterByIdActive").val(),
+                "operationSorterById.order": $("#operationSorterByIdOrder").val(),
+                minimalSum:$("input[name=minimalSum]").val(),
+                maximalSum:$("input[name=maximalSum]").val(),
+                documentSearch:$("input[name=documentSearch]").val(),
             }
         });
+    }
+
+    function sorterAjax() {
+        pagerAjax();
     }
 
     function setStatus(status) {

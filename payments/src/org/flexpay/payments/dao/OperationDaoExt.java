@@ -3,22 +3,21 @@ package org.flexpay.payments.dao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
 import org.flexpay.payments.service.Roles;
 import org.springframework.security.annotation.Secured;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface OperationDaoExt {
 
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
 	 *
+     * @param operationSorter operation sorter
 	 * @param cashbox Cashbox object
 	 * @param serviceTypeId document service type id
 	 * @param begin lower bound for document creation date
@@ -29,12 +28,14 @@ public interface OperationDaoExt {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
+	List<Operation> searchDocuments(OperationSorter operationSorter, Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
 									BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager);
 
     /**
      * Returns list of operations suitable to search criterias
      *
+     * @param operationSorter operation sorter
+     * @param tradingDayProcessId trading day process id
      * @param cashbox Cashbox object
      * @param begin lower bound for operation creation date
      * @param end upper bound for operation creation date
@@ -44,7 +45,7 @@ public interface OperationDaoExt {
      * @return list of operations suitable to search criterias
      */
     @Secured(Roles.OPERATION_READ)
-    List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSum,
+    List<Operation> searchOperations(OperationSorter operationSorter, Long tradingDayProcessId, Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSum,
                                      BigDecimal maximalSum, Page<Operation> pager);
 
     /**

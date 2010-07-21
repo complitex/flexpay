@@ -1,6 +1,10 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
+<script type="text/javascript">
+    FP.switchSorter(["operationSorterByIdButton"]);
+</script>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
     <s:if test="tradingDayControlPanel.processStatus != null">
         <tr>
@@ -47,7 +51,9 @@
         <tr>
             <td class="th" width="1%">&nbsp;</td>
             <td class="th" width="1%"><s:text name="payments.operations.list.number_symbol" /></td>
-            <td class="th" width="1%"><s:text name="payments.operations.list.uno" /></td>
+            <td class="<s:property value="operationSorterById.activated ? 'th_s' : 'th'" />" nowrap>
+                <%@include file="/WEB-INF/jsp/payments/sorters/operation_sort_by_id_header.jsp"%>
+            </td>
             <td class="th"><s:text name="payments.operations.list.creation_date" /></td>
             <td class="th"><s:text name="payments.operations.list.address" /></td>
             <td class="th"><s:text name="payments.operations.list.fio" /></td>

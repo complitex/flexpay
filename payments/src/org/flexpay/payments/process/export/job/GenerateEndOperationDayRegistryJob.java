@@ -79,18 +79,15 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 	}
 
 	private PaymentCollector getPaymentCollector(PaymentPoint paymentPoint) {
-
 		return paymentCollectorService.read(paymentPoint.collectorStub());
 	}
 
 	private PaymentPoint getPaymentPoint(Map<Serializable, Serializable> parameters) {
-
 		Long pointId = (Long) parameters.get(PAYMENT_POINT_ID);
 		return paymentPointService.read(new Stub<PaymentPoint>(pointId));
 	}
 
 	private Organization getOrganization(Map<Serializable, Serializable> parameters) {
-
 		Long organizationId = (Long) parameters.get(ORGANIZATION_ID);
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}

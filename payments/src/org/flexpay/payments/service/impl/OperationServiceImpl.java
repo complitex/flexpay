@@ -13,6 +13,7 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationLevel;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.OperationType;
+import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
 import org.flexpay.payments.service.OperationLevelService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.OperationStatusService;
@@ -166,15 +167,15 @@ public class OperationServiceImpl implements OperationService {
 	}
 
     @Override
-	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,
+	public List<Operation> searchDocuments(OperationSorter operationSorter, Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,
 										   Date end, BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager) {
-		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSum, maximalSum, pager);
+		return operationDaoExt.searchDocuments(operationSorter, cashbox, serviceTypeId, begin, end, minimalSum, maximalSum, pager);
 	}
 
     @Override
-	public List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSum,
+	public List<Operation> searchOperations(OperationSorter operationSorter, Long tradingDayProcessId, Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSum,
 											BigDecimal maximalSum, Page<Operation> pager) {
-		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSum, maximalSum, pager);
+		return operationDaoExt.searchOperations(operationSorter, tradingDayProcessId, cashbox, begin, end, minimalSum, maximalSum, pager);
 	}
 
 	/**

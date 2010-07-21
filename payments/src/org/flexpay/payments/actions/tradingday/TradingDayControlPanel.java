@@ -1,13 +1,10 @@
 package org.flexpay.payments.actions.tradingday;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.process.ContextCallback;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.payments.process.export.TradingDay;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -19,7 +16,13 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.payments.process.export.TradingDay.*;
+
 public class TradingDayControlPanel {
+
+    private static final Logger controlPanelLog = LoggerFactory.getLogger(TradingDayControlPanel.class);
 
 	// public data
 	private List<String> availableCommands = Collections.emptyList();
@@ -29,9 +32,6 @@ public class TradingDayControlPanel {
 	// private data
 	private Long tradingDayProcessInstanceId;
 	private String actor;
-
-	// own log
-	private static final Logger controlPanelLog = LoggerFactory.getLogger(TradingDayControlPanel.class);
 
 	// process logger
 	private Logger userLog;
@@ -58,7 +58,7 @@ public class TradingDayControlPanel {
 
 	private void processCommand() {
 
-		if (StringUtils.isEmpty(command)) {
+		if (isEmpty(command)) {
 			controlPanelLog.info("Empty command. Processing canceled.");
 			return;
 		}
@@ -80,6 +80,7 @@ public class TradingDayControlPanel {
 			public Void doInContext(@NotNull JbpmContext context) {
 				TaskInstance taskInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
 				if (taskInstance.isSignalling()) {
+                    userLog.debug("Signalling {} transition command", command);
 					taskInstance.getProcessInstance().signal(command);
 				}
 				return null;
@@ -110,7 +111,7 @@ public class TradingDayControlPanel {
 					return Collections.emptyList();
 				}
 
-				List<String> availableTransitions = CollectionUtils.list();
+				List<String> availableTransitions = list();
 				for (Object o : currentTaskInstance.getProcessInstance().getRootToken().getAvailableTransitions()) {
 					Transition t = (Transition) o;
 					availableTransitions.add(t.getName());
@@ -125,15 +126,16 @@ public class TradingDayControlPanel {
 
 		if (tradingDayProcessInstanceId == null) {
 			controlPanelLog.warn("Trading day process not found. Status loading canceled.");
+            processStatus = STATUS_CLOSED;
 			return;
 		}
 
 		Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
-		processStatus = process != null ? (String) process.getParameters().get(TradingDay.PROCESS_STATUS) : null;
+		processStatus = process != null ? (String) process.getParameters().get(PROCESS_STATUS) : STATUS_CLOSED;
 	}
 
 	public boolean isTradingDayOpened() {
-		return tradingDayProcessInstanceId != null && TradingDay.isOpened(processManager, tradingDayProcessInstanceId, userLog);
+		return tradingDayProcessInstanceId != null && isOpened(processManager, tradingDayProcessInstanceId, userLog);
 	}
 
 	private TaskInstance getTaskInstance() {

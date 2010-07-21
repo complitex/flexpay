@@ -389,6 +389,34 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		});
 	}
 
+    @Override
+    public void endProcess(Process process) {
+
+        final Long processId = process.getId();
+        final Map<Serializable, Serializable> params = process.getParameters();
+
+        execute(new ContextCallback<Long>() {
+            @Override
+            public Long doInContext(@NotNull JbpmContext context) {
+
+                //starting process
+                GraphSession graphSession = context.getGraphSession();
+                ProcessInstance processInstance = graphSession.loadProcessInstance(processId);
+
+                ContextInstance ci = processInstance.getContextInstance();
+
+                params.put(Process.PROCESS_INSTANCE_ID, String.valueOf(processId));
+                ci.addVariables(params);
+                processInstance.getRootToken().end();
+
+                log.info("Process Instance id = {} ended.", processId);
+
+                return processId;
+            }
+        });
+
+    }
+
 	/**
 	 * Start task instance
 	 *
@@ -755,7 +783,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		});
 	}
 
-	@Override
+    @Override
 	public void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter) {
 		processDao.deleteProcessInstances(range, nameFilter.getSelectedName());
 	}

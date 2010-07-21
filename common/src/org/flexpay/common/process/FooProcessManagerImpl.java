@@ -66,6 +66,10 @@ public class FooProcessManagerImpl implements ProcessManager {
 	}
 
     @Override
+    public void endProcess(Process process) {
+    }
+
+    @Override
 	public List<Process> getProcesses() {
 		return null;
 	}

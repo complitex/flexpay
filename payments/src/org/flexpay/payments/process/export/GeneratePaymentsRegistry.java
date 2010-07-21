@@ -79,6 +79,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	 * @param context Job execution context.
 	 * @throws JobExecutionException
 	 */
+    @Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
 		log.debug("Starting process generate payments registry at {}", new Date());
@@ -122,7 +123,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         List<Long> registryIds = list();
 
         do {
-            log.debug("Waiting number {} processes: {}", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, processInstanceIds.size()});
+            log.debug("Waiting number {} processes: {}", GENERATE_PAYMENTS_REGISRY_PROCESS, processInstanceIds.size());
             try {
                 Thread.sleep(TIME_OUT);
             } catch (InterruptedException e) {
@@ -150,7 +151,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     log.debug("Process {} did not find", processId);
                     tmpListProcessInstanesId.remove(processId);
                 } else {
-                    log.debug("Process {} has status {}: ", new Object[]{processId, process.getProcessState(), process.getParameters()});
+                    log.debug("Process {} has status {}: {}", new Object[]{processId, process.getProcessState(), process.getParameters()});
                 }
             }
             processInstanceIds = tmpListProcessInstanesId;

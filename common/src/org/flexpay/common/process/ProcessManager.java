@@ -89,6 +89,8 @@ public interface ProcessManager {
 	long createProcess(@NotNull String definitionName, @Nullable Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException;
 
+    void endProcess(Process process);
+
 	/**
 	 * Get list of system processes
 	 *

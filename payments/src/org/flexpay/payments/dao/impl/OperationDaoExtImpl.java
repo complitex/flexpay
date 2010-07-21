@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,7 +25,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 
     @SuppressWarnings ({"unchecked"})
 	@Override
-	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, final Long serviceTypeId, final Date begin, final Date end,
+	public List<Operation> searchDocuments(OperationSorter operationSorter, Stub<Cashbox> cashbox, final Long serviceTypeId, final Date begin, final Date end,
                                         final BigDecimal minimalSum, final BigDecimal maximalSum, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc");
@@ -34,6 +35,16 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 
 		hql.append(filterHql);
 		cntHql.append(filterHql);
+
+		if (operationSorter != null) {
+            hql.append(" order by ");
+			StringBuilder orderByClause = new StringBuilder();
+			operationSorter.setOrderBy(orderByClause);
+
+			if (orderByClause.length() > 0) {
+				hql.append(orderByClause);
+			}
+		}
 
 		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback() {
 			@Override
@@ -120,36 +131,46 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 */
     @SuppressWarnings ({"unchecked"})
 	@Override
-    public List<Operation> searchOperations(Stub<Cashbox> cashbox, final Date begin, final Date end, final BigDecimal minimalSum,
+    public List<Operation> searchOperations(OperationSorter operationSorter, final Long tradingDayProcessId, Stub<Cashbox> cashbox, final Date begin, final Date end, final BigDecimal minimalSum,
                                      final BigDecimal maximalSum, final Page<Operation> pager) {
-        final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
-		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");
-		final StringBuilder filterHql = getCashboxOperationSearchHql(begin, end, minimalSum, maximalSum);
+        final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc left join o.paymentPoint pp");
+		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc left join o.paymentPoint pp");
+		final StringBuilder filterHql = getCashboxOperationSearchHql(tradingDayProcessId, begin, end, minimalSum, maximalSum);
 		final Long cashboxId = cashbox.getId();
 
 		hql.append(filterHql);
 		cntHql.append(filterHql);
+
+        if (operationSorter != null) {
+            hql.append(" order by ");
+            StringBuilder orderByClause = new StringBuilder();
+            operationSorter.setOrderBy(orderByClause);
+
+            if (orderByClause.length() > 0) {
+                hql.append(orderByClause);
+            }
+        }
 
 		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback() {
 			@Override
 			public List<Operation> doInHibernate(Session session) throws HibernateException {
 
 				Query cntQuery = session.createQuery(cntHql.toString());
-				setCashboxOperationSearchQueryParameters(cntQuery, cashboxId, begin, end, minimalSum, maximalSum);
+				setCashboxOperationSearchQueryParameters(cntQuery, tradingDayProcessId, cashboxId, begin, end, minimalSum, maximalSum);
 				Long count = (Long) cntQuery.uniqueResult();
 				pager.setTotalElements(count.intValue());
 
 				Query query = session.createQuery(hql.toString());
-				setCashboxOperationSearchQueryParameters(query, cashboxId, begin, end, minimalSum, maximalSum);
-				query.setFirstResult(pager.getThisPageFirstElementNumber());
-				query.setMaxResults(pager.getPageSize());
-
-				return (List<Operation>) query.list();
+				setCashboxOperationSearchQueryParameters(query, tradingDayProcessId, cashboxId, begin, end, minimalSum, maximalSum);
+                log.debug("Operations search query: {}", query);
+				return (List<Operation>) query.setFirstResult(pager.getThisPageFirstElementNumber()).
+                        setMaxResults(pager.getPageSize()).
+                        list();
 			}
 		});
     }
 
-    private StringBuilder getCashboxOperationSearchHql(Date begin, Date end, BigDecimal minimalSum, BigDecimal maximalSum) {
+    private StringBuilder getCashboxOperationSearchHql(Long tradingDayProcessId, Date begin, Date end, BigDecimal minimalSum, BigDecimal maximalSum) {
 		StringBuilder filterHql = new StringBuilder(" WHERE");
 
 		// operation type filtering (payments only)
@@ -159,6 +180,10 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		// status filtering (non-deleted ones)
 		filterHql.append(" AND o.operationStatus.code <> 3");
 		filterHql.append(" AND doc.documentStatus.code <> 3");
+
+        if (tradingDayProcessId != null) {
+            filterHql.append(" AND pp.tradingDayProcessInstanceId = :tradingDayProcessId");
+        }
 
 		if (begin != null) {
 			filterHql.append(" AND o.creationDate >= :begin");
@@ -179,7 +204,11 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		return filterHql;
 	}
 
-    private void setCashboxOperationSearchQueryParameters(Query query, Long cashboxId, Date begin, Date end, BigDecimal minimalSum, BigDecimal maximalSum) {
+    private void setCashboxOperationSearchQueryParameters(Query query, Long tradingDayProcessId, Long cashboxId, Date begin, Date end, BigDecimal minimalSum, BigDecimal maximalSum) {
+
+        if (tradingDayProcessId != null) {
+            query.setLong("tradingDayProcessId", tradingDayProcessId);
+        }
 
 		if (cashboxId != null) {
 			query.setLong("cashboxId", cashboxId);
