@@ -11,6 +11,8 @@ import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
+import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
+import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
@@ -26,12 +28,12 @@ import java.util.Map;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
+import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
 
 public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport {
 
 	public static final String ENABLE = "enable";
 	public static final String DISABLE = "disable";
-	private static final String PROCESS_DEFINITION_NAME = "TradingDay";
 
     private PaymentPoint paymentPoint;
 	private String action;
@@ -104,7 +106,7 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 
 		Long processInstanceId = null;
 		try {
-			processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
+			processInstanceId = processManager.createProcess(TradingDay.PROCESS_DEFINITION_NAME, parameters);
 			paymentPoint.setTradingDayProcessInstanceId(processInstanceId);
             paymentPointService.update(paymentPoint);
 		} catch (ProcessInstanceException e) {
@@ -126,12 +128,21 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
     @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
 	private void disableTradingDay() throws FlexPayExceptionContainer {
 		log.debug("Try disable trading day for payment point {}", paymentPoint.getId());
-		try {
-			deleteProcess(paymentPoint.getTradingDayProcessInstanceId());
-		} catch (Exception e) {
-			log.error("Can't delete process \"TradingDay\"", e);
-			throw new FlexPayExceptionContainer(new FlexPayException("Can't disable process Trading day", "payments.error.cant_disable_trading_day"));
-		}
+
+//        TradingDayControlPanel tradingDayControlPanel = new TradingDayControlPanel(processManager, PAYMENT_COLLECTOR, log);
+//        tradingDayControlPanel.setCommand(TradingDay.TRANSITION_END_DAY);
+//        tradingDayControlPanel.updatePanel(paymentPoint);
+
+        Process process = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+
+        if (process == null) {
+            log.warn("Can't disable TradingDay process, because can't find it");
+        } else {
+            process.getParameters().put(ExportJobParameterNames.END_DATE, new Date());
+            process.getParameters().put(TradingDay.PROCESS_STATUS, TradingDay.STATUS_CLOSED);
+            processManager.endProcess(process);
+        }
+
 		paymentPoint.setTradingDayProcessInstanceId(null);
 		paymentPointService.update(paymentPoint);
 	}

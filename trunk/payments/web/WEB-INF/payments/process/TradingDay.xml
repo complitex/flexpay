@@ -137,13 +137,13 @@
 
     <task-node name="ViewApproval">
         <description>
-            Просмотр Оператором сообщения о том что операционный день завершен
+            Просмотр Оператором сообщения о том, что операционный день закрыт
         </description>
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
-                    processStatus = "Завершён";
+                    processStatus = "Закрыт";
                 </expression>
             </script>
         </event>

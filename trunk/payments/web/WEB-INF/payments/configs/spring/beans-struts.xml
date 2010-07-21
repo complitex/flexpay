@@ -175,6 +175,7 @@
 		  p:crumbNameKey="payments.crumbs.payment_point_detail"
           p:paymentPointService-ref="paymentPointService"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
+          p:processManager-ref="processManager"
 		  scope="prototype" />
 
     <bean id="paymentPointCashboxesListAction"

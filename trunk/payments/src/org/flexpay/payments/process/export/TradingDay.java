@@ -48,8 +48,18 @@ public class TradingDay extends QuartzJobBean {
 	public final static String PROCESS_STATUS = "PROCESS_STATUS";
 	public final static String AUTO_MODE = "AUTO_MODE";
 
-    private static final String PROCESS_DEFINITION_NAME = "TradingDay";
+    public static final String PROCESS_DEFINITION_NAME = "TradingDay";
     private static final String USER_TRADING_DAY = "trading-day";
+
+    // trading day statuses
+    public static final String STATUS_OPEN = "Открыт";
+    public static final String STATUS_PROCESSED = "Обрабатывается";
+    public static final String STATUS_ERROR = "Допущена ошибка, обратитесь к администратору";
+    public static final String STATUS_APROVE = "Ожидает подтверждения";
+    public static final String STATUS_CLOSED = "Закрыт";
+
+    public static final String TRANSITION_END_DAY = "Подтвердить закрытие";
+
     // time out 10 sec
     private static final long TIME_OUT = 10000;
     private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
@@ -80,7 +90,6 @@ public class TradingDay extends QuartzJobBean {
 			OPERATION_READ,
 			OPERATION_CHANGE,
 			SERVICE_READ
-
     );
 
 	/**
@@ -160,6 +169,7 @@ public class TradingDay extends QuartzJobBean {
 
             }
         } while (!processes.isEmpty());
+
         log.debug("All processes finished");
 
         for (PaymentPoint pp : paymentPointService.listPaymentPointsWithTradingDay()) {

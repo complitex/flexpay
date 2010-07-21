@@ -7,6 +7,7 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -174,6 +175,7 @@ public interface OperationService {
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
 	 *
+     * @param operationSorter operation sorter
 	 * @param cashbox	   cash box which registered operation
 	 * @param serviceTypeId document service type id
 	 * @param begin		 lower bound for document creation date
@@ -184,12 +186,14 @@ public interface OperationService {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
+	List<Operation> searchDocuments(OperationSorter operationSorter, Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
 									BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager);
 
 	/**
 	 * Returns list of operations suitable to search criterias
 	 *
+     * @param operationSorter operation sorter
+     * @param tradingDayProcessId trading day process id
 	 * @param cashbox	 cash box which registered operation
 	 * @param begin	   lower bound for operation creation date
 	 * @param end		 upper bound for operation creation date
@@ -199,7 +203,7 @@ public interface OperationService {
 	 * @return list of operations suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end,
+	List<Operation> searchOperations(OperationSorter operationSorter, Long tradingDayProcessId, Stub<Cashbox> cashbox, Date begin, Date end,
 									 BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager);
 
 	/**

@@ -44,13 +44,12 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 		if (paymentProcessId == null || paymentProcessId == 0) {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
+            return TRADING_DAY_CLOSED;
 		} else {
 			log.debug("Found process id {} for cashbox {}", paymentProcessId, cashboxId);
-
-			if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
-				return TRADING_DAY_CLOSED;
-			}
-	
+            if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+                return TRADING_DAY_CLOSED;
+            }
 		}
 
 		fillOperation(operation);

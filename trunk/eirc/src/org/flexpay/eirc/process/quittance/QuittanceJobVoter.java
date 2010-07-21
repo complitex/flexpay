@@ -9,6 +9,7 @@ import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,14 +22,8 @@ import java.util.Set;
  */
 public class QuittanceJobVoter implements LyfecycleVoter {
 
-	/**
-	 * Logger
-	 */
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * ProcesHelper
-	 */
 	private ProcessHelper processHelper;
 
 	/**
@@ -38,6 +33,7 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	 * @return LyfecycleVote
 	 */
 	@NotNull
+    @Override
 	public LyfecycleVote onStart(@NotNull TaskInstance instance) {
 
 		log.debug("Voting on task start: {}, pid={}", instance.getName(), instance.getId());
@@ -98,6 +94,7 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	 *
 	 * @param processHelper the processHelper of this QuittanceJobVoter object.
 	 */
+    @Required
 	public void setProcessHelper(ProcessHelper processHelper) {
 		this.processHelper = processHelper;
 	}

@@ -157,6 +157,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
         if (paymentProcessId == null || paymentProcessId == 0) {
             log.debug("TradingDay process id not found for Payment point id = {}", paymentPoint.getId());
+            response.setStatus(Status.REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED);
+            return response;
         } else {
             log.debug("Found process id {} for cashbox {}", paymentProcessId, cashbox.getId());
 

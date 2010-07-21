@@ -1,7 +1,11 @@
 package org.flexpay.payments.actions.monitor;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
+import org.flexpay.common.process.*;
+import org.flexpay.common.process.Process;
+import org.flexpay.common.process.sorter.ProcessSorterByEndDate;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
@@ -10,6 +14,8 @@ import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
 import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
@@ -63,8 +69,36 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 
 		tradingDayControlPanel.updatePanel(paymentPoint);
 
-		Date startDate = now();
-		Date finishDate = new Date();
+        Date startDate = new Date();
+        Date finishDate = new Date();
+
+        if (tradingDayControlPanel.isTradingDayOpened()) {
+
+            Process tradingDayProcess = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+            startDate = tradingDayProcess.getProcessStartDate();
+
+        } else {
+
+            ProcessSorterByEndDate processSorter = new ProcessSorterByEndDate();
+            processSorter.setOrder(ObjectSorter.ORDER_DESC);
+
+            List<Process> processes = processManager.getProcesses(processSorter, new Page<Process>(1000), now(), new Date(), ProcessState.COMPLETED, TradingDay.PROCESS_DEFINITION_NAME);
+            if (log.isDebugEnabled()) {
+                log.debug("Found {} processes", processes.size());
+            }
+
+            if (!processes.isEmpty()) {
+
+                Process tradingDayProcess = findTradingDayProcess(paymentPoint, processes);
+                log.debug("Closed trading day process: {}", tradingDayProcess);
+
+                if (tradingDayProcess != null) {
+                    startDate = tradingDayProcess.getProcessStartDate();
+                    finishDate = tradingDayProcess.getProcessEndDate();
+                }
+            }
+        }
+
         if (log.isDebugEnabled()) {
             log.debug("Start date={}, finish date={}", formatWithTime(startDate), formatWithTime(finishDate));
         }
@@ -91,6 +125,22 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 
 		return SUCCESS;
 	}
+
+    private Process findTradingDayProcess(PaymentPoint paymentPoint, List<Process> processes) {
+
+        for (Process process : processes) {
+
+            Process tradingDayProcess = processManager.getProcessInstanceInfo(process.getId());
+            Long paymentPointId = (Long) tradingDayProcess.getParameters().get(ExportJobParameterNames.PAYMENT_POINT_ID);
+            log.debug("Closed trading day process paymentPointId variable ({}) and this paymentPoint id ({})", paymentPointId, paymentPoint.getId());
+
+            if (paymentPoint.getId().equals(paymentPointId)) {
+                return tradingDayProcess;
+            }
+        }
+
+        return null;
+    }
 
 	/**
 	 * Get default error execution result
