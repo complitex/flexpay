@@ -11,7 +11,6 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Range;
-import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,6 +26,10 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static java.util.Collections.emptyList;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
+
 /**
  * Hibernate implementation of GenericDao A type safe implementation of CRUD and finder methods based on Hibernate and
  * Spring AOP The finders are implemented through the executeFinder method. Normally called by the
@@ -36,6 +39,8 @@ import java.util.*;
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		implements GenericDao<T, PK>, FinderExecutor<T>, MethodExecutor {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
 	/**
 	 * prefix of a named query parameters followed by list number, like list_1, list_2
 	 */
@@ -44,19 +49,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	private static final Object[] NULL_ARRAY = {null};
 	private static final List<?> NULL_LIST = Arrays.asList(NULL_ARRAY);
 
-	/**
-	 * Logger
-	 */
-	private final Logger log = LoggerFactory.getLogger(getClass());
-
 	protected HibernateTemplate hibernateTemplate;
 
 	// Default. Can override in config
 	private FinderNamingStrategy namingStrategy = new SimpleFinderNamingStrategy();
-
 	// Default. Can override in config
-	private FinderArgumentTypeFactory argumentTypeFactory =
-			new SimpleFinderArgumentTypeFactory();
+	private FinderArgumentTypeFactory argumentTypeFactory = new SimpleFinderArgumentTypeFactory();
 
 	private Class<T> type;
 
@@ -83,9 +81,9 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		return (T) hibernateTemplate.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.getNamedQuery(queryName);
-				queryObject.setParameter(0, id);
-				return queryObject.uniqueResult();
+				return session.getNamedQuery(queryName).
+                        setParameter(0, id).
+                        uniqueResult();
 			}
 		});
 	}
@@ -101,25 +99,25 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	@Override
 	public List<T> readFullCollection(final @NotNull Collection<PK> ids, boolean preserveOrder) {
 		if (ids.isEmpty()) {
-			return Collections.emptyList();
+			return emptyList();
 		}
 		final String queryName = type.getSimpleName() + ".readFullCollection";
 		List<T> result = (List<T>) hibernateTemplate.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
-				Query query = session.getNamedQuery(queryName);
-				query.setParameterList("ids", ids);
-				return query.list();
+				return session.getNamedQuery(queryName).
+                        setParameterList("ids", ids).
+                        list();
 			}
 		});
 
 		if (preserveOrder) {
-			Map<Long, DomainObject> map = CollectionUtils.map();
+			Map<Long, DomainObject> map = map();
 			for (Object t : result) {
 				DomainObject o = (DomainObject) t;
 				map.put(o.getId(), o);
 			}
-			result = CollectionUtils.list();
+			result = list();
 			for (Object id : ids) {
 				//noinspection SuspiciousMethodCalls
 				T obj = (T) map.get(id);
@@ -229,8 +227,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						if (values[i] instanceof Collection) {
 							Collection<?> value = (Collection<?>) values[i];
 							if (value.isEmpty()) {
-								log.warn("Empty collection parameter {} in query {}",
-										PARAM_LIST_PREFIX + nNamedParam, queryName);
+								log.warn("Empty collection parameter {} in query {}", PARAM_LIST_PREFIX + nNamedParam, queryName);
 								value = NULL_LIST;
 							}
 							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
@@ -248,8 +245,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						if (values[i] instanceof Object[]) {
 							Object[] value = (Object[]) values[i];
 							if (value.length == 0) {
-								log.warn("Empty collection parameter {} in query {}",
-										PARAM_LIST_PREFIX + nNamedParam, queryName);
+								log.warn("Empty collection parameter {} in query {}", PARAM_LIST_PREFIX + nNamedParam, queryName);
 								value = NULL_ARRAY;
 							}
 							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);

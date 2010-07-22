@@ -1,6 +1,5 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.CollectionUtils;
@@ -11,6 +10,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 /**
  * Parent class for all domain objects
@@ -48,7 +49,7 @@ public class DomainObject implements Serializable {
 	}
 
 	public static Collection<Long> collectionIds(@NotNull Collection<? extends DomainObject> objects) {
-		List<Long> result = CollectionUtils.list();
+		List<Long> result = list();
 		for (DomainObject o : objects) {
 			result.add(o.getId());
 		}

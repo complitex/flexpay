@@ -4,9 +4,8 @@
 	   xmlns:p="http://www.springframework.org/schema/p"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <bean id="eircRegistryDaoExt"
-		  p:hibernateTemplate-ref="hibernateTemplate"
-		  class="org.flexpay.payments.dao.impl.EircRegistryDaoExtImpl" />
+    <bean id="eircRegistryDaoExt" class="org.flexpay.payments.dao.impl.EircRegistryDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<!-- Module payments DAO layer instances -->	
 
