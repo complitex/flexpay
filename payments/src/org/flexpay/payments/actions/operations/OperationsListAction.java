@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -202,12 +203,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
             log.debug("Found {} operations", searchResults.size());
         }
 
-        Set<Long> operationIds = set();
-		for (Operation operation : searchResults) {
-            operationIds.add(operation.getId());
-		}
-
-        operations = operationService.readFull(operationIds, true);
+        operations = operationService.readFull(collectionIds(searchResults), true);
 	}
 
     private Process findTradingDayProcess(PaymentPoint paymentPoint, List<Process> processes) {
