@@ -141,7 +141,6 @@ public class Client {
             return;
         }
         StringEntity entity = new StringEntity(content, "UTF-8");
-        entity.setChunked(true);
         HttpPost post = new HttpPost(props.getProperty("url"));
         post.setEntity(entity);
         post.setHeader("Accept-Language", props.getProperty("locale"));
@@ -186,9 +185,9 @@ public class Client {
         HttpClient httpClient = new DefaultHttpClient();
 
 //        executeRequest(REQUEST_TYPE_SEARCH, props, httpClient);
-        executeRequest(REQUEST_TYPE_PAY, props, httpClient);
+//        executeRequest(REQUEST_TYPE_PAY, props, httpClient);
 //        executeRequest(REQUEST_TYPE_REFUND, props, httpClient);
-//        executeRequest(REQUEST_TYPE_REGISTRY_COMMENT, props, httpClient);
+        executeRequest(REQUEST_TYPE_REGISTRY_COMMENT, props, httpClient);
 
 	}
 
