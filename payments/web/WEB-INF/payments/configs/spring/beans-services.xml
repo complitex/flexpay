@@ -255,6 +255,7 @@
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
           p:masterIndexService-ref="masterIndexService"
+          p:apartmentService-ref="apartmentService"
           p:addressService-ref="addressService"
           p:personService-ref="personService"
           p:operationService-ref="operationService"

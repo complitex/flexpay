@@ -97,7 +97,7 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 							String.format("Address group '%s' has invalid number of fields %d",
 									addressStr, addressFieldList.size()));
 				}
-				record.setCity(addressFieldList.get(0));
+				record.setTownName(addressFieldList.get(0));
 				record.setStreetType(addressFieldList.get(1));
 				record.setStreetName(addressFieldList.get(2));
 				record.setBuildingNum(addressFieldList.get(3));

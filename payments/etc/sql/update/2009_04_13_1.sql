@@ -34,7 +34,7 @@ create table payments_document_types_tbl (
 create table payments_documents_tbl (
 	id bigint not null auto_increment comment 'Primary key',
 	version integer not null comment 'Optimistic lock version',
-	summ decimal(19,2) not null comment 'Summ',
+	sum decimal(19,2) not null comment 'Summ',
 	address varchar(255) comment 'Payer address',
 	payer_fio varchar(255) comment 'Payer first-middle-last names',
 	creditor_id varchar(255) comment 'Kreditor key',

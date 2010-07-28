@@ -14,8 +14,8 @@
 	<parameter name="payerFIO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="total" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="totalSpelling" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="inputSumm" class="java.math.BigDecimal" isForPrompting="false"/>
-	<parameter name="changeSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="inputSum" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="changeSum" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="digest" class="java.lang.String"/>
@@ -37,8 +37,8 @@
 	<field name="paymentPeriod" class="java.lang.String">
 		<fieldDescription><![CDATA[paymentPeriod]]></fieldDescription>
 	</field>
-	<field name="paymentSumm" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[paymentSumm]]></fieldDescription>
+	<field name="paymentSum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[paymentSum]]></fieldDescription>
 	</field>
 	<field name="counterValue" class="java.lang.String">
 		<fieldDescription><![CDATA[counterValue]]></fieldDescription>
@@ -52,7 +52,7 @@
 			<textField>
 				<reportElement x="0" y="0" width="76" height="11"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.operation.report.header.city}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.operation.report.header.townName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="432" y="0" width="103" height="11"/>
@@ -197,7 +197,7 @@
 			<textField pattern="#,##0.00">
 				<reportElement positionType="Float" mode="Transparent" x="465" y="0" width="61" height="11"/>
 				<textElement textAlignment="Justified" markup="html"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentSumm}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentSum}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement positionType="Float" mode="Transparent" x="456" y="10" width="70" height="11"/>
@@ -297,12 +297,12 @@
 			<textField pattern="#,##0.00">
 				<reportElement x="77" y="20" width="100" height="11"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{inputSumm}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{inputSum}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="314" y="20" width="100" height="11"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{changeSumm}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{changeSum}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="526" y="50" width="9" height="11"/>

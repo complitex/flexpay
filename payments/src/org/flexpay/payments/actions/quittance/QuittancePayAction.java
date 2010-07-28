@@ -89,13 +89,13 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	private boolean isNotEmptyOperation(Operation operation) {
-		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
+		return !BigDecimalUtil.isZero(operation.getOperationSum()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
 	}
 
 	private boolean validateOperation(Operation operation) {
 
-		BigDecimal totalSum = operation.getOperationSumm();
-		BigDecimal inputSum = operation.getOperationInputSumm();
+		BigDecimal totalSum = operation.getOperationSum();
+		BigDecimal inputSum = operation.getOperationInputSum();
 		BigDecimal changeSum = operation.getChange();
 
 		BigDecimal sum = totalSum.add(changeSum);

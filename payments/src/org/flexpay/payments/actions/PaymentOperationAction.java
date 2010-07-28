@@ -39,8 +39,8 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 	private Map<String, String> eircAccounts = map();
 	private Map<String, BigDecimal> debts = map();
 	private Map<String, String> ercAccounts = map();
-	private BigDecimal changeSumm;
-	private BigDecimal inputSumm;
+	private BigDecimal changeSum;
+	private BigDecimal inputSum;
 	private BigDecimal totalToPay;
 
 	// used to save address search criteria when using search by address
@@ -74,9 +74,9 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		Cashbox cashbox = cashboxService.read(operation.getCashboxStub());
 
 		Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
-		operation.setOperationSumm(totalToPay);
-		operation.setOperationInputSumm(inputSumm);
-		operation.setChange(changeSumm);
+		operation.setOperationSum(totalToPay);
+		operation.setOperationInputSum(inputSum);
+		operation.setChange(changeSum);
 		operation.setCreationDate(new Date());
 		operation.setRegisterDate(new Date());
 		operation.setCreatorOrganization(organization);
@@ -99,7 +99,7 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 				operation.setPayerFIO(StringUtils.stripToEmpty(document.getPayerFIO()));
 			}
 
-			if (!BigDecimalUtil.isZero(document.getSumm())) {
+			if (!BigDecimalUtil.isZero(document.getSum())) {
 				operation.addDocument(document);
 			}
 		}
@@ -107,7 +107,7 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
 	private Document buildDocument(String serviceFullIndex, Cashbox cashbox) throws FlexPayException {
 		
-		BigDecimal documentSumm = payments.get(serviceFullIndex);
+		BigDecimal documentSum = payments.get(serviceFullIndex);
 		String serviceId = getServiceIdFromIndex(serviceFullIndex);
 		Service service = spService.readFull(new Stub<Service>(Long.parseLong(serviceId)));
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
@@ -119,7 +119,7 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		document.setService(service);
 		document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
 		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
-		document.setSumm(documentSumm);
+		document.setSum(documentSum);
 		document.setDebt(debts.get(serviceFullIndex));
 		document.setAddress(addresses.get(serviceFullIndex));
 		document.setPayerFIO(StringUtils.stripToEmpty(payerFios.get(serviceFullIndex)));
@@ -157,7 +157,7 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		document.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
 
 		Town town = townService.readFull(street.getTownStub());
-		document.setTown(getTranslation(town.getCurrentName().getTranslations()).getName());
+		document.setTownName(getTranslation(town.getCurrentName().getTranslations()).getName());
 
 		Region region = regionService.readFull(town.getRegionStub());
 		document.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
@@ -266,20 +266,20 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		this.ercAccounts = ercAccounts;
 	}
 
-	public BigDecimal getChangeSumm() {
-		return changeSumm;
+	public BigDecimal getChangeSum() {
+		return changeSum;
 	}
 
-	public void setChangeSumm(BigDecimal changeSumm) {
-		this.changeSumm = changeSumm;
+	public void setChangeSum(BigDecimal changeSum) {
+		this.changeSum = changeSum;
 	}
 
-	public BigDecimal getInputSumm() {
-		return inputSumm;
+	public BigDecimal getInputSum() {
+		return inputSum;
 	}
 
-	public void setInputSumm(BigDecimal inputSumm) {
-		this.inputSumm = inputSumm;
+	public void setInputSum(BigDecimal inputSum) {
+		this.inputSum = inputSum;
 	}
 
 	public BigDecimal getTotalToPay() {

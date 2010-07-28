@@ -40,8 +40,8 @@
             <td class="col"><s:date format="yyyy/MM/dd" name="creationDate" /></td>
             <td class="col"><s:property value="%{format(beginDate)}" /></td>
             <td class="col"><s:property value="%{format(closeDate)}" /></td>
-            <td class="col"><s:property value="controlOverallSumm" /></td>
-            <td class="col"><s:property value="overallSumm" /></td>
+            <td class="col"><s:property value="controlOverallSum" /></td>
+            <td class="col"><s:property value="overallSum" /></td>
             <td class="col">
                 <a href="<s:url action="quittancePacketEdit" includeParams="none"><s:param name="packet.id" value="id" /></s:url>">
                     <s:text name="common.edit" />

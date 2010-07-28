@@ -18,18 +18,18 @@
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-		<property name="operationSumm">
-			<column name="operation_summ" not-null="false" scale="2">
-				<comment>Operation summ</comment>
+		<property name="operationSum">
+			<column name="operation_sum" not-null="false" scale="2">
+				<comment>Operation sum</comment>
 			</column>
 		</property>
-		<property name="operationInputSumm">
-			<column name="operation_input_summ" not-null="false" scale="2">
-				<comment>Operation input summ</comment>
+		<property name="operationInputSum">
+			<column name="operation_input_sum" not-null="false" scale="2">
+				<comment>Operation input sum</comment>
 			</column>
 		</property>
 		<property name="change">
-			<column name="change_summ" not-null="false" scale="2">
+			<column name="change_sum" not-null="false" scale="2">
 				<comment>Change</comment>
 			</column>
 		</property>

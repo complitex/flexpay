@@ -94,9 +94,14 @@
 				<comment>Prividers consumer last name</comment>
 			</column>
 		</property>
-		<property name="cityName">
-			<column name="city_name" not-null="false">
-				<comment>Prividers consumer city name</comment>
+        <property name="townType">
+            <column name="town_type" not-null="false">
+                <comment>Prividers consumer town type name</comment>
+            </column>
+        </property>
+		<property name="townName">
+			<column name="town_name" not-null="false">
+				<comment>Prividers consumer town name</comment>
 			</column>
 		</property>
 		<property name="streetTypeName">

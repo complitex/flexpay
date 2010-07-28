@@ -36,7 +36,6 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -290,7 +289,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		BigDecimal sum = new BigDecimal("0.00");
 		for (Operation operation : operations) {
 			if (statusCode == operation.getOperationStatus().getCode()) {
-				sum = sum.add(operation.getOperationSumm());
+				sum = sum.add(operation.getOperationSum());
 			}
 		}
 

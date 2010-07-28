@@ -52,6 +52,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 *
 	 * @return empty temporal
 	 */
+    @Override
 	protected TownNameTemporal getEmptyTemporal() {
 		return new TownNameTemporal(this);
 	}
@@ -138,26 +139,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		}
 
 		return typeTemporals;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Town)) {
-			return false;
-		}
-
-		Town that = (Town) obj;
-
-		return new EqualsBuilder()
-				.append(typesTimeLine, that.typesTimeLine)
-				.appendSuper(super.equals(obj))
-				.isEquals();
 	}
 
 	@NotNull
@@ -292,4 +273,22 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 
 		addTypeTemporal(temporal);
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Town)) {
+            return false;
+        }
+
+        Town that = (Town) obj;
+
+        return new EqualsBuilder()
+                .append(typesTimeLine, that.typesTimeLine)
+                .appendSuper(super.equals(obj))
+                .isEquals();
+    }
+
 }

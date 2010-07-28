@@ -4,7 +4,7 @@
 		<address>ул.Ахсарова, д.3, кв.45</address>
 		<serviceName>Квартплата</serviceName>
 		<accountNumber>1234567890</accountNumber>
-		<paymentSumm>234.50</paymentSumm>
+		<paymentSum>234.50</paymentSum>
 		<fio>Шматенко А.С.</fio>
 		<serviceProviderName>ЖКС</serviceProviderName>
 		<paymentPeriod>02/09-04/09</paymentPeriod>
@@ -14,7 +14,7 @@
 		<address>ул.Ахсарова, д.3, кв.45</address>
 		<serviceName>Холодная вода</serviceName>
 		<accountNumber>987654320112</accountNumber>
-		<paymentSumm>54.32</paymentSumm>
+		<paymentSum>54.32</paymentSum>
 		<fio>Шматенко А.С.</fio>
 		<serviceProviderName>КП Вода</serviceProviderName>
 		<paymentPeriod>02/09-04/09</paymentPeriod>
@@ -24,7 +24,7 @@
 		<address>ул.Ахсарова, д.3, кв.45</address>
 		<serviceName>Водоотведение</serviceName>
 		<accountNumber>4756475</accountNumber>
-		<paymentSumm>24.05</paymentSumm>
+		<paymentSum>24.05</paymentSum>
 		<fio>Шматенко С.В.</fio>
 		<serviceProviderName>ХКОВ</serviceProviderName>
 		<paymentPeriod>02/09-04/09</paymentPeriod>
@@ -34,7 +34,7 @@
 		<address>ул.Ахсарова, д.3, кв.45</address>
 		<serviceName>Горячая вода</serviceName>
 		<accountNumber>23987754</accountNumber>
-		<paymentSumm>44.50</paymentSumm>
+		<paymentSum>44.50</paymentSum>
 		<fio>Шматенко А.С.</fio>
 		<serviceProviderName>ХТС</serviceProviderName>
 		<paymentPeriod>04/09</paymentPeriod>
@@ -44,7 +44,7 @@
 		<address>ул.Ахсарова, д.3, кв.45</address>
 		<serviceName>Отопление</serviceName>
 		<accountNumber>59845867</accountNumber>
-		<paymentSumm>34.50</paymentSumm>
+		<paymentSum>34.50</paymentSum>
 		<fio>Шматенко А.С.</fio>
 		<serviceProviderName>ХТС</serviceProviderName>
 		<paymentPeriod>02/09-04/09</paymentPeriod>

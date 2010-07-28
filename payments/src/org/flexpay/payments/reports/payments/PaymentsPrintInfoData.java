@@ -113,7 +113,7 @@ public class PaymentsPrintInfoData {
 
 		private Long operationId;
 		private String payerFio;
-		private BigDecimal summ;
+		private BigDecimal sum;
 		private Map<Integer, BigDecimal> servicePayments; // maps service code to payment for the service inthe operation
 
 		public Long getOperationId() {
@@ -132,12 +132,12 @@ public class PaymentsPrintInfoData {
 			this.payerFio = payerFio;
 		}
 
-		public BigDecimal getSumm() {
-			return summ;
+		public BigDecimal getSum() {
+			return sum;
 		}
 
-		public void setSumm(BigDecimal summ) {
-			this.summ = summ;
+		public void setSum(BigDecimal sum) {
+			this.sum = sum;
 		}
 
 		public Map<Integer, BigDecimal> getServicePayments() {
@@ -186,7 +186,7 @@ public class PaymentsPrintInfoData {
 			return new ToStringBuilder(this).
 					append("operationId", operationId).
 					append("payerFio", payerFio).
-					append("summ", summ).
+					append("sum", sum).
 					toString();
 		}
 	}

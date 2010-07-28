@@ -17,12 +17,10 @@ import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.delayed.*;
-import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +94,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		info.setMiddleName(record.getMiddleName());
 		info.setLastName(record.getLastName());
 
-		info.setCityName(record.getCity());
+        info.setTownType(record.getTownType());
+		info.setTownName(record.getTownName());
 		info.setStreetTypeName(record.getStreetType());
 		info.setStreetName(record.getStreetName());
 		info.setBuildingNumber(record.getBuildingNum());

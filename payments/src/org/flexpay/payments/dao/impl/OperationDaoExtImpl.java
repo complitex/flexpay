@@ -89,11 +89,11 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		}
 
 		if (minimalSum != null) {
-			filterHql.append(" AND doc.summ >= :minimalSum");
+			filterHql.append(" AND doc.sum >= :minimalSum");
 		}
 
 		if (maximalSum != null) {
-			filterHql.append(" AND doc.summ <= :maximalSum");
+			filterHql.append(" AND doc.sum <= :maximalSum");
 		}
 
 		return filterHql;
@@ -194,11 +194,11 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		}
 
 		if (minimalSum != null) {
-			filterHql.append(" AND o.operationSumm >= :minimalSum");
+			filterHql.append(" AND o.operationSum >= :minimalSum");
 		}
 
 		if (maximalSum != null) {
-			filterHql.append(" AND o.operationSumm <= :maximalSum");
+			filterHql.append(" AND o.operationSum <= :maximalSum");
 		}
 
 		return filterHql;

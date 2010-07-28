@@ -164,7 +164,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 					"Invalid control number", "eirc.error.quittance_packet.invalid_control_number"));
 		}
 
-		if (packet.getControlOverallSumm() == null) {
+		if (packet.getControlOverallSum() == null) {
 			ex.addException(new FlexPayException(
 					"Invalid control sum", "eirc.error.quittance_packet.invalid_control_sum"));
 		}

@@ -203,7 +203,7 @@ public class OperationServiceImpl implements OperationService {
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		operation.setCreationDate(new Date());
-		operation.setOperationSumm(new BigDecimal("0.00"));
+		operation.setOperationSum(new BigDecimal("0.00"));
 		operation.setCreatorUserName(creator);
 		operation.setCreatorOrganization(creatorOrganization);
 		operation.setPaymentPoint(paymentPoint);

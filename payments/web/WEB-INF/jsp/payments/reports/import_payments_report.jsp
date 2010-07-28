@@ -61,7 +61,7 @@
                 <td class="cols_1"><s:property value="serviceProviderAccount" /></td>
                 <td class="cols_1"><s:property value="fio" /></td>
                 <td class="cols_1"><s:property value="serviceTypeCode" /></td>
-                <td class="cols_1"><s:property value="documentSumm" /></td>
+                <td class="cols_1"><s:property value="documentSum" /></td>
                 <td class="cols_1"><s:property value="documentId" /></td>
             </tr>
 		</s:iterator>

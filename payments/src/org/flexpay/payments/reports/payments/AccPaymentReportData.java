@@ -27,7 +27,7 @@ public class AccPaymentReportData {
 		private BigDecimal paymentHotWater;
 		private BigDecimal paymentColdWater;
 		private BigDecimal paymentSewer;
-		private BigDecimal summ;
+		private BigDecimal sum;
 
 		private List<PaymentDetails> childDetailses;
 
@@ -111,12 +111,12 @@ public class AccPaymentReportData {
 			this.paymentSewer = paymentSewer;
 		}
 
-		public BigDecimal getSumm() {
-			return summ;
+		public BigDecimal getSum() {
+			return sum;
 		}
 
-		public void setSumm(BigDecimal summ) {
-			this.summ = summ;
+		public void setSum(BigDecimal sum) {
+			this.sum = sum;
 		}
 
 		public List<PaymentDetails> getChildDetailses() {

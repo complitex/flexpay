@@ -78,7 +78,7 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 		record.setServiceCode(SRV_KVARPLATA.getId().toString());
 		// лиц. счёт поставщика услуг
 		record.setPersonalAccountExt("080080080");
-		record.setCity("Н-ск");
+		record.setTownName("Н-ск");
 		record.setStreetType("ул");
 		record.setStreetName("Ивнова");
 		record.setBuildingNum("27");

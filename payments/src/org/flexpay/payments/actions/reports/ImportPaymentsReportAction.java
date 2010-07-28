@@ -88,7 +88,7 @@ public class ImportPaymentsReportAction extends AccountantAWPActionSupport {
 							data.getServiceProviderAccount(),
 							data.getFio(),
 							String.valueOf(data.getServiceTypeCode()),
-							String.valueOf(data.getDocumentSumm()),
+							String.valueOf(data.getDocumentSum()),
 							String.valueOf(data.getDocumentId())							
 					};
 					writer.writeNext(row);

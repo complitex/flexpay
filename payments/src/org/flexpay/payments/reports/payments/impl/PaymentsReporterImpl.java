@@ -70,7 +70,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 			reportData.setPaymentPointId(operation.getPaymentPoint().getId());
 			reportData.setDocumentId(doc.getId());
-			reportData.setDocumentSumm(doc.getSumm());
+			reportData.setDocumentSum(doc.getSum());
 			reportData.setFio(doc.getPayerFIO());
 			reportData.setOperationId(operation.getId());
 			reportData.setOperationCount(operationCount);
@@ -126,11 +126,11 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		form.setPaymentPointName(paymentPoint.getName());
 		form.setCashierFIO(op.getCashierFio());
 
-		form.setTotal(op.getOperationSumm());
+		form.setTotal(op.getOperationSum());
 		form.setTotalSpelling("(" + currencyToTextConverter.toText(
-				op.getOperationSumm(), currencyInfoService.getDefaultCurrency()) + ")");
-		form.setInputSumm(op.getOperationInputSumm());
-		form.setChangeSumm(op.getChange());
+				op.getOperationSum(), currencyInfoService.getDefaultCurrency()) + ")");
+		form.setInputSum(op.getOperationInputSum());
+		form.setChangeSum(op.getChange());
 
 		List<PaymentPrintForm.PaymentDetails> detailses = CollectionUtils.list();
 		for (Document doc : op.getDocuments()) {
@@ -141,7 +141,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 			details.setAddress(doc.getAddress());
 			details.setFio(doc.getPayerFIO());
-			details.setPaymentSumm(doc.getSumm());
+			details.setPaymentSum(doc.getSum());
 			details.setDebt(doc.getDebt());
 
 			details.setPaymentPeriod(DateUtil.formatMonth(DateUtil.previousMonth(op.getCreationDate())));
@@ -254,14 +254,14 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private OperationPrintInfo convert(Operation operation) {
 		OperationPrintInfo operationPrintInfo = new OperationPrintInfo();
 		operationPrintInfo.setOperationId(operation.getId());
-		operationPrintInfo.setSumm(operation.getOperationSumm());
+		operationPrintInfo.setSum(operation.getOperationSum());
 		operationPrintInfo.setPayerFio(operation.getPayerFIO());
 
 		// setting service payments
 		Map<Integer, BigDecimal> servicePayments = CollectionUtils.map();
 		for (Document document : operation.getDocuments()) {
 			ServiceType serviceType = serviceTypeService.read(document.getService().serviceTypeStub());
-			servicePayments.put(serviceType.getCode(), document.getSumm());
+			servicePayments.put(serviceType.getCode(), document.getSum());
 		}
 		operationPrintInfo.setServicePayments(servicePayments);
 
@@ -458,7 +458,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		paymentDetails.setPaymentHotWater(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_HOT_WATER));
 		paymentDetails.setPaymentColdWater(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_COLD_WATER));
 		paymentDetails.setPaymentSewer(documentService.getOperationServiceSum(operationStub, SERVICE_TYPE_SEWER));
-		paymentDetails.setSumm(operation.getOperationSumm());
+		paymentDetails.setSum(operation.getOperationSum());
 
 		return paymentDetails;
 	}
@@ -479,7 +479,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		paymentDetails.setPaymentHotWater(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
 		paymentDetails.setPaymentColdWater(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
 		paymentDetails.setPaymentSewer(documentService.getCashboxServiceSum(cashboxStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
-		paymentDetails.setSumm(documentService.getCashboxTotalSum(cashboxStub, status, beginDate, endDate));
+		paymentDetails.setSum(documentService.getCashboxTotalSum(cashboxStub, status, beginDate, endDate));
 
 		return paymentDetails;
 	}
@@ -500,7 +500,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		paymentDetails.setPaymentHotWater(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
 		paymentDetails.setPaymentColdWater(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
 		paymentDetails.setPaymentSewer(documentService.getPaymentPointServiceSum(paymentPointStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
-		paymentDetails.setSumm(documentService.getPaymentPointTotalSum(paymentPointStub, status, beginDate, endDate));
+		paymentDetails.setSum(documentService.getPaymentPointTotalSum(paymentPointStub, status, beginDate, endDate));
 
 		return paymentDetails;
 	}
