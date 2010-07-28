@@ -217,9 +217,9 @@ public class RegistryFPFileFormat {
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(record.getPersonalAccountExt())).
 				append(RegistryUtil.FIELD_SEPARATOR).
-				//default city is empty
-//				append(StringUtil.getString(record.getCity())).
-						append(RegistryUtil.ADDRESS_SEPARATOR).
+				//default town is empty
+//				append(StringUtil.getString(record.getTownName())).
+                append(RegistryUtil.ADDRESS_SEPARATOR).
 				append(StringUtil.getString(record.getStreetType())).
 				append(RegistryUtil.ADDRESS_SEPARATOR).
 				append(StringUtil.getString(record.getStreetName())).

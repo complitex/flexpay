@@ -27,8 +27,8 @@ public class Operation extends DomainObject {
     private String payerFIO;
     private String cashierFio;
 
-	private BigDecimal operationSumm;
-	private BigDecimal operationInputSumm;
+	private BigDecimal operationSum;
+	private BigDecimal operationInputSum;
 	private BigDecimal change;
 
 	private Date creationDate;
@@ -69,20 +69,20 @@ public class Operation extends DomainObject {
 		super(stub.getId());
 	}
 
-	public BigDecimal getOperationSumm() {
-		return operationSumm;
+	public BigDecimal getOperationSum() {
+		return operationSum;
 	}
 
-	public void setOperationSumm(BigDecimal operationSumm) {
-		this.operationSumm = operationSumm;
+	public void setOperationSum(BigDecimal operationSum) {
+		this.operationSum = operationSum;
 	}
 
-	public BigDecimal getOperationInputSumm() {
-		return operationInputSumm;
+	public BigDecimal getOperationInputSum() {
+		return operationInputSum;
 	}
 
-	public void setOperationInputSumm(BigDecimal operationInputSumm) {
-		this.operationInputSumm = operationInputSumm;
+	public void setOperationInputSum(BigDecimal operationInputSum) {
+		this.operationInputSum = operationInputSum;
 	}
 
 	public BigDecimal getChange() {
@@ -263,12 +263,22 @@ public class Operation extends DomainObject {
 		return stub(cashbox);
 	}
 
+    public BigDecimal documentsSum() {
+
+        BigDecimal sum = new BigDecimal("0.00");
+        for (Document document : documents) {
+            sum = sum.add(document.getSum());
+        }
+
+        return sum;
+    }
+
     @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
-				append("operationInputSum", operationInputSumm).
-				append("operationSum", operationSumm).
+				append("operationInputSum", operationInputSum).
+				append("operationSum", operationSum).
 				append("change", change).
 				append("creationDate", creationDate).
 				append("creatorUserName", creatorUserName).
@@ -279,13 +289,4 @@ public class Operation extends DomainObject {
 				toString();
 	}
 
-	public BigDecimal documentsSumm() {
-
-		BigDecimal summ = new BigDecimal("0.00");
-		for (Document document : documents) {
-			summ = summ.add(document.getSumm());
-		}
-
-		return summ;
-	}
 }

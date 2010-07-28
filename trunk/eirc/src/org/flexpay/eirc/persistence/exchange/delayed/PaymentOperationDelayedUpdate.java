@@ -83,7 +83,7 @@ public class PaymentOperationDelayedUpdate implements
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
 
-		operation.setOperationSumm(operation.documentsSumm());
+		operation.setOperationSum(operation.documentsSum());
 		log.debug("Adding payment operation {}", operation);
 		operationService.create(operation);
 	}

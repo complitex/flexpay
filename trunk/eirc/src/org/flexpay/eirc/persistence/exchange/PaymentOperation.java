@@ -65,7 +65,7 @@ public abstract class PaymentOperation extends ContainerOperation {
         Document document = new Document();
         setDocumentType(context, document);
         document.setDocumentStatus(factory.getDocumentStatusService().read(DocumentStatus.REGISTERED));
-        document.setSumm(record.getAmount());
+        document.setSum(record.getAmount());
         document.setService(((EircRegistryRecordProperties)context.getCurrentRecord().getProperties()).getService());
         document.setCreditorOrganization(props.getSender());
         document.setDebtorOrganization(props.getRecipient());
@@ -74,7 +74,7 @@ public abstract class PaymentOperation extends ContainerOperation {
         document.setLastName(record.getLastName());
         document.setMiddleName(record.getMiddleName());
         document.setFirstName(record.getFirstName());
-        document.setTown(record.getCity());
+        document.setTownName(record.getTownName());
         document.setStreetType(record.getStreetType());
         document.setStreetName(record.getStreetName());
         document.setBuildingNumber(record.getBuildingNum());
@@ -106,7 +106,7 @@ public abstract class PaymentOperation extends ContainerOperation {
 			update = new PaymentOperationDelayedUpdate(factory.getOperationService(), null);
 			update.setOperationId(getOperationId(context));
 			org.flexpay.payments.persistence.Operation operation = update.getOperation();
-			operation.setOperationSumm(getOperationSum(context));
+			operation.setOperationSum(getOperationSum(context));
 			setOperationType(context, operation);
 			operation.setOperationLevel(factory.getOperationLevelService().read(OperationLevel.AVERAGE));
 			operation.setOperationStatus(factory.getOperationStatusService().read(OperationStatus.REGISTERED));

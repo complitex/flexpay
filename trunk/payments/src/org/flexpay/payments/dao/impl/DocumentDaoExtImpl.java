@@ -48,12 +48,12 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 		}
 
 		if (minimalSum != null) {
-			filterHql.append(" AND doc.summ >= ");
+			filterHql.append(" AND doc.sum >= ");
 			filterHql.append(minimalSum);
 		}
 
 		if (maximalSum != null) {
-			filterHql.append(" AND doc.summ <= ");
+			filterHql.append(" AND doc.sum <= ");
 			filterHql.append(maximalSum);
 		}
 

@@ -20,7 +20,7 @@
 	<field name="paymentHotWater" class="java.math.BigDecimal"/>
 	<field name="paymentColdWater" class="java.math.BigDecimal"/>
 	<field name="paymentSewer" class="java.math.BigDecimal"/>
-	<field name="summ" class="java.math.BigDecimal"/>
+	<field name="sum" class="java.math.BigDecimal"/>
 	<variable name="counter" class="java.lang.Integer">
 		<variableExpression><![CDATA[new Integer($V{counter}.intValue() + 1)]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
@@ -29,15 +29,15 @@
 		<variableExpression><![CDATA[$F{objectId}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalPaymentsSumm" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{summ}]]></variableExpression>
+	<variable name="totalPaymentsSum" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
 	<variable name="kvartplataTotalCount" class="java.lang.Integer">
 		<variableExpression><![CDATA[new Integer($V{kvartplataTotalCount}.intValue() + (($F{paymentKvartplata}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="kvartplataTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="kvartplataTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentKvartplata}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -45,7 +45,7 @@
 		<variableExpression><![CDATA[new Integer($V{dogsTotalCount}.intValue() + (($F{paymentDogs}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="dogsTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="dogsTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentDogs}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -53,7 +53,7 @@
 		<variableExpression><![CDATA[new Integer($V{garageTotalCount}.intValue() + (($F{paymentGarage}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="garageTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="garageTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentGarage}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -61,7 +61,7 @@
 		<variableExpression><![CDATA[new Integer($V{warmingTotalCount}.intValue() + (($F{paymentWarming}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="warmingTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="warmingTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentWarming}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -69,7 +69,7 @@
 		<variableExpression><![CDATA[new Integer($V{hotWaterTotalCount}.intValue() + (($F{paymentHotWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="hotWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="hotWaterTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentHotWater}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -77,7 +77,7 @@
 		<variableExpression><![CDATA[new Integer($V{coldWaterTotalCount}.intValue() + (($F{paymentColdWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="coldWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="coldWaterTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentColdWater}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -85,7 +85,7 @@
 		<variableExpression><![CDATA[new Integer($V{sewerTotalCount}.intValue() + (($F{paymentSewer}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="sewerTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="sewerTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentSewer}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -412,7 +412,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{summ}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{sum}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="113" y="0" width="79" height="20"/>
@@ -468,7 +468,7 @@
 			<textField>
 				<reportElement x="128" y="21" width="57" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalPaymentsSumm}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalPaymentsSum}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="144" width="65" height="20"/>
@@ -480,49 +480,49 @@
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{kvartplataTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_kvartplata}, $V{kvartplataTotalCount}, $V{kvartplataTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_kvartplata}, $V{kvartplataTotalCount}, $V{kvartplataTotalSum})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="72" width="465" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{dogsTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_dogs}, $V{dogsTotalCount}, $V{dogsTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_dogs}, $V{dogsTotalCount}, $V{dogsTotalSum})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="84" width="465" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{garageTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_garage}, $V{garageTotalCount}, $V{garageTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_garage}, $V{garageTotalCount}, $V{garageTotalSum})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="96" width="465" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{warmingTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_warming}, $V{warmingTotalCount}, $V{warmingTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_warming}, $V{warmingTotalCount}, $V{warmingTotalSum})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="108" width="465" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{hotWaterTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_hot_water}, $V{hotWaterTotalCount}, $V{hotWaterTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_hot_water}, $V{hotWaterTotalCount}, $V{hotWaterTotalSum})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="120" width="465" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{coldWaterTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_cold_water}, $V{coldWaterTotalCount}, $V{coldWaterTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_cold_water}, $V{coldWaterTotalCount}, $V{coldWaterTotalSum})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="132" width="465" height="12" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($V{sewerTotalCount}.intValue() > 0)]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_sewer}, $V{sewerTotalCount}, $V{sewerTotalSumm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.service_total}, $R{received.payments.report.service_sewer}, $V{sewerTotalCount}, $V{sewerTotalSum})]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

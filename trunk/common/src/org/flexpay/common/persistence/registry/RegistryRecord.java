@@ -15,7 +15,8 @@ public class RegistryRecord extends DomainObject {
 	private String serviceCode;
 	// лиц. счёт поставщика услуг
 	private String personalAccountExt;
-	private String city;
+    private String townType;
+	private String townName;
 	private String streetType;
 	private String streetName;
 	private String buildingNum;
@@ -61,12 +62,20 @@ public class RegistryRecord extends DomainObject {
 		this.personalAccountExt = personalAccountExt;
 	}
 
-	public String getCity() {
-		return city;
+    public String getTownType() {
+        return townType;
+    }
+
+    public void setTownType(String townType) {
+        this.townType = townType;
+    }
+
+    public String getTownName() {
+		return townName;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setTownName(String townName) {
+		this.townName = townName;
 	}
 
 	public String getStreetType() {
@@ -211,7 +220,8 @@ public class RegistryRecord extends DomainObject {
 				append("id", getId()).
 				append("serviceCode", serviceCode).
 				append("personalAccountExt", personalAccountExt).
-				append("city", city).
+                append("townType", townType).
+				append("townName", townName).
 				append("streetType", streetType).
 				append("streetName", streetName).
 				append("buildingNum", buildingNum).

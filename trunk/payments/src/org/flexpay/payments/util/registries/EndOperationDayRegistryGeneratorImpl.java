@@ -113,7 +113,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setLastName(StringUtils.stripToEmpty(document.getLastName()));
 				record.setMiddleName(StringUtils.stripToEmpty(document.getMiddleName()));
 				record.setFirstName(StringUtils.stripToEmpty(document.getFirstName()));
-				record.setCity(StringUtils.stripToEmpty(document.getTown()));
+				record.setTownName(StringUtils.stripToEmpty(document.getTownName()));
 				record.setBuildingBulkNum(StringUtils.stripToEmpty(document.getBuildingBulk()));
 				record.setStreetType(StringUtils.stripToEmpty(document.getStreetType()));
 				record.setStreetName(StringUtils.stripToEmpty(document.getStreetName()));
@@ -121,14 +121,14 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setApartmentNum(StringUtils.stripToEmpty(document.getApartmentNumber()));
 
 				RegistryRecordContainer container = new RegistryRecordContainer();
-				BigDecimal sum = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
+				BigDecimal sum = document.getSum().setScale(2, BigDecimal.ROUND_HALF_UP);
 				record.setAmount(sum);
 
 				totalSum = totalSum.add(sum);
 				container.setData(BANK_PAYMENT_CONTAINER_CODE + CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(paymentPoint.getId()) + CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(operation.getId()) + CONTAINER_BODY_SEPARATOR +
-								  StringUtil.getString(operation.getOperationSumm()));
+								  StringUtil.getString(operation.getOperationSum()));
 				record.addContainer(container);
 
 				RegistryRecordProperties recordProperties = propertiesFactory.newRecordProperties();

@@ -23,8 +23,8 @@ public class PaymentPrintForm implements Serializable {
 	private String paymentPointAddress;
 	private BigDecimal total;
 	private String totalSpelling;
-	private BigDecimal inputSumm;
-	private BigDecimal changeSumm;
+	private BigDecimal inputSum;
+	private BigDecimal changeSum;
 	private Stub<PaymentPoint> paymentPointStub;
 
 	private List<PaymentDetails> detailses = Collections.emptyList();
@@ -93,20 +93,20 @@ public class PaymentPrintForm implements Serializable {
 		this.totalSpelling = totalSpelling;
 	}
 
-	public BigDecimal getInputSumm() {
-		return inputSumm;
+	public BigDecimal getInputSum() {
+		return inputSum;
 	}
 
-	public void setInputSumm(BigDecimal inputSumm) {
-		this.inputSumm = inputSumm;
+	public void setInputSum(BigDecimal inputSum) {
+		this.inputSum = inputSum;
 	}
 
-	public BigDecimal getChangeSumm() {
-		return changeSumm;
+	public BigDecimal getChangeSum() {
+		return changeSum;
 	}
 
-	public void setChangeSumm(BigDecimal changeSumm) {
-		this.changeSumm = changeSumm;
+	public void setChangeSum(BigDecimal changeSum) {
+		this.changeSum = changeSum;
 	}
 
 	public String getPaymentPointName() {
@@ -150,8 +150,8 @@ public class PaymentPrintForm implements Serializable {
 		if (paymentPointName != null) digest.update(paymentPointName.getBytes());
 		if (paymentPointAddress != null) digest.update(paymentPointAddress.getBytes());
 		if (total != null) digest.update(total.toString().getBytes());
-		if (inputSumm != null) digest.update(inputSumm.toString().getBytes());
-		if (changeSumm != null) digest.update(changeSumm.toString().getBytes());
+		if (inputSum != null) digest.update(inputSum.toString().getBytes());
+		if (changeSum != null) digest.update(changeSum.toString().getBytes());
 
 		for (PaymentDetails details : detailses) {
 
@@ -160,16 +160,16 @@ public class PaymentPrintForm implements Serializable {
 			if (details.getAccountNumber() != null) digest.update(details.getAccountNumber().getBytes());
 			if (details.getServiceName() != null) digest.update(details.getServiceName().getBytes());
 			if (details.getServiceProviderName() != null) digest.update(details.getServiceProviderName().getBytes());
-			if (details.getPaymentSumm() != null) digest.update(details.getPaymentSumm().toString().getBytes());
+			if (details.getPaymentSum() != null) digest.update(details.getPaymentSum().toString().getBytes());
 			if (details.getPaymentPeriod() != null) digest.update(details.getPaymentPeriod().getBytes());
 			if (details.getDebt() != null) digest.update(details.getDebt().toString().getBytes());
 		}
 
 		byte[] result = digest.digest();
 		StringBuffer hexString = new StringBuffer();
-		for (int i = 0; i < result.length; i++) {
-			hexString.append(Integer.toHexString(0xFF & result[i]));
-		}
+        for (byte aResult : result) {
+            hexString.append(Integer.toHexString(0xFF & aResult));
+        }
 
 		return hexString.toString();
 	}
@@ -181,7 +181,7 @@ public class PaymentPrintForm implements Serializable {
 		private String accountNumber;
 		private String serviceName;
 		private String serviceProviderName;
-		private BigDecimal paymentSumm;
+		private BigDecimal paymentSum;
 		private String paymentPeriod;
 		private String counterValue;
 		private BigDecimal debt;
@@ -226,12 +226,12 @@ public class PaymentPrintForm implements Serializable {
 			this.serviceProviderName = serviceProviderName;
 		}
 
-		public BigDecimal getPaymentSumm() {
-			return paymentSumm;
+		public BigDecimal getPaymentSum() {
+			return paymentSum;
 		}
 
-		public void setPaymentSumm(BigDecimal paymentSumm) {
-			this.paymentSumm = paymentSumm;
+		public void setPaymentSum(BigDecimal paymentSum) {
+			this.paymentSum = paymentSum;
 		}
 
 		public String getPaymentPeriod() {

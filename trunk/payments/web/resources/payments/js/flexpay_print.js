@@ -2,7 +2,7 @@ var FPP = {
 
     messages : {
         invalidPayValue : "invalidPayValue",
-        inputSummIsTooSmall : "inputSummIsTooSmall",
+        inputSumIsTooSmall : "inputSumIsTooSmall",
         createOpServerError : "createOpServerError",
         clipboardAccessDenided : "clipboardAccessDenided",
         clipboardCopyError : "clipboardCopyError"
@@ -24,7 +24,7 @@ var FPP = {
             FPP.fieldChain.push(this.id);
         });
         // adding total input sum field to field chain
-        FPP.fieldChain.push("inputSumm");
+        FPP.fieldChain.push("inputSum");
 
         // setting focus to the first payments field
         $("#" + FPP.fieldChain[0]).focus().select();
@@ -60,8 +60,8 @@ var FPP = {
                     $("#" + currentFieldId).focus().select();
                 }
             } else {
-                if ($.inArray("inputSumm", FPP.errorFields) >= 0) {
-                    $("#changeSumm").focus(); // to invalidate error by calling validator on change
+                if ($.inArray("inputSum", FPP.errorFields) >= 0) {
+                    $("#changeSum").focus(); // to invalidate error by calling validator on change
                 }
                 $("#printQuittanceButton").focus();
 
@@ -127,7 +127,7 @@ var FPP = {
             });
         });
 
-        var inputSum = $("#inputSumm");
+        var inputSum = $("#inputSum");
         var printBut = $("#printQuittanceButton");
         var payBut = $("#payQuittanceButton");
 
@@ -262,7 +262,7 @@ var FPP = {
 
     validateInputValue : function () {
 
-        var inputValue = $("#inputSumm").val();
+        var inputValue = $("#inputSum").val();
         var totalValue = $("#totalToPay").val();
 
         if (!FPP.validate(inputValue) || !FPP.validate(totalValue)) {
@@ -271,14 +271,14 @@ var FPP = {
 
         var totalPaySum = FPP.dotted2Int(totalValue);
         var inputSum = FPP.dotted2Int(inputValue);
-        return FPP.validateValue("inputSumm", totalPaySum > inputSum ? FPP.messages.inputSummIsTooSmall : null);
+        return FPP.validateValue("inputSum", totalPaySum > inputSum ? FPP.messages.inputSumIsTooSmall : null);
     },
 
     updateTotal : function () {
         var totalSum = 0;
         var total = $("#totalToPay");
-        var input = $("#inputSumm");
-        var change = $("#changeSumm");
+        var input = $("#inputSum");
+        var change = $("#changeSum");
 
         $("input[id^=payments_]").each(function() {
             var val = this.value;
@@ -299,9 +299,9 @@ var FPP = {
     },
 
     updateChange : function () {
-        var inputValue = $("#inputSumm").val();
+        var inputValue = $("#inputSum").val();
         var totalValue = $("#totalToPay").val();
-        var change = $("#changeSumm");
+        var change = $("#changeSum");
 
         if (!FPP.validate(inputValue) || !FPP.validate(totalValue)) {
             change.val("");

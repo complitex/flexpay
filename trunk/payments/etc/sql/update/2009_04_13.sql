@@ -54,8 +54,8 @@ create table payments_operation_types_tbl (
 create table payments_operations_tbl (
 	id bigint not null auto_increment comment 'Primary key',
 	version integer not null comment 'Optimistic lock version',
-	operation_summ decimal(19,2) not null comment 'Operation summ',
-	operation_input_summ decimal(19,2) comment 'Operation input summ',
+	operation_summ decimal(19,2) not null comment 'Operation sum',
+	operation_input_summ decimal(19,2) comment 'Operation input sum',
 	change_summ decimal(19,2) comment 'Change',
 	creator varchar(255) not null comment 'Creator username',
 	creation_date datetime not null comment 'Creation date',

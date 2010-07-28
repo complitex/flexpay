@@ -196,7 +196,8 @@
 		<property name="serviceCode" column="service_code" not-null="true" />
 		<property name="personalAccountExt" column="personal_account_ext"
 				  not-null="true" />
-		<property name="city" column="city" />
+        <property name="townType" column="town_type" />
+		<property name="townName" column="town_name" />
 		<property name="streetType" column="street_type" />
 		<property name="streetName" column="street_name" />
 		<property name="buildingNum" column="building_number" />

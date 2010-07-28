@@ -80,11 +80,11 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		Map<String, Object> params = map(
 				ar("operationDate", "organizationName", "quittanceNumber",
 						"cashierFIO", "payerFIO", "total", "totalSpelling",
-						"inputSumm", "changeSumm", "paymentPointName",
+						"inputSum", "changeSum", "paymentPointName",
 						"paymentPointAddress", "detailses", "digest"),
 				ar(form.getOperationDate(), form.getOrganizationName(), form.getQuittanceNumber(),
 						form.getCashierFIO(), form.getPayerFIO(), form.getTotal(), form.getTotalSpelling(),
-						form.getInputSumm(), form.getChangeSumm(), form.getPaymentPointName(),
+						form.getInputSum(), form.getChangeSum(), form.getPaymentPointName(),
 						form.getPaymentPointAddress(), form.getDetailses(), form.getDigestValue()));
 
 		JRDataSource dataSource = new JRBeanCollectionDataSource(form.getDetailses());

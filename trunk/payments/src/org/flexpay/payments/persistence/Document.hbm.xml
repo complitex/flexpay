@@ -18,14 +18,14 @@
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-		<property name="summ">
-			<column name="summ" not-null="true">
-				<comment>Summ</comment>
+		<property name="sum">
+			<column name="sum" not-null="true">
+				<comment>Sum</comment>
 			</column>
 		</property>
 		<property name="debt">
 			<column name="debt" not-null="false">
-				<comment>Debt summ</comment>
+				<comment>Debt sum</comment>
 			</column>
 		</property>
 		<property name="address">
@@ -73,8 +73,13 @@
 				<comment>Prividers consumer region name</comment>
 			</column>
 		</property>
-		<property name="town">
-			<column name="town" not-null="false">
+        <property name="townType">
+            <column name="town_type" not-null="false">
+                <comment>Prividers consumer town type name</comment>
+            </column>
+        </property>
+		<property name="townName">
+			<column name="town_name" not-null="false">
 				<comment>Prividers consumer town name</comment>
 			</column>
 		</property>
@@ -476,7 +481,7 @@
 	</query>
 
 	<query name="Document.findCashboxServiceSum"><![CDATA[
-		select sum(doc.summ)
+		select sum(doc.sum)
 		from Document doc
 		where doc.operation.cashbox.id = ?
 		and doc.operation.operationStatus.code = ?
@@ -486,7 +491,7 @@
 	]]></query>
 
 	<query name="Document.findCashboxTotalSum"><![CDATA[
-		select sum(doc.summ)
+		select sum(doc.sum)
 		from Document doc
 		where doc.operation.cashbox.id = ?
 		and doc.operation.operationStatus.code = ?
@@ -495,7 +500,7 @@
 	]]></query>
 
 	<query name="Document.findPaymentPointServiceSum"><![CDATA[
-		select sum(doc.summ)
+		select sum(doc.sum)
 		from Document doc
 		where doc.operation.paymentPoint.id = ?
 		and doc.operation.operationStatus.code = ?
@@ -505,7 +510,7 @@
 	]]></query>
 
 	<query name="Document.findPaymentPointTotalSum"><![CDATA[
-		select sum(doc.summ)
+		select sum(doc.sum)
 		from Document doc
 		where doc.operation.paymentPoint.id = ?
 		and doc.operation.operationStatus.code = ?
@@ -514,7 +519,7 @@
 	]]></query>
 
 	<query name="Document.findOperationServiceSum">
-		select doc.summ
+		select doc.sum
 		from Document doc
 		where doc.operation.id = ?
 		and doc.service.serviceType.code = ?

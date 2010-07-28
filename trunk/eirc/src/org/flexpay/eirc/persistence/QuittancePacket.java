@@ -20,9 +20,9 @@ public class QuittancePacket extends DomainObjectWithStatus {
 	private Date closeDate = getFutureInfinite();
 	private PaymentPoint paymentPoint;
 	private Integer controlQuittanciesNumber;
-	private BigDecimal controlOverallSumm;
+	private BigDecimal controlOverallSum;
 	private Integer quittanciesNumber = 0;
-	private BigDecimal overallSumm = BigDecimal.ZERO;
+	private BigDecimal overallSum = new BigDecimal("0.00");
 	private String creatorUserName;
 	private String closerUserName;
 
@@ -87,12 +87,12 @@ public class QuittancePacket extends DomainObjectWithStatus {
 		this.controlQuittanciesNumber = controlQuittanciesNumber;
 	}
 
-	public BigDecimal getControlOverallSumm() {
-		return controlOverallSumm;
+	public BigDecimal getControlOverallSum() {
+		return controlOverallSum;
 	}
 
-	public void setControlOverallSumm(BigDecimal controlOverallSumm) {
-		this.controlOverallSumm = controlOverallSumm;
+	public void setControlOverallSum(BigDecimal controlOverallSum) {
+		this.controlOverallSum = controlOverallSum;
 	}
 
 	public Integer getQuittanciesNumber() {
@@ -103,12 +103,12 @@ public class QuittancePacket extends DomainObjectWithStatus {
 		this.quittanciesNumber = quittanciesNumber;
 	}
 
-	public BigDecimal getOverallSumm() {
-		return overallSumm;
+	public BigDecimal getOverallSum() {
+		return overallSum;
 	}
 
-	public void setOverallSumm(BigDecimal overallSumm) {
-		this.overallSumm = overallSumm;
+	public void setOverallSum(BigDecimal overallSum) {
+		this.overallSum = overallSum;
 	}
 
 	public String getCreatorUserName() {
@@ -146,9 +146,9 @@ public class QuittancePacket extends DomainObjectWithStatus {
 				append("closeDate", closeDate).
 				append("paymentPoint", paymentPoint).
 				append("controlQuittanciesNumber", controlQuittanciesNumber).
-				append("controlOverallSum", controlOverallSumm).
+				append("controlOverallSum", controlOverallSum).
 				append("quittanciesNumber", quittanciesNumber).
-				append("overallSum", overallSumm).
+				append("overallSum", overallSum).
 				append("creatorUserName", creatorUserName).
 				append("closerUserName", closerUserName).
 				toString();

@@ -156,40 +156,42 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
     private void getCorrectionCriteria(StringBuilder fromWhereClause, List<Object> params, RegistryRecord record, String type) throws FlexPayException {
 
-        String corCity = "and city=? ";
+        String corTownType = "and town_type=? ";
+        String corTownName = "and town_name=? ";
         String corStreetType = "and street_type=? ";
-        String corStreet = "and street_name=? ";
+        String corStreetName = "and street_name=? ";
         String corBuilding = "and building_number=? and bulk_number=? ";
         String corApartment = "and apartment_number=? ";
         String corPerson = "and first_name=? and middle_name=? and last_name=? ";
 
         if (!CORRECT_TYPE_STREET_TYPE.equals(type)) {
-            fromWhereClause.append(corCity);
-            params.add(record.getCity());
+            fromWhereClause.append(corTownType).append(corTownName);
+            params.add(record.getTownType());
+            params.add(record.getTownName());
         }
 
         if (CORRECT_TYPE_STREET_TYPE.equals(type)) {
             fromWhereClause.append(corStreetType);
             params.add(record.getStreetType());
         } else if (CORRECT_TYPE_STREET.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreet);
+            fromWhereClause.append(corStreetType).append(corStreetName);
             params.add(record.getStreetType());
             params.add(record.getStreetName());
         } else if (CORRECT_TYPE_BUILDING.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreet).append(corBuilding);
+            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding);
             params.add(record.getStreetType());
             params.add(record.getStreetName());
             params.add(record.getBuildingNum());
             params.add(record.getBuildingBulkNum());
         } else if (CORRECT_TYPE_APARTMENT.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreet).append(corBuilding).append(corApartment);
+            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corApartment);
             params.add(record.getStreetType());
             params.add(record.getStreetName());
             params.add(record.getBuildingNum());
             params.add(record.getBuildingBulkNum());
             params.add(record.getApartmentNum());
         } else if (CORRECT_TYPE_PERSON.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreet).append(corBuilding).append(corApartment).append(corPerson);
+            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corApartment).append(corPerson);
             params.add(record.getStreetType());
             params.add(record.getStreetName());
             params.add(record.getBuildingNum());

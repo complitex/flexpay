@@ -7,7 +7,7 @@
 
 	<query name="ServicePaymentsStatistics.collect"><![CDATA[
 		select distinct o.creatorOrganization.id, d.service.id,
-		 	(select sum(dd.summ)
+		 	(select sum(dd.sum)
 		 	from Document dd
 		 		inner join dd.operation op
 		 	 	inner join dd.documentStatus ss
@@ -25,7 +25,7 @@
 	]]></query>
 
 	<query name="OperationTypeOrganizationStatistics.collect"><![CDATA[
-		select type.code, count(o), sum(o.operationSumm)
+		select type.code, count(o), sum(o.operationSum)
 		from Operation o
 			inner join o.operationStatus status
 			inner join o.operationType type
@@ -34,7 +34,7 @@
 	]]></query>
 
     <query name="OperationTypePaymentPointStatistics.collect"><![CDATA[
-		select o.operationType.code, count(o), sum(o.operationSumm)
+		select o.operationType.code, count(o), sum(o.operationSum)
 		from Operation o
 		where o.operationStatus.code=2 
 		    and o.paymentPoint.id=?
@@ -43,7 +43,7 @@
 	]]></query>
 
     <query name="OperationTypeCashboxStatistics.collect"><![CDATA[
-		select type.code, count(o), sum(o.operationSumm)
+		select type.code, count(o), sum(o.operationSum)
 		from Operation o
 			inner join o.operationStatus status
 			inner join o.operationType type

@@ -8,6 +8,7 @@ import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;
 
 public class CorrectionsRecordValidator extends MessageValidatorWithContext<String> {
+
     public static final long FIELDS_LENGTH = 28;
 	public static final long FIELDS_LENGTH_SKIP_RECORD = 20;
 	public static final long FIELDS_LENGTH_EMPTY_FOOTER = 21;
@@ -49,7 +50,7 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
             return false;
         }
         if (!longValidator.validate(fields[3])) {
-            addErrorMessage("Can't parse city id {} ", fields[3]);
+            addErrorMessage("Can't parse town id {} ", fields[3]);
             return false;
 		}
 		if (!longValidator.validate(fields[4])) {

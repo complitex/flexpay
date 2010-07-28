@@ -18,7 +18,7 @@
 	<field name="paymentHotWater" class="java.math.BigDecimal"/>
 	<field name="paymentColdWater" class="java.math.BigDecimal"/>
 	<field name="paymentSewer" class="java.math.BigDecimal"/>
-	<field name="summ" class="java.math.BigDecimal"/>
+	<field name="sum" class="java.math.BigDecimal"/>
 	<field name="childDetailses" class="java.util.List"/>
 	<variable name="counter" class="java.lang.Integer">
 		<variableExpression><![CDATA[new Integer($V{counter}.intValue() + 1)]]></variableExpression>
@@ -28,15 +28,15 @@
 		<variableExpression><![CDATA[$F{objectId}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="totalPaymentsSumm" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{summ}]]></variableExpression>
+	<variable name="totalPaymentsSum" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
 	<variable name="kvartplataTotalCount" class="java.lang.Integer">
 		<variableExpression><![CDATA[new Integer($V{kvartplataTotalCount}.intValue() + (($F{paymentKvartplata}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="kvartplataTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="kvartplataTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentKvartplata}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -44,7 +44,7 @@
 		<variableExpression><![CDATA[new Integer($V{dogsTotalCount}.intValue() + (($F{paymentDogs}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="dogsTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="dogsTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentDogs}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -52,7 +52,7 @@
 		<variableExpression><![CDATA[new Integer($V{garageTotalCount}.intValue() + (($F{paymentGarage}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="garageTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="garageTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentGarage}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -60,7 +60,7 @@
 		<variableExpression><![CDATA[new Integer($V{warmingTotalCount}.intValue() + (($F{paymentWarming}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="warmingTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="warmingTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentWarming}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -68,7 +68,7 @@
 		<variableExpression><![CDATA[new Integer($V{hotWaterTotalCount}.intValue() + (($F{paymentHotWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="hotWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="hotWaterTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentHotWater}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -76,7 +76,7 @@
 		<variableExpression><![CDATA[new Integer($V{coldWaterTotalCount}.intValue() + (($F{paymentColdWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="coldWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="coldWaterTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentColdWater}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -84,7 +84,7 @@
 		<variableExpression><![CDATA[new Integer($V{sewerTotalCount}.intValue() + (($F{paymentSewer}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="sewerTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+	<variable name="sewerTotalSum" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentSewer}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
@@ -223,7 +223,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{summ}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{sum}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="113" y="0" width="79" height="20"/>

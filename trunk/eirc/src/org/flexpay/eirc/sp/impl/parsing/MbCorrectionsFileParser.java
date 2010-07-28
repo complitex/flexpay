@@ -2,7 +2,6 @@ package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
@@ -11,7 +10,6 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
@@ -352,7 +350,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		record.setLastName(fields[2]);
 		record.setMiddleName("");
 		record.setFirstName("");
-		record.setCity("ХАРЬКОВ");
+		record.setTownName("ХАРЬКОВ");
 		record.setStreetType(fields[6]);
 		record.setStreetName(fields[7]);
 		setBuildingAddress(record, fields[8]);

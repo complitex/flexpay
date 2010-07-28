@@ -77,8 +77,8 @@
                 <td><s:date name="creationDate" format="HH:mm:ss" /></td>
                 <td><s:property value="address" /></td>
                 <td><s:property value="payerFIO" /></td>
-                <td><s:property value="operationSumm" /></td>
-                <td><s:property value="operationInputSumm" /></td>
+                <td><s:property value="operationSum" /></td>
+                <td><s:property value="operationInputSum" /></td>
                 <td><s:property value="change" /></td>
                 <td class="service_column" style="display:none;">&nbsp;</td>
                 <td class="service_provider_column" style="display:none;">&nbsp;</td>

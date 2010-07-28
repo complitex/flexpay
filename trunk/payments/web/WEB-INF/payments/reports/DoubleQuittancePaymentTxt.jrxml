@@ -11,8 +11,8 @@
 	<parameter name="payerFIO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="total" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="totalSpelling" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="inputSumm" class="java.math.BigDecimal" isForPrompting="false"/>
-	<parameter name="changeSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="inputSum" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="changeSum" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["H:/projects/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
@@ -36,8 +36,8 @@
 	<field name="paymentPeriod" class="java.lang.String">
 		<fieldDescription><![CDATA[paymentPeriod]]></fieldDescription>
 	</field>
-	<field name="paymentSumm" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[paymentSumm]]></fieldDescription>
+	<field name="paymentSum" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[paymentSum]]></fieldDescription>
 	</field>
 	<field name="counterValue" class="java.lang.String">
 		<fieldDescription><![CDATA[counterValue]]></fieldDescription>

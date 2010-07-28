@@ -51,9 +51,9 @@
 				<comment>Control quittances number</comment>
 			</column>
 		</property>
-		<property name="controlOverallSumm">
-			<column name="control_overall_summ" not-null="true">
-				<comment>Control overall summ</comment>
+		<property name="controlOverallSum">
+			<column name="control_overall_sum" not-null="true">
+				<comment>Control overall sum</comment>
 			</column>
 		</property>
 		<property name="quittanciesNumber">
@@ -61,9 +61,9 @@
 				<comment>Inputed quittances number</comment>
 			</column>
 		</property>
-		<property name="overallSumm">
-			<column name="overall_summ" not-null="true">
-				<comment>Inputed overall summ</comment>
+		<property name="overallSum">
+			<column name="overall_sum" not-null="true">
+				<comment>Inputed overall sum</comment>
 			</column>
 		</property>
 		<property name="creatorUserName">

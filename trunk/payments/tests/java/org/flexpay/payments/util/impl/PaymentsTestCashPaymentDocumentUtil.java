@@ -60,7 +60,7 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
         }
 
         Document document = new Document();
-		document.setSumm(new BigDecimal(sum));
+		document.setSum(new BigDecimal(sum));
 		document.setDocumentStatus(documentStatus);
 		document.setOperation(operation);
 		document.setCreditorOrganization(serviceProviderOrganization);
@@ -70,7 +70,8 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
 		document.setLastName("Test Last Name");
 		document.setMiddleName("Test Middle Name");
 		document.setFirstName("Test First Name");
-		document.setTown("Test Town");
+		document.setTownName("Test Town Name");
+        document.setTownType("Test Town Type");
 		document.setStreetType("Test Street Type");
 		document.setStreetName("Test Street Name");
 		document.setBuildingNumber("00");

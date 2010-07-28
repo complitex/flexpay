@@ -34,6 +34,7 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	 *
 	 * @return empty temporal
 	 */
+    @Override
 	protected RegionNameTemporal getEmptyTemporal() {
 		return new RegionNameTemporal(this);
 	}

@@ -255,7 +255,7 @@ select @payment_status_partial:=2;
 -- Quittance packets
 insert into eirc_quittance_packets_tbl (id, status, version, packet_number, payment_point_id,
 		creation_date, begin_date, close_date, creator_user_name, closer_user_name,
-		control_quittances_number, control_overall_summ, quittances_number, overall_summ)
+		control_quittances_number, control_overall_sum, quittances_number, overall_sum)
 	values (1, 0, 0, 123, @payment_point_1,
 		'2009-01-12', '2100-12-31', '2100-12-31', 'test user', '',
 		2, 123.45, 1, 12.21);

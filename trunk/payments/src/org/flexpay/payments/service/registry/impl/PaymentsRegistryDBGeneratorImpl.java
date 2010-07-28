@@ -116,7 +116,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 
 			try {
 				registryRecordService.create(record);
-				totalSum = totalSum.add(document.getSumm());
+				totalSum = totalSum.add(document.getSum());
 				recordsNumber++;
 			} catch (FlexPayException e) {
 				errorsNumber++;
@@ -204,7 +204,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 
 		RegistryRecord record = new RegistryRecord();
 		record.setRecordStatus(statusProcessed);
-		record.setAmount(document.getSumm());
+		record.setAmount(document.getSum());
 		record.setServiceCode(document.getService().registryCode());
 		record.setPersonalAccountExt(document.getDebtorId());
 		record.setOperationDate(document.getOperation().getCreationDate());
@@ -212,7 +212,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		record.setLastName(document.getLastName());
 		record.setMiddleName(document.getMiddleName());
 		record.setFirstName(document.getFirstName());
-		record.setCity(document.getTown());
+		record.setTownName(document.getTownName());
 		record.setStreetType(document.getStreetType());
 		record.setStreetName(document.getStreetName());
 		record.setBuildingNum(document.getBuildingNumber());

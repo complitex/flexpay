@@ -146,8 +146,8 @@ public class QuittancePacketEditAction extends FPActionSupport {
 			addActionError(getText("eirc.error.quittance_packet.invalid_control_number"));
 		}
 
-		if (packet.getControlOverallSumm() == null) {
-			log.warn("Incorrect control overall sum ({})", packet.getControlOverallSumm());
+		if (packet.getControlOverallSum() == null) {
+			log.warn("Incorrect control overall sum ({})", packet.getControlOverallSum());
 			addActionError(getText("eirc.error.quittance_packet.invalid_control_sum"));
 		}
 

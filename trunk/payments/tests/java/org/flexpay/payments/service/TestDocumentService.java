@@ -49,7 +49,7 @@ public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
 			Service serv = spService.readFull(doc.getServiceStub());
 			if (!doc.getOperation().getId().equals(criteriaOperationId) ||
 				!serv.getServiceType().getId().equals(criteriaServiceTypeId) ||
-				doc.getSumm().compareTo(criteriaSum) != 0) {
+				doc.getSum().compareTo(criteriaSum) != 0) {
 				fail("Result contains documents which does not correspond criterias");
 			}
 		}

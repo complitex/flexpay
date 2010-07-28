@@ -16,7 +16,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 
 public class Document extends DomainObject {
 
-	private BigDecimal summ;
+	private BigDecimal sum;
 
 	private Operation operation;
 
@@ -43,9 +43,10 @@ public class Document extends DomainObject {
 	private String lastName;
 	private String country;
 	private String region;
-	private String town;
+    private String townType;
+	private String townName;
+    private String streetType;
 	private String streetName;
-	private String streetType;
 	private String buildingNumber;
 	private String buildingBulk;
 	private String apartmentNumber;
@@ -54,12 +55,12 @@ public class Document extends DomainObject {
 
 	private Set<DocumentAddition> additions = Collections.emptySet();
 
-	public BigDecimal getSumm() {
-		return summ;
+	public BigDecimal getSum() {
+		return sum;
 	}
 
-	public void setSumm(BigDecimal summ) {
-		this.summ = summ;
+	public void setSum(BigDecimal sum) {
+		this.sum = sum;
 	}
 
 	public Operation getOperation() {
@@ -248,15 +249,23 @@ public class Document extends DomainObject {
 		this.region = region;
 	}
 
-	public String getTown() {
-		return town;
-	}
+    public String getTownName() {
+        return townName;
+    }
 
-	public void setTown(String town) {
-		this.town = town;
-	}
+    public void setTownName(String townName) {
+        this.townName = townName;
+    }
 
-	public String getStreetName() {
+    public String getTownType() {
+        return townType;
+    }
+
+    public void setTownType(String townType) {
+        this.townType = townType;
+    }
+
+    public String getStreetName() {
 		return streetName;
 	}
 
@@ -308,7 +317,7 @@ public class Document extends DomainObject {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
-				append("summ", summ).
+				append("sum", sum).
 				append("registryRecord", registryRecord).
 				append("documentType", documentType).
 				append("documentStatus", documentStatus).
@@ -317,9 +326,10 @@ public class Document extends DomainObject {
 				append("lastName", lastName).
 				append("country", country).
 				append("region", region).
-				append("town", town).
+                append("townType", townType).
+				append("townName", townName).
+                append("streetType", streetType).
 				append("streetName", streetName).
-				append("streetType", streetType).
 				append("buildingNumber", buildingNumber).
 				append("buildingBulk", buildingBulk).
 				append("apartmentNumber", apartmentNumber).

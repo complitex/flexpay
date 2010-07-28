@@ -88,8 +88,8 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 
 		Operation op = new Operation();
 		try {
-			op.setOperationSumm(payment.getAmount());
-			op.setOperationInputSumm(payment.getAmount());
+			op.setOperationSum(payment.getAmount());
+			op.setOperationInputSum(payment.getAmount());
 			op.setChange(BigDecimal.ZERO);
 			op.setCreationDate(new Date());
 			op.setCreatorOrganization(eirc);
@@ -115,7 +115,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 				Document doc = new Document();
 				doc.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
 				doc.setDocumentType(documentType);
-				doc.setSumm(qdPayment.getAmount());
+				doc.setSum(qdPayment.getAmount());
 
 				doc.setDebtorOrganization(eirc);
 				doc.setDebtorId(account.getAccountNumber());

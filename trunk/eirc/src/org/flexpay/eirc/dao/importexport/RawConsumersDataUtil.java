@@ -26,7 +26,7 @@ public class RawConsumersDataUtil {
 		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, record.getFirstName());
 		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, record.getMiddleName());
 		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, record.getLastName());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_CITY, record.getCity());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_TOWN, record.getTownName());
 		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_STREET, record.getStreetName());
 		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_STREET_TYPE, record.getStreetType());
 		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_HOUSE, record.getBuildingNum());

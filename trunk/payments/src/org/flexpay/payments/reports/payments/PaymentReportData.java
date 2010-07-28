@@ -16,7 +16,7 @@ public class PaymentReportData implements Serializable {
 	private String serviceProviderAccount;
 	private String fio;
 	private Integer serviceTypeCode;
-	private BigDecimal documentSumm;
+	private BigDecimal documentSum;
 	private Long documentId;
 
 	public Long getPaymentPointId() {
@@ -59,12 +59,12 @@ public class PaymentReportData implements Serializable {
 		this.serviceTypeCode = serviceTypeCode;
 	}
 
-	public BigDecimal getDocumentSumm() {
-		return documentSumm;
+	public BigDecimal getDocumentSum() {
+		return documentSum;
 	}
 
-	public void setDocumentSumm(BigDecimal documentSumm) {
-		this.documentSumm = documentSumm;
+	public void setDocumentSum(BigDecimal documentSum) {
+		this.documentSum = documentSum;
 	}
 
 	public Long getDocumentId() {
@@ -92,7 +92,7 @@ public class PaymentReportData implements Serializable {
 				append("serviceProviderAccount", serviceProviderAccount).
 				append("fio", fio).
 				append("serviceTypeCode", serviceTypeCode).
-				append("documentSumm", documentSumm).
+				append("documentSum", documentSum).
 				append("documentId", documentId).
 				toString();
 	}

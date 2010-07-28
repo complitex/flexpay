@@ -18,9 +18,10 @@ public class RawConsumerData extends RawData<Consumer> {
 	public static final String FIELD_LAST_NAME = "lastName";
 	public static final String FIELD_ACCOUNT_NUMBER = "accountNumber";
 	public static final String FIELD_SERVICE_CODE = "serviceCode";
-	public static final String FIELD_ADDRESS_CITY = "city";
+    public static final String FIELD_ADDRESS_TOWN_TYPE = "townType";
+	public static final String FIELD_ADDRESS_TOWN = "town";
+    public static final String FIELD_ADDRESS_STREET_TYPE = "streetType";
 	public static final String FIELD_ADDRESS_STREET = "street";
-	public static final String FIELD_ADDRESS_STREET_TYPE = "streetType";
 	public static final String FIELD_ADDRESS_HOUSE = "house";
 	public static final String FIELD_ADDRESS_BULK = "bulk";
 	public static final String FIELD_ADDRESS_APARTMENT = "apartment";
@@ -34,9 +35,10 @@ public class RawConsumerData extends RawData<Consumer> {
 		possibleNames.add(FIELD_LAST_NAME);
 		possibleNames.add(FIELD_ACCOUNT_NUMBER);
 		possibleNames.add(FIELD_SERVICE_CODE);
-		possibleNames.add(FIELD_ADDRESS_CITY);
+        possibleNames.add(FIELD_ADDRESS_TOWN_TYPE);
+		possibleNames.add(FIELD_ADDRESS_TOWN);
+        possibleNames.add(FIELD_ADDRESS_STREET_TYPE);
 		possibleNames.add(FIELD_ADDRESS_STREET);
-		possibleNames.add(FIELD_ADDRESS_STREET_TYPE);
 		possibleNames.add(FIELD_ADDRESS_HOUSE);
 		possibleNames.add(FIELD_ADDRESS_BULK);
 		possibleNames.add(FIELD_ADDRESS_APARTMENT);
@@ -71,16 +73,20 @@ public class RawConsumerData extends RawData<Consumer> {
 		return getParam(FIELD_SERVICE_CODE);
 	}
 
-	public String getAddressCity() {
-		return getParam(FIELD_ADDRESS_CITY);
+    public String getAddressTownType() {
+        return getParam(FIELD_ADDRESS_TOWN_TYPE);
+    }
+
+	public String getAddressTown() {
+		return getParam(FIELD_ADDRESS_TOWN);
 	}
+
+    public String getAddressStreetType() {
+        return getParam(FIELD_ADDRESS_STREET_TYPE);
+    }
 
 	public String getAddressStreet() {
 		return getParam(FIELD_ADDRESS_STREET);
-	}
-
-	public String getAddressStreetType() {
-		return getParam(FIELD_ADDRESS_STREET_TYPE);
 	}
 
 	public String getAddressHouse() {
@@ -139,13 +145,13 @@ public class RawConsumerData extends RawData<Consumer> {
 	}
 
 	/**
-	 * Get correction id for street, includes City | Street Name | Street Type
+	 * Get correction id for street, includes Town | Street Name | Street Type
 	 *
 	 * @return Correction ID for street
 	 */
 	public String getStreetId() {
 		return new StringBuilder()
-				.append(getAddressCity()).append('|')
+				.append(getAddressTown()).append('|')
 				.append(getAddressStreet()).append('|')
 				.append(getAddressStreetType())
 				.toString();

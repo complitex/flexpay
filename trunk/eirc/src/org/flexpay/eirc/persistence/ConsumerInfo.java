@@ -18,7 +18,8 @@ public class ConsumerInfo extends DomainObjectWithStatus {
     private String lastName;
 
     // address information
-    private String cityName;
+    private String townType;
+    private String townName;
     private String streetTypeName;
     private String streetName;
     private String buildingNumber;
@@ -58,12 +59,20 @@ public class ConsumerInfo extends DomainObjectWithStatus {
         this.lastName = lastName;
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getTownType() {
+        return townType;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public void setTownType(String townType) {
+        this.townType = townType;
+    }
+
+    public String getTownName() {
+        return townName;
+    }
+
+    public void setTownName(String townName) {
+        this.townName = townName;
     }
 
     public String getStreetTypeName() {
@@ -161,7 +170,8 @@ public class ConsumerInfo extends DomainObjectWithStatus {
 				append("firstName", firstName).
 				append("middleName", middleName).
 				append("lastName", lastName).
-				append("cityName", cityName).
+                append("townType", townType).
+				append("townName", townName).
 				append("streetTypeName", streetTypeName).
 				append("streetName", streetName).
 				append("buildingNumber", buildingNumber).

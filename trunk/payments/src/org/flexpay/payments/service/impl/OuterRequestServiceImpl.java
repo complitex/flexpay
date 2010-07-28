@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -50,6 +51,7 @@ import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.SecurityUtil.getUserName;
+import static org.flexpay.common.util.TranslationUtil.getTranslation;
 import static org.flexpay.payments.actions.request.data.request.InfoRequest.serviceProviderAccountNumberRequest;
 
 public class OuterRequestServiceImpl implements OuterRequestService {
@@ -70,6 +72,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private OperationTypeService operationTypeService;
     private SPService spService;
     private ServiceProviderService serviceProviderService;
+    private ApartmentService apartmentService;
     private AddressService addressService;
     private CorrectionsService correctionsService;
     private MasterIndexService masterIndexService;
@@ -133,7 +136,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     }
 
     private boolean isNotEmptyOperation(Operation operation) {
-        return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
+        return !BigDecimalUtil.isZero(operation.getOperationSum()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
     }
 
     @SuppressWarnings({"unchecked"})
@@ -170,8 +173,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         }
 
         Organization organization = paymentPoint.getCollector().getOrganization();
-        operation.setOperationSumm(payRequest.getTotalToPay());
-        operation.setOperationInputSumm(payRequest.getTotalToPay());
+        operation.setOperationSum(payRequest.getTotalToPay());
+        operation.setOperationInputSum(payRequest.getTotalToPay());
         operation.setChange(BigDecimal.ZERO);
         operation.setCreationDate(new Date());
         operation.setRegisterDate(new Date());
@@ -211,7 +214,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
                 operation.setPayerFIO(stripToEmpty(document.getPayerFIO()));
             }
 
-            if (isNotZero(document.getSumm())) {
+            if (isNotZero(document.getSum())) {
                 operation.addDocument(document);
                 servicePayInfo.setServiceId(document.getServiceStub().getId());
                 response.addServicePayInfo(servicePayInfo);
@@ -230,14 +233,14 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         Organization serviceProviderOrganization = serviceProvider.getOrganization();
 
         Document document = new Document();
-        document.setSumm(paySum);
+        document.setSum(paySum);
         document.setService(service);
         document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
         document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
         document.setDebtorOrganization(cashbox.getPaymentPoint().getCollector().getOrganization());
         document.setCreditorOrganization(serviceProviderOrganization);
         document.setDebt(serviceDetails.getAmount());
-        document.setAddress(getApartmentAddress(info, locale));
+        getApartmentAddress(document, info, locale);
         document.setPayerFIO(stripToEmpty(getPersonFio(info)));
         document.setDebtorId(info.getAccountNumber());
         document.setCreditorId(serviceDetails.getServiceProviderAccount());
@@ -277,16 +280,39 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         }
     }
 
-    public String getApartmentAddress(QuittanceInfo quittanceInfo, Locale locale) throws Exception {
+    public void getApartmentAddress(Document document, QuittanceInfo quittanceInfo, Locale locale) throws Exception {
 
         String apartmentMasterIndex = quittanceInfo.getApartmentMasterIndex();
         if (apartmentMasterIndex != null) {
             Stub<Apartment> stub = correctionsService.findCorrection(apartmentMasterIndex,
                     Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
-            return addressService.getAddress(stub, locale);
-        } else {
-            return quittanceInfo.getAddress();
+            Apartment apartment = apartmentService.readFullWithHierarchy(stub);
+
+            document.setAddress(addressService.getAddress(stub, locale));
+            document.setCountry(getTranslation(apartment.getCountry().getTranslations(), locale).getName());
+            document.setRegion(getTranslation(apartment.getRegion().getCurrentName().getTranslations(), locale).getName());
+            document.setTownType(getTranslation(apartment.getTown().getCurrentType().getTranslations(), locale).getShortName());
+            document.setTownName(getTranslation(apartment.getTown().getCurrentName().getTranslations(), locale).getName());
+            document.setStreetType(getTranslation(apartment.getDefaultStreet().getCurrentType().getTranslations(), locale).getName());
+            document.setStreetName(getTranslation(apartment.getDefaultStreet().getCurrentName().getTranslations(), locale).getName());
+            document.setBuildingBulk(apartment.getDefaultBuildings().getBulk());
+            document.setBuildingNumber(apartment.getDefaultBuildings().getNumber());
+            document.setApartmentNumber(apartment.getNumber());
+
+            return;
         }
+
+        document.setAddress(quittanceInfo.getAddress());
+        document.setCountry(quittanceInfo.getCountry());
+        document.setRegion(quittanceInfo.getRegion());
+        document.setTownType(quittanceInfo.getTownType());
+        document.setTownName(quittanceInfo.getTownName());
+        document.setStreetType(quittanceInfo.getStreetType());
+        document.setStreetName(quittanceInfo.getStreetName());
+        document.setBuildingBulk(quittanceInfo.getBuildingBulk());
+        document.setBuildingNumber(quittanceInfo.getBuildingNumber());
+        document.setApartmentNumber(quittanceInfo.getApartmentNumber());
+
     }
 
     private void setPayerName(QuittanceInfo info, Document document) {
@@ -337,7 +363,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             return response;
         }
 
-        if (!request.getTotalPaySum().equals(operation.getOperationSumm())) {
+        if (!request.getTotalPaySum().equals(operation.getOperationSum())) {
             log.warn("Request total pay sum not equals operation sum!");
             response.setStatus(Status.INCORRECT_PAY_SUM);
             return response;
@@ -494,6 +520,11 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Required
     public void setServiceProviderService(ServiceProviderService serviceProviderService) {
         this.serviceProviderService = serviceProviderService;
+    }
+
+    @Required
+    public void setApartmentService(ApartmentService apartmentService) {
+        this.apartmentService = apartmentService;
     }
 
     @Required

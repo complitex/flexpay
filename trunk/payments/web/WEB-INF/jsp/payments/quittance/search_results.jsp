@@ -78,8 +78,8 @@
                 <s:text name="payments.quittance.payment.input" />
             </td>
             <td>
-                <s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;" value="%{getTotalToPay()}"
-                             onchange="onChangeInputHandler('inputSumm');" />
+                <s:textfield name="inputSum" cssStyle="width:100%;text-align:right;" value="%{getTotalToPay()}"
+                             onchange="onChangeInputHandler('inputSum');" />
             </td>
             <td class="col"></td>
         </tr>
@@ -88,7 +88,7 @@
                 <s:text name="payments.quittance.payment.change" />
             </td>
             <td>
-                <s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00" readonly="true"/>
+                <s:textfield name="changeSum" cssStyle="width:100%;text-align:right;" value="0.00" readonly="true"/>
             </td>
             <td class="col"></td>
         </tr>
