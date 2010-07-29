@@ -3,6 +3,8 @@ package org.flexpay.payments.service.registry.impl;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
@@ -12,8 +14,11 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
@@ -34,6 +39,8 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Generate the payments registry in MB format.
@@ -98,7 +105,10 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	private FPFileService fpFileService;
 	private ServiceTypesMapper serviceTypesMapper;
 	private SPService spService;
+	private CorrectionsService correctionsService;
+	private ClassToTypeRegistry classToTypeRegistry;
 
+	private Stub<DataSourceDescription> megabankSD;
 	private Signature signature = null;
 
 	/**
@@ -114,6 +124,9 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 		RegistryWriter rg = null;
 		try {
+
+			String externalServiceProviderId = getExternalServiceProviderId(registry);
+
 			FPFile tmpFile = new FPFile();
 			tmpFile.setModule(file.getModule());
 			tmpFile.setDescription(file.getDescription());
@@ -165,7 +178,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
             do {
 				try {
 					for (RegistryRecord registryRecord : registryRecordService.listRecordsForExport(registry, range)) {
-						String[] infoLine = createInfoLine(registry, registryRecord);
+						String[] infoLine = createInfoLine(registry, registryRecord, externalServiceProviderId);
 						rg.writeLine(infoLine);
 					}
 				} catch (Exception e) {
@@ -225,8 +238,23 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		}
 	}
 
+	private String getExternalServiceProviderId(Registry registry) throws FlexPayException {
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+
+		Stub<ServiceProvider> serviceProviderStub = props.getServiceProviderStub();
+		if (serviceProviderStub == null) {
+			throw new FlexPayException("Service provider do not set to registry properties");
+		}
+		String externalServiceProviderId = correctionsService.getExternalId(serviceProviderStub.getId(),
+				classToTypeRegistry.getType(ServiceProvider.class), megabankSD);
+		if (StringUtils.isEmpty(externalServiceProviderId)) {
+			throw new FlexPayException("External Id of service provider " +serviceProviderStub.getId() + " did not find");
+		}
+		return externalServiceProviderId;
+	}
+
 	@NotNull
-	private String[] createInfoLine(Registry registry, @NotNull RegistryRecord record) throws FlexPayException {
+	private String[] createInfoLine(Registry registry, @NotNull RegistryRecord record, @NotNull String serviceProviderId) throws FlexPayException {
 		List<String> infoLine = new ArrayList<String>();
 		//граница таблицы
 		infoLine.add(createCellData("", 0, ' '));
@@ -235,21 +263,21 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), TABLE_HEADERS[0].length(), ' '));
 
 		// лиц. счёт ЕРЦ
-		String eircCount = null;
+		String eircAccount = null;
 		//List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
 		for (RegistryRecordContainer container : record.getContainers()) {
 			if (container.getData() != null && container.getData().startsWith("15:")) {
-				String[] contenerFields = container.getData().split(":");
-				if (contenerFields.length >= 3) {
-					eircCount = contenerFields[2];
+				String[] containerFields = container.getData().split(":");
+				if (containerFields.length >= 4) {
+					eircAccount = containerFields[3];
 					break;
 				}
 			}
 		}
-		infoLine.add(createCellData(eircCount, TABLE_HEADERS[1].length(), ' '));
+		infoLine.add(createCellData(eircAccount, TABLE_HEADERS[1].length(), ' '));
 
 		// лиц. счёт поставщика услуг
-		infoLine.add(createCellData(record.getPersonalAccountExt(), TABLE_HEADERS[2].length(), ' '));
+		infoLine.add(createCellData(serviceProviderId, TABLE_HEADERS[2].length(), ' '));
 
 		// ФИО
 		String fio = record.getLastName();
@@ -405,5 +433,20 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
+	}
+
+	@Required
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
+		this.classToTypeRegistry = classToTypeRegistry;
+	}
+
+	@Required
+	public void setMegabankSD(DataSourceDescription megabankSD) {
+		this.megabankSD = stub(megabankSD);
 	}
 }
