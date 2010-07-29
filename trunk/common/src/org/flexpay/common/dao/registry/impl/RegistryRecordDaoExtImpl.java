@@ -156,49 +156,67 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
     private void getCorrectionCriteria(StringBuilder fromWhereClause, List<Object> params, RegistryRecord record, String type) throws FlexPayException {
 
-        String corTownType = "and town_type=? ";
-        String corTownName = "and town_name=? ";
-        String corStreetType = "and street_type=? ";
-        String corStreetName = "and street_name=? ";
-        String corBuilding = "and building_number=? and bulk_number=? ";
-        String corApartment = "and apartment_number=? ";
-        String corPerson = "and first_name=? and middle_name=? and last_name=? ";
+        String recTownType = record.getTownType();
+        String recTownName = record.getTownName();
+        String recStreetType = record.getStreetType();
+        String recStreetName = record.getStreetName();
+        String recBuilding = record.getBuildingNum();
+        String recBuildingBulk = record.getBuildingBulkNum();
+        String recApartment = record.getApartmentNum();
+        String recFirstName = record.getFirstName();
+        String recMiddleName = record.getMiddleName();
+        String recLastName = record.getLastName();
+
+        String isNull = " is ? ";
+        String value = " = ? ";
+
+        String corTownType = "and town_type" + (recTownType == null ? isNull : value);
+        String corTownName = "and town_name" + (recTownName == null ? isNull : value);
+        String corStreetType = "and street_type" + (recStreetType == null ? isNull : value);
+        String corStreetName = "and street_name" + (recStreetName == null ? isNull : value);
+        String corBuilding = "and building_number" + (recBuilding == null ? isNull : value);
+        String corBuildingBulk = "and bulk_number" + (recBuildingBulk == null ? isNull : value);
+        String corApartment = "and apartment_number" + (recApartment == null ? isNull : value);
+        String corFirstName = "and first_name" + (recFirstName == null ? isNull : value);
+        String corMiddleName = "and middle_name" + (recMiddleName == null ? isNull : value);
+        String corLastName = "and last_name" + (recLastName == null ? isNull : value);
 
         if (!CORRECT_TYPE_STREET_TYPE.equals(type)) {
             fromWhereClause.append(corTownType).append(corTownName);
-            params.add(record.getTownType());
-            params.add(record.getTownName());
+            params.add(recTownType);
+            params.add(recTownName);
         }
 
         if (CORRECT_TYPE_STREET_TYPE.equals(type)) {
             fromWhereClause.append(corStreetType);
-            params.add(record.getStreetType());
+            params.add(recStreetType);
         } else if (CORRECT_TYPE_STREET.equals(type)) {
             fromWhereClause.append(corStreetType).append(corStreetName);
-            params.add(record.getStreetType());
-            params.add(record.getStreetName());
+            params.add(recStreetType);
+            params.add(recStreetName);
         } else if (CORRECT_TYPE_BUILDING.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding);
-            params.add(record.getStreetType());
-            params.add(record.getStreetName());
-            params.add(record.getBuildingNum());
-            params.add(record.getBuildingBulkNum());
+            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corBuildingBulk);
+            params.add(recStreetType);
+            params.add(recStreetName);
+            params.add(recBuilding);
+            params.add(recBuildingBulk);
         } else if (CORRECT_TYPE_APARTMENT.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corApartment);
-            params.add(record.getStreetType());
-            params.add(record.getStreetName());
-            params.add(record.getBuildingNum());
-            params.add(record.getBuildingBulkNum());
-            params.add(record.getApartmentNum());
+            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corBuildingBulk).append(corApartment);
+            params.add(recStreetType);
+            params.add(recStreetName);
+            params.add(recBuilding);
+            params.add(recBuildingBulk);
+            params.add(recApartment);
         } else if (CORRECT_TYPE_PERSON.equals(type)) {
-            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corApartment).append(corPerson);
-            params.add(record.getStreetType());
-            params.add(record.getStreetName());
-            params.add(record.getBuildingNum());
-            params.add(record.getBuildingBulkNum());
-            params.add(record.getFirstName());
-            params.add(record.getMiddleName());
-            params.add(record.getLastName());
+            fromWhereClause.append(corStreetType).append(corStreetName).append(corBuilding).append(corBuildingBulk).append(corApartment).
+                    append(corFirstName).append(corMiddleName).append(corLastName);
+            params.add(recStreetType);
+            params.add(recStreetName);
+            params.add(recBuilding);
+            params.add(recBuildingBulk);
+            params.add(recFirstName);
+            params.add(recMiddleName);
+            params.add(recLastName);
         } else {
             log.warn("Incorrect type parameter {}", type);
             throw new FlexPayException("Incorrect correction type", "payments.error.registry.incorrect_correction_type");
@@ -230,6 +248,8 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         params.add(record.getRecordStatus().getId());
         fromWhereClause.append("and import_error_type=? ");
         params.add(record.getImportErrorType());
+
+        log.debug("Correction criteria: {},\nparams: {}", fromWhereClause, params);
 
         selectSql.append(fromWhereClause);
 
