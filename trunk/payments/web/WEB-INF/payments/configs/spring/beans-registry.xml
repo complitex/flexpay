@@ -32,7 +32,10 @@
 		  p:registryService-ref="registryService"
 		  p:registryStatusService-ref="registryStatusService"
 		  p:spService-ref="spService"
-		  p:serviceTypesMapper-ref="mbServiceTypeMapper" />
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
+		  p:correctionsService-ref="correctionsService"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:megabankSD-ref="megabankDataSourceDescription" />
 
 	<bean id="registryContainerBuilder" class="org.flexpay.payments.service.registry.impl.RegistryContainerBuilderImpl"
 		  p:typeRegistry-ref="classToTypeRegistry"
