@@ -3,7 +3,7 @@ update ab_buildings_tbl set eirc_service_organization_id=@service_org_1 where id
 
 -- Init Consumer infos
 insert into eirc_consumer_infos_tbl (id, status, first_name, middle_name, last_name,
-	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
 	values (1, 0, 'М', 'А', 'Иванофф',
 	'Н-ск', 'ул', 'ИВОНОВА', '27', '', '330');
 select @consumer_info:=1;
