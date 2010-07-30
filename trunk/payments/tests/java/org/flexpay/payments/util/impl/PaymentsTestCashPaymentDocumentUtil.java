@@ -2,8 +2,10 @@ package org.flexpay.payments.util.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.DocumentStatusService;
 import org.flexpay.payments.service.DocumentTypeService;
@@ -28,6 +30,8 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
 	private DocumentStatusService documentStatusService;
 	@Autowired
 	private DocumentService documentService;
+	@Autowired
+	private DocumentAdditionTypeService documentAdditionTypeService;
 
     @Nullable
     @Override
@@ -81,7 +85,25 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
 		document.setDocumentType(documentType);
 		document.setOperation(operation);
 
-        documentService.create(document);
+		DocumentAdditionType codeERCAccountType;
+		try {
+			codeERCAccountType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
+		} catch (FlexPayException e) {
+			log.error("Can not find document addition type", e);
+			return null;
+		}
+		if (codeERCAccountType == null) {
+			log.error("Can not find document addition type {}", DocumentAdditionType.CODE_ERC_ACCOUNT);
+			return null;
+		}
+		DocumentAddition ercAccountAddition = new DocumentAddition();
+		ercAccountAddition.setAdditionType(codeERCAccountType);
+		ercAccountAddition.setDocument(document);
+		ercAccountAddition.setStringValue("TestERCAc");
+
+		document.setAdditions(CollectionUtils.set(ercAccountAddition));
+
+		documentService.create(document);
 
         return document;
     }

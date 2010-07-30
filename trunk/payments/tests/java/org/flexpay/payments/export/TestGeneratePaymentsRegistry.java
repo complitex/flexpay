@@ -5,11 +5,14 @@ import static junit.framework.Assert.assertEquals;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.DataCorrection;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ObjectFilter;
@@ -22,6 +25,8 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -59,6 +64,7 @@ import org.springframework.scheduling.quartz.CronTriggerBean;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -109,6 +115,12 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
     @Autowired
     private RSASignatureService signatureService;
 	@Autowired
+	private CorrectionsService correctionsService;
+	@Autowired
+	private ClassToTypeRegistry classToTypeRegistry;
+	@Autowired
+	private DataSourceDescription megabankDataSourceDescription;
+	@Autowired
 	@Qualifier ("registryFPFileTypeService")
 	private RegistryFPFileTypeService registryFPFileTypeService;
     @Autowired
@@ -144,6 +156,9 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		//create service1 provider
 		serviceProvider = serviceProviderUtil.create(recipientOrganization);
         assertNotNull("Did not create service provider", serviceProvider);
+		DataCorrection serviceProviderCorrection = new DataCorrection("ESPA" + serviceProvider.getId(),
+				serviceProvider.getId(), classToTypeRegistry.getType(ServiceProvider.class), megabankDataSourceDescription);
+		correctionsService.save(serviceProviderCorrection);
 
         //create operation payment point
         paymentPoint = paymentPointUtil.create(registerOrganization);
@@ -187,7 +202,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
         OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
         senderOrganizationFilter.setOrganizations(CollectionUtils.list(registerOrganization));
         List<ObjectFilter> filters = CollectionUtils.<ObjectFilter>list(senderOrganizationFilter);
-        for (Registry registry : eircRegistryService.findObjects(filters, new Page<Registry>(1000))) {
+        for (Registry registry : eircRegistryService.findObjects(null, filters, new Page<Registry>(1000))) {
             System.out.println("Delete registry " + registry.getId());
             registryUtil.delete(registry);
         }
@@ -342,6 +357,15 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
                 assertEquals("Incorrect service line", SERVICE_LINE, serviceLine);
 				// 128 - is a size of SHA-1 signature
 				byte[] signature = TestGeneratePaymentsRegistry.read(is, 128);
+
+				int countLines = 0;
+				int k = 0;
+				while ((k = ArrayUtils.indexOf(signature, lineFeed[0], k)) >= 0) {
+					if (lineFeed.length > 1 && signature.length < (k + 1)) {
+						
+					}
+					countLines++;
+				}
 
 				// skip service lines - up to a 3 new feed lines
                 TestGeneratePaymentsRegistry.read(is, lineFeed.length);
