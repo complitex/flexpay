@@ -135,7 +135,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	0, 'А', 'А', 'Гаруст', '',
 	0, @identity_type_fio_id, @person_id_garust);
 insert into eirc_consumer_infos_tbl (status, first_name, middle_name, last_name,
-	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
 	values (0, 'А', 'А', 'Гаруст',
 	'Харьков', 'в-д', 'Аптекарский', '4', '', '1');
 select @consumer_info_garust:=last_insert_id();
@@ -188,7 +188,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	0, 'А', 'М', 'Афоничев', '',
 	0, @identity_type_fio_id, @person_id_afonichev);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
 	values (0, 'А', 'М', 'Афоничев',
 	'Харьков', 'в-д', 'Аптекарский', '4', '', '2');
 select @consumer_info_afonichev:=last_insert_id();
@@ -239,7 +239,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	0, 'Г', 'А', 'Турчин', '',
 	0, @identity_type_fio_id, @person_id_turchin);
 insert into eirc_consumer_infos_tbl (status, first_name, middle_name, last_name,
-	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
 	values (0, 'Г', 'А', 'Турчин',
 	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '12');
 select @consumer_info_turchin:=last_insert_id();
@@ -290,7 +290,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	0, 'В', 'А', 'Зайцев', '',
 	0, @identity_type_fio_id, @person_id_zaicev);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
     values (0, 'В', 'А', 'Зайцев',
     'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '16');
 select @consumer_info_zaicev:=last_insert_id();
@@ -341,7 +341,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
             0, 'Т', 'В', 'Цапко', '',
             0, @identity_type_fio_id, @person_id_capko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-        city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+        town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
     values (0, 'Т', 'В', 'Цапко',
         'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '37');
 select @consumer_info_capko:=last_insert_id();
@@ -392,7 +392,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
             0, 'В', 'М', 'Гончарова', '',
             0, @identity_type_fio_id, @person_id_goncharova);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-            city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+            town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
       values (0, 'В', 'М', 'Гончарова',
             'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '62');
 select @consumer_info_goncharova:=last_insert_id();
@@ -458,7 +458,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
             0, 'А', 'В', 'Панченко', '',
             0, @identity_type_fio_id, @person_id_panchenko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-            city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+            town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
     values (0, 'А', 'В', 'Панченко',
             'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '59');
 select @consumer_info_panchenko:=last_insert_id();
@@ -510,7 +510,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
             0, 'С', 'А', 'Юдин', '',
             0, @identity_type_fio_id, @person_id_yudin);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-            city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+            town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
     values (0, 'С', 'А', 'Юдин',
             'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '70');
 select @consumer_info_yudin:=last_insert_id();
@@ -561,7 +561,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
             0, 'Галина', 'Николаевна', 'Мирошниченко', '',
             0, @identity_type_fio_id, @person_id_miroshnichenko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-            city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+            town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
     values (0, 'Галина', 'Николаевна', 'Мирошниченко',
             'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '59');
 select @consumer_info_miroshnichenko:=last_insert_id();
@@ -612,7 +612,7 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
             0, 'А', 'М', 'Климко', '',
             0, @identity_type_fio_id, @person_id_klimko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
-            city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+            town_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
     values (0, 'А', 'М', 'Климко',
             'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '103');
 select @consumer_info_klimko:=last_insert_id();
