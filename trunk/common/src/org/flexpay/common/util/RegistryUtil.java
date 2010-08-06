@@ -22,6 +22,6 @@ public class RegistryUtil {
 
 	public static final String EXPORT_FILE_ENCODING = "Cp1251";
 
-	public static final String EXPORT_FILE_EXTENSION = "ree_12";
+	public static final String EXPORT_FILE_EXTENSION = "ree_";
 
 }
