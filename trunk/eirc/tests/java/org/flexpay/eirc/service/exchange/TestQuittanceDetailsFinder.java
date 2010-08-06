@@ -7,12 +7,15 @@ import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.payments.actions.request.data.request.DebtsRequest;
+import org.flexpay.payments.actions.request.data.request.RequestType;
 import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.actions.request.data.response.Status;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.Locale;
 
 import static org.flexpay.payments.actions.request.data.request.InfoRequest.quittanceNumberRequest;
 import static org.junit.Assert.assertEquals;
@@ -40,22 +43,22 @@ public class TestQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		QuittanceDetailsResponse response = detailsFinder.findQuittance(quittanceNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
+		QuittanceDetailsResponse response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 		watch.reset();
 		watch.start();
-		response = detailsFinder.findQuittance(quittanceNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
+		response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 		watch.reset();
 		watch.start();
-		response = detailsFinder.findQuittance(quittanceNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
+		response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 		watch.reset();
 		watch.start();
-		response = detailsFinder.findQuittance(quittanceNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
+		response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 

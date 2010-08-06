@@ -9,12 +9,15 @@ import static org.flexpay.payments.actions.request.data.request.InfoRequest.apar
 import static org.flexpay.payments.actions.request.data.request.InfoRequest.quittanceNumberRequest;
 
 import org.flexpay.payments.actions.request.data.request.DebtsRequest;
+import org.flexpay.payments.actions.request.data.request.RequestType;
 import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.Locale;
 
 public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
@@ -62,7 +65,7 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
         @Override
 		public void run() {
-			response = detailsFinder.findQuittance(quittanceNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
+			response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
 		}
 	}
 
@@ -70,7 +73,7 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 	public void testGetQuittanceDetailsByApartment() {
 
 		String number = String.valueOf(1L);
-		QuittanceDetailsResponse response = detailsFinder.findQuittance(apartmentNumberRequest(number, DebtsRequest.SEARCH_QUITTANCE_DEBT_REQUEST));
+		QuittanceDetailsResponse response = detailsFinder.findQuittance(apartmentNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
 
 		log.info("Got response {}", response);
 	}

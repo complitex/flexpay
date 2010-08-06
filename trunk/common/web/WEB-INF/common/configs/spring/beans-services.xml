@@ -335,7 +335,6 @@
 	</bean>
 
 	<bean id="megabankDataSourceDescription"
-		  autowire-candidate="false"
 		  class="org.flexpay.common.persistence.DataSourceDescription">
 		<constructor-arg index="0" value="${megabank.data.source.description.id}" type="java.lang.Long" />
 	</bean>

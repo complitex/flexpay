@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.util.RegistryUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class ExportBankPaymentsRegistry extends RegistryFPFileFormat {
 		}
 
 		return new SimpleDateFormat(RegistryUtil.EXPORT_FILE_NAME_DATE_FORMAT).format(new Date())
-			   + "_" + paymentPointId + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION;
+			   + "_" + paymentPointId + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION + RegistryType.TYPE_BANK_PAYMENTS;
 
 	}
 }
