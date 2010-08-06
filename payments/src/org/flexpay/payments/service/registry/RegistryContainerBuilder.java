@@ -8,6 +8,7 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentAddition;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
 
 public interface RegistryContainerBuilder {
@@ -25,6 +26,8 @@ public interface RegistryContainerBuilder {
 	RegistryContainer buildSyncIdContainer(Class<? extends DomainObject> clazz, DomainObject object, String end);
 
 	RegistryRecordContainer getSimplePaymentContainer(Document document);
+
+	RegistryRecordContainer getBankPaymentContainer(Operation operation);
 
 	RegistryRecordContainer getPaymentPointIdContainer(Document document);
 
