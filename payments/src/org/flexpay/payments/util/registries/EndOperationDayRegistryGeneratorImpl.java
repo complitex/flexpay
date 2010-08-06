@@ -4,12 +4,15 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.DocumentAddition;
+import org.flexpay.payments.persistence.DocumentAdditionType;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.registry.RegistryContainerBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -23,8 +26,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.RegistryUtil.BANK_PAYMENT_CONTAINER_CODE;
-import static org.flexpay.common.util.RegistryUtil.CONTAINER_BODY_SEPARATOR;
 
 @Transactional (readOnly = true)
 public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegistryGenerator {
@@ -41,6 +42,10 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	private RegistryStatusService registryStatusService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
+	private DocumentAdditionTypeService documentAdditionTypeService;
+
+	private RegistryContainerBuilder registryContainerBuilder;
+
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	@Nullable
@@ -120,16 +125,17 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setBuildingNum(StringUtils.stripToEmpty(document.getBuildingNumber()));
 				record.setApartmentNum(StringUtils.stripToEmpty(document.getApartmentNumber()));
 
-				RegistryRecordContainer container = new RegistryRecordContainer();
 				BigDecimal sum = document.getSum().setScale(2, BigDecimal.ROUND_HALF_UP);
 				record.setAmount(sum);
-
 				totalSum = totalSum.add(sum);
-				container.setData(BANK_PAYMENT_CONTAINER_CODE + CONTAINER_BODY_SEPARATOR +
-								  StringUtil.getString(paymentPoint.getId()) + CONTAINER_BODY_SEPARATOR +
-								  StringUtil.getString(operation.getId()) + CONTAINER_BODY_SEPARATOR +
-								  StringUtil.getString(operation.getOperationSum()));
-				record.addContainer(container);
+
+				record.addContainer(registryContainerBuilder.getBankPaymentContainer(operation));
+
+				// add external organization account number if available
+				DocumentAddition ercAccountAddition = getErcAccountAddition(document);
+				if (ercAccountAddition != null) {
+					record.addContainer(registryContainerBuilder.getExternalOrganizationAccountContainer(ercAccountAddition));
+				}
 
 				RegistryRecordProperties recordProperties = propertiesFactory.newRecordProperties();
 				recordProperties.setRecord(record);
@@ -165,6 +171,23 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 			return registry;
 		}
+	}
+
+	private DocumentAddition getErcAccountAddition(Document document) throws FlexPayException {
+
+		DocumentAdditionType documentErcType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
+		if (documentErcType == null) {
+			log.warn("No ERC account document addition type found");
+			return null;
+		}
+
+		for (DocumentAddition addition : document.getAdditions()) {
+			if (documentErcType.equals(addition.getAdditionType())) {
+				return addition;
+			}
+		}
+
+		return null;
 	}
 
 	@Required
@@ -215,5 +238,15 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	@Required
 	public void setFileService(FPFileService fileService) {
 		this.fileService = fileService;
+	}
+
+	@Required
+	public void setDocumentAdditionTypeService(DocumentAdditionTypeService documentAdditionTypeService) {
+		this.documentAdditionTypeService = documentAdditionTypeService;
+	}
+
+	@Required
+	public void setRegistryContainerBuilder(RegistryContainerBuilder registryContainerBuilder) {
+		this.registryContainerBuilder = registryContainerBuilder;
 	}
 }

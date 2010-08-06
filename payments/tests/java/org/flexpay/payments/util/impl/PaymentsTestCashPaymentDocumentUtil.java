@@ -68,6 +68,7 @@ public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
 		document.setDocumentStatus(documentStatus);
 		document.setOperation(operation);
 		document.setCreditorOrganization(serviceProviderOrganization);
+		document.setCreditorId("042111");
 		document.setDebtorOrganization(collectorOrganization);
 		document.setService(service);
 		document.setAddress("Test address");

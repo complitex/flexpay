@@ -21,7 +21,7 @@ public class GeneratePaymentsFPRegistryJob extends Job {
 
 	private RegistryService registryService;
 
-	private RegistryFPFileFormat exportBankPaymentsRegistry;
+	private RegistryFPFileFormat exportPaymentsRegistry;
 
     /**
      * Create new file in FP format from db registry and attach result to it.<br/>
@@ -41,7 +41,7 @@ public class GeneratePaymentsFPRegistryJob extends Job {
 
         log.debug("Run generate FP file of registry {}", registry.getId());
 
-        FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry, getPrivateKey(parameters));
+        FPFile file = exportPaymentsRegistry.generateAndAttachFile(registry, getPrivateKey(parameters));
         if (file == null) {
             log.error("FP file does not generate for registry {}", registry.getId());
             return RESULT_ERROR;
@@ -86,7 +86,7 @@ public class GeneratePaymentsFPRegistryJob extends Job {
     }
 
     @Required
-    public void setExportBankPaymentsRegistry(RegistryFPFileFormat exportBankPaymentsRegistry) {
-        this.exportBankPaymentsRegistry = exportBankPaymentsRegistry;
+    public void setExportPaymentsRegistry(RegistryFPFileFormat exportPaymentsRegistry) {
+        this.exportPaymentsRegistry = exportPaymentsRegistry;
     }
 }

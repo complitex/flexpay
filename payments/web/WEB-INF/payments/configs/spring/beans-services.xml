@@ -149,7 +149,8 @@
 		  parent="paymentsRegistryFPFileFormat" />
 
 
-	<bean id="exportPaymentsRegistry"
+	<bean id="exportCashPaymentsRegistry"
+		  class="org.flexpay.payments.util.registries.ExportCashPaymentsRegistry"
 		  parent="paymentsRegistryFPFileFormat" />
 
 	<bean id="endOperationDayRegistryGenerator"
@@ -163,7 +164,9 @@
 		  p:registryRecordStatusService-ref="registryRecordStatusService"
 		  p:registryService-ref="registryService"
 		  p:registryStatusService-ref="registryStatusService"
-		  p:registryTypeService-ref="registryTypeService" />
+		  p:registryTypeService-ref="registryTypeService"
+		  p:documentAdditionTypeService-ref="documentAdditionTypeService"
+		  p:registryContainerBuilder-ref="registryContainerBuilder" />
 
 	<bean id="rsaSignatureService"
 		  class="org.flexpay.payments.service.impl.RSASignatureService" />

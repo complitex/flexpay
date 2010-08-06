@@ -201,9 +201,11 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
         //delete generation registry
         OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
         senderOrganizationFilter.setOrganizations(CollectionUtils.list(registerOrganization));
+		senderOrganizationFilter.setSelected(Stub.stub(registerOrganization));
         List<ObjectFilter> filters = CollectionUtils.<ObjectFilter>list(senderOrganizationFilter);
         for (Registry registry : eircRegistryService.findObjects(null, filters, new Page<Registry>(1000))) {
             System.out.println("Delete registry " + registry.getId());
+			log.debug("Delete registry {}", registry.getId());
             registryUtil.delete(registry);
         }
         //delete operation with own documents
@@ -214,7 +216,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
         paymentPointUtil.delete(paymentPoint);
         //delete organization
         organizationUtil.delete(registerOrganization);
-        organizationUtil.delete(recipientOrganization);
+        organizationUtil.delete(recipientOrganization);		
     }
 
     @Test
@@ -294,7 +296,10 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 //		fpFileService.deleteFromFileSystem(registryFPFile);
 	}
 
-	private static void assertTotalCountLine(FPFile file, final long n) throws IOException {
+	private void assertTotalCountLine(FPFile file, final long n) throws IOException {
+
+		log.debug("assertTotalCountLine");
+
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
             @Override
 			public void read(Reader r) throws IOException {
@@ -321,7 +326,10 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		});
 	}
 
-	private static void assertRecordCountLine(FPFile file, final int n) throws IOException {
+	private void assertRecordCountLine(FPFile file, final int n) throws IOException {
+
+		log.debug("assertRecordCountLine");
+
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
             @Override
 			public void read(Reader r) throws IOException {
@@ -345,6 +353,8 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 	private void assertDigitalSignature(FPFile file, String key) throws Exception {
 
+		log.debug("assertDigitalSignature");
+
 		final Signature sign = signatureService.readPublicSignature(key);
 
 		file.withInputStream(new InputStreamCallback() {
@@ -352,36 +362,20 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 			public void read(InputStream is) throws IOException {
 
 				byte[] lineFeed = "\n".getBytes(FILE_ENCODING);
-                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
                 String serviceLine = new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length()));
                 assertEquals("Incorrect service line", SERVICE_LINE, serviceLine);
+				TestGeneratePaymentsRegistry.read(is, lineFeed.length);
 				// 128 - is a size of SHA-1 signature
 				byte[] signature = TestGeneratePaymentsRegistry.read(is, 128);
 
-				int countLines = 0;
-				int k = 0;
-				while ((k = ArrayUtils.indexOf(signature, lineFeed[0], k)) >= 0) {
-					if (lineFeed.length > 1 && signature.length < (k + 1)) {
-						
-					}
-					countLines++;
-				}
+				byte[] readBytes;
+				do {
+					readBytes = TestGeneratePaymentsRegistry.read(is, lineFeed.length);
+				} while ("\n".equals(new String(readBytes, FILE_ENCODING)));
 
-				// skip service lines - up to a 3 new feed lines
-                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
-                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
-                serviceLine = new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length()));
-                assertEquals("Incorrect service line", SERVICE_LINE, serviceLine);
+				assertEquals("Incorrect start second service line", "_", new String(readBytes, FILE_ENCODING));
 
-                String[] signatureParts = new String(signature).split("\n");
-
-                if (signatureParts.length < 2) {
-                    TestGeneratePaymentsRegistry.read(is, lineFeed.length);
-                }
-
-                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
-
-                serviceLine = new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length()));
+                serviceLine = "_" + new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length() - 1));
                 assertEquals("Incorrect second service line", SERVICE_LINE, serviceLine);
 
                 TestGeneratePaymentsRegistry.read(is, lineFeed.length);

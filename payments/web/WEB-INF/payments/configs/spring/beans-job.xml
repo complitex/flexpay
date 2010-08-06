@@ -46,7 +46,7 @@
     <bean id="generatePaymentsFPRegistryJob"
           class="org.flexpay.payments.process.export.job.GeneratePaymentsFPRegistryJob"
           p:registryService-ref="registryService"
-          p:exportBankPaymentsRegistry-ref="exportPaymentsRegistry"
+          p:exportPaymentsRegistry-ref="exportCashPaymentsRegistry"
           scope="prototype" />
 
     <bean id="sendRegistryJob"

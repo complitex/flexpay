@@ -5,11 +5,13 @@ import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentAddition;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.registry.RegistryContainerBuilder;
 import org.flexpay.payments.util.config.ApplicationConfig;
@@ -25,6 +27,7 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 	// container types
 	private static final String EXTERNAL_ORG_ACCOUNT_CONTAINER_TYPE = "15";
 	private static final String SIMPLE_PAYMENT_CONTAINER_TYPE = "50";
+	private static final String BANK_PAYMENT_CONTAINER_TYPE = "52";
 	private static final String PAYMENT_POINT_ID_CONTAINER_TYPE = "500";
 	private static final String INSTANCE_ID_CONTAINER_TYPE = "503";
 	private static final String SYNC_ID_CONTAINER_TYPE = "502";
@@ -73,6 +76,14 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 
 		return new RegistryRecordContainer(SIMPLE_PAYMENT_CONTAINER_TYPE +
 										   DELIMITER + document.getCreditorOrganization().getId());
+	}
+	
+	public RegistryRecordContainer getBankPaymentContainer(Operation operation) {
+
+		return new RegistryRecordContainer(BANK_PAYMENT_CONTAINER_TYPE +
+				                           DELIMITER + StringUtil.getString(operation.getRegisterOrganization().getId()) +
+										   DELIMITER + StringUtil.getString(operation.getId()) +
+				                           DELIMITER + StringUtil.getString(operation.getOperationSum()));
 	}
 
 	public RegistryRecordContainer getPaymentPointIdContainer(Document document) {
