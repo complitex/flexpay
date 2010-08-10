@@ -7,19 +7,24 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
-import org.flexpay.payments.actions.request.data.request.InfoRequest;
-import org.flexpay.payments.actions.request.data.request.RequestType;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
-import org.flexpay.payments.actions.request.data.response.Status;
-import org.flexpay.payments.actions.request.data.response.data.ConsumerAttributes;
-import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
-import org.flexpay.payments.actions.request.data.response.data.ServiceDetails;
+import org.flexpay.payments.actions.outerrequest.request.GetQuittanceDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
+import org.flexpay.payments.actions.outerrequest.request.response.GetQuittanceDebtInfoResponse;
+import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.actions.outerrequest.request.response.Status;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
+import org.flexpay.payments.actions.outerrequest.request.response.data.QuittanceInfo;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ServiceDetails;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -28,11 +33,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale;
 
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.accountNumberRequest;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.apartmentNumberRequest;
 
 public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
@@ -40,13 +42,11 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private static final String SEARCH_TYPE_QUITTANCE_NUMBER = "QUITTANCE_NUMBER";
 	private static final String SEARCH_TYPE_ADDRESS = "ADDRESS";
 
-	// form data
 	private String searchType;
 	private String searchCriteria;
-	private QuittanceInfo[] quittanceInfos;
+	private List<QuittanceInfo> quittanceInfos;
 	private String actionName;
 
-	// required services
 	private AddressService addressService;
 	private ApartmentService apartmentService;
 	private PersonService personService;
@@ -55,35 +55,53 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private ServiceProviderService serviceProviderService;
 	private MasterIndexService masterIndexService;
 	private CorrectionsService correctionsService;
-
 	private ServiceTypesMapper serviceTypesMapper;
+    private ProcessManager processManager;
 
 	@NotNull
     @Override
 	protected String doExecute() throws Exception {
 
-		InfoRequest request = buildQuittanceRequest();
-		QuittanceDetailsResponse response = quittanceDetailsFinder.findQuittance(request);
+		GetQuittanceDebtInfoRequest request = buildQuittanceRequest();
+		SearchResponse searchResponse = quittanceDetailsFinder.findQuittance(request);
 
-		if (response.isSuccess()) {
+		if (searchResponse.isSuccess()) {
+            GetQuittanceDebtInfoResponse response = (GetQuittanceDebtInfoResponse) searchResponse;
 			quittanceInfos = response.getInfos();
 			filterSubservices();
 			filterNegativeSums();
+
+            final Long paymentProcessId = getPaymentProcessId();
+
+            if (paymentProcessId == null || paymentProcessId == 0) {
+                log.debug("TradingDay process id not found for Payment collector with id = {}", getPaymentPoint().getCollector().getId());
+                addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
+            } else {
+                log.debug("Found process id {} for cashbox {}", paymentProcessId, cashboxId);
+                if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+                    addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
+                }
+            }
+
 		} else {
-			addActionError(getStatusText(response.getStatus()));
+			addActionError(getStatusText(searchResponse.getStatus()));
 		}
 
 		return SUCCESS;
 	}
 
-	private InfoRequest buildQuittanceRequest() throws FlexPayException {
+	private GetQuittanceDebtInfoRequest buildQuittanceRequest() throws FlexPayException {
 
-        Locale locale = getUserPreferences().getLocale();
+        GetQuittanceDebtInfoRequest request = new GetQuittanceDebtInfoRequest();
+
+        request.setLocale(getUserPreferences().getLocale());
 
 		if (SEARCH_TYPE_EIRC_ACCOUNT.equals(searchType)) {
-			return accountNumberRequest(searchCriteria, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, locale);
+            request.setSearchCriteria(searchCriteria);
+            request.setSearchType(SearchRequest.TYPE_ACCOUNT_NUMBER);
 		} else if (SEARCH_TYPE_QUITTANCE_NUMBER.equals(searchType)) {
-			return InfoRequest.quittanceNumberRequest(searchCriteria, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, locale);
+            request.setSearchCriteria(searchCriteria);
+            request.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
 			Apartment apartment = apartmentService.readFull(
 					new Stub<Apartment>(Long.parseLong(searchCriteria)));
@@ -91,11 +109,14 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			if (indx == null) {
 				throw new FlexPayException("No master index for apartment #" + searchCriteria);
 			}
-			return apartmentNumberRequest(indx, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, locale);
+            request.setSearchCriteria(searchCriteria);
+            request.setSearchType(SearchRequest.TYPE_APARTMENT_NUMBER);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
 									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
 		}
+
+        return request;
 	}
 
 	// eliminates services with non-positive outgoing balances
@@ -106,7 +127,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			BigDecimal total = new BigDecimal("0.00");
 
 			List<ServiceDetails> filteredDetails = list();
-			for (ServiceDetails sd : info.getDetailses()) {
+			for (ServiceDetails sd : info.getServiceDetailses()) {
 				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) > 0) {
 					filteredDetails.add(sd);
 					total = total.add(sd.getOutgoingBalance());
@@ -117,13 +138,13 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			}
 
 			if (!filteredDetails.isEmpty()) {
-				info.setDetailses(filteredDetails.toArray(new ServiceDetails[filteredDetails.size()]));
+				info.setServiceDetailses(filteredDetails);
 				info.setTotalToPay(total);
 				filteredInfos.add(info);
 			}
 		}
 
-		this.quittanceInfos = filteredInfos.toArray(new QuittanceInfo[filteredInfos.size()]);
+		quittanceInfos = filteredInfos;
 	}
 
 	// eliminates subservices information from quittances info
@@ -133,7 +154,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			List<ServiceDetails> filtered = list();
 			BigDecimal totalToPay = new BigDecimal("0.00");
 
-			for (ServiceDetails details : quittanceInfo.getDetailses()) {
+			for (ServiceDetails details : quittanceInfo.getServiceDetailses()) {
 				if (isNotSubservice(details.getServiceMasterIndex())) {
 					filtered.add(details);
 					totalToPay = totalToPay.add(details.getOutgoingBalance());
@@ -142,7 +163,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 				}
 			}
 
-			quittanceInfo.setDetailses(filtered.toArray(new ServiceDetails[filtered.size()]));
+			quittanceInfo.setServiceDetailses(filtered);
 			quittanceInfo.setTotalToPay(totalToPay);
 		}
 
@@ -164,16 +185,10 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private String getStatusText(Status status) {
         return getText(status.getTextKey());
 	}
-
 	@NotNull
     @Override
 	protected String getErrorResult() {
 		return SUCCESS;
-	}
-
-	// rendering utility methods
-	public boolean resultsAreNotEmpty() {
-		return quittanceInfos.length > 0;
 	}
 
 	public String getServiceName(String serviceMasterIndex) {
@@ -244,7 +259,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
 		BigDecimal total = new BigDecimal("0.00");
 		for (QuittanceInfo info : quittanceInfos) {
-			for (ServiceDetails details : info.getDetailses()) {
+			for (ServiceDetails details : info.getServiceDetailses()) {
 				total = total.add(details.getOutgoingBalance());
 			}
 		}
@@ -295,11 +310,11 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		this.searchCriteria = searchCriteria;
 	}
 
-	public QuittanceInfo[] getQuittanceInfos() {
-		return quittanceInfos;
-	}
+    public List<QuittanceInfo> getQuittanceInfos() {
+        return quittanceInfos;
+    }
 
-	public String getActionName() {
+    public String getActionName() {
 		return actionName;
 	}
 
@@ -307,7 +322,12 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		this.actionName = actionName;
 	}
 
-	@Required
+    @Required
+    public void setProcessManager(ProcessManager processManager) {
+        this.processManager = processManager;
+    }
+
+    @Required
 	public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
 		this.quittanceDetailsFinder = quittanceDetailsFinder;
 	}

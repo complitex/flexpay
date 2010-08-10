@@ -1,9 +1,9 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.payments.actions.request.data.request.InfoRequest;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
-import org.flexpay.payments.actions.request.data.response.Status;
+import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
+import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.actions.outerrequest.request.response.Status;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -30,28 +30,28 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	 */
 	@NotNull
 	@Override
-	public QuittanceDetailsResponse findQuittance(final InfoRequest request) {
+	public SearchResponse findQuittance(final SearchRequest<?> request) {
 
-		request.setRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
+		request.setJmsRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
 
 		jmsTemplate.send(requestQueue, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
 				ObjectMessage msg = session.createObjectMessage(request);
 				msg.setJMSReplyTo(responseQueue);
-				msg.setStringProperty("requestId", request.getRequestId());
+				msg.setStringProperty("requestId", request.getJmsRequestId());
 				return msg;
 			}
 		});
 
-		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate.receiveSelectedAndConvert(
-				responseQueue, String.format("requestId = '%s'", request.getRequestId()));
+        SearchResponse response = (SearchResponse) jmsTemplate.receiveSelectedAndConvert(
+                responseQueue, String.format("requestId = '%s'", request.getJmsRequestId()));
 
 		log.debug("Response recieved: {}", response);
 
 		if (response == null) {
-			response = new QuittanceDetailsResponse();
-			response.setStatus(Status.RECIEVE_TIMEOUT);
+			request.getResponse().setStatus(Status.RECIEVE_TIMEOUT);
+            return request.getResponse();
 		}
 
 		return response;

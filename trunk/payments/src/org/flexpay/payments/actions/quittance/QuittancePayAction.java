@@ -19,7 +19,6 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private Long operationId;
 
-	// required services
 	private ProcessManager processManager;
 
 	@NotNull
@@ -40,7 +39,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 		}
 
 		Cashbox cashbox = getCashbox();
-		final Long paymentProcessId = getPaymentProcessId(cashbox);
+		final Long paymentProcessId = getPaymentProcessId();
 
 		if (paymentProcessId == null || paymentProcessId == 0) {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
@@ -71,12 +70,6 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 		return REDIRECT_SUCCESS;
 
-	}
-
-	private Long getPaymentProcessId(Cashbox cashbox) {
-		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
-		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
-		return paymentPoint.getTradingDayProcessInstanceId();
 	}
 
 	private Cashbox getCashbox() {

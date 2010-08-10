@@ -193,7 +193,7 @@ public class Service extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public String format(Locale locale) throws Exception {
+	public String format(Locale locale) {
 		ServiceDescription description = TranslationUtil.getTranslation(descriptions, locale);
 		return description != null ? description.getName() : "";
 	}

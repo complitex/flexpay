@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.jetbrains.annotations.NotNull;
@@ -167,6 +168,16 @@ public class RegistryServiceImpl implements RegistryService {
 	public Collection<Registry> findObjects(@NotNull Set<Long> objectIds) {
 		return registryDaoExt.findRegistries(objectIds);
 	}
+
+    @Override
+    public List<Registry> findRegistries(int typeCode, Date from, Date till) {
+        return registryDao.findRegistries(typeCode, from, till);
+    }
+
+    @Override
+    public List<Registry> findRegistriesInDateInterval(Date from, Date till) {
+        return registryDao.findRegistriesInDateInterval(from, till);
+    }
 
 	/**
 	 * {@inheritDoc}

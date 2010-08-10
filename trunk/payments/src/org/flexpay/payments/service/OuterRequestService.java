@@ -1,33 +1,31 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.payments.actions.request.data.request.InfoRequest;
-import org.flexpay.payments.actions.request.data.request.PayRequest;
-import org.flexpay.payments.actions.request.data.request.RegistryCommentRequest;
-import org.flexpay.payments.actions.request.data.request.ReversalPayRequest;
-import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
-import org.flexpay.payments.actions.request.data.response.SimpleResponse;
+import org.flexpay.payments.actions.outerrequest.request.*;
+import org.flexpay.payments.actions.outerrequest.request.response.*;
 import org.jetbrains.annotations.NotNull;
 
 public interface OuterRequestService {
 
-    /**
-     * Find quittance details
-     *
-     * @param request Request for quittance details
-     * @return Details response
-     */
     @NotNull
-    QuittanceDetailsResponse findQuittance(InfoRequest request);
+    GetDebtInfoResponse getDeftInfo(GetDebtInfoRequest request);
 
     @NotNull
-    PayInfoResponse quittancePay(PayRequest payRequest) throws FlexPayException;
+    GetQuittanceDebtInfoResponse getQuittanceDeftInfo(GetQuittanceDebtInfoRequest request);
 
     @NotNull
-    SimpleResponse refund(ReversalPayRequest reversalPayRequest) throws FlexPayException;
+    PayDebtResponse quittancePay(PayDebtRequest request) throws FlexPayException;
 
     @NotNull
-    SimpleResponse addRegistryComment(RegistryCommentRequest registryCommentRequest) throws FlexPayException;
+    ReversalPayResponse reversalPay(ReversalPayRequest request) throws FlexPayException;
+
+    @NotNull
+    RegistryCommentResponse addRegistryComment(RegistryCommentRequest request) throws FlexPayException;
+
+    @NotNull
+    GetRegistryListResponse getRegistryList(GetRegistryListRequest request) throws FlexPayException;
+
+    @NotNull
+    GetServiceListResponse getServiceList(GetServiceListRequest request) throws FlexPayException;
 
 }

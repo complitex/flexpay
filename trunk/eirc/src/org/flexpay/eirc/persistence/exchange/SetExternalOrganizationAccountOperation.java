@@ -12,7 +12,7 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateConsumer;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.payments.actions.request.data.response.data.ConsumerAttributes;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 
 import org.jetbrains.annotations.NotNull;

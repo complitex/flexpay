@@ -1,6 +1,6 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -23,6 +23,7 @@ public class RequestIdSetMessageConverter implements MessageConverter {
 	 * @throws org.springframework.jms.support.converter.MessageConversionException
 	 *                                in case of conversion failure
 	 */
+    @Override
 	public Message toMessage(Object object, Session session) throws JMSException, MessageConversionException {
 
 		Message msg = delegate.toMessage(object, session);
@@ -31,9 +32,9 @@ public class RequestIdSetMessageConverter implements MessageConverter {
 	}
 
 	private void setRequestIdProperty(Object object, Message msg) throws JMSException {
-		if (object instanceof QuittanceDetailsResponse) {
-			QuittanceDetailsResponse response = (QuittanceDetailsResponse) object;
-			msg.setStringProperty("requestId", response.getRequestId());
+		if (object instanceof SearchResponse) {
+			SearchResponse response = (SearchResponse) object;
+			msg.setStringProperty("requestId", response.getJmsRequestId());
 		}
 	}
 
@@ -46,6 +47,7 @@ public class RequestIdSetMessageConverter implements MessageConverter {
 	 * @throws org.springframework.jms.support.converter.MessageConversionException
 	 *                                in case of conversion failure
 	 */
+    @Override
 	public Object fromMessage(Message message) throws JMSException, MessageConversionException {
 		return delegate.fromMessage(message);
 	}

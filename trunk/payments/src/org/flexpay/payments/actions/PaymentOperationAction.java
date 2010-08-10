@@ -12,7 +12,7 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
+import org.flexpay.payments.actions.outerrequest.request.response.data.QuittanceInfo;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.springframework.beans.factory.annotation.Required;

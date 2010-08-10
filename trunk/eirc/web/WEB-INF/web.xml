@@ -148,7 +148,7 @@
 
     <servlet>
         <servlet-name>processRequestServlet</servlet-name>
-        <servlet-class>org.flexpay.payments.actions.request.ProcessRequestServlet</servlet-class>
+        <servlet-class>org.flexpay.payments.actions.outerrequest.OuterRequestHandlerServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>processRequestServlet</servlet-name>

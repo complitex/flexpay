@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:if test="resultsAreNotEmpty()">
+<s:if test="!quittanceInfos.isEmpty()">
 
 <form id="quittancePayForm" action="<s:url action="paymentOperationReportAction" includeParams="none" />">
 
@@ -22,7 +22,7 @@
             <td class="th">&nbsp;</td>
         </tr>
         <s:iterator value="quittanceInfos" id="qi" status="nQI">
-            <s:iterator value="detailses" status="status">
+            <s:iterator value="serviceDetailses" status="status">
                 <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>
                 <s:set name="serviceIndx" value="%{getServiceFullIndex(#nQI.index, #serviceId)}"/>
 
@@ -92,20 +92,22 @@
             </td>
             <td class="col"></td>
         </tr>
-        <tr>
-            <td colspan="5" style="text-align:right;">
-                <span style="display:none;">&nbsp;</span>
-                <img id="indicator" src="<s:url value="/resources/common/img/indicator.gif" />" style="display:none;" />
-                <input type="button" id="printQuittanceButton" class="btn-exit" style="width:80px;" value="<s:text name="payments.quittances.quittance_pay.print_quittance" />" />
-            </td>
-            <td style="text-align:right;">
-                <sec:authorize ifAllGranted="ROLE_PAYMENTS_OPERATION_ADD">
-                    <input type="button" id="payQuittanceButton" class="btn-exit" style="width:80px;"
-                           value="<s:text name="payments.quittances.quittance_pay.pay" />" />
-                </sec:authorize>
-            </td>
-            <td class="col"></td>
-        </tr>
+        <s:if test="!hasActionErrors()">
+            <tr>
+                <td colspan="5" style="text-align:right;">
+                    <span style="display:none;">&nbsp;</span>
+                    <img id="indicator" src="<s:url value="/resources/common/img/indicator.gif" />" style="display:none;" />
+                    <input type="button" id="printQuittanceButton" class="btn-exit" style="width:80px;" value="<s:text name="payments.quittances.quittance_pay.print_quittance" />" />
+                </td>
+                <td style="text-align:right;">
+                    <sec:authorize ifAllGranted="ROLE_PAYMENTS_OPERATION_ADD">
+                        <input type="button" id="payQuittanceButton" class="btn-exit" style="width:80px;"
+                               value="<s:text name="payments.quittances.quittance_pay.pay" />" />
+                    </sec:authorize>
+                </td>
+                <td class="col"></td>
+            </tr>
+        </s:if>
     </table>
 </form>
 
@@ -114,7 +116,7 @@
     $(function() {
         FPP.bindEvents([
             <s:iterator value="quittanceInfos" id="qi" status="nQI">
-                <s:iterator value="detailses" status="status">
+                <s:iterator value="serviceDetailses" status="status">
                     <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}" />
                     //<s:property value="#serviceId" />
                     {

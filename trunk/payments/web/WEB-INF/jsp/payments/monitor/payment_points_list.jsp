@@ -5,7 +5,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%" class="payment_points_list">
     <tr>
-        <td colspan="9">
+        <td colspan="8">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
         </td>
     </tr>
@@ -18,9 +18,6 @@
         <td class="th"><s:text name="payments.payment_points.list.cash_box" /></td>
         <td class="th"><s:text name="payments.payment_points.list.FIO_cashier" /></td>
         <td class="th"><s:text name="payments.payment_points.list.last_payment" /></td>
-        <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
-            <td class="th"><s:text name="payments.payment_points.list.action" /></td>
-        </sec:authorize>
     </tr>
     <s:iterator value="paymentPoints" status="iterStatus">
         <tr>
@@ -36,17 +33,10 @@
             <td><s:property value="cashBox" /></td>
             <td><s:property value="cashierFIO" /></td>
             <td><s:property value="lastPayment" /></td>
-            <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
-                <td>
-                    <a href="#" onclick="enableDisablePaymentPoint(<s:property value="id" />, '<s:property value="action" />');">
-                        <s:text name="%{action}" />
-                    </a>
-                </td>
-            </sec:authorize>
         </tr>
     </s:iterator>
     <tr>
-        <td colspan="9">
+        <td colspan="8">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
         </td>
     </tr>

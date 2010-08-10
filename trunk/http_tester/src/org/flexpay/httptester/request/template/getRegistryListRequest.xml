@@ -1,0 +1,10 @@
+<request>
+    <getRegistryList>
+        <requestId>@requestId@</requestId>
+        <periodBeginDate>@periodBeginDate@</periodBeginDate>
+        <periodEndDate>@periodEndDate@</periodEndDate>
+        <registryType>@registryType@</registryType>
+    </getRegistryList>
+    <login>@login@</login>
+    <signature>@signature@</signature>
+</request>

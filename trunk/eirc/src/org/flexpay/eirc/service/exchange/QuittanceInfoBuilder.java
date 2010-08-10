@@ -17,10 +17,11 @@ import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.payments.actions.request.data.request.RequestType;
-import org.flexpay.payments.actions.request.data.response.data.ConsumerAttributes;
-import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
-import org.flexpay.payments.actions.request.data.response.data.ServiceDetails;
+import org.flexpay.payments.actions.outerrequest.request.GetDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.GetQuittanceDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
+import org.flexpay.payments.actions.outerrequest.request.response.data.QuittanceInfo;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ServiceDetails;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
@@ -51,65 +52,58 @@ public class QuittanceInfoBuilder {
     private SPService spService;
 
     @Nullable
-    public QuittanceInfo buildInfo(Stub<Quittance> stub, RequestType infoType, Locale locale) throws Exception {
+    public QuittanceInfo buildInfo(Stub<Quittance> stub, GetQuittanceDebtInfoRequest request) throws Exception {
 
         List<QuittanceDetails> quittanceDetailses;
         List<QuittancePayment> payments = list();
 
         QuittanceInfo info = new QuittanceInfo();
 
-        log.debug("infoType = {}", infoType);
+        Locale locale = request.getLocale();
 
-        if (infoType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
-
-            Quittance q = quittanceService.readFull(stub);
-            if (q == null) {
-                return null;
-            }
-
-            info.setQuittanceNumber(quittanceNumberService.getNumber(q));
-            info.setAccountNumber(q.getAccountNumber());
-            info.setCreationDate(q.getCreationDate());
-            info.setDateFrom(q.getDateFrom());
-            info.setDateTill(q.getDateTill());
-            info.setOrderNumber(q.getOrderNumber());
-
-            ConsumerInfo consumerInfo = q.getEircAccount().getConsumerInfo();
-            Apartment apartment = q.getEircAccount().getApartment();
-
-            if (apartment != null) {
-                Stub<Apartment> apartmentStub = stub(apartment);
-                info.setApartmentMasterIndex(masterIndexService.getMasterIndex(apartment));
-                setAddress1(info, apartmentStub, locale);
-            } else {
-                Iterator<Consumer> it = consumerInfo.getConsumers().iterator();
-                if (it.hasNext()) {
-                    Consumer consumer = it.next();
-                    setAddress1(info, consumer.getApartmentStub(), locale);
-                }
-            }
-
-            Person person = q.getEircAccount().getPerson();
-            if (person != null) {
-                info.setPersonMasterIndex(masterIndexService.getMasterIndex(person));
-            } else {
-                info.setPersonFirstName(consumerInfo.getFirstName());
-                info.setPersonMiddleName(consumerInfo.getMiddleName());
-                info.setPersonLastName(consumerInfo.getLastName());
-            }
-
-            payments = quittancePaymentService.getQuittancePayments(stub(q));
-
-            info.setTotalToPay(getTotalPayable(q));
-            info.setTotalPayed(getTotalPayed(q, payments));
-
-            quittanceDetailses = q.getQuittanceDetails();
-
-        } else {
-            quittanceDetailses = quittanceService.getQuittanceDetailsByQuittanceId(stub);
+        Quittance q = quittanceService.readFull(stub);
+        if (q == null) {
+            return null;
         }
 
-        List<ServiceDetails> serviceDetailses = list();
+        info.setQuittanceNumber(quittanceNumberService.getNumber(q));
+        info.setAccountNumber(q.getAccountNumber());
+        info.setCreationDate(q.getCreationDate());
+        info.setDateFrom(q.getDateFrom());
+        info.setDateTill(q.getDateTill());
+        info.setOrderNumber(q.getOrderNumber());
+
+        ConsumerInfo consumerInfo = q.getEircAccount().getConsumerInfo();
+        Apartment apartment = q.getEircAccount().getApartment();
+
+        if (apartment != null) {
+            Stub<Apartment> apartmentStub = stub(apartment);
+            info.setApartmentMasterIndex(masterIndexService.getMasterIndex(apartment));
+            setAddress1(info, apartmentStub, locale);
+        } else {
+            Iterator<Consumer> it = consumerInfo.getConsumers().iterator();
+            if (it.hasNext()) {
+                Consumer consumer = it.next();
+                setAddress1(info, consumer.getApartmentStub(), locale);
+            }
+        }
+
+        Person person = q.getEircAccount().getPerson();
+        if (person != null) {
+            info.setPersonMasterIndex(masterIndexService.getMasterIndex(person));
+        } else {
+            info.setPersonFirstName(consumerInfo.getFirstName());
+            info.setPersonMiddleName(consumerInfo.getMiddleName());
+            info.setPersonLastName(consumerInfo.getLastName());
+        }
+
+        payments = quittancePaymentService.getQuittancePayments(stub(q));
+
+        info.setTotalToPay(getTotalPayable(q));
+        info.setTotalPayed(getTotalPayed(q, payments));
+
+        quittanceDetailses = q.getQuittanceDetails();
+
         // prepare sum to pay
         if (log.isDebugEnabled()) {
             log.debug("Total detailses: {}", quittanceDetailses.size());
@@ -125,37 +119,66 @@ public class QuittanceInfoBuilder {
             serviceDetails.setServiceName(getTranslation(service.getDescriptions(), locale).getName());
             serviceDetails.setAmount(details.getAmount().setScale(2));
             serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
-
-            if (infoType == RequestType.SEARCH_QUITTANCE_DEBT_REQUEST) {
-                serviceDetails.setIncomingBalance(details.getIncomingBalance());
-                serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
-                serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
-                serviceDetails.setExpence(details.getExpence().setScale(2));
-                serviceDetails.setRate(details.getRate().setScale(2));
-                serviceDetails.setRecalculation(details.getRecalculation().setScale(2));
-                serviceDetails.setBenifit(details.getBenifit().setScale(2));
-                serviceDetails.setSubsidy(details.getSubsidy().setScale(2));
-                serviceDetails.setPayment(details.getPayment().setScale(2));
-                serviceDetails.setPayed(getPayedSum(details, payments).setScale(2));
-                serviceDetails.setAttributes(getConsumerAttributes(consumer));
-            }
+            serviceDetails.setIncomingBalance(details.getIncomingBalance());
+            serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
+            serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
+            serviceDetails.setExpence(details.getExpence().setScale(2));
+            serviceDetails.setRate(details.getRate().setScale(2));
+            serviceDetails.setRecalculation(details.getRecalculation().setScale(2));
+            serviceDetails.setBenifit(details.getBenifit().setScale(2));
+            serviceDetails.setSubsidy(details.getSubsidy().setScale(2));
+            serviceDetails.setPayment(details.getPayment().setScale(2));
+            serviceDetails.setPayed(getPayedSum(details, payments).setScale(2));
+            serviceDetails.setAttributes(getConsumerAttributes(consumer));
 
             ConsumerInfo cinfo = consumer.getConsumerInfo();
-            serviceDetails.setFirstName(cinfo.getFirstName());
-            serviceDetails.setMiddleName(cinfo.getMiddleName());
-            serviceDetails.setLastName(cinfo.getLastName());
+            serviceDetails.setPersonFirstName(cinfo.getFirstName());
+            serviceDetails.setPersonMiddleName(cinfo.getMiddleName());
+            serviceDetails.setPersonLastName(cinfo.getLastName());
             //TODO: Пока что непонятно откуда брать apartment, в темповом режиме берем из consumer'а
             setAddress2(serviceDetails, consumer.getApartmentStub(), locale);
+//            serviceDetails.setRoomNumber("");
+
+            info.addServiceDetails(serviceDetails);
+        }
+
+        log.debug("QuittanceInfo: {}", info);
+
+        return info;
+    }
+
+    public List<ServiceDetails> buildServiceDetails(Stub<Quittance> stub, GetDebtInfoRequest request) throws Exception {
+
+        List<QuittanceDetails> quittanceDetailses = quittanceService.getQuittanceDetailsByQuittanceId(stub);
+        List<ServiceDetails> serviceDetailses = list();
+
+        if (log.isDebugEnabled()) {
+            log.debug("Total detailses: {}", quittanceDetailses.size());
+        }
+        for (QuittanceDetails details : quittanceDetailses) {
+
+            Consumer consumer = details.getConsumer();
+            Service service = consumer.getService();
+            log.debug("Building quittanceDetails for service {}", service);
+
+            ServiceDetails serviceDetails = new ServiceDetails();
+            serviceDetails.setServiceId(service.getServiceType().getId());
+            serviceDetails.setServiceName(getTranslation(service.getDescriptions(), request.getLocale()).getName());
+            serviceDetails.setAmount(details.getAmount().setScale(2));
+            serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
+
+            ConsumerInfo cinfo = consumer.getConsumerInfo();
+            serviceDetails.setPersonFirstName(cinfo.getFirstName());
+            serviceDetails.setPersonMiddleName(cinfo.getMiddleName());
+            serviceDetails.setPersonLastName(cinfo.getLastName());
+            //TODO: Пока что непонятно откуда брать apartment, в темповом режиме берем из consumer'а
+            setAddress2(serviceDetails, consumer.getApartmentStub(), request.getLocale());
 //            serviceDetails.setRoomNumber("");
 
             serviceDetailses.add(serviceDetails);
         }
 
-        info.setDetailses(serviceDetailses.toArray(new ServiceDetails[serviceDetailses.size()]));
-
-        log.debug("QuittanceInfo: {}", info);
-
-        return info;
+        return serviceDetailses;
     }
 
     private void setAddress2(ServiceDetails serviceDetails, Stub<Apartment> apartmentStub, Locale locale) throws FlexPayException {
@@ -218,7 +241,7 @@ public class QuittanceInfoBuilder {
 
     }
 
-    public ServiceDetails.ServiceAttribute[] getConsumerAttributes(Consumer consumer) {
+    public List<ServiceDetails.ServiceAttribute> getConsumerAttributes(Consumer consumer) {
         List<ServiceDetails.ServiceAttribute> attrs = list();
         for (String attrCode : ConsumerAttributes.PAYMENT_ATTRIBUTES) {
             ConsumerAttributeTypeBase type = attributeTypeService.readByCode(attrCode);
@@ -232,7 +255,7 @@ public class QuittanceInfoBuilder {
             attrs.add(new ServiceDetails.ServiceAttribute(attrCode, String.valueOf(attribute.value())));
         }
 
-        return attrs.toArray(new ServiceDetails.ServiceAttribute[attrs.size()]);
+        return attrs;
     }
 
     public BigDecimal getTotalPayed(Quittance quittance, List<QuittancePayment> payments) {

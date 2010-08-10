@@ -597,14 +597,17 @@
 		order by o.creationDate desc
 	]]></query>
 
-    <query name="Operation.listPaymentsByPaymentPoint"><![CDATA[
+    <query name="Operation.listPaymentsByPaymentCollector"><![CDATA[
 		select distinct o
 		from Operation o
             left join fetch o.operationStatus status
             left join fetch o.operationLevel level
             left join fetch o.documents doc
             left join fetch o.cashbox cashbox
+            left join fetch o.paymentPoint pp
             left join fetch doc.documentStatus docStatus
+	    	left join fetch doc.additions docAd
+	    	left join fetch docAd.additionType
             left join fetch doc.documentType docType
             left join fetch doc.service service
             left join fetch service.serviceType serviceType
@@ -612,7 +615,7 @@
             left join fetch service.serviceProvider serviceProvider
             left join fetch serviceProvider.organization organization
             left join fetch organization.names names
-		where o.paymentPoint.id = ?
+		where pp.collector.id = ?
 		    and o.creationDate >= ?
 		    and o.creationDate <= ?
 			and (o.operationType.code in (1, 2, 5, 6))

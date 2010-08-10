@@ -22,7 +22,6 @@ public class PaymentPointEditAction extends AccountantAWPActionSupport {
 	private Map<Long, String> names = map();
 
 	private String crumbCreateKey;
-	private PaymentCollectorService paymentCollectorService;
 	private PaymentPointService paymentPointService;
 
 	public PaymentPointEditAction() {
@@ -157,11 +156,6 @@ public class PaymentPointEditAction extends AccountantAWPActionSupport {
 	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
-	}
-
-	@Required
-	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
-		this.paymentCollectorService = paymentCollectorService;
 	}
 
 }

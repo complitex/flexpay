@@ -4,9 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class StringUtil {
 
@@ -22,7 +23,7 @@ public class StringUtil {
 	public static List<String> tokenize(String line, String delim) {
 		int ind1 = 0;
 		int ind2;
-		List<String> fieldList = new ArrayList<String>();
+		List<String> fieldList = list();
 		while ((ind2 = line.indexOf(delim, ind1)) != -1) {
 			fieldList.add(line.substring(ind1, ind2));
 			ind1 = ind2 + 1;
@@ -31,6 +32,22 @@ public class StringUtil {
 
 		return fieldList;
 	}
+
+    public static String format(String str, char delimiter, char escapeChar) {
+        if (str == null) {
+            return str;
+        }
+
+        StringBuilder buf = new StringBuilder(str.length());
+        for (char c : str.toCharArray()) {
+            if (c == delimiter) {
+                buf.append(escapeChar);
+            }
+            buf.append(c);
+        }
+
+        return buf.toString();
+    }
 
 	/**
 	 * Split string with delimiter taking in account escape character
@@ -49,7 +66,7 @@ public class StringUtil {
 			return Collections.emptyList();
 		}
 
-		List<String> datum = new ArrayList<String>();
+		List<String> datum = list();
 		StringBuilder buf = new StringBuilder(str.length());
 		boolean escaped = false;
 		boolean haveFinalDelimiter = false;

@@ -8,6 +8,7 @@ public interface ExportJobParameterNames {
 	final static String FILE_ID = "fileId";
 
 	final static String PAYMENT_POINT_ID = "paymentPointId";
+    final static String PAYMENT_COLLECTOR_ID = "paymentCollectorId";
 
 	final static String ORGANIZATION = "organization";
 	final static String ORGANIZATION_ID = "organizationId";

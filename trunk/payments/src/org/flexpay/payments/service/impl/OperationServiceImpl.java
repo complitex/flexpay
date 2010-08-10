@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.dao.OperationDao;
@@ -157,8 +158,8 @@ public class OperationServiceImpl implements OperationService {
 	}
 
     @Override
-	public List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
-		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
+	public List<Operation> listReceivedPaymentsForPaymentCollector(Stub<PaymentCollector> stub, Date beginDate, Date endDate) {
+		return operationDao.listPaymentsByPaymentCollector(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
     @Override

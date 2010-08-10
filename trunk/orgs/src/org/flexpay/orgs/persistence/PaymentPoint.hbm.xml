@@ -25,17 +25,6 @@
 				<comment>Address</comment>
 			</column>
 		</property>
-        <property name="tradingDayProcessInstanceId">
-            <column name="tradingDayProcessInstance_Id" not-null="false">
-                <comment>Trading date process instance id</comment>
-            </column>
-        </property>
-        <!--<many-to-one name="tradingDayProcessInstance" foreign-key="FK_trading_day_process_instance_id"-->
-                     <!--class="org.jbpm.graph.exe.ProcessInstance">-->
-            <!--<column name="tradingDayProcessInstance_Id" not-null="false">-->
-				<!--<comment>Trading day process instance ID</comment>-->
-			<!--</column>-->
-        <!--</many-to-one>-->
 		<many-to-one name="collector" foreign-key="FK_orgs_payment_points_tbl_collector_id"
 					 class="org.flexpay.orgs.persistence.PaymentCollector">
 			<column name="collector_id" not-null="true">
@@ -74,72 +63,72 @@
 	</class>
 
 	<query name="PaymentPoint.listPoints.count">
-		select count(o)
-		from PaymentPoint o
-		where o.status = 0
+		select count(pp)
+		from PaymentPoint pp
+		where pp.status = 0
 	</query>
 
 	<query name="PaymentPoint.listPoints">
-		select distinct o
-		from PaymentPoint o
-			inner join fetch o.collector
-            left join fetch o.names
-		where o.status = 0
+		select distinct pp
+		from PaymentPoint pp
+			inner join fetch pp.collector
+            left join fetch pp.names
+		where pp.status=0
 	</query>
 
 	<query name="PaymentPoint.listCollectorPoints.count">
-		select count(o)
-		from PaymentPoint o
-		where o.status = 0 and o.collector.id = ?
+		select count(pp)
+		from PaymentPoint pp
+		where pp.status=0 and pp.collector.id = ?
 	</query>
 
 	<query name="PaymentPoint.listCollectorPoints">
-		select distinct o
-		from PaymentPoint o
-			inner join fetch o.collector
-			left join fetch o.names
-		where o.status = 0 and o.collector.id = ?
+		select distinct pp
+		from PaymentPoint pp
+			inner join fetch pp.collector c
+			left join fetch pp.names
+		where pp.status=0 and c.id = ?
 	</query>
 
 	<query name="PaymentPoint.readFull">
-		select distinct p
-		from PaymentPoint p
-            left join fetch p.names
-            inner join fetch p.collector c
+		select distinct pp
+		from PaymentPoint pp
+            left join fetch pp.names
+            inner join fetch pp.collector c
             inner join fetch c.organization o
             left join fetch o.names
-		where p.id=?
+		where pp.id=?
 	</query>
 
 	<query name="PaymentPoint.readFullCollection">
-		select distinct p
-		from PaymentPoint p
-            left join fetch p.names
-		where p.id in (:ids)
+		select distinct pp
+		from PaymentPoint pp
+            left join fetch pp.names
+		where pp.id in (:ids)
 	</query>
 
     <query name="PaymentPoint.findByIdAndCollectorId">
-        select distinct p
-        from PaymentPoint p
-            left join fetch p.names
-            inner join fetch p.collector
-        where p.id=? and p.collector.id=?
+        select distinct pp
+        from PaymentPoint pp
+            left join fetch pp.names
+            inner join fetch pp.collector c
+        where pp.id=? and c.id=?
     </query>
 
     <query name="PaymentPoint.listPaymentPointsWithTradingDay">
-        select distinct o
-		from PaymentPoint o
-			inner join fetch o.collector
-			left join fetch o.names
-		where o.tradingDayProcessInstanceId is not null
+        select distinct pp
+		from PaymentPoint pp
+			inner join fetch pp.collector c
+			left join fetch pp.names
+		where c.tradingDayProcessInstanceId is not null
     </query>
 
     <query name="PaymentPoint.listPaymentPointsWithoutTradingDay">
-        select distinct o
-		from PaymentPoint o
-			inner join fetch o.collector
-			left join fetch o.names
-		where o.tradingDayProcessInstanceId is null
+        select distinct pp
+		from PaymentPoint pp
+			inner join fetch pp.collector c
+			left join fetch pp.names
+		where c.tradingDayProcessInstanceId is null
     </query>
 	
 </hibernate-mapping>

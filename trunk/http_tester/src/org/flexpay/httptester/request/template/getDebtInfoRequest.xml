@@ -1,0 +1,9 @@
+<request>
+    <getDebtInfo>
+		<requestId>@requestId@</requestId>
+		<searchType>@searchType@</searchType>
+		<searchCriteria>@searchCriteria@</searchCriteria>
+    </getDebtInfo>
+	<login>@login@</login>
+	<signature>@signature@</signature>
+</request>

@@ -6,18 +6,15 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import org.flexpay.payments.actions.request.data.request.DebtsRequest;
-import org.flexpay.payments.actions.request.data.request.RequestType;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
-import org.flexpay.payments.actions.request.data.response.Status;
+import org.flexpay.payments.actions.outerrequest.request.GetQuittanceDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
+import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.actions.outerrequest.request.response.Status;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.Locale;
-
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.quittanceNumberRequest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -43,25 +40,45 @@ public class TestQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		QuittanceDetailsResponse response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
+
+        GetQuittanceDebtInfoRequest request1 = new GetQuittanceDebtInfoRequest();
+        request1.setSearchCriteria(number);
+        request1.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
+
+		SearchResponse response = detailsFinder.findQuittance(request1);
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 		watch.reset();
+
 		watch.start();
-		response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
+        GetQuittanceDebtInfoRequest request2 = new GetQuittanceDebtInfoRequest();
+        request2.setSearchCriteria(number);
+        request2.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
+
+		response = detailsFinder.findQuittance(request2);
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 		watch.reset();
+
 		watch.start();
-		response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
+        GetQuittanceDebtInfoRequest request3 = new GetQuittanceDebtInfoRequest();
+        request3.setSearchCriteria(number);
+        request3.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
+
+		response = detailsFinder.findQuittance(request3);
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 		watch.reset();
+
 		watch.start();
-		response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
+        GetQuittanceDebtInfoRequest request4 = new GetQuittanceDebtInfoRequest();
+        request4.setSearchCriteria(number);
+        request4.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
+
+		response = detailsFinder.findQuittance(request4);
 		watch.stop();
 		log.info("Got response {}, time spent {}", response, watch);
 
-		assertEquals("Invalid response", Status.SUCCESS.getCode(), response.getStatus().getCode());
+		assertEquals("Invalid response", Status.SUCCESS, response.getStatus());
 	}
 }

@@ -1,9 +1,9 @@
 package org.flexpay.payments.actions.tradingday;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
-import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -24,10 +24,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.flexpay.common.service.Roles.*;
-import static org.flexpay.orgs.service.Roles.*;
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.flexpay.common.service.Roles.PROCESS_DELETE;
+import static org.flexpay.common.service.Roles.PROCESS_READ;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ;
 import static org.flexpay.payments.process.export.TradingDay.*;
 
 public class ConfirmationTradingDayServlet extends HttpServlet {
@@ -85,7 +86,7 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
 
             log.debug("Got payment point with id={}", paymentPointId);
 
-            Long processId = paymentPoint.getTradingDayProcessInstanceId();
+            Long processId = paymentPoint.getCollector().getTradingDayProcessInstanceId();
             if (processId == null) {
                 log.error("Process does not set for payment point with id={}", paymentPointId);
                 httpServletResponse.sendError(530, "Trading day is not opened");
@@ -94,7 +95,7 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
 
             ProcessManager processManager = (ProcessManager) context.getBean("processManager");
 
-            org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(processId);
+            Process process = processManager.getProcessInstanceInfo(processId);
             if (process == null) {
                 log.error("Process instance with id={} not found", processId);
                 httpServletResponse.sendError(500, "Internal Server Error");
@@ -131,10 +132,10 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
             httpServletResponse.sendError(HttpServletResponse.SC_OK, "Ok");
 
         } catch (NumberFormatException ex) {
-            log.error("Unknown parameter format: {}", new Object[] {PARAM_PAYMENT_POINT_ID, paymentPointId});
+            log.error("Unknown parameter format: name = {}, value = {}", PARAM_PAYMENT_POINT_ID, paymentPointId);
             httpServletResponse.sendError(430, "Unknown parameter format");
         } catch (ParseException e) {
-            log.error("Unknown parameter format: {}", new Object[] {PARAM_DATE, date});
+            log.error("Unknown parameter format: name = {}, value = {}", PARAM_DATE, date);
             httpServletResponse.sendError(430, "Unknown parameter format");
         }
     }

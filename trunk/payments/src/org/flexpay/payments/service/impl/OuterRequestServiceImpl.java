@@ -1,5 +1,6 @@
 package org.flexpay.payments.service.impl;
 
+import com.opensymphony.xwork2.util.LocalizedTextUtil;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
@@ -10,13 +11,12 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.util.BigDecimalUtil;
-import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.*;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -24,12 +24,10 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.request.data.request.*;
-import org.flexpay.payments.actions.request.data.response.PayInfoResponse;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
-import org.flexpay.payments.actions.request.data.response.SimpleResponse;
-import org.flexpay.payments.actions.request.data.response.Status;
-import org.flexpay.payments.actions.request.data.response.data.*;
+import org.flexpay.payments.actions.outerrequest.request.*;
+import org.flexpay.payments.actions.outerrequest.request.data.ServicePayDetails;
+import org.flexpay.payments.actions.outerrequest.request.response.*;
+import org.flexpay.payments.actions.outerrequest.request.response.data.*;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.service.*;
@@ -39,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -52,7 +49,6 @@ import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.SecurityUtil.getUserName;
 import static org.flexpay.common.util.TranslationUtil.getTranslation;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.serviceProviderAccountNumberRequest;
 
 public class OuterRequestServiceImpl implements OuterRequestService {
 
@@ -81,13 +77,21 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
     @NotNull
     @Override
-    public QuittanceDetailsResponse findQuittance(InfoRequest request) {
-        return quittanceDetailsFinder.findQuittance(request);
+    public GetDebtInfoResponse getDeftInfo(GetDebtInfoRequest request) {
+        request.copyResponse((GetDebtInfoResponse) quittanceDetailsFinder.findQuittance(request));
+        return request.getResponse();
     }
 
     @NotNull
     @Override
-    public PayInfoResponse quittancePay(PayRequest payRequest) throws FlexPayException {
+    public GetQuittanceDebtInfoResponse getQuittanceDeftInfo(GetQuittanceDebtInfoRequest request) {
+        request.copyResponse((GetQuittanceDebtInfoResponse) quittanceDetailsFinder.findQuittance(request));
+        return request.getResponse();
+    }
+
+    @NotNull
+    @Override
+    public PayDebtResponse quittancePay(PayDebtRequest request) throws FlexPayException {
         Security.authenticateOuterRequest();
 
         //TODO: Откуда брать айдишник кассы?
@@ -97,18 +101,17 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         log.debug("Created blank operation: {}", oper);
 
         log.debug("Start filling operation");
-        PayInfoResponse response;
+        PayDebtResponse response;
 
         try {
-            response = fillOperation(payRequest, oper);
+            response = fillOperation(request, oper);
         } catch (Exception e) {
             log.error("Error with filling operation", e);
+            operationService.delete(stub(oper));
             throw new FlexPayException("Error with filling operation", e);
         }
 
         log.debug("Finish filling operation");
-
-        response.setRequestId(payRequest.getRequestId());
 
         if (isNotEmptyOperation(oper)) {
             if (oper.isNew()) {
@@ -119,6 +122,9 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.debug("Operation created");
         } else {
             log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
+            operationService.delete(stub(oper));
+            response.setStatus(Status.INCORRECT_PAY_SUM);
+            return response;
         }
 
         response.setOperationId(oper.getId());
@@ -140,10 +146,9 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     }
 
     @SuppressWarnings({"unchecked"})
-    private PayInfoResponse fillOperation(PayRequest payRequest, Operation operation) throws Exception {
+    private PayDebtResponse fillOperation(PayDebtRequest request, Operation operation) throws Exception {
 
-        PayInfoResponse response = new PayInfoResponse();
-        response.setStatus(Status.SUCCESS);
+        PayDebtResponse response = request.getResponse();
 
         Cashbox cashbox = cashboxService.read(operation.getCashboxStub());
         if (cashbox == null) {
@@ -156,7 +161,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.warn("Can't get payment point with id {} from DB", cashbox.getPaymentPointStub().getId());
             throw new FlexPayException("Can't get payment point with id " + cashbox.getPaymentPointStub().getId() + " from DB");
         }
-        final Long paymentProcessId = paymentPoint.getTradingDayProcessInstanceId();
+        final Long paymentProcessId = paymentPoint.getCollector().getTradingDayProcessInstanceId();
 
         if (paymentProcessId == null || paymentProcessId == 0) {
             log.debug("TradingDay process id not found for Payment point id = {}", paymentPoint.getId());
@@ -173,8 +178,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         }
 
         Organization organization = paymentPoint.getCollector().getOrganization();
-        operation.setOperationSum(payRequest.getTotalToPay());
-        operation.setOperationInputSum(payRequest.getTotalToPay());
+        operation.setOperationSum(request.getTotalPaySum());
+        operation.setOperationInputSum(request.getTotalPaySum());
         operation.setChange(BigDecimal.ZERO);
         operation.setCreationDate(new Date());
         operation.setRegisterDate(new Date());
@@ -190,15 +195,19 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         operation.setRegisterUserName(getUserName());
         operation.setCashierFio(getUserName());
 
-        for (ServicePayDetails spDetails : payRequest.getServicePayDetails()) {
+        for (ServicePayDetails spDetails : request.getServicePayDetails()) {
 
             ServicePayInfo servicePayInfo = new ServicePayInfo();
             servicePayInfo.setServiceStatus(Status.SUCCESS);
 
-            InfoRequest infoRequest = serviceProviderAccountNumberRequest(spDetails.getServiceId() + ":" + spDetails.getServiceProviderAccount(), RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, payRequest.getLocale());
-            log.debug("infoRequest = {}", infoRequest);
-            QuittanceDetailsResponse quittanceDetailsResponse = findQuittance(infoRequest);
-            if (quittanceDetailsResponse.getInfos() == null || quittanceDetailsResponse.getInfos().length == 0) {
+            GetQuittanceDebtInfoRequest searchRequest = new GetQuittanceDebtInfoRequest();
+            searchRequest.setSearchCriteria(spDetails.getServiceId() + ":" + spDetails.getServiceProviderAccount());
+            searchRequest.setSearchType(SearchRequest.TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER);
+            searchRequest.setLocale(request.getLocale());
+            log.debug("searchRequest = {}", searchRequest);
+            getQuittanceDeftInfo(searchRequest);
+            GetQuittanceDebtInfoResponse quittanceDetailsResponse = searchRequest.getResponse();
+            if (quittanceDetailsResponse.getInfos() == null || quittanceDetailsResponse.getInfos().isEmpty()) {
                 log.info("Cant't find quittances by serviceId and spAccountNumber ({}, {})", spDetails.getServiceId(), spDetails.getServiceProviderAccount());
                 servicePayInfo.setServiceStatus(quittanceDetailsResponse.getStatus());
                 servicePayInfo.setServiceId(spDetails.getServiceId());
@@ -207,7 +216,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
                 continue;
             }
 
-            Document document = buildDocument(quittanceDetailsResponse.getInfos()[0], spDetails.getPaySum(), cashbox, payRequest.getLocale());
+            Document document = buildDocument(quittanceDetailsResponse.getInfos().get(0), spDetails.getPaySum(), cashbox, request.getLocale());
 
             if (isEmpty(operation.getAddress())) {
                 operation.setAddress(document.getAddress());
@@ -227,7 +236,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @SuppressWarnings({"unchecked"})
     private Document buildDocument(QuittanceInfo info, BigDecimal paySum, Cashbox cashbox, Locale locale) throws Exception {
 
-        ServiceDetails serviceDetails = info.getDetailses()[0];
+        ServiceDetails serviceDetails = info.getServiceDetailses().get(0);
         Service service = spService.readFull(new Stub<Service>(serviceDetails.getServiceId()));
         ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
         Organization serviceProviderOrganization = serviceProvider.getOrganization();
@@ -256,7 +265,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         return document;
     }
 
-    public String getErcAccount(ServiceDetails.ServiceAttribute[] attributes) {
+    public String getErcAccount(List<ServiceDetails.ServiceAttribute> attributes) {
 
         for (ServiceDetails.ServiceAttribute attribute : attributes) {
             if (attribute.getName().equals(ConsumerAttributes.ATTR_ERC_ACCOUNT)) {
@@ -347,18 +356,16 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
     @NotNull
     @Override
-    public SimpleResponse refund(ReversalPayRequest request) throws FlexPayException {
+    public ReversalPayResponse reversalPay(ReversalPayRequest request) throws FlexPayException {
 
         Security.authenticateOuterRequest();
 
-        SimpleResponse response = new SimpleResponse();
-        response.setRequestId(request.getRequestId());
+        ReversalPayResponse response = request.getResponse();
 
         OperationStatus operationStatus = operationStatusService.read(OperationStatus.RETURNED);
-        Stub<Operation> stub = new Stub<Operation>(request.getOperationId());
-        Operation operation = operationService.read(stub);
+        Operation operation = operationService.read(new Stub<Operation>(request.getOperationId()));
         if (operation == null) {
-            log.warn("Can't get operation with id {} from DB", stub.getId());
+            log.warn("Can't get operation with id {} from DB", request.getOperationId());
             response.setStatus(Status.INCORRECT_OPERATION_ID);
             return response;
         }
@@ -384,24 +391,20 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
         operationService.update(operation);
 
-        response.setStatus(Status.SUCCESS);
-
         return response;
     }
 
     @NotNull
     @Override
-    public SimpleResponse addRegistryComment(RegistryCommentRequest request) throws FlexPayException {
+    public RegistryCommentResponse addRegistryComment(RegistryCommentRequest request) throws FlexPayException {
 
         Security.authenticateOuterRequest();
 
-        SimpleResponse response = new SimpleResponse();
-        response.setRequestId(request.getRequestId());
+        RegistryCommentResponse response = request.getResponse();
 
-        Stub<Registry> stub = new Stub<Registry>(request.getRegistryId());
-        Registry registry = registryService.readWithContainers(stub);
+        Registry registry = registryService.readWithContainers(new Stub<Registry>(request.getRegistryId()));
         if (registry == null) {
-            log.warn("Can't get registry with id {} from DB", stub.getId());
+            log.warn("Can't get registry with id {} from DB", request.getRegistryId());
             response.setStatus(Status.REGISTRY_NOT_FOUND);
             return response;
         }
@@ -417,12 +420,9 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             }
         }
 
-        SimpleDateFormat format = new SimpleDateFormat(RegistryContainer.COMMENTARY_PAYMENT_DATE_FORMAT);
-
         if (commentaryContainer == null) {
             commentaryContainer = new RegistryContainer();
-            commentaryContainer.setRegistry(registry);
-            containers.add(commentaryContainer);
+            registry.addContainer(commentaryContainer);
         }
 
         if (isBlank(request.getOrderComment())) {
@@ -431,18 +431,90 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
             commentaryContainer.setData(COMMENTARY_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER +
                     request.getOrderNumber() + CONTAINER_DATA_DELIMITER +
-                    format.format(request.getOrderDate()) + CONTAINER_DATA_DELIMITER +
-                    request.getOrderComment());
+                    request.getOrderDate() + CONTAINER_DATA_DELIMITER +
+                    StringUtil.format(request.getOrderComment(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL));
 
             if (commentaryContainer.getData().length() > CONTAINER_DATA_MAX_SIZE) {
-                log.warn("Commentary length can't be more 256 symbols", stub.getId());
+                log.warn("Commentary length can't be more 256 symbols");
                 response.setStatus(Status.INTERNAL_ERROR);
                 return response;
             }
         }
         registryService.update(registry);
 
-        response.setStatus(Status.SUCCESS);
+        return response;
+    }
+
+    @NotNull
+    @Override
+    public GetRegistryListResponse getRegistryList(GetRegistryListRequest request) throws FlexPayException {
+
+        Security.authenticateOuterRequest();
+
+        GetRegistryListResponse response = request.getResponse();
+
+        List<Registry> registries = list();
+
+        if (request.getRegistryType() == null) {
+            registries = registryService.findRegistriesInDateInterval(request.getPeriodBeginDateDate(), request.getPeriodEndDateDate());
+        } else if (request.getRegistryType() == 1) {
+            registries = registryService.findRegistries(RegistryType.TYPE_CASH_PAYMENTS, request.getPeriodBeginDateDate(), request.getPeriodEndDateDate());
+        } else if (request.getRegistryType() == 2) {
+            registries = registryService.findRegistries(RegistryType.TYPE_BANK_PAYMENTS, request.getPeriodBeginDateDate(), request.getPeriodEndDateDate());
+        } else {
+            log.warn("Incorrect value in request - {}", request.getRegistryType());
+            response.setStatus(Status.REGISTRY_NOT_FOUND);
+            return response;
+        }
+
+        for (Registry registry : registries) {
+
+            RegistryInfo registryInfo = new RegistryInfo();
+
+            registryInfo.setRegistryId(registry.getId());
+            registryInfo.setRegistryDate(registry.getCreationDate());
+            registryInfo.setRecordsCount(registry.getRecordsNumber());
+            registryInfo.setTotalSum(registry.getAmount());
+            registryInfo.setRegistryType(LocalizedTextUtil.findDefaultText(registry.getRegistryType().getI18nName(), request.getLocale()));
+
+            for (RegistryContainer registryContainer : registry.getContainers()) {
+                List<String> containerData = StringUtil.splitEscapable(
+                        registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
+                if (containerData != null && !containerData.isEmpty() && COMMENTARY_CONTAINER_TYPE.equals(containerData.get(0))) {
+                    if (containerData.size() > 3) {
+                        registryInfo.setRegistryComment(containerData.get(3));
+                    }
+                    break;
+                }
+            }
+
+
+            response.addRegistryInfo(registryInfo);
+        }
+
+        return response;
+    }
+
+    @NotNull
+    @Override
+    public GetServiceListResponse getServiceList(GetServiceListRequest request) throws FlexPayException {
+
+        Security.authenticateOuterRequest();
+
+        GetServiceListResponse response = request.getResponse();
+
+        List<Service> services = spService.listAllServices();
+
+        for (Service service : services) {
+
+            ServiceInfo serviceInfo = new ServiceInfo();
+
+            serviceInfo.setServiceId(service.getId());
+            serviceInfo.setServiceName(service.format(request.getLocale()));
+            serviceInfo.setServiceProvider(service.getServiceProvider().getDescription(LanguageUtil.getLanguage(request.getLocale())).getName());
+
+            response.addServiceInfo(serviceInfo);
+        }
 
         return response;
     }

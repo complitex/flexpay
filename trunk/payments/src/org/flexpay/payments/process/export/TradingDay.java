@@ -201,8 +201,8 @@ public class TradingDay extends QuartzJobBean {
             Long processInstanceId = null;
             try {
                 processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
-                pp.setTradingDayProcessInstanceId(processInstanceId);
-                paymentPointService.update(pp);
+                paymentPointCollector.setTradingDayProcessInstanceId(processInstanceId);
+                paymentCollectorService.update(paymentPointCollector);
                 log.info("TradingDay process created. Process instance id = {}, for payment point with id {}", processInstanceId, pp.getId());
             } catch (ProcessInstanceException e) {
                 log.error("Failed run process trading day", e);

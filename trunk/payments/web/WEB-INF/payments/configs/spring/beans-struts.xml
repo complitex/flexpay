@@ -13,18 +13,22 @@
 		  scope="prototype"/>
 
 	<!-- Operator AWP parent actions -->
-	<bean id="operatorAWPAction" abstract="true" class="org.flexpay.payments.actions.OperatorAWPActionSupport"
+	<bean id="operatorAWPAction" abstract="true"
+          class="org.flexpay.payments.actions.OperatorAWPActionSupport"
 		  p:cashboxService-ref="cashboxService"
 		  p:paymentPointService-ref="paymentPointService" />
 
-	<bean id="operatorAWPWithPagerAction" abstract="true" class="org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport"
+	<bean id="operatorAWPWithPagerAction" abstract="true"
+          class="org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport"
 		  p:cashboxService-ref="cashboxService"
 		  p:paymentPointService-ref="paymentPointService" />
 
-	<bean id="accountantAWPAction" abstract="true" class="org.flexpay.payments.actions.AccountantAWPActionSupport"
+	<bean id="accountantAWPAction" abstract="true"
+          class="org.flexpay.payments.actions.AccountantAWPActionSupport"
 		  p:paymentCollectorService-ref="paymentCollectorService" />
 
-	<bean id="accountantAWPWithPagerAction" abstract="true" class="org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport"
+	<bean id="accountantAWPWithPagerAction" abstract="true"
+          class="org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport"
 		  p:paymentCollectorService-ref="paymentCollectorService" />
 
 	<!-- Define module payments struts actions beans -->
@@ -48,6 +52,7 @@
 	<bean id="searchQuittanceAction"
 		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.quittance.SearchQuittanceAction"
+          p:processManager-ref="processManagerPayments"
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
@@ -79,9 +84,9 @@
 		  p:townService-ref="townService"
 		  p:regionService-ref="regionService"
 		  p:countryService-ref="countryService"
-		  p:crumbNameKey="payments.crumbs.quittances_pay"
           p:processManager-ref="processManagerPayments"
           p:paymentPointService-ref="paymentPointService"
+          p:crumbNameKey="payments.crumbs.quittances_pay"
 		  scope="prototype" />
 
 	<!-- operation-related actions -->
@@ -137,6 +142,7 @@
 		  scope="prototype" />
 
     <!-- payment points monitor actions -->
+
 	<bean id="paymentPointsListMonitorAction"
 		  parent="accountantAWPWithPagerAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorAction"
@@ -146,18 +152,23 @@
           p:paymentCollectorService-ref="paymentCollectorService"
 		  scope="prototype" />
 
-    <bean id="paymentPointEnableDisableAction"
+    <bean id="paymentCollectorEnableDisableAction"
 		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.monitor.PaymentPointEnableDisableAction"
           p:processManager-ref="processManagerPayments"
           p:paymentCollectorService-ref="paymentCollectorService"
-          p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
-    <bean id="paymentPointsListMonitorPageAction"
-          class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorPageAction"
-          p:crumbNameKey="payments.crumbs.payment_points_list"
+    <bean id="paymentCollectorMonitorAction"
+          parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.monitor.PaymentCollectorMonitorPageAction"
+          p:crumbNameKey="payments.crumbs.payment_collector_monitor"
+          scope="prototype" />
+
+    <bean id="paymentCollectorMonitorDataAction"
+          class="org.flexpay.payments.actions.monitor.PaymentCollectorMonitorDataAction"
           p:paymentCollectorService-ref="paymentCollectorService"
+          p:processManager-ref="processManagerPayments"
           scope="prototype" />
 
     <bean id="operationsListMonitorPageAction"

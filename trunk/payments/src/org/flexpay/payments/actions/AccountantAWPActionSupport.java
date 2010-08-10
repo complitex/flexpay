@@ -25,6 +25,7 @@ public abstract class AccountantAWPActionSupport extends FPActionSupport {
 
         Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
         if (paymentCollectorId == null) {
+            log.warn("PaymentCollectorId is not defined in preferences of User {} (id = {})", getUserPreferences().getUsername(), getUserPreferences().getId());
             return null;
         }
 

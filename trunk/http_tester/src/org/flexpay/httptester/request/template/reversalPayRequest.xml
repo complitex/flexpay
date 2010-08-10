@@ -1,0 +1,9 @@
+<request>
+    <reversalPay>
+        <requestId>@requestId@</requestId>
+        <operationId>@operationId@</operationId>
+        <totalPaySum>@totalPaySum@</totalPaySum>
+    </reversalPay>
+    <login>@login@</login>
+    <signature>@signature@</signature>
+</request>
