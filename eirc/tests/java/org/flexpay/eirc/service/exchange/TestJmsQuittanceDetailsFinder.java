@@ -5,19 +5,15 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.apartmentNumberRequest;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.quittanceNumberRequest;
-
-import org.flexpay.payments.actions.request.data.request.DebtsRequest;
-import org.flexpay.payments.actions.request.data.request.RequestType;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
+import org.flexpay.payments.actions.outerrequest.request.GetQuittanceDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
+import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.Locale;
+import static org.junit.Assert.assertNotNull;
 
 public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
@@ -56,7 +52,7 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
 	private class Requester implements Runnable {
 
-		private QuittanceDetailsResponse response;
+		private SearchResponse response;
 		private String number;
 
 		private Requester(String number) {
@@ -65,15 +61,23 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
         @Override
 		public void run() {
-			response = detailsFinder.findQuittance(quittanceNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
+            GetQuittanceDebtInfoRequest request = new GetQuittanceDebtInfoRequest();
+            request.setSearchCriteria(number);
+            request.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
+			response = detailsFinder.findQuittance(request);
 		}
 	}
 
 	@Test
 	public void testGetQuittanceDetailsByApartment() {
 
-		String number = String.valueOf(1L);
-		QuittanceDetailsResponse response = detailsFinder.findQuittance(apartmentNumberRequest(number, RequestType.SEARCH_QUITTANCE_DEBT_REQUEST, new Locale("ru")));
+        String number = String.valueOf(1L);
+
+        GetQuittanceDebtInfoRequest request = new GetQuittanceDebtInfoRequest();
+        request.setSearchCriteria(number);
+        request.setSearchType(SearchRequest.TYPE_APARTMENT_NUMBER);
+
+		SearchResponse response = detailsFinder.findQuittance(request);
 
 		log.info("Got response {}", response);
 	}

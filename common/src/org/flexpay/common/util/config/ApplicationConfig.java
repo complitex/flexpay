@@ -262,7 +262,7 @@ public class ApplicationConfig implements ResourceLoaderAware {
 		this.disableSelfValidation = disableSelfValidation;
 	}
 
-		public static String getKeystorePath() {
+    public static String getKeystorePath() {
 		return getInstance().keystorePath;
 	}
 

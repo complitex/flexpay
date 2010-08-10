@@ -130,11 +130,11 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>processRequestServlet</servlet-name>
-		<servlet-class>org.flexpay.payments.actions.request.ProcessRequestServlet</servlet-class>
+		<servlet-name>outerRequestHandlerServlet</servlet-name>
+		<servlet-class>org.flexpay.payments.actions.outerrequest.OuterRequestHandlerServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>processRequestServlet</servlet-name>
+		<servlet-name>outerRequestHandlerServlet</servlet-name>
 		<url-pattern>/process/*</url-pattern>
 	</servlet-mapping>
 

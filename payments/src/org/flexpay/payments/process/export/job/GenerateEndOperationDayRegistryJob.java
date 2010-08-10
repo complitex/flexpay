@@ -8,10 +8,8 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentCollectorService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator;
 import org.flexpay.payments.util.registries.ExportBankPaymentsRegistry;
 import org.springframework.beans.factory.annotation.Required;
@@ -26,11 +24,8 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 	public final static String RESULT_NO_REGISTRY_CREATED = "No registry created";
 
-	// required services
 	private OrganizationService organizationService;
 	private PaymentCollectorService paymentCollectorService;
-	private PaymentPointService paymentPointService;
-
 
 	private EndOperationDayRegistryGenerator registryGenerator;
 	private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
@@ -41,13 +36,13 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 		log.info("Start process generating end operation day registry and save it to file...");
 
-		PaymentPoint paymentPoint = getPaymentPoint(parameters);
-		if (paymentPoint == null) {
-			log.error("Payment point was not found (searching by id {})", parameters.get(PAYMENT_POINT_ID));
+		PaymentCollector collector = getPaymentCollector(parameters);
+		if (collector == null) {
+			log.error("Payment collector was not found (searching by id {})", parameters.get(PAYMENT_COLLECTOR_ID));
 			return RESULT_ERROR;
 		}
 
-		log.debug("Payment point found: {}", paymentPoint);
+		log.debug("Payment collector found: {}", collector);
 
 		Organization organization = getOrganization(parameters);
 		if (organization == null) {
@@ -60,41 +55,36 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		Date beginDate = (Date) parameters.get(BEGIN_DATE);
 		Date endDate = (Date) parameters.get(END_DATE);
 
-		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
+		Registry registry = registryGenerator.generate(collector, organization, beginDate, endDate);
 		if (registry == null) {
 			return RESULT_NO_REGISTRY_CREATED;
 		}
 
 		FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry);
 		parameters.put(FILE_ID, file.getId());
-
-		PaymentCollector paymentCollector = getPaymentCollector(paymentPoint);
-		if (paymentCollector != null) {
-			parameters.put(EMAIL, paymentCollector.getEmail());
-		}
+        parameters.put(EMAIL, collector.getEmail());
 
 		log.info("Process end operation day registry and save it to file finished...");
 
 		return RESULT_NEXT;
 	}
 
-	private PaymentCollector getPaymentCollector(PaymentPoint paymentPoint) {
-		return paymentCollectorService.read(paymentPoint.collectorStub());
-	}
-
-	private PaymentPoint getPaymentPoint(Map<Serializable, Serializable> parameters) {
-		Long pointId = (Long) parameters.get(PAYMENT_POINT_ID);
-		return paymentPointService.read(new Stub<PaymentPoint>(pointId));
+	private PaymentCollector getPaymentCollector(Map<Serializable, Serializable> parameters) {
+		Long collectorId = (Long) parameters.get(PAYMENT_COLLECTOR_ID);
+        if (collectorId == null) {
+            log.error("Can't find {} paramenter", PAYMENT_COLLECTOR_ID);
+            return null;
+        }
+		return paymentCollectorService.read(new Stub<PaymentCollector>(collectorId));
 	}
 
 	private Organization getOrganization(Map<Serializable, Serializable> parameters) {
 		Long organizationId = (Long) parameters.get(ORGANIZATION_ID);
+        if (organizationId == null) {
+            log.error("Can't find {} paramenter", ORGANIZATION_ID);
+            return null;
+        }
 		return organizationService.readFull(new Stub<Organization>(organizationId));
-	}
-
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
 	}
 
 	@Required

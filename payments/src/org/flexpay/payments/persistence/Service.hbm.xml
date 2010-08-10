@@ -202,10 +202,13 @@
 	</query>
 
 	<query name="Service.findAllServices">
-		select distinct o
-		from Service o
-		where o.status=0
-		order by o.parentService.id ASC
+		select distinct s
+		from Service s
+            left join fetch s.descriptions
+            inner join fetch s.serviceProvider p
+            left join fetch p.descriptions
+		where s.status=0
+		order by s.parentService.id ASC
 	</query>
 
 	<query name="Service.findServicesByProviderCode">

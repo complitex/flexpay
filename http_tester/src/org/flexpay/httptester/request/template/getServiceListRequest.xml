@@ -1,0 +1,7 @@
+<request>
+    <getServiceList>
+        <requestId>@requestId@</requestId>
+    </getServiceList>
+    <login>@login@</login>
+    <signature>@signature@</signature>
+</request>

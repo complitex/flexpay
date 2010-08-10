@@ -88,7 +88,7 @@
                 if (data.errorMessage != "") {
                     $("#messagesBlock").html(data.errorMessage);
                 }
-            })
+            });
     }
 
 

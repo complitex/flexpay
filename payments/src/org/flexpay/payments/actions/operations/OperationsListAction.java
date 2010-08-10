@@ -1,20 +1,17 @@
 package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ProcessState;
-import org.flexpay.common.process.sorter.ProcessSorterByEndDate;
 import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
@@ -24,7 +21,6 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorterById;
-import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.service.DocumentService;
@@ -40,7 +36,6 @@ import java.util.List;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 import static org.flexpay.common.util.DateUtil.now;
 import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
@@ -97,13 +92,19 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 			return ERROR;
 		}
 
-		tradingDayControlPanel.updatePanel(paymentPoint);
+        PaymentCollector collector = paymentPoint.getCollector();
+        if (collector == null) {
+            addActionError(getText("payments.error.monitor.cant_get_payment_collector"));
+            return ERROR;
+        }
+
+		tradingDayControlPanel.updatePanel(collector);
 
 		if (!doValidate()) {
 			return ERROR;
 		}
 
-		loadOperations(paymentPoint);
+		loadOperations(collector);
 
 		return SUCCESS;
 	}
@@ -124,7 +125,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		return !hasActionErrors();
 	}
 
-	private void loadOperations(@NotNull PaymentPoint paymentPoint) {
+	private void loadOperations(@NotNull PaymentCollector collector) {
 
 		List<Operation> searchResults = list();
 
@@ -144,7 +145,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                 }
 
             } else {
-                Long tradingDayProcessId = paymentPoint.getTradingDayProcessInstanceId();
+                Long tradingDayProcessId = collector.getTradingDayProcessInstanceId();
                 Process tradingDayProcess = processManager.getProcessInstanceInfo(tradingDayProcessId);
                 Date pStart = tradingDayProcess.getProcessStartDate();
                 Date fStart = beginTimeFilter.setTime(now());
@@ -164,9 +165,10 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
             }
         } else {
 
-            log.warn("Trading day process is closed for payment point with id {}. Operation status update canceled", paymentPoint.getId());
-//            addActionMessage(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));
+            log.warn("Trading day process is closed for payment collector with id {}. Operation status update canceled", collector.getId());
+            addActionMessage(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));
 
+/*
             ProcessSorterByEndDate processSorter = new ProcessSorterByEndDate();
             processSorter.setOrder(ObjectSorter.ORDER_DESC);
 
@@ -177,7 +179,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
             if (!processes.isEmpty()) {
 
-                Process tradingDayProcess = findTradingDayProcess(paymentPoint, processes);
+                Process tradingDayProcess = findTradingDayProcess(collector, processes);
                 log.debug("Closed trading day process: {}", tradingDayProcess);
 
                 if (tradingDayProcess != null) {
@@ -196,6 +198,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
                 }
             }
+*/
         }
 
         if (log.isDebugEnabled()) {
@@ -205,15 +208,15 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
         operations = operationService.readFull(collectionIds(searchResults), true);
 	}
 
-    private Process findTradingDayProcess(PaymentPoint paymentPoint, List<Process> processes) {
+    private Process findTradingDayProcess(PaymentCollector collector, List<Process> processes) {
 
         for (Process process : processes) {
 
             Process tradingDayProcess = processManager.getProcessInstanceInfo(process.getId());
-            Long paymentPointId = (Long) tradingDayProcess.getParameters().get(ExportJobParameterNames.PAYMENT_POINT_ID);
-            log.debug("Closed trading day process paymentPointId variable ({}) and this paymentPoint id ({})", paymentPointId, paymentPoint.getId());
+            Long paymentCollectorId = (Long) tradingDayProcess.getParameters().get(ExportJobParameterNames.PAYMENT_COLLECTOR_ID);
+            log.debug("Closed trading day process paymentCollectorId variable ({}) and this paymentCollector id ({})", paymentCollectorId, collector.getId());
 
-            if (paymentPoint.getId().equals(paymentPointId)) {
+            if (collector.getId().equals(paymentCollectorId)) {
                 return tradingDayProcess;
             }
         }

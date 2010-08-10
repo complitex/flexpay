@@ -3,6 +3,7 @@ package org.flexpay.common.dao.registry;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -56,4 +57,11 @@ public interface RegistryDao extends GenericDao<Registry, Long> {
 	 * @return number of registries which corresponds following parameters
 	 */
 	List findRegistriesCount(int typeCode, Long recipientCode, Date from, Date till);
+
+    @NotNull
+    List<Registry> findRegistries(int typeCode, Date from, Date till);
+
+    @NotNull
+    List<Registry> findRegistriesInDateInterval(Date from, Date till);
+
 }

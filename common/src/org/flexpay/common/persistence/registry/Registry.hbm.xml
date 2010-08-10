@@ -289,6 +289,27 @@
         order by r.creationDate desc
 	</query>
 
+    <query name="Registry.findRegistries"><![CDATA[
+        select distinct r
+        from Registry r
+			left join fetch r.registryType
+            left join fetch r.containers
+        where r.registryType.code = ?
+            and r.creationDate >= ?
+            and r.creationDate <= ?
+        order by r.creationDate desc
+    ]]></query>
+
+    <query name="Registry.findRegistriesInDateInterval"><![CDATA[
+        select distinct r
+        from Registry r
+			left join fetch r.registryType
+            left join fetch r.containers
+        where r.creationDate >= ?
+            and r.creationDate <= ?
+        order by r.creationDate desc
+    ]]></query>
+
 	<query name="Registry.findObjects">
         select distinct r
 		from Registry r

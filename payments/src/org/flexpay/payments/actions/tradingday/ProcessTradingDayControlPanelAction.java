@@ -64,7 +64,7 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 			tradingDayControlPanel.setUserLog(log);
 		}
 
-		tradingDayControlPanel.updatePanel(paymentPoint);
+		tradingDayControlPanel.updatePanel(paymentPoint.getCollector());
 
 		return SUCCESS;
 	}

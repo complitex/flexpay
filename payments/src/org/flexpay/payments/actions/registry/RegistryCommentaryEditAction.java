@@ -95,7 +95,7 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
                 String commentaryContainerData = COMMENTARY_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER +
                         paymentNumber + CONTAINER_DATA_DELIMITER +
                         paymentDate + CONTAINER_DATA_DELIMITER +
-                        commentary;
+                        StringUtil.format(commentary, CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
 
                 if (commentaryContainerData.length() > CONTAINER_DATA_MAX_SIZE) {
                     addActionError(getText("payments.error.registry.commentary.commentary_too_long"));
@@ -103,8 +103,7 @@ public class RegistryCommentaryEditAction extends AccountantAWPActionSupport {
                 }
                 if (commentaryContainer == null) {
                     commentaryContainer = new RegistryContainer();
-                    commentaryContainer.setRegistry(registry);
-                    containers.add(commentaryContainer);
+                    registry.addContainer(commentaryContainer);
                 }
                 commentaryContainer.setData(commentaryContainerData);
                 registryService.update(registry);

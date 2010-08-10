@@ -174,9 +174,9 @@
 	</definition>
 
     <!-- payment point list definitions -->
-	<definition name="payments.payment_points.list" extends="payments.accountant">
+	<definition name="payments.payment_collector.monitor" extends="payments.accountant">
 		<put-attribute name="title" value="payments.payment_points.list.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_points_monitor.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_collector_monitor.jsp"/>
 	</definition>
     <definition name="payments.payment_point.detail" extends="payments.accountant">
 		<put-attribute name="title" value="payments.payment_point.detail.title"/>

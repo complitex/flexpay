@@ -4,18 +4,23 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td><s:text name="payments.payment_points.list.updated" />&nbsp;<s:property value="updated" /></td>
+        <td><s:text name="payments.payment_points.list.last_update" />:&nbsp;<s:property value="updated" /></td>
         <td align="left">
             <input type="button" value="<s:text name="payments.payment_points.list.update" />" onclick="window.location='<s:url action="paymentPointDetailMonitor" includeParams="none"><s:param name="paymentPoint.id" value="paymentPoint.id" /></s:url>';" />
         </td>
     </tr>
     <tr>
-        <td colspan="2"><s:text name="payments.payment_point" />&nbsp;:&nbsp;<s:property value="paymentPoint.name" /></td>
+        <td colspan="2">
+            <s:text name="payments.payment_points.list.payment_collector" />:&nbsp;<s:property value="paymentCollector.getName(getLocale())" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><s:text name="payments.payment_point" />:&nbsp;<s:property value="paymentPoint.name" /></td>
     </tr>
     <tr>
         <td colspan="2">
-            <s:text name="payments.payment_point.detail.payments_count" />&nbsp;:&nbsp;<s:property value="paymentsCount" />&nbsp;&nbsp;&nbsp;
-            <s:text name="payments.payment_point.detail.sum" />&nbsp;:&nbsp;<s:property value="totalSum" />
+            <s:text name="payments.payment_point.detail.payments_count" />:&nbsp;<s:property value="paymentsCount" />&nbsp;&nbsp;&nbsp;
+            <s:text name="payments.payment_point.detail.sum" />:&nbsp;<s:property value="totalSum" />
         </td>
     </tr>
 <%--
@@ -36,7 +41,7 @@
 
 <script type="text/javascript">
 
-    $(function() {
+    $("#result").ready(function() {
         pagerAjax();
     });
 

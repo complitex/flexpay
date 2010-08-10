@@ -69,7 +69,6 @@
     <bean id="generateEndOperationDayRegistryJob"
           class="org.flexpay.payments.process.export.job.GenerateEndOperationDayRegistryJob"
           p:exportBankPaymentsRegistry-ref="exportBankPaymentsRegistry"
-          p:paymentPointService-ref="paymentPointService"
           p:organizationService-ref="organizationService"
           p:registryGenerator-ref="endOperationDayRegistryGenerator"
           p:paymentCollectorService-ref="paymentCollectorServiceTarget"

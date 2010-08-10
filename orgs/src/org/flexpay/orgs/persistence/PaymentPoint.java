@@ -21,8 +21,6 @@ import java.util.Set;
 public class PaymentPoint extends DomainObjectWithStatus {
 
 	private String address;
-//    private org.jbpm.graph.exe.ProcessInstance tradingDayProcessInstance;
-    private Long tradingDayProcessInstanceId;
 
 	private PaymentCollector collector;
 	private Set<PaymentPointName> names = Collections.emptySet();
@@ -74,22 +72,6 @@ public class PaymentPoint extends DomainObjectWithStatus {
 		return getName(ApplicationConfig.getDefaultLocale());
 	}
 
-//    public ProcessInstance getTradingDayProcessInstance() {
-//        return tradingDayProcessInstance;
-//    }
-//
-//    public void setTradingDayProcessInstance(ProcessInstance tradingDayProcessInstance) {
-//        this.tradingDayProcessInstance = tradingDayProcessInstance;
-//    }
-
-    public Long getTradingDayProcessInstanceId() {
-        return tradingDayProcessInstanceId;
-    }
-
-    public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
-        this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
-    }
-
     /**
 	 * Get name translation in a specified language
 	 *
@@ -114,7 +96,6 @@ public class PaymentPoint extends DomainObjectWithStatus {
 				append("id", getId()).
 				append("status", getStatus()).
 				append("address", address).
-				append("tradingDayProcessInstanceId", tradingDayProcessInstanceId).
 				toString();
 	}
 

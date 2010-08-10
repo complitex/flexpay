@@ -5,7 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.persistence.DocumentAdditionType;
@@ -50,15 +50,15 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	@Nullable
 	@Override
-	public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
+	public Registry generate(@NotNull PaymentCollector collector, @NotNull Organization organization,
 							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
 
 		log.info("Start generating end operation day registry...");
 
-		List<Operation> operations = operationService.listReceivedPaymentsForPaymentPoint(stub(paymentPoint), beginDate, endDate);
+		List<Operation> operations = operationService.listReceivedPaymentsForPaymentCollector(stub(collector), beginDate, endDate);
 
 		if (operations.isEmpty()) {
-			log.debug("Not found operations for payment point {}. Registry was not created.", paymentPoint.getId());
+			log.debug("Not found operations for payment collector {}. Registry was not created.", collector.getId());
 			return null;
 		}
 
@@ -67,7 +67,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		Registry registry = new Registry();
 
 		registry.setCreationDate(new Date());
-		registry.setSenderCode(paymentPoint.getCollector().getOrganizationStub().getId());
+		registry.setSenderCode(collector.getOrganizationStub().getId());
 		registry.setRecipientCode(organization.getId());
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_BANK_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
@@ -182,7 +182,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		}
 
 		for (DocumentAddition addition : document.getAdditions()) {
-			if (documentErcType.equals(addition.getAdditionType())) {
+			if (documentErcType.getCode() == addition.getAdditionType().getCode()) {
 				return addition;
 			}
 		}

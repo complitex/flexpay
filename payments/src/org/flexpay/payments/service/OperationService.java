@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
@@ -151,15 +152,15 @@ public interface OperationService {
 	List<Operation> listReturnedPaymentsForOperator(Stub<Cashbox> cashbox, Date beginDate, Date endDate, String registerUserName);
 
 	/**
-	 * List of all payment operations which has status REGISTERED inside time interval and organization
+	 * List of all payment operations which has status REGISTERED inside time interval and payment collector
 	 *
-	 * @param stub Payment point stub
+	 * @param stub Payment collector stub
 	 * @param beginDate lower bound for operation registration date
 	 * @param endDate   higher bound for operation registration date
 	 * @return list of payment operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate);
+	List<Operation> listReceivedPaymentsForPaymentCollector(Stub<PaymentCollector> stub, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization

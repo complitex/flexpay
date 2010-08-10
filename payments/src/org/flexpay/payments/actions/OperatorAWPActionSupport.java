@@ -45,7 +45,7 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 		return cashboxService.read(new Stub<Cashbox>(cashboxId));
 	}
 
-	private PaymentPoint getPaymentPoint() {
+	protected PaymentPoint getPaymentPoint() {
 
 		Cashbox cashbox = getCashbox();
 		if (cashbox == null) {
@@ -54,6 +54,10 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 
 		return paymentPointService.read(cashbox.getPaymentPointStub());
 	}
+
+    protected Long getPaymentProcessId() {
+        return getPaymentPoint().getCollector().getTradingDayProcessInstanceId();
+    }
 
 	@Override
 	public Long getCashboxId() {

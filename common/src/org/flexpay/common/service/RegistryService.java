@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,6 +69,10 @@ public interface RegistryService {
 	 * @return collection of registries
 	 */
 	Collection<Registry> findObjects(@NotNull Set<Long> objectIds);
+
+    public List<Registry> findRegistries(int typeCode, Date from, Date till);
+
+    public List<Registry> findRegistriesInDateInterval(Date from, Date till);
 
 	/**
 	 * Delete all records for registry

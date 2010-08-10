@@ -401,53 +401,53 @@
 	<query name="DocumentType.readFull">
 		select distinct o
 		from DocumentType o
-		left join fetch o.translations
+	    	left join fetch o.translations
 		where o.id=?
 	</query>
 
 	<query name="DocumentType.findByCode">
 		select distinct o
 		from DocumentType o
-		left join fetch o.translations
+    		left join fetch o.translations
 		where o.code=?
 	</query>
 
 	<query name="DocumentStatus.readFull">
 		select distinct o
 		from DocumentStatus o
-		left join fetch o.translations
+	    	left join fetch o.translations
 		where o.id=?
 	</query>
 
 	<query name="DocumentStatus.findByCode">
 		select distinct o
 		from DocumentStatus o
-		left join fetch o.translations
+    		left join fetch o.translations
 		where o.code=?
 	</query>
 
 	<query name="Document.listRegisteredPaymentDocuments"><![CDATA[
 		select distinct doc
 		from Document doc
-		left join fetch doc.operation op
-		left join fetch doc.service serv
-		left join fetch serv.serviceType servType
+            left join fetch doc.operation op
+            left join fetch doc.service serv
+            left join fetch serv.serviceType servType
 		where op.creationDate >= ? and op.creationDate <= ?
-		and doc.documentType.id = 1 and doc.documentStatus.id = 2
+    		and doc.documentType.id = 1 and doc.documentStatus.id = 2
 		group by op.id 
 	]]></query>
 
     <query name="Document.listPaymentDocumentsByServiceProvider"><![CDATA[
 		select distinct doc
 		from Document doc
-		left join fetch doc.operation op
-		left join fetch doc.service serv
-		left join fetch doc.additions adds
-		left join fetch serv.serviceType servType
+    		left join fetch doc.operation op
+		    left join fetch doc.service serv
+	    	left join fetch doc.additions adds
+    		left join fetch serv.serviceType servType
 		where serv.serviceProvider.id = ?
-		and op.registerOrganization.id = ?
-		and op.creationDate >= ? and op.creationDate <= ?
-		and doc.documentType.code = ? and doc.documentStatus.code = ?
+            and op.registerOrganization.id = ?
+            and op.creationDate >= ? and op.creationDate <= ?
+            and doc.documentType.code = ? and doc.documentStatus.code = ?
 	]]></query>
 
     <query name="Document.listPaymentsServicesByServiceProvider"><![CDATA[
@@ -456,9 +456,9 @@
 			left join doc.operation op
 			left join doc.service serv
 		where serv.serviceProvider.id = ?
-		and op.registerOrganization.id = ?
-		and op.creationDate >= ? and op.creationDate <= ?
-		and doc.documentType.code = ? and doc.documentStatus.code = ?
+            and op.registerOrganization.id = ?
+            and op.creationDate >= ? and op.creationDate <= ?
+            and doc.documentType.code = ? and doc.documentStatus.code = ?
 	]]></query>
 
     <query name="Document.listPaymentsPointsByServiceProvider"><![CDATA[
@@ -468,15 +468,15 @@
 			left join op.paymentPoint pp
 			left join doc.service serv
 		where serv.serviceProvider.id = ?
-		and op.registerOrganization.id = ?
-		and op.creationDate >= ? and op.creationDate <= ?
-		and doc.documentType.code = ? and doc.documentStatus.code = ?
+            and op.registerOrganization.id = ?
+            and op.creationDate >= ? and op.creationDate <= ?
+            and doc.documentType.code = ? and doc.documentStatus.code = ?
 	]]></query>
 
 	<query name="DocumentAdditionType.findTypeByCode">
 		select distinct type
 		from DocumentAdditionType type
-		left join fetch type.translations
+		    left join fetch type.translations
 		where type.code = ?
 	</query>
 
@@ -484,45 +484,45 @@
 		select sum(doc.sum)
 		from Document doc
 		where doc.operation.cashbox.id = ?
-		and doc.operation.operationStatus.code = ?
-		and doc.service.serviceType.code = ?
-		and doc.operation.registerDate >= ?
-		and doc.operation.registerDate <= ?
+            and doc.operation.operationStatus.code = ?
+            and doc.service.serviceType.code = ?
+            and doc.operation.registerDate >= ?
+            and doc.operation.registerDate <= ?
 	]]></query>
 
 	<query name="Document.findCashboxTotalSum"><![CDATA[
 		select sum(doc.sum)
 		from Document doc
 		where doc.operation.cashbox.id = ?
-		and doc.operation.operationStatus.code = ?
-		and doc.operation.registerDate >= ?
-		and doc.operation.registerDate <= ?
+            and doc.operation.operationStatus.code = ?
+            and doc.operation.registerDate >= ?
+            and doc.operation.registerDate <= ?
 	]]></query>
 
 	<query name="Document.findPaymentPointServiceSum"><![CDATA[
 		select sum(doc.sum)
 		from Document doc
 		where doc.operation.paymentPoint.id = ?
-		and doc.operation.operationStatus.code = ?
-		and doc.service.serviceType.code = ?
-		and doc.operation.registerDate >= ?
-		and doc.operation.registerDate <= ?
+            and doc.operation.operationStatus.code = ?
+            and doc.service.serviceType.code = ?
+            and doc.operation.registerDate >= ?
+            and doc.operation.registerDate <= ?
 	]]></query>
 
 	<query name="Document.findPaymentPointTotalSum"><![CDATA[
 		select sum(doc.sum)
 		from Document doc
 		where doc.operation.paymentPoint.id = ?
-		and doc.operation.operationStatus.code = ?
-		and doc.operation.registerDate >= ?
-		and doc.operation.registerDate <= ?
+            and doc.operation.operationStatus.code = ?
+            and doc.operation.registerDate >= ?
+            and doc.operation.registerDate <= ?
 	]]></query>
 
 	<query name="Document.findOperationServiceSum">
 		select doc.sum
 		from Document doc
 		where doc.operation.id = ?
-		and doc.service.serviceType.code = ?
+    		and doc.service.serviceType.code = ?
 	</query>
 
 </hibernate-mapping>

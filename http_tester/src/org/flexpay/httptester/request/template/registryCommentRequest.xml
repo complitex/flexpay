@@ -1,0 +1,11 @@
+<request>
+    <registryComment>
+        <requestId>@requestId@</requestId>
+        <registryId>@registryId@</registryId>
+        <orderNumber>@orderNumber@</orderNumber>
+        <orderDate>@orderDate@</orderDate>
+        <orderComment>@orderComment@</orderComment>
+    </registryComment>
+    <login>@login@</login>
+    <signature>@signature@</signature>
+</request>

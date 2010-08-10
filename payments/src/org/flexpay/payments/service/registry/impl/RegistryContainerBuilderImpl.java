@@ -35,45 +35,44 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 	// predefined field values
 	private static final String GLOBAL_FP_ID_TYPE = "1";
 
-	// required services
 	private ClassToTypeRegistry typeRegistry;
 	private MasterIndexService masterIndexService;
 
+    @Override
 	public RegistryContainer getInstanceIdContainer() {
-
 		return new RegistryContainer(INSTANCE_ID_CONTAINER_TYPE + DELIMITER + getInstanceId());
 	}
 
+    @Override
 	public RegistryContainer getServiceSyncContainer(Service service) {
-
 		return buildSyncIdContainer(Service.class, service, GLOBAL_FP_ID_TYPE);
 	}
 
+    @Override
 	public RegistryContainer getRegisterOrganizationSyncContainer(Organization registerOrganization) {
-
 		return buildSyncIdContainer(Organization.class, registerOrganization, GLOBAL_FP_ID_TYPE);
 	}
 
+    @Override
 	public RegistryContainer getProviderOrganizationSyncContainer(ServiceProvider provider) {
-
 		return buildSyncIdContainer(Organization.class, provider.getOrganization(), GLOBAL_FP_ID_TYPE);
 	}
 
+    @Override
 	public RegistryContainer getPaymentPointSyncContainer(PaymentPoint paymentPoint) {
-
 		return buildSyncIdContainer(PaymentPoint.class, paymentPoint, GLOBAL_FP_ID_TYPE);
 	}
 
+    @Override
 	public RegistryContainer buildSyncIdContainer(Class<? extends DomainObject> clazz, DomainObject object, String end) {
-
 		return new RegistryContainer(SYNC_ID_CONTAINER_TYPE + DELIMITER + typeRegistry.getType(clazz) +
 									 DELIMITER + object.getId() + DELIMITER +
 									 DELIMITER + masterIndexService.getMasterIndex(object) +
 									 DELIMITER + end);
 	}
 
+    @Override
 	public RegistryRecordContainer getSimplePaymentContainer(Document document) {
-
 		return new RegistryRecordContainer(SIMPLE_PAYMENT_CONTAINER_TYPE +
 										   DELIMITER + document.getCreditorOrganization().getId());
 	}
@@ -87,11 +86,11 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 	}
 
 	public RegistryRecordContainer getPaymentPointIdContainer(Document document) {
-
 		return new RegistryRecordContainer(PAYMENT_POINT_ID_CONTAINER_TYPE +
 										   DELIMITER + document.getOperation().getPaymentPoint().getId());
 	}
 
+    @Override
 	public RegistryRecordContainer getExternalOrganizationAccountContainer(DocumentAddition ercAccountAddition) {
 		return new RegistryRecordContainer(
 				EXTERNAL_ORG_ACCOUNT_CONTAINER_TYPE + DELIMITER +
@@ -100,7 +99,6 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 				DELIMITER + ApplicationConfig.getMbOrganizationStub().getId());
 	}
 
-	// required services
 	@Required
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;

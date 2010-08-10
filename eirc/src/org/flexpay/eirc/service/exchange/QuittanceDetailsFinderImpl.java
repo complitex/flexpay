@@ -14,11 +14,11 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.Security;
-import org.flexpay.payments.actions.request.data.request.InfoRequest;
-import org.flexpay.payments.actions.request.data.request.RequestType;
-import org.flexpay.payments.actions.request.data.response.QuittanceDetailsResponse;
-import org.flexpay.payments.actions.request.data.response.Status;
-import org.flexpay.payments.actions.request.data.response.data.QuittanceInfo;
+import org.flexpay.payments.actions.outerrequest.request.GetDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.GetQuittanceDebtInfoRequest;
+import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
+import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.actions.outerrequest.request.response.Status;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -28,13 +28,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.actions.request.data.request.InfoRequest.*;
+import static org.flexpay.payments.actions.outerrequest.request.SearchRequest.*;
 
 public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
@@ -56,54 +55,51 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 	 */
 	@NotNull
     @Override
-	public QuittanceDetailsResponse findQuittance(InfoRequest request) {
+	public SearchResponse findQuittance(SearchRequest<?> request) {
 
 		Security.authenticateQuittanceFinder();
 
 		log.debug("Request for quittance details recieved: {}", request);
 
-        String requestStr = request.getRequest();
-
-		QuittanceDetailsResponse response;
-        Locale locale = request.getLocale();
-        RequestType type = request.getDebtInfoType();
-		switch (request.getType()) {
+		switch (request.getSearchType()) {
             case TYPE_ACCOUNT_NUMBER:
-                response = findByAccountNumber(requestStr, type, locale);
+                findByAccountNumber(request);
                 break;
 			case TYPE_QUITTANCE_NUMBER:
-				response = findByQuittanceNumber(requestStr, type, locale);
+				findByQuittanceNumber(request);
 				break;
 			case TYPE_APARTMENT_NUMBER:
-				response = findByApartment(requestStr, type, locale);
+				findByApartment(request);
 				break;
             case TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER:
-                response = findByServiceProviderAccountNumber(requestStr, type, locale);
+                findByServiceProviderAccountNumber(request);
                 break;
             case TYPE_ADDRESS:
-                response = findByAddress(requestStr, type, locale);
+                findByAddress(request);
                 break;
             case TYPE_COMBINED:
-                response = findByCombined(requestStr, type, locale);
+                findByCombined(request);
                 break;
 			default:
-				response = getError(Status.UNKNOWN_REQUEST);
+                request.getResponse().setStatus(Status.UNKNOWN_REQUEST);
 		}
-		response.setRequestId(request.getRequestId());
 
-		log.debug("Response to return: {}", response);
+        request.getResponse().setJmsRequestId(request.getJmsRequestId());
 
-		return response;
+		log.debug("Response to return: {}", request.getResponse());
+
+		return request.getResponse();
 	}
 
-    private QuittanceDetailsResponse findByAccountNumber(@NotNull String request, RequestType requestType, Locale locale) {
+    private void findByAccountNumber(SearchRequest<?> request) {
 
         try {
 
-            String[] reqMas = request.split(":");
+            String[] reqMas = request.getSearchCriteria().split(":");
             EircAccount account = accountService.findAccount(reqMas.length > 1 ? reqMas[1] : reqMas[0]);
             if (account == null) {
-                return getError(Status.ACCOUNT_NOT_FOUND);
+                request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+                return;
             }
             List<Quittance> quittances;
             if (reqMas.length > 1) {
@@ -111,7 +107,8 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
                 try {
                     quittances = quittanceService.getLatestAccountQuittances(account, getServiceTypeStub(reqMas[0]));
                 } catch (FlexPayException e) {
-                    return getError(Status.SERVICE_NOT_FOUND);
+                    request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+                    return;
                 }
             } else {
                 log.debug("Find quittances by account ({})", account);
@@ -119,37 +116,40 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             }
             if (quittances.isEmpty()) {
                 log.debug("Quittances not found");
-                return getError(Status.QUITTANCE_NOT_FOUND);
+                request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+                return;
             }
 
             if (log.isDebugEnabled()) {
                 log.debug("Found {} quittances", quittances.size());
             }
             
-            return buildResponse(quittances, requestType, locale);
+            buildResponse(quittances, request);
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
-            return getError(Status.INTERNAL_ERROR);
+            request.getResponse().setStatus(Status.INTERNAL_ERROR);
         }
 
     }
 
-    private QuittanceDetailsResponse findByQuittanceNumber(@NotNull String request, RequestType requestType, Locale locale) {
+    private void findByQuittanceNumber(SearchRequest<?> request) {
 
-        if (isBlank(request)) {
-            return getError(Status.INVALID_QUITTANCE_NUMBER);
+        if (isBlank(request.getSearchCriteria())) {
+            request.getResponse().setStatus(Status.INVALID_QUITTANCE_NUMBER);
+            return;
         }
 
         try {
 
-            String[] reqMas = request.split(":");
+            String[] reqMas = request.getSearchCriteria().split(":");
             Quittance quittance;
             if (reqMas.length > 1) {
                 try {
                     log.debug("Find quittances by quittance number ({}) and serviceType ({})", reqMas[1], reqMas[0]);
                     quittance = quittanceService.findByNumberAndServiceType(reqMas[1], getServiceTypeStub(reqMas[0]));
                 } catch (FlexPayException e) {
-                    return getError(Status.SERVICE_NOT_FOUND);
+                    request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+                    return;
                 }
             } else {
                 log.debug("Find quittances by quittance number ({})", reqMas[0]);
@@ -157,21 +157,22 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             }
             if (quittance == null) {
                 log.debug("Quittances not found");
-                return getError(Status.QUITTANCE_NOT_FOUND);
+                request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+                return;
             } else {
                 log.debug("Quittance found");
             }
 
-            return buildResponse(list(quittance), requestType, locale);
+            buildResponse(list(quittance), request);
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
-            return getError(Status.INTERNAL_ERROR);
+            request.getResponse().setStatus(Status.INTERNAL_ERROR);
         }
     }
 
-	private QuittanceDetailsResponse findByApartment(@NotNull String request, RequestType requestType, Locale locale) {
+	private void findByApartment(SearchRequest<?> request) {
 
-        String[] reqMas = request.split(":");
+        String[] reqMas = request.getSearchCriteria().split(":");
         String apartmentMasterIndex = reqMas.length > 1 ? reqMas[1] : reqMas[0];
         try {
             Stub<Apartment> stub = correctionsService.findCorrection(
@@ -189,13 +190,15 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             }
             if (stub == null) {
                 log.debug("No apartment found by master index {}", apartmentMasterIndex);
-                return getError(Status.APARTMENT_NOT_FOUND);
+                request.getResponse().setStatus(Status.APARTMENT_NOT_FOUND);
+                return;
             }
 
             ApartmentFilter filter = new ApartmentFilter(stub.getId());
             List<EircAccount> accounts = accountService.findAccounts(arrayStack(filter), new Page<EircAccount>(1000));
             if (accounts.isEmpty()) {
-                return getError(Status.ACCOUNT_NOT_FOUND);
+                request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+                return;
             }
 
             List<Quittance> quittances;
@@ -204,7 +207,8 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
                 try {
                     quittances = quittanceService.getLatestAccountsQuittances(accounts, getServiceTypeStub(reqMas[0]));
                 } catch (FlexPayException e) {
-                    return getError(Status.SERVICE_NOT_FOUND);
+                    request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+                    return;
                 }
             } else {
                 log.debug("Find quittances by accounts ({})", accounts);
@@ -212,32 +216,35 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             }
             if (quittances == null || quittances.isEmpty()) {
                 log.debug("Quittances not found");
-                return getError(Status.QUITTANCE_NOT_FOUND);
+                request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+                return;
             }
 
             if (log.isDebugEnabled()) {
                 log.debug("Found {} quittances", quittances.size());
             }
 
-            return buildResponse(quittances, requestType, locale);
+            buildResponse(quittances, request);
 
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
-            return getError(Status.INTERNAL_ERROR);
+            request.getResponse().setStatus(Status.INTERNAL_ERROR);
         }
 	}
 
-    private QuittanceDetailsResponse findByServiceProviderAccountNumber(@NotNull String request, RequestType requestType, Locale locale) {
+    private void findByServiceProviderAccountNumber(SearchRequest<?> request) {
 
         List<Consumer> consumers;
         try {
-            consumers = getConsumers(request, TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER);
+            consumers = getConsumers(request);
         } catch (FlexPayException e) {
-            return getError(Status.SERVICE_NOT_FOUND);
+            request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+            return;
         }
         if (consumers == null) {
             log.debug("Consumers not found");
-            return getError(Status.ACCOUNT_NOT_FOUND);
+            request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+            return;
         }
 
         log.debug("Find quittances by consumers ({})", consumers);
@@ -246,27 +253,30 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
         if (quittances.isEmpty()) {
             log.debug("Quittances not found");
-            return getError(Status.QUITTANCE_NOT_FOUND);
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
         }
 
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
         }
 
-        return buildResponse(quittances, requestType, locale);
+        buildResponse(quittances, request);
     }
 
-    private QuittanceDetailsResponse findByAddress(@NotNull String request, RequestType requestType, Locale locale) {
+    private void findByAddress(SearchRequest<?> request) {
 
         List<Consumer> consumers;
         try {
-            consumers = getConsumers(request, TYPE_ADDRESS);
+            consumers = getConsumers(request);
         } catch (FlexPayException e) {
-            return getError(Status.SERVICE_NOT_FOUND);
+            request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+            return;
         }
         if (consumers == null) {
             log.debug("Consumers not found");
-            return getError(Status.ACCOUNT_NOT_FOUND);
+            request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+            return;
         }
 
         log.debug("Find quittances by consumers ({})", consumers);
@@ -275,27 +285,30 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
         if (quittances.isEmpty()) {
             log.debug("Quittances not found");
-            return getError(Status.QUITTANCE_NOT_FOUND);
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
         }
 
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
         }
 
-        return buildResponse(quittances, requestType, locale);
+        buildResponse(quittances, request);
     }
 
-    private QuittanceDetailsResponse findByCombined(@NotNull String request, RequestType requestType, Locale locale) {
+    private void findByCombined(SearchRequest<?> request) {
 
         List<Consumer> consumers;
         try {
-            consumers = getConsumers(request, TYPE_COMBINED);
+            consumers = getConsumers(request);
         } catch (FlexPayException e) {
-            return getError(Status.SERVICE_NOT_FOUND);
+            request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+            return;
         }
         if (consumers == null) {
             log.debug("Consumers not found");
-            return getError(Status.ACCOUNT_NOT_FOUND);
+            request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+            return;
         }
 
         log.debug("Find quittances by consumers ({})", consumers);
@@ -304,21 +317,23 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
         if (quittances.isEmpty()) {
             log.debug("Quittances not found");
-            return getError(Status.QUITTANCE_NOT_FOUND);
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
         }
 
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
         }
 
-        return buildResponse(quittances, requestType, locale);
+        buildResponse(quittances, request);
     }
 
-    private List<Consumer> getConsumers(@NotNull String request, int searchType) throws FlexPayException {
+    private List<Consumer> getConsumers(SearchRequest<?> request) throws FlexPayException {
 
         List<Consumer> consumers;
 
-        String[] reqMas = request.split(":");
+        String[] reqMas = request.getSearchCriteria().split(":");
+        Integer searchType = request.getSearchType();
         if (reqMas.length > 1) {
             Stub<ServiceType> serviceTypeStub = getServiceTypeStub(reqMas[0]);
             String account = reqMas[1];
@@ -354,28 +369,33 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
     }
 
-    private QuittanceDetailsResponse buildResponse(@NotNull List<Quittance> quittances, RequestType requestType, Locale locale) {
+    private void buildResponse(@NotNull List<Quittance> quittances, SearchRequest<?> request) {
 
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
         }
         if (quittances.isEmpty()) {
-            return getError(Status.QUITTANCE_NOT_FOUND);
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
         }
 
         try {
-            QuittanceDetailsResponse response = new QuittanceDetailsResponse();
-            List<QuittanceInfo> infos = list();
 
-            for (Quittance quittance : quittances) {
-                infos.add(quittanceInfoBuilder.buildInfo(stub(quittance), requestType, locale));
+            if (request instanceof GetQuittanceDebtInfoRequest) {
+                GetQuittanceDebtInfoRequest getQuittanceDebtInfoRequest = (GetQuittanceDebtInfoRequest) request;
+                for (Quittance quittance : quittances) {
+                    getQuittanceDebtInfoRequest.getResponse().addQuiitanceInfo(quittanceInfoBuilder.buildInfo(stub(quittance), getQuittanceDebtInfoRequest));
+                }
+            } else {
+                GetDebtInfoRequest getDebtInfoRequest = (GetDebtInfoRequest) request;
+                for (Quittance quittance : quittances) {
+                    getDebtInfoRequest.getResponse().addAllServiceDetails(quittanceInfoBuilder.buildServiceDetails(stub(quittance), getDebtInfoRequest));
+                }
             }
-            response.setInfos(infos.toArray(new QuittanceInfo[infos.size()]));
-            response.setStatus(Status.SUCCESS);
-            return response;
+
         } catch (Exception ex) {
             log.error("Failed building quittance info", ex);
-            return getError(Status.INTERNAL_ERROR);
+            request.getResponse().setStatus(Status.INTERNAL_ERROR);
         }
 
     }
@@ -390,12 +410,6 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         }
         return serviceTypeStub;
     }
-
-	private QuittanceDetailsResponse getError(Status status) {
-		QuittanceDetailsResponse response = new QuittanceDetailsResponse();
-		response.setStatus(status);
-		return response;
-	}
 
 	@Required
 	public void setMasterIndexService(MasterIndexService masterIndexService) {

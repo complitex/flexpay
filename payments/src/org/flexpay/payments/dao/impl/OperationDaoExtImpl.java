@@ -133,8 +133,8 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	@Override
     public List<Operation> searchOperations(OperationSorter operationSorter, final Long tradingDayProcessId, Stub<Cashbox> cashbox, final Date begin, final Date end, final BigDecimal minimalSum,
                                      final BigDecimal maximalSum, final Page<Operation> pager) {
-        final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc left join o.paymentPoint pp");
-		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc left join o.paymentPoint pp");
+        final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc left join o.paymentPoint pp left join pp.collector c");
+		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc left join o.paymentPoint pp left join pp.collector c");
 		final StringBuilder filterHql = getCashboxOperationSearchHql(tradingDayProcessId, begin, end, minimalSum, maximalSum);
 		final Long cashboxId = cashbox.getId();
 
@@ -182,7 +182,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		filterHql.append(" AND doc.documentStatus.code <> 3");
 
         if (tradingDayProcessId != null) {
-            filterHql.append(" AND pp.tradingDayProcessInstanceId = :tradingDayProcessId");
+            filterHql.append(" AND c.tradingDayProcessInstanceId = :tradingDayProcessId");
         }
 
 		if (begin != null) {
