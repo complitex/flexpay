@@ -22,7 +22,7 @@ public class DomainObject implements Serializable {
 
 	@SuppressWarnings ({"UnusedDeclaration"})
 	protected Integer version;
-	private Long id;
+	protected Long id;
 
 	public DomainObject() {
 	}

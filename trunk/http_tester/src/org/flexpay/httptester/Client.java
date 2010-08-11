@@ -17,10 +17,10 @@ public class Client {
 
 //        executeRequest(new GetQuittanceDebtInfoRequest(props), httpClient);
 //        executeRequest(new GetDebtInfoRequest(props), httpClient);
-//        executeRequest(new PayDebtRequest(props), httpClient);
+        executeRequest(new PayDebtRequest(props), httpClient);
 //        executeRequest(new ReversalPayRequest(props), httpClient);
 //        executeRequest(new RegistryCommentRequest(props), httpClient);
-        executeRequest(new GetRegistryListRequest(props), httpClient);
+//        executeRequest(new GetRegistryListRequest(props), httpClient);
 //        executeRequest(new GetServiceListRequest(props), httpClient);
 
     }

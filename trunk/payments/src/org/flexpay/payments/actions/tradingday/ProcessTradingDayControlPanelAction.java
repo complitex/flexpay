@@ -28,6 +28,7 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 		Stub<PaymentPoint> paymentPointStub;
 
 		if (cashbox != null && cashbox.isNotNew()) {
+
 			actor = PAYMENT_COLLECTOR;
 
 			Stub<Cashbox> stub = stub(cashbox);
@@ -64,7 +65,7 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 			tradingDayControlPanel.setUserLog(log);
 		}
 
-		tradingDayControlPanel.updatePanel(paymentPoint.getCollector());
+		tradingDayControlPanel.updatePanel(paymentPoint);
 
 		return SUCCESS;
 	}

@@ -10,7 +10,7 @@
 	<bean id="generatePaymentRegistryFileNameJob"
 		  class="org.flexpay.payments.process.export.job.GeneratePaymentsRegistryFileNameJob"
 		  p:registryService-ref="registryService"
-		  scope="prototype"/>
+		  scope="prototype" />
 
 	<bean id="createFPFileJob"
           class="org.flexpay.payments.process.export.job.CreateFPFileJob"
@@ -71,8 +71,8 @@
           p:exportBankPaymentsRegistry-ref="exportBankPaymentsRegistry"
           p:organizationService-ref="organizationService"
           p:registryGenerator-ref="endOperationDayRegistryGenerator"
-          p:paymentCollectorService-ref="paymentCollectorServiceTarget"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
 </beans>

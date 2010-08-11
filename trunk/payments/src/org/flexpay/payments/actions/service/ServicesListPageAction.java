@@ -21,6 +21,7 @@ public class ServicesListPageAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
+        serviceProviderFilter.setNeedAutoChange(false);
 
 		return SUCCESS;
 	}

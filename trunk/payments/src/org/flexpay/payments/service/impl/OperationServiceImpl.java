@@ -36,10 +36,10 @@ public class OperationServiceImpl implements OperationService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+    private CashboxService cashboxService;
 	private OperationStatusService operationStatusService;
 	private OperationLevelService operationLevelService;
 	private OperationTypeService operationTypeService;
-	private CashboxService cashboxService;
 
 	private OperationDao operationDao;
 	private OperationDaoExt operationDaoExt;
@@ -158,8 +158,8 @@ public class OperationServiceImpl implements OperationService {
 	}
 
     @Override
-	public List<Operation> listReceivedPaymentsForPaymentCollector(Stub<PaymentCollector> stub, Date beginDate, Date endDate) {
-		return operationDao.listPaymentsByPaymentCollector(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
+	public List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
+		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
     @Override

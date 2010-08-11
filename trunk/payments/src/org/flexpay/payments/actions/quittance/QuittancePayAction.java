@@ -4,7 +4,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.process.export.TradingDay;
@@ -39,7 +38,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 		}
 
 		Cashbox cashbox = getCashbox();
-		final Long paymentProcessId = getPaymentProcessId();
+		final Long paymentProcessId = getPaymentPoint().getTradingDayProcessInstanceId();
 
 		if (paymentProcessId == null || paymentProcessId == 0) {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());

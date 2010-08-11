@@ -161,7 +161,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.warn("Can't get payment point with id {} from DB", cashbox.getPaymentPointStub().getId());
             throw new FlexPayException("Can't get payment point with id " + cashbox.getPaymentPointStub().getId() + " from DB");
         }
-        final Long paymentProcessId = paymentPoint.getCollector().getTradingDayProcessInstanceId();
+        final Long paymentProcessId = paymentPoint.getTradingDayProcessInstanceId();
 
         if (paymentProcessId == null || paymentProcessId == 0) {
             log.debug("TradingDay process id not found for Payment point id = {}", paymentPoint.getId());

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DomainObjectWithStatus extends DomainObject implements ObjectWithStatus {
 
-	private int status = ObjectWithStatus.STATUS_ACTIVE;
+	protected int status = ObjectWithStatus.STATUS_ACTIVE;
 
 	public DomainObjectWithStatus() {
 	}

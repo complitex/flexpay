@@ -11,9 +11,6 @@ import java.util.Set;
 public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescription, PaymentCollector> {
 
 	private String email;
-//    private org.jbpm.graph.exe.ProcessInstance tradingDayProcessInstance;
-    private Long tradingDayProcessInstanceId;
-
 	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
 
 	public PaymentCollector() {
@@ -27,6 +24,14 @@ public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescr
 		super(stub.getId());
 	}
 
+	public Set<PaymentPoint> getPaymentPoints() {
+		return paymentPoints;
+	}
+
+	public void setPaymentPoints(Set<PaymentPoint> paymentPoints) {
+		this.paymentPoints = paymentPoints;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -35,39 +40,12 @@ public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescr
 		this.email = email;
 	}
 
-/*
-    public ProcessInstance getTradingDayProcessInstance() {
-        return tradingDayProcessInstance;
-    }
-
-    public void setTradingDayProcessInstance(ProcessInstance tradingDayProcessInstance) {
-        this.tradingDayProcessInstance = tradingDayProcessInstance;
-    }
-*/
-
-    public Long getTradingDayProcessInstanceId() {
-        return tradingDayProcessInstanceId;
-    }
-
-    public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
-        this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
-    }
-
-    public Set<PaymentPoint> getPaymentPoints() {
-        return paymentPoints;
-    }
-
-    public void setPaymentPoints(Set<PaymentPoint> paymentPoints) {
-        this.paymentPoints = paymentPoints;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-                append("id", getId()).
-                append("status", getStatus()).
+                append("id", id).
+                append("status", status).
                 append("email", email).
-                append("tradingDayProcessInstanceId", tradingDayProcessInstanceId).
                 toString();
     }
 }

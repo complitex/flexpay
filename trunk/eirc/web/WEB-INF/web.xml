@@ -848,6 +848,10 @@
         <role-name>ROLE_MENU_PAYMENTS_REPORTS_ACC_RETURNED</role-name>
     </security-role>
 
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_ACC_PAYMENTS_REGISTRIES</role-name>
+    </security-role>
+
 	<security-role>
         <role-name>ROLE_MENU_PAYMENTS_CASHBOXES</role-name>
     </security-role>

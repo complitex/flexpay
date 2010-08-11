@@ -263,10 +263,10 @@
     </bean>
 
 	<bean name="payments.payment_collector.monitor" parent="payments.acc"
-			 p:name="payments.payment_collector.monitor"
-			 p:title="payments.menu2.payment_collector.monitor"
+			 p:name="payments.menu2.payment_point.monitor"
+			 p:title="payments.menu2.payment_point.monitor"
 			 p:namespace="/payments"
-			 p:action="paymentCollectorMonitor"
+			 p:action="paymentPointsListMonitor"
 			 p:parent-ref="payments.acc">
 		   <property name="userRole">
 			   <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_MONITOR" />
@@ -354,6 +354,16 @@
           p:parent-ref="payments.reports.reports">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACC_RETURNED" />
+        </property>
+    </bean>
+
+    <bean name="payments.reports.reports.acc.payments_registries" parent="payments.reports.reports"
+          p:name="payments.reports2.acc.payments_registries"
+          p:title="payments.menu4.payments_registries"
+          p:action="accPaymentsRegistriesReport"
+          p:parent-ref="payments.reports.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACC_PAYMENTS_REGISTRIES" />
         </property>
     </bean>
 

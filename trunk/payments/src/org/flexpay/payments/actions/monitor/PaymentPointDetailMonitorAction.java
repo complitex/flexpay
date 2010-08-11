@@ -1,13 +1,19 @@
 package org.flexpay.payments.actions.monitor;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.sorter.ProcessSorterByEndDate;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
+import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
@@ -21,8 +27,8 @@ import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.DateUtil.now;
-import static org.flexpay.payments.util.MonitorUtils.formatTime;
 import static org.flexpay.payments.util.MonitorUtils.getPaymentsSum;
+import static org.flexpay.payments.util.MonitorUtils.formatTime;
 
 public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport implements InitializingBean {
     
@@ -34,8 +40,8 @@ public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport 
     private TradingDayControlPanel tradingDayControlPanel;
 
     private ProcessManager processManager;
-    private PaymentPointService paymentPointService;
     private PaymentsStatisticsService paymentsStatisticsService;
+    private PaymentPointService paymentPointService;
 
     @NotNull
     @Override
@@ -59,30 +65,40 @@ public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport 
 			return REDIRECT_ERROR;
 		}
 
-        PaymentCollector collector = getPaymentCollector();
-        if (collector == null) {
-            addActionError(getText("payments.error.monitor.cant_get_payment_collector"));
-            return SUCCESS;
-        }
+        tradingDayControlPanel.updatePanel(paymentPoint);
 
-        tradingDayControlPanel.updatePanel(collector);
-
-        Date startDate = now();
+        Date startDate = new Date();
         Date finishDate = new Date();
+
+        if (tradingDayControlPanel.isTradingDayOpened()) {
+
+            Process tradingDayProcess = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+            startDate = tradingDayProcess.getProcessStartDate();
+
+        } else {
+
+            ProcessSorterByEndDate processSorter = new ProcessSorterByEndDate();
+            processSorter.setOrder(ObjectSorter.ORDER_DESC);
+
+            List<Process> processes = processManager.getProcesses(processSorter, new Page<Process>(1000), now(), new Date(), ProcessState.COMPLETED, TradingDay.PROCESS_DEFINITION_NAME);
+            if (log.isDebugEnabled()) {
+                log.debug("Found {} processes", processes.size());
+            }
+
+            if (!processes.isEmpty()) {
+
+                Process tradingDayProcess = findTradingDayProcess(paymentPoint, processes);
+                log.debug("Closed trading day process: {}", tradingDayProcess);
+
+                if (tradingDayProcess != null) {
+                    startDate = tradingDayProcess.getProcessStartDate();
+                    finishDate = tradingDayProcess.getProcessEndDate();
+                }
+            }
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("Start date={}, finish date={}", formatWithTime(startDate), formatWithTime(finishDate));
-        }
-        
-        if (tradingDayControlPanel.isTradingDayOpened()) {
-
-            Process process = processManager.getProcessInstanceInfo(collector.getTradingDayProcessInstanceId());
-            if (process == null) {
-                log.warn("Can't get trading day process with id {} from DB", collector.getTradingDayProcessInstanceId());
-            } else {
-                startDate = process.getProcessStartDate();
-            }
-
         }
 
 		List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(stub, startDate, finishDate);
@@ -92,7 +108,23 @@ public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport 
         updated = formatTime.format(new Date());
 
         return SUCCESS;
-    }    
+    }
+
+    private Process findTradingDayProcess(PaymentPoint paymentPoint, List<Process> processes) {
+
+        for (Process process : processes) {
+
+            Process tradingDayProcess = processManager.getProcessInstanceInfo(process.getId());
+            Long paymentPointId = (Long) tradingDayProcess.getParameters().get(ExportJobParameterNames.PAYMENT_POINT_ID);
+            log.debug("Closed trading day process paymentPointId variable ({}) and this paymentPoint id ({})", paymentPointId, paymentPoint.getId());
+
+            if (paymentPoint.getId().equals(paymentPointId)) {
+                return tradingDayProcess;
+            }
+        }
+
+        return null;
+    }
 
 	@NotNull
     @Override

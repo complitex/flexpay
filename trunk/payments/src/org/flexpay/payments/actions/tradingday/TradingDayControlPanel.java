@@ -4,7 +4,7 @@ import org.flexpay.common.process.ContextCallback;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
-import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -46,9 +46,9 @@ public class TradingDayControlPanel {
 		this.actor = actor;
 	}
 
-	public void updatePanel(@NotNull PaymentCollector paymentCollector) {
+    public void updatePanel(@NotNull PaymentPoint paymentPoint) {
 
-		tradingDayProcessInstanceId = paymentCollector.getTradingDayProcessInstanceId();
+        tradingDayProcessInstanceId = paymentPoint.getTradingDayProcessInstanceId();
 		processCommand();
 		loadAvailableCommands();
 		loadProcessStatus();

@@ -47,6 +47,7 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
 	protected String doExecute() throws Exception {
 
         serviceProviderService.initServiceProvidersFilter(serviceProviderFilter);
+        serviceProviderFilter.setNeedAutoChange(false);
 
 		List<Organization> orgs = organizationService.listOrganizations();
 

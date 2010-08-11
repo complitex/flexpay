@@ -56,7 +56,7 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 	}
 
     protected Long getPaymentProcessId() {
-        return getPaymentPoint().getCollector().getTradingDayProcessInstanceId();
+        return getPaymentPoint().getTradingDayProcessInstanceId();
     }
 
 	@Override
