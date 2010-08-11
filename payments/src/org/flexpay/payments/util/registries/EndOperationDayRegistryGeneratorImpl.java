@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.persistence.DocumentAdditionType;
@@ -50,24 +51,24 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	@Nullable
 	@Override
-	public Registry generate(@NotNull PaymentCollector collector, @NotNull Organization organization,
-							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
+    public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
+                             @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
 
-		log.info("Start generating end operation day registry...");
+        log.info("Start generating end operation day registry...");
 
-		List<Operation> operations = operationService.listReceivedPaymentsForPaymentCollector(stub(collector), beginDate, endDate);
-
-		if (operations.isEmpty()) {
-			log.debug("Not found operations for payment collector {}. Registry was not created.", collector.getId());
-			return null;
-		}
+        List<Operation> operations = operationService.listReceivedPaymentsForPaymentPoint(stub(paymentPoint), beginDate, endDate);
+                                                                
+        if (operations.isEmpty()) {
+            log.debug("Not found operations for payment point {}. Registry was not created.", paymentPoint.getId());
+            return null;
+        }
 
 		log.debug("Found {} operations", operations.size());
 
 		Registry registry = new Registry();
 
 		registry.setCreationDate(new Date());
-		registry.setSenderCode(collector.getOrganizationStub().getId());
+		registry.setSenderCode(paymentPoint.getCollector().getOrganizationStub().getId());
 		registry.setRecipientCode(organization.getId());
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_BANK_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
@@ -176,6 +177,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	private DocumentAddition getErcAccountAddition(Document document) throws FlexPayException {
 
 		DocumentAdditionType documentErcType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
+
 		if (documentErcType == null) {
 			log.warn("No ERC account document addition type found");
 			return null;

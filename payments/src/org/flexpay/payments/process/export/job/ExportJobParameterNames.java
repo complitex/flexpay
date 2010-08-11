@@ -8,7 +8,6 @@ public interface ExportJobParameterNames {
 	final static String FILE_ID = "fileId";
 
 	final static String PAYMENT_POINT_ID = "paymentPointId";
-    final static String PAYMENT_COLLECTOR_ID = "paymentCollectorId";
 
 	final static String ORGANIZATION = "organization";
 	final static String ORGANIZATION_ID = "organizationId";
@@ -26,7 +25,6 @@ public interface ExportJobParameterNames {
 	final static String END_DATE = "endDate";
 	final static String FINISH_DATE = "finishDate";
 	final static String LAST_PROCESSED_DATE = "lastProcessedDate";
-
 	final static String EMAIL = "email";
 	
 	final static String PRIVATE_KEY = "privateKey";

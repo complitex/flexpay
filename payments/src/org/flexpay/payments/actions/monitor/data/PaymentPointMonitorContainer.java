@@ -13,6 +13,7 @@ public class PaymentPointMonitorContainer {
     private String cashBox;
     private String cashierFIO;
     private String lastPayment;
+    private String action;
 
 	public Long getId() {
 		return id;
@@ -78,7 +79,15 @@ public class PaymentPointMonitorContainer {
 		this.lastPayment = lastPayment;
 	}
 
-	@Override
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", id).
@@ -89,6 +98,8 @@ public class PaymentPointMonitorContainer {
 				append("cashBox", cashBox).
 				append("cashierFIO", cashierFIO).
 				append("lastPayment", lastPayment).
+                append("action", action).
 				toString();
 	}
+
 }

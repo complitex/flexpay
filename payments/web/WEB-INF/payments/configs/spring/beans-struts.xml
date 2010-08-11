@@ -52,7 +52,6 @@
 	<bean id="searchQuittanceAction"
 		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.quittance.SearchQuittanceAction"
-          p:processManager-ref="processManagerPayments"
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
@@ -62,6 +61,7 @@
 		  p:masterIndexService-ref="masterIndexService"
 		  p:correctionsService-ref="correctionsService"
 		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
+          p:processManager-ref="processManagerPayments"
 		  p:crumbNameKey="payments.crumbs.search_quittances"
 		  scope="prototype" />
 
@@ -86,7 +86,7 @@
 		  p:countryService-ref="countryService"
           p:processManager-ref="processManagerPayments"
           p:paymentPointService-ref="paymentPointService"
-          p:crumbNameKey="payments.crumbs.quittances_pay"
+		  p:crumbNameKey="payments.crumbs.quittances_pay"
 		  scope="prototype" />
 
 	<!-- operation-related actions -->
@@ -142,33 +142,25 @@
 		  scope="prototype" />
 
     <!-- payment points monitor actions -->
-
 	<bean id="paymentPointsListMonitorAction"
 		  parent="accountantAWPWithPagerAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorAction"
           p:processManager-ref="processManagerPayments"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
           p:operationService-ref="operationService"
-          p:paymentCollectorService-ref="paymentCollectorService"
 		  scope="prototype" />
 
-    <bean id="paymentCollectorEnableDisableAction"
+    <bean id="paymentPointEnableDisableAction"
 		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.monitor.PaymentPointEnableDisableAction"
           p:processManager-ref="processManagerPayments"
-          p:paymentCollectorService-ref="paymentCollectorService"
+          p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
-    <bean id="paymentCollectorMonitorAction"
-          parent="accountantAWPAction"
-          class="org.flexpay.payments.actions.monitor.PaymentCollectorMonitorPageAction"
-          p:crumbNameKey="payments.crumbs.payment_collector_monitor"
-          scope="prototype" />
-
-    <bean id="paymentCollectorMonitorDataAction"
-          class="org.flexpay.payments.actions.monitor.PaymentCollectorMonitorDataAction"
+    <bean id="paymentPointsListMonitorPageAction"
+          class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorPageAction"
+          p:crumbNameKey="payments.crumbs.payment_points_list"
           p:paymentCollectorService-ref="paymentCollectorService"
-          p:processManager-ref="processManagerPayments"
           scope="prototype" />
 
     <bean id="operationsListMonitorPageAction"
@@ -237,6 +229,16 @@
 		  p:paymentsReporter-ref="paymentsReporter"
 		  p:reportUtil-ref="reportUtil"
 		  scope="prototype" />
+
+    <bean id="accPaymentsRegistriesReportAction"
+          parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.reports.AccPaymentsRegistriesReportAction"
+          p:paymentsReporter-ref="paymentsReporter"
+          p:serviceProviderService-ref="serviceProviderService"
+          p:paymentPointService-ref="paymentPointService"
+          p:cashboxService-ref="cashboxService"
+          p:reportUtil-ref="reportUtil"
+          scope="prototype" />
 
 	<bean id="importPaymentsReportAction"
 		  parent="accountantAWPAction"

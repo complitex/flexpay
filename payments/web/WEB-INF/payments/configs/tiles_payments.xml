@@ -106,8 +106,13 @@
 
 	<definition name="payments.report.acc.returned" extends="payments.accountant">
 		<put-attribute name="title" value="payments.reports.returned.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/acc_returned_payments_report.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/acc_returned_payments_report.jsp" />
 	</definition>
+
+    <definition name="payments.report.acc.payments_registries" extends="payments.accountant">
+        <put-attribute name="title" value="payments.reports.payments_registries.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/reports/acc_payments_registries_report.jsp" />
+    </definition>
 
 	<definition name="payments.report.importPaymentsReport" extends="payments.accountant">
 		<put-attribute name="title" value="payments.report.generate.title"/>
@@ -174,10 +179,10 @@
 	</definition>
 
     <!-- payment point list definitions -->
-	<definition name="payments.payment_collector.monitor" extends="payments.accountant">
-		<put-attribute name="title" value="payments.payment_points.list.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_collector_monitor.jsp"/>
-	</definition>
+    <definition name="payments.payment_points.list" extends="payments.accountant">
+        <put-attribute name="title" value="payments.payment_points.list.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_points_monitor.jsp"/>
+    </definition>
     <definition name="payments.payment_point.detail" extends="payments.accountant">
 		<put-attribute name="title" value="payments.payment_point.detail.title"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_point_detail.jsp"/>

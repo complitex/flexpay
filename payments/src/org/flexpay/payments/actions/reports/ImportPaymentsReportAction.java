@@ -9,8 +9,6 @@ import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
@@ -24,14 +22,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.now;
+
 public class ImportPaymentsReportAction extends AccountantAWPActionSupport {
 
-	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
-	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(now());
+	private EndDateFilter endDateFilter = new EndDateFilter(now());
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 
-	private List<PaymentReportData> reportContent = CollectionUtils.list();
+	private List<PaymentReportData> reportContent = list();
 
 	private FPFile file;
 

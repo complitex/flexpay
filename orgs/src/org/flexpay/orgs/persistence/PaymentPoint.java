@@ -5,7 +5,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -15,12 +14,16 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
+import static org.flexpay.common.persistence.Stub.stub;
+
 /**
  * Place where payments are taken
  */
 public class PaymentPoint extends DomainObjectWithStatus {
 
 	private String address;
+//    private org.jbpm.graph.exe.ProcessInstance tradingDayProcessInstance;
+    private Long tradingDayProcessInstanceId;
 
 	private PaymentCollector collector;
 	private Set<PaymentPointName> names = Collections.emptySet();
@@ -43,6 +46,10 @@ public class PaymentPoint extends DomainObjectWithStatus {
 	public void setCollector(PaymentCollector collector) {
 		this.collector = collector;
 	}
+
+    public Stub<PaymentCollector> collectorStub() {
+        return stub(collector);
+    }
 
 	public String getAddress() {
 		return address;
@@ -72,6 +79,22 @@ public class PaymentPoint extends DomainObjectWithStatus {
 		return getName(ApplicationConfig.getDefaultLocale());
 	}
 
+//    public ProcessInstance getTradingDayProcessInstance() {
+//        return tradingDayProcessInstance;
+//    }
+//
+//    public void setTradingDayProcessInstance(ProcessInstance tradingDayProcessInstance) {
+//        this.tradingDayProcessInstance = tradingDayProcessInstance;
+//    }
+
+    public Long getTradingDayProcessInstanceId() {
+        return tradingDayProcessInstanceId;
+    }
+
+    public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
+        this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
+    }
+
     /**
 	 * Get name translation in a specified language
 	 *
@@ -93,13 +116,10 @@ public class PaymentPoint extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("status", getStatus()).
+				append("id", id).
+				append("status", status).
 				append("address", address).
+                append("tradingDayProcessInstanceId", tradingDayProcessInstanceId).
 				toString();
-	}
-
-	public Stub<PaymentCollector> collectorStub() {
-		return stub(collector);
 	}
 }

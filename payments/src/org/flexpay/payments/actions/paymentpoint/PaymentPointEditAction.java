@@ -1,19 +1,19 @@
 package org.flexpay.payments.actions.paymentpoint;
 
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentPointName;
 import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
-import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class PaymentPointEditAction extends AccountantAWPActionSupport {
 

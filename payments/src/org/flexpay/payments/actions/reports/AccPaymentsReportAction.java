@@ -31,15 +31,16 @@ import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportL
 
 public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport {
 
-	// detailing options
-	private static final int DETAILS_OPTION_PAYMENT_POINT = 1;
-	private static final int DETAILS_OPTION_CASHBOX = 2;
-	private static final int DETAILS_OPTION_PAYMENT = 3;
-
 	private static final String PAYMENTS_SUFFIX = "_payments";
 	private static final String CASHBOXES_SUFFIX = "_cashboxes";
 
-	// filters
+    private static final String BEGIN_DATE = "beginDate";
+    private static final String END_DATE = "endDate";
+    private static final String CREATION_DATE = "creationDate";
+    private static final String PAYMENT_COLLECTOR_ORG_ADDRESS = "paymentCollectorOrgAddress";
+    private static final String PAYMENT_COLLECTOR_ORG_NAME = "paymentCollectorOrgName";
+    private static final String ACCOUNTANT_FIO = "accountantFio";
+
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
@@ -47,27 +48,15 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 	private PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
 	private CashboxFilter cashboxFilter = new CashboxFilter();
 
-	// report file
 	private FPFile report;
 
-	// form data
 	private Integer details;
 	private String format;
 
-	// required services
 	private PaymentPointService paymentPointService;
 	private CashboxService cashboxService;
-
 	private ReportUtil reportUtil;
 	protected PaymentsReporter paymentsReporter;
-
-	// report parameter names
-	private static final String BEGIN_DATE = "beginDate";
-	private static final String END_DATE = "endDate";
-	private static final String CREATION_DATE = "creationDate";
-	private static final String PAYMENT_COLLECTOR_ORG_ADDRESS = "paymentCollectorOrgAddress";
-	private static final String PAYMENT_COLLECTOR_ORG_NAME = "paymentCollectorOrgName";
-	private static final String ACCOUNTANT_FIO = "accountantFio";
 
 	@NotNull
 	@Override
@@ -190,7 +179,7 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	private void initFilters() {
+	protected void initFilters() {
 
 		paymentPointFilter.initFilter(session);
 		paymentPointService.initFilter(paymentPointFilter);
@@ -207,7 +196,6 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		return SUCCESS;
 	}
 
-	// filters
 	public BeginDateFilter getBeginDateFilter() {
 		return beginDateFilter;
 	}
@@ -256,7 +244,6 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		this.cashboxFilter = cashboxFilter;
 	}
 
-	// form data
 	public Integer getDetails() {
 		return details;
 	}
@@ -269,7 +256,6 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		this.format = format;
 	}
 
-	// report file
 	public FPFile getReport() {
 		return report;
 	}

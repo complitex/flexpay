@@ -33,9 +33,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.service.Roles.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
-import static org.flexpay.common.util.DateUtil.now;
-import static org.flexpay.common.util.DateUtil.truncateDay;
+import static org.flexpay.common.util.DateUtil.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 
@@ -201,8 +199,8 @@ public class TradingDay extends QuartzJobBean {
             Long processInstanceId = null;
             try {
                 processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
-                paymentPointCollector.setTradingDayProcessInstanceId(processInstanceId);
-                paymentCollectorService.update(paymentPointCollector);
+                pp.setTradingDayProcessInstanceId(processInstanceId);
+                paymentPointService.update(pp);
                 log.info("TradingDay process created. Process instance id = {}, for payment point with id {}", processInstanceId, pp.getId());
             } catch (ProcessInstanceException e) {
                 log.error("Failed run process trading day", e);

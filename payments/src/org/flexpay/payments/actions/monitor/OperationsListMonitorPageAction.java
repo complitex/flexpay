@@ -18,12 +18,12 @@ import static org.flexpay.common.util.DateUtil.now;
 
 public class OperationsListMonitorPageAction extends OperatorAWPActionSupport {
 
-	private Cashbox cashbox = new Cashbox();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
+    private Cashbox cashbox = new Cashbox();
 
 	private ServiceTypeService serviceTypeService;
 

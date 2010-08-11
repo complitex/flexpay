@@ -25,19 +25,6 @@
 				<comment>Collector email address</comment>
 			</column>
 		</property>
-        <property name="tradingDayProcessInstanceId">
-            <column name="tradingDayProcessInstance_Id" not-null="false">
-                <comment>Trading date process instance id</comment>
-            </column>
-        </property>
-<!--
-        <many-to-one name="tradingDayProcessInstance" foreign-key="FK_trading_day_process_instance_id"
-                     class="org.jbpm.graph.exe.ProcessInstance">
-            <column name="tradingDayProcessInstance_Id" not-null="false">
-				<comment>Trading day process instance ID</comment>
-			</column>
-        </many-to-one>
--->
 		<many-to-one name="organization" class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_orgs_payment_collectors_tbl_organization_id">
 			<column name="organization_id" not-null="true">
@@ -129,9 +116,9 @@
 	<query name="PaymentCollector.findInstancelessOrganizations">
 		select distinct o
 		from Organization o
-		left join fetch o.names
-		left join fetch o.descriptions
-		left join o.paymentCollectors pc
+            left join fetch o.names
+            left join fetch o.descriptions
+            left join o.paymentCollectors pc
 		where o.status = 0 and o.id not in (select pc1.organization.id from PaymentCollector pc1 where pc1.status = 0)
 		or pc.id = ?
 	</query>

@@ -50,6 +50,16 @@
 			</result>
 		</action>
 
+        <action name="accPaymentsRegistriesReport" class="accPaymentsRegistriesReportAction">
+            <result type="tiles">payments.report.acc.payments_registries</result>
+            <result name="file" type="redirect-action">
+                <param name="actionName">print</param>
+                <param name="namespace">/common</param>
+                <param name="parse">true</param>
+                <param name="file.id">${report.id}</param>
+            </result>
+        </action>
+
 		<action name="importPaymentsReport" class="importPaymentsReportAction">
 			<result name="input" type="tiles">payments.report.importPaymentsReport</result>
 			<result type="stream">

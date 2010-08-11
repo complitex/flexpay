@@ -144,6 +144,7 @@ public class ServiceEditAction extends FPActionSupport {
         }
 
         serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
+        serviceProviderFilter.setNeedAutoChange(false);
         serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
         parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
         measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);

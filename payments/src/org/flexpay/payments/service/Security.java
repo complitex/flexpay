@@ -40,6 +40,7 @@ public abstract class Security extends org.flexpay.common.service.Security {
             OPERATION_READ,
             OPERATION_ADD,
             OPERATION_CHANGE,
+            OPERATION_DELETE,
             APARTMENT_READ,
             BUILDING_READ,
             STREET_READ,

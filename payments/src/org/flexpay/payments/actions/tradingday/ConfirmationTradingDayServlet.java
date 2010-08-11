@@ -86,7 +86,7 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
 
             log.debug("Got payment point with id={}", paymentPointId);
 
-            Long processId = paymentPoint.getCollector().getTradingDayProcessInstanceId();
+            Long processId = paymentPoint.getTradingDayProcessInstanceId();
             if (processId == null) {
                 log.error("Process does not set for payment point with id={}", paymentPointId);
                 httpServletResponse.sendError(530, "Trading day is not opened");

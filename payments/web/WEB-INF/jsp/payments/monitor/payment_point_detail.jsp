@@ -10,17 +10,12 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2">
-            <s:text name="payments.payment_points.list.payment_collector" />:&nbsp;<s:property value="paymentCollector.getName(getLocale())" />
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><s:text name="payments.payment_point" />:&nbsp;<s:property value="paymentPoint.name" /></td>
+        <td colspan="2"><s:text name="payments.payment_point" />&nbsp;:&nbsp;<s:property value="paymentPoint.name" /></td>
     </tr>
     <tr>
         <td colspan="2">
-            <s:text name="payments.payment_point.detail.payments_count" />:&nbsp;<s:property value="paymentsCount" />&nbsp;&nbsp;&nbsp;
-            <s:text name="payments.payment_point.detail.sum" />:&nbsp;<s:property value="totalSum" />
+            <s:text name="payments.payment_point.detail.payments_count" />&nbsp;:&nbsp;<s:property value="paymentsCount" />&nbsp;&nbsp;&nbsp;
+            <s:text name="payments.payment_point.detail.sum" />&nbsp;:&nbsp;<s:property value="totalSum" />
         </td>
     </tr>
 <%--

@@ -10,8 +10,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
@@ -71,10 +69,10 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			filterSubservices();
 			filterNegativeSums();
 
-            final Long paymentProcessId = getPaymentProcessId();
+            final Long paymentProcessId = getPaymentPoint().getTradingDayProcessInstanceId();
 
             if (paymentProcessId == null || paymentProcessId == 0) {
-                log.debug("TradingDay process id not found for Payment collector with id = {}", getPaymentPoint().getCollector().getId());
+                log.debug("TradingDay process id not found for Payment point with id = {}", getPaymentPoint().getId());
                 addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
             } else {
                 log.debug("Found process id {} for cashbox {}", paymentProcessId, cashboxId);

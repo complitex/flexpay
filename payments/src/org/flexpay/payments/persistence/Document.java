@@ -316,7 +316,7 @@ public class Document extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
+				append("id", id).
 				append("sum", sum).
 				append("registryRecord", registryRecord).
 				append("documentType", documentType).
