@@ -9,10 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.map;
 
 /**
  * Search eirc accounts in documents
@@ -39,6 +37,9 @@ public class EircAccountReadHintsHandler extends ProcessingReadHintsHandler {
 
 		Document document = null;
 		for (RegistryRecord record : records) {
+			if (!iterDocuments.hasNext() && document == null) {
+				break;
+			}
 			if (record.getPersonalAccountExt() != null && record.getUniqueOperationNumber() != null) {
 				if (document == null) {
 					document = iterDocuments.next();
