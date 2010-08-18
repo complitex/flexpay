@@ -55,13 +55,13 @@ public interface DocumentService {
 	void delete(@NotNull Stub<Document> documentStub);
 
 	/**
-	 * Returns list of operations documents
+	 * Returns list of  documents
 	 *
-	 * @param operationIds Operation ids
-	 * @return list of operations documents
+	 * @param documentIds Document ids
+	 * @return list of documents
 	 */
 	@Secured (Roles.DOCUMENT_READ)
-	List<Document> searchDocuments(@NotNull Collection<Long> operationIds);
+	List<Document> searchDocuments(@NotNull Collection<Long> documentIds);
 
 	/**
 	 * Returns list of operation documents which suits search criterias

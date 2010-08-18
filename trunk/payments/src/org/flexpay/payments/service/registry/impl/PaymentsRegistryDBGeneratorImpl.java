@@ -218,7 +218,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		record.setBuildingNum(document.getBuildingNumber());
 		record.setBuildingBulkNum(document.getBuildingBulk());
 		record.setApartmentNum(document.getApartmentNumber());
-		record.setUniqueOperationNumber(document.getOperation().getId());
+		record.setUniqueOperationNumber(document.getId());
 		record.setProperties(propertiesFactory.newRecordProperties());
 
 		addRecordContainers(record, document);

@@ -422,13 +422,13 @@
 	<query name="DocumentStatus.findByCode">
 		select distinct o
 		from DocumentStatus o
-    		left join fetch o.translations
+    		left join fetch o.tranDoDocuslations
 		where o.code=?
 	</query>
 
 	<query name="Document.readFullCollection">
 		from Document doc
-		where doc.operation.id IN (:ids)
+		where doc.id IN (:ids)
 	</query>
 
 	<query name="Document.listRegisteredPaymentDocuments"><![CDATA[
