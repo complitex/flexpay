@@ -8,6 +8,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 
 public class EircRegistryRecordPropertiesDaoImpl extends HibernateDaoSupport implements EircRegistryRecordPropertiesDao {
@@ -28,6 +29,16 @@ public class EircRegistryRecordPropertiesDaoImpl extends HibernateDaoSupport imp
 		Object[] params = {registryId, lowerBound, upperBound};
 		return (List<EircRegistryRecordProperties>) getHibernateTemplate()
 				.findByNamedQuery("EircRegistryRecordProperties.findWithConsumers", params);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings ({"unchecked"})
+	@Override
+	public List<EircRegistryRecordProperties> findWithConsumers(Collection<Long> recordIds) {
+		return (List<EircRegistryRecordProperties>) getHibernateTemplate()
+				.findByNamedQueryAndNamedParam("EircRegistryRecordProperties.findWithConsumersAndEircAccount", "ids", recordIds);
 	}
 
 	/**

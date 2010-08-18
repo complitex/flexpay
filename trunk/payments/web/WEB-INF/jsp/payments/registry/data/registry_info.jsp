@@ -3,7 +3,7 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr class="cols_1">
 		<td class="col">
-            <strong><s:text name="eirc.registry.number" />:</strong> <s:property value="registry.registryNumber" />
+            <strong><s:text name="eirc.registry.number" />:</strong> <s:property value="registry.id" />
         </td>
 		<td class="col">
             <strong><s:text name="eirc.sender" />:</strong> <s:property value="getTranslationName(orgs.get(registry.senderCode).names)" />

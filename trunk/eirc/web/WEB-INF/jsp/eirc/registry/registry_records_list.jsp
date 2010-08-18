@@ -43,7 +43,7 @@
                     <s:property value="serviceCode" />
                 </s:else>
             </td>
-            <td class="col"><s:property value="personalAccountExt" /></td>
+            <td class="col"><s:property value="properties.consumer.eircAccount.accountNumber" /></td>
             <td class="col" nowrap>
                 <s:if test="streetType != null && streetName != null && (buildingNum != null || buildingBulkNum != null) && apartmentNum != null">
                     <s:set name="addressVal" value="%{streetType + ' ' + streetName + ', ' + (buildingNum != null ? buildingNum : '') + (buildingBulkNum != null ? ' ' + buildingBulkNum : '') + ', ' + apartmentNum}" />
