@@ -7,6 +7,7 @@ import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.service.DocumentService;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -34,24 +35,24 @@ public class EircAccountReadHintsHandler extends ProcessingReadHintsHandler {
 				operationIds.add(record.getUniqueOperationNumber());
 			}
 		}
-		List<Document> documents = documentService.searchDocuments(operationIds);
+		Iterator<Document> iterDocuments = documentService.searchDocuments(operationIds).iterator();
 
-		Map<String, Document> docs = map();
-		for (Document document : documents) {
-			docs.put(document.getCreditorId() + "," + document.getOperation().getId(), document);
-		}
+		Document document = null;
 		for (RegistryRecord record : records) {
 			if (record.getPersonalAccountExt() != null && record.getUniqueOperationNumber() != null) {
-				String key = record.getPersonalAccountExt() + "," + record.getUniqueOperationNumber();
-				final Document document = docs.get(key);
-				if (document != null) {
+				if (document == null) {
+					document = iterDocuments.next();
+				}
+				if (document != null && record.getUniqueOperationNumber().equals(document.getId())) {
+					final String innerEircAccount = document.getDebtorId();
 					record.setProperties(new RegistryRecordProperties() {
-						private String eircAccount = document.getDebtorId();
+						private String eircAccount = innerEircAccount;
 
 						public String getEircAccount() {
 							return eircAccount;
 						}
 					});
+					document = null;
 				}
 			}
 		}

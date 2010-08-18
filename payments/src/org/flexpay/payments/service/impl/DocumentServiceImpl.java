@@ -87,8 +87,8 @@ public class DocumentServiceImpl implements DocumentService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Document> searchDocuments(@NotNull Collection<Long> operationIds) {
-		return documentDao.readFullCollection(operationIds, false);
+	public List<Document> searchDocuments(@NotNull Collection<Long> documentIds) {
+		return documentDao.readFullCollection(documentIds, true);
 	}
 
 	/**
