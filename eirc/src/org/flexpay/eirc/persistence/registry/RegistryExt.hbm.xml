@@ -22,6 +22,17 @@
 		order by r.id
 	</query>
 
+	<query name="EircRegistryRecordProperties.findWithConsumersAndEircAccount">
+		select distinct p
+		from EircRegistryRecordProperties p
+			left join fetch p.consumer c
+			left join fetch c.eircAccount e
+			left join fetch c.attributes a
+			left join fetch a.type t
+			left join p.record r
+		where r.id IN (:ids)
+	</query>
+
 	<sql-query name="EircRegistryRecordProperties.findWithApartmentAttributes">
 		<return alias="pr" class="org.flexpay.eirc.persistence.EircRegistryRecordProperties" />
 		<return alias="ap" class="org.flexpay.bti.persistence.apartment.BtiApartment" />

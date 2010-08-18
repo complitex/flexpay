@@ -2,6 +2,7 @@ package org.flexpay.eirc.dao;
 
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface EircRegistryRecordPropertiesDao {
@@ -15,6 +16,14 @@ public interface EircRegistryRecordPropertiesDao {
 	 * @return list of properties
 	 */
 	List<EircRegistryRecordProperties> findWithConsumers(Long registryId, Long lowerBound, Long upperBound);
+
+	/**
+	 * Find record properties with full consumers info fetched
+	 *
+	 * @param recordIds Collection record ids
+	 * @return list of properties
+	 */
+	List<EircRegistryRecordProperties> findWithConsumers(Collection<Long> recordIds);
 
 	/**
 	 * Find record properties with apartments info fetched

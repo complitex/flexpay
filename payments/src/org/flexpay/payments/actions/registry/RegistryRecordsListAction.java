@@ -1,12 +1,15 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
@@ -36,6 +39,8 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 	private ServiceTypeService serviceTypeService;
 	private RegistryRecordService registryRecordService;
 	private ClassToTypeRegistry classToTypeRegistry;
+
+	private ProcessingReadHintsHandlerFactory hintsHandlerFactory = null;
 
 	@NotNull
 	@Override
@@ -69,6 +74,12 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		}
 
 		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
+
+		if (hintsHandlerFactory != null && records.size() > 0) {
+			log.debug("select consumers with eirc account for registry records");
+			hintsHandlerFactory.getInstance(null, null, records).read();
+		}
+
 		if (log.isDebugEnabled()) {
 			watch.stop();
 			log.debug("Time spent listing records: {}", watch);
@@ -148,4 +159,7 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	public void setHintsHandlerFactory(ProcessingReadHintsHandlerFactory hintsHandlerFactory) {
+		this.hintsHandlerFactory = hintsHandlerFactory;
+	}
 }

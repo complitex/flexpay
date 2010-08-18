@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -80,6 +81,14 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 
 		documentDao.delete(document);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Document> searchDocuments(@NotNull Collection<Long> operationIds) {
+		return documentDao.readFullCollection(operationIds, false);
 	}
 
 	/**

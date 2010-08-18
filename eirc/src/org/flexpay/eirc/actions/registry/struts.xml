@@ -18,7 +18,7 @@
             <result>/WEB-INF/jsp/payments/registry/check_errors_number_response.jsp</result>
         </action>
 
-        <action name="registryRecordsListAjax" class="registryRecordsListAction">
+        <action name="eircRegistryRecordsListAjax" class="eircRegistryRecordsListAction">
             <result>/WEB-INF/jsp/eirc/registry/registry_records_list.jsp</result>
         </action>
 

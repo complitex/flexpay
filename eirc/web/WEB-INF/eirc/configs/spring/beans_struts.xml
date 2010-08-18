@@ -185,12 +185,22 @@
           p:recordStatusService-ref="registryRecordStatusService"
           scope="prototype"  />
 
-    <bean id="registryRecordsListAction"
+	<bean id="registryRecordsListAction"
           class="org.flexpay.payments.actions.registry.RegistryRecordsListAction"
           p:classToTypeRegistry-ref="classToTypeRegistry"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:serviceTypeService-ref="serviceTypeService"
           p:registryRecordService-ref="registryRecordService"
+		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          scope="prototype"  />
+
+    <bean id="eircRegistryRecordsListAction"
+          class="org.flexpay.payments.actions.registry.RegistryRecordsListAction"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:registryRecordService-ref="registryRecordService"
+		  p:hintsHandlerFactory-ref="consumerReadHintsHandlerFactory"
           scope="prototype"  />
 
 	<bean id="processesListPageAction"

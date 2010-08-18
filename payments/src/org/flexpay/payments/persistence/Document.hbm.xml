@@ -426,6 +426,11 @@
 		where o.code=?
 	</query>
 
+	<query name="Document.readFullCollection">
+		from Document doc
+		where doc.operation.id IN (:ids)
+	</query>
+
 	<query name="Document.listRegisteredPaymentDocuments"><![CDATA[
 		select distinct doc
 		from Document doc

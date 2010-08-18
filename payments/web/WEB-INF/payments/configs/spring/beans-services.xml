@@ -24,6 +24,10 @@
 		</property>
 	</bean>
 
+	<bean id="eircAccountReadHintsHandlerFactory"
+		  class="org.flexpay.payments.service.impl.fetch.EircAccountReadHintsHandlerFactory"
+		  p:documentService-ref="documentService" />
+
 	<bean id="registryDeliveryHistoryService"
 		  class="org.flexpay.payments.service.impl.RegistryDeliveryHistoryServiceImpl"
 		  p:registryDeliveryHistoryDao-ref="registryDeliveryHistoryDao" />

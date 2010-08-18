@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,15 @@ public interface DocumentService {
 	 */
 	@Secured (Roles.DOCUMENT_DELETE)
 	void delete(@NotNull Stub<Document> documentStub);
+
+	/**
+	 * Returns list of operations documents
+	 *
+	 * @param operationIds Operation ids
+	 * @return list of operations documents
+	 */
+	@Secured (Roles.DOCUMENT_READ)
+	List<Document> searchDocuments(@NotNull Collection<Long> operationIds);
 
 	/**
 	 * Returns list of operation documents which suits search criterias
