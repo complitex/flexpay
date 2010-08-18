@@ -277,7 +277,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData(eircAccount, TABLE_HEADERS[1].length(), ' '));
 
 		// лиц. счёт поставщика услуг
-		infoLine.add(createCellData(serviceProviderId, TABLE_HEADERS[2].length(), ' '));
+		infoLine.add(createCellData(record.getPersonalAccountExt(), TABLE_HEADERS[2].length(), ' '));
 
 		// ФИО
 		String fio = record.getLastName();
