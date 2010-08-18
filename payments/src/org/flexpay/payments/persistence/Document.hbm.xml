@@ -422,7 +422,7 @@
 	<query name="DocumentStatus.findByCode">
 		select distinct o
 		from DocumentStatus o
-    		left join fetch o.tranDoDocuslations
+    		left join fetch o.translations
 		where o.code=?
 	</query>
 
