@@ -48,7 +48,7 @@
     </patternset>
 
     <property name="compiler.args.common" value="${compiler.args}" />
-    <property name="common.output.dir" value="${module.common.basedir}/../_build/classes/http_tester" />
+    <property name="common.output.dir" value="${module.common.basedir}/build/classes" />
 
     <path id="common.module.classpath">
         <path refid="library.jb.classpath" />
