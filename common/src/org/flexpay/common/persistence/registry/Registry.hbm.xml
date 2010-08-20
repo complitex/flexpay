@@ -431,6 +431,7 @@
         from RegistryRecord rr
             left outer join fetch rr.recordStatus
             left outer join fetch rr.importError
+            left outer join fetch rr.containers
         where rr.id in (:ids)
     </query>
 
