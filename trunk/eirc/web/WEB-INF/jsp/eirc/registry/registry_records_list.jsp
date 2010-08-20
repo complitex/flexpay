@@ -74,8 +74,9 @@
 								N/A
 							</s:if>
 							<s:else>
-								<s:iterator value="containers" id="container">
-									<s:property value="#container.data" /><s:if test="#container.id != containers.get(containers.size() - 1).id">; </s:if>
+								<s:set name="lastContainerIndex" value="%{containers.size() - 1}" />
+								<s:iterator value="containers" status="containerStatus" id="container">
+									<s:property value="#container.data" /><s:if test="#containerStatus.index < #lastContainerIndex">; </s:if>
 								</s:iterator>
 							</s:else>
 						</td>
