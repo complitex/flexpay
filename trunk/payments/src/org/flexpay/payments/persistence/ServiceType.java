@@ -18,6 +18,101 @@ import java.util.Set;
 
 public class ServiceType extends DomainObjectWithStatus {
 
+	//Квартплата
+	public static final int RENT = 1;
+	//Содержание собак
+	public static final int DOGS = 2;
+	//Гараж
+	public static final int GARAGE = 3;
+	//Отопление
+	public static final int HEATING = 4;
+	//Подогрев воды
+	public static final int WATER_COOLING = 5;
+	//Холодная вода
+	public static final int COLD_WATER = 7;
+	//Горячая вода
+	public static final int HOT_WATER = 8;
+	//Уборка территории
+	public static final int TERRITORY_CLEANING = 10;
+	//Водоснабжение
+	public static final int WATER_SUPPLY = 12;
+	//Водоотведение
+	public static final int WATER_DISPOSAL = 13;
+	//Очистка мусоросборников
+	public static final int CLEANING_GARBAGE_COLLECTORS = 20;
+	//Уборка подвалов, тех.этажей, крыш
+	public static final int CLEANING_EXT = 30;
+	//Вывоз и утилизация ТБО
+	public static final int TBO = 40;
+	//ТО лифтов
+	public static final int TO_ELEVATORS = 50;
+	//ТО систем диспетчеризации
+	public static final int TO_DISPATCHING = 60;
+	//ТО систем водоснабжения
+	public static final int TO_WATER_SUPPLY = 70;
+	//ТО систем водоотведения
+	public static final int TO_WATER_DISPOSAL = 80;
+	//ТО систем теплоснабжения
+	public static final int TO_HEAT_SUPPLY = 90;
+	//ТО систем горячего водоснабжения
+	public static final int TO_HOT_WATER_SUPPLY = 100;
+	//ТО бойлеров
+	public static final int TO_BOILERS = 110;
+	//Обслуживание дымоотв. каналов
+	public static final int FOG_CANALS = 120;
+	//Очистка дворовых туалетов
+	public static final int CLEANING_TOILETS = 130;
+	//Освещение мест общего пльзования
+	public static final int PUBLIC_SPACE_LIGHTING = 140;
+	//Энергоснабж. для подкачки воды
+	public static final int WATER_SUPPLY_ENERGY = 150;
+	//Энергоснабжение для лифтов
+	public static final int ELEVATORS_ENERGY = 160;
+	//Уборка лестничных клеток
+	public static final int STAIRCASES_CLEANING = 170;
+	//Дератизация и дезинфекция
+	public static final int DISINFECTION = 180;
+	//ТО бытовых электроплит
+	public static final int ELECTRIC_COOKER = 190;
+	//Гараж
+	public static final int GARAGE2 = 220;
+	//Погреба
+	public static final int CELLAR = 38;
+	//Содержание животных
+	public static final int KEEP_OF_ANIMALS = 250;
+	//Электроэнергия
+	public static final int ELECTRICITY = 1002;
+	//Сарай
+	public static final int SHED = 230;
+	//Кладовая
+	public static final int LARDER = 1004;
+	//Хозрасходы
+	public static final int HOUSEHOLD_COST = 1005;
+	//Канализация
+	public static final int SEWERAGE = 1006;
+	//Газ варочный
+	public static final int COOKING_GAS = 1007;
+	//Газ отопительный
+	public static final int HEATING_GAS = 1008;
+	//Радио
+	public static final int RADIO = 1009;
+	//Антена
+	public static final int ANTENNA = 1010;
+	//Телефон
+	public static final int PHONE = 1011;
+	//Ассенизация
+	public static final int CESSPOOL_CLEANING = 1012;
+	//Лифт
+	public static final int LIFT = 1013;
+	//Налог на землю
+	public static final int GROUND_TAX = 1014;
+	//Повторное подключение
+	public static final int REPEAT_TURN_ON = 1015;
+	//Оплата по актам
+	public static final int ACTS_PAYMENT = 1016;
+	//Ремонт счётчиков
+	public static final int COUNTERS_REPAIR = 1017;
+
 	private int code;
 	private Set<ServiceTypeNameTranslation> typeNames = Collections.emptySet();
 
