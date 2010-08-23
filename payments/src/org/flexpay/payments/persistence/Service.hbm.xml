@@ -198,6 +198,7 @@
 	<query name="Service.findServicesByTypeCode">
 		select distinct o
 		from Service o
+		inner join fetch o.serviceType
 		where o.serviceProvider.id=? and o.serviceType.id=? 
 	</query>
 

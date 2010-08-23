@@ -287,53 +287,72 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		record.addContainer(container);
 
 		// ФИО
+		/*
 		container = new RegistryRecordContainer();
 		container.setData("3:" + modificationStartDate + "::" + fields[2]);
 		record.addContainer(container);
+             */
 
 		// Количество проживающих
 		if (StringUtils.isNotEmpty(fields[15]) && !"0".equals(fields[15])) {
 			container = new RegistryRecordContainer();
-			container.setData("4:" + modificationStartDate + "::" + fields[15]);
+			container.setData("600:" + modificationStartDate + "::" + fields[15]);
 			record.addContainer(container);
 		}
 
-		// Площадь общая
+		// Количество зарегистрированных
+		if (StringUtils.isNotEmpty(fields[14]) && !"0".equals(fields[15])) {
+			container = new RegistryRecordContainer();
+			container.setData("601:" + modificationStartDate + "::" + fields[15]);
+			record.addContainer(container);
+		}
+
+		// Общая или отапливаемая площадь
 		if (StringUtils.isNotEmpty(fields[10]) && !"0.00".equals(fields[10])) {
 			container = new RegistryRecordContainer();
-			container.setData("5:" + modificationStartDate + "::" + fields[10]);
+			EircRegistryRecordProperties props = (EircRegistryRecordProperties)record.getProperties();
+			if (props.getService().getServiceType().getCode() != ServiceType.HEATING) {
+				container.setData("602:" + modificationStartDate + "::" + fields[10]);
+			} else {
+				container.setData("604:" + modificationStartDate + "::" + fields[10]);
+			}
 			record.addContainer(container);
 		}
 
 		// Площадь жилая
 		if (StringUtils.isNotEmpty(fields[11]) && !"0.00".equals(fields[11])) {
 			container = new RegistryRecordContainer();
-			container.setData("6:" + modificationStartDate + "::" + fields[11]);
+			container.setData("603:" + modificationStartDate + "::" + fields[11]);
 			record.addContainer(container);
 		}
 
 		// Тип льготы
+		/*
 		if (StringUtils.isNotEmpty(fields[17]) && !"0".equals(fields[17])) {
 			container = new RegistryRecordContainer();
 			container.setData("8:" + modificationStartDate + "::" + fields[17]);
 			record.addContainer(container);
 		}
-
+             */
 		// ФИО носителя льготы
+		/*
 		if (fields.length != CorrectionsRecordValidator.FIELDS_LENGTH_EMPTY_FOOTER &&
 				StringUtils.isNotEmpty(fields[26]) && !"0".equals(fields[26])) {
 			container = new RegistryRecordContainer();
 			container.setData("9:" + modificationStartDate + "::" + fields[26]);
 			record.addContainer(container);
 		}
+		*/
 
 		// Количество пользующихся льготой
+		/*
 		if (StringUtils.isNotEmpty(fields[16]) && !"0".equals(fields[16])) {
 			container = new RegistryRecordContainer();
 			container.setData("12:" + modificationStartDate + "::" + fields[16]);
 			record.addContainer(container);
 		}
-
+        	*/
+		
 		return record;
 	}
 
