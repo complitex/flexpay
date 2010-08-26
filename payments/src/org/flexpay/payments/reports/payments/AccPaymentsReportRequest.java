@@ -1,22 +1,13 @@
 package org.flexpay.payments.reports.payments;
 
-import java.util.Date;
-import java.util.Locale;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
-public class AccPaymentsReportRequest {
+public class AccPaymentsReportRequest extends AccReportRequest {
 
-	public static final int DETAILS_LEVEL_PAYMENT_POINT = 1;
-	public static final int DETAILS_LEVEL_CASHBOX = 2;
-	public static final int DETAILS_LEVEL_PAYMENT = 3;
-
-	private int paymentStatus;
 	private int detailsLevel;
-	private String format;
-	private Date beginDate;
-	private Date endDate;
 	private Long paymentPointId;
 	private Long cashboxId;
-	private Locale locale;
 
 	public int getDetailsLevel() {
 		return detailsLevel;
@@ -24,22 +15,6 @@ public class AccPaymentsReportRequest {
 
 	public void setDetailsLevel(int detailsLevel) {
 		this.detailsLevel = detailsLevel;
-	}
-
-	public Date getBeginDate() {
-		return beginDate;
-	}
-
-	public void setBeginDate(Date beginDate) {
-		this.beginDate = beginDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	public Long getPaymentPointId() {
@@ -58,27 +33,18 @@ public class AccPaymentsReportRequest {
 		this.cashboxId = cashboxId;
 	}
 
-	public int getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public void setPaymentStatus(int paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
-	public Locale getLocale() {
-		return locale;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
-
-	public String getFormat() {
-		return format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("format", format).
+                append("beginDate", beginDate).
+                append("endDate", endDate).
+                append("paymentCollectorId", paymentCollectorId).
+                append("locale", locale).
+                append("paymentStatus", paymentStatus).
+                append("detailsLevel", detailsLevel).
+                append("paymentPointId", paymentPointId).
+                append("cashboxId", cashboxId).
+                toString();
+    }
 }

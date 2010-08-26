@@ -1,28 +1,39 @@
 package org.flexpay.eirc.actions.eircaccount;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.persistence.filters.ApartmentFilter;
+import org.flexpay.ab.persistence.filters.BuildingsFilter;
+import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
+import org.flexpay.eirc.persistence.sorter.EircAccountSorterByAccountNumber;
+import org.flexpay.eirc.persistence.sorter.EircAccountSorterByAddress;
 import org.flexpay.eirc.service.EircAccountService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount> {
 
 	private Long apartmentFilter;
 	private Long buildingFilter;
-	private String personFio;
+    private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
+    private Integer output = 1;
 	private List<EircAccount> accounts = list();
+
+    private EircAccountSorterByAccountNumber eircAccountSorterByAccountNumber = new EircAccountSorterByAccountNumber();
+    private EircAccountSorterByAddress eircAccountSorterByAddress = new EircAccountSorterByAddress();
 
 	private EircAccountService eircAccountService;
 	private PersonService personService;
@@ -32,22 +43,28 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 	@Override
 	public String doExecute() throws Exception {
 
-		boolean setApartment = apartmentFilter != null && apartmentFilter > 0;
-		boolean setBuilding = buildingFilter != null && buildingFilter > 0;
+        if (personSearchFilter == null) {
+            log.warn("PersonSearchFilter parameter is null");
+            personSearchFilter = new PersonSearchFilter();
+        }
 
-		if (!setApartment && !setBuilding) {
-			if (personFio != null) {
-				return SUCCESS;
-			} else {
-				personFio = "";
-			}
+        log.debug("apartmentFilter = {}, buildingFilter = {}", apartmentFilter, buildingFilter);
+        log.debug("personSearchFilter = {}, output = {}", personSearchFilter, output);
+
+        List<EircAccountSorter> sorters = list(eircAccountSorterByAccountNumber, eircAccountSorterByAddress);
+
+		if ((apartmentFilter == null || apartmentFilter <= 0) && (buildingFilter == null || buildingFilter <= 0) && isEmpty(personSearchFilter.getSearchString())) {
+            log.debug("All filters are empty. Return empty list");
+            return SUCCESS;
 		}
 
-		if (setApartment) {
-			accounts = eircAccountService.getAccountsInApartment(new Stub<Apartment>(apartmentFilter), personFio, getPager());
-		} else if (setBuilding) {
-			accounts = eircAccountService.getAccountsInBuilding(new Stub<BuildingAddress>(buildingFilter), personFio, getPager());
-		}
+        List<ObjectFilter> filters = list(
+                new ApartmentFilter(apartmentFilter),
+                new BuildingsFilter(buildingFilter),
+                personSearchFilter
+        );
+
+        accounts = eircAccountService.getAccounts(sorters, filters, output, getPager());
 
 		log.debug("Found eirc accounts: {}", accounts);
 
@@ -83,11 +100,11 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 		throw new RuntimeException("No default identity: " + persistent);
 	}
 
-	public void setPersonFio(String personFio) {
-		this.personFio = personFio;
-	}
+    public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
+        this.personSearchFilter = personSearchFilter;
+    }
 
-	public void setBuildingFilter(Long buildingFilter) {
+    public void setBuildingFilter(Long buildingFilter) {
 		this.buildingFilter = buildingFilter;
 	}
 
@@ -95,11 +112,31 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 		this.apartmentFilter = apartmentFilter;
 	}
 
-	public List<EircAccount> getAccounts() {
+    public void setOutput(Integer output) {
+        this.output = output;
+    }
+
+    public List<EircAccount> getAccounts() {
 		return accounts;
 	}
 
-	@Required
+    public EircAccountSorterByAccountNumber getEircAccountSorterByAccountNumber() {
+        return eircAccountSorterByAccountNumber;
+    }
+
+    public void setEircAccountSorterByAccountNumber(EircAccountSorterByAccountNumber eircAccountSorterByAccountNumber) {
+        this.eircAccountSorterByAccountNumber = eircAccountSorterByAccountNumber;
+    }
+
+    public EircAccountSorterByAddress getEircAccountSorterByAddress() {
+        return eircAccountSorterByAddress;
+    }
+
+    public void setEircAccountSorterByAddress(EircAccountSorterByAddress eircAccountSorterByAddress) {
+        this.eircAccountSorterByAddress = eircAccountSorterByAddress;
+    }
+
+    @Required
 	public void setEircAccountService(EircAccountService eircAccountService) {
 		this.eircAccountService = eircAccountService;
 	}

@@ -4,7 +4,7 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="eirc_account" namespace="/eirc" extends="common">
+	<package name="eirc_account2" namespace="/eirc" extends="common">
 
 		<!-- Eirc account -->
         <action name="eircAccountsList" class="eircAccountsListPageAction">
@@ -19,6 +19,16 @@
 			<result type="tiles">eirc.eirc_account.view</result>
 			<result name="redirectError" type="redirect-action">eircAccountsList</result>
 		</action>
+
+        <action name="eircAccountEditConsumerAttributes" class="eircAccountEditConsumerAttributesAction">
+            <result name="input" type="tiles">eirc.eirc_account.edit_consumer_attributes</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">eircAccountView</param>
+                <param name="parse">true</param>
+                <param name="eircAccount.id">${eircAccount.id}</param>
+            </result>
+            <result name="redirectError" type="redirect-action">eircAccountsList</result>
+        </action>
 
 		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
 			<result type="tiles">eirc.eirc_account.create.form1</result>

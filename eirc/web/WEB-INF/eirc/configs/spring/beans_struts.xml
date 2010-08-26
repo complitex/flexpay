@@ -233,24 +233,38 @@
 		  p:moduleName="${flexpay.module.name.eirc}"
 		  scope="prototype" />
 
-	<bean id="eircAccountsListAction"
-		  class="org.flexpay.eirc.actions.eircaccount.EircAccountsListAction"
-		  p:eircAccountService-ref="eircAccountService"
-		  p:personService-ref="personService"
-		  p:addressService-ref="addressService"
-		  scope="prototype" />
+    <bean id="eircAccountsListAction"
+          class="org.flexpay.eirc.actions.eircaccount.EircAccountsListAction"
+          p:eircAccountService-ref="eircAccountService"
+          p:personService-ref="personService"
+          p:addressService-ref="addressService"
+          scope="prototype" />
 
-	<bean id="eircAccountsListPageAction"
-		  class="org.flexpay.common.actions.StaticPageAction"
-		  p:crumbNameKey="eirc.crumbs.eirc_accounts_list"
-		  scope="prototype" />
+    <bean id="eircAccountsListPageAction"
+          class="org.flexpay.common.actions.StaticPageAction"
+          p:crumbNameKey="eirc.crumbs.eirc_accounts_list"
+          scope="prototype" />
 
-	<bean id="eircAccountViewAction"
-		  class="org.flexpay.eirc.actions.eircaccount.EircAccountViewAction"
-		  p:crumbNameKey="eirc.crumbs.eirc_account_view"
-		  p:eircAccountService-ref="eircAccountService"
-		  p:spService-ref="spService"
-		  scope="prototype" />
+    <bean id="eircAccountViewAction"
+          class="org.flexpay.eirc.actions.eircaccount.EircAccountViewAction"
+          p:crumbNameKey="eirc.crumbs.eirc_account_view"
+          p:eircAccountService-ref="eircAccountService"
+          p:spService-ref="spService"
+          p:personService-ref="personService"
+          p:addressService-ref="addressService"
+          p:consumerAttributeTypeService-ref="consumerAttributeTypeService"
+          scope="prototype" />
+
+    <bean id="eircAccountEditConsumerAttributesAction"
+          class="org.flexpay.eirc.actions.eircaccount.EircAccountEditConsumerAttributesAction"
+          p:crumbNameKey="eirc.crumbs.eirc_account_edit_consumer_attributes"
+          p:eircAccountService-ref="eircAccountService"
+          p:spService-ref="spService"
+          p:personService-ref="personService"
+          p:addressService-ref="addressService"
+          p:consumerAttributeTypeService-ref="consumerAttributeTypeService"
+          p:consumerService-ref="consumerService"
+          scope="prototype" />
 
 	<bean id="eircAccountCreateForm1Action"
 		  class="org.flexpay.common.actions.StaticPageAction"

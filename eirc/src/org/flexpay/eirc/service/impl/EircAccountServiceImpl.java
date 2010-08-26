@@ -2,7 +2,6 @@ package org.flexpay.eirc.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
@@ -11,12 +10,14 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.Luhn;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.dao.EircAccountDao;
 import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Transactional (readOnly = true)
@@ -149,15 +151,8 @@ public class EircAccountServiceImpl implements EircAccountService {
 	}
 
 	@Override
-	public List<EircAccount> getAccountsInApartment(@NotNull Stub<Apartment> stub, @NotNull String personFio, Page<EircAccount> pager) {
-		String str = "%" + personFio + "%";
-		return eircAccountDao.findByApartmentAndFIO(stub.getId(), str, str, pager);
-	}
-
-	@Override
-	public List<EircAccount> getAccountsInBuilding(@NotNull Stub<BuildingAddress> stub, @NotNull String personFio, Page<EircAccount> pager) {
-		String str = "%" + personFio + "%";
-		return eircAccountDao.findByBuildingAndFIO(stub.getId(), str, str, pager);
+	public List<EircAccount> getAccounts(@NotNull List<? extends EircAccountSorter> sorters, Collection<ObjectFilter> filters, @NotNull Integer output, Page<EircAccount> pager) {
+        return eircAccountDaoExt.findAccounts(sorters, filters, output, pager);
 	}
 
 	/**

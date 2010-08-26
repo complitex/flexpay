@@ -70,9 +70,9 @@ public interface RegistryService {
 	 */
 	Collection<Registry> findObjects(@NotNull Set<Long> objectIds);
 
-    public List<Registry> findRegistries(int typeCode, Date from, Date till);
+    List<Registry> findRegistries(int typeCode, Date from, Date till);
 
-    public List<Registry> findRegistriesInDateInterval(Date from, Date till);
+    List<Registry> findRegistriesInDateInterval(Date from, Date till);
 
 	/**
 	 * Delete all records for registry

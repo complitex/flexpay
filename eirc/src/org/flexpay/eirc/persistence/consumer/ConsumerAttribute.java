@@ -1,8 +1,9 @@
 package org.flexpay.eirc.persistence.consumer;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.TemporalValueObject;
 import org.flexpay.eirc.persistence.Consumer;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class ConsumerAttribute extends TemporalValueObject implements Comparable<ConsumerAttribute> {
 
@@ -72,4 +73,16 @@ public class ConsumerAttribute extends TemporalValueObject implements Comparable
 
 		return attribute;
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("id", id).
+                append("isTemporal", isTemporal).
+                append("begin", getBegin()).
+                append("end", getEnd()).
+                append("value", value()).
+                append("type", type).
+                toString();
+    }
 }

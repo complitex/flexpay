@@ -62,6 +62,16 @@
         </property>
     </bean>
 
+    <bean name="eirc_accounts" parent="eirc"
+          p:name="eirc.eirc_accounts"
+          p:title="eirc.eirc_account.list"
+          p:action="mainEircAccounts"
+          p:parent-ref="eirc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_EIRC_ACCOUNTS" />
+        </property>
+    </bean>
+
 	<!--level3-->
 	<bean name="eirc_dicts_organizations" parent="eirc_dicts"
 		  p:name="eirc.organizations"
@@ -145,6 +155,16 @@
         </property>
     </bean>
 
+    <bean name="eirc_accounts_accounts" parent="eirc_accounts"
+          p:name="eirc.eirc_accounts2"
+          p:title="eirc.eirc_account.list"
+          p:action="mainEircAccountsAccounts"
+          p:parent-ref="eirc_accounts">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_EIRC_ACCOUNTS2" />
+        </property>
+    </bean>
+
 	<!--level4-->
 	<bean parent="eirc_dicts_organizations"
 		  p:name="eirc.organizations2"
@@ -183,16 +203,6 @@
 		  p:parent-ref="eirc_dicts_organizations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_SERVICE_PROVIDERS" />
-        </property>
-    </bean>
-
-	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.eirc_accounts"
-		  p:title="eirc.eirc_account.list"
-		  p:action="eircAccountsList"
-		  p:parent-ref="eirc_dicts_organizations">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_EIRC_ACCOUNTS" />
         </property>
     </bean>
 
@@ -346,6 +356,16 @@
 		  p:parent-ref="eirc_quittances_packets">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PACKETS" />
+        </property>
+    </bean>
+
+    <bean parent="eirc_accounts_accounts"
+          p:name="eirc.eirc_accounts3"
+          p:title="eirc.eirc_account.list"
+          p:action="eircAccountsList"
+          p:parent-ref="eirc_accounts_accounts">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_EIRC_ACCOUNTS3" />
         </property>
     </bean>
 

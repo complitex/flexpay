@@ -280,16 +280,6 @@ public class Consumer extends DomainObjectWithStatus {
 		return attrs;
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("externalAccountNumber", externalAccountNumber).
-				append("beginDate", beginDate).
-				append("endDate", endDate).
-				toString();
-	}
-
 	public Consumer copy() {
 
 		Consumer consumer = new Consumer();
@@ -302,4 +292,16 @@ public class Consumer extends DomainObjectWithStatus {
 
 		return consumer;
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("id", id).
+                append("status", status).
+                append("externalAccountNumber", externalAccountNumber).
+                append("beginDate", beginDate).
+                append("endDate", endDate).
+                toString();
+    }
+
 }

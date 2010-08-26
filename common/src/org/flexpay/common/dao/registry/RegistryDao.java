@@ -56,7 +56,7 @@ public interface RegistryDao extends GenericDao<Registry, Long> {
 	 * @param till higher bound for creation date
 	 * @return number of registries which corresponds following parameters
 	 */
-	List findRegistriesCount(int typeCode, Long recipientCode, Date from, Date till);
+	List<?> findRegistriesCount(int typeCode, Long recipientCode, Date from, Date till);
 
     @NotNull
     List<Registry> findRegistries(int typeCode, Date from, Date till);

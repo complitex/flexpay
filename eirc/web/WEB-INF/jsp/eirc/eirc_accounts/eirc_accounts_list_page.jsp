@@ -9,22 +9,24 @@
             <input type="text" id="personFio" name="personFio" value="" />
             <input type="button" class="btn-exit" onclick="pagerAjax();" value="<s:text name="common.search" />" />
         </td>
+        <td class="filter"><s:text name="eirc.eirc_account.output" /></td>
+        <td>
+            <select id="output" name="output" onchange="pagerAjax();">
+                <option value="0"><s:text name="eirc.eirc_account.all" /></option>
+                <option value="1" selected><s:text name="eirc.eirc_account.with_differences" /></option>
+            </select>
+        </td>
     </tr>
     <tr>
-        <td id="result" colspan="2"></td>
+        <td id="result" colspan="4"></td>
     </tr>
 </table>
 
 <script type="text/javascript">
 
-    var opt = {
-        action:"<s:url action="eircAccountsListAjax" namespace="/eirc" includeParams="none" />",
-        params:{}
-    };
+    var $result= $("#result");
 
-    var resultId = "result";
-
-    $(function() {
+    $result.ready(function() {
 
         FF.addListener("building", function(filter) {
             if (FF.filters["apartment"].value.val() > 0) {
@@ -33,27 +35,26 @@
             if (filter.value.val() == 0) {
                 return;
             }
-            opt["params"] = {
-                buildingFilter: filter.value.val(),
-                personFio: ""
-            };
-            FP.pagerAjax(null, opt);
+            pagerAjax(null, {
+                buildingFilter:filter.value.val(),
+                apartmentFilter:0
+            });
         });
         FF.addEraser("building", function() {
-            $("#" + resultId).html("");
+            $result.html("");
         });
 
         FF.addListener("apartment", function(filter) {
-            opt["params"] = {
-                apartmentFilter: filter.value.val(),
-                personFio: ""
-            };
-            FP.pagerAjax(null, opt);
+            pagerAjax(null, {
+                buildingFilter:0,
+                apartmentFilter: filter.value.val()
+            });
         });
 
     });
 
-    function pagerAjax(element) {
+    function pagerAjax(element, params) {
+
         var af = FF.filters["apartment"].value.val();
         var bf = FF.filters["building"].value.val();
         var fio = $("#personFio").val();
@@ -61,12 +62,29 @@
             alert("<s:text name="eirc.error.all_filters_are_empty" />");
             return;
         }
-        opt["params"] = {
-            apartmentFilter: af,
-            buildingFilter: bf,
-            personFio: fio
+        var opt = {
+            action: "<s:url action="eircAccountsListAjax" namespace="/eirc" includeParams="none" />",
+            params: {
+                output: $("#output").val(),
+                buildingFilter: bf,
+                apartmentFilter: af,
+                "personSearchFilter.searchString": fio,
+                "eircAccountSorterByAccountNumber.active": $("#eircAccountSorterByAccountNumberActive").val(),
+                "eircAccountSorterByAccountNumber.order": $("#eircAccountSorterByAccountNumberOrder").val(),
+                "eircAccountSorterByAddress.active": $("#eircAccountSorterByAddressActive").val(),
+                "eircAccountSorterByAddress.order": $("#eircAccountSorterByAddressOrder").val()
+            }
         };
+
+        for(var o in params) {
+            opt.params[o] = params[o];
+        }
+
         FP.pagerAjax(element, opt);
+    }
+
+    function sorterAjax() {
+        pagerAjax();
     }
 
 </script>

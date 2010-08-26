@@ -235,8 +235,6 @@
           class="org.flexpay.payments.actions.reports.AccPaymentsRegistriesReportAction"
           p:paymentsReporter-ref="paymentsReporter"
           p:serviceProviderService-ref="serviceProviderService"
-          p:paymentPointService-ref="paymentPointService"
-          p:cashboxService-ref="cashboxService"
           p:reportUtil-ref="reportUtil"
           scope="prototype" />
 

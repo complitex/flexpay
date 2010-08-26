@@ -40,9 +40,19 @@ public class TranslationUtil {
 	 */
 	@Nullable
 	public static <T extends Translation> T getTranslation(@NotNull Collection<T> translations) {
-
 		return getTranslation(translations, ApplicationConfig.getDefaultLanguage());
 	}
+
+    /**
+     * Find translation object in collection for default <code>language</locale>
+     *
+     * @param translations Collection of object translations
+     * @return Translation in defualt language, or <code>null</code>
+     */
+    @Nullable
+    public static <T extends Translation> String getTranslationName(@NotNull Collection<T> translations) {
+        return getTranslation(translations, ApplicationConfig.getDefaultLanguage()).getName();
+    }
 
 	/**
 	 * Find translation object in collection for specified <code>language</locale>

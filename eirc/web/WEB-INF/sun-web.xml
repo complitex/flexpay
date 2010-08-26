@@ -750,6 +750,10 @@
 		<role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
 	<security-role-mapping>
 		<role-name>ROLE_MENU_EIRC_ORGANIZATIONS_DICTS</role-name>
 		<group-name>FULL_ACCESS</group-name>
@@ -778,6 +782,10 @@
 		<role-name>ROLE_MENU_EIRC_QUITTANCE_PACKETS</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS2</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
 	<security-role-mapping>
 		<role-name>ROLE_MENU_EIRC_DICTS_ORGANIZATIONS</role-name>
 		<group-name>FULL_ACCESS</group-name>
@@ -800,10 +808,6 @@
 	</security-role-mapping>
 	<security-role-mapping>
 		<role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS</role-name>
-		<group-name>FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_MENU_EIRC_DICTS_EIRC_ACCOUNTS</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
@@ -854,6 +858,10 @@
 		<role-name>ROLE_MENU_EIRC_QUITTANCES_PACKETS</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS3</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
 
 
 
