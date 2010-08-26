@@ -671,6 +671,9 @@
         <role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>
     </security-role>
     <security-role>
+        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS</role-name>
+    </security-role>
+    <security-role>
         <role-name>ROLE_MENU_EIRC_ORGANIZATIONS_DICTS</role-name>
     </security-role>
     <security-role>
@@ -695,6 +698,9 @@
         <role-name>ROLE_MENU_EIRC_QUITTANCE_PACKETS</role-name>
     </security-role>
     <security-role>
+        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS2</role-name>
+    </security-role>
+    <security-role>
         <role-name>ROLE_MENU_EIRC_DICTS_ORGANIZATIONS</role-name>
     </security-role>
     <security-role>
@@ -711,9 +717,6 @@
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_EIRC_ACCOUNTS</role-name>
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_DICTS_SERVICE_TYPES</role-name>
@@ -747,6 +750,9 @@
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_QUITTANCES_PACKETS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS3</role-name>
     </security-role>
 
 	<security-role>

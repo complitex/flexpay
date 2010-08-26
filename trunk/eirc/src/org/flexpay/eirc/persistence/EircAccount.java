@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
@@ -83,4 +85,12 @@ public class EircAccount extends DomainObjectWithStatus {
 		return new Stub<Apartment>(apartment);
 	}
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("id", id).
+                append("status", status).
+                append("accountNumber", accountNumber).
+                toString();
+    }
 }

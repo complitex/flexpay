@@ -281,57 +281,6 @@
         where a.accountNumber=? and a.status=0
     </query>
 
-	<query name="EircAccount.findByApartmentAndFIO.count">
-		select count(a)
-		from EircAccount a
-            left join a.consumerInfo ci
-            left join a.person p
-            inner join p.personIdentities pi
-        where a.status=0 and a.apartment.id=? and
-            ( upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or
-              upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?) )
-	</query>
-
-	<query name="EircAccount.findByApartmentAndFIO">
-		select distinct a
-		from EircAccount a
-            left join fetch a.apartment aa
-            left join fetch a.consumerInfo ci
-            left join a.person p
-            inner join p.personIdentities pi
-        where a.status=0 and aa.id=? and 
-            ( upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or
-              upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?) )
-	</query>
-
-    <query name="EircAccount.findByBuildingAndFIO.count">
-        select count(a)
-        from EircAccount a
-            left join a.apartment aa
-            inner join aa.building b
-            left join b.buildingses bs
-            left join a.consumerInfo ci
-            left join a.person p
-            inner join p.personIdentities pi
-        where a.status=0 and bs.id=? and
-            ( upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or
-              upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?) )
-    </query>
-
-    <query name="EircAccount.findByBuildingAndFIO">
-        select distinct a
-        from EircAccount a
-            left join fetch a.apartment aa
-            inner join fetch aa.building b
-            left join b.buildingses bs
-            left join fetch a.consumerInfo ci
-            left join a.person p
-            inner join p.personIdentities pi
-        where a.status=0 and bs.id=? and
-            ( upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or
-              upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?) )
-    </query>
-
 	<query name="EircAccount.findObjects">
 		from EircAccount a
 			left outer join fetch a.consumerInfo
@@ -348,13 +297,15 @@
 			left outer join fetch a.consumerInfo
 			left join fetch a.consumers c
 			left join fetch c.consumerInfo
+            left join fetch c.attributes attribute
+            left join fetch attribute.type
 			left join fetch c.responsiblePerson p
 			left join fetch p.personAttributes pa
 			left join fetch p.personIdentities pi
 			left join fetch pi.identityType it
 			left join fetch c.service s
 			left join fetch s.serviceType st
-		WHERE a.id=? and (c is null or c.status=0)
+		where a.id=? and (c is null or c.status=0)
 	</query>
 
     <query name="EircAccount.findByApartment">

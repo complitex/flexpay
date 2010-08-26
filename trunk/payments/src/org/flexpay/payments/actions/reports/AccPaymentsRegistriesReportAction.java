@@ -3,23 +3,18 @@ package org.flexpay.payments.actions.reports;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.reports.payments.AccPaymentsRegistriesReportRequest;
 import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
+import org.flexpay.payments.reports.payments.AccReportRequest;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.springframework.beans.factory.annotation.Required;
 
 public class AccPaymentsRegistriesReportAction extends AccPaymentsReportAction {
 
-    private static final String PREFIX = "AccReceived";
+    private static final String PREFIX = "AccPaymentsRegistries";
 
-    private static final String ACC_RECEIVED_ALL_PAYMENT_POINTS_NO_DETAILS = PREFIX + "AllPaymentPointsNoDetails";
-    private static final String ACC_RECEIVED_PAYMENT_POINT_NO_DETAILS = PREFIX + "PaymentPointNoDetails";
-
-    private static final String ACC_RECEIVED_ALL_PAYMENT_POINTS_CASHBOXES = PREFIX + "AllPaymentPointsCashboxes";
-    private static final String ACC_RECEIVED_PAYMENT_POINT_CASHBOXES = PREFIX + "PaymentPointCashboxes";
-    private static final String ACC_RECEIVED_CASHBOX = PREFIX + "Cashbox";
-
-    private static final String ACC_RECEIVED_ALL_PAYMENT_POINTS_PAYMENTS = PREFIX + "AllPaymentPointsPayments";
-    private static final String ACC_RECEIVED_PAYMENT_POINT_PAYMENTS = PREFIX + "PaymentPointPayments";
-    private static final String ACC_RECEIVED_CASHBOX_PAYMENTS = PREFIX + "CashboxPayments";
+    private static final String ACC_PAYMENTS_REGISTRIES_ALL_SERVICE_PROVIDERS = PREFIX + "AllSeviceProviders";
+    private static final String ACC_PAYMENTS_REGISTRIES_SERVICE_PROVIDER = PREFIX + "SeviceProvider";
 
     private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 
@@ -28,52 +23,45 @@ public class AccPaymentsRegistriesReportAction extends AccPaymentsReportAction {
     @SuppressWarnings({"unchecked"})
     @Override
     protected void initFilters() {
-        super.initFilters();
         serviceProviderFilter = serviceProviderService.initServiceProvidersFilter(serviceProviderFilter);
         serviceProviderFilter.setNeedAutoChange(false);
     }
 
     @Override
-    protected int getPaymentStatus() {
-        return OperationStatus.REGISTERED;
+    protected AccReportRequest buildReportRequest() {
+
+        AccPaymentsRegistriesReportRequest request = new AccPaymentsRegistriesReportRequest();
+
+        request.setBeginDate(beginTimeFilter.setTime(beginDateFilter.getDate()));
+        request.setEndDate(endTimeFilter.setTime(endDateFilter.getDate()));
+        request.setPaymentStatus(OperationStatus.REGISTERED);
+        request.setLocale(getUserPreferences().getLocale());
+        request.setPaymentCollectorId(((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId());
+
+        if (serviceProviderFilter != null && serviceProviderFilter.needFilter()) {
+            request.setServiceProviderId(serviceProviderFilter.getSelectedId());
+        }
+
+        return request;
+
     }
 
     @Override
-    protected String getReportName(AccPaymentsReportRequest request) {
-        Long paymentPointId = request.getPaymentPointId();
-        Long cashboxId = request.getCashboxId();
+    protected void uploadAdditionalReportFiles(AccReportRequest request) throws Exception {
 
-        switch (request.getDetailsLevel()) {
-            case AccPaymentsReportRequest.DETAILS_LEVEL_PAYMENT_POINT:
-                if (paymentPointId == null && cashboxId == null) {
-                    return ACC_RECEIVED_ALL_PAYMENT_POINTS_NO_DETAILS;
-                } else if (paymentPointId != null && cashboxId == null) {
-                    return ACC_RECEIVED_PAYMENT_POINT_NO_DETAILS;
-                }
-                break;
-            case AccPaymentsReportRequest.DETAILS_LEVEL_CASHBOX:
-                if (paymentPointId == null && cashboxId == null) {
-                    return ACC_RECEIVED_ALL_PAYMENT_POINTS_CASHBOXES;
-                } else if (paymentPointId != null && cashboxId == null) {
-                    return ACC_RECEIVED_PAYMENT_POINT_CASHBOXES;
-                } else if (paymentPointId != null) {
-                    return ACC_RECEIVED_CASHBOX;
-                }
-                break;
-            case AccPaymentsReportRequest.DETAILS_LEVEL_PAYMENT:
-                if (paymentPointId == null && cashboxId == null) {
-                    return ACC_RECEIVED_ALL_PAYMENT_POINTS_PAYMENTS;
-                } else if (paymentPointId != null && cashboxId == null) {
-                    return ACC_RECEIVED_PAYMENT_POINT_PAYMENTS;
-                } else if (paymentPointId != null) {
-                    return ACC_RECEIVED_CASHBOX_PAYMENTS;
-                }
-                break;
-            default:
-                break;
+    }
+
+    @Override
+    protected String getReportName(AccReportRequest request) {
+
+        Long serviceProvierId = ((AccPaymentsRegistriesReportRequest) request).getServiceProviderId();
+
+        if (serviceProvierId != null && serviceProvierId > 0) {
+            return ACC_PAYMENTS_REGISTRIES_SERVICE_PROVIDER;
+        } else {
+            return ACC_PAYMENTS_REGISTRIES_ALL_SERVICE_PROVIDERS;
         }
 
-        return null;
     }
 
     public ServiceProviderFilter getServiceProviderFilter() {

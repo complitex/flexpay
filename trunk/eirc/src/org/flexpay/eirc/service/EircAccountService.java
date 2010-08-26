@@ -2,16 +2,18 @@ package org.flexpay.eirc.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface EircAccountService {
@@ -61,26 +63,15 @@ public interface EircAccountService {
 	/**
 	 * Find EircAccounts
 	 *
-	 * @param stub Stub of apartment
-	 * @param personFio query for person FIO search
+     * @param sorters sorters
+     * @param filters filters
+     * @param output all or not all
 	 * @param pager   Accounts pager
 	 *
 	 * @return List of EircAccount
 	 */
 	@Secured (Roles.ACCOUNT_READ)
-	List<EircAccount> getAccountsInApartment(@NotNull Stub<Apartment> stub, @NotNull String personFio, Page<EircAccount> pager);
-
-	/**
-	 * Find EircAccounts
-	 *
-	 * @param stub Stub of building
-	 * @param personFio query for person FIO search
-	 * @param pager   Accounts pager
-	 *
-	 * @return List of EircAccount
-	 */
-	@Secured (Roles.ACCOUNT_READ)
-	List<EircAccount> getAccountsInBuilding(@NotNull Stub<BuildingAddress> stub, @NotNull String personFio, Page<EircAccount> pager);
+	List<EircAccount> getAccounts(@NotNull List<? extends EircAccountSorter> sorters, Collection<ObjectFilter> filters, @NotNull Integer output, Page<EircAccount> pager);
 
 	/**
 	 * Read full account info, includes person and service

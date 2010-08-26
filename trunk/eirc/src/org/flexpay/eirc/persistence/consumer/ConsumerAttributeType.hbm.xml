@@ -172,7 +172,9 @@
 	<query name="ConsumerAttributeTypeBase.readFull">
 		select distinct t
 		from ConsumerAttributeTypeBase t
-		left join fetch t.names
+		    left join fetch t.names
+            left join fetch t.measureUnit mu
+            left join fetch mu.unitNames
 		where t.status=0 and t.id=?
 	</query>
 

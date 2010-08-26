@@ -39,6 +39,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param example Consumer
 	 * @return Persistent consumer if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Consumer findConsumer(Consumer example) {
 		List<Consumer> consumers = consumerDaoExt.findConsumers(
 				new Page(1, 1), // request the only record
@@ -58,6 +59,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param serviceCode     Service code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Consumer findConsumer(Stub<ServiceProvider> serviceProviderStub, String accountNumber, String serviceCode) {
 		if (serviceCode.startsWith("#")) {
 			return consumerDaoExt.findConsumerByProviderServiceCode(
@@ -73,6 +75,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param serviceCode	   Subservice code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
 		return spService.findService(serviceProviderStub, serviceCode);
 	}
@@ -84,6 +87,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @return Consumer instance
 	 */
 	@Nullable
+    @Override
 	public Consumer read(@NotNull Stub<Consumer> stub) {
 		return consumerDao.readFull(stub.getId());
 	}
@@ -96,6 +100,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 *          if validation failure occurs
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void save(Consumer consumer) throws FlexPayExceptionContainer {
 		if (consumer.isNew()) {
 			consumer.setId(null);

@@ -40,4 +40,5 @@ public interface ConsumerAttributeTypeService extends DomainObjectService<Consum
 	 */
 	@Nullable
 	ConsumerAttributeTypeBase readByCode(String code);
+
 }

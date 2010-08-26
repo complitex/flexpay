@@ -289,19 +289,19 @@
         <put-attribute name="body" value="/WEB-INF/jsp/payments/services/service_view.jsp" />
     </definition>
 
-	<!-- EIRC Account -->
-	<definition name="eirc.eirc_accounts.list" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.eirc_account.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list.jsp" />
-	</definition>
+    <!-- EIRC Account -->
     <definition name="eirc.eirc_accounts.list_page" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.eirc_account.list" />
         <put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list_page.jsp" />
     </definition>
-	<definition name="eirc.eirc_account.view" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.eirc_account.view" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_view.jsp" />
-	</definition>
+    <definition name="eirc.eirc_account.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.eirc_account.view" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_view.jsp" />
+    </definition>
+    <definition name="eirc.eirc_account.edit_consumer_attributes" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.eirc_account.edit_consumer_attributes" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_edit_attributes.jsp" />
+    </definition>
 	<definition name="eirc.eirc_account.create.form1" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_create_form1.jsp" />
