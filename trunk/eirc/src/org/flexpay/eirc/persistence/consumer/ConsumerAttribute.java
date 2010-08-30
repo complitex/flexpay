@@ -1,9 +1,12 @@
 package org.flexpay.eirc.persistence.consumer;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.TemporalValueObject;
 import org.flexpay.eirc.persistence.Consumer;
+import org.jetbrains.annotations.NotNull;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 public class ConsumerAttribute extends TemporalValueObject implements Comparable<ConsumerAttribute> {
 
@@ -33,6 +36,28 @@ public class ConsumerAttribute extends TemporalValueObject implements Comparable
 
 	public void setTemporal(int temporal) {
 		isTemporal = temporal;
+	}
+
+	public void setValue(@NotNull Object value) {
+		if (notEmpty()) {
+			updateValue(value);
+			return;
+		}
+		if (value instanceof Integer) {
+			setIntValue((Integer)value);
+		} else if (value instanceof Double) {
+			setDoubleValue((Double)value);
+		} else if (value instanceof Boolean) {
+			setBoolValue((Boolean)value);
+		} else if (value instanceof BigDecimal) {
+			setDecimalValue((BigDecimal)value);
+		} else if (value instanceof String) {
+			setStringValue((String)value);
+		} else if (value instanceof Date) {
+			setDateValue((Date)value);
+		} else {
+			throw new IllegalStateException("unsupported type: " + value.getClass().getName());
+		}
 	}
 
 	@Override

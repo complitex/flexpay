@@ -16,16 +16,23 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Open new service provider personal account
@@ -76,6 +83,19 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setEircAccount(account);
 		consumer.setConsumerInfo(info);
 
+		/*
+		for (Map.Entry<String, Serializable> consumerAttributeType : ConsumerAttributes.CALCULATION_ATTRIBUTES.entrySet()) {
+			ConsumerAttributeTypeBase type = factory.getConsumerAttributeTypeService()
+				.readByCode(consumerAttributeType.getKey());
+			if (type == null) {
+				throw new FlexPayException("Cannot find attribute " + type);
+			}
+			ConsumerAttribute attribute = new ConsumerAttribute();
+			attribute.setType(type);
+			attribute.setValue(consumerAttributeType.getValue());
+			consumer.setTmpAttributeForDate(attribute, changeApplyingDate);
+		}
+              */
 		container.addUpdate(new DelayedUpdateConsumer(consumer, factory.getConsumerService()));
 
 		createCorrections(registry, record, consumer, container);

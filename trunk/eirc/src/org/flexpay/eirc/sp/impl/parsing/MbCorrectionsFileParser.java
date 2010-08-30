@@ -294,37 +294,39 @@ public class MbCorrectionsFileParser extends MbFileParser {
              */
 
 		// Количество проживающих
-		if (StringUtils.isNotEmpty(fields[15]) && !"0".equals(fields[15])) {
-			container = new RegistryRecordContainer();
-			container.setData("600:" + modificationStartDate + "::" + fields[15]);
-			record.addContainer(container);
-		}
+		String containerValue = StringUtils.isEmpty(fields[15])? "0": fields[15];
+		container = new RegistryRecordContainer();
+		container.setData("600:" + modificationStartDate + ":" + containerValue);
+		record.addContainer(container);
 
 		// Количество зарегистрированных
-		if (StringUtils.isNotEmpty(fields[14]) && !"0".equals(fields[15])) {
-			container = new RegistryRecordContainer();
-			container.setData("601:" + modificationStartDate + "::" + fields[15]);
-			record.addContainer(container);
-		}
+		containerValue = StringUtils.isEmpty(fields[14])? "0": fields[14];
+		container = new RegistryRecordContainer();
+		container.setData("601:" + modificationStartDate + ":" + containerValue);
+		record.addContainer(container);
 
-		// Общая или отапливаемая площадь
-		if (StringUtils.isNotEmpty(fields[10]) && !"0.00".equals(fields[10])) {
-			container = new RegistryRecordContainer();
-			EircRegistryRecordProperties props = (EircRegistryRecordProperties)record.getProperties();
-			if (props.getService().getServiceType().getCode() != ServiceType.HEATING) {
-				container.setData("602:" + modificationStartDate + "::" + fields[10]);
-			} else {
-				container.setData("604:" + modificationStartDate + "::" + fields[10]);
-			}
-			record.addContainer(container);
+		// Общая и отапливаемая площадь
+		containerValue = StringUtils.isEmpty(fields[10])? "0.00": fields[10];
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties)record.getProperties();
+		String generalSquare = "0.00";
+		String heatingSquare = "0.00";
+		if (props.getService().getServiceType().getCode() != ServiceType.HEATING) {
+			generalSquare = containerValue;
+		} else {
+			heatingSquare = containerValue;
 		}
+		container = new RegistryRecordContainer();
+		container.setData("602:" + modificationStartDate + ":" + generalSquare);
+		record.addContainer(container);
+		container = new RegistryRecordContainer();
+		container.setData("604:" + modificationStartDate + ":" + heatingSquare);
+		record.addContainer(container);
 
 		// Площадь жилая
-		if (StringUtils.isNotEmpty(fields[11]) && !"0.00".equals(fields[11])) {
-			container = new RegistryRecordContainer();
-			container.setData("603:" + modificationStartDate + "::" + fields[11]);
-			record.addContainer(container);
-		}
+		containerValue = StringUtils.isEmpty(fields[11])? "0.00": fields[11];
+		container = new RegistryRecordContainer();
+		container.setData("603:" + modificationStartDate + ":" + containerValue);
+		record.addContainer(container);
 
 		// Тип льготы
 		/*

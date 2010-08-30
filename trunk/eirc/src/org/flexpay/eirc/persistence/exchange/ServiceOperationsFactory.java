@@ -152,7 +152,7 @@ public class ServiceOperationsFactory {
 			case 6:
 				checkContainer(registry, "Set live square", RegistryType.TYPE_INFO);
 				return new SetLiveSquareOperation(this, datum);
-			case    7:
+			case 7:
 				checkContainer(registry, "Set warm square", RegistryType.TYPE_INFO);
 				return new SetWarmSquareOperation(datum);
 			case 8:
@@ -193,6 +193,23 @@ public class ServiceOperationsFactory {
 				return new ObjectIdentifierSyncOperation(this, datum);
             case 503:
                 return new InstanceIdOperation(datum);
+
+			// Calculation properties
+			case 600:
+				checkContainer(registry, "Set number tenants of the house (calculation property)", RegistryType.TYPE_INFO);
+				return new SetNumberTenantsOperation(this, datum);
+			case 601:
+				checkContainer(registry, "Set number registered tenants of the house (calculation property)", RegistryType.TYPE_INFO);
+				return new SetNumberRegisteredTenantsOperation(this, datum);
+			case 602:
+				checkContainer(registry, "Set total square of the house (calculation property)", RegistryType.TYPE_INFO);
+				return new SetTotalSquareCalculationPropertyOperation(this, datum);
+			case 603:
+				checkContainer(registry, "Set live square of the house (calculation property)", RegistryType.TYPE_INFO);
+				return new SetLiveSquareCalculationPropertyOperation(this, datum);
+			case 604:
+				checkContainer(registry, "Set heating square of the house (calculation property)", RegistryType.TYPE_INFO);
+				return new SetHeatingSquareCalculationPropertyOperation(this, datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
