@@ -26,13 +26,13 @@ public class ServiceProviderFileProcessorRecordsTxImpl extends ServiceProviderFi
 
 	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	protected void postUpdated(ProcessingContext context) throws FlexPayException {
-		updateRecordsWatch.resume();
+//		updateRecordsWatch.resume();
 		log.debug("Start update records");
 		for (RegistryRecord record : context.getOperationRecords()) {
 			registryRecordService.update(record);
 		}
 		log.debug("Records updated");
-		updateRecordsWatch.suspend();
+//		updateRecordsWatch.suspend();
 
 		super.postUpdated(context);
 		
@@ -40,7 +40,7 @@ public class ServiceProviderFileProcessorRecordsTxImpl extends ServiceProviderFi
 	}
 
 	private void printWatch() {
-		log.debug("Update records time: {}", updateRecordsWatch);
+//		log.debug("Update records time: {}", updateRecordsWatch);
 	}
 
 	@Required
