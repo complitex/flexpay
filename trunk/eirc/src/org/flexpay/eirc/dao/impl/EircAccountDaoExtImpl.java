@@ -43,6 +43,22 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
 		return (EircAccount) accounts.get(0);
 	}
 
+	/**
+	 * Find EIRC account by apartment identifiers
+	 *
+	 * @param apartmentId Apartment key
+	 * @return EircAccount instance if found, or <code>null</code> otherwise
+	 */
+    @Override
+	public EircAccount findAccount(@NotNull Long apartmentId) {
+		List<?> accounts = getHibernateTemplate().findByNamedQuery("EircAccount.findByApartmentWithConsumerInfo", apartmentId);
+		if (accounts.isEmpty()) {
+			return null;
+		}
+
+		return (EircAccount) accounts.get(0);
+	}
+
     @SuppressWarnings ({"unchecked"})
     @NotNull
     @Override

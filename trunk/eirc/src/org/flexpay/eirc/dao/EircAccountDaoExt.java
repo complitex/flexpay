@@ -18,7 +18,15 @@ public interface EircAccountDaoExt {
 	 * @param apartmentId Apartment key
 	 * @return EircAccount instance if found, or <code>null</code> otherwise
 	 */
-	EircAccount findAccount(@NotNull Long personId, @NotNull Long apartmentId);
+	EircAccount findAccount(@NotNull Long personId, @NotNull Long apartmentId);	
+
+	/**
+	 * Find EIRC account by apartment identifiers
+	 *
+	 * @param apartmentId Apartment key
+	 * @return EircAccount instance if found, or <code>null</code> otherwise
+	 */
+	EircAccount findAccount(@NotNull Long apartmentId);
 
     @NotNull
     List<EircAccount> findAccounts(@NotNull Collection<? extends EircAccountSorter> sorters,  @NotNull Collection<ObjectFilter> filters, @NotNull Integer output, Page<EircAccount> pager);
