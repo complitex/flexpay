@@ -54,6 +54,17 @@ public class EircAccountServiceImpl implements EircAccountService {
 	}
 
 	/**
+	 * Find EircAccount by apartment references
+	 *
+	 * @param apartmentStub Apartment reference
+	 * @return EircAccount if found, or <code>null</code> otherwise
+	 */
+	@Override
+	public EircAccount findAccount(@NotNull Stub<Apartment> apartmentStub) {
+		return eircAccountDaoExt.findAccount(apartmentStub.getId());
+	}
+
+	/**
 	 * Create account
 	 *
 	 * @param account EIRC account to save

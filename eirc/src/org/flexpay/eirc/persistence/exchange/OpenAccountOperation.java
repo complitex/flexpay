@@ -16,23 +16,17 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Open new service provider personal account
@@ -65,12 +59,12 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		}
 		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
 
-		ConsumerInfo info = saveConsumerInfo(record);
-		DelayedUpdate update = new DelayedUpdateConsumerInfo(info, factory.getConsumerInfoService());
-		update.doUpdate();
+		ConsumerInfo info = createConsumerInfo(record);
+		EircAccount account = getEircAccount(record);
+		if (account == null) {
+			account = createEircAccount(record, info);
+		}
 //		container.addUpdate(update);
-
-		EircAccount account = getEircAccount(record, info);
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Consumer consumer = new Consumer();
@@ -106,7 +100,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		return DelayedUpdateNope.INSTANCE;
 	}
 
-	private ConsumerInfo saveConsumerInfo(RegistryRecord record) {
+	private ConsumerInfo createConsumerInfo(RegistryRecord record) throws FlexPayExceptionContainer, FlexPayException {
 
 		ConsumerInfo info = new ConsumerInfo();
 
@@ -121,6 +115,9 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		info.setBuildingNumber(record.getBuildingNum());
 		info.setBuildingBulk(record.getBuildingBulkNum());
 		info.setApartmentNumber(record.getApartmentNum());
+
+		DelayedUpdate update = new DelayedUpdateConsumerInfo(info, factory.getConsumerInfoService());
+		update.doUpdate();
 
 		return info;
 	}
@@ -142,15 +139,13 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	}
 
 	/**
-	 * Check if EIRC account exists, and create a new one if necessary
+	 * Check if EIRC account exists
 	 *
 	 * @param record RegistryRecord
-	 * @param info   ConsumerInfo
-	 * @return EircAccount instance
-	 * @throws FlexPayException if failure occurs
+	 * @return Found EircAccount instance
 	 */
-	private EircAccount getEircAccount(RegistryRecord record, ConsumerInfo info)
-			throws FlexPayException, FlexPayExceptionContainer {
+	@Nullable
+	private EircAccount getEircAccount(RegistryRecord record) {
 
 		EircAccountService accountService = factory.getAccountService();
 
@@ -162,7 +157,31 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 			if (account != null) {
 				return account;
 			}
+		} else if (apartmentStub != null) {
+			EircAccount account = accountService.findAccount(apartmentStub);
+			if (account != null) {
+				return account;
+			}
 		}
+		return null;
+	}
+
+	/**
+	 * Create new EIRC account
+	 *
+	 * @param record Registry record
+	 * @param info Consumer info
+	 * @return EircAccount instance
+	 * @throws FlexPayException if failure occurs
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer if operation fails
+	 */
+	@NotNull
+	private EircAccount createEircAccount(RegistryRecord record, ConsumerInfo info)
+			throws FlexPayExceptionContainer, FlexPayException {
+
+		EircAccountService accountService = factory.getAccountService();
+
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 
 		EircAccount account = new EircAccount();
 		account.setPerson(props.getPerson());

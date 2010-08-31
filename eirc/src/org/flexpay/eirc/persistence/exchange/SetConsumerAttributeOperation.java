@@ -23,7 +23,6 @@ import java.util.List;
  * Set Consumer attribute
  */
 public abstract class SetConsumerAttributeOperation extends ContainerOperation {
-	private static final Logger log = LoggerFactory.getLogger(SetConsumerAttributeOperation.class);
 
 	protected ServiceOperationsFactory factory;
 	protected Date applyingDate;
@@ -79,7 +78,6 @@ public abstract class SetConsumerAttributeOperation extends ContainerOperation {
 		}
 
 		ConsumerAttribute oldAttr = consumer.getAttributeForDate(type, applyingDate);
-		log.debug("Old attribute: {}", oldAttr);
 
 		if (oldAttr != null && oldAttr.isNew()) {
 			setAttributeValue(oldAttr);
