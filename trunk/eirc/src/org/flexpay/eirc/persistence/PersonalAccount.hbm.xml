@@ -274,6 +274,13 @@
 		where a.person.id=? and a.apartment.id=? and a.status=0
 	</query>
 
+	<query name="EircAccount.findByApartmentWithConsumerInfo">
+		select a
+		from EircAccount a
+			left join fetch a.consumerInfo
+		where a.apartment.id=? and a.status=0
+	</query>
+
     <query name="EircAccount.findByNumber">
         select distinct a
         from EircAccount a

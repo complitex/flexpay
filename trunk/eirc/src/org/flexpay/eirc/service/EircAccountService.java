@@ -29,6 +29,15 @@ public interface EircAccountService {
 	EircAccount findAccount(@NotNull Stub<Person> personStub, @NotNull Stub<Apartment> apartmentStub);
 
 	/**
+	 * Find EircAccount apartment references
+	 *
+	 * @param apartmentStub Apartment reference
+	 * @return EircAccount if found, or <code>null</code> otherwise
+	 */
+	@Secured (Roles.ACCOUNT_READ)
+	EircAccount findAccount(@NotNull Stub<Apartment> apartmentStub);
+
+	/**
 	 * Create or update account
 	 *
 	 * @param account EIRC account to save
