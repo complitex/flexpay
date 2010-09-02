@@ -24,7 +24,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td class="th" width="1%">&nbsp;</td>
-            <td class="th">
+            <td class="th" nowrap>
                 <s:text name="eirc.service" /><br />
                 (<s:text name="eirc.eirc_account.consumer_fio" />)
             </td>
@@ -37,13 +37,15 @@
         <s:iterator value="eircAccount.consumers" status="status">
             <tr valign="middle" class="cols_1">
                 <td class="col_1s" align="right"><s:property value="#status.index + 1" /></td>
-                <td class="col">
+                <td class="col" nowrap>
                     <s:property value="getServiceDescription(service)" /><br />
                     (<s:property value="consumerInfo.lastName + ' ' + consumerInfo.firstName + ' ' + consumerInfo.middleName" />)
                 </td>
-                <s:iterator value="attributes">
+                <s:iterator value="consumerAttributes.get(id)">
                     <td class="col">
-                        <s:property value="value()" />
+                        <s:if test="isNotNew()">
+                            <s:property value="value()" />
+                        </s:if>
                     </td>
                 </s:iterator>
             </tr>

@@ -172,9 +172,14 @@ function Filter(name, options) {
         listeners.push(listener);
     };
 
+    this.removeListener = function() {
+        var listeners = this.listeners;
+        Array.remove(listeners, listeners.length);
+    };
+
     this.listen = function() {
         var el = this;
-        $.each(this.listeners, function (i, v) {
+        $.each(el.listeners, function (i, v) {
             v.call(el, el);
         });
     };
@@ -452,6 +457,16 @@ var FF = {
             alert("Incorrect filterName!");
         }
         filter.addListener(func);
+    },
+
+    removeListener : function(filterName) {
+
+        var filter = this.filters[filterName];
+
+        if (filter == null) {
+            alert("Incorrect filterName!");
+        }
+        filter.removeListener();
     },
 
     addEraser : function(filterName, func) {

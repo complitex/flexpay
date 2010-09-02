@@ -9,10 +9,7 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateConsumer;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
-import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

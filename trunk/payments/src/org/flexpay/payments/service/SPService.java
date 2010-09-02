@@ -60,7 +60,7 @@ public interface SPService extends DomainObjectService<Service> {
 	 */
 	@Secured (Roles.SERVICE_READ)
 	@NotNull
-	List<Service> readFull(Collection<Long> ids, boolean preserveOrder);
+	List<Service> readFull(@NotNull Collection<Long> ids, boolean preserveOrder);
 
 	/**
 	 * Create service

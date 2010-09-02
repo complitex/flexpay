@@ -52,6 +52,24 @@
 		<property name="target" ref="consumerAttributeTypeServiceTarget" />
 	</bean>
 
+    <bean id="consumerAttributeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+        <property name="cacheProviderFacade" ref="cacheProviderFacade" />
+        <property name="cachingModels">
+            <props>
+                <prop key="read*">cacheName=eircQuittancePacketsCache</prop>
+                <prop key="list*">cacheName=eircQuittancePacketsCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=eircQuittancePacketsCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=eircQuittancePacketsCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+        <property name="target" ref="consumerAttributeServiceTarget" />
+    </bean>
+
 	<bean id="quittancePaymentStatusService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />

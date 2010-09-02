@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface DomainObjectService<T extends DomainObject> {
 
@@ -23,6 +24,9 @@ public interface DomainObjectService<T extends DomainObject> {
 
 	@Nullable
 	T readFull(@NotNull Stub<? extends T> stub);
+
+    @NotNull
+    List<T> readFull(@NotNull Collection<Long> ids, boolean preserveOrder);
 
 	Class<? extends T> getType();
 

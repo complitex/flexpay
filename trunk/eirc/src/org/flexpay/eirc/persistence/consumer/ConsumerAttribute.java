@@ -68,6 +68,7 @@ public class ConsumerAttribute extends TemporalValueObject implements Comparable
 	@Override
 	protected ToStringBuilder buildToString(ToStringBuilder builder) {
 		return super.buildToString(builder)
+                .append("isTemporal", isTemporal)
 				.append("type-id", type == null ? null : type.getId())
 				.append("consumer-id", consumer == null ? null : consumer.getId());
 	}

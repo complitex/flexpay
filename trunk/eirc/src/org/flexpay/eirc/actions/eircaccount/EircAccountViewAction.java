@@ -13,22 +13,24 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.EircAccountService;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class EircAccountViewAction extends FPActionSupport {
-	
+
 	private EircAccount eircAccount = new EircAccount();
-    private Set<ConsumerAttributeTypeBase> attributeTypes = set();
+    private Map<Long, List<ConsumerAttribute>> consumerAttributes = map();
+    private List<ConsumerAttributeTypeBase> attributeTypes;
 
 	private SPService spService;
 	private EircAccountService eircAccountService;
@@ -54,10 +56,27 @@ public class EircAccountViewAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
+        attributeTypes = consumerAttributeTypeService.getByUniqueCode(ConsumerAttributes.EIRC_ATTRIBUTES);
+
         for (Consumer consumer : eircAccount.getConsumers()) {
-            for (ConsumerAttribute attribute : consumer.getAttributes()) {
-                attributeTypes.add(consumerAttributeTypeService.readFull(stub(attribute.getType())));
+            List<ConsumerAttribute> attrs = list();
+            for (ConsumerAttributeTypeBase type : attributeTypes) {
+                boolean found = false;
+                for (ConsumerAttribute attribute : consumer.getAttributes()) {
+                    if (attribute.getType().getId().equals(type.getId())) {
+                        if (attribute.isDecimal() && attribute.getDecimalValue() != null) {
+                            attribute.setDecimalValue(attribute.getDecimalValue().setScale(2));
+                        }
+                        attrs.add(attribute);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    attrs.add(new ConsumerAttribute());
+                }
             }
+            consumerAttributes.put(consumer.getId(), attrs);
         }
 
 		return SUCCESS;
@@ -105,7 +124,11 @@ public class EircAccountViewAction extends FPActionSupport {
 		this.eircAccount = eircAccount;
 	}
 
-    public Set<ConsumerAttributeTypeBase> getAttributeTypes() {
+    public Map<Long, List<ConsumerAttribute>> getConsumerAttributes() {
+        return consumerAttributes;
+    }
+
+    public List<ConsumerAttributeTypeBase> getAttributeTypes() {
         return attributeTypes;
     }
 
@@ -133,4 +156,5 @@ public class EircAccountViewAction extends FPActionSupport {
     public void setConsumerAttributeTypeService(ConsumerAttributeTypeService consumerAttributeTypeService) {
         this.consumerAttributeTypeService = consumerAttributeTypeService;
     }
+
 }

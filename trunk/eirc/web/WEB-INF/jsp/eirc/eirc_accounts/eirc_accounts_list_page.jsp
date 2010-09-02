@@ -24,10 +24,7 @@
 
 <script type="text/javascript">
 
-    var $result= $("#result");
-
-    $result.ready(function() {
-
+    $("#building_string").ready(function() {
         FF.addListener("building", function(filter) {
             if (FF.filters["apartment"].value.val() > 0) {
                 return;
@@ -41,16 +38,18 @@
             });
         });
         FF.addEraser("building", function() {
-            $result.html("");
+            $("#result").html("");
         });
+    });
 
+    $("#apartment_string").ready(function() {
+        FF.removeListener("apartment");
         FF.addListener("apartment", function(filter) {
             pagerAjax(null, {
                 buildingFilter:0,
                 apartmentFilter: filter.value.val()
             });
         });
-
     });
 
     function pagerAjax(element, params) {

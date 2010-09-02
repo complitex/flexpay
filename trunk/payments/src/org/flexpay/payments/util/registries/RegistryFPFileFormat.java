@@ -35,6 +35,7 @@ import java.util.List;
  * Content basic logic and similar behaviour.
  */
 public class RegistryFPFileFormat {
+
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private String moduleName;

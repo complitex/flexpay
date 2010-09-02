@@ -4,7 +4,7 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="eirc_account2" namespace="/eirc" extends="common">
+	<package name="eirc_account" namespace="/eirc" extends="common">
 
 		<!-- Eirc account -->
         <action name="eircAccountsList" class="eircAccountsListPageAction">
