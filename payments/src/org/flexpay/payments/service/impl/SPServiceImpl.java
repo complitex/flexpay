@@ -51,15 +51,18 @@ public class SPServiceImpl implements SPService {
 	 * @param pager   Page
 	 * @return List of services
 	 */
+    @Override
 	public List<Service> listServices(List<ObjectFilter> filters, Page<Service> pager) {
 		return serviceDaoExt.findServices(filters, pager);
 	}
 
 	@NotNull
+    @Override
 	public Service newInstance() {
 		return new Service();
 	}
 
+    @Override
 	public Class<Service> getType() {
 		return Service.class;
 	}
@@ -83,6 +86,7 @@ public class SPServiceImpl implements SPService {
 	 */
 	@NotNull
 	@Transactional (readOnly = false)
+    @Override
 	public Service create(@NotNull Service service) throws FlexPayExceptionContainer {
 
 		validate(service);
@@ -94,8 +98,8 @@ public class SPServiceImpl implements SPService {
 		return service;
 	}
 
-	@Override
 	@Transactional (readOnly = false)
+    @Override
 	public void disable(@NotNull Collection<Long> ids) {
 		log.debug("Disabling service types");
 		for (Long id : ids) {
@@ -110,8 +114,8 @@ public class SPServiceImpl implements SPService {
 		}
 	}
 
-	@Override
 	@Transactional (readOnly = false)
+    @Override
 	public void delete(@NotNull Service service) {
 		serviceDao.delete(service);
 	}
@@ -127,6 +131,7 @@ public class SPServiceImpl implements SPService {
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@NotNull
 	@Transactional (readOnly = false)
+    @Override
 	public Service update(@NotNull Service service) throws FlexPayExceptionContainer {
 
 		validate(service);
@@ -232,6 +237,7 @@ public class SPServiceImpl implements SPService {
 	 * @return Service description
 	 */
 	@Nullable
+    @Override
 	public Service readFull(@NotNull Stub<? extends Service> stub) {
 		log.debug("readFull called");
 		Service service = serviceDao.readFull(stub.getId());
@@ -251,8 +257,8 @@ public class SPServiceImpl implements SPService {
 	 * @return Services found
 	 */
 	@NotNull
-	@Override
-	public List<Service> readFull(Collection<Long> ids, boolean preserveOrder) {
+    @Override
+	public List<Service> readFull(@NotNull Collection<Long> ids, boolean preserveOrder) {
 		return serviceDao.readFullCollection(ids, preserveOrder);
 	}
 
@@ -262,6 +268,7 @@ public class SPServiceImpl implements SPService {
 	 * @param filter Filter to initialize
 	 * @return Filter back
 	 */
+    @Override
 	public ServiceFilter initParentServicesFilter(ServiceFilter filter) {
 		List<ObjectFilter> filters = CollectionUtils.list();
 		filters.add(new ParentServiceFilterMarker());
@@ -279,8 +286,8 @@ public class SPServiceImpl implements SPService {
 	 * @param date		 Date service is valid in
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-	@Override
 	@Nullable
+    @Override
 	public List<Service> findServices(@NotNull Stub<ServiceProvider> providerStub,
 									  @NotNull Stub<ServiceType> typeStub, Date date) {
 		log.debug("Finding services provider #{}, type #{}, date {}", new Object[]{providerStub.getId(), typeStub.getId(), date});
@@ -294,8 +301,8 @@ public class SPServiceImpl implements SPService {
 	 * @param typeStub	 Service type stub
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-	@Override
 	@Nullable
+    @Override
 	public List<Service> findServices(@NotNull Stub<ServiceProvider> providerStub,
 									  @NotNull Stub<ServiceType> typeStub) {
 		log.debug("Finding services provider #{}, type #{}", providerStub.getId(), typeStub.getId());
@@ -308,8 +315,8 @@ public class SPServiceImpl implements SPService {
 	 * @param serviceProviderStub ServiceProvider stub
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-    @Override
 	@Nullable
+    @Override
 	public List<Service> findServices(@NotNull Stub<ServiceProvider> serviceProviderStub) {
 		log.debug("Finding services provider #{}", serviceProviderStub.getId());
 		return serviceDao.findServices(serviceProviderStub.getId());

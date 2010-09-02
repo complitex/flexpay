@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -125,7 +126,13 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 		return type;
 	}
 
-	/**
+    @Override
+    @NotNull
+    public List<ConsumerAttributeTypeBase> readFull(@NotNull Collection<Long> ids, boolean preserveOrder) {
+        return attributeTypeDao.readFullCollection(ids, preserveOrder);
+    }
+
+    /**
 	 * Find attribute type by unique code
 	 *
 	 * @param code Unique attribute type code
@@ -140,7 +147,13 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 		return null;
 	}
 
-	@Override
+    @NotNull
+    @Override
+    public List<ConsumerAttributeTypeBase> getByUniqueCode(Collection<String> codes) {
+        return attributeTypeDao.findAtributeTypeByCodes(codes);
+    }
+
+    @Override
 	public Class<? extends ConsumerAttributeTypeBase> getType() {
 		return ConsumerAttributeTypeBase.class;
 	}

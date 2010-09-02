@@ -37,7 +37,7 @@ insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
 	values ('Количество зарегистрированных', @ru_id, @cons_attr_type_number_registered_tenats);
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
-	values ('Общая площадь (приведенная)', @ru_id, @cons_attr_type_total_square);
+	values ('Общая площадь (приведённая)', @ru_id, @cons_attr_type_total_square);
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
 	values ('Жилая площадь', @ru_id, @cons_attr_type_live_square);
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)

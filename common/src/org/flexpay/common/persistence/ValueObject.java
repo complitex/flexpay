@@ -1,10 +1,13 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class ValueObject extends DomainObject {
@@ -16,6 +19,8 @@ public abstract class ValueObject extends DomainObject {
 	public static final int TYPE_DATE = 5;
 	public static final int TYPE_DOUBLE = 6;
 	public static final int TYPE_DECIMAL = 7;
+
+    public static final DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
 	private Boolean boolValue;
 	private Integer intValue;
@@ -158,6 +163,39 @@ public abstract class ValueObject extends DomainObject {
 				throw new IllegalStateException("updateValue called before valueType set");
 		}
 	}
+
+    /**
+     * Update object value. Setting String value and parsing in this method
+     *
+     * @param value String value whitch will be parsed
+     */
+    public void setValue(String value) throws ParseException {
+        switch (valueType) {
+            case TYPE_BOOLEAN:
+                setBoolValue(Boolean.valueOf(value));
+                break;
+            case TYPE_DATE:
+                setDateValue(DEFAULT_DATE_FORMAT.parse(value));
+                break;
+            case TYPE_DECIMAL:
+                setDecimalValue(new BigDecimal(value));
+                break;
+            case TYPE_DOUBLE:
+                setDoubleValue(Double.valueOf(value));
+                break;
+            case TYPE_INT:
+                setIntValue(Integer.valueOf(value));
+                break;
+            case TYPE_LONG:
+                setLongValue(Long.valueOf(value));
+                break;
+            case TYPE_STRING:
+                setStringValue(value);
+                break;
+            default:
+                throw new IllegalStateException("updateValue called before valueType set");
+        }
+    }
 
 	public Object value() {
 		switch (valueType) {

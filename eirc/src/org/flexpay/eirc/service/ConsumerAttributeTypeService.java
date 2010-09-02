@@ -8,29 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ConsumerAttributeTypeService extends DomainObjectService<ConsumerAttributeTypeBase> {
-
-	@NotNull
-	@Override
-	ConsumerAttributeTypeBase newInstance();
-
-	@NotNull
-	@Override
-	ConsumerAttributeTypeBase create(@NotNull ConsumerAttributeTypeBase obj) throws FlexPayExceptionContainer;
-
-	@NotNull
-	@Override
-	ConsumerAttributeTypeBase update(@NotNull ConsumerAttributeTypeBase obj) throws FlexPayExceptionContainer;
-
-	@Override
-	void disable(@NotNull Collection<Long> ids);
-
-	@Override
-	ConsumerAttributeTypeBase readFull(@NotNull Stub<? extends ConsumerAttributeTypeBase> stub);
-
-	@Override
-	Class<? extends ConsumerAttributeTypeBase> getType();
 
 	/**
 	 * Find attribute type by unique code
@@ -40,5 +20,8 @@ public interface ConsumerAttributeTypeService extends DomainObjectService<Consum
 	 */
 	@Nullable
 	ConsumerAttributeTypeBase readByCode(String code);
+
+    @NotNull
+    List<ConsumerAttributeTypeBase> getByUniqueCode(Collection<String> codes);
 
 }

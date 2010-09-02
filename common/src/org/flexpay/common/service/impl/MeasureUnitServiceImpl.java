@@ -8,7 +8,6 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.MeasureUnitService;
@@ -22,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class MeasureUnitServiceImpl implements MeasureUnitService {
@@ -45,7 +46,14 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 		return measureUnitDao.readFull(unitStub.getId());
 	}
 
-	/**
+    //TODO: not implemented
+    @NotNull
+    @Override
+    public List<MeasureUnit> readFull(@NotNull Collection<Long> ids, boolean preserveOrder) {
+        return null;
+    }
+
+    /**
 	 * Disable measure units
 	 *
 	 * @param unitIds IDs of measure units to disable

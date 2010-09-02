@@ -25,7 +25,7 @@
 		<tiles:insertAttribute name="language" />
 
 		<!--<form name="search">-->
-		<td class="topmenu_form_search" nowrap="1">&nbsp;
+		<td class="topmenu_form_search" nowrap>&nbsp;
 			<!--<input type="text" class="form-search">&nbsp;<input type="button" value="Найти" class="btn-search" />-->
 		</td>
 		<!--</form>-->

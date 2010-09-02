@@ -1,6 +1,5 @@
 package org.flexpay.eirc.actions.eircaccount;
 
-import net.sf.json.JSONObject;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
@@ -16,24 +15,26 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
+import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.common.util.CollectionUtils.*;
 
 public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
 
 	private EircAccount eircAccount = new EircAccount();
-    private Set<ConsumerAttributeTypeBase> attributeTypes = set();
-    private Map<String, Map<String, Object>> formAttributes = map();
-    private Map<String, String[]> attributes;
+    private List<ConsumerAttributeTypeBase> attributeTypes = list();
+    private Map<Long, Map<Long, ConsumerAttribute>> formAttributes = map();
+    private Map<Long, String> attributes = treeMap();
 
 	private SPService spService;
 	private EircAccountService eircAccountService;
@@ -60,11 +61,18 @@ public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
+        attributeTypes = consumerAttributeTypeService.getByUniqueCode(ConsumerAttributes.EIRC_ATTRIBUTES);
+
+        correctAttributes();
+
         if (isSubmit()) {
 
             try {
-                saveConsumer();
+                updateConsumer();
             } catch (FlexPayExceptionContainer e) {
+                return REDIRECT_ERROR;
+            } catch (ParseException e) {
+                log.error("Can't parse inputed date value");
                 return REDIRECT_ERROR;
             }
 
@@ -72,43 +80,64 @@ public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
 
             return REDIRECT_SUCCESS;
 
-        } else {
-            fillFormAttributes();
-            log.debug("formAttributes parameter in JSON format = {}", JSONObject.fromObject(formAttributes));
         }
+
+        initData();
 
 		return INPUT;
 	}
 
-    private void fillFormAttributes() {
+    private void initData() {
 
         for (Consumer consumer : eircAccount.getConsumers()) {
 
-            Map<String, Object> consumerAttributes = map();
+            Map<Long, ConsumerAttribute> consumerAttributes = map();
 
-            for (ConsumerAttribute consumerAttribute : consumer.getAttributes()) {
-                consumerAttributes.put(consumerAttribute.getId() + "", consumerAttribute.value());
-                attributeTypes.add(consumerAttributeTypeService.readFull(stub(consumerAttribute.getType())));
+            for (ConsumerAttribute attribute : consumer.getAttributes()) {
+                if (!attributeTypes.contains(attribute.getType())) {
+                    continue;
+                }
+                attributes.put(attribute.getId(), "");
+                if (attribute.isDecimal() && attribute.getDecimalValue() != null) {
+                    attribute.setDecimalValue(attribute.getDecimalValue().setScale(2));
+                }
+                consumerAttributes.put(attribute.getType().getId(), attribute);
             }
 
-            formAttributes.put(consumer.getId() + "", consumerAttributes);
+            formAttributes.put(consumer.getId(), consumerAttributes);
 
         }
+    }
+
+    private void correctAttributes() {
+        if (attributes == null) {
+            log.warn("Attributes parameter is null");
+            attributes = treeMap();
+        }
+        Map<Long, String> newAttributes = treeMap();
+        for (Consumer consumer : eircAccount.getConsumers()) {
+            for (ConsumerAttribute attribute : consumer.getAttributes()) {
+                if (!attributeTypes.contains(attribute.getType())) {
+                    continue;
+                }
+                newAttributes.put(attribute.getId(), attributes.containsKey(attribute.getId()) ? attributes.get(attribute.getId()) : "");
+            }
+        }
+        attributes = newAttributes;
 
     }
 
-    private void saveConsumer() throws FlexPayExceptionContainer {
+    private void updateConsumer() throws FlexPayExceptionContainer, ParseException {
 
         for (Consumer consumer : eircAccount.getConsumers()) {
 
-            for (String attributeId : attributes.keySet()) {
-                for (ConsumerAttribute consumerAttribute : consumer.getAttributes()) {
-                    if (Long.parseLong(attributeId) != consumerAttribute.getId()) {
-                        continue;
-                    }
-                    log.debug("Attribute id = {}, New value = {}", attributeId, attributes.get(attributeId));
-                    consumerAttribute.updateValue(attributes.get(attributeId)[0]);
+            log.debug("Saving consumer with id {}", consumer.getId());
+
+            for (ConsumerAttribute consumerAttribute : consumer.getAttributes()) {
+                if (!attributeTypes.contains(consumerAttribute.getType())) {
+                    continue;
                 }
+                consumerAttribute.setValue(attributes.get(consumerAttribute.getId()));
             }
 
             try {
@@ -133,7 +162,7 @@ public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_ERROR;
+		return INPUT;
 	}
 
 	public String getServiceDescription(@NotNull Service service) throws Exception {
@@ -157,7 +186,7 @@ public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
         throw new RuntimeException("No default identity: " + persistent);
     }
 
-    public Map<String, Map<String, Object>> getFormAttributes() {
+    public Map<Long, Map<Long, ConsumerAttribute>> getFormAttributes() {
         return formAttributes;
     }
 
@@ -169,11 +198,15 @@ public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
 		this.eircAccount = eircAccount;
 	}
 
-    public Set<ConsumerAttributeTypeBase> getAttributeTypes() {
+    public List<ConsumerAttributeTypeBase> getAttributeTypes() {
         return attributeTypes;
     }
 
-    public void setAttributes(Map<String, String[]> attributes) {
+    public Map<Long, String> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Map<Long, String> attributes) {
         this.attributes = attributes;
     }
 

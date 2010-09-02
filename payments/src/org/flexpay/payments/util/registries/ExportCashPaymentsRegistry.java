@@ -11,8 +11,8 @@ import java.util.Date;
 
 public class ExportCashPaymentsRegistry extends RegistryFPFileFormat {
 
+    @Override
 	protected String fileName(@NotNull Registry registry) throws FlexPayException {
-
 		return new SimpleDateFormat(RegistryUtil.EXPORT_FILE_NAME_DATE_FORMAT).format(new Date())
 			   + "_" + registry.getSenderCode() + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION + RegistryType.TYPE_CASH_PAYMENTS;
 

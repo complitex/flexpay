@@ -19,6 +19,7 @@ public class ExportBankPaymentsRegistry extends RegistryFPFileFormat {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+    @Override
 	protected String fileName(@NotNull Registry registry) throws FlexPayException {
 
 		FetchRange fetchRange = new FetchRange();

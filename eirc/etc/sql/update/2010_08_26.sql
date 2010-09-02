@@ -8,6 +8,8 @@ insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code,
 	values (7, 0, 0, 'ATTR_LIVE_SQUARE', 0, 'simple', null);
 insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
 	values (8, 0, 0, 'ATTR_HEATING_SQUARE', 0, 'simple', null);
+
+select @ru_id:=id from common_languages_tbl where lang_iso_code='ru';
 select @cons_attr_type_number_tenats:=4;
 select @cons_attr_type_number_registered_tenats:=5;
 select @cons_attr_type_total_square:=6;
@@ -18,7 +20,7 @@ insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
 	values ('Количество зарегистрированных', @ru_id, @cons_attr_type_number_registered_tenats);
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
-	values ('Общая площадь (приведенная)', @ru_id, @cons_attr_type_total_square);
+	values ('Общая площадь (приведённая)', @ru_id, @cons_attr_type_total_square);
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
 	values ('Жилая площадь', @ru_id, @cons_attr_type_live_square);
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
