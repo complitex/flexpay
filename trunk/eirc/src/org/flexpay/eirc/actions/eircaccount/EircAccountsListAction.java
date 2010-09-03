@@ -3,9 +3,7 @@ package org.flexpay.eirc.actions.eircaccount;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.filters.ApartmentFilter;
-import org.flexpay.ab.persistence.filters.BuildingsFilter;
-import org.flexpay.ab.persistence.filters.PersonSearchFilter;
+import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
@@ -28,6 +26,8 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 
 	private Long apartmentFilter;
 	private Long buildingFilter;
+    private Long streetFilter;
+    private Long townFilter;
     private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
     private Integer output = 1;
 	private List<EircAccount> accounts = list();
@@ -49,11 +49,17 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
         }
 
         log.debug("apartmentFilter = {}, buildingFilter = {}", apartmentFilter, buildingFilter);
+        log.debug("streetFilter = {}, townFilter = {}", streetFilter, townFilter);
         log.debug("personSearchFilter = {}, output = {}", personSearchFilter, output);
 
         List<EircAccountSorter> sorters = list(eircAccountSorterByAccountNumber, eircAccountSorterByAddress);
 
-		if ((apartmentFilter == null || apartmentFilter <= 0) && (buildingFilter == null || buildingFilter <= 0) && isEmpty(personSearchFilter.getSearchString())) {
+		if ((apartmentFilter == null || apartmentFilter <= 0)
+                && (buildingFilter == null || buildingFilter <= 0)
+                && (streetFilter == null || streetFilter <= 0)
+                && (townFilter == null || townFilter <= 0)
+                && isEmpty(personSearchFilter.getSearchString())) {
+
             log.debug("All filters are empty. Return empty list");
             return SUCCESS;
 		}
@@ -61,6 +67,8 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
         List<ObjectFilter> filters = list(
                 new ApartmentFilter(apartmentFilter),
                 new BuildingsFilter(buildingFilter),
+                new StreetFilter(streetFilter),
+                new TownFilter(townFilter),
                 personSearchFilter
         );
 
@@ -104,13 +112,21 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
         this.personSearchFilter = personSearchFilter;
     }
 
-    public void setBuildingFilter(Long buildingFilter) {
-		this.buildingFilter = buildingFilter;
-	}
+    public void setApartmentFilter(Long apartmentFilter) {
+        this.apartmentFilter = apartmentFilter;
+    }
 
-	public void setApartmentFilter(Long apartmentFilter) {
-		this.apartmentFilter = apartmentFilter;
-	}
+    public void setBuildingFilter(Long buildingFilter) {
+        this.buildingFilter = buildingFilter;
+    }
+
+    public void setStreetFilter(Long streetFilter) {
+        this.streetFilter = streetFilter;
+    }
+
+    public void setTownFilter(Long townFilter) {
+        this.townFilter = townFilter;
+    }
 
     public void setOutput(Integer output) {
         this.output = output;

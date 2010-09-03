@@ -8,9 +8,6 @@ import java.util.Set;
 
 public class DistrictName extends TemporaryName<DistrictName, DistrictNameTranslation> {
 
-	/**
-	 * Constructs a new DistrictName.
-	 */
 	public DistrictName() {
 	}
 
@@ -43,6 +40,7 @@ public class DistrictName extends TemporaryName<DistrictName, DistrictNameTransl
 	 *
 	 * @return Null representation of this value
 	 */
+    @Override
 	public DistrictName getEmpty() {
 		DistrictName empty = new DistrictName();
 		empty.setObject(getObject());

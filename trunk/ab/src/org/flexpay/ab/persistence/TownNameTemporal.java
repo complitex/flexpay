@@ -41,6 +41,7 @@ public class TownNameTemporal extends NameDateInterval<TownName, TownNameTempora
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	protected TownNameTemporal doGetCopy(NameDateInterval<TownName, TownNameTemporal> di) {
 		return new TownNameTemporal(di);
 	}

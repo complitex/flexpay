@@ -16,6 +16,7 @@ public class TownSorterByType extends TownSorter {
 		super(lang);
 	}
 
+    @Override
 	public void setFrom(StringBuilder query) {
 		Language defaultLang = getDefaultLanguage();
 		query

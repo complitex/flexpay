@@ -1,8 +1,6 @@
 package org.flexpay.eirc.dao.impl;
 
-import org.flexpay.ab.persistence.filters.ApartmentFilter;
-import org.flexpay.ab.persistence.filters.BuildingsFilter;
-import org.flexpay.ab.persistence.filters.PersonSearchFilter;
+import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.dao.FilterHandler;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +52,36 @@ public final class FilterHandlers {
 			return list(f.getSelectedStub().getId());
 		}
 	}
+
+    public static final class StreetFilterHandler implements FilterHandler {
+
+        @Override
+        public boolean supports(ObjectFilter filter) {
+            return filter instanceof StreetFilter;
+        }
+
+        @Override
+        public List<Long> whereClause(ObjectFilter filter, StringBuilder clause) {
+            clause.append("street.id=?");
+            StreetFilter f = (StreetFilter) filter;
+            return list(f.getSelectedStub().getId());
+        }
+    }
+
+    public static final class TownFilterHandler implements FilterHandler {
+
+        @Override
+        public boolean supports(ObjectFilter filter) {
+            return filter instanceof TownFilter;
+        }
+
+        @Override
+        public List<Long> whereClause(ObjectFilter filter, StringBuilder clause) {
+            clause.append("town.id=?");
+            TownFilter f = (TownFilter) filter;
+            return list(f.getSelectedStub().getId());
+        }
+    }
 
 	public static final class PersonSearchFilterHandler implements FilterHandler {
 

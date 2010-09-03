@@ -4,9 +4,6 @@ import org.flexpay.common.persistence.NameDateInterval;
 
 public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameTemporal> {
 
-	/**
-	 * Constructs a new NameTemporal.
-	 */
 	public StreetNameTemporal() {
 		super(new StreetName());
 	}
@@ -28,6 +25,7 @@ public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameT
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	protected StreetNameTemporal doGetCopy(NameDateInterval<StreetName, StreetNameTemporal> di) {
 		return new StreetNameTemporal(di);
 	}

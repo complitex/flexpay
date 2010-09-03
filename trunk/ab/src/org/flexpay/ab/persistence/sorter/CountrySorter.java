@@ -23,6 +23,7 @@ public class CountrySorter extends I18nObjectSorter {
 		this.countryField = countryField;
 	}
 
+    @Override
 	public void setFrom(StringBuilder query) {
 		Language defaultLang = getDefaultLanguage();
 		query

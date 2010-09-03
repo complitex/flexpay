@@ -24,40 +24,27 @@
 
 <script type="text/javascript">
 
-    $("#building_string").ready(function() {
-        FF.addListener("building", function(filter) {
-            if (FF.filters["apartment"].value.val() > 0) {
-                return;
-            }
-            if (filter.value.val() == 0) {
-                return;
-            }
-            pagerAjax(null, {
-                buildingFilter:filter.value.val(),
-                apartmentFilter:0
-            });
-        });
-        FF.addEraser("building", function() {
-            $("#result").html("");
-        });
+    $("#town_string").ready(function() {
+        FF.removeListener("town");
     });
-
+    $("#street_string").ready(function() {
+        FF.removeListener("street");
+    });
+    $("#building_string").ready(function() {
+        FF.removeListener("building");
+    });
     $("#apartment_string").ready(function() {
         FF.removeListener("apartment");
-        FF.addListener("apartment", function(filter) {
-            pagerAjax(null, {
-                buildingFilter:0,
-                apartmentFilter: filter.value.val()
-            });
-        });
     });
 
-    function pagerAjax(element, params) {
+    function pagerAjax(element) {
 
         var af = FF.filters["apartment"].value.val();
         var bf = FF.filters["building"].value.val();
+        var sf = FF.filters["street"].value.val();
+        var tf = FF.filters["town"].value.val();
         var fio = $("#personFio").val();
-        if (fio == "" && af == 0 && bf == 0) {
+        if (fio == "" && af == 0 && bf == 0 && sf == 0 && tf == 0) {
             alert("<s:text name="eirc.error.all_filters_are_empty" />");
             return;
         }
@@ -65,8 +52,10 @@
             action: "<s:url action="eircAccountsListAjax" namespace="/eirc" includeParams="none" />",
             params: {
                 output: $("#output").val(),
-                buildingFilter: bf,
                 apartmentFilter: af,
+                buildingFilter: bf,
+                streetFilter: sf,
+                townFilter: tf,
                 "personSearchFilter.searchString": fio,
                 "eircAccountSorterByAccountNumber.active": $("#eircAccountSorterByAccountNumberActive").val(),
                 "eircAccountSorterByAccountNumber.order": $("#eircAccountSorterByAccountNumberOrder").val(),
@@ -75,8 +64,17 @@
             }
         };
 
-        for(var o in params) {
-            opt.params[o] = params[o];
+        if (af > 0) {
+            opt.params["buildingFilter"] = 0;
+            opt.params["streetFilter"] = 0;
+            opt.params["townFilter"] = 0;
+        }
+        if (bf > 0) {
+            opt.params["streetFilter"] = 0;
+            opt.params["townFilter"] = 0;
+        }
+        if (sf > 0) {
+            opt.params["townFilter"] = 0;
         }
 
         FP.pagerAjax(element, opt);

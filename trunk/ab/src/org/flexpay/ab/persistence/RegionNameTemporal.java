@@ -58,6 +58,7 @@ public class RegionNameTemporal extends NameDateInterval<RegionName, RegionNameT
 		return super.toString();
 	}
 
+    @Override
 	protected RegionNameTemporal doGetCopy(NameDateInterval<RegionName, RegionNameTemporal> di) {
 		return new RegionNameTemporal(di);
 	}
