@@ -1,4 +1,3 @@
-<%@ taglib prefix="S" uri="/struts-tags" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
@@ -46,11 +45,12 @@
                 </td>
                 <s:set name="consumerId" value="id" />
                 <s:set name="formAttributesMap" value="formAttributes.get(id)" />
-                <s:iterator value="attributeTypes">
-                    <td class="col">
-                        <s:set name="attribute" value="#formAttributesMap.get(id)" />
+                <s:iterator value="attributeTypes" id="type">
+                    <td class="col" style="text-align:center;">
+                        <s:set name="attribute" value="#formAttributesMap.get(#type.id)" />
                         <s:if test="#attribute != null && #attribute.isNotNew()">
-                            <s:textfield name="attributes[%{#attribute.id}]" value="%{#attribute.value()}" />
+                            <s:textfield name="attributes[%{#attribute.id}]" value="%{#attribute.value()}" /><br />
+                            <input type="radio" name="<s:property value="'attr' + #type.id" />" value="<s:property value="#attribute.id" />" />
                         </s:if>
                     </td>
                 </s:iterator>
@@ -58,67 +58,29 @@
         </s:iterator>
         <tr>
             <td colspan="15">
-                <input type="submit" name="submitted" class="btn-exit" value="<s:text name="common.save" />" />
+                <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
+                <input type="button" class="btn-exit" value="<s:text name="eirc.eirc_account.set_values" />" onclick="setValues();" />
             </td>
         </tr>
     </table>
 
     <s:hidden name="eircAccount.id" value="%{eircAccount.id}" />
 
-<%--
+</s:form>
+
     <script type="text/javascript">
 
-        var formAttributes = {
-            <s:set name="consumersCount" value="eircAccount.consumers.size()" />
-            <s:iterator value="eircAccount.consumers" status="consumersStatus">
-                "<s:property value="id" />": [
-                    <s:set name="formAttributesMap" value="formAttributes.get(id + '')" />
-                    <s:set name="i" value="0" />
-                    <s:iterator value="attributeTypes">
-                        <s:set name="attribute" value="#formAttributesMap.get(id + '')" />
-                        <s:if test="#attribute != null">
-                            "<s:property value="#attribute.id" />"
-                        </s:if><s:else>
-                            "-1"
-                        </s:else>
-                        <s:if test="#i + 1 < @org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes@EIRC_ATTRIBUTES.size()">,</s:if>
-                        <s:set name="i" value="#i + 1" />
-                    </s:iterator>
-                ]<s:if test="#consumersStatus.index + 1 < #consumersCount">,</s:if>
-            </s:iterator>
-        };
-
-        function submitForm() {
-
-            var params = {
-                "eircAccount.id":<s:property value="eircAccount.id" />,
-                submitted:true
-            };
-
-            $.log(formAttributes);
-
-            for (var consumerId in formAttributes) {
-                for (var i in formAttributes[consumerId]) {
-                    var attributeId = formAttributes[consumerId][i];
-                    if (attributeId == "-1") {
-                        continue;
-                    }
-                    params["attributes['" + attributeId + "']"] = $("input[name=\"attributes['" + attributeId + "']\"]").val();
-                }
-            }
-
-            $.log(params);
-
-            $.post("<s:url action="eircAccountEditConsumerAttributes" includeParams="none" />", params,
-                    function(data, status) {
-//                        window.location.href = "<s:url action="eircAccountView" includeParams="none"><s:param name="eircAccount.id" value="%{eircAccount.id}" /></s:url>";
+        function setValues() {
+            $.each([<s:iterator value="attributeTypes" status="i"><s:property value="id" /><s:if test="!#i.last">,</s:if></s:iterator>], function(i, typeId) {
+                $("input[name=attr" + typeId + "]:radio:checked").each(function() {
+                    var checkedValue = $("input[name=\"attributes[" + this.value + "]\"]").val();
+                    $("input[name=attr" + typeId + "]:radio").each(function() {
+                        $("input[name=\"attributes[" + this.value + "]\"]").val(checkedValue);
                     });
-
+                });
+            });
         }
 
     </script>
---%>
-
-</s:form>
 
 </s:if>

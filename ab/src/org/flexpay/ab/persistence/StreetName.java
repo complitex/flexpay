@@ -54,6 +54,7 @@ public class StreetName extends TemporaryName<StreetName, StreetNameTranslation>
 	 *
 	 * @return Null representation of this value
 	 */
+    @Override
 	public StreetName getEmpty() {
 		StreetName empty = new StreetName();
 		empty.setObject(getObject());

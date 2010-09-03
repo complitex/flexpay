@@ -28,17 +28,9 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	private Set<District> districts = Collections.emptySet();
 	private Set<Street> streets = Collections.emptySet();
 
-	/**
-	 * Constructs a new Town.
-	 */
 	public Town() {
 	}
 
-	/**
-	 * Constructs a new Town.
-	 *
-	 * @param id Town id
-	 */
 	public Town(Long id) {
 		super(id);
 	}

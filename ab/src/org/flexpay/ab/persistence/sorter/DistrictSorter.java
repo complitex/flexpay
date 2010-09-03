@@ -23,6 +23,7 @@ public class DistrictSorter extends I18nObjectSorter {
 		this.districtField = districtField;
 	}
 
+    @Override
 	public void setFrom(StringBuilder query) {
 		Language defaultLang = getDefaultLanguage();
 		query

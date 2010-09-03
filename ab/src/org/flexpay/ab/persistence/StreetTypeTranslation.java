@@ -57,6 +57,7 @@ public class StreetTypeTranslation extends Translation {
 		this.shortName = shortName;
 	}
 
+    @Override
 	public void copyName(Translation t) {
 		super.copyName(t);
 		if (t instanceof StreetTypeTranslation) {

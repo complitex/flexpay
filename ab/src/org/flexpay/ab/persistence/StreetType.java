@@ -52,6 +52,7 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 	 *
 	 * @return Null representation of this value
 	 */
+    @Override
 	public StreetType getEmpty() {
 		return new StreetType();
 	}

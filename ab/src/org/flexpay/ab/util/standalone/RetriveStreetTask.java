@@ -15,6 +15,7 @@ public class RetriveStreetTask implements StandaloneTask {
 	/**
 	 * Execute task
 	 */
+    @Override
 	public void execute() {
 //		Street street = streetDao.readFull(6L);
 		Street street = streetService.readFull(new Stub<Street>(6L));

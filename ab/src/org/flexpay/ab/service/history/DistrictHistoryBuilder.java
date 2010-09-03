@@ -131,6 +131,7 @@ public class DistrictHistoryBuilder extends HistoryBuilderBase<District> {
 	 * @param district Object to apply diff to
 	 * @param diff	 Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull District district, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

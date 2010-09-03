@@ -4,9 +4,6 @@ import org.flexpay.common.persistence.NameDateInterval;
 
 public class DistrictNameTemporal extends NameDateInterval<DistrictName, DistrictNameTemporal> {
 
-	/**
-	 * Constructs a new RegionNameTemporal.
-	 */
 	public DistrictNameTemporal() {
 		super(new DistrictName());
 	}
@@ -30,10 +27,10 @@ public class DistrictNameTemporal extends NameDateInterval<DistrictName, Distric
 	 */
 	@Override
 	public boolean equals(Object obj) {
-
 		return obj instanceof DistrictNameTemporal && super.equals(obj);
 	}
 
+    @Override
 	protected DistrictNameTemporal doGetCopy(NameDateInterval<DistrictName, DistrictNameTemporal> di) {
 		return new DistrictNameTemporal(di);
 	}

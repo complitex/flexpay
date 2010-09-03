@@ -41,6 +41,7 @@ public class TownTypeTemporal extends TypeDateInterval<TownType, TownTypeTempora
 	 * @param di Name date interval
 	 * @return a copy
 	 */
+    @Override
 	protected TownTypeTemporal doGetCopy(TypeDateInterval<TownType, TownTypeTemporal> di) {
 		return new TownTypeTemporal(di);
 	}

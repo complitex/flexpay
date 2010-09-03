@@ -64,6 +64,10 @@ public class ApplicationConfig {
 		return getInstance().addressAttributeTypePart;
 	}
 
+    public static ApplicationConfig getInstance() {
+        return INSTANCE;
+    }
+
 	@Required
 	public void setDefaultTownId(Long townId) {
 		defaultTown = new Town(townId);
@@ -92,10 +96,6 @@ public class ApplicationConfig {
 	@Required
 	public void setBuildingAttributeTypePartId(Long partTypeId) {
 		addressAttributeTypePart = new AddressAttributeType(partTypeId);
-	}
-
-	public static ApplicationConfig getInstance() {
-		return INSTANCE;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.standalone.StandaloneTask;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ImportTask implements StandaloneTask {
 
@@ -16,6 +17,7 @@ public class ImportTask implements StandaloneTask {
 	/**
 	 * Execute task
 	 */
+    @Override
 	public void execute() {
 		try {
 			importService.importDistricts(town, new DataSourceDescription(sourceDescription));
@@ -29,20 +31,11 @@ public class ImportTask implements StandaloneTask {
 		}
 	}
 
-	/**
-	 * Setter for property 'importService'.
-	 *
-	 * @param importService Value to set for property 'importService'.
-	 */
+    @Required
 	public void setImportService(ImportService importService) {
 		this.importService = importService;
 	}
 
-	/**
-	 * Setter for property 'sourceDescription'.
-	 *
-	 * @param sourceDescription Value to set for property 'sourceDescription'.
-	 */
 	public void setSourceDescription(DataSourceDescription sourceDescription) {
 		this.sourceDescription = stub(sourceDescription);
 	}

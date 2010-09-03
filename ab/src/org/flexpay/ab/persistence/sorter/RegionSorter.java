@@ -23,6 +23,7 @@ public class RegionSorter extends I18nObjectSorter {
 		this.regionField = regionField;
 	}
 
+    @Override
 	public void setFrom(StringBuilder query) {
 		Language defaultLang = getDefaultLanguage();
 		query

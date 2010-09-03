@@ -26,6 +26,7 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 		super(district.getId());
 	}
 
+    @Override
 	protected DistrictNameTemporal getEmptyTemporal() {
 		return new DistrictNameTemporal(this);
 	}

@@ -23,6 +23,7 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	protected StreetTypeTemporal doGetCopy(TypeDateInterval<StreetType, StreetTypeTemporal> di) {
 		return new StreetTypeTemporal(di);
 	}
