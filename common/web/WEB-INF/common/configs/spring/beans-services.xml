@@ -26,6 +26,7 @@
 		  p:languageService-ref="languageService" />
 
 	<bean id="sequenceService" class="org.flexpay.common.service.impl.SequenceServiceImpl"
+		  scope="singleton"
 		  p:sequenceDao-ref="sequenceDao" />
 
 	<bean id="reportPrintHistoryRecordService"
