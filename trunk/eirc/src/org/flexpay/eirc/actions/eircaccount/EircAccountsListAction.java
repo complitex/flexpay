@@ -6,12 +6,9 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
-import org.flexpay.eirc.persistence.sorter.EircAccountSorterByAccountNumber;
-import org.flexpay.eirc.persistence.sorter.EircAccountSorterByAddress;
 import org.flexpay.eirc.service.EircAccountService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -22,18 +19,9 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 
-public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount> {
+public class EircAccountsListAction extends EircAccountAction {
 
-	private Long apartmentFilter;
-	private Long buildingFilter;
-    private Long streetFilter;
-    private Long townFilter;
-    private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
-    private Integer output = 1;
 	private List<EircAccount> accounts = list();
-
-    private EircAccountSorterByAccountNumber eircAccountSorterByAccountNumber = new EircAccountSorterByAccountNumber();
-    private EircAccountSorterByAddress eircAccountSorterByAddress = new EircAccountSorterByAddress();
 
 	private EircAccountService eircAccountService;
 	private PersonService personService;
@@ -50,6 +38,7 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 
         log.debug("apartmentFilter = {}, buildingFilter = {}", apartmentFilter, buildingFilter);
         log.debug("streetFilter = {}, townFilter = {}", streetFilter, townFilter);
+        log.debug("regionFilter = {}, countryFilter = {}", regionFilter, countryFilter);
         log.debug("personSearchFilter = {}, output = {}", personSearchFilter, output);
 
         List<EircAccountSorter> sorters = list(eircAccountSorterByAccountNumber, eircAccountSorterByAddress);
@@ -108,49 +97,9 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 		throw new RuntimeException("No default identity: " + persistent);
 	}
 
-    public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
-        this.personSearchFilter = personSearchFilter;
-    }
-
-    public void setApartmentFilter(Long apartmentFilter) {
-        this.apartmentFilter = apartmentFilter;
-    }
-
-    public void setBuildingFilter(Long buildingFilter) {
-        this.buildingFilter = buildingFilter;
-    }
-
-    public void setStreetFilter(Long streetFilter) {
-        this.streetFilter = streetFilter;
-    }
-
-    public void setTownFilter(Long townFilter) {
-        this.townFilter = townFilter;
-    }
-
-    public void setOutput(Integer output) {
-        this.output = output;
-    }
-
     public List<EircAccount> getAccounts() {
 		return accounts;
 	}
-
-    public EircAccountSorterByAccountNumber getEircAccountSorterByAccountNumber() {
-        return eircAccountSorterByAccountNumber;
-    }
-
-    public void setEircAccountSorterByAccountNumber(EircAccountSorterByAccountNumber eircAccountSorterByAccountNumber) {
-        this.eircAccountSorterByAccountNumber = eircAccountSorterByAccountNumber;
-    }
-
-    public EircAccountSorterByAddress getEircAccountSorterByAddress() {
-        return eircAccountSorterByAddress;
-    }
-
-    public void setEircAccountSorterByAddress(EircAccountSorterByAddress eircAccountSorterByAddress) {
-        this.eircAccountSorterByAddress = eircAccountSorterByAddress;
-    }
 
     @Required
 	public void setEircAccountService(EircAccountService eircAccountService) {

@@ -19,8 +19,6 @@
 	</tr>
 </table>
 
-<s:if test="!eircAccount.consumers.isEmpty()">
-
 <s:form action="eircAccountEditConsumerAttributes" method="POST">
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -58,8 +56,11 @@
         </s:iterator>
         <tr>
             <td colspan="15">
-                <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
-                <input type="button" class="btn-exit" value="<s:text name="eirc.eirc_account.set_values" />" onclick="setValues();" />
+                <s:if test="!eircAccount.consumers.isEmpty()">
+                    <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
+                    <input type="button" class="btn-exit" value="<s:text name="eirc.eirc_account.set_values" />" onclick="setValues();" />
+                </s:if>
+                <input type="button" class="btn-exit" value="<s:text name="common.back" />" onclick="backf();" />
             </td>
         </tr>
     </table>
@@ -81,6 +82,24 @@
             });
         }
 
-    </script>
+        function backf() {
 
-</s:if>
+            FP.post("<s:url action="eircAccountsList" includeParams="none" />", {
+                output: <s:property value="output" />,
+                apartmentFilter: <s:property value="apartmentFilter" />,
+                buildingFilter: <s:property value="buildingFilter" />,
+                streetFilter: <s:property value="streetFilter" />,
+                townFilter: <s:property value="townFilter" />,
+                regionFilter: <s:property value="regionFilter" />,
+                countryFilter: <s:property value="countryFilter" />,
+                "personSearchFilter.searchString": "<s:property value="personSearchFilter.searchString" />",
+                "eircAccountSorterByAccountNumber.active": <s:property value="eircAccountSorterByAccountNumber.active" />,
+                "eircAccountSorterByAccountNumber.order": "<s:property value="eircAccountSorterByAccountNumber.order" />",
+                "eircAccountSorterByAddress.active": <s:property value="eircAccountSorterByAddress.active" />,
+                "eircAccountSorterByAddress.order": "<s:property value="eircAccountSorterByAddress.order" />",
+                "pager.pageNumber":<s:property value="pager.pageNumber" />,
+                "pager.pageSize":<s:property value="pager.pageSize" />
+            });
+        }
+
+    </script>

@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircAccount;
@@ -26,9 +25,8 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
 
-public class EircAccountViewAction extends FPActionSupport {
+public class EircAccountViewAction extends EircAccountAction {
 
-	private EircAccount eircAccount = new EircAccount();
     private Map<Long, List<ConsumerAttribute>> consumerAttributes = map();
     private List<ConsumerAttributeTypeBase> attributeTypes;
 
@@ -115,14 +113,6 @@ public class EircAccountViewAction extends FPActionSupport {
         }
         throw new RuntimeException("No default identity: " + persistent);
     }
-
-	public EircAccount getEircAccount() {
-		return eircAccount;
-	}
-
-	public void setEircAccount(EircAccount eircAccount) {
-		this.eircAccount = eircAccount;
-	}
 
     public Map<Long, List<ConsumerAttribute>> getConsumerAttributes() {
         return consumerAttributes;
