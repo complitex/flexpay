@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Consumer;
@@ -21,7 +20,6 @@ import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +27,8 @@ import java.util.Map;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.*;
 
-public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
+public class EircAccountEditConsumerAttributesAction extends EircAccountAction {
 
-	private EircAccount eircAccount = new EircAccount();
     private List<ConsumerAttributeTypeBase> attributeTypes = list();
     private Map<Long, Map<Long, ConsumerAttribute>> formAttributes = map();
     private Map<Long, String> attributes = treeMap();
@@ -189,14 +186,6 @@ public class EircAccountEditConsumerAttributesAction extends FPActionSupport {
     public Map<Long, Map<Long, ConsumerAttribute>> getFormAttributes() {
         return formAttributes;
     }
-
-    public EircAccount getEircAccount() {
-		return eircAccount;
-	}
-
-	public void setEircAccount(EircAccount eircAccount) {
-		this.eircAccount = eircAccount;
-	}
 
     public List<ConsumerAttributeTypeBase> getAttributeTypes() {
         return attributeTypes;

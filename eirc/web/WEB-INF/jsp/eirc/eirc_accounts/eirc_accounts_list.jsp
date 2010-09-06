@@ -27,26 +27,20 @@
                 <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col">
-                <a href="<s:url action="eircAccountView" includeParams="none"><s:param name="eircAccount.id" value="%{id}" /></s:url>">
+                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountView" includeParams="none" />', {'eircAccount.id':<s:property value="id" />});">
                     <s:property value="accountNumber" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url action="apartmentRegistration" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="%{apartment.id}" /></s:url>">
-                    <s:property value="getAddress(apartment)" />
+                <s:property value="getAddress(apartment)" />
+            </td>
+            <td class="col">
+                <s:property value="consumerInfo.FIO" />
+            </td>
+            <td class="col">
+                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountEditConsumerAttributes" includeParams="none" />', {'eircAccount.id':<s:property value="id" />});">
+                    <s:text name="common.edit" />
                 </a>
-            </td>
-            <td class="col">
-                <s:if test="person != null">
-                    <a href="<s:url action="personView" namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{person.id}" /></s:url>">
-                        <s:property value="getFIO(person)" />
-                    </a>
-                </s:if><s:else>
-                    (*)&nbsp;<s:property value="consumerInfo.FIO" />
-                </s:else>
-            </td>
-            <td class="col">
-                <a href="<s:url action="eircAccountEditConsumerAttributes" includeParams="none"><s:param name="eircAccount.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>

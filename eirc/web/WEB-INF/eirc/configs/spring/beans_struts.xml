@@ -241,7 +241,7 @@
           scope="prototype" />
 
     <bean id="eircAccountsListPageAction"
-          class="org.flexpay.common.actions.StaticPageAction"
+          class="org.flexpay.eirc.actions.eircaccount.EircAccountsListPageAction"
           p:crumbNameKey="eirc.crumbs.eirc_accounts_list"
           scope="prototype" />
 

@@ -175,11 +175,15 @@ var FP = {
         var pageSizeName = opt.pageSizeName;
 
         if (element == null || element == undefined) {
-            params[opt.pageSizeChangedName] = false;
+            if (params[opt.pageSizeChangedName] == null) {
+                params[opt.pageSizeChangedName] = false;
+            }
             var curPage = $("input[name=curPage]");
-            params[opt.pageNumberName] = curPage.get(0) != null && curPage.get(0) != undefined ? curPage.val() : 1;
+            if (params[opt.pageNumberName] == null) {
+                params[opt.pageNumberName] = curPage.get(0) != null && curPage.get(0) != undefined ? curPage.val() : 1;
+            }
             var pageSize = $("select[name=" + pageSizeName + "]");
-            if (pageSize.get(0) != null && pageSize.get(0) != undefined) {
+            if (pageSize.get(0) != null && pageSize.get(0) != undefined && params[pageSizeName] == null) {
                 params[pageSizeName] = pageSize.val();
             }
         } else {
@@ -195,11 +199,15 @@ var FP = {
                 FP.hideShadow(shadowId);
                 return;
             }
-            params[opt.pageSizeChangedName] = isSelect;
-            if (!isSelect) {
+            if (params[opt.pageSizeChangedName] == null) {
+                params[opt.pageSizeChangedName] = isSelect;
+            }
+            if (!isSelect && params[opt.pageNumberName] == null) {
                 params[opt.pageNumberName] = elValue;
             }
-            params[pageSizeName] = isSelect ? elValue : $("select[name=" + pageSizeName + "]").val();
+            if (params[pageSizeName] == null) {
+                params[pageSizeName] = isSelect ? elValue : $("select[name=" + pageSizeName + "]").val();
+            }
         }
 
         $.post(opt.action, params, function(data, status) {
@@ -273,6 +281,23 @@ var FP = {
                     callback(null);
                 });
     },
+
+    post : function(url, params) {
+        var temp = document.createElement("form");
+        temp.action = url;
+        temp.method = "POST";
+        temp.style.display = "none";
+        for(var x in params) {
+            var opt = document.createElement("textarea");
+            opt.name = x;
+            opt.value = params[x];
+            temp.appendChild(opt);
+        }
+        document.body.appendChild(temp);
+        temp.submit();
+        return temp;
+    },
+
 
 	/*
 	 * Clipboard function
