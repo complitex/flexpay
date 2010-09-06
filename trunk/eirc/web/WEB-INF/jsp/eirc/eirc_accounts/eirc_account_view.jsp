@@ -51,9 +51,7 @@
     <tr>
         <td colspan="15">
             <s:if test="!eircAccount.consumers.isEmpty()">
-                <input type="button" class="btn-exit"
-                       onclick="window.location='<s:url action="eircAccountEditConsumerAttributes" includeParams="none"><s:param name="eircAccount.id" value="eircAccount.id" /></s:url>';"
-                       value="<s:text name="common.edit" />" />
+                <input type="button" class="btn-exit" value="<s:text name="common.edit" />" onclick="editf();" />
             </s:if>
             <input type="button" class="btn-exit" value="<s:text name="common.back" />" onclick="backf();" />
         </td>
@@ -62,24 +60,31 @@
 
 <script type="text/javascript">
 
-    function backf() {
+    var params = {
+        <s:if test="output != null">output: <s:property value="output" />,</s:if>
+        <s:if test="apartmentFilter != null">apartmentFilter: <s:property value="apartmentFilter" />,</s:if>
+        <s:if test="buildingFilter != null">buildingFilter: <s:property value="buildingFilter" />,</s:if>
+        <s:if test="streetFilter != null">streetFilter: <s:property value="streetFilter" />,</s:if>
+        <s:if test="townFilter != null">townFilter: <s:property value="townFilter" />,</s:if>
+        <s:if test="regionFilter != null">regionFilter: <s:property value="regionFilter" />,</s:if>
+        <s:if test="countryFilter != null">countryFilter: <s:property value="countryFilter" />,</s:if>
+        "personSearchFilter.searchString": "<s:property value="personSearchFilter.searchString" />",
+        "eircAccountSorterByAccountNumber.active": "<s:property value="eircAccountSorterByAccountNumber.active" />",
+        "eircAccountSorterByAccountNumber.order": "<s:property value="eircAccountSorterByAccountNumber.order" />",
+        "eircAccountSorterByAddress.active": "<s:property value="eircAccountSorterByAddress.active" />",
+        "eircAccountSorterByAddress.order": "<s:property value="eircAccountSorterByAddress.order" />",
+        "pager.pageNumber": "<s:property value="pager.pageNumber" />",
+        "pager.pageSize": "<s:property value="pager.pageSize" />",
+        "eircAccount.id": "<s:property value="eircAccount.id" />",
+        returnTo: 0,
+    };
 
-        FP.post("<s:url action="eircAccountsList" includeParams="none" />", {
-            output: <s:property value="output" />,
-            apartmentFilter: <s:property value="apartmentFilter" />,
-            buildingFilter: <s:property value="buildingFilter" />,
-            streetFilter: <s:property value="streetFilter" />,
-            townFilter: <s:property value="townFilter" />,
-            regionFilter: <s:property value="regionFilter" />,
-            countryFilter: <s:property value="countryFilter" />,
-            "personSearchFilter.searchString": "<s:property value="personSearchFilter.searchString" />",
-            "eircAccountSorterByAccountNumber.active": <s:property value="eircAccountSorterByAccountNumber.active" />,
-            "eircAccountSorterByAccountNumber.order": "<s:property value="eircAccountSorterByAccountNumber.order" />",
-            "eircAccountSorterByAddress.active": <s:property value="eircAccountSorterByAddress.active" />,
-            "eircAccountSorterByAddress.order": "<s:property value="eircAccountSorterByAddress.order" />",
-            "pager.pageNumber":<s:property value="pager.pageNumber" />,
-            "pager.pageSize":<s:property value="pager.pageSize" />
-        });
+    function editf() {
+        FP.post("<s:url action="eircAccountEditConsumerAttributes" includeParams="none" />", params);
+    }
+
+    function backf() {
+        FP.post("<s:url action="eircAccountsList" includeParams="none" />", params);
     }
 
 </script>

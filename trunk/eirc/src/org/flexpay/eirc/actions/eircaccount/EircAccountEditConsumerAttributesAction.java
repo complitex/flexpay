@@ -29,6 +29,10 @@ import static org.flexpay.common.util.CollectionUtils.*;
 
 public class EircAccountEditConsumerAttributesAction extends EircAccountAction {
 
+    public static final String REDIRECT_SUCCESS_VIEW = "redirectSuccessView";
+    public static final String REDIRECT_SUCCESS_LIST = "redirectSuccessList";
+
+    private Integer returnTo = 1;
     private List<ConsumerAttributeTypeBase> attributeTypes = list();
     private Map<Long, Map<Long, ConsumerAttribute>> formAttributes = map();
     private Map<Long, String> attributes = treeMap();
@@ -75,7 +79,7 @@ public class EircAccountEditConsumerAttributesAction extends EircAccountAction {
 
             log.info("New attribute values saved");
 
-            return REDIRECT_SUCCESS;
+            return returnTo == 1 ? REDIRECT_SUCCESS_LIST : REDIRECT_SUCCESS_VIEW;
 
         }
 
@@ -197,6 +201,14 @@ public class EircAccountEditConsumerAttributesAction extends EircAccountAction {
 
     public void setAttributes(Map<Long, String> attributes) {
         this.attributes = attributes;
+    }
+
+    public Integer getReturnTo() {
+        return returnTo;
+    }
+
+    public void setReturnTo(Integer returnTo) {
+        this.returnTo = returnTo;
     }
 
     @Required

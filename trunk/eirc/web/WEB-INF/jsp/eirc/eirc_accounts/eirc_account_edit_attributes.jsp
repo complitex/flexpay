@@ -65,6 +65,20 @@
         </tr>
     </table>
 
+    <s:hidden name="output" value="%{output}" />
+    <s:hidden name="apartmentFilter" value="%{apartmentFilter != null ? apartmentFilter : 0}" />
+    <s:hidden name="buildingFilter" value="%{buildingFilter != null ? buildingFilter : 0}" />
+    <s:hidden name="streetFilter" value="%{streetFilter != null ? streetFilter : 0}" />
+    <s:hidden name="townFilter" value="%{townFilter != null ? townFilter : 0}" />
+    <s:hidden name="regionFilter" value="%{regionFilter != null ? regionFilter : 0}" />
+    <s:hidden name="countryFilter" value="%{countryFilter != null ? countryFilter : 0}" />
+    <s:hidden name="eircAccountSorterByAccountNumber.active" value="%{eircAccountSorterByAccountNumber != null ? eircAccountSorterByAccountNumber.active : 0}" />
+    <s:hidden name="eircAccountSorterByAccountNumber.order" value="%{eircAccountSorterByAccountNumber.order}" />
+    <s:hidden name="eircAccountSorterByAddress.active" value="%{eircAccountSorterByAddress != null ? eircAccountSorterByAddress.active : 0}" />
+    <s:hidden name="eircAccountSorterByAddress.order" value="%{eircAccountSorterByAddress.order}" />
+    <s:hidden name="pager.pageNumber" value="%{pager.pageNumber}" />
+    <s:hidden name="pager.pageSize" value="%{pager.pageSize}" />
+    <s:hidden name="returnTo" value="%{returnTo}" />
     <s:hidden name="eircAccount.id" value="%{eircAccount.id}" />
 
 </s:form>
@@ -84,21 +98,22 @@
 
         function backf() {
 
-            FP.post("<s:url action="eircAccountsList" includeParams="none" />", {
-                output: <s:property value="output" />,
-                apartmentFilter: <s:property value="apartmentFilter" />,
-                buildingFilter: <s:property value="buildingFilter" />,
-                streetFilter: <s:property value="streetFilter" />,
-                townFilter: <s:property value="townFilter" />,
-                regionFilter: <s:property value="regionFilter" />,
-                countryFilter: <s:property value="countryFilter" />,
+            FP.post("<s:if test="returnTo == 1"><s:url action="eircAccountsList" includeParams="none" /></s:if><s:else><s:url action="eircAccountView" includeParams="none" /></s:else>", {
+                <s:if test="output != null">output: <s:property value="output" />,</s:if>
+                <s:if test="apartmentFilter != null">apartmentFilter: <s:property value="apartmentFilter" />,</s:if>
+                <s:if test="buildingFilter != null">buildingFilter: <s:property value="buildingFilter" />,</s:if>
+                <s:if test="streetFilter != null">streetFilter: <s:property value="streetFilter" />,</s:if>
+                <s:if test="townFilter != null">townFilter: <s:property value="townFilter" />,</s:if>
+                <s:if test="regionFilter != null">regionFilter: <s:property value="regionFilter" />,</s:if>
+                <s:if test="countryFilter != null">countryFilter: <s:property value="countryFilter" />,</s:if>
                 "personSearchFilter.searchString": "<s:property value="personSearchFilter.searchString" />",
-                "eircAccountSorterByAccountNumber.active": <s:property value="eircAccountSorterByAccountNumber.active" />,
+                "eircAccountSorterByAccountNumber.active": "<s:property value="eircAccountSorterByAccountNumber.active" />",
                 "eircAccountSorterByAccountNumber.order": "<s:property value="eircAccountSorterByAccountNumber.order" />",
-                "eircAccountSorterByAddress.active": <s:property value="eircAccountSorterByAddress.active" />,
+                "eircAccountSorterByAddress.active": "<s:property value="eircAccountSorterByAddress.active" />",
                 "eircAccountSorterByAddress.order": "<s:property value="eircAccountSorterByAddress.order" />",
-                "pager.pageNumber":<s:property value="pager.pageNumber" />,
-                "pager.pageSize":<s:property value="pager.pageSize" />
+                "pager.pageNumber": "<s:property value="pager.pageNumber" />",
+                "pager.pageSize": "<s:property value="pager.pageSize" />",
+                "eircAccount.id": "<s:property value="eircAccount.id" />",
             });
         }
 
