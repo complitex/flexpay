@@ -108,30 +108,24 @@ where 1 = (
     <s:if test="eircAccount != null">
 
         $(function() {
-            if (FF.filters["apartment"].value.val() > 0
-                    || FF.filters["building"].value.val() > 0
-                    || FF.filters["street"].value.val() > 0
-                    || FF.filters["town"].value.val() > 0
-                    || $("#personFio").val() != "") {
-
+            <s:if test="apartmentFilter != null || buildingFilter != null || streetFilter != null || townFilter != null">
                 pagerAjax(null, {
-                    output: <s:property value="output" />,
-                    apartmentFilter: <s:property value="apartmentFilter != null ? apartmentFilter : 0" />,
-                    buildingFilter: <s:property value="buildingFilter != null ? buildingFilter : 0" />,
-                    streetFilter: <s:property value="streetFilter != null ? streetFilter : 0" />,
-                    townFilter: <s:property value="townFilter != null ? townFilter : 0" />,
-                    regionFilter: <s:property value="regionFilter != null ? regionFilter : 0" />,
-                    countryFilter: <s:property value="countryFilter != null ? countryFilter : 0" />,
+                    <s:if test="output != null">output: <s:property value="output" />,</s:if>
+                    <s:if test="apartmentFilter != null">apartmentFilter: <s:property value="apartmentFilter" />,</s:if>
+                    <s:if test="buildingFilter != null">buildingFilter: <s:property value="buildingFilter" />,</s:if>
+                    <s:if test="streetFilter != null">streetFilter: <s:property value="streetFilter" />,</s:if>
+                    <s:if test="townFilter != null">townFilter: <s:property value="townFilter" />,</s:if>
+                    <s:if test="regionFilter != null">regionFilter: <s:property value="regionFilter" />,</s:if>
+                    <s:if test="countryFilter != null">countryFilter: <s:property value="countryFilter" />,</s:if>
                     "personSearchFilter.searchString": "<s:property value="personSearchFilter.searchString" />",
-                    "eircAccountSorterByAccountNumber.active": <s:property value="eircAccountSorterByAccountNumber.active" />,
+                    "eircAccountSorterByAccountNumber.active": "<s:property value="eircAccountSorterByAccountNumber.active" />",
                     "eircAccountSorterByAccountNumber.order": "<s:property value="eircAccountSorterByAccountNumber.order" />",
-                    "eircAccountSorterByAddress.active": <s:property value="eircAccountSorterByAddress.active" />,
+                    "eircAccountSorterByAddress.active": "<s:property value="eircAccountSorterByAddress.active" />",
                     "eircAccountSorterByAddress.order": "<s:property value="eircAccountSorterByAddress.order" />",
-                    "pager.pageNumber":<s:property value="pager.pageNumber" />,
-                    "pager.pageSize":<s:property value="pager.pageSize" />
+                    "pager.pageNumber": "<s:property value="pager.pageNumber" />",
+                    "pager.pageSize": "<s:property value="pager.pageSize" />"
                 });
-
-            }
+            </s:if>
         });
 
     </s:if>
