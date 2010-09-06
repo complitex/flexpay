@@ -1,5 +1,7 @@
 package org.flexpay.common.service;
 
+import org.flexpay.common.exception.FlexPayException;
+
 
 public interface SequenceService {
 	
@@ -12,6 +14,6 @@ public interface SequenceService {
 	 * @param sequenceId id of Sequence
 	 * @return next counter value for Sequence
 	 */
-	Long next(Long sequenceId);
+	long next(Long sequenceId);
 
 }
