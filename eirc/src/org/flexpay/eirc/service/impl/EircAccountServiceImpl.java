@@ -117,8 +117,8 @@ public class EircAccountServiceImpl implements EircAccountService {
 	@Transactional (readOnly = false)
 	public String nextPersonalAccount() {
 		String eircId = ApplicationConfig.getEircId();
-		String result = sequenceService.next(
-				SequenceService.PERSONAL_ACCOUNT_SEQUENCE_ID).toString();
+		String result = Long.toString(sequenceService.next(
+				SequenceService.PERSONAL_ACCOUNT_SEQUENCE_ID));
 		result = StringUtil.fillLeadingZero(result, 7);
 		result = eircId + result;
 		result = Luhn.insertControlDigit(result, 1);
