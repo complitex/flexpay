@@ -175,18 +175,6 @@ public class EircAccountEditConsumerAttributesAction extends EircAccountAction {
         return addressService.getAddress(stub(apartment), getLocale());
     }
 
-    public String getFIO(@NotNull Person person) {
-        Person persistent = personService.readFull(stub(person));
-        if (persistent == null) {
-            throw new RuntimeException("Invalid person: " + person);
-        }
-        PersonIdentity identity = persistent.getDefaultIdentity();
-        if (identity != null) {
-            return identity.getLastName() + " " + identity.getFirstName() + " " + identity.getMiddleName();
-        }
-        throw new RuntimeException("No default identity: " + persistent);
-    }
-
     public Map<Long, Map<Long, ConsumerAttribute>> getFormAttributes() {
         return formAttributes;
     }

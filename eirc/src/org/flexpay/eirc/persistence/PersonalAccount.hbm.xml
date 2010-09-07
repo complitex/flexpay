@@ -317,6 +317,24 @@
         order by t.id
 	</query>
 
+    <query name="EircAccount.readFullCollection">
+        select distinct a
+        from EircAccount a
+            left outer join fetch a.consumerInfo
+            left join fetch a.consumers c
+            left join fetch c.consumerInfo
+            left join fetch c.attributes attribute
+            left join fetch attribute.type t
+            left join fetch c.responsiblePerson p
+            left join fetch p.personAttributes pa
+            left join fetch p.personIdentities pi
+            left join fetch pi.identityType it
+            left join fetch c.service s
+            left join fetch s.serviceType st
+        where a.id in (:ids) and (c is null or c.status=0)
+            and c.endDate='2100-12-31' and attribute.end='2100-12-31'
+    </query>
+
     <query name="EircAccount.findByApartment">
         select distinct a
         from EircAccount a

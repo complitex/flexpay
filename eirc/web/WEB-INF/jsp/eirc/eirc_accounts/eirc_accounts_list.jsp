@@ -27,7 +27,7 @@
                 <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col">
-                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountView" includeParams="none" />', {'eircAccount.id':<s:property value="id" />});">
+                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountView" includeParams="none"><s:param name="eircAccount.id" value="%{id}" /></s:url>');">
                     <s:property value="accountNumber" />
                 </a>
             </td>
@@ -38,7 +38,7 @@
                 <s:property value="consumerInfo.FIO" />
             </td>
             <td class="col">
-                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountEditConsumerAttributes" includeParams="none" />', {'eircAccount.id':<s:property value="id" />});">
+                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountEditConsumerAttributes" includeParams="none"><s:param name="eircAccount.id" value="%{id}" /></s:url>');">
                     <s:text name="common.edit" />
                 </a>
             </td>

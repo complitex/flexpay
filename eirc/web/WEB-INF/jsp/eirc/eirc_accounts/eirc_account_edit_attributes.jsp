@@ -7,7 +7,7 @@
             <strong><s:text name="eirc.eirc_account" />:</strong> <s:property value="eircAccount.accountNumber" />
         </td>
 		<td class="col">
-            <strong><s:text name="eirc.eirc_account.person" />:</strong> <s:property value="eircAccount.person != null ? getFIO(eircAccount.person) : '(*) ' + eircAccount.consumerInfo.FIO" />
+            <strong><s:text name="eirc.eirc_account.person" />:</strong> <s:property value="eircAccount.consumerInfo.FIO" />
         </td>
 	</tr>
 	<tr class="cols_1">

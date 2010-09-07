@@ -7,6 +7,7 @@ import org.flexpay.common.dao.FilterHandler;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.eirc.dao.EircAccountDao;
 import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
@@ -14,11 +15,11 @@ import org.flexpay.eirc.persistence.sorter.EircAccountSorterStub;
 import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -32,6 +33,7 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     private List<FilterHandler> filterHandlers = FilterHandlers.eircAccountFilterHandlers();
+    private EircAccountDao eircAccountDao;
 
 	/**
 	 * Find EIRC account by person and apartment identifiers
@@ -67,12 +69,9 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
 		return (EircAccount) accounts.get(0);
 	}
 
-    @SuppressWarnings ({"unchecked"})
-    @NotNull
-    @Override
-    public List<EircAccount> findAccounts(@NotNull Collection<? extends EircAccountSorter> sorters, @NotNull Collection<ObjectFilter> filters,
-                                                   @NotNull Integer output, final Page<EircAccount> pager) {
-
+    @SuppressWarnings({"unchecked"})
+    private List<EircAccount> getAllEircAccounts(@NotNull Collection<? extends EircAccountSorter> sorters,
+                                                 @NotNull Collection<ObjectFilter> filters, final Page<EircAccount> pager) {
         final List<Object> params = list();
         EircAccountSorter sorter = findSorter(sorters);
 
@@ -146,7 +145,7 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
             hql.append(" order by ").append(orderByClause);
         }
 
-        List<EircAccount> accounts = getHibernateTemplate().executeFind(new HibernateCallback() {
+        return getHibernateTemplate().executeFind(new HibernateCallback() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
 
@@ -167,44 +166,165 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
             }
         });
 
-        if (output == 0) {
-            return accounts;
-        }
+    }
 
-        final String resultQuery = "select count(*) " +
-                                   "from ( " +
-                                       "select distinct sum((ifnull(bool_value,0) + ifnull(int_value,0) + ifnull(long_value,0) " +
-                                       "   + convert(ifnull(string_value,'0'),SIGNED) + ifnull(double_value,0) + ifnull(decimal_value,0))*type_id) " +
-                                       "from eirc_consumer_attributes_tbl a " +
-                                       "   left outer join eirc_consumers_tbl consumer on a.consumer_id=consumer.id " +
-                                       "   left outer join eirc_consumer_attribute_types_tbl type on a.type_id=type.id " +
-                                       "where consumer.eirc_account_id = ? and type.unique_code in (:type_codes) " +
-                                       "group by consumer_id " +
-                                   ") as sb;";
+/*
+ select count.ea_id
+from (
+  select count(*) c, sum.ea_id ea_id
+  from (
 
-        List<EircAccount> resultAccounts = list();
+select distinct sum((ifnull(bool_value,0) + UNIX_TIMESTAMP(ifnull(date_value,'1970-01-01 00:00:00')) + ifnull(int_value,0) + ifnull(long_value,0) + convert(ifnull(string_value,'0'),SIGNED) + ifnull(double_value,0) + ifnull(decimal_value,0))*type_id) s,
+   a.id ea_id, a.account_number account_number, ci.town_type town_type, ci.town_name town_name, ci.street_type_name street_type_name, ci.street_name street_name, ci.building_number building_number, ci.building_bulk building_bulk, ci.apartment_number apartment_number
+from eirc_eirc_accounts_tbl a
+    inner join eirc_consumer_infos_tbl ci on ci.id=a.consumer_info_id and (ci.status=0)
+    left outer join eirc_consumers_tbl c on a.id=c.eirc_account_id
+    left outer join eirc_consumer_attributes_tbl ca on ca.consumer_id=c.id
+    left outer join eirc_consumer_attribute_types_tbl t on ca.type_id=t.id
+    left outer join ab_apartments_tbl apartment on apartment.id=a.apartment_id
+    inner join ab_buildings_tbl b on b.id=apartment.building_id
+    left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0)
+    left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0)
+where a.status=0 and c.end_date = '2100-12-31' and ca.end_date = '2100-12-31'
+  and street.id=1 and t.unique_code in ('ATTR_NUMBER_TENANTS', 'ATTR_NUMBER_REGISTERED_TENANTS', 'ATTR_TOTAL_SQUARE', 'ATTR_LIVE_SQUARE', 'ATTR_HEATING_SQUARE')
+group by ca.consumer_id
+  ) sum
+  group by sum.ea_id
+  order by upper(ifnull(sum.town_type,'')),
+    upper(ifnull(sum.town_name,'')),
+    upper(ifnull(sum.street_type_name,'')),
+    upper(ifnull(sum.street_name,'')),
+    lpad(convert(ifnull(sum.building_number, '0'), UNSIGNED), 10, '0'),
+    lpad(convert(ifnull(sum.building_bulk, '0'), UNSIGNED), 10, '0'),
+    lpad(convert(ifnull(sum.apartment_number, '0'), UNSIGNED), 10, '0') desc
+) count
+where count.c > 1
 
-        for (final EircAccount account : accounts) {
-            List<Number> count = getHibernateTemplate().executeFind(new HibernateCallback() {
-                @Override
-                public List<?> doInHibernate(Session session) throws HibernateException {
+ */
+    @SuppressWarnings({"unchecked"})
+    private List<EircAccount> getEircAccountsWithDifferences(@NotNull Collection<? extends EircAccountSorter> sorters,
+                                                             @NotNull Collection<ObjectFilter> filters, final Page<EircAccount> pager) {
 
-                    SQLQuery query = session.createSQLQuery(resultQuery);
-                    query.setLong(0, account.getId());
-                    query.setParameterList("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
+        final List<Object> params = list();
+        EircAccountSorter sorter = findSorter(sorters);
 
-                    return query.list();
+        final StringBuilder sql = new StringBuilder("select count.ea_id from (select count(*) c, sum.ea_id ea_id from ( ");
+        final StringBuilder sqlCount = new StringBuilder("select count(count.ea_id) from (select count(*) c, sum.ea_id ea_id from ( ");
 
-                }
-            });
+        final StringBuilder innerSql = new StringBuilder("select distinct sum((ifnull(bool_value,0) + ifnull(int_value,0) + ifnull(long_value,0) + " +
+                                                                            "convert(ifnull(string_value,'0'),SIGNED) + ifnull(double_value,0) + " +
+                                                                            "ifnull(decimal_value,0) + UNIX_TIMESTAMP(ifnull(date_value,'1970-01-01 00:00:00')))*type_id) s, " +
+                                                                "a.id ea_id, a.account_number account_number, " +
+                                                                "ci.town_type town_type, ci.town_name town_name, ci.street_type_name street_type_name, " +
+                                                                "ci.street_name street_name, ci.building_number building_number, ci.building_bulk building_bulk, " +
+                                                                "ci.apartment_number apartment_number " +
+                                                        "from eirc_eirc_accounts_tbl a " +
+                                                        "    inner join eirc_consumer_infos_tbl ci on ci.id=a.consumer_info_id and (ci.status=0)" + 
+                                                        "    left outer join eirc_consumers_tbl c on a.id=c.eirc_account_id " +
+                                                        "    left outer join eirc_consumer_attributes_tbl ca on ca.consumer_id=c.id " +
+                                                        "    left outer join eirc_consumer_attribute_types_tbl t on ca.type_id=t.id " +
+                                                        "    left outer join ab_apartments_tbl apartment on apartment.id=a.apartment_id ");
 
-            if (count.get(0).longValue() == 1) {
-                resultAccounts.add(account);
+        StringBuilder whereClause = new StringBuilder();
+        whereClause.append(" where a.status=").append(ObjectWithStatus.STATUS_ACTIVE).append(" and c.end_date = '2100-12-31' and ca.end_date = '2100-12-31' ");
+
+        for (ObjectFilter filter : filters) {
+            if (filter.needFilter() && filter instanceof BuildingsFilter) {
+                innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
+                           "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) ");
+                break;
+            }
+            if (filter.needFilter() && filter instanceof StreetFilter) {
+                innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
+                           "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) " +
+                           "left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0) "
+                );
+                break;
+            }
+            if (filter.needFilter() && filter instanceof TownFilter) {
+                innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
+                           "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) " +
+                           "left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0) " +
+                           "left outer join ab_towns_tbl town on town.id=street.town_id "
+                );
+                break;
             }
         }
 
-        return resultAccounts;
+        innerSql.append(whereClause);
 
+        for (ObjectFilter filter : filters) {
+            if (!filter.needFilter()) {
+                continue;
+            }
+            for (FilterHandler handler : filterHandlers) {
+                if (handler.supports(filter)) {
+                    innerSql.append(" and ");
+                    List<?> parameters = handler.whereClause(filter, innerSql);
+                    params.addAll(parameters);
+                }
+            }
+        }
+
+        innerSql.append(" and t.unique_code in (:type_codes) ").append(" group by ca.consumer_id ");
+
+        sqlCount.append(innerSql).append(" ) sum group by sum.ea_id ) count where count.c > 1 ");
+        sql.append(innerSql).append(" ) sum group by sum.ea_id");
+
+        StringBuilder orderByClause = new StringBuilder();
+        sorter.setOrderBySQL(orderByClause);
+        if (orderByClause.length() > 0) {
+            sql.append(" order by ").append(orderByClause);
+        }
+        sql.append(" ) count where count.c > 1 ");
+
+        log.debug("sql = {}", sql);
+
+        List<Number> ids = getHibernateTemplate().executeFind(new HibernateCallback() {
+            @Override
+            public List<?> doInHibernate(Session session) throws HibernateException {
+
+                Query qCount = session.createSQLQuery(sqlCount.toString());
+                Query query = session.createSQLQuery(sql.toString());
+
+                for (int n = 0; n < params.size(); ++n) {
+                    qCount.setParameter(n, params.get(n));
+                    query.setParameter(n, params.get(n));
+                }
+
+                query.setParameterList("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
+                qCount.setParameterList("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
+
+                Number objectsCount = (Number) qCount.uniqueResult();
+                pager.setTotalElements(objectsCount.intValue());
+
+                return query.setFirstResult(pager.getThisPageFirstElementNumber()).
+                        setMaxResults(pager.getPageSize()).
+                        list();
+            }
+        });
+
+        List<Long> idsLong = list();
+        for (Number id : ids) {
+            idsLong.add(id.longValue());
+        }
+
+        log.debug("ids = {}", idsLong);
+
+        return eircAccountDao.readFullCollection(idsLong, true);
+    }
+
+    @SuppressWarnings ({"unchecked"})
+    @NotNull
+    @Override
+    public List<EircAccount> findAccounts(@NotNull Collection<? extends EircAccountSorter> sorters, @NotNull Collection<ObjectFilter> filters,
+                                                   @NotNull Integer output, final Page<EircAccount> pager) {
+
+        if (output == 0) {
+            return getAllEircAccounts(sorters, filters, pager);
+        } else {
+            return getEircAccountsWithDifferences(sorters, filters, pager);
+        }
     }
 
     @NotNull
@@ -219,4 +339,8 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
         return new EircAccountSorterStub();
     }
 
+    @Required
+    public void setEircAccountDao(EircAccountDao eircAccountDao) {
+        this.eircAccountDao = eircAccountDao;
+    }
 }

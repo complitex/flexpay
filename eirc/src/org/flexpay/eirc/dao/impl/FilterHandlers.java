@@ -19,6 +19,8 @@ public final class FilterHandlers {
 		return list(
 				new ApartmentFilterHandler(),
 				new BuildingsFilterHandler(),
+                new StreetFilterHandler(),
+                new TownFilterHandler(),
                 new PersonSearchFilterHandler()
 		);
 	}
@@ -92,10 +94,9 @@ public final class FilterHandlers {
 
 		@Override
 		public List<String> whereClause(ObjectFilter filter, StringBuilder clause) {
-            clause.append("(upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or " +
-                    "upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?))");
+            clause.append("upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?))");
 			PersonSearchFilter f = (PersonSearchFilter) filter;
-			return list("%" + f.getSearchString() + "%", "%" + f.getSearchString() + "%");
+			return list("%" + f.getSearchString() + "%");
 		}
 	}
 

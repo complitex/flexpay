@@ -38,6 +38,7 @@
 
 	<bean id="eircAccountDaoExt"
 		  class="org.flexpay.eirc.dao.impl.EircAccountDaoExtImpl"
+          p:eircAccountDao-ref="eircAccountDao"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<bean id="eircRegistryRecordPropertiesDao"
