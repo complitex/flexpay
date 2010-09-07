@@ -26,4 +26,13 @@ public class EircAccountSorterStub extends EircAccountSorter {
 	@Override
 	public void setOrderBy(StringBuilder orderByClause) {
 	}
+
+    /**
+     * Add SQL addendum for ORDER BY clause
+     *
+     * @param orderByClause SQL query to update
+     */
+    @Override
+    public void setOrderBySQL(StringBuilder orderByClause) {
+    }
 }

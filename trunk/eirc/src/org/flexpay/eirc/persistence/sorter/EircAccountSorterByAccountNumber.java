@@ -10,4 +10,12 @@ public class EircAccountSorterByAccountNumber extends EircAccountSorter {
         orderByClause.append(" a.accountNumber ").append(getOrder());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOrderBySQL(StringBuilder orderByClause) {
+        orderByClause.append(" sum.account_number ").append(getOrder());
+    }
+
 }

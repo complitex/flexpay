@@ -9,4 +9,12 @@ public abstract class EircAccountSorter extends ObjectSorter {
 	 */
     @Override
 	public void setFrom(StringBuilder query) {}
+
+    /**
+     * Add SQL addendum for ORDER BY clause
+     *
+     * @param orderByClause SQL query to update
+     */
+    public abstract void setOrderBySQL(StringBuilder orderByClause);
+
 }

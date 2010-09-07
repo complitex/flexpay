@@ -10,26 +10,8 @@
             <input type="button" class="btn-exit" onclick="pagerAjax();" value="<s:text name="common.search" />" />
         </td>
         <td class="filter"><s:text name="eirc.eirc_account.output" /></td>
-        <%--
-        select * from eirc_eirc_accounts_tbl ea
-where 1 = (
-  select count(*)
-  from (
-    select distinct sum((ifnull(bool_value,0) + ifnull(int_value,0) + ifnull(long_value,0) + convert(ifnull(string_value,'0'),SIGNED) + ifnull(double_value,0) + ifnull(decimal_value,0))*type_id)
-      from eirc_consumer_attributes_tbl a
-        left outer join eirc_consumers_tbl consumer on a.consumer_id=consumer.id
-        left outer join eirc_consumer_attribute_types_tbl type on a.type_id=type.id
-      where ea.id = consumer.eirc_account_id and type.unique_code in ('ATTR_NUMBER_TENANTS', 'ATTR_NUMBER_REGISTERED_TENANTS', 'ATTR_TOTAL_SQUARE', 'ATTR_LIVE_SQUARE', 'ATTR_HEATING_SQUARE')
-      group by consumer_id) sum
-);
-#where ea.id = 44197
-;
-        --%>
         <td>
-            <select id="output" name="output">
-                <option value="0"<s:if test="output == 0"> selected</s:if>> <s:text name="eirc.eirc_account.all" /></option>
-                <option value="1"<s:if test="output == 1"> selected</s:if>><s:text name="eirc.eirc_account.with_differences" /></option>
-            </select>
+            <s:select id="output" name="output" list="#{0:getText('eirc.eirc_account.all'),1:getText('eirc.eirc_account.with_differences')}" />
         </td>
     </tr>
     <tr>
@@ -38,19 +20,6 @@ where 1 = (
 </table>
 
 <script type="text/javascript">
-
-    $("#town_string").ready(function() {
-        FF.removeListener("town");
-    });
-    $("#street_string").ready(function() {
-        FF.removeListener("street");
-    });
-    $("#building_string").ready(function() {
-        FF.removeListener("building");
-    });
-    $("#apartment_string").ready(function() {
-        FF.removeListener("apartment");
-    });
 
     function pagerAjax(element, params) {
 
@@ -148,8 +117,10 @@ where 1 = (
             "pager.pageSize": $("select[name=pager.pageSize]:first").val()
         };
 
-        for (var p in params) {
-            pars[p] = params[p];
+        if (params != null && params != undefined) {
+            for (var p in params) {
+                pars[p] = params[p];
+            }
         }
 
         FP.post(url, pars);
