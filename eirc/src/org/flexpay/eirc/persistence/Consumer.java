@@ -304,4 +304,28 @@ public class Consumer extends DomainObjectWithStatus {
                 toString();
     }
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Consumer)) return false;
+		if (!super.equals(o)) return false;
+
+		Consumer consumer = (Consumer) o;
+
+		if (apartment != null ? !apartment.equals(consumer.apartment) : consumer.apartment != null) return false;
+		if (externalAccountNumber != null ? !externalAccountNumber.equals(consumer.externalAccountNumber) : consumer.externalAccountNumber != null)
+			return false;
+		if (service != null ? !service.equals(consumer.service) : consumer.service != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (externalAccountNumber != null ? externalAccountNumber.hashCode() : 0);
+		result = 31 * result + (apartment != null ? apartment.hashCode() : 0);
+		result = 31 * result + (service != null ? service.hashCode() : 0);
+		return result;
+	}
 }
