@@ -25,6 +25,11 @@
 				<comment>Collector email address</comment>
 			</column>
 		</property>
+		<property name="tradingDayProcessInstanceId">
+            <column name="tradingDayProcessInstance_Id" not-null="false">
+                <comment>Trading date process instance id</comment>
+            </column>
+        </property>
 		<many-to-one name="organization" class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_orgs_payment_collectors_tbl_organization_id">
 			<column name="organization_id" not-null="true">

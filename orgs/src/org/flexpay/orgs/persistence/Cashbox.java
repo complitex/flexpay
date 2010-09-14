@@ -21,6 +21,7 @@ public class Cashbox extends DomainObjectWithStatus {
 	private Set<CashboxNameTranslation> names = Collections.emptySet();
 
 	private PaymentPoint paymentPoint;
+	private Long tradingDayProcessInstanceId;
 
 	public Set<CashboxNameTranslation> getNames() {
 		return names;
@@ -40,6 +41,14 @@ public class Cashbox extends DomainObjectWithStatus {
 
 	public void setPaymentPoint(PaymentPoint paymentPoint) {
 		this.paymentPoint = paymentPoint;
+	}
+
+	public Long getTradingDayProcessInstanceId() {
+		return tradingDayProcessInstanceId;
+	}
+
+	public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
+		this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
 	}
 
 	public void setName(CashboxNameTranslation name) {
@@ -77,6 +86,7 @@ public class Cashbox extends DomainObjectWithStatus {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
 				append("status", getStatus()).
+				append("tradingDayProcessInstanceId", getTradingDayProcessInstanceId()).
 				toString();
 	}
 

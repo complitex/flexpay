@@ -428,6 +428,7 @@
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Cashbox status',
         payment_point_id bigint not null comment 'Payment point reference',
+        tradingDayProcessInstance_Id bigint comment 'Trading date process instance id',
         primary key (id)
     ) comment='Cashboxes table';
 
@@ -475,6 +476,7 @@
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled/Disabled status',
         email varchar(255) comment 'Collector email address',
+        tradingDayProcessInstance_Id bigint comment 'Trading date process instance id',
         organization_id bigint not null comment 'Organization reference',
         primary key (id)
     ) comment='Payment collectors';
