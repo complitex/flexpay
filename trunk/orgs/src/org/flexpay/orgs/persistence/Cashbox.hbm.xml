@@ -29,6 +29,11 @@
 				<comment>Payment point reference</comment>
 			</column>
 		</many-to-one>
+		<property name="tradingDayProcessInstanceId">
+            <column name="tradingDayProcessInstance_Id" not-null="false">
+                <comment>Trading date process instance id</comment>
+            </column>
+        </property>
         <set name="names" inverse="true" cascade="all-delete-orphan">
             <key column="cashbox_id" not-null="true"/>
             <one-to-many class="org.flexpay.orgs.persistence.CashboxNameTranslation"/>

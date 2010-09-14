@@ -12,6 +12,7 @@ public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescr
 
 	private String email;
 	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
+	private Long tradingDayProcessInstanceId;
 
 	public PaymentCollector() {
 	}
@@ -40,7 +41,15 @@ public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescr
 		this.email = email;
 	}
 
-    @Override
+	public Long getTradingDayProcessInstanceId() {
+		return tradingDayProcessInstanceId;
+	}
+
+	public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
+		this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
+	}
+
+	@Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
                 append("id", id).
