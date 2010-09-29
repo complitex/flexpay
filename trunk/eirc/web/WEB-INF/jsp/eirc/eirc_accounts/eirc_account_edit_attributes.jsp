@@ -39,7 +39,7 @@
                 <td class="col_1s" align="right"><s:property value="#status.index + 1" /></td>
                 <td class="col" nowrap>
                     <s:property value="getServiceDescription(service)" /><br />
-                    (<s:property value="consumerInfo.lastName + ' ' + consumerInfo.firstName + ' ' + consumerInfo.middleName" />)
+                    (<s:property value="consumerInfo.lastName + ' ' + consumerInfo.firstName + ' ' + consumerInfo.middleName + ', #' + externalAccountNumber" />)
                 </td>
                 <s:set name="consumerId" value="id" />
                 <s:set name="formAttributesMap" value="formAttributes.get(id)" />
