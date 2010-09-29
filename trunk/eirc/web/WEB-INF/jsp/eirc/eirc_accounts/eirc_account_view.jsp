@@ -37,7 +37,7 @@
             <td class="col_1s" align="right"><s:property value="#status.index + 1" /></td>
             <td class="col" nowrap>
                 <s:property value="getServiceDescription(service)" /><br />
-                (<s:property value="consumerInfo.lastName + ' ' + consumerInfo.firstName + ' ' + consumerInfo.middleName" />)
+                (<s:property value="consumerInfo.lastName + ' ' + consumerInfo.firstName + ' ' + consumerInfo.middleName" />,&nbsp;<s:text name="eirc.eirc_account.consumer.account_number" />:<s:property value="externalAccountNumber" />)
             </td>
             <s:iterator value="consumerAttributes.get(id)">
                 <td class="col">
