@@ -55,8 +55,6 @@ public class QuittanceInfoBuilder {
     public QuittanceInfo buildInfo(Stub<Quittance> stub, GetQuittanceDebtInfoRequest request) throws Exception {
 
         List<QuittanceDetails> quittanceDetailses;
-        List<QuittancePayment> payments = list();
-
         QuittanceInfo info = new QuittanceInfo();
 
         Locale locale = request.getLocale();
@@ -97,7 +95,7 @@ public class QuittanceInfoBuilder {
             info.setPersonLastName(consumerInfo.getLastName());
         }
 
-        payments = quittancePaymentService.getQuittancePayments(stub(q));
+        List<QuittancePayment> payments = quittancePaymentService.getQuittancePayments(stub(q));
 
         info.setTotalToPay(getTotalPayable(q));
         info.setTotalPayed(getTotalPayed(q, payments));
