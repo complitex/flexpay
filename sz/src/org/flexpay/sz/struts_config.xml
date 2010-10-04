@@ -10,6 +10,7 @@
 			         org/flexpay/bti/i18n/errors,org/flexpay/bti/i18n/messages,
 			         org/flexpay/orgs/i18n/errors,org/flexpay/orgs/i18n/messages,
 			  		 org/flexpay/payments/i18n/errors,org/flexpay/payments/i18n/messages,
+			  		 org/flexpay/payments/i18n/responseStatuses,
                      org/flexpay/eirc/i18n/errors,org/flexpay/eirc/i18n/messages
                      org/flexpay/sz/i18n/errors,org/flexpay/sz/i18n/messages" />
 

@@ -192,6 +192,7 @@
 			left join fetch q.quittanceDetailsQuittances qdq
 			left join fetch qdq.quittanceDetails qd
 			left join fetch qd.consumer c
+			left join fetch c.consumerInfo cci
 			left join fetch c.attributes attr
 			left join fetch attr.type 
 			left join fetch c.service s

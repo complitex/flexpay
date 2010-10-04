@@ -10,6 +10,7 @@
 			         org/flexpay/admin/i18n/errors,org/flexpay/admin/i18n/messages,
 			         org/flexpay/orgs/i18n/errors,org/flexpay/orgs/i18n/messages,
 			  		 org/flexpay/payments/i18n/errors,org/flexpay/payments/i18n/messages,
+			  		 org/flexpay/payments/i18n/responseStatuses,
 			         org/flexpay/eirc/i18n/errors,org/flexpay/eirc/i18n/messages" />
 
 	<package name="eirc" namespace="/eirc" extends="common">
