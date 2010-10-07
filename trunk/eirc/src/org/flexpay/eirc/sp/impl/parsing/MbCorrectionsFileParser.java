@@ -1,6 +1,7 @@
 package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -212,6 +213,14 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		if (fields.length == CorrectionsRecordValidator.FIELDS_LENGTH_SKIP_RECORD) {
 			log.debug("Skip record: {}", line);
 			return 0;
+		}
+
+		if (fields.length > CorrectionsRecordValidator.FIELDS_LENGTH_SKIP_RECORD &&
+				StringUtils.isEmpty(fields[9]) &&
+				StringUtils.isEmpty(fields[10]) &&
+				StringUtils.isEmpty(getModificationDate(fields[19]))) {
+			fields = (String[]) ArrayUtils.remove(fields, 9);
+			fields[9] = "-";
 		}
 
 		// remove duplicates in service codes

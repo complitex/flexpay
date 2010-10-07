@@ -1,5 +1,6 @@
 package org.flexpay.eirc.sp.impl.validation;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.eirc.sp.impl.MessageLevel;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
@@ -37,6 +38,11 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
 		if (fields.length == FIELDS_LENGTH_SKIP_RECORD) {
 			addErrorMessage("Skip record. Found {} fields. It is closed account", fields.length, MessageLevel.WARN);
 			return true;
+		}
+		if (fields.length > FIELDS_LENGTH_SKIP_RECORD && StringUtils.isEmpty(fields[9]) && StringUtils.isEmpty(fields[10])
+				&& !modificationsBeginDateValidator.validate(fields[19])) {
+			fields = (String[])ArrayUtils.remove(fields, 9);
+			fields[9] = "-";
 		}
 		if (fields.length < FIELDS_LENGTH && fields.length != FIELDS_LENGTH_EMPTY_FOOTER) {
 			addErrorMessage("Found {} fields. expected {}, {} or {}",
