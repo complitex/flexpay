@@ -43,6 +43,7 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
 				&& !modificationsBeginDateValidator.validate(fields[19])) {
 			fields = (String[])ArrayUtils.remove(fields, 9);
 			fields[9] = "-";
+			addErrorMessage("In line:\n{}\n Modification date is incorrect. Try remove excess field.\nResult:\n{}", new Object[]{line, fields}, MessageLevel.WARN);
 		}
 		if (fields.length < FIELDS_LENGTH && fields.length != FIELDS_LENGTH_EMPTY_FOOTER) {
 			addErrorMessage("Found {} fields. expected {}, {} or {}",
