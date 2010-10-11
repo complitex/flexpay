@@ -197,8 +197,13 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             ApartmentFilter filter = new ApartmentFilter(stub.getId());
             List<EircAccount> accounts = accountService.findAccounts(arrayStack(filter), new Page<EircAccount>(1000));
             if (accounts.isEmpty()) {
+                log.debug("Account not found for apartment with id {}", stub.getId());
                 request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
                 return;
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug("Found accounts: {}", accounts.size());
             }
 
             List<Quittance> quittances;
