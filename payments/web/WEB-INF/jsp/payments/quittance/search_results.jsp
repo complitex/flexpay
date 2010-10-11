@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:if test="!quittanceInfos.isEmpty()">
+<s:if test="quittanceInfos != null && !quittanceInfos.isEmpty()">
 
 <form id="quittancePayForm" action="<s:url action="paymentOperationReportAction" includeParams="none" />">
 
