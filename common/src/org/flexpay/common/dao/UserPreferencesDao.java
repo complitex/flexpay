@@ -2,6 +2,8 @@ package org.flexpay.common.dao;
 
 import org.flexpay.common.util.config.UserPreferences;
 
+import java.io.InputStream;
+import java.security.cert.Certificate;
 import java.util.List;
 
 
@@ -28,4 +30,12 @@ public interface UserPreferencesDao {
 	UserPreferences findByUserName(String uid);
 
 	List<UserPreferences> listAllUser();
+
+	Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate);
+
+	Certificate getCertificate(UserPreferences preferences);
+
+	void deleteCertificate(UserPreferences preferences);
+
+	boolean isCertificateExist(UserPreferences preferences);
 }

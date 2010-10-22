@@ -367,6 +367,18 @@ ul.docs {
     background: #ecf6f6;
 }
 
+.cols_1_green {
+    background: #90ee90;
+}
+
+.cols_1_red {
+    background: #ff4500;
+}
+
+.cols_1_yellow {
+    background: yellow;
+}
+
 .cols_1_highlighted {
     background: #ccccff;
 }

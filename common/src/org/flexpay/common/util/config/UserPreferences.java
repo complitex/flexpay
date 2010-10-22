@@ -4,6 +4,7 @@ import net.sourceforge.navigator.menu.MenuComponent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
+import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.UserRole;
@@ -41,6 +42,8 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 
 	private String activeMenu;
 	private Stack<Crumb> crumbs = new Stack<Crumb>();
+
+	private Certificate certificate;
 
 	public UserPreferences() {
 	}
@@ -168,6 +171,14 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
+	}
+
+	public Certificate getCertificate() {
+		return certificate;
+	}
+
+	public void setCertificate(Certificate certificate) {
+		this.certificate = certificate;
 	}
 
 	/**

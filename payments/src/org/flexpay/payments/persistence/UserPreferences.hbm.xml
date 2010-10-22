@@ -54,6 +54,8 @@
 				<comment>Optional user role reference</comment>
 			</column>
 		</many-to-one>
+		<one-to-one name="certificate" cascade="all" constrained="true" class="org.flexpay.common.persistence.Certificate"
+					foreign-key="FK_common_users_tbl_certificate_id" property-ref="userPreferences" />
 
 		<subclass name="org.flexpay.ab.util.config.AbUserPreferences" discriminator-value="ab">
 			<property name="countryFilter">

@@ -7,6 +7,7 @@ import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.ldap.core.DirContextOperations;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class PaymentsUserPreferencesContextMapper implements UserPreferencesContextMapper {
@@ -62,6 +63,14 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 	@Override
 	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
 
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextCertificate(DirContextOperations ctx, UserPreferences preferences, InputStream inputStream, boolean delete) {
+		
 	}
 
 	/**

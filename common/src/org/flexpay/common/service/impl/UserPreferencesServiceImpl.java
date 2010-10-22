@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
+import java.io.InputStream;
+import java.security.cert.Certificate;
 import java.util.List;
 import java.util.Map;
 
@@ -190,6 +192,21 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		}
 
 		return preferences;
+	}
+
+	@Override
+	public Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate) {
+		return getUserPreferencesDao().editCertificate(preferences, description, inputStreamCertificate);
+	}
+
+	@Override
+	public Certificate getCertificate(UserPreferences preferences) {
+		return getUserPreferencesDao().getCertificate(preferences);
+	}
+
+	@Override
+	public void deleteCertificate(UserPreferences preferences) {
+		getUserPreferencesDao().deleteCertificate(preferences);
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})

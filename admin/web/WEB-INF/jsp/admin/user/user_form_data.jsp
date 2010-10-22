@@ -68,6 +68,11 @@
 	<tr>
 		<td colspan="2">
             <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
+			<s:if test="#readonly">
+						<input type="button" class="btn-exit"
+									 onclick="window.location='<s:url action="certificateEdit" includeParams="none"><s:param name="alias" value="%{currentUserPreferences.username}" /></s:url>'"
+									 value="<s:text name="admin.certificate.edit" />" />
+			</s:if>
 		</td>
 	</tr>
 </table>

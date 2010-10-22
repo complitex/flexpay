@@ -41,6 +41,7 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	private String selfKeyAlias;
 	private String selfKeyPassword;
 	private int certificateExpirationWarningPeriod;
+	private int maxCertificateSize;
 
 	private Locale defaultReportLocale;
 
@@ -305,5 +306,14 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	@Required
 	public void setCertificateExpirationWarningPeriod(int certificateExpirationWarningPeriod) {
 		this.certificateExpirationWarningPeriod = certificateExpirationWarningPeriod;
+	}
+
+	public static int getMaxCertificateSize() {
+		return getInstance().maxCertificateSize;
+	}
+
+	@Required
+	public void setMaxCertificateSize(int maxCertificateSize) {
+		this.maxCertificateSize = maxCertificateSize;
 	}
 }

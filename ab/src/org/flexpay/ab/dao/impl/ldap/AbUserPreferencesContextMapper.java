@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ldap.core.DirContextOperations;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class AbUserPreferencesContextMapper implements UserPreferencesContextMapper {
@@ -66,6 +67,14 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	 */
 	@Override
 	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextCertificate(DirContextOperations ctx, UserPreferences preferences, InputStream inputStream, boolean delete) {
 
 	}
 

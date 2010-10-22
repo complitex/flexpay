@@ -42,14 +42,6 @@
 	</definition>
 
 	<!-- certificates -->
-	<definition name="admin.certificates.list" extends="admin.layout.standart">
-		<put-attribute name="title" value="admin.certificates.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/certificate/certificates_list_page.jsp" />
-	</definition>
-	<definition name="admin.certificate.upload" extends="admin.layout.standart">
-		<put-attribute name="title" value="admin.certificate.upload" />
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/certificate/certificate_upload.jsp" />
-	</definition>
 	<definition name="admin.certificate.edit" extends="admin.layout.standart">
 		<put-attribute name="title" value="admin.certificate.edit" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/certificate/certificate_edit.jsp" />

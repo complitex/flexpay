@@ -23,6 +23,7 @@
 		  p:selfKeyAlias="${app.config.common.keystore.selfkey.alias}"
 		  p:selfKeyPassword="${app.config.common.keystore.selfkey.password}"
 		  p:certificateExpirationWarningPeriod="${app.config.common.certificateExpirationWarningPeriod}"
+		  p:maxCertificateSize="${app.config.common.maxCertificateSize}"
 		  p:languageService-ref="languageService" />
 
 	<bean id="sequenceService" class="org.flexpay.common.service.impl.SequenceServiceImpl"

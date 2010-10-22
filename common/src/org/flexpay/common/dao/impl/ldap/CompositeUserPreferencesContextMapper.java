@@ -4,6 +4,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -60,6 +61,16 @@ public class CompositeUserPreferencesContextMapper implements UserPreferencesCon
 	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
 		for (UserPreferencesContextMapper mapper : mappers) {
 			mapper.doMapToContextPassword(ctx, preferences, password);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextCertificate(DirContextOperations ctx, UserPreferences preferences, InputStream inputStream, boolean delete) {
+		for (UserPreferencesContextMapper mapper : mappers) {
+			mapper.doMapToContextCertificate(ctx, preferences, inputStream, delete);
 		}
 	}
 
