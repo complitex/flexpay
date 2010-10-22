@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserRoleService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
@@ -59,8 +60,8 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		if (userCertificateAttribute != null && StringUtils.isNotEmpty(ctx.getStringAttribute("flexpayCertificateBeginDate"))) {
 			try {
 				Certificate certificate = new Certificate();
-				certificate.setBeginDate(DateFormat.getDateTimeInstance().parse(ctx.getStringAttribute("flexpayCertificateBeginDate")));
-				certificate.setEndDate(DateFormat.getDateTimeInstance().parse(ctx.getStringAttribute("flexpayCertificateEndDate")));
+				certificate.setBeginDate(DateUtil.parseDate(ctx.getStringAttribute("flexpayCertificateBeginDate")));
+				certificate.setEndDate(DateUtil.parseDate(ctx.getStringAttribute("flexpayCertificateEndDate")));
 				certificate.setDescription(ctx.getStringAttribute("flexpayCertificateDescription"));
 				preferences.setCertificate(certificate);
 			} catch (ParseException e) {
@@ -164,8 +165,8 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 				return;
 			}
 
-			setSingleAttribute(ctx, preferences, "flexpayCertificateBeginDate", DateFormat.getDateTimeInstance().format(preferences.getCertificate().getBeginDate()));
-			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", DateFormat.getDateTimeInstance().format(preferences.getCertificate().getEndDate()));
+			setSingleAttribute(ctx, preferences, "flexpayCertificateBeginDate", DateUtil.format(preferences.getCertificate().getBeginDate()));
+			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", DateUtil.format(preferences.getCertificate().getEndDate()));
 			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", preferences.getCertificate().getDescription());
 
 			log.debug("Try set usercertificate: {}", certificateData);

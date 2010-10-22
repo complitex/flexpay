@@ -80,9 +80,9 @@ public class DateUtil {
 	}
 
 	/**
-	 * Parse date in yyyy/MM/dd or yyyy-MM-dd formats
+	 * Parse date in yyyy/MM/dd or yyyy-MM-dd or yyyy-MM-dd HH:mm formats
 	 *
-	 * @param date		String in yyyy/MM/dd or yyyy-MM-dd format, possibly empty
+	 * @param date		String in yyyy/MM/dd or yyyy-MM-dd or yyyy-MM-dd HH:mm format, possibly empty
 	 * @throws ParseException if parsing fails
 	 * @return Date
 	 */
@@ -90,8 +90,12 @@ public class DateUtil {
 	public static Date parseDate(String date) throws ParseException {
 		try {
 			return new SimpleDateFormat(FLEXPAY_DATE_FORMAT).parse(date);
-		} catch (ParseException ex) {
-			return new SimpleDateFormat(FLEXPAY_DATE_FORMAT2).parse(date);
+		} catch (ParseException ex1) {
+			try {
+				return new SimpleDateFormat(FLEXPAY_DATE_FORMAT2).parse(date);
+			} catch (ParseException ex2) {
+				return new SimpleDateFormat(FLEXPAY_DATE_FORMAT_WITH_TIME).parse(date);
+			}
 		}
 	}
 
