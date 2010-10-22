@@ -22,12 +22,6 @@
 			</column>
 		</version>
 
-		<property name="alias">
-			<column name="alias" not-null="true">
-				<comment>Alias</comment>
-			</column>
-		</property>
-
 		<property name="beginDate" not-null="true">
 			<column name="begin_date">
 				<comment>Certificate validity begin date</comment>
@@ -46,22 +40,32 @@
 			</column>
 		</property>
 
+		<many-to-one name="userPreferences" class="org.flexpay.common.util.config.UserPreferences"
+					 foreign-key="FK_common_certificates_tbl_user_preference_id">
+			<column name="user_preference_id" not-null="false">
+				<comment>User preference reference</comment>
+			</column>
+		</many-to-one>
+
 	</class>
 
 	<query name="Certificate.findCertificates">
 		select distinct c
-		from Certificate c		
+		from Certificate c
+		join fetch c.userPreferences
 	</query>
 
 	<query name="Certificate.findCertificateByAlias">
 		select distinct c
 		from Certificate c
-		where c.alias = ?
+		join fetch c.userPreferences
+		where c.userPreferences.username = ?
 	</query>
 
 	<query name="Certificate.readFull">
 		select distinct c
 		from Certificate c
+		join fetch c.userPreferences
 		where c.id = ?
 	</query>
 

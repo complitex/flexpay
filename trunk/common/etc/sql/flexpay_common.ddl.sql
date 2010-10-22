@@ -2,10 +2,10 @@
     create table common_certificates_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
-        alias varchar(255) not null comment 'Alias',
         begin_date datetime comment 'Certificate validity begin date',
         end_date datetime comment 'Certificate validity end date',
         description varchar(255) not null comment 'Description',
+        user_preference_id bigint comment 'User preference reference',
         primary key (id)
     ) comment='Security certificate';
 
@@ -390,6 +390,12 @@
         user_role_id bigint comment 'Optional user role reference',
         primary key (id)
     ) comment='User details';
+
+    alter table common_certificates_tbl 
+        add index FK_common_certificates_tbl_user_preference_id (user_preference_id), 
+        add constraint FK_common_certificates_tbl_user_preference_id 
+        foreign key (user_preference_id) 
+        references common_users_tbl (id);
 
     alter table common_currency_names_tbl 
         add index FK_common_currency_names_tbl_currency_info_id (currency_info_id), 

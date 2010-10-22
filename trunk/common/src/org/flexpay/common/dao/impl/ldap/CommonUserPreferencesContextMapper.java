@@ -1,15 +1,26 @@
 package org.flexpay.common.dao.impl.ldap;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserRoleService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ldap.core.DirContextOperations;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +53,35 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		if (preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
 			preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
 			preferences.setPageSize(getFilterValue("flexpayPreferedPagerSize", 20, ctx));
+		}
+
+		Attribute userCertificateAttribute = ctx.getAttributes().get("usercertificate");
+		if (userCertificateAttribute != null && StringUtils.isNotEmpty(ctx.getStringAttribute("flexpayCertificateBeginDate"))) {
+			try {
+				Certificate certificate = new Certificate();
+				certificate.setBeginDate(DateFormat.getDateTimeInstance().parse(ctx.getStringAttribute("flexpayCertificateBeginDate")));
+				certificate.setEndDate(DateFormat.getDateTimeInstance().parse(ctx.getStringAttribute("flexpayCertificateEndDate")));
+				certificate.setDescription(ctx.getStringAttribute("flexpayCertificateDescription"));
+				preferences.setCertificate(certificate);
+			} catch (ParseException e) {
+				log.warn("Can not set certificate in user preferences", e);
+			}
+		}
+
+
+		try {
+			log.debug("Attributes of '{}'", preferences.getUsername());
+			Attributes attributes = ctx.getAttributes();
+			if (attributes != null && attributes.size() > 0) {
+				NamingEnumeration<? extends Attribute> iterAttributes = attributes.getAll();
+				while (iterAttributes.hasMore()) {
+					Attribute attribute = iterAttributes.next();
+					log.debug("attribute '{}' ({}, {})", new Object[]{attribute.getID(), attribute.get().getClass(), attribute.get()});
+				}
+				iterAttributes.close();
+			}
+		} catch (NamingException e) {
+			log.warn("Get attribute usercertificate", e);
 		}
 
 		return preferences;
@@ -94,6 +134,54 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	}
 
 	@Override
+	public void doMapToContextCertificate(DirContextOperations ctx, UserPreferences preferences, InputStream inputStream, boolean delete) {
+		log.debug("doMapToContextCertificate: preference ({}), stream ({}), delete ({})", new Object[]{preferences, inputStream, delete});
+		if (delete) {
+			setSingleAttribute(ctx, preferences, "flexpayCertificateBeginDate", "");
+			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", "");
+			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", "");
+			setSingleAttribute(ctx, preferences, "usercertificate", new byte[0]);
+			return;
+		}
+		if (inputStream == null) {
+			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", preferences.getCertificate().getDescription());
+			return;
+		}
+		try {
+			byte[] certificateData = new byte[ApplicationConfig.getMaxCertificateSize()];
+			int countReadData;
+			if ((countReadData = inputStream.read(certificateData)) == ApplicationConfig.getMaxCertificateSize()) {
+				log.warn("Read max certificate size ({}) from stream", ApplicationConfig.getMaxCertificateSize());
+			} else if (countReadData > 0) {
+				certificateData = ArrayUtils.subarray(certificateData, 0, countReadData - 1);
+			} else {
+				log.warn("Read empty certificate data");
+				certificateData = null;
+			}
+
+			if (certificateData == null) {
+				log.debug("Empty certificate data");
+				return;
+			}
+
+			setSingleAttribute(ctx, preferences, "flexpayCertificateBeginDate", DateFormat.getDateTimeInstance().format(preferences.getCertificate().getBeginDate()));
+			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", DateFormat.getDateTimeInstance().format(preferences.getCertificate().getEndDate()));
+			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", preferences.getCertificate().getDescription());
+
+			log.debug("Try set usercertificate: {}", certificateData);
+			setSingleAttribute(ctx, preferences, "usercertificate", certificateData);
+		} catch (IOException e) {
+			log.error("Read line", e);
+		} finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				log.error("Close stream", e);
+			}
+		}
+	}
+
+	@Override
 	public void doMapToContextAccessPermissions(DirContextOperations ctx, UserPreferences preferences, List<String> permissions) {
 		/*
 		String[] allCurrentValues = ctx.getStringAttributes("memberof");
@@ -121,7 +209,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		ctx.addAttributeValue("uid", preferences.getUsername());
 	}
 
-	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {
+	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, Object value) {
 		if (preferences.attributes().contains(name)) {
 			ctx.setAttributeValue(name, value);
 		} else {

@@ -7,6 +7,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
+import java.io.InputStream;
+import java.security.cert.Certificate;
 import java.util.List;
 
 public interface UserPreferencesService extends UserDetailsService {
@@ -124,4 +126,29 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @return User preferences
 	 */
 	UserPreferences createInstanceUserPreferences();
+
+	/**
+	 * Edit certificate
+	 *
+	 * @param preferences User preference
+	 * @param description Certificate description
+	 * @param inputStreamCertificate Input Stream certificate
+	 * @return  Security certificate instance
+	 */
+	Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate);
+
+	/**
+	 * Get certificate from user preferences storage
+	 *
+	 * @param preferences User preferences
+	 * @return Security certificate
+	 */
+	Certificate getCertificate(UserPreferences preferences);
+
+	/**
+	 * Delete certificate from user preferences storage
+	 *
+	 * @param preferences  User preferences
+	 */
+	void deleteCertificate(UserPreferences preferences);
 }

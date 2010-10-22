@@ -1,127 +1,71 @@
 package org.flexpay.common.service.impl;
 
-import org.flexpay.common.dao.CertificateDao;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Certificate;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.CertificateService;
-import org.flexpay.common.util.KeyStoreUtil;
+import org.flexpay.common.service.UserPreferencesService;
+import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class CertificateServiceImpl implements CertificateService {
 
 	private static final Logger log = LoggerFactory.getLogger(CertificateServiceImpl.class);
 
-	private CertificateDao certificateDao;
+	private UserPreferencesService userPreferencesService;
 
 	@Override
-	public void addCertificate(String alias, String description, InputStream inputStream) throws FlexPayException {
+	public void addCertificate(String alias, String description, InputStream inputStream) {
 
-		X509Certificate javaCertificate = (X509Certificate) addCertificateToKeyStore(alias, inputStream);
-		certificateDao.create(new Certificate(alias, description, javaCertificate.getNotBefore(), javaCertificate.getNotAfter()));
+		UserPreferences preferences = getUserPreferences(alias);
+
+		userPreferencesService.editCertificate(preferences, description, inputStream);
 	}
 
 	@Override
-	public void replaceCertificate(String alias, InputStream inputStream) throws FlexPayException {
+	public void replaceCertificate(String alias, String description, InputStream inputStream) {
 
-		if (!aliasExists(alias)) {
-			log.warn("Error replacing certificate: no certificate with alias {} found", alias);
-			return;
-		}
+		UserPreferences preferences = getUserPreferences(alias);
 
+		userPreferencesService.editCertificate(preferences, description, inputStream);
+	}
 
-		java.security.cert.Certificate javaCertificate = null;
-		try {
-			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-			javaCertificate = certificateFactory.generateCertificate(inputStream);
-		} catch (CertificateException e) {
-			log.warn("Error replacing certificate: unable to load certificate from given input stream");
-			return;
-		}
+	@Override
+	public void editCertificateDescription(String alias, String description) {
+		UserPreferences preferences = getUserPreferences(alias);
 
-		if (javaCertificate != null) {
-			try {
-				KeyStore keyStore = KeyStoreUtil.loadKeyStore();
-				keyStore.deleteEntry(alias);
-				keyStore.setCertificateEntry(alias, javaCertificate);
-				KeyStoreUtil.saveKeyStore();
-			} catch (KeyStoreException e) {
-				throw new FlexPayException("Error replacing certificate in keystore", e);
-			}
-		}
+		userPreferencesService.editCertificate(preferences, description, null);
+	}
+
+	@Override
+	public java.security.cert.Certificate getCertificate(String alias) {
+		UserPreferences preferences = getUserPreferences(alias);
+
+		return userPreferencesService.getCertificate(preferences);
+	}
+
+	private UserPreferences getUserPreferences(String alias) {
+		return userPreferencesService.loadUserByUsername(alias);
 	}
 
 	@Override
 	public List<Certificate> listAllCertificates() {
-
-		return certificateDao.findCertificates();
+		return list();
 	}
 
 	@Override
-	public void delete(Certificate certificate) throws FlexPayException {
+	public void delete(Certificate certificate) {
 
-		removeCertificateFromKeyStore(certificate);
-		certificateDao.delete(certificate);
-	}
-
-	@Override
-	public void update(Certificate certificate) {
-
-		certificateDao.update(certificate);
-	}
-
-	@Override
-	public Certificate readFull(Stub<Certificate> certificateStub) {
-
-		return certificateDao.readFull(certificateStub.getId());
-	}
-
-	@Override
-	public boolean aliasExists(String alias) {
-
-		List<Certificate> result = certificateDao.findCertificateByAlias(alias);
-		return result.size() > 0;
-	}
-
-	private java.security.cert.Certificate addCertificateToKeyStore(String alias, InputStream inputStream) throws FlexPayException {
-
-		try {
-			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-			java.security.cert.Certificate javaCertificate = certificateFactory.generateCertificate(inputStream);
-
-			KeyStore keyStore = KeyStoreUtil.loadKeyStore();
-			keyStore.setCertificateEntry(alias, javaCertificate);
-			KeyStoreUtil.saveKeyStore();
-
-			return javaCertificate;
-		} catch (Exception e) {
-			throw new FlexPayException("Error importing certificate to keystore", e);
-		}
-	}
-
-	private void removeCertificateFromKeyStore(Certificate certificate) throws FlexPayException {
-
-		try {
-			KeyStore keyStore = KeyStoreUtil.loadKeyStore();
-			keyStore.deleteEntry(certificate.getAlias());
-			KeyStoreUtil.saveKeyStore();
-		} catch (Exception e) {
-			throw new FlexPayException("Error deleting certificate to keystore", e);
-		}
+		userPreferencesService.deleteCertificate(certificate.getUserPreferences());
 	}
 
 	@Required
-	public void setCertificateDao(CertificateDao certificateDao) {
-		this.certificateDao = certificateDao;
+	public void setUserPreferencesService(UserPreferencesService userPreferencesService) {
+		this.userPreferencesService = userPreferencesService;
 	}
 }

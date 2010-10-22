@@ -5,6 +5,9 @@ import com.iplanet.sso.SSOToken;
 import com.iplanet.sso.SSOTokenManager;
 import com.sun.identity.policy.*;
 import com.sun.identity.policy.interfaces.Subject;
+import com.sun.identity.security.cert.AMCertStore;
+import com.sun.identity.security.cert.AMLDAPCertStoreParameters;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.security.opensso.PolicyUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
@@ -13,6 +16,7 @@ import org.flexpay.common.dao.impl.ldap.LdapConstants;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesDnBuilder;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.jetbrains.annotations.NotNull;
@@ -32,9 +36,17 @@ import javax.naming.Name;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import static java.security.cert.CertificateFactory.getInstance;
 
 /**
  * Spring LDAP implementation of PersonDao. This implementation uses many Spring LDAP features, such as the {@link
@@ -49,6 +61,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SimpleLdapTemplate ldapTemplate;
+	private AMLDAPCertStoreParameters ldapCertStoreParameters;
 
 	private UserPreferencesDnBuilder userNameBuilder;
 	private UserPreferencesDnBuilder userGroupBuilder;
@@ -285,6 +298,101 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Override
+	public Certificate editCertificate(UserPreferences person, String description, InputStream inputStreamCertificate) {
+
+		if (inputStreamCertificate == null && person.getCertificate() == null) {
+			log.warn("Empty person`s certificate and input stream certificate is null");
+			return null;
+		}
+
+		if (inputStreamCertificate == null && person.getCertificate() != null) {
+			org.flexpay.common.persistence.Certificate certificate = person.getCertificate();
+			certificate.setDescription(description);
+
+			DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+			mapToContextCertificate(person, ctx, inputStreamCertificate, false);
+			ldapTemplate.modifyAttributes(ctx);
+
+			log.debug("Edited only description");
+			return getCertificate(person);
+		}
+		
+		byte[] certificateData = new byte[ApplicationConfig.getMaxCertificateSize()];
+		int countReadData = 0;
+		try {
+			if ((countReadData = inputStreamCertificate.read(certificateData)) == ApplicationConfig.getMaxCertificateSize()) {
+				log.warn("Read max certificate size ({}) from stream", ApplicationConfig.getMaxCertificateSize());
+			}
+			if (countReadData > 0) {
+				certificateData = ArrayUtils.subarray(certificateData, 0, countReadData);
+			} else {
+				log.warn("Read empty certificate data");
+				certificateData = null;
+			}
+		} catch (IOException e) {
+			log.error("Read certificate");
+			certificateData = null;
+		}
+
+		if (certificateData == null) {
+			return null;
+		}
+
+		log.debug("Read certificate. Size={}", countReadData);
+
+		inputStreamCertificate = new ByteArrayInputStream(certificateData);
+
+		X509Certificate javaCertificate = null;
+		try {
+			CertificateFactory certificateFactory = getInstance("X.509");
+			//inputStreamCertificate.read();
+			javaCertificate = (X509Certificate) certificateFactory.generateCertificate(inputStreamCertificate);
+		} catch (Exception e) {
+			log.debug("Generate certificate", e);
+		}
+
+		if (javaCertificate == null) {
+			return null;
+		}
+
+		org.flexpay.common.persistence.Certificate certificate =
+					new org.flexpay.common.persistence.Certificate(person, description, javaCertificate.getNotBefore(), javaCertificate.getNotAfter());
+		person.setCertificate(certificate);
+
+		inputStreamCertificate = new ByteArrayInputStream(certificateData);
+
+		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+		mapToContextCertificate(person, ctx, inputStreamCertificate, false);
+		ldapTemplate.modifyAttributes(ctx);
+
+		log.debug("Success edited person`s certificate: {}", certificate);
+
+		return javaCertificate;
+	}
+
+	@Override
+	public Certificate getCertificate(UserPreferences preferences) {
+		try {
+			return AMCertStore.getCertificate(ldapCertStoreParameters, "uid", preferences.getUsername());
+		} catch (Exception e) {
+			log.error("Error load certificate from ldap", e);
+		}
+		return null;
+	}
+
+	@Override
+	public void deleteCertificate(UserPreferences person) {
+		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+		mapToContextCertificate(person, ctx, null, true);
+		ldapTemplate.modifyAttributes(ctx);
+	}
+
+	@Override
+	public boolean isCertificateExist(UserPreferences preferences) {
+		return preferences.getCertificate() != null;
+	}
+
+	@Override
 	public UserPreferences findByUserName(String userName) {
 
 		List<UserPreferences> persons = ldapTemplate.search(peopleBuilder.buildDn(null),
@@ -437,6 +545,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		mapper.doMapToContextNewUser(ctx, preferences);
 	}
 
+	private void mapToContextCertificate(UserPreferences preferences, DirContextOperations ctx, InputStream inputStream, boolean delete) {
+		mapper.doMapToContextCertificate(ctx, preferences, inputStream, delete);
+	}
+
 	@Required
 	public void setPolicyNames(String policyNames) {
 		StringTokenizer stz = new StringTokenizer(policyNames, "|");
@@ -492,5 +604,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	@Required
 	public void setBase(String base) {
 		this.base = base;
+	}
+
+	@Required
+	public void setLdapCertStoreParameters(AMLDAPCertStoreParameters ldapCertStoreParameters) {
+		this.ldapCertStoreParameters = ldapCertStoreParameters;
 	}
 }

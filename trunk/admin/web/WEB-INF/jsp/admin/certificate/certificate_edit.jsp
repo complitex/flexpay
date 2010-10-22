@@ -3,7 +3,7 @@
 
 <s:form action="certificateEdit"  method="post" enctype="multipart/form-data">
 
-	<s:hidden name="certificate.id" />
+	<s:hidden name="alias" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -16,10 +16,10 @@
 			<td class="col"><s:text name="admin.certificate.description" />:</td>
 			<td class="col"><s:textfield name="description" value="%{description}"/></td>
 		</tr>
-		
+
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="admin.certificate.file" />:</td>
-			<td class="col"><s:file name="certificateFile" /></td>
+			<td class="col"><s:file name="certificateFile" required="false" /></td>
 		</tr>
 
 		<tr valign="middle" class="cols_1">

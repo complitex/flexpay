@@ -48,6 +48,8 @@
 				<comment>Preferred listing page size</comment>
 			</column>
 		</property>
+		<one-to-one name="certificate" cascade="all" constrained="true" class="org.flexpay.common.persistence.Certificate"
+					foreign-key="FK_common_users_tbl_certificate_id" property-ref="userPreferences" />
 		<many-to-one name="userRole" class="org.flexpay.common.persistence.UserRole"
 					 foreign-key="common_user_role_tbl_user_role_id">
 			<column name="user_role_id">

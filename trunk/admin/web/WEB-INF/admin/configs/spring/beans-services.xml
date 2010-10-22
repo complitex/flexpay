@@ -11,6 +11,6 @@
 
 	<bean id="certificateService"
 		  class="org.flexpay.common.service.impl.CertificateServiceImpl"
-		  p:certificateDao-ref="certificateDao" />
+		  p:userPreferencesService-ref="userPreferencesService" />
 
 </beans>

@@ -5,6 +5,8 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.CertificateService;
+import org.flexpay.common.service.UserPreferencesService;
+import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -14,8 +16,6 @@ import java.security.cert.CertificateFactory;
 
 public class CertificateEditAction extends FPActionSupport {
 
-	private Certificate certificate;
-
 	private String alias;
 	private String description;
 	private File certificateFile;
@@ -23,28 +23,40 @@ public class CertificateEditAction extends FPActionSupport {
 	private String certificateFileFileName;
 
 	private CertificateService certificateService;
+	private UserPreferencesService userPreferencesService;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+		UserPreferences preference = null;
+		try {
+			preference = userPreferencesService.loadUserByUsername(alias);
+		} catch (Throwable t) {
+			log.warn("Search user {}", alias, t);
+		}
+		if (preference == null) {
+			addActionError(getText("admin.error.certificate.user_not_found"));
+			return INPUT;
+		}
 
-		certificate = certificateService.readFull(new Stub<Certificate>(certificate.getId()));
-		alias = certificate.getAlias();
-
-		if (isSubmit()) {
+		if (isSubmit() && getText("common.save").equals(submitted)) {
 			if (!doValidate()) {
 				return INPUT;
 			}
 
-			if (certificateFile != null) {
-				certificateService.replaceCertificate(alias, new FileInputStream(certificateFile));
-			}
+			log.debug("certificateFile={}, certificateFileName={}", certificateFile, certificateFileFileName);
 
-			certificate.setDescription(description);
-			certificateService.update(certificate);
+			if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() == null) {
+				certificateService.addCertificate(alias, description, new FileInputStream(certificateFile));
+			} else if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() != null) {
+				certificateService.replaceCertificate(alias, description, new FileInputStream(certificateFile));
+			} else {
+				certificateService.editCertificateDescription(alias, description);
+			}
+			//addActionMessage(getText("admin.certificate.edited"));
 			return REDIRECT_SUCCESS;
-		} else {			
-			description = certificate.getDescription();
+		} else if (preference.getCertificate() != null) {
+			description = preference.getCertificate().getDescription();
 		}
 
 		return INPUT;
@@ -69,14 +81,6 @@ public class CertificateEditAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return INPUT;
-	}
-
-	public Certificate getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(Certificate certificate) {
-		this.certificate = certificate;
 	}
 
 	public String getAlias() {
@@ -122,5 +126,10 @@ public class CertificateEditAction extends FPActionSupport {
 	@Required
 	public void setCertificateService(CertificateService certificateService) {
 		this.certificateService = certificateService;
+	}
+
+	@Required
+	public void setUserPreferencesService(UserPreferencesService userPreferencesService) {
+		this.userPreferencesService = userPreferencesService;
 	}
 }

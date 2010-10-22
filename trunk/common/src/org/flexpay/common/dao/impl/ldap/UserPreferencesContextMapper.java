@@ -3,6 +3,7 @@ package org.flexpay.common.dao.impl.ldap;
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -36,13 +37,22 @@ public interface UserPreferencesContextMapper {
 	void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences);
 
 	/**
-	 * Do mapping of password to context attributes
+	 * Do mapping password to context attributes
 	 *
 	 * @param ctx		 Context
 	 * @param preferences UserPreferences
 	 * @param password Password
 	 */
 	void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password);
+
+	/**
+	 * Do mapping certificate to context attributes
+	 *
+	 * @param ctx		 Context
+	 * @param preferences UserPreferences
+	 * @param inputStream certificate stream
+	 */
+	void doMapToContextCertificate(DirContextOperations ctx, UserPreferences preferences, InputStream inputStream, boolean delete);
 
 	/**
 	 * Do mapping of permissions to context attributes

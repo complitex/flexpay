@@ -2,13 +2,15 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.time.DateUtils;
+import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
 public class Certificate extends DomainObject {
 
-	private String alias;
+	private UserPreferences userPreferences;
 	private String description;
 	private Date beginDate;
 	private Date endDate;
@@ -20,19 +22,19 @@ public class Certificate extends DomainObject {
         setId(id);
     }
 
-	public Certificate(String alias, String description, Date beginDate, Date endDate) {
-		this.alias = alias;
+	public Certificate(UserPreferences preferences, String description, Date beginDate, Date endDate) {
+		this.userPreferences = preferences;
 		this.description = description;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 	}
 
-	public String getAlias() {
-		return alias;
+	public UserPreferences getUserPreferences() {
+		return userPreferences;
 	}
 
-	public void setAlias(String alias) {
-		this.alias = alias;
+	public void setUserPreferences(UserPreferences userPreferences) {
+		this.userPreferences = userPreferences;
 	}
 
 	public String getDescription() {
@@ -59,13 +61,24 @@ public class Certificate extends DomainObject {
 		this.endDate = endDate;
 	}
 
+	public boolean isTimeUpdate() {
+		Date nexMonthDate = DateUtils.addMonths(new Date(), 1);
+		return nexMonthDate.after(getEndDate());
+	}
+
+	public boolean isExpired() {
+		return new Date().after(getEndDate());
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
 				append("version", version).
-				append("alias", alias).
+				append("userPreferences", userPreferences).
 				append("description", description).
+				append("beginDate", beginDate).
+				append("endDate", endDate).
 				toString();
 	}
 }

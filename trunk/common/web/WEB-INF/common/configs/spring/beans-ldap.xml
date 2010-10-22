@@ -29,6 +29,21 @@
 		<constructor-arg ref="contextSource" />
 	</bean>
 
+	<bean id="ldapCertStoreParametersFactory"
+		  class="org.flexpay.common.service.impl.AMLDAPCertStoreParametersFactory"
+		  p:serverUrl="${ldap.url}"
+		  p:principleUser="${ldap.userDn}"
+		  p:principlePassword="${ldap.password}"
+		  p:startSearchLoc="${ldap.base}"
+		  scope="singleton"
+		  />
+
+	<bean id="ldapCertStoreParameters"
+		  factory-bean="ldapCertStoreParametersFactory"
+		  factory-method="getLDAPStoreParameters"
+		  lazy-init="true"
+		  scope="singleton" />
+
 	<bean id="compositeUserPreferencesContextMapperFactory"
 		  class="org.flexpay.common.dao.impl.ldap.CompositeUserPreferencesContextMapperFactory" />
 
@@ -74,6 +89,7 @@
 		  p:url="${ldap.url}"
 		  p:base="${ldap.base}"
 		  p:policyNames="${ldap.policy.names}"
+		  p:ldapCertStoreParameters-ref="ldapCertStoreParameters"
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />
 
 	<bean id="userPreferencesServiceFactory"

@@ -15,8 +15,12 @@
         <td class="th" width="40%">&nbsp;</td>
     </tr>
     <s:iterator value="allUserPreferences" status="status" id="currentUserPreferences">
-        <tr valign="middle" class="cols_1">
-            <td class="col_1s" align="right">
+        <tr valign="middle"
+						<s:if test="certificate != null && !certificate.isTimeUpdate()">class="cols_1_green" </s:if>
+						<s:elseif test="certificate != null && certificate.isExpired()">class="cols_1_red" </s:elseif>
+						<s:elseif test="certificate != null && certificate.isTimeUpdate()">class="cols_1_yellow" </s:elseif>
+						<s:else>class="cols_1"</s:else>>
+            <td class="col" align="right">
                 <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col">
