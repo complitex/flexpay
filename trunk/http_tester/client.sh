@@ -1,1 +1,1 @@
-java -cp ./build/classes:./libs/commons-beanutils-1.8.3.jar:./libs/commons-codec-1.4.jar:./libs/commons-digester-2.0.jar:./libs/commons-lang-2.5.jar:./libs/commons-logging-1.1.1.jar:./libs/httpclient-4.0.1.jar:./libs/httpcore-4.0.1.jar org.flexpay.httptester.Client
+java -cp ../_build/classes/http_tester:libs/* org.flexpay.httptester.Client

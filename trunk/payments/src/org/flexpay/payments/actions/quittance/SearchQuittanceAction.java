@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
@@ -22,9 +23,10 @@ import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerA
 import org.flexpay.payments.actions.outerrequest.request.response.data.QuittanceInfo;
 import org.flexpay.payments.actions.outerrequest.request.response.data.ServiceDetails;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.TradingDaySchedulingJob;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.TradingDay;
 import org.flexpay.payments.util.ServiceTypesMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -54,7 +56,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private MasterIndexService masterIndexService;
 	private CorrectionsService correctionsService;
 	private ServiceTypesMapper serviceTypesMapper;
-    private ProcessManager processManager;
+	private TradingDay<Cashbox> cashBoxTradingDayService;
 
 	@NotNull
     @Override
@@ -69,14 +71,15 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			filterSubservices();
 			filterNegativeSums();
 
-            final Long paymentProcessId = getPaymentPoint().getTradingDayProcessInstanceId();
+			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+			Long cashboxProcessId = cashbox.getTradingDayProcessInstanceId();
 
-            if (paymentProcessId == null || paymentProcessId == 0) {
-                log.debug("TradingDay process id not found for Payment point with id = {}", getPaymentPoint().getId());
+            if (cashboxProcessId == null || cashboxProcessId == 0) {
+                log.debug("TradingDaySchedulingJob process id not found for cash box with id = {}", cashboxId);
                 addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
             } else {
-                log.debug("Found process id {} for cashbox {}", paymentProcessId, cashboxId);
-                if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+                log.debug("Found process id {} for cashbox {}", cashboxProcessId, cashboxId);
+                if (!cashBoxTradingDayService.isOpened(cashboxProcessId)) {
                     addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
                 }
             }
@@ -321,11 +324,6 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	}
 
     @Required
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
-    }
-
-    @Required
 	public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
 		this.quittanceDetailsFinder = quittanceDetailsFinder;
 	}
@@ -368,6 +366,11 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	@Required
 	public void setServiceTypesMapper(ServiceTypesMapper serviceTypesMapper) {
 		this.serviceTypesMapper = serviceTypesMapper;
+	}
+
+	@Required
+	public void setCashBoxTradingDayService(TradingDay<Cashbox> cashBoxTradingDayService) {
+		this.cashBoxTradingDayService = cashBoxTradingDayService;
 	}
 
 	public static class ServiceFullIndexUtil {

@@ -1,14 +1,10 @@
 package org.flexpay.eirc.actions.quittance;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.persistence.filters.TownFilter;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.process.quittance.GenerateQuittanceJob;
 import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.orgs.service.ServiceOrganizationService;
@@ -20,18 +16,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import static org.apache.commons.lang.time.DateUtils.truncate;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.common.util.DateUtil.truncateMonth;
+
 public class QuittanceGenerateAction extends FPActionSupport {
 
 	private ServiceOrganizationFilter serviceOrganizationFilter = new ServiceOrganizationFilter();
 
-	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
-	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(truncate(new Date(), Calendar.MONTH));
+	private EndDateFilter endDateFilter = new EndDateFilter(now());
 	private TownFilter townFilter = new TownFilter(getDefaultTownStub());
 
 	private ServiceOrganizationService serviceOrganizationService;
 	private ProcessManager processManager;
 
 	@NotNull
+    @Override
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -46,14 +49,14 @@ public class QuittanceGenerateAction extends FPActionSupport {
 				addActionError(getText("eirc.error.quittance.no_town"));
 				validated = false;
 			}
-			if (!DateUtil.truncateMonth(beginDateFilter.getDate()).equals(DateUtil.truncateMonth(endDateFilter.getDate()))) {
+			if (!truncateMonth(beginDateFilter.getDate()).equals(truncateMonth(endDateFilter.getDate()))) {
 				addActionError(getText("eirc.error.quittance.job.month_only_allowed"));
 				validated = false;
 			}
 
 			if (validated) {
 
-				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+				Map<Serializable, Serializable> contextVariables = map();
 
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, beginDateFilter.getDate());
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, endDateFilter.getDate());
@@ -62,7 +65,7 @@ public class QuittanceGenerateAction extends FPActionSupport {
 
 				processManager.createProcess("GenerateQuittances", contextVariables);
 
-				addActionError(getText("eirc.quittance.generation_started"));
+				addActionMessage(getText("eirc.quittance.generation_started"));
 			}
 		}
 
@@ -79,6 +82,7 @@ public class QuittanceGenerateAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

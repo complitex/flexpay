@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,8 +29,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.flexpay.common.service.Roles.PROCESS_DELETE;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ;
-import static org.flexpay.payments.process.export.TradingDay.*;
+import static org.flexpay.orgs.service.Roles.PAYMENT_COLLECTOR_READ;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.*;
 
 public class ConfirmationTradingDayServlet extends HttpServlet {
 
@@ -46,7 +47,7 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
     protected static final List<String> USER_CONFIRM_TRADING_DAY_AUTHORITIES = list(
             PROCESS_READ,
             PROCESS_DELETE,
-            PAYMENT_POINT_READ
+            PAYMENT_COLLECTOR_READ
     );
 
     private static final String USER_CONFIRM_TRADING_DAY = "confirm-trading-day";
@@ -107,21 +108,22 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
                 httpServletResponse.sendError(530, "Trading day is not opened");
                 return;
             }
-            
-            if (process.getProcessStartDate().before(finishDate) && !STATUS_CLOSED.equals(process.getParameters().get(PROCESS_STATUS))) {
-                if (STATUS_APROVE.equals(process.getParameters().get(PROCESS_STATUS))) {
+
+			Serializable processStatus = process.getParameters().get(PROCESS_STATUS);
+			if (process.getProcessStartDate().before(finishDate) && !Statuses.CLOSED.equals(processStatus)) {
+                if (Statuses.WAIT_APPROVE.equals(processStatus)) {
                     log.debug("Try close trading day");
-                    TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Подтвердить закрытие", log);
+                    TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, Transitions.CONFIRM_CLOSING_DAY.getTransitionName(), log);
                     process = processManager.getProcessInstanceInfo(processId);
-                    String currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
-                    if (!STATUS_CLOSED.equals(currentStatus)) {
-                        log.error("Day is not closed. Current status '{}'", currentStatus);
+                    Statuses newProcessStatus = (Statuses) process.getParameters().get(PROCESS_STATUS);
+                    if (!Statuses.CLOSED.equals(newProcessStatus)) {
+                        log.error("Day is not closed. Current status '{}'", newProcessStatus);
                         httpServletResponse.sendError(500, "Internal Server Error");
                         return;
                     }
                     log.debug("Trading day is closed");
                 } else {
-                    log.error("Missing process status '{}'", process.getParameters().get(PROCESS_STATUS));
+                    log.error("Missing process status '{}'", processStatus);
                     httpServletResponse.sendError(540, "Incorrect Trading day status");
                     return;
                 }

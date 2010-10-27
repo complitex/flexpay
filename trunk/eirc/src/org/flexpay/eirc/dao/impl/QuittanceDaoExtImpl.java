@@ -77,6 +77,13 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
 	}
 
 	private long generateQuittances(Long townId, Long organisationId, Date dateFrom, Date dateTill, Date now) {
+
+/*
+        log.debug("townId = {}, organizationId = {}", townId, organisationId);
+        log.debug("dateFrom = {}, dateTill = {}", dateFrom, dateTill);
+        log.debug("now = {}", now);
+*/
+
 		String insertSql = "insert into eirc_quittances_tbl " +
 						   "(service_organization_id, eirc_account_id, order_number, date_from, date_till, creation_date) " +
 						   "select b.eirc_service_organization_id, acc.id, 0, ?, ?, ? " +

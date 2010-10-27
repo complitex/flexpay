@@ -26,12 +26,11 @@
     </bean>
 
     <bean name="jobTradingDay" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="org.flexpay.payments.process.export.TradingDay" />
+        <property name="jobClass" value="org.flexpay.payments.process.export.TradingDaySchedulingJob" />
         <property name="jobDataAsMap">
             <map>
-                <entry key="processManager" value-ref="processManagerPayments" />
-                <entry key="paymentPointService" value-ref="paymentPointService" />
                 <entry key="paymentCollectorService" value-ref="paymentCollectorService" />
+                <entry key="tradingDayService" value-ref="paymentCollectorTradingDayService" />
             </map>
         </property>
     </bean>

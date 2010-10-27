@@ -212,6 +212,7 @@
 		  abstract="true"
 		  class="org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator"
 		  p:diffService-ref="diffService"
+		  p:sessionUtils-ref="sessionUtils"
 		  p:referencesHistoryGenerator-ref="organizationInstanceReferencesHistoryGenerator" />
 
 	<bean id="organizationInstanceReferencesHistoryGenerator"

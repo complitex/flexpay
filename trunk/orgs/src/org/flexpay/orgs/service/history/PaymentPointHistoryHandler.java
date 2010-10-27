@@ -41,7 +41,7 @@ public class PaymentPointHistoryHandler extends HistoryHandlerBase<PaymentPoint>
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {
-				log.info("Request for object creation, but it already exists {}", diff);
+				log.debug("Request for object creation, but it already exists {}", diff);
 				object = paymentPointService.read(stub);
 			} else {
 				object = new PaymentPoint();
@@ -51,6 +51,7 @@ public class PaymentPointHistoryHandler extends HistoryHandlerBase<PaymentPoint>
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
+			log.debug("Read payment point {}", stub);
 			object = paymentPointService.read(stub);
 		}
 

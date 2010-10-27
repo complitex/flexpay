@@ -5,9 +5,10 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
-import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
+
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,15 +24,15 @@ public class TestTradingDay extends PaymentsSpringBeanAwareTestCase {
 	@Test
 	public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
 
-		testProcessManager.deployProcessDefinition("TradingDay", true);
+		testProcessManager.deployProcessDefinition("TradingDaySchedulingJob", true);
 
 		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-		long processId = testProcessManager.createProcess("TradingDay", parameters);
+		long processId = testProcessManager.createProcess("TradingDaySchedulingJob", parameters);
 		assertTrue(processId > 0);
 
 		testProcessManager.join(processId);
 		Process process = testProcessManager.getProcessInstanceInfo(processId);
 		assertNotNull("Process not found", process);
-		log.debug("Process work: {}", process.getParameters().get(TradingDay.PROCESS_STATUS));
+		log.debug("Process work: {}", process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS));
 	}
 }

@@ -15,6 +15,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.cash_box" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.status" /></td>
         <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.sum" /></td>
         <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.FIO_cashier" /></td>
         <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.last_payment" /></td>
@@ -28,6 +29,7 @@
                     <s:property value="cashbox" />
                 </a>
             </td>
+            <td><s:property value="status" /></td>
             <td><s:property value="totalSum" /></td>
             <td><s:property value="cashierFIO" /></td>
             <td><s:property value="lastPayment" /></td>

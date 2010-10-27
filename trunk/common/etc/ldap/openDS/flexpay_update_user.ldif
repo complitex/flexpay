@@ -25,3 +25,6 @@ flexpayAbRegionFilter: харь
 -
 add: flexpayAbTownFilter
 flexpayAbTownFilter: харь
+-
+add: flexpayUserRole
+flexpayUserRole: cashier

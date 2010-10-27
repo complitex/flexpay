@@ -29,7 +29,7 @@ import org.flexpay.payments.actions.outerrequest.request.data.ServicePayDetails;
 import org.flexpay.payments.actions.outerrequest.request.response.*;
 import org.flexpay.payments.actions.outerrequest.request.response.data.*;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.TradingDaySchedulingJob;
 import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -74,6 +74,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private MasterIndexService masterIndexService;
     private PersonService personService;
     private RegistryService registryService;
+	private TradingDay<Cashbox> cashBoxTradingDayService;
 
     @NotNull
     @Override
@@ -161,16 +162,16 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.warn("Can't get payment point with id {} from DB", cashbox.getPaymentPointStub().getId());
             throw new FlexPayException("Can't get payment point with id " + cashbox.getPaymentPointStub().getId() + " from DB");
         }
-        final Long paymentProcessId = paymentPoint.getTradingDayProcessInstanceId();
+        final Long cashBoxProcessId = cashbox.getTradingDayProcessInstanceId();
 
-        if (paymentProcessId == null || paymentProcessId == 0) {
-            log.debug("TradingDay process id not found for Payment point id = {}", paymentPoint.getId());
+        if (cashBoxProcessId == null || cashBoxProcessId == 0) {
+            log.debug("TradingDaySchedulingJob process id not found for cash box id = {}", cashbox.getId());
             response.setStatus(Status.REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED);
             return response;
         } else {
-            log.debug("Found process id {} for cashbox {}", paymentProcessId, cashbox.getId());
+            log.debug("Found process id {} for cashbox {}", cashBoxProcessId, cashbox.getId());
 
-            if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+            if (!cashBoxTradingDayService.isOpened(cashBoxProcessId)) {
                 response.setStatus(Status.REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED);
                 return response;
             }

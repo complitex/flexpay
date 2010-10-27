@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.security.Signature;
 import java.util.Map;
 
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
 public class GeneratePaymentsMBRegistryJob extends Job {
 

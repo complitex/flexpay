@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
-import org.flexpay.payments.process.export.job.ExportJobParameterNames;
+import org.flexpay.payments.process.export.ExportJobParameterNames;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

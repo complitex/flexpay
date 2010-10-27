@@ -2,21 +2,22 @@ package org.flexpay.payments.action.tradingday;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.payments.actions.tradingday.ConfirmationTradingDayServlet;
-import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.ExportJobParameterNames;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
 
@@ -30,16 +31,17 @@ public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
     @Test
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
 
-		processManager.deployProcessDefinition("TradingDay", true);
+		processManager.deployProcessDefinition("CashBoxTradingDay", true);
 
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-        long processId = processManager.createProcess("TradingDay", parameters);
+		parameters.put(ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT, 0);
+        long processId = processManager.createProcess("CashBoxTradingDay", parameters);
         assertTrue(processId > 0);
 
-        Set transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Пометить на закрытие", log);
+        TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Пометить на закрытие", log);
 
         org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(processId);
-        String  currentStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
+        String  currentStatus = (String) process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS);
 
         assertEquals("Ожидает подтверждения", currentStatus);
 

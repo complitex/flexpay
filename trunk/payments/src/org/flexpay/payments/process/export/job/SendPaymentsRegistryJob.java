@@ -17,8 +17,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.REGISTRY;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.REGISTRY_ID;
 
 public class SendPaymentsRegistryJob extends SendFileJob {
     private String email;

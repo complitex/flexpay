@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
 public class SendFileJob extends Job {
     private String emailPassword;

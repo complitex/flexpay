@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Map;
 
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
 /**
  * Job generate payments registry in FP format.
@@ -25,8 +25,8 @@ public class GeneratePaymentsFPRegistryJob extends Job {
 
     /**
      * Create new file in FP format from db registry and attach result to it.<br/>
-     * Job parameters map must content {@link ExportJobParameterNames#REGISTRY_ID} (type falue is {@link Long}) or
-     * {@link ExportJobParameterNames#REGISTRY} (type value is {@link Registry})
+     * Job parameters map must content {@link org.flexpay.payments.process.export.ExportJobParameterNames#REGISTRY_ID} (type falue is {@link Long}) or
+     * {@link org.flexpay.payments.process.export.ExportJobParameterNames#REGISTRY} (type value is {@link Registry})
      *
      * @param parameters Job parameters map
      * @return {@link #RESULT_NEXT} if file generated successfully.<br/>{@link #RESULT_ERROR} if registry did not find in job parameters map or generation had errors.

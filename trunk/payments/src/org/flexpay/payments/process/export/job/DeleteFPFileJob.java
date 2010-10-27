@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.payments.process.export.ExportJobParameterNames;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;

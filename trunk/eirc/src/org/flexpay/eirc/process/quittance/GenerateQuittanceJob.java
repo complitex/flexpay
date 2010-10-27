@@ -1,5 +1,6 @@
 package org.flexpay.eirc.process.quittance;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -12,7 +13,6 @@ import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.service.QuittanceService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.time.StopWatch;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -52,7 +52,7 @@ public class GenerateQuittanceJob extends Job {
 		Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(organizationId);
 		Stub<Town> townStub = new Stub<Town>(townId);
 		plog.info("Starting generation quittances, organization-id={}, from={}, till={}",
-				new Object[]{organizationId, dateFrom, dateTill});
+				new Object[] {organizationId, dateFrom, dateTill});
 		StopWatch watch = new StopWatch();
 		watch.start();
 

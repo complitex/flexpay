@@ -12,8 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.GENERATED_FILE_NAME;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.ORGANIZATION_ID;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.GENERATED_FILE_NAME;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.ORGANIZATION_ID;
 
 public class GeneratePaymentsRegistryFileNameJob extends Job {
 

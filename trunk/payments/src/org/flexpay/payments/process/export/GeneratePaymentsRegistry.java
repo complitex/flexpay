@@ -17,7 +17,6 @@ import org.flexpay.orgs.persistence.ServiceProviderAttribute;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
 /**
  * Scheduling job generate payments registries for all service providers and registered organizations.
