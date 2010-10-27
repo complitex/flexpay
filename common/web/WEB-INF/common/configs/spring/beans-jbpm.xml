@@ -11,6 +11,10 @@
 		  scope="prototype"
 		  class="org.flexpay.common.process.job.SendEmailToAdministrator" />
 
+	<bean id="checkArrayEndingActionHandler"
+		  scope="prototype"
+		  class="org.flexpay.common.process.handler.CheckArrayEndingActionHandler" />
+
 	<bean id="emptyJob"
 		  scope="prototype"
 		  class="org.flexpay.common.process.job.EmptyJob" />

@@ -24,11 +24,12 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorterById;
-import org.flexpay.payments.process.export.TradingDay;
-import org.flexpay.payments.process.export.job.ExportJobParameterNames;
+import org.flexpay.payments.process.export.ExportJobParameterNames;
+import org.flexpay.payments.process.export.TradingDaySchedulingJob;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -65,6 +66,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 	private OperationService operationService;
 	private CurrencyInfoService currencyInfoService;
 	private ProcessManager processManager;
+	private TradingDay<Cashbox> cashboxTradingDayService;
 
 	@NotNull
 	@Override
@@ -96,13 +98,13 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 			return ERROR;
 		}
 
-        tradingDayControlPanel.updatePanel(paymentPoint);
+        tradingDayControlPanel.updatePanel(cashbox.getTradingDayProcessInstanceId());
 
         if (!doValidate()) {
             return ERROR;
         }
 
-        loadOperations(paymentPoint);
+        loadOperations();
 
 		return SUCCESS;
 	}
@@ -123,7 +125,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		return !hasActionErrors();
 	}
 
-	private void loadOperations(@NotNull PaymentPoint paymentPoint) {
+	private void loadOperations() {
 
 		List<Operation> searchResults = list();
 
@@ -132,7 +134,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
             if (documentSearch != null && documentSearch) {
                 Date begin = beginDateFilter.getDate();
                 Date end = getEndOfThisDay(endDateFilter.getDate());
-                searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null, stub(cashbox), serviceTypeFilter.getSelectedId(), begin, end, minimalSum, maximalSum, getPager());
+                searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null, stub(this.cashbox), serviceTypeFilter.getSelectedId(), begin, end, minimalSum, maximalSum, getPager());
                 highlightedDocumentIds = list();
 
                 for (Operation operation : searchResults) {
@@ -143,7 +145,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                 }
 
             } else {
-                Long tradingDayProcessId = paymentPoint.getTradingDayProcessInstanceId();
+                Long tradingDayProcessId = cashbox.getTradingDayProcessInstanceId();
                 Process tradingDayProcess = processManager.getProcessInstanceInfo(tradingDayProcessId);
                 Date pStart = tradingDayProcess.getProcessStartDate();
                 Date fStart = beginTimeFilter.setTime(now());
@@ -159,42 +161,28 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                     log.debug("Trading day process id = {}", tradingDayProcessId);
                 }
                 searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null,
-                        tradingDayProcessId, stub(cashbox), begin, end, minimalSum, maximalSum, getPager());
+                        tradingDayProcessId, stub(this.cashbox), begin, end, minimalSum, maximalSum, getPager());
             }
-        } else {
+        } else if (cashbox.getTradingDayProcessInstanceId() != null) {
 
-            log.warn("Trading day process is closed for payment point with id {}. Operation status update canceled", paymentPoint.getId());
-            addActionMessage(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));
+			Process tradingDayProcess = processManager.getProcessInstanceInfo(cashbox.getTradingDayProcessInstanceId());
+			log.debug("Closed trading day process: {}", tradingDayProcess);
 
-            ProcessSorterByEndDate processSorter = new ProcessSorterByEndDate();
-            processSorter.setOrder(ObjectSorter.ORDER_DESC);
+			if (tradingDayProcess != null) {
 
-            List<Process> processes = processManager.getProcesses(processSorter, new Page<Process>(1000), now(), new Date(), ProcessState.COMPLETED, TradingDay.PROCESS_DEFINITION_NAME);
-            if (log.isDebugEnabled()) {
-                log.debug("Found {} processes", processes.size());
-            }
+				Date pStart = tradingDayProcess.getProcessStartDate();
+				Date pEnd = tradingDayProcess.getProcessEndDate();
+				Date fStart = beginTimeFilter.setTime(now());
+				Date fEnd = endTimeFilter.setTime(now());
 
-            if (!processes.isEmpty()) {
+				Date begin = pStart.compareTo(fStart) > 0 ? pStart : fStart;
+				Date end = pEnd.compareTo(fEnd) < 0 ? pEnd : fEnd;
 
-                Process tradingDayProcess = findTradingDayProcess(paymentPoint, processes);
-                log.debug("Closed trading day process: {}", tradingDayProcess);
+				log.debug("Get operations for beginDate {} and endDate {}", begin, end);
 
-                if (tradingDayProcess != null) {
+				searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null, null, stub(this.cashbox), begin, end, minimalSum, maximalSum, getPager());
 
-                    Date pStart = tradingDayProcess.getProcessStartDate();
-                    Date pEnd = tradingDayProcess.getProcessEndDate();
-                    Date fStart = beginTimeFilter.setTime(now());
-                    Date fEnd = endTimeFilter.setTime(now());
-
-                    Date begin = pStart.compareTo(fStart) > 0 ? pStart : fStart;
-                    Date end = pEnd.compareTo(fEnd) < 0 ? pEnd : fEnd;
-
-                    log.debug("Get operations for beginDate {} and endDate {}", begin, end);
-
-                    searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null, null, stub(cashbox), begin, end, minimalSum, maximalSum, getPager());
-
-                }
-            }
+			}
         }
 
         if (log.isDebugEnabled()) {
@@ -204,22 +192,6 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
         operations = operationService.readFull(collectionIds(searchResults), true);
 	}
 
-    private Process findTradingDayProcess(PaymentPoint paymentPoint, List<Process> processes) {
-
-        for (Process process : processes) {
-
-            Process tradingDayProcess = processManager.getProcessInstanceInfo(process.getId());
-            Long paymentPointId = (Long) tradingDayProcess.getParameters().get(ExportJobParameterNames.PAYMENT_POINT_ID);
-            log.debug("Closed trading day process paymentPointId variable ({}) and this paymentPoint id ({})", paymentPointId, paymentPoint.getId());
-
-            if (paymentPoint.getId().equals(paymentPointId)) {
-                return tradingDayProcess;
-            }
-        }
-
-        return null;
-    }
-
 	@NotNull
 	@Override
 	protected String getErrorResult() {
@@ -228,7 +200,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		tradingDayControlPanel = new TradingDayControlPanel(processManager, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
+		tradingDayControlPanel = new TradingDayControlPanel(processManager, cashboxTradingDayService, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
 	}
 
 	public String getCurrencyName() {
@@ -395,4 +367,8 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		this.processManager = processManager;
 	}
 
+	@Required
+	public void setCashboxTradingDayService(TradingDay<Cashbox> cashboxTradingDayService) {
+		this.cashboxTradingDayService = cashboxTradingDayService;
+	}
 }

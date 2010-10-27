@@ -4,7 +4,7 @@ import org.flexpay.common.process.ContextCallback;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
-import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.payments.service.TradingDay;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -18,14 +18,15 @@ import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.process.export.TradingDay.*;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.PROCESS_STATUS;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses;
 
 public class TradingDayControlPanel {
 
     private static final Logger controlPanelLog = LoggerFactory.getLogger(TradingDayControlPanel.class);
 
 	private List<String> availableCommands = Collections.emptyList();
-	private String processStatus;
+	private Statuses processStatus;
 	private String command;
 
 	// private data
@@ -36,19 +37,21 @@ public class TradingDayControlPanel {
 	private Logger userLog;
 
 	private ProcessManager processManager;
+	private TradingDay<?> tradingDayService;
 
 	public TradingDayControlPanel() {
 	}
 
-	public TradingDayControlPanel(ProcessManager processManager, String actor, Logger userLog) {
+	public TradingDayControlPanel(ProcessManager processManager, TradingDay<?> tradingDayService, String actor, Logger userLog) {
 		this.processManager = processManager;
 		this.userLog = userLog;
 		this.actor = actor;
+		this.tradingDayService = tradingDayService;
 	}
 
-    public void updatePanel(@NotNull PaymentPoint paymentPoint) {
+    public void updatePanel(Long tradingDayProcessInstanceId) {
 
-        tradingDayProcessInstanceId = paymentPoint.getTradingDayProcessInstanceId();
+        this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
 		processCommand();
 		loadAvailableCommands();
 		loadProcessStatus();
@@ -73,17 +76,21 @@ public class TradingDayControlPanel {
 		}
 		final Long taskInstanceId = taskInstance.getId();
 
+        userLog.debug("processManager.executing...");
+
 		processManager.execute(new ContextCallback<Void>() {
 			@Override
 			public Void doInContext(@NotNull JbpmContext context) {
-				TaskInstance taskInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
-				if (taskInstance.isSignalling()) {
+				TaskInstance tInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
+				if (tInstance.isSignalling()) {
                     userLog.debug("Signalling {} transition command", command);
-					taskInstance.getProcessInstance().signal(command);
+					tInstance.getProcessInstance().signal(command);
 				}
 				return null;
 			}
 		});
+
+        userLog.debug("processManager.execute completed");
 
 		command = ""; // reset command
 	}
@@ -112,7 +119,9 @@ public class TradingDayControlPanel {
 				List<String> availableTransitions = list();
 				for (Object o : currentTaskInstance.getProcessInstance().getRootToken().getAvailableTransitions()) {
 					Transition t = (Transition) o;
-					availableTransitions.add(t.getName());
+					if (t.getName() != null && !t.getName().startsWith(".")) {
+						availableTransitions.add(t.getName());
+					}
 				}
 
 				return availableTransitions;
@@ -124,16 +133,17 @@ public class TradingDayControlPanel {
 
 		if (tradingDayProcessInstanceId == null) {
 			controlPanelLog.warn("Trading day process not found. Status loading canceled.");
-            processStatus = STATUS_CLOSED;
+            processStatus = Statuses.CLOSED;
 			return;
 		}
 
 		Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
-		processStatus = process != null ? (String) process.getParameters().get(PROCESS_STATUS) : STATUS_CLOSED;
+		processStatus = process != null ? (Statuses) process.getParameters().get(PROCESS_STATUS) :
+				Statuses.CLOSED;
 	}
 
 	public boolean isTradingDayOpened() {
-		return tradingDayProcessInstanceId != null && isOpened(processManager, tradingDayProcessInstanceId, userLog);
+		return tradingDayProcessInstanceId != null && tradingDayService.isOpened(tradingDayProcessInstanceId);
 	}
 
 	private TaskInstance getTaskInstance() {
@@ -148,7 +158,7 @@ public class TradingDayControlPanel {
 		return availableCommands;
 	}
 
-	public String getProcessStatus() {
+	public Statuses getProcessStatus() {
 		return processStatus;
 	}
 

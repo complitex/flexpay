@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.flexpay.orgs.service.OrganizationInstanceService;
@@ -25,6 +26,7 @@ public class OrganizationInstanceHistoryGenerator<
 	private OrganizationInstanceService<D, T> instanceService;
 	private OrganizationInstanceHistoryBuilder<D, T> historyBuilder;
 	private OrganizationInstanceReferencesHistoryGenerator<D, T> referencesHistoryGenerator;
+	private SessionUtils sessionUtils;
 
 	/**
 	 * Do generation
@@ -39,6 +41,7 @@ public class OrganizationInstanceHistoryGenerator<
 		}
 
 		T org = instanceService.read(stub(obj));
+		sessionUtils.evict(org);
 		if (org == null) {
 			log.warn("Requested organization instance history generation, but not found: {}", obj.getId());
 			return;
@@ -76,5 +79,10 @@ public class OrganizationInstanceHistoryGenerator<
 	@Required
 	public void setReferencesHistoryGenerator(OrganizationInstanceReferencesHistoryGenerator<D, T> referencesHistoryGenerator) {
 		this.referencesHistoryGenerator = referencesHistoryGenerator;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
 	}
 }

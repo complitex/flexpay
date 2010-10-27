@@ -10,7 +10,7 @@
 	</swimlane>
 
 	<start-state name="start">
-		<transition to="fileParserJob" />
+		<transition to="generateEndOperationDayRegistryJob" />
 	</start-state>
 
 	<task-node name="generateEndOperationDayRegistryJob">

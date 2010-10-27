@@ -61,7 +61,7 @@
 		  p:masterIndexService-ref="masterIndexService"
 		  p:correctionsService-ref="correctionsService"
 		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
-          p:processManager-ref="processManagerPayments"
+		  p:cashBoxTradingDayService-ref="cashBoxTradingDayService"
 		  p:crumbNameKey="payments.crumbs.search_quittances"
 		  scope="prototype" />
 
@@ -84,7 +84,7 @@
 		  p:townService-ref="townService"
 		  p:regionService-ref="regionService"
 		  p:countryService-ref="countryService"
-          p:processManager-ref="processManagerPayments"
+          p:cashBoxTradingDayService-ref="cashBoxTradingDayService"
           p:paymentPointService-ref="paymentPointService"
 		  p:crumbNameKey="payments.crumbs.quittances_pay"
 		  scope="prototype" />
@@ -107,6 +107,7 @@
           p:paymentPointService-ref="paymentPointService"
 		  p:currencyInfoService-ref="currencyInfoService"
           p:processManager-ref="processManager"
+		  p:cashboxTradingDayService-ref="cashBoxTradingDayService"
 		  scope="prototype" />
 
     <bean id="operationSetStatusAction"
@@ -125,7 +126,11 @@
           class="org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction"
           p:cashboxService-ref="cashboxService"
           p:paymentPointService-ref="paymentPointService"
+          p:paymentCollectorService-ref="paymentCollectorService"
           p:processManager-ref="processManager"
+		  p:cashBoxTradingDayService-ref="cashBoxTradingDayService"
+          p:paymentPointTradingDayService-ref="paymentPointTradingDayService"
+          p:paymentCollectorTradingDayService-ref="paymentCollectorTradingDayService"
           scope="prototype" />
 
 	<bean id="createBlankOperationAction"
@@ -152,9 +157,8 @@
 
     <bean id="paymentPointEnableDisableAction"
 		  parent="accountantAWPAction"
-          class="org.flexpay.payments.actions.monitor.PaymentPointEnableDisableAction"
-          p:processManager-ref="processManagerPayments"
-          p:paymentPointService-ref="paymentPointService"
+          class="org.flexpay.payments.actions.monitor.PaymentCollectorEnableDisableAction"
+		  p:tradingDayService-ref="paymentCollectorTradingDayService"
           scope="prototype" />
 
     <bean id="paymentPointsListMonitorPageAction"

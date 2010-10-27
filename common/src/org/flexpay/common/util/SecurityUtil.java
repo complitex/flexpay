@@ -74,6 +74,7 @@ public abstract class SecurityUtil {
 	 * @return <code>true</code> if authority found, or <code>false</code> otherwise
 	 */
 	public static boolean isAuthenticationGranted(@NotNull String authName) {
+
 		Authentication auth = getAuthentication();
 		if (auth == null) {
 			return false;

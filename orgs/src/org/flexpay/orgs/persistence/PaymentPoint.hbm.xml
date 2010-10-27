@@ -109,7 +109,6 @@
             left join fetch p.names
             inner join fetch p.collector c
             inner join fetch c.organization o
-            left join fetch o.names
 		where p.id=?
 	</query>
 

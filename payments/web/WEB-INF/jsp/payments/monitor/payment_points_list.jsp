@@ -7,6 +7,11 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%" class="payment_points_list">
     <tr>
         <td colspan="9">
+            <%@include file="/WEB-INF/jsp/payments/trading_day/trading_day_control_panel.jsp"%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="9">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
         </td>
     </tr>

@@ -34,14 +34,14 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 	@Before
 	public void createTradingDayProcess() throws ProcessInstanceException, ProcessDefinitionException {
 
-		processManager.deployProcessDefinition("TradingDay", true);
+		processManager.deployProcessDefinition("TradingDaySchedulingJob", true);
 
 		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-		tradingDayProcessInstanceId = processManager.createProcess("TradingDay", parameters);
+		tradingDayProcessInstanceId = processManager.createProcess("TradingDaySchedulingJob", parameters);
 		assertTrue(tradingDayProcessInstanceId > 0);
 
 		//Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-		//String  currentStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
+		//String  currentStatus = (String) process.getParameters().get(TradingDaySchedulingJob.PROCESS_STATUS);
 	}
 
 	@After

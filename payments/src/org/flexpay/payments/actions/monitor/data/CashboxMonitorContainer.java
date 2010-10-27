@@ -2,6 +2,7 @@ package org.flexpay.payments.actions.monitor.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 
 public class CashboxMonitorContainer {
 
@@ -11,6 +12,7 @@ public class CashboxMonitorContainer {
     private String cashierFIO;
     private String lastPayment;
     private Long paymentsCount;
+	private PaymentCollectorTradingDayConstants.Statuses status;
 
 	public Long getId() {
 		return id;
@@ -60,6 +62,14 @@ public class CashboxMonitorContainer {
 		this.paymentsCount = paymentsCount;
 	}
 
+	public void setStatus(PaymentCollectorTradingDayConstants.Statuses status) {
+		this.status = status;
+	}
+
+	public PaymentCollectorTradingDayConstants.Statuses getStatus() {
+		return status;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
@@ -69,6 +79,7 @@ public class CashboxMonitorContainer {
 				append("cashierFIO", cashierFIO).
 				append("lastPayment", lastPayment).
 				append("paymentsCount", paymentsCount).
+				append("status", status).
 				toString();
 	}
 }

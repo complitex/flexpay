@@ -2,13 +2,14 @@ package org.flexpay.payments.actions.monitor.data;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 
 public class PaymentPointMonitorContainer {
 
     private Long id;
     private String name;
     private Long paymentsCount;
-    private String status;
+    private PaymentCollectorTradingDayConstants.Statuses status;
     private String totalSum;
     private String cashBox;
     private String cashierFIO;
@@ -39,11 +40,11 @@ public class PaymentPointMonitorContainer {
 		this.paymentsCount = paymentsCount;
 	}
 
-	public String getStatus() {
+	public PaymentCollectorTradingDayConstants.Statuses getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(PaymentCollectorTradingDayConstants.Statuses status) {
 		this.status = status;
 	}
 

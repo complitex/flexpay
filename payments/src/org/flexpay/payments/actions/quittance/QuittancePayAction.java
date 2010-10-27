@@ -6,7 +6,8 @@ import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.TradingDaySchedulingJob;
+import org.flexpay.payments.service.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -18,7 +19,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private Long operationId;
 
-	private ProcessManager processManager;
+	private TradingDay<Cashbox> cashBoxTradingDayService;
 
 	@NotNull
 	@Override
@@ -38,14 +39,14 @@ public class QuittancePayAction extends PaymentOperationAction {
 		}
 
 		Cashbox cashbox = getCashbox();
-		final Long paymentProcessId = getPaymentPoint().getTradingDayProcessInstanceId();
+		final Long cashBoxProcessId = cashbox.getTradingDayProcessInstanceId();
 
-		if (paymentProcessId == null || paymentProcessId == 0) {
-			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
+		if (cashBoxProcessId == null || cashBoxProcessId == 0) {
+			log.debug("TradingDaySchedulingJob process id not found for Cash box id = {}", cashbox.getPaymentPoint().getId());
             return TRADING_DAY_CLOSED;
 		} else {
-			log.debug("Found process id {} for cashbox {}", paymentProcessId, cashboxId);
-            if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+			log.debug("Found process id {} for cashbox {}", cashBoxProcessId, cashboxId);
+            if (!cashBoxTradingDayService.isOpened(cashbox.getTradingDayProcessInstanceId())) {
                 return TRADING_DAY_CLOSED;
             }
 		}
@@ -111,8 +112,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	@Required
-	public void setProcessManager(ProcessManager processManager) {
-		this.processManager = processManager;
+	public void setCashBoxTradingDayService(TradingDay<Cashbox> cashBoxTradingDayService) {
+		this.cashBoxTradingDayService = cashBoxTradingDayService;
 	}
-
 }

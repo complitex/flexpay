@@ -192,8 +192,9 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	 *          if validation fails
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	@Transactional (readOnly = false)
 	@NotNull
+	@Override
+	@Transactional (readOnly = false)
 	public PaymentPoint update(@NotNull PaymentPoint point) throws FlexPayExceptionContainer {
 		validate(point);
 

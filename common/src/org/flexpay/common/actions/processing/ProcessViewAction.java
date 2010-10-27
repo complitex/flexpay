@@ -11,6 +11,7 @@ public class ProcessViewAction extends FPActionSupport {
 
     private String logText;
     private Process process;
+	private Boolean delete;
 
     private ProcessManager processManager;
 
@@ -32,6 +33,11 @@ public class ProcessViewAction extends FPActionSupport {
 			return SUCCESS;
 		}
         logText = LogPreviewUtil.getLogLastLines(process.getId());
+		if (Boolean.TRUE.equals(delete)) {
+			log.debug("Try delete process instance {}", process.getProcessInstaceId());
+			processManager.deleteProcessInstance(process);
+			log.debug("Deleted process instance");
+		}
 
         return SUCCESS;
     }
@@ -60,6 +66,10 @@ public class ProcessViewAction extends FPActionSupport {
     public String getLogText() {
         return logText;
     }
+
+	public void setDelete(Boolean delete) {
+		this.delete = delete;
+	}
 
 	@Required
     public void setProcessManager(ProcessManager processManager) {

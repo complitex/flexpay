@@ -289,5 +289,26 @@
 		  factory-method="getMapper"
 		  p:mapper-ref="paymentsUserPreferencesContextMapper" />
 
+	<bean id="tradingDayService"
+		  class="org.flexpay.payments.service.GeneralizationTradingDay"
+		  abstract="true"
+		  autowire-candidate="false"
+		  p:processManager-ref="processManager" />
 
+	<bean id="paymentCollectorTradingDayService"
+		  class="org.flexpay.payments.service.impl.PaymentCollectorTradingDay"
+		  parent="tradingDayService"
+		  p:paymentPointTradingDayService-ref="paymentPointTradingDayService" />
+
+
+	<bean id="paymentPointTradingDayService"
+		  class="org.flexpay.payments.service.impl.PaymentPointTradingDay"
+		  parent="tradingDayService"
+		  p:cashboxTradingDayService-ref="cashBoxTradingDayService"
+		  p:cashboxService-ref="cashboxService" />
+
+	<bean id="cashBoxTradingDayService"
+		  class="org.flexpay.payments.service.impl.CashBoxTradingDay"
+		  parent="tradingDayService" />
+	
 </beans>

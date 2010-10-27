@@ -98,12 +98,12 @@
 	</category>
 
 	<category name="org.flexpay.common.persistence.history" additivity="false">
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="flexpay_hist" />
 	</category>
 
 	<category name="org.flexpay.ab.service.history" additivity="false">
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="flexpay_hist" />
 	</category>
 
@@ -153,7 +153,7 @@
 	</category>
 
 	<category name="org.flexpay.eirc.service.importexport" additivity="false">
-		<priority value="info" />
+		<priority value="debug" />
 		<appender-ref ref="flexpay" />
 	</category>
 
@@ -167,62 +167,87 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
-	<category name="org.flexpay.payments.process.export.TradingDay" additivity="false">
+	<category name="org.flexpay.payments.process.export.TradingDaySchedulingJob" additivity="false">
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<category name="org.springframework.ws" additivity="false">
-		<priority value="warn" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<category name="jdbc.sqlonly" additivity="false">
-		<priority value="FATAL" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<category name="jdbc.sqltiming" additivity="false">
-		<priority value="FATAL" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<category name="jdbc.audit" additivity="false">
-		<priority value="FATAL" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<category name="jdbc.resultset" additivity="false">
-		<priority value="FATAL" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<category name="jdbc.connection" additivity="false">
-		<priority value="FATAL" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
 	<!-- Disable "Narrowing proxy to class XXX - this operation breaks ==" warnings-->
 	<category name="org.hibernate.engine.StatefulPersistenceContext" additivity="false">
-		<priority value="ERROR" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
+<!--
+	<category name="org.hibernate.event.def.DefaultSaveOrUpdateEventListener" additivity="false">
+		<priority value="trace" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.hibernate.impl.SessionImpl" additivity="false">
+		<priority value="trace" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.hibernate.jdbc.ConnectionManager" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.hibernate.transaction.JDBCTransaction" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+-->
 	<category name="org.springframework.jms.listener.DefaultMessageListenerContainer" additivity="false">
-		<priority value="warn" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 
-	<category name="org.springframework.security" additivity="false">
-		<priority value="debug" />
-		<appender-ref ref="security" />
+	<category name="org.flexpay.common.process" additivity="false">
+	    <priority value="debug"/>
+	    <appender-ref ref="flexpay"/>
 	</category>
 
-	<category name="com.sun.identity.provider.springsecurity" additivity="false">
-		<priority value="debug" />
-		<appender-ref ref="security" />
+	<category name="org.flexpay.payments.process.export.job" additivity="false">
+	    <priority value="info"/>
+	    <appender-ref ref="flexpay"/>
 	</category>
 
+	<category name="org.flexpay.payments.actions.registry" additivity="false">
+	    <priority value="debug"/>
+	    <appender-ref ref="flexpay"/>
+	</category>
 
 	<category name="org.flexpay.common.actions.security" additivity="false">
 		<priority value="debug" />

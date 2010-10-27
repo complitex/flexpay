@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="PaymentCollectorTradingDay"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
+
+	<swimlane name="PaymentPointProcess">
+        <assignment actor-id="PAYMENT_POINT_PROCESS" />
+    </swimlane>
+
+	<swimlane name="JobManager">
+        <assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
+    </swimlane>
+
+	<start-state name="Start">
+        <description>
+            Старт опердня
+        </description>
+		<event type="node-leave">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+				<variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
+				<expression>
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.OPEN;
+					canUpdateOrCreateOperation = "true";
+				</expression>
+            </script>
+        </event>
+        <transition to="StartProcessThread" name="start" />
+    </start-state>
+
+	<task-node name="StartProcessThread">
+		<task name="startThread">
+			<timer duedate="0 minutes" transition="process"/>
+		</task>
+		<event type="node-leave">
+			<script>
+				<variable name="ProcessInstanceID" mapped-name="ProcessInstanceID" access="read" />
+				<variable name="START_TIME" mapped-name="startTime" access="write" />
+				<expression>
+					org.flexpay.common.process.ProcessLogger.setThreadProcessId(java.lang.Long.valueOf(ProcessInstanceID));
+					startTime = org.flexpay.common.util.DateUtil.now();
+				</expression>
+			</script>
+		</event>
+		<transition name="process" to="AddProcessIdToPaymentCollector" />
+	</task-node>
+
+	<decision name="AddProcessIdToPaymentCollector">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
+		<event type="node-enter">
+			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+				<targetBean>addProcessIdToPaymentCollectorActionHandler</targetBean>
+				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="GetPaymentPoints" name="next" />
+		<transition to="end-state" name="error" />
+	</decision>
+
+	<decision name="GetPaymentPoints">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
+		<event type="node-enter">
+			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+				<targetBean>getPaymentPointsActionHandler</targetBean>
+				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<event type="node-leave">
+			<script>
+				<variable name="currentIndexPaymentPoint" mapped-name="currentIndexPaymentPoint" access="write" />
+				<expression>
+					currentIndexPaymentPoint = 0;
+				</expression>
+			</script>
+		</event>
+		<transition to="SelectNextPaymentPoint" name="next" />
+	</decision>
+
+	<decision name="SelectNextPaymentPoint">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
+		<event type="node-enter">
+			<action name="task" config-type="bean" class="org.flexpay.common.process.handler.CheckArrayEndingJbpmHandlerProxy">
+				<targetBean>checkArrayEndingActionHandler</targetBean>
+				<factoryKey>jbpmConfiguration</factoryKey>
+				<arrayName>paymentPoints</arrayName>
+				<arraySizeName>currentIndexPaymentPoint</arraySizeName>
+			</action>
+		</event>
+		<event type="node-leave">
+			<script>
+				<variable name="processingPaymentPoint" mapped-name="processingPaymentPoint" access="write" />
+				<variable name="closedCountPaymentPoints" mapped-name="closedCountPaymentPoints" access="write" />
+				<variable name="approvedClosingCountPaymentPoints" mapped-name="approvedClosingCountPaymentPoints" access="write" />
+				<expression>
+					processingPaymentPoint = false;
+					closedCountPaymentPoints = 0;
+					approvedClosingCountPaymentPoints = 0;
+				</expression>
+			</script>
+		</event>
+		<transition to="end-state" name="end" />
+		<transition to="StartPaymentPointTradingDay" name="next" />
+	</decision>
+
+	<fork name="StartPaymentPointTradingDay">
+		<transition to="PaymentPointTradingDay" name="start payment point trading day" />
+		<transition to="SleepThread" name="select next payment point" />
+	</fork>
+
+	<process-state name="PaymentPointTradingDay">
+		<sub-process name="PaymentPointTradingDay" binding='late' />
+		<variable name="paymentPoints" access="read" />
+		<variable name="currentIndexPaymentPoint" access="read" />
+		<variable name="_PROCESS_MANAGER_SECURITY_CONTEXT" access="read" />
+		<transition to="WaitPaymentPointTradingDay" />
+		<event type="subprocess-created">
+			<script>
+				<variable name="processingPaymentPoint" mapped-name="processingPaymentPoint" access="read,write" />
+				<expression>
+					processingPaymentPoint = true;
+				</expression>
+			</script>
+		</event>
+	</process-state>
+
+	<task-node name="SleepThread">
+		<task name="sleepThread">
+			<timer duedate="0 minutes" transition="process"/>
+		</task>
+		<transition to="continueProcess" name="process" />
+	</task-node>
+
+	<decision name="continueProcess">
+		<transition to="SleepThread">
+			<condition expression="#{processingPaymentPoint == false}" />
+		</transition>
+		<transition to="SelectNextPaymentPoint2">
+			<condition expression="#{processingPaymentPoint == true}" />
+			<script>
+				<variable name="currentIndexPaymentPoint" mapped-name="currentIndexPaymentPoint" access="read,write" />
+				<expression>
+					currentIndexPaymentPoint++;
+				</expression>
+			</script>
+		</transition>
+	</decision>
+
+	<decision name="SelectNextPaymentPoint2">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
+		<event type="node-enter">
+			<action name="task" config-type="bean" class="org.flexpay.common.process.handler.CheckArrayEndingJbpmHandlerProxy">
+				<targetBean>checkArrayEndingActionHandler</targetBean>
+				<factoryKey>jbpmConfiguration</factoryKey>
+				<arrayName>paymentPoints</arrayName>
+				<arraySizeName>currentIndexPaymentPoint</arraySizeName>
+			</action>
+		</event>
+		<transition to="WaitSubProcessSignal" name="end" />
+		<transition to="StartPaymentPointTradingDay" name="next" />
+	</decision>
+
+	<task-node name="WaitSubProcessSignal">
+		<task name="ClosePaymentCollectorTradingDay" swimlane="PaymentPointProcess">
+            <!--<timer duedate="#{START_TIME} + 1 business day" transition="CloseTradingDayByTimer" />-->
+        </task>
+        <transition to="WaitSubProcessSignal" name="Close trading day" >
+			<script>
+				<variable name="closedCountPaymentPoints" mapped-name="closedCountPaymentPoints" access="read,write" />
+				<variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+				<expression>
+					closedCountPaymentPoints++;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.WAIT_APPROVE;
+				</expression>
+			</script>
+		</transition>
+        <transition to="WaitSubProcessSignal" name="Cancel" >
+			<script>
+				<variable name="closedCountPaymentPoints" mapped-name="closedCountPaymentPoints" access="read,write" />
+				<variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+				<expression>
+					closedCountPaymentPoints--;
+					if (closedCountPaymentPoints == 0) {
+						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.OPEN;
+					}
+				</expression>
+			</script>
+		</transition>
+        <transition to="ApprovedPaymentPointTradingDay" name="Approve">
+			<script>
+				<variable name="closedCountPaymentPoints" mapped-name="closedCountPaymentPoints" access="read,write" />
+				<variable name="approvedClosingCountPaymentPoints" mapped-name="approvedClosingCountPaymentPoints" access="read,write" />
+				<expression>
+					closedCountPaymentPoints--;
+					approvedClosingCountPaymentPoints++;
+				</expression>
+			</script>
+		</transition>
+		<transition to="end-state" name="CloseTradingDayByTimer" />
+    </task-node>
+
+	<decision name="ApprovedPaymentPointTradingDay" async="true">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
+		<event type="node-enter">
+			<action name="task" config-type="bean" class="org.flexpay.common.process.handler.CheckArrayEndingJbpmHandlerProxy">
+				<targetBean>checkArrayEndingActionHandler</targetBean>
+				<factoryKey>jbpmConfiguration</factoryKey>
+				<arrayName>paymentPoints</arrayName>
+				<arraySizeName>approvedClosingCountPaymentPoints</arraySizeName>
+			</action>
+		</event>
+		<transition to="end-state" name="end" />
+		<transition to="WaitSubProcessSignal" name="next" />
+	</decision>
+
+	<join name="WaitPaymentPointTradingDay">
+		<transition to="generateEndOperationDayRegistryJob" />
+	</join>
+
+	<task-node name="generateEndOperationDayRegistryJob">
+        <description>
+            генерация реестра типа 12
+        </description>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
+                <expression>
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.PROCESSED;
+					canUpdateOrCreateOperation = "false";
+				</expression>
+            </script>
+        </event>
+        <task swimlane="JobManager" />
+        <transition to="sendRegistryJob" name="next" />
+        <!-- <transition to="sendEmailToAdministrator" name="error" /> -->
+        <transition to="sendEmailToAdministrator" name="error" />
+        <transition to="end-state" name="No registry created"/>
+    </task-node>
+
+	<task-node name="sendRegistryJob">
+        <description>
+            отправляем на указанный в ППП е-мейл с вложенным файлом сформированного реестра
+        </description>
+        <task swimlane="JobManager" />
+        <transition to="end-state" name="next" />
+        <transition to="sendEmailToAdministrator" name="error" />
+    </task-node>
+
+	 <task-node name="sendEmailToAdministrator">
+        <description>
+            Выслать администрутору е-мейл с сообщением о том, что процесс закончился с ошибкой
+        </description>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
+                <expression>
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.ERROR;
+					canUpdateOrCreateOperation = "false";
+				</expression>
+            </script>
+        </event>
+        <task swimlane="JobManager" />
+        <!--<task name="sendEmailToAdministrator" swimlane="JobManager" />-->
+        <transition to="end-state" name="error" />
+        <transition to="end-state" name="next" />
+    </task-node>
+
+	<end-state name="end-state">
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="read,write" name="PROCESS_STATUS" />
+                <expression>
+					if (!processStatus.equals(org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.ERROR))
+					{
+						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.CLOSED;
+					}
+				</expression>
+            </script>
+        </event>
+    </end-state>
+
+</process-definition>

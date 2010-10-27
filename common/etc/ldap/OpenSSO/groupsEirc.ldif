@@ -484,6 +484,14 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 cn: AB_PERSON_DELETE
 
+# ADMIN_USER_ROLE_READ, groups, opensso.java.net
+dn: cn=ADMIN_USER_ROLE_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ADMIN_USER_ROLE_READ
+
 # ORGS_ORGANIZATION_READ, groups, opensso.java.net
 dn: cn=ORGS_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
@@ -1223,6 +1231,22 @@ objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
 cn: MENU_AB_DICTS_MEASURE_UNITS
+
+# MENU_ADMIN, groups, opensso.java.net
+dn: cn=MENU_ADMIN,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_ADMIN
+
+# MENU_ADMIN_USERS, groups, opensso.java.net
+dn: cn=MENU_ADMIN_USERS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_ADMIN_USERS
 
 # MENU_EIRC, groups, opensso.java.net
 dn: cn=MENU_EIRC,ou=groups,dc=opensso,dc=java,dc=net

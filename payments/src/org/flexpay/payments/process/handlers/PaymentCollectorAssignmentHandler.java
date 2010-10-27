@@ -1,7 +1,7 @@
 package org.flexpay.payments.process.handlers;
 
 import org.flexpay.common.process.JobManagerAssignmentHandler;
-import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.taskmgmt.def.AssignmentHandler;
 import org.jbpm.taskmgmt.exe.Assignable;
@@ -18,7 +18,7 @@ public class PaymentCollectorAssignmentHandler implements AssignmentHandler {
 
     @Override
     public void assign(Assignable assignable, ExecutionContext executionContext) {
-        String autoMode = (String) executionContext.getVariable(TradingDay.AUTO_MODE);
+        String autoMode = (String) executionContext.getVariable(PaymentCollectorTradingDayConstants.AUTO_MODE);
 		log.debug("AUTO_MODE = {}", autoMode);
         if (autoMode != null && autoMode.equals("true")) {
             assignable.setActorId(JobManagerAssignmentHandler.JOB_MANAGER_ACTOR_NAME);

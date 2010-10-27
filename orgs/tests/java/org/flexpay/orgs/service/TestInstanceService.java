@@ -1,7 +1,11 @@
 package org.flexpay.orgs.service;
 
 import org.flexpay.common.persistence.Language;
+
+import static junit.framework.Assert.assertNotNull;
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
@@ -106,6 +110,14 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 
 		paymentPointService.delete(point);
 		paymentCollectorService.delete(org);
+	}
+
+	@Test
+	public void testEditPaymentPoint2() throws Exception {
+		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(1L));
+		assertNotNull("Payment point did not find", paymentPoint);
+		paymentPoint.setTradingDayProcessInstanceId(1000L);
+		paymentPointService.update(paymentPoint);
 	}
 
 	@Before

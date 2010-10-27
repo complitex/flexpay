@@ -5,7 +5,6 @@ import static junit.framework.Assert.assertEquals;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.common.dao.paging.Page;
@@ -15,7 +14,6 @@ import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
@@ -27,7 +25,6 @@ import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.io.InputStreamCallback;
@@ -35,15 +32,13 @@ import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.process.export.ExportJobParameterNames;
 import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
-import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.payments.service.OperationService;
@@ -64,7 +59,6 @@ import org.springframework.scheduling.quartz.CronTriggerBean;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -197,6 +191,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
     @After
     public void tearDown() {
+		/*
         authenticateTestUser();
         //delete generation registry
         OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
@@ -216,7 +211,8 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
         paymentPointUtil.delete(paymentPoint);
         //delete organization
         organizationUtil.delete(registerOrganization);
-        organizationUtil.delete(recipientOrganization);		
+        organizationUtil.delete(recipientOrganization);
+        */
     }
 
     @Test

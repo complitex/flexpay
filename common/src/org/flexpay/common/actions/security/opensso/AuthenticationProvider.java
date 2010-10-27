@@ -7,6 +7,7 @@ import com.sun.identity.provider.springsecurity.OpenSSOAuthenticationProvider;
 import com.sun.identity.provider.springsecurity.OpenSSOSimpleAuthoritiesPopulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.Authentication;
 import org.springframework.security.AuthenticationException;
 import org.springframework.security.GrantedAuthority;
@@ -21,7 +22,7 @@ public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 	private AuthenticationUserDetailsService authenticationUserDetailsService;
 
 	/**
-	 * authenticate the access request.
+	 * Authenticate the access request.
 	 *
 	 * Note by this point the user has already been granted an sso token
 	 * (i.e. they have already authenticated because they were redirected
@@ -41,6 +42,7 @@ public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 	 *
 	 * @throws org.springframework.security.AuthenticationException
 	 */
+    @Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
 		log.debug("Authentication object: {}", authentication);
@@ -72,6 +74,7 @@ public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 		return authentication;
 	}
 
+    @Required
 	public void setAuthenticationUserDetailsService(AuthenticationUserDetailsService authenticationUserDetailsService) {
 		this.authenticationUserDetailsService = authenticationUserDetailsService;
 	}
