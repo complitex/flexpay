@@ -162,6 +162,11 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
+	@Override
+	public List<Operation> listReceivedPaymentsForPaymentCollector(Stub<PaymentCollector> stub, Date beginDate, Date endDate) {
+		return operationDao.listPaymentsByPaymentCollector(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
+	}
+
     @Override
 	public List<Operation> listReceivedPaymentsForOrganization(Stub<Organization> organization, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByOrganization(organization.getId(), beginDate, endDate, OperationStatus.REGISTERED);

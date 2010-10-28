@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -36,17 +35,15 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 		log.info("Start process generating end operation day registry and save it to file...");
 
-		PaymentPoint paymentPoint = getPaymentPoint(parameters);
-		if (paymentPoint == null) {
-			log.error("Payment point was not found (searching by id {})", parameters.get(PAYMENT_POINT_ID));
+		PaymentCollector paymentCollector = getPaymentCollector(parameters);
+		if (paymentCollector == null) {
 			return RESULT_ERROR;
 		}
 
-		log.debug("Payment point found: {}", paymentPoint);
+		log.debug("Payment collector found: {}", paymentCollector);
 
 		Organization organization = getOrganization(parameters);
 		if (organization == null) {
-			log.error("Organization was not found (searching by id {})", parameters.get(ORGANIZATION_ID));
 			return RESULT_ERROR;
 		}
 
@@ -55,7 +52,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		Date beginDate = (Date) parameters.get(BEGIN_DATE);
 		Date endDate = (Date) parameters.get(END_DATE);
 
-		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
+		Registry registry = registryGenerator.generate(paymentCollector, organization, beginDate, endDate);
 		if (registry == null) {
 			return RESULT_NO_REGISTRY_CREATED;
 		}
@@ -63,27 +60,25 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry);
 		parameters.put(FILE_ID, file.getId());
 
-		PaymentCollector paymentCollector = getPaymentCollector(paymentPoint);
-		if (paymentCollector != null) {
-			parameters.put(EMAIL, paymentCollector.getEmail());
-		}
+		parameters.put(EMAIL, paymentCollector.getEmail());
 
 		log.info("Process end operation day registry and save it to file finished...");
 
 		return RESULT_NEXT;
 	}
 
-	private PaymentCollector getPaymentCollector(PaymentPoint paymentPoint) {
-		return paymentCollectorService.read(paymentPoint.collectorStub());
-	}
-
-	private PaymentPoint getPaymentPoint(Map<Serializable, Serializable> parameters) {
-		Long pointId = (Long) parameters.get(PAYMENT_POINT_ID);
-        if (pointId == null) {
-            log.error("Can't find {} paramenter", PAYMENT_POINT_ID);
+	private PaymentCollector getPaymentCollector(Map<Serializable, Serializable> parameters) {
+		Long paymentCollectorId = (Long) parameters.get(PAYMENT_COLLECTOR_ID);
+        if (paymentCollectorId == null) {
+            log.error("Can't find {} paramenter", PAYMENT_COLLECTOR_ID);
             return null;
         }
-		return paymentPointService.read(new Stub<PaymentPoint>(pointId));
+		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+
+		if (paymentCollector == null) {
+			log.error("Payment point was not found (searching by id {})", parameters.get(PAYMENT_COLLECTOR_ID));
+		}
+		return null;
 	}
 
 	private Organization getOrganization(Map<Serializable, Serializable> parameters) {
@@ -92,7 +87,12 @@ public class GenerateEndOperationDayRegistryJob extends Job {
             log.error("Can't find {} paramenter", ORGANIZATION_ID);
             return null;
         }
-		return organizationService.readFull(new Stub<Organization>(organizationId));
+		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
+
+		if (organization == null) {
+			log.error("Organization was not found (searching by id {})", parameters.get(ORGANIZATION_ID));
+		}
+		return organization;
 	}
 
 	@Required

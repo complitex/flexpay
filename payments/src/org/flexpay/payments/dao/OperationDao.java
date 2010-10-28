@@ -66,6 +66,17 @@ public interface OperationDao extends GenericDao<Operation, Long> {
     List<Operation> listPaymentsByPaymentPoint(Long paymentPointId, Date beginDate, Date endDate, int status);
 
 	/**
+     * List of all payment operations which has status REGISTERED inside time interval and payment collector
+     *
+     * @param paymentCollectorId payment collector id
+     * @param beginDate lower bound for operation registration date
+     * @param endDate higher bound for operation registration date
+     * @param status operation status
+     * @return list of payment operations
+     */
+    List<Operation> listPaymentsByPaymentCollector(Long paymentCollectorId, Date beginDate, Date endDate, int status);
+
+	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
 	 *
 	 * @param organizationId payment point id
