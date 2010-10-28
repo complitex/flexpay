@@ -40,7 +40,7 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 		Organization organization = organizationService.readFull(TestData.ORG_CN);
 		assertNotNull("Organization with id - 4 does not exist", organization);
 
-		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
+		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint.getCollector(), organization, beginDate, endDate);
 		assertNotNull("Operation day registry generation failed", registry);
 
 //		registryService.deleteRecords(Stub.stub(registry));

@@ -51,15 +51,15 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	@Nullable
 	@Override
-    public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
+    public Registry generate(@NotNull PaymentCollector paymentCollector, @NotNull Organization organization,
                              @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
 
         log.info("Start generating end operation day registry...");
 
-        List<Operation> operations = operationService.listReceivedPaymentsForPaymentPoint(stub(paymentPoint), beginDate, endDate);
+        List<Operation> operations = operationService.listReceivedPaymentsForPaymentCollector(stub(paymentCollector), beginDate, endDate);
                                                                 
         if (operations.isEmpty()) {
-            log.debug("Not found operations for payment point {}. Registry was not created.", paymentPoint.getId());
+            log.debug("Not found operations for payment point {}. Registry was not created.", paymentCollector.getId());
             return null;
         }
 
@@ -68,7 +68,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		Registry registry = new Registry();
 
 		registry.setCreationDate(new Date());
-		registry.setSenderCode(paymentPoint.getCollector().getOrganizationStub().getId());
+		registry.setSenderCode(paymentCollector.getOrganizationStub().getId());
 		registry.setRecipientCode(organization.getId());
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_BANK_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
