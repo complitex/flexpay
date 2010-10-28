@@ -85,6 +85,11 @@
 						<comment>User payment collector id</comment>
 					</column>
 				</property>
+				<property name="cashBoxId">
+					<column name="cash_box_id" not-null="false">
+						<comment>User cash box id</comment>
+					</column>
+				</property>
 			</subclass>
 
 		</subclass>

@@ -17,7 +17,7 @@ import java.security.cert.CertificateFactory;
 public class CertificateEditAction extends FPActionSupport {
 
 	private String alias;
-	private String description;
+	private Certificate certificate = new Certificate();
 	private File certificateFile;
 	private String certificateFileContentType;
 	private String certificateFileFileName;
@@ -47,16 +47,16 @@ public class CertificateEditAction extends FPActionSupport {
 			log.debug("certificateFile={}, certificateFileName={}", certificateFile, certificateFileFileName);
 
 			if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() == null) {
-				certificateService.addCertificate(alias, description, new FileInputStream(certificateFile));
+				certificateService.addCertificate(alias, certificate.getDescription(), new FileInputStream(certificateFile));
 			} else if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() != null) {
-				certificateService.replaceCertificate(alias, description, new FileInputStream(certificateFile));
+				certificateService.replaceCertificate(alias, certificate.getDescription(), new FileInputStream(certificateFile));
 			} else {
-				certificateService.editCertificateDescription(alias, description);
+				certificateService.editCertificateDescription(alias, certificate.getDescription());
 			}
 			//addActionMessage(getText("admin.certificate.edited"));
 			return REDIRECT_SUCCESS;
 		} else if (preference.getCertificate() != null) {
-			description = preference.getCertificate().getDescription();
+			certificate = preference.getCertificate();
 		}
 
 		return INPUT;
@@ -91,12 +91,8 @@ public class CertificateEditAction extends FPActionSupport {
 		this.alias = alias;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public Certificate getCertificate() {
+		return certificate;
 	}
 
 	public File getCertificateFile() {

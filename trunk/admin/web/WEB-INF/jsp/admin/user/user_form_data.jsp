@@ -72,6 +72,7 @@
 						<input type="button" class="btn-exit"
 									 onclick="window.location='<s:url action="certificateEdit" includeParams="none"><s:param name="alias" value="%{currentUserPreferences.username}" /></s:url>'"
 									 value="<s:text name="admin.certificate.edit" />" />
+				<%@include file="user_extend.jsp"%>
 			</s:if>
 		</td>
 	</tr>

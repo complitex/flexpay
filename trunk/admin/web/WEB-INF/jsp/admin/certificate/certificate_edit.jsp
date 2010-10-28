@@ -12,9 +12,19 @@
 			<td class="col"><s:property value="%{alias}" /></td>
 		</tr>
 
-        <tr valign="top" class="cols_1">
+    <tr valign="top" class="cols_1">
 			<td class="col"><s:text name="admin.certificate.description" />:</td>
-			<td class="col"><s:textfield name="description" value="%{description}"/></td>
+			<td class="col"><s:textfield name="certificate.description" value="%{certificate.description}"/></td>
+		</tr>
+
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="admin.certificate.begin_date" />:</td>
+			<td class="col"><s:date name="certificate.beginDate" format="yyyy/MM/dd" /></td>
+		</tr>
+
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="admin.certificate.end_date" />:</td>
+			<td class="col"><s:date name="certificate.endDate" format="yyyy/MM/dd" /></td>
 		</tr>
 
 		<tr valign="top" class="cols_1">
