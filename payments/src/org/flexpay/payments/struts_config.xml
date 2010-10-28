@@ -5,6 +5,7 @@
 <struts>
 
     <include file="org/flexpay/payments/actions/struts.xml" />
-    <include file="org/flexpay/payments/i18n/struts.xml" />
+	<include file="org/flexpay/payments/admin/actions/user/parameters/struts.xml" />
+	<include file="org/flexpay/payments/i18n/struts.xml" />
 
 </struts>

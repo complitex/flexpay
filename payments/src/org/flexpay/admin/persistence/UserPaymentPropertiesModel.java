@@ -1,14 +1,18 @@
-package org.flexpay.payments.util.config;
+package org.flexpay.admin.persistence;
 
-import org.flexpay.ab.util.config.AbUserPreferences;
+public class UserPaymentPropertiesModel {
 
-public class PaymentsUserPreferences extends AbUserPreferences {
-
+	private String username;
 	private Long paymentPointId;
 	private Long paymentCollectorId;
 	private Long cashBoxId;
 
-	protected PaymentsUserPreferences() {
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public Long getPaymentPointId() {
@@ -19,14 +23,6 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 		this.paymentPointId = paymentPointId;
 	}
 
-	public String getPaymentPointIdStr() {
-		return paymentPointId == null ? "0" : paymentPointId.toString();
-	}
-
-	public String getPaymentCollectorIdStr() {
-		return paymentCollectorId == null ? "0" : paymentCollectorId.toString();
-	}
-
 	public Long getPaymentCollectorId() {
 		return paymentCollectorId;
 	}
@@ -35,15 +31,15 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 		this.paymentCollectorId = paymentCollectorId;
 	}
 
-	public String getCashBoxIdStr() {
-		return cashBoxId == null ? "0" : cashBoxId.toString();
-	}
-
 	public Long getCashBoxId() {
 		return cashBoxId;
 	}
 
 	public void setCashBoxId(Long cashBoxId) {
 		this.cashBoxId = cashBoxId;
+	}
+
+	public static UserPaymentPropertiesModel getInstance() {
+		return new UserPaymentPropertiesModel();
 	}
 }

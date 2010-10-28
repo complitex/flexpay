@@ -35,6 +35,7 @@
 			/WEB-INF/bti/configs/tiles_bti.xml,
 			/WEB-INF/orgs/configs/tiles_orgs.xml,
 			/WEB-INF/payments/configs/tiles_payments.xml,
+			/WEB-INF/admin/configs/tiles_payments_admin.xml,
 			/WEB-INF/eirc/configs/tiles_eirc.xml
 		</param-value>
 	</context-param>

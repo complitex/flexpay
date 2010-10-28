@@ -10,6 +10,7 @@
                   org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages,
                   org/flexpay/admin/i18n/errors,org/flexpay/admin/i18n/messages,
                   org/flexpay/orgs/i18n/errors,org/flexpay/orgs/i18n/messages,
+                  org/flexpay/admin/i18n/userPaymentParameters,
                   org/flexpay/payments/i18n/errors,org/flexpay/payments/i18n/messages
                   org/flexpay/payments/i18n/responseStatuses"/>
 

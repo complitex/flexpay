@@ -869,6 +869,7 @@
         ab_town_filter bigint comment 'Town filter',
         payments_payment_point_id bigint comment 'User payment point',
         payment_collector_id bigint comment 'User payment collector id',
+        cash_box_id bigint comment 'User cash box id',
         primary key (id)
     ) comment='User details';
 

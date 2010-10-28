@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <package name="userPaymentParameters" namespace="/admin" extends="common">
+
+		<action name="userPaymentParametersEdit" class="userPaymentParametersEditAction">
+			<result name="input" type="tiles">admin.payment.parameters.edit</result>
+			<result name="redirectError" type="redirect-action">userPaymentParametersEdit</result>
+			<result name="redirectSuccess" type="redirect-action">usersList</result>
+		</action>
+		
+	</package>
+
+</struts>
