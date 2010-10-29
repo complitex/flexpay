@@ -1,5 +1,5 @@
 alter table payments_operations_tbl
-        add column cashbox_id bigint comment 'Cash box';
+        add column cashbox_id bigint comment 'Cashbox';
 
 alter table payments_operations_tbl
 add index FK_payments_cashboxes_tbl_cashbox_id (cashbox_id),

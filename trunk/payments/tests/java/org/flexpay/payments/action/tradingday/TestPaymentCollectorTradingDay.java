@@ -93,7 +93,7 @@ public class TestPaymentCollectorTradingDay extends SpringBeanAwareTestCase {
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException, FlexPayExceptionContainer {
 		processManager.deployProcessDefinition("PaymentCollectorTradingDay", true);
 		processManager.deployProcessDefinition("PaymentPointTradingDay", true);
-		processManager.deployProcessDefinition("CashBoxTradingDay", true);
+		processManager.deployProcessDefinition("CashboxTradingDay", true);
 
 		final Long currentPaymentCollectorId = 1L;
 
@@ -116,47 +116,47 @@ public class TestPaymentCollectorTradingDay extends SpringBeanAwareTestCase {
 //		paymentCollector.setTradingDayProcessInstanceId(processId);
 //		paymentCollectorService.update(paymentCollector);
 
-		List<Cashbox> cashBoxes = list();
+		List<Cashbox> cashboxes = list();
 		for (PaymentPoint paymentPoint : paymentCollector.getPaymentPoints()) {
 			assertNotNull("Process instance id did not find for payment point " + paymentPoint.getId(), paymentPoint.getTradingDayProcessInstanceId());
-			cashBoxes.addAll(cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId()));
+			cashboxes.addAll(cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId()));
 		}
-		for (Cashbox cashBox : cashBoxes) {
-			assertNotNull("Process instance id did not find for cash box " + cashBox.getId(), cashBox.getTradingDayProcessInstanceId());
+		for (Cashbox cashbox : cashboxes) {
+			assertNotNull("Process instance id did not find for cashbox " + cashbox.getId(), cashbox.getTradingDayProcessInstanceId());
 		}
 
-		sendSignal(cashBoxes, AccounterAssignmentHandler.ACCOUNTER, "Пометить на закрытие");
-		sendSignal(cashBoxes, AccounterAssignmentHandler.ACCOUNTER, "Подтвердить закрытие");
-		sendSignal(cashBoxes, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, "Принять сообщение");
+		sendSignal(cashboxes, AccounterAssignmentHandler.ACCOUNTER, "Пометить на закрытие");
+		sendSignal(cashboxes, AccounterAssignmentHandler.ACCOUNTER, "Подтвердить закрытие");
+		sendSignal(cashboxes, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, "Принять сообщение");
 
 		do {
 			Thread.sleep(30000);
 			log.debug("Wait process " + processId);
-//			getState(cashBoxes);
+//			getState(cashboxes);
 		} while (!isProcessCompleted(processId));
 	}
 
-	private void getState(List<Cashbox> cashBoxes) {
-		for (Cashbox cashBox : cashBoxes) {
-			getCashBoxState(cashBox, AccounterAssignmentHandler.ACCOUNTER);
-			getCashBoxState(cashBox, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR);
+	private void getState(List<Cashbox> cashboxes) {
+		for (Cashbox cashbox : cashboxes) {
+			getCashboxState(cashbox, AccounterAssignmentHandler.ACCOUNTER);
+			getCashboxState(cashbox, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR);
 		}
 	}
 
-	private void getCashBoxState(Cashbox cashBox, String user) {
-		Set<?> transitions = TaskHelper.getTransitions(processManager, user, cashBox.getTradingDayProcessInstanceId(), null, log);
+	private void getCashboxState(Cashbox cashbox, String user) {
+		Set<?> transitions = TaskHelper.getTransitions(processManager, user, cashbox.getTradingDayProcessInstanceId(), null, log);
 
 		StringBuilder transitionNames = new StringBuilder();
-		transitionNames.append("Cash box ").append(cashBox.getId()).append(" user ").append(user).append(":");
+		transitionNames.append("Cashbox ").append(cashbox.getId()).append(" user ").append(user).append(":");
 		for (Object transition : transitions) {
 			transitionNames.append(((Transition) transition).getName()).append(",");
 		}
 		log.debug(transitionNames.toString());
 	}
 
-	private void sendSignal(List<Cashbox> cashBoxes, String user, String action) throws InterruptedException {
-		for (Cashbox cashBox : cashBoxes) {
-			TaskHelper.getTransitions(processManager, user, cashBox.getTradingDayProcessInstanceId(), action, log);
+	private void sendSignal(List<Cashbox> cashboxes, String user, String action) throws InterruptedException {
+		for (Cashbox cashbox : cashboxes) {
+			TaskHelper.getTransitions(processManager, user, cashbox.getTradingDayProcessInstanceId(), action, log);
 //			Thread.sleep(5000);
 		}
 	}

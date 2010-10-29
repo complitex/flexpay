@@ -80,8 +80,8 @@
 		  p:paymentCollectorService-ref="paymentCollectorService"
 		  scope="prototype" />
 
-	<bean id="getCashBoxesActionHandler"
-		  class="org.flexpay.payments.process.export.handler.GetCashBoxesActionHandler"
+	<bean id="getCashboxesActionHandler"
+		  class="org.flexpay.payments.process.export.handler.GetCashboxesActionHandler"
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
@@ -89,8 +89,8 @@
 		  class="org.flexpay.payments.process.export.handler.SelectNextPaymentPointActionHandler"
 		  scope="prototype" />
 
-	<bean id="selectNextCashBoxActionHandler"
-		  class="org.flexpay.payments.process.export.handler.SelectNextCashBoxActionHandler"
+	<bean id="selectNextCashboxActionHandler"
+		  class="org.flexpay.payments.process.export.handler.SelectNextCashboxActionHandler"
 		  scope="prototype" />
 
 	<bean id="addProcessIdToPaymentCollectorActionHandler"
@@ -103,8 +103,8 @@
 		  p:paymentPointService-ref="paymentPointService"
 		  scope="prototype" />
 
-	<bean id="addProcessIdToCashBoxActionHandler"
-		  class="org.flexpay.payments.process.export.handler.AddProcessIdToCashBoxActionHandler"
+	<bean id="addProcessIdToCashboxActionHandler"
+		  class="org.flexpay.payments.process.export.handler.AddProcessIdToCashboxActionHandler"
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
@@ -115,27 +115,27 @@
 		  class="org.flexpay.payments.process.export.job.SendSignalToProcessJob"
 		  p:processManager-ref="processManager" />
 
-	<bean id="sendSignalToCashBoxParentJob"
+	<bean id="sendSignalToCashboxParentJob"
 		  abstract="true"
 		  scope="prototype"
-		  class="org.flexpay.payments.process.export.job.SendSignalToCashBoxParentJob"
+		  class="org.flexpay.payments.process.export.job.SendSignalToCashboxParentJob"
 		  parent="sendSignalToProcessActionHandler"
-		  p:actorName="CASH_BOX_PROCESS"
+		  p:actorName="CASHBOX_PROCESS"
 		  p:cashboxService-ref="cashboxService" />
 
-	<bean id="sendSignalToCashBoxParentCloseTradingDayJob"
+	<bean id="sendSignalToCashboxParentCloseTradingDayJob"
 		  scope="prototype"
-		  parent="sendSignalToCashBoxParentJob"
+		  parent="sendSignalToCashboxParentJob"
 		  p:message="Close trading day" />
 
-	<bean id="sendSignalToCashBoxParentApproveJob"
+	<bean id="sendSignalToCashboxParentApproveJob"
 		  scope="prototype"
-		  parent="sendSignalToCashBoxParentJob"
+		  parent="sendSignalToCashboxParentJob"
 		  p:message="Approve" />
 
-	<bean id="sendSignalToCashBoxParentCancelJob"
+	<bean id="sendSignalToCashboxParentCancelJob"
 		  scope="prototype"
-		  parent="sendSignalToCashBoxParentActionHandler"
+		  parent="sendSignalToCashboxParentActionHandler"
 		  p:message="Cancel" />
 
 	<bean id="sendSignalToPaymentPointParentJob"
@@ -167,23 +167,23 @@
 		  class="org.flexpay.payments.process.export.handler.SendSignalToProcessActionHandler"
 		  p:processManager-ref="processManager" />
 
-	<bean id="sendSignalToCashBoxParentActionHandler"
+	<bean id="sendSignalToCashboxParentActionHandler"
 		  abstract="true"
-		  class="org.flexpay.payments.process.export.handler.SendSignalToCashBoxParentActionHandler"
+		  class="org.flexpay.payments.process.export.handler.SendSignalToCashboxParentActionHandler"
 		  parent="sendSignalToProcessActionHandler"
-		  p:actorName="CASH_BOX_PROCESS"
+		  p:actorName="CASHBOX_PROCESS"
 		  p:cashboxService-ref="cashboxService" />
 
-	<bean id="sendSignalToCashBoxParentCloseTradingDay"
-		  parent="sendSignalToCashBoxParentActionHandler"
+	<bean id="sendSignalToCashboxParentCloseTradingDay"
+		  parent="sendSignalToCashboxParentActionHandler"
 		  p:message="Close trading day" />
 
-	<bean id="sendSignalToCashBoxParentApprove"
-		  parent="sendSignalToCashBoxParentActionHandler"
+	<bean id="sendSignalToCashboxParentApprove"
+		  parent="sendSignalToCashboxParentActionHandler"
 		  p:message="Approve" />
 
-	<bean id="sendSignalToCashBoxParentCancel"
-		  parent="sendSignalToCashBoxParentActionHandler"
+	<bean id="sendSignalToCashboxParentCancel"
+		  parent="sendSignalToCashboxParentActionHandler"
 		  p:message="Cancel" />
 
 	<bean id="sendSignalToPaymentPointParentActionHandler"

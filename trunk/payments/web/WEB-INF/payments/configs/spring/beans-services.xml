@@ -304,11 +304,11 @@
 	<bean id="paymentPointTradingDayService"
 		  class="org.flexpay.payments.service.impl.PaymentPointTradingDay"
 		  parent="tradingDayService"
-		  p:cashboxTradingDayService-ref="cashBoxTradingDayService"
+		  p:cashboxTradingDayService-ref="cashboxTradingDayService"
 		  p:cashboxService-ref="cashboxService" />
 
-	<bean id="cashBoxTradingDayService"
-		  class="org.flexpay.payments.service.impl.CashBoxTradingDay"
+	<bean id="cashboxTradingDayService"
+		  class="org.flexpay.payments.service.impl.CashboxTradingDay"
 		  parent="tradingDayService" />
 	
 </beans>

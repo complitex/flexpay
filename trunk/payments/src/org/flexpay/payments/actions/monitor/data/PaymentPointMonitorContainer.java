@@ -11,10 +11,9 @@ public class PaymentPointMonitorContainer {
     private Long paymentsCount;
     private PaymentCollectorTradingDayConstants.Statuses status;
     private String totalSum;
-    private String cashBox;
+    private String cashbox;
     private String cashierFIO;
     private String lastPayment;
-    private String action;
 
 	public Long getId() {
 		return id;
@@ -56,12 +55,12 @@ public class PaymentPointMonitorContainer {
 		this.totalSum = totalSum;
 	}
 
-	public String getCashBox() {
-		return cashBox;
+	public String getCashbox() {
+		return cashbox;
 	}
 
-	public void setCashBox(String cashBox) {
-		this.cashBox = cashBox;
+	public void setCashbox(String cashbox) {
+		this.cashbox = cashbox;
 	}
 
 	public String getCashierFIO() {
@@ -80,14 +79,6 @@ public class PaymentPointMonitorContainer {
 		this.lastPayment = lastPayment;
 	}
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
     @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
@@ -96,10 +87,9 @@ public class PaymentPointMonitorContainer {
 				append("paymentsCount", paymentsCount).
 				append("status", status).
 				append("totalSum", totalSum).
-				append("cashBox", cashBox).
+				append("cashbox", cashbox).
 				append("cashierFIO", cashierFIO).
 				append("lastPayment", lastPayment).
-                append("action", action).
 				toString();
 	}
 

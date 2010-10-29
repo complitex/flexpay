@@ -89,7 +89,7 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 	@Test
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
 		processManager.deployProcessDefinition("PaymentPointTradingDay", true);
-		processManager.deployProcessDefinition("CashBoxTradingDay", true);
+		processManager.deployProcessDefinition("CashboxTradingDay", true);
 
 		final Long currentPaymentPointId = 1L;
 
@@ -110,7 +110,7 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 
 		assertEquals("Trading day for payment point did not start", processId, paymentPoint.getTradingDayProcessInstanceId().longValue());
 
-		List<Cashbox> cashBoxes = cashboxService.findCashboxesForPaymentPoint(currentPaymentPointId);
+		List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(currentPaymentPointId);
 
 		Process process = processManager.getProcessInstanceInfo(processId);
 //		Long variable = (Long)process.getParameters().get("variable");
@@ -118,43 +118,43 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 //		ProcessInstance processInstance = processManager.getProcessInstance(process.getProcessInstaceId());
 //		log.debug("sub-process={}", processInstance.getRootToken().getSubProcessInstance());
 
-//		getState(cashBoxes);
-		sendSignal(cashBoxes, AccounterAssignmentHandler.ACCOUNTER, "Пометить на закрытие");
+//		getState(cashboxes);
+		sendSignal(cashboxes, AccounterAssignmentHandler.ACCOUNTER, "Пометить на закрытие");
 //		Thread.sleep(5000);
-//		getState(cashBoxes);
-		sendSignal(cashBoxes, AccounterAssignmentHandler.ACCOUNTER, "Подтвердить закрытие");
+//		getState(cashboxes);
+		sendSignal(cashboxes, AccounterAssignmentHandler.ACCOUNTER, "Подтвердить закрытие");
 //		Thread.sleep(5000);
-//		getState(cashBoxes);
-		sendSignal(cashBoxes, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, "Принять сообщение");
+//		getState(cashboxes);
+		sendSignal(cashboxes, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, "Принять сообщение");
 
 		do {
 //			Thread.sleep(5000);
 			log.debug("Wait process " + processId);
-			getState(cashBoxes);
+			getState(cashboxes);
 		} while (!isProcessCompleted(processId));
 	}
 
-	private void getState(List<Cashbox> cashBoxes) {
-		for (Cashbox cashBox : cashBoxes) {
-			getCashBoxState(cashBox, AccounterAssignmentHandler.ACCOUNTER);
-			getCashBoxState(cashBox, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR);
+	private void getState(List<Cashbox> cashboxes) {
+		for (Cashbox cashbox : cashboxes) {
+			getCashboxState(cashbox, AccounterAssignmentHandler.ACCOUNTER);
+			getCashboxState(cashbox, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR);
 		}
 	}
 
-	private void getCashBoxState(Cashbox cashBox, String user) {
-		Set<?> transitions = TaskHelper.getTransitions(processManager, user, cashBox.getTradingDayProcessInstanceId(), null, log);
+	private void getCashboxState(Cashbox cashbox, String user) {
+		Set<?> transitions = TaskHelper.getTransitions(processManager, user, cashbox.getTradingDayProcessInstanceId(), null, log);
 
 		StringBuilder transitionNames = new StringBuilder();
-		transitionNames.append("Cash box ").append(cashBox.getId()).append(" user ").append(user).append(":");
+		transitionNames.append("Cashbox ").append(cashbox.getId()).append(" user ").append(user).append(":");
 		for (Object transition : transitions) {
 			transitionNames.append(((Transition) transition).getName()).append(",");
 		}
 		log.debug(transitionNames.toString());
 	}
 
-	private void sendSignal(List<Cashbox> cashBoxes, String user, String action) throws InterruptedException {
-		for (Cashbox cashBox : cashBoxes) {
-			TaskHelper.getTransitions(processManager, user, cashBox.getTradingDayProcessInstanceId(), action, log);
+	private void sendSignal(List<Cashbox> cashboxes, String user, String action) throws InterruptedException {
+		for (Cashbox cashbox : cashboxes) {
+			TaskHelper.getTransitions(processManager, user, cashbox.getTradingDayProcessInstanceId(), action, log);
 			Thread.sleep(5000);
 		}
 	}

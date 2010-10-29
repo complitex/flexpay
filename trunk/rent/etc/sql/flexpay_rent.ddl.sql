@@ -1127,7 +1127,7 @@
         register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
         reference_operation_id bigint comment 'Optional operation reference',
-        cashbox_id bigint comment 'Cash box',
+        cashbox_id bigint comment 'Cashbox',
         primary key (id)
     ) comment='Operations';
 

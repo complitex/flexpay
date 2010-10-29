@@ -37,13 +37,13 @@ public class UserPaymentParametersEditAction extends FPActionSupport {
 		if (isSubmit() && getText("common.save").equals(submitted)) {
 			paymentsUserPreferences.setPaymentCollectorId(preference.getPaymentCollectorId());
 			paymentsUserPreferences.setPaymentPointId(preference.getPaymentPointId());
-			paymentsUserPreferences.setCashBoxId(preference.getCashBoxId());
+			paymentsUserPreferences.setCashboxId(preference.getCashboxId());
 
 			userPreferencesService.saveAdvancedData(paymentsUserPreferences);
 			return REDIRECT_SUCCESS;
 		}
 
-		preference.setCashBoxId(paymentsUserPreferences.getCashBoxId());
+		preference.setCashboxId(paymentsUserPreferences.getCashboxId());
 		preference.setPaymentPointId(paymentsUserPreferences.getPaymentPointId());
 		preference.setPaymentCollectorId(paymentsUserPreferences.getPaymentCollectorId());
 

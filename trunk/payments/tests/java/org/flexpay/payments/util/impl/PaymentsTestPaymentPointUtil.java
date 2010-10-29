@@ -72,7 +72,7 @@ public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
 
     @Nullable
     @Override
-    public Cashbox addCashBox(@NotNull PaymentPoint paymentPoint, @NotNull String cashboxName) {
+    public Cashbox addCashbox(@NotNull PaymentPoint paymentPoint, @NotNull String cashboxName) {
         return cashboxUtil.create(paymentPoint, cashboxName);
     }
 

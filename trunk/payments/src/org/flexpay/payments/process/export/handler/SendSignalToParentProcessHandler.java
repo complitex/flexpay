@@ -11,12 +11,13 @@ public class SendSignalToParentProcessHandler implements DecisionHandler {
 
 	@Override
 	public String decide(ExecutionContext executionContext) throws Exception {
-		Integer closedCountCashBoxes = (Integer)executionContext.getContextInstance().getVariable("closedCountCashBoxes");
 
-		if (closedCountCashBoxes > 1) {
+		Integer closedCountCashboxes = (Integer) executionContext.getContextInstance().getVariable("closedCountCashboxes");
+
+		if (closedCountCashboxes > 1) {
 			log.debug("wait");
 			return "wait";
-		} else if (closedCountCashBoxes == 1) {
+		} else if (closedCountCashboxes == 1) {
 			log.debug("close");
 			return "close";
 		}

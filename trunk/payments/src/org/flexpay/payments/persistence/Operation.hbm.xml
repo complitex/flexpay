@@ -125,7 +125,7 @@
 					 class="org.flexpay.orgs.persistence.Cashbox"
 					 foreign-key="FK_orgs_cashboxes_tbl_cashbox_id">
 			<column name="cashbox_id" not-null="false">
-				<comment>Cash box</comment>
+				<comment>Cashbox</comment>
 			</column>
 		</many-to-one>
 		<set name="documents" inverse="true" cascade="all-delete-orphan">

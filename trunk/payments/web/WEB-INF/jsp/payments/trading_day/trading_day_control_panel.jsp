@@ -19,15 +19,19 @@
             </s:iterator>
         </s:else>
         
-    </s:if><s:else>
-        <s:if test="open">
-            <input type="button" value="<s:text name="common.close" />"
-                   onclick="tradingDay(<s:property value="@org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction@COMMAND_STOP" />);" />
+    </s:if><s:elseif test="paymentPoint != null || paymentCollector != null">
+
+        <s:if test="availableCommands == null || availableCommands.isEmpty()">
+            <br/>
+            <s:text name="payments.payment_point.detail.no_action_available" />
+            <br/>
         </s:if><s:else>
-            <input type="button" value="<s:text name="common.open" />"
-                   onclick="tradingDay(<s:property value="@org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction@COMMAND_OPEN" />);" />
+            <s:iterator value="availableCommands" id="command">
+                <input type="button" onclick="tradingDay(<s:property value="#command.value" />);" value="<s:property value="#command.name.transitionName" />" />
+            </s:iterator>
         </s:else>
-    </s:else>
+
+    </s:elseif>
 </fieldset>
 
 <script type="text/javascript">

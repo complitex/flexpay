@@ -17,7 +17,7 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
 		userPreferences.setPaymentPointId(getId(ctx.getStringAttribute("flexpayPaymentsPaymentPointId")));
 		userPreferences.setPaymentCollectorId(getId(ctx.getStringAttribute("flexpayPaymentsPaymentCollectorId")));
-		userPreferences.setCashBoxId(getId(ctx.getStringAttribute("flexpayPaymentsCashBoxId")));
+		userPreferences.setCashboxId(getId(ctx.getStringAttribute("flexpayPaymentsCashboxId")));
 
 		return preferences;
 	}
@@ -36,7 +36,7 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 
 	@Override
 	public void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences) {
-		//To change body of implemented methods use File | Settings | File Templates.
+
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
 		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentPointId", userPreferences.getPaymentPointIdStr());
 		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentCollectorId", userPreferences.getPaymentCollectorIdStr());
-		setSingleAttribute(ctx, preferences, "flexpayPaymentsCashBoxId", userPreferences.getCashBoxIdStr());
+		setSingleAttribute(ctx, preferences, "flexpayPaymentsCashboxId", userPreferences.getCashboxIdStr());
 	}
 
 	/**

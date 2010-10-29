@@ -34,8 +34,8 @@ public interface ExportJobParameterNames {
 	final static String CURRENT_INDEX_PAYMENT_POINT = "currentIndexPaymentPoint";
 	final static String PAYMENT_POINTS = "paymentPoints";
 
-	final static String CURRENT_INDEX_CASH_BOX = "currentIndexCashBox";
-	final static String CASH_BOXES = "cashBoxes";
+	final static String CURRENT_INDEX_CASHBOX = "currentIndexCashbox";
+	final static String CASHBOXES = "cashboxes";
 
 	final static String PAYMENT_COLLECTOR_ID = "paymentCollectorId";
 }

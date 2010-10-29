@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%" class="cash_boxes_list">
+<table cellpadding="3" cellspacing="1" border="0" width="100%" class="cashboxes_list">
     <tr>
         <td colspan="6">
             <%@include file="/WEB-INF/jsp/payments/trading_day/trading_day_control_panel.jsp"%>
@@ -14,12 +14,12 @@
     </tr>
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.cash_box" /></td>
-        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.status" /></td>
-        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.sum" /></td>
-        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.FIO_cashier" /></td>
-        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.last_payment" /></td>
-        <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.payments_count" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cashboxes.list.cashbox" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cashboxes.list.status" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cashboxes.list.sum" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cashboxes.list.FIO_cashier" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cashboxes.list.last_payment" /></td>
+        <td class="th"><s:text name="payments.payment_point.detail.cashboxes.list.payments_count" /></td>
     </tr>
     <s:iterator value="cashboxes">
         <tr>

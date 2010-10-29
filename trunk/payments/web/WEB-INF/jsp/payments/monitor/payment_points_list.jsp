@@ -21,12 +21,9 @@
         <td class="th"><s:text name="payments.payment_points.list.payments_count" /></td>
         <td class="th"><s:text name="payments.payment_points.list.payment_point_status" /></td>
         <td class="th"><s:text name="payments.payment_points.list.payment_point_sum" /></td>
-        <td class="th"><s:text name="payments.payment_points.list.cash_box" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.cashbox" /></td>
         <td class="th"><s:text name="payments.payment_points.list.FIO_cashier" /></td>
         <td class="th"><s:text name="payments.payment_points.list.last_payment" /></td>
-        <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
-            <td class="th"><s:text name="payments.payment_points.list.action" /></td>
-        </sec:authorize>
     </tr>
     <s:iterator value="paymentPoints" status="iterStatus">
         <tr>
@@ -39,16 +36,9 @@
             <td><s:property value="paymentsCount" /></td>
             <td><s:property value="status" /></td>
             <td><s:property value="totalSum" /></td>
-            <td><s:property value="cashBox" /></td>
+            <td><s:property value="cashbox" /></td>
             <td><s:property value="cashierFIO" /></td>
             <td><s:property value="lastPayment" /></td>
-            <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
-                <td>
-                    <a href="#" onclick="enableDisablePaymentPoint(<s:property value="id" />, '<s:property value="action" />');">
-                        <s:text name="%{action}" />
-                    </a>
-                </td>
-            </sec:authorize>
         </tr>
     </s:iterator>
     <tr>

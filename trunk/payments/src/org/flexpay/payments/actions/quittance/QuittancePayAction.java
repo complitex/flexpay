@@ -19,7 +19,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private Long operationId;
 
-	private TradingDay<Cashbox> cashBoxTradingDayService;
+	private TradingDay<Cashbox> cashboxTradingDayService;
 
 	@NotNull
 	@Override
@@ -39,14 +39,14 @@ public class QuittancePayAction extends PaymentOperationAction {
 		}
 
 		Cashbox cashbox = getCashbox();
-		final Long cashBoxProcessId = cashbox.getTradingDayProcessInstanceId();
+		final Long cashboxProcessId = cashbox.getTradingDayProcessInstanceId();
 
-		if (cashBoxProcessId == null || cashBoxProcessId == 0) {
-			log.debug("TradingDaySchedulingJob process id not found for Cash box id = {}", cashbox.getPaymentPoint().getId());
+		if (cashboxProcessId == null || cashboxProcessId == 0) {
+			log.debug("TradingDaySchedulingJob process id not found for Cashbox id = {}", cashbox.getPaymentPoint().getId());
             return TRADING_DAY_CLOSED;
 		} else {
-			log.debug("Found process id {} for cashbox {}", cashBoxProcessId, cashboxId);
-            if (!cashBoxTradingDayService.isOpened(cashbox.getTradingDayProcessInstanceId())) {
+			log.debug("Found process id {} for cashbox {}", cashboxProcessId, cashboxId);
+            if (!cashboxTradingDayService.isOpened(cashbox.getTradingDayProcessInstanceId())) {
                 return TRADING_DAY_CLOSED;
             }
 		}
@@ -112,7 +112,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	@Required
-	public void setCashBoxTradingDayService(TradingDay<Cashbox> cashBoxTradingDayService) {
-		this.cashBoxTradingDayService = cashBoxTradingDayService;
+	public void setCashboxTradingDayService(TradingDay<Cashbox> cashboxTradingDayService) {
+		this.cashboxTradingDayService = cashboxTradingDayService;
 	}
 }
