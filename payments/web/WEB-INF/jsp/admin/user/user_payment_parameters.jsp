@@ -9,7 +9,7 @@
 
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="admin.user.name" />:</td>
-			<td class="col"><s:property value="%{preference.username}" /></td>
+			<td class="col"><s:property value="preference.username" /></td>
 		</tr>
 
     <tr valign="top" class="cols_1">
@@ -23,8 +23,8 @@
 		</tr>
 
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="admin.payment.parameters.cash_box_id" />:</td>
-			<td class="col"><s:textfield name="preference.cashBoxId" /></td>
+			<td class="col"><s:text name="admin.payment.parameters.cashbox_id" />:</td>
+			<td class="col"><s:textfield name="preference.cashboxId" /></td>
 		</tr>
 
 		<tr valign="middle" class="cols_1">

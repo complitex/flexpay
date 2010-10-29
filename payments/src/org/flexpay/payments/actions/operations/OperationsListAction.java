@@ -1,19 +1,15 @@
 package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ProcessState;
-import org.flexpay.common.process.sorter.ProcessSorterByEndDate;
 import org.flexpay.common.service.CurrencyInfoService;
-import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport;
@@ -24,8 +20,6 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorterById;
-import org.flexpay.payments.process.export.ExportJobParameterNames;
-import org.flexpay.payments.process.export.TradingDaySchedulingJob;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
@@ -35,6 +29,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +38,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
 
 public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Operation> implements InitializingBean {
@@ -151,7 +147,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                 Date fStart = beginTimeFilter.setTime(now());
                 Date end = endTimeFilter.setTime(now());
                 Date begin = pStart.compareTo(fStart) > 0 ? pStart : fStart;
-                if (SecurityUtil.isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
+                if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
                     begin = beginTimeFilter.setTime(beginDateFilter.getDate());
                     end = endTimeFilter.setTime(endDateFilter.getDate());
                     tradingDayProcessId = null;
@@ -170,8 +166,15 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
 			if (tradingDayProcess != null) {
 
-				Date pStart = tradingDayProcess.getProcessStartDate();
-				Date pEnd = tradingDayProcess.getProcessEndDate();
+                Date pStart;
+                Date pEnd;
+                try {
+                    pStart = tradingDayProcess.getProcessStartDate() == null ? DateUtil.parseDate("2000-01-01") : tradingDayProcess.getProcessStartDate();
+                    pEnd = tradingDayProcess.getProcessEndDate() == null ? DateUtil.parseDate("2100-12-31") : tradingDayProcess.getProcessEndDate();
+                } catch (ParseException e) {
+                    log.error("Can't parse date", e);
+                    return;
+                }
 				Date fStart = beginTimeFilter.setTime(now());
 				Date fEnd = endTimeFilter.setTime(now());
 

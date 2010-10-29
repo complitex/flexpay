@@ -9,6 +9,7 @@ import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
+import org.flexpay.payments.actions.monitor.data.Command;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
@@ -22,12 +23,14 @@ import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_UNMARK_CLOSE_DAY;
+import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_MARK_CLOSE_DAY;
 import static org.flexpay.payments.util.MonitorUtils.*;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.PROCESS_STATUS;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.*;
 
 public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActionSupport<CashboxMonitorContainer> {
 
+    private List<Command> availableCommands;
 	private PaymentPoint paymentPoint = new PaymentPoint();
 	private List<CashboxMonitorContainer> cashboxes = list();
     private Statuses processStatus = Statuses.CLOSED;
@@ -62,6 +65,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 
         Date startDate = new Date();
         Date finishDate = new Date();
+        availableCommands = list();
 
         if (paymentPoint.getTradingDayProcessInstanceId() != null) {
 
@@ -74,6 +78,13 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
                 processStatus = (Statuses) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }
 
+        }
+
+        if (Statuses.WAIT_APPROVE.equals(processStatus)) {
+            availableCommands.add(new Command(Transitions.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
+            availableCommands.add(new Command(Transitions.UNMARK_CLOSE_DAY, COMMAND_UNMARK_CLOSE_DAY));
+        } else if (Statuses.OPEN.equals(processStatus)) {
+            availableCommands.add(new Command(Transitions.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
         }
 
         if (log.isDebugEnabled()) {
@@ -138,8 +149,8 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
         return processStatus;
     }
 
-    public boolean isOpen() {
-        return Statuses.OPEN.equals(processStatus);
+    public List<Command> getAvailableCommands() {
+        return availableCommands;
     }
 
     @Required

@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 public class PaymentCollectorAssignmentHandler implements AssignmentHandler {
 
+    protected Logger log = LoggerFactory.getLogger(getClass());
+
 	private static final long serialVersionUID = 1L;
 
     public final static String PAYMENT_COLLECTOR = "PAYMENT_COLLECTOR";
-
-	protected Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public void assign(Assignable assignable, ExecutionContext executionContext) {

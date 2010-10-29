@@ -115,7 +115,7 @@ public interface OperationService {
 	 * List last operations which have been created between <code>beginDate</code> and <code>endDate</code> NOTE:
 	 * operations with status DELETED are not included!
 	 *
-	 * @param cashbox   cash box
+	 * @param cashbox   cashbox
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date
 	 * @return list of operations
@@ -188,7 +188,7 @@ public interface OperationService {
 	 * Returns list of operations which contains documents suitable to search criterias
 	 *
      * @param operationSorter operation sorter
-	 * @param cashbox	   cash box which registered operation
+	 * @param cashbox	   cashbox which registered operation
 	 * @param serviceTypeId document service type id
 	 * @param begin		 lower bound for document creation date
 	 * @param end		   upper bound for document creation date
@@ -207,7 +207,7 @@ public interface OperationService {
 	 *
      * @param operationSorter operation sorter
      * @param tradingDayProcessId trading day process id
-	 * @param cashbox	 cash box which registered operation
+	 * @param cashbox	 cashbox which registered operation
 	 * @param begin	   lower bound for operation creation date
 	 * @param end		 upper bound for operation creation date
 	 * @param minimalSum minimal operation sum

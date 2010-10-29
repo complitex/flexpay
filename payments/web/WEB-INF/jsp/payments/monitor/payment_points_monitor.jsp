@@ -35,12 +35,4 @@
         });
     }
 
-    function enableDisablePaymentPoint(id, action) {
-        FP.serviceElements("<s:url action="paymentPointEnableDisable" includeParams="none" />", null, pagerAjax,
-                            {params:{
-                                "paymentPoint.id":id,
-                                action:action
-                            }});
-    }
-
 </script>

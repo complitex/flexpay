@@ -41,7 +41,7 @@ public class PaymentsTestCashboxUtil implements TestCashboxUtil {
         try {
             return cashboxService.create(cashbox);
         } catch (FlexPayExceptionContainer flexPayExceptionContainer) {
-            log.error("Did not create cash box", flexPayExceptionContainer);
+            log.error("Did not create cashbox", flexPayExceptionContainer);
         }
         return null;
     }

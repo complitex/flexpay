@@ -40,7 +40,7 @@ public interface PaymentStatisticsDaoExt {
     /**
 	 * Build payment operations statistics
 	 *
-	 * @param cashboxId Cash box
+	 * @param cashboxId Cashbox id
 	 * @param begin		  Report period begin timestamp
 	 * @param end			Report period end timestamp
 	 * @return List of payment operation statistics

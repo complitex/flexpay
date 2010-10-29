@@ -6,7 +6,7 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 
 	private Long paymentPointId;
 	private Long paymentCollectorId;
-	private Long cashBoxId;
+	private Long cashboxId;
 
 	protected PaymentsUserPreferences() {
 	}
@@ -35,15 +35,15 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 		this.paymentCollectorId = paymentCollectorId;
 	}
 
-	public String getCashBoxIdStr() {
-		return cashBoxId == null ? "0" : cashBoxId.toString();
+	public String getCashboxIdStr() {
+		return cashboxId == null ? "0" : cashboxId.toString();
 	}
 
-	public Long getCashBoxId() {
-		return cashBoxId;
+	public Long getCashboxId() {
+		return cashboxId;
 	}
 
-	public void setCashBoxId(Long cashBoxId) {
-		this.cashBoxId = cashBoxId;
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
 	}
 }

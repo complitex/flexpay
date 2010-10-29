@@ -7,11 +7,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface TestPaymentPointUtil {
+
     @Nullable
     PaymentPoint create(@NotNull Organization registerOrganization);
 
     @Nullable
-    Cashbox addCashBox(@NotNull PaymentPoint paymentPoint, @NotNull String cashboxName);
+    Cashbox addCashbox(@NotNull PaymentPoint paymentPoint, @NotNull String cashboxName);
 
     void delete(@NotNull PaymentPoint paymentPoint);
 }

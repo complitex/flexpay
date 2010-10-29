@@ -4,8 +4,8 @@
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
-	<swimlane name="CashBoxProcess">
-        <assignment actor-id="CASH_BOX_PROCESS" />
+	<swimlane name="CashboxProcess">
+        <assignment actor-id="CASHBOX_PROCESS" />
     </swimlane>
 
 	<swimlane name="JobManager">
@@ -54,63 +54,63 @@
 				<factoryKey>jbpmConfiguration</factoryKey>
 			</action>
 		</event>
-		<transition to="GetCashBoxes" name="next" />
+		<transition to="GetCashboxes" name="next" />
 		<transition to="end-state" name="error" />
 	</decision>
 
-	<decision name="GetCashBoxes">
+	<decision name="GetCashboxes">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
 		<event type="node-enter">
 			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-				<targetBean>getCashBoxesActionHandler</targetBean>
+				<targetBean>getCashboxesActionHandler</targetBean>
 				<factoryKey>jbpmConfiguration</factoryKey>
 			</action>
 		</event>
-		<transition to="SelectNextCashBox" name="next" />
+		<transition to="SelectNextCashbox" name="next" />
 	</decision>
 
-	<decision name="SelectNextCashBox">
+	<decision name="SelectNextCashbox">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
 		<event type="node-enter">
 			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-				<targetBean>selectNextCashBoxActionHandler</targetBean>
+				<targetBean>selectNextCashboxActionHandler</targetBean>
 				<factoryKey>jbpmConfiguration</factoryKey>
 			</action>
 		</event>
 		<event type="node-leave">
 			<script>
-				<variable name="processingCashBox" mapped-name="processingCashBox" access="write" />
-				<variable name="closedCountCashBoxes" mapped-name="closedCountCashBoxes" access="write" />
-				<variable name="approvedClosingCountCashBoxes" mapped-name="approvedClosingCountCashBoxes" access="write" />
+				<variable name="processingCashbox" mapped-name="processingCashbox" access="write" />
+				<variable name="closedCountCashboxes" mapped-name="closedCountCashboxes" access="write" />
+				<variable name="approvedClosingCountCashboxes" mapped-name="approvedClosingCountCashboxes" access="write" />
 				<variable name="START_TIME" mapped-name="startTime" access="write" />
 				<expression>
-					processingCashBox = false;
-					closedCountCashBoxes = 0;
-					approvedClosingCountCashBoxes = 0;
+					processingCashbox = false;
+					closedCountCashboxes = 0;
+					approvedClosingCountCashboxes = 0;
 					startTime = org.flexpay.common.util.DateUtil.now();
 				</expression>
 			</script>
 		</event>
-		<transition to="StartCashBoxTradingDay" name="next" />
+		<transition to="StartCashboxTradingDay" name="next" />
 		<transition to="end-state" name="end" />
 	</decision>
 
-	<fork name="StartCashBoxTradingDay">
-		<transition to="CashBoxTradingDay" name="start cash box trading day" />
-		<transition to="SleepThread" name="select next cash box" />
+	<fork name="StartCashboxTradingDay">
+		<transition to="CashboxTradingDay" name="start cashbox trading day" />
+		<transition to="SleepThread" name="select next cashbox" />
 	</fork>
 	
-	<process-state name="CashBoxTradingDay">
-		<sub-process name="CashBoxTradingDay" binding='late' />
-		<variable name="cashBoxes" access="read" />
-		<variable name="currentIndexCashBox" access="read" />
+	<process-state name="CashboxTradingDay">
+		<sub-process name="CashboxTradingDay" binding='late' />
+		<variable name="cashboxes" access="read" />
+		<variable name="currentIndexCashbox" access="read" />
 		<variable name="_PROCESS_MANAGER_SECURITY_CONTEXT" access="read" />
-		<transition to="WaitCashBoxTradingDay" />
+		<transition to="WaitCashboxTradingDay" />
 		<event type="subprocess-created">
 			<script>
-				<variable name="processingCashBox" mapped-name="processingCashBox" access="read,write" />
+				<variable name="processingCashbox" mapped-name="processingCashbox" access="read,write" />
 				<expression>
-					processingCashBox = true;
+					processingCashbox = true;
 				</expression>
 			</script>
 		</event>
@@ -125,60 +125,60 @@
 
 	<decision name="continueProcess">
 		<transition to="SleepThread">
-			<condition expression="#{processingCashBox == false}" />
+			<condition expression="#{processingCashbox == false}" />
 		</transition>
-		<transition to="SelectNextCashBox2">
-			<condition expression="#{processingCashBox == true}" />
+		<transition to="SelectNextCashbox2">
+			<condition expression="#{processingCashbox == true}" />
 		</transition>
 	</decision>
 
-	<decision name="SelectNextCashBox2">
+	<decision name="SelectNextCashbox2">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
 		<event type="node-enter">
 			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-				<targetBean>selectNextCashBoxActionHandler</targetBean>
+				<targetBean>selectNextCashboxActionHandler</targetBean>
 				<factoryKey>jbpmConfiguration</factoryKey>
 			</action>
 		</event>
 		<event type="node-leave">
 			<script>
-				<variable name="processingCashBox" mapped-name="processingCashBox" access="read,write" />
+				<variable name="processingCashbox" mapped-name="processingCashbox" access="read,write" />
 				<expression>
-					processingCashBox = false;
+					processingCashbox = false;
 				</expression>
 			</script>
 		</event>
-		<transition to="StartCashBoxTradingDay" name="next" />
+		<transition to="StartCashboxTradingDay" name="next" />
 		<transition to="WaitSubProcessSignal" name="end" />
 	</decision>
 
 	<task-node name="WaitSubProcessSignal">
-		<task name="ClosePaymentPointTradingDay" swimlane="CashBoxProcess">
+		<task name="ClosePaymentPointTradingDay" swimlane="CashboxProcess">
             <!--<timer duedate="#{START_TIME} + 1 business day" transition="CloseTradingDayByTimer" />-->
         </task>
         <transition to="SendSignalToParentProcess" name="Close trading day" >
 			<script>
-				<variable name="closedCountCashBoxes" mapped-name="closedCountCashBoxes" access="read,write" />
+				<variable name="closedCountCashboxes" mapped-name="closedCountCashboxes" access="read,write" />
 				<expression>
-					closedCountCashBoxes++;
+					closedCountCashboxes++;
 				</expression>
 			</script>
 		</transition>
         <transition to="SendSignalToParentProcess" name="Cancel" >
 			<script>
-				<variable name="closedCountCashBoxes" mapped-name="closedCountCashBoxes" access="read,write" />
+				<variable name="closedCountCashboxes" mapped-name="closedCountCashboxes" access="read,write" />
 				<expression>
-					closedCountCashBoxes--;
+					closedCountCashboxes--;
 				</expression>
 			</script>
 		</transition>
-        <transition to="ApprovedCashBoxTradingDay" name="Approve">
+        <transition to="ApprovedCashboxTradingDay" name="Approve">
 			<script>
-				<variable name="closedCountCashBoxes" mapped-name="closedCountCashBoxes" access="read,write" />
-				<variable name="approvedClosingCountCashBoxes" mapped-name="approvedClosingCountCashBoxes" access="read,write" />
+				<variable name="closedCountCashboxes" mapped-name="closedCountCashboxes" access="read,write" />
+				<variable name="approvedClosingCountCashboxes" mapped-name="approvedClosingCountCashboxes" access="read,write" />
 				<expression>
-					closedCountCashBoxes--;
-					approvedClosingCountCashBoxes++;
+					closedCountCashboxes--;
+					approvedClosingCountCashboxes++;
 				</expression>
 			</script>
 		</transition>
@@ -244,14 +244,14 @@
 		<transition to="SendSignalToPaymentPointParentProcessCancel" name="process" />
 	</task-node>
 
-	<decision name="ApprovedCashBoxTradingDay" async="true">
+	<decision name="ApprovedCashboxTradingDay" async="true">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
 		<event type="node-enter">
 			<action name="task" config-type="bean" class="org.flexpay.common.process.handler.CheckArrayEndingJbpmHandlerProxy">
 				<targetBean>checkArrayEndingActionHandler</targetBean>
 				<factoryKey>jbpmConfiguration</factoryKey>
-				<arrayName>cashBoxes</arrayName>
-				<arraySizeName>approvedClosingCountCashBoxes</arraySizeName>
+				<arrayName>cashboxes</arrayName>
+				<arraySizeName>approvedClosingCountCashboxes</arraySizeName>
 			</action>
 		</event>
 		<transition to="sendSignalToPaymentPointParentApproveJob" name="end" />
@@ -283,7 +283,7 @@
 		<transition to="SendSignalToParentProcessPaymentPointApprove" name="process" />
 	</task-node>
 -->
-	<join name="WaitCashBoxTradingDay">
+	<join name="WaitCashboxTradingDay">
 		<transition to="end-state" />
 	</join>
 

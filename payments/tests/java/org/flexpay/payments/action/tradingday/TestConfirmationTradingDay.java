@@ -31,11 +31,11 @@ public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
     @Test
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
 
-		processManager.deployProcessDefinition("CashBoxTradingDay", true);
+		processManager.deployProcessDefinition("CashboxTradingDay", true);
 
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		parameters.put(ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT, 0);
-        long processId = processManager.createProcess("CashBoxTradingDay", parameters);
+        long processId = processManager.createProcess("CashboxTradingDay", parameters);
         assertTrue(processId > 0);
 
         TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Пометить на закрытие", log);

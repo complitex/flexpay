@@ -74,7 +74,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private MasterIndexService masterIndexService;
     private PersonService personService;
     private RegistryService registryService;
-	private TradingDay<Cashbox> cashBoxTradingDayService;
+	private TradingDay<Cashbox> cashboxTradingDayService;
 
     @NotNull
     @Override
@@ -162,16 +162,16 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.warn("Can't get payment point with id {} from DB", cashbox.getPaymentPointStub().getId());
             throw new FlexPayException("Can't get payment point with id " + cashbox.getPaymentPointStub().getId() + " from DB");
         }
-        final Long cashBoxProcessId = cashbox.getTradingDayProcessInstanceId();
+        final Long cashboxProcessId = cashbox.getTradingDayProcessInstanceId();
 
-        if (cashBoxProcessId == null || cashBoxProcessId == 0) {
-            log.debug("TradingDaySchedulingJob process id not found for cash box id = {}", cashbox.getId());
+        if (cashboxProcessId == null || cashboxProcessId == 0) {
+            log.debug("TradingDaySchedulingJob process id not found for cashbox id = {}", cashbox.getId());
             response.setStatus(Status.REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED);
             return response;
         } else {
-            log.debug("Found process id {} for cashbox {}", cashBoxProcessId, cashbox.getId());
+            log.debug("Found process id {} for cashbox {}", cashboxProcessId, cashbox.getId());
 
-            if (!cashBoxTradingDayService.isOpened(cashBoxProcessId)) {
+            if (!cashboxTradingDayService.isOpened(cashboxProcessId)) {
                 response.setStatus(Status.REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED);
                 return response;
             }

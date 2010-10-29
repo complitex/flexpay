@@ -56,7 +56,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private MasterIndexService masterIndexService;
 	private CorrectionsService correctionsService;
 	private ServiceTypesMapper serviceTypesMapper;
-	private TradingDay<Cashbox> cashBoxTradingDayService;
+	private TradingDay<Cashbox> cashboxTradingDayService;
 
 	@NotNull
     @Override
@@ -75,11 +75,11 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			Long cashboxProcessId = cashbox.getTradingDayProcessInstanceId();
 
             if (cashboxProcessId == null || cashboxProcessId == 0) {
-                log.debug("TradingDaySchedulingJob process id not found for cash box with id = {}", cashboxId);
+                log.debug("TradingDaySchedulingJob process id not found for cashbox with id = {}", cashboxId);
                 addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
             } else {
                 log.debug("Found process id {} for cashbox {}", cashboxProcessId, cashboxId);
-                if (!cashBoxTradingDayService.isOpened(cashboxProcessId)) {
+                if (!cashboxTradingDayService.isOpened(cashboxProcessId)) {
                     addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
                 }
             }
@@ -369,8 +369,8 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	}
 
 	@Required
-	public void setCashBoxTradingDayService(TradingDay<Cashbox> cashBoxTradingDayService) {
-		this.cashBoxTradingDayService = cashBoxTradingDayService;
+	public void setCashboxTradingDayService(TradingDay<Cashbox> cashboxTradingDayService) {
+		this.cashboxTradingDayService = cashboxTradingDayService;
 	}
 
 	public static class ServiceFullIndexUtil {

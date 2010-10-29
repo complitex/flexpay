@@ -5,6 +5,7 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
+import org.flexpay.payments.actions.monitor.data.Command;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
@@ -20,14 +21,16 @@ import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.actions.monitor.PaymentCollectorEnableDisableAction.DISABLE;
-import static org.flexpay.payments.actions.monitor.PaymentCollectorEnableDisableAction.ENABLE;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
+import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_CLOSE;
+import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_OPEN;
+import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
 import static org.flexpay.payments.util.MonitorUtils.*;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.PROCESS_STATUS;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.*;
 
 public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerActionSupport<PaymentPointMonitorContainer> {
 
+    private List<Command> availableCommands;
     private List<PaymentPointMonitorContainer> paymentPoints;
     private Statuses processStatus = Statuses.CLOSED;
 
@@ -84,7 +87,6 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
             container.setId(paymentPoint.getId());
             container.setName(paymentPoint.getName(getLocale()));
             container.setStatus(status);
-            container.setAction(tradingDayProcess == null ? ENABLE : DISABLE);
 
             List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(stub(paymentPoint), startDate, finishDate);
             container.setPaymentsCount(getPaymentsCount(statistics));
@@ -93,7 +95,7 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
             Operation operation = operationService.getLastPaymentOperationForPaymentPoint(stub(paymentPoint), startDate, finishDate);
             if (operation != null) {
                 container.setCashierFIO(operation.getCashierFio());
-                container.setCashBox(operation.getCashbox().getName(getLocale()));
+                container.setCashbox(operation.getCashbox().getName(getLocale()));
                 container.setLastPayment(formatTime.format(operation.getCreationDate()));
             }
 
@@ -102,6 +104,7 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
         Date startDate = new Date();
         Date finishDate = new Date();
+        availableCommands = list();
 
         if (paymentCollector.getTradingDayProcessInstanceId() != null) {
 
@@ -114,6 +117,14 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
                 processStatus = (Statuses) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }
 
+        }
+
+        if (!Statuses.CLOSED.equals(processStatus)) {
+            availableCommands.add(new Command(Transitions.CLOSE, COMMAND_CLOSE));
+        } else {
+            if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
+                availableCommands.add(new Command(Transitions.OPEN, COMMAND_OPEN));
+            }
         }
 
         if (log.isDebugEnabled()) {
@@ -137,8 +148,8 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
         return processStatus;
     }
 
-    public boolean isOpen() {
-        return Statuses.OPEN.equals(processStatus);
+    public List<Command> getAvailableCommands() {
+        return availableCommands;
     }
 
     @Required

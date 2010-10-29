@@ -869,7 +869,7 @@
         ab_town_filter bigint comment 'Town filter',
         payments_payment_point_id bigint comment 'User payment point',
         payment_collector_id bigint comment 'User payment collector id',
-        cash_box_id bigint comment 'User cash box id',
+        cashbox_id bigint comment 'User cashbox id',
         primary key (id)
     ) comment='User details';
 
@@ -1451,7 +1451,7 @@
         register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
         reference_operation_id bigint comment 'Optional operation reference',
-        cashbox_id bigint comment 'Cash box',
+        cashbox_id bigint comment 'Cashbox',
         primary key (id)
     ) comment='Operations';
 

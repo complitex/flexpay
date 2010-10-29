@@ -26,11 +26,12 @@ public abstract class PaymentCollectorTradingDayConstants {
 
     public static final Map<String, String> PROCESSES_DEFINITION_NAME =
 			map(pair(PaymentPoint.class.getName(), "PaymentPointTradingDay"),
-				 pair(Cashbox.class.getName(), "CashBoxTradingDay"),
+				 pair(Cashbox.class.getName(), "CashboxTradingDay"),
 				 pair(PaymentCollector.class.getName(), "PaymentCollectorTradingDay"));
 
 	// trading day statuses
 	public static enum Statuses {
+
 		OPEN("Открыт"),
     	PROCESSED("Обрабатывается"),
     	ERROR("Допущена ошибка, обратитесь к администратору"),
@@ -55,6 +56,11 @@ public abstract class PaymentCollectorTradingDayConstants {
 
 	// trading transitions
 	public enum Transitions {
+
+        OPEN("Открыть"),
+        CLOSE("Закрыть"),
+        MARK_CLOSE_DAY("Пометить на закрытие"),
+        UNMARK_CLOSE_DAY("Отменить пометку"),
 		CONFIRM_CLOSING_DAY("Подтвердить закрытие");
 
 		private String transitionName;
