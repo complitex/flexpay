@@ -3,26 +3,26 @@ package org.flexpay.payments.actions.monitor.data;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Transitions;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Transition;
 
 public class Command {
 
-    private Transitions name;
+    private Transition name;
     private Short value;
 
     public Command() {
     }
 
-    public Command(Transitions name, Short value) {
+    public Command(Transition name, Short value) {
         this.name = name;
         this.value = value;
     }
 
-    public Transitions getName() {
+    public Transition getName() {
         return name;
     }
 
-    public void setName(Transitions name) {
+    public void setName(Transition name) {
         this.name = name;
     }
 

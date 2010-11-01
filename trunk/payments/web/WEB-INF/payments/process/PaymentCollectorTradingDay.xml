@@ -21,7 +21,7 @@
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
 				<variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
 				<expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.OPEN;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.OPEN;
 					canUpdateOrCreateOperation = "true";
 				</expression>
             </script>
@@ -170,7 +170,7 @@
 				<variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
 				<expression>
 					closedCountPaymentPoints++;
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.WAIT_APPROVE;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.WAIT_APPROVE;
 				</expression>
 			</script>
 		</transition>
@@ -181,7 +181,7 @@
 				<expression>
 					closedCountPaymentPoints--;
 					if (closedCountPaymentPoints == 0) {
-						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.OPEN;
+						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.OPEN;
 					}
 				</expression>
 			</script>
@@ -226,7 +226,7 @@
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.PROCESSED;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.PROCESSED;
 					canUpdateOrCreateOperation = "false";
 				</expression>
             </script>
@@ -256,7 +256,7 @@
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.ERROR;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.ERROR;
 					canUpdateOrCreateOperation = "false";
 				</expression>
             </script>
@@ -272,9 +272,9 @@
             <script>
                 <variable mapped-name="processStatus" access="read,write" name="PROCESS_STATUS" />
                 <expression>
-					if (!processStatus.equals(org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.ERROR))
+					if (!processStatus.equals(org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.ERROR))
 					{
-						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.CLOSED;
+						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.CLOSED;
 					}
 				</expression>
             </script>

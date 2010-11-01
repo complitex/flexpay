@@ -4,18 +4,11 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 
-import java.util.List;
 import java.util.Map;
 
-import static org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW;
-import static org.flexpay.common.service.Roles.PROCESS_DELETE;
-import static org.flexpay.common.service.Roles.PROCESS_READ;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.PairUtil.pair;
-import static org.flexpay.orgs.service.Roles.*;
-import static org.flexpay.payments.service.Roles.*;
-import static org.flexpay.payments.service.Roles.SERVICE_READ;
 
 public abstract class PaymentCollectorTradingDayConstants {
 
@@ -30,7 +23,7 @@ public abstract class PaymentCollectorTradingDayConstants {
 				 pair(PaymentCollector.class.getName(), "PaymentCollectorTradingDay"));
 
 	// trading day statuses
-	public static enum Statuses {
+	public static enum Status {
 
 		OPEN("Открыт"),
     	PROCESSED("Обрабатывается"),
@@ -40,7 +33,7 @@ public abstract class PaymentCollectorTradingDayConstants {
 
 		private String statusName;
 
-		private Statuses(String s) {
+		private Status(String s) {
 			statusName = s;
 		}
 
@@ -55,7 +48,7 @@ public abstract class PaymentCollectorTradingDayConstants {
 	}
 
 	// trading transitions
-	public enum Transitions {
+	public enum Transition {
 
         OPEN("Открыть"),
         CLOSE("Закрыть"),
@@ -65,7 +58,7 @@ public abstract class PaymentCollectorTradingDayConstants {
 
 		private String transitionName;
 
-		private Transitions(String s) {
+		private Transition(String s) {
 			transitionName = s;
 		}
 

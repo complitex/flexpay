@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.annotation.Secured;
 
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.payments.process.handlers.AccounterAssignmentHandler.ACCOUNTER;
 import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Transitions;
 
 public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSupport {
 
@@ -37,6 +35,7 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
     private PaymentCollectorService paymentCollectorService;
     private ProcessManager processManager;
 	private TradingDay<Cashbox> cashboxTradingDayService;
+    private TradingDay<PaymentPoint> paymentPointTradingDayService;
     private TradingDay<PaymentCollector> paymentCollectorTradingDayService;
 
 	@NotNull
@@ -79,16 +78,13 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 
             if (command == COMMAND_MARK_CLOSE_DAY || command == COMMAND_UNMARK_CLOSE_DAY) {
 
-                String actor = ACCOUNTER;
-
                 log.debug("Mark/unmark close payment point trayding day ({})", command);
 
-                preparePanel(actor);
-                tradingDayControlPanel.setCommand(command == COMMAND_MARK_CLOSE_DAY ? Transitions.MARK_CLOSE_DAY.getTransitionName() : Transitions.UNMARK_CLOSE_DAY.getTransitionName());
-
-                tradingDayControlPanel.processCommand(paymentPoint.getTradingDayProcessInstanceId());
-
-                log.debug("tradingDayControlPanel = {}", tradingDayControlPanel);
+                if (command == COMMAND_MARK_CLOSE_DAY) {
+                    paymentPointTradingDayService.stopTradingDay(paymentPoint);
+                } else {
+                    paymentPointTradingDayService.startTradingDay(paymentPoint);
+                }
 
             } else {
                 log.debug("Command value is incorrect ({}). Skip", command);
@@ -207,6 +203,11 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 	public void setCashboxTradingDayService(TradingDay<Cashbox> cashboxTradingDayService) {
 		this.cashboxTradingDayService = cashboxTradingDayService;
 	}
+
+    @Required
+    public void setPaymentPointTradingDayService(TradingDay<PaymentPoint> paymentPointTradingDayService) {
+        this.paymentPointTradingDayService = paymentPointTradingDayService;
+    }
 
     @Required
     public void setPaymentCollectorTradingDayService(TradingDay<PaymentCollector> paymentCollectorTradingDayService) {

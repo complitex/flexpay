@@ -49,10 +49,10 @@
                 <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <variable name="START_TIME" mapped-name="startTime" access="write" />
                 <expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.OPEN;
-					canUpdateOrCreateOperation = "true";
-					startTime = org.flexpay.common.util.DateUtil.now();
-				</expression>
+                    processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.OPEN;
+                    canUpdateOrCreateOperation = "true";
+                    startTime = org.flexpay.common.util.DateUtil.now();
+                </expression>
             </script>
         </event>
         <task name="CloseTradingDayByAccounter" swimlane="Accounter" />
@@ -109,7 +109,7 @@
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
 				<variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.WAIT_APPROVE;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.WAIT_APPROVE;
 					canUpdateOrCreateOperation = "false";
 				</expression>
             </script>
@@ -197,7 +197,7 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.CLOSED;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.CLOSED;
 				</expression>
             </script>
         </event>
@@ -213,7 +213,7 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
-					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses.CLOSED;
+					processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.CLOSED;
 				</expression>
             </script>
         </event>
