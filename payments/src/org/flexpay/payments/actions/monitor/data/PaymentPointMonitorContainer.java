@@ -9,7 +9,7 @@ public class PaymentPointMonitorContainer {
     private Long id;
     private String name;
     private Long paymentsCount;
-    private PaymentCollectorTradingDayConstants.Statuses status;
+    private PaymentCollectorTradingDayConstants.Status status;
     private String totalSum;
     private String cashbox;
     private String cashierFIO;
@@ -39,11 +39,11 @@ public class PaymentPointMonitorContainer {
 		this.paymentsCount = paymentsCount;
 	}
 
-	public PaymentCollectorTradingDayConstants.Statuses getStatus() {
+	public PaymentCollectorTradingDayConstants.Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(PaymentCollectorTradingDayConstants.Statuses status) {
+	public void setStatus(PaymentCollectorTradingDayConstants.Status status) {
 		this.status = status;
 	}
 

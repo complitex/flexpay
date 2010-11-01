@@ -110,13 +110,13 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
             }
 
 			Serializable processStatus = process.getParameters().get(PROCESS_STATUS);
-			if (process.getProcessStartDate().before(finishDate) && !Statuses.CLOSED.equals(processStatus)) {
-                if (Statuses.WAIT_APPROVE.equals(processStatus)) {
+			if (process.getProcessStartDate().before(finishDate) && !Status.CLOSED.equals(processStatus)) {
+                if (Status.WAIT_APPROVE.equals(processStatus)) {
                     log.debug("Try close trading day");
-                    TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, Transitions.CONFIRM_CLOSING_DAY.getTransitionName(), log);
+                    TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, Transition.CONFIRM_CLOSING_DAY.getTransitionName(), log);
                     process = processManager.getProcessInstanceInfo(processId);
-                    Statuses newProcessStatus = (Statuses) process.getParameters().get(PROCESS_STATUS);
-                    if (!Statuses.CLOSED.equals(newProcessStatus)) {
+                    Status newProcessStatus = (Status) process.getParameters().get(PROCESS_STATUS);
+                    if (!Status.CLOSED.equals(newProcessStatus)) {
                         log.error("Day is not closed. Current status '{}'", newProcessStatus);
                         httpServletResponse.sendError(500, "Internal Server Error");
                         return;

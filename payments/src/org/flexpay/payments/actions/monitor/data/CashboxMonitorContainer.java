@@ -12,7 +12,7 @@ public class CashboxMonitorContainer {
     private String cashierFIO;
     private String lastPayment;
     private Long paymentsCount;
-	private PaymentCollectorTradingDayConstants.Statuses status;
+	private PaymentCollectorTradingDayConstants.Status status;
 
 	public Long getId() {
 		return id;
@@ -62,11 +62,11 @@ public class CashboxMonitorContainer {
 		this.paymentsCount = paymentsCount;
 	}
 
-	public void setStatus(PaymentCollectorTradingDayConstants.Statuses status) {
+	public void setStatus(PaymentCollectorTradingDayConstants.Status status) {
 		this.status = status;
 	}
 
-	public PaymentCollectorTradingDayConstants.Statuses getStatus() {
+	public PaymentCollectorTradingDayConstants.Status getStatus() {
 		return status;
 	}
 

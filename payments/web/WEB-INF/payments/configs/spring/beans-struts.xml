@@ -129,6 +129,7 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           p:processManager-ref="processManager"
 		  p:cashboxTradingDayService-ref="cashboxTradingDayService"
+          p:paymentPointTradingDayService-ref="paymentPointTradingDayService"
           p:paymentCollectorTradingDayService-ref="paymentCollectorTradingDayService"
           scope="prototype" />
 

@@ -33,7 +33,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
     private List<Command> availableCommands;
 	private PaymentPoint paymentPoint = new PaymentPoint();
 	private List<CashboxMonitorContainer> cashboxes = list();
-    private Statuses processStatus = Statuses.CLOSED;
+    private Status processStatus = Status.CLOSED;
 
 	private ProcessManager processManager;
 	private OperationService operationService;
@@ -75,16 +75,16 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
                 if (tradingDayProcess.getProcessEndDate() != null) {
                     finishDate = tradingDayProcess.getProcessEndDate();
                 }
-                processStatus = (Statuses) tradingDayProcess.getParameters().get(PROCESS_STATUS);
+                processStatus = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }
 
         }
 
-        if (Statuses.WAIT_APPROVE.equals(processStatus)) {
-            availableCommands.add(new Command(Transitions.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
-            availableCommands.add(new Command(Transitions.UNMARK_CLOSE_DAY, COMMAND_UNMARK_CLOSE_DAY));
-        } else if (Statuses.OPEN.equals(processStatus)) {
-            availableCommands.add(new Command(Transitions.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
+        if (Status.WAIT_APPROVE.equals(processStatus)) {
+            availableCommands.add(new Command(Transition.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
+            availableCommands.add(new Command(Transition.UNMARK_CLOSE_DAY, COMMAND_UNMARK_CLOSE_DAY));
+        } else if (Status.OPEN.equals(processStatus)) {
+            availableCommands.add(new Command(Transition.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
         }
 
         if (log.isDebugEnabled()) {
@@ -110,7 +110,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 			if (cashbox.getTradingDayProcessInstanceId() != null) {
 				Process process = processManager.getProcessInstanceInfo(cashbox.getTradingDayProcessInstanceId());
 				if (process != null) {
-					container.setStatus((PaymentCollectorTradingDayConstants.Statuses)process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS));
+					container.setStatus((Status)process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS));
 				}
 			}
 
@@ -145,7 +145,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 		this.paymentPoint = paymentPoint;
 	}
 
-    public PaymentCollectorTradingDayConstants.Statuses getProcessStatus() {
+    public Status getProcessStatus() {
         return processStatus;
     }
 

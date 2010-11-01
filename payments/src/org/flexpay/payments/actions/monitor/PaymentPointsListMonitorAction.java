@@ -11,7 +11,6 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
-import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -32,7 +31,7 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
     private List<Command> availableCommands;
     private List<PaymentPointMonitorContainer> paymentPoints;
-    private Statuses processStatus = Statuses.CLOSED;
+    private Status processStatus = Status.CLOSED;
 
     private ProcessManager processManager;
     private OperationService operationService;
@@ -80,9 +79,9 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
                 log.debug("Start date={}, finish date={}", formatWithTime(startDate), formatWithTime(finishDate));
             }
 
-            Statuses status = Statuses.CLOSED;
+            Status status = Status.CLOSED;
             if (tradingDayProcess != null) {
-                status = (Statuses) tradingDayProcess.getParameters().get(PROCESS_STATUS);
+                status = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }
             container.setId(paymentPoint.getId());
             container.setName(paymentPoint.getName(getLocale()));
@@ -114,16 +113,16 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
                 if (tradingDayProcess.getProcessEndDate() != null) {
                     finishDate = tradingDayProcess.getProcessEndDate();
                 }
-                processStatus = (Statuses) tradingDayProcess.getParameters().get(PROCESS_STATUS);
+                processStatus = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }
 
         }
 
-        if (!Statuses.CLOSED.equals(processStatus)) {
-            availableCommands.add(new Command(Transitions.CLOSE, COMMAND_CLOSE));
+        if (!Status.CLOSED.equals(processStatus)) {
+            availableCommands.add(new Command(Transition.CLOSE, COMMAND_CLOSE));
         } else {
             if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
-                availableCommands.add(new Command(Transitions.OPEN, COMMAND_OPEN));
+                availableCommands.add(new Command(Transition.OPEN, COMMAND_OPEN));
             }
         }
 
@@ -144,7 +143,7 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
         return paymentPoints;
     }
 
-    public PaymentCollectorTradingDayConstants.Statuses getProcessStatus() {
+    public Status getProcessStatus() {
         return processStatus;
     }
 

@@ -5,6 +5,7 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
 import org.flexpay.payments.service.TradingDay;
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -19,14 +20,14 @@ import java.util.List;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.PROCESS_STATUS;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Statuses;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status;
 
 public class TradingDayControlPanel {
 
     private static final Logger controlPanelLog = LoggerFactory.getLogger(TradingDayControlPanel.class);
 
 	private List<String> availableCommands = Collections.emptyList();
-	private Statuses processStatus;
+	private Status processStatus;
 	private String command;
 
 	// private data
@@ -138,13 +139,13 @@ public class TradingDayControlPanel {
 
 		if (tradingDayProcessInstanceId == null) {
 			controlPanelLog.warn("Trading day process not found. Status loading canceled.");
-            processStatus = Statuses.CLOSED;
+            processStatus = Status.CLOSED;
 			return;
 		}
 
 		Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
-		processStatus = process != null ? (Statuses) process.getParameters().get(PROCESS_STATUS) :
-				Statuses.CLOSED;
+		processStatus = process != null ? (Status) process.getParameters().get(PROCESS_STATUS) :
+				PaymentCollectorTradingDayConstants.Status.CLOSED;
 	}
 
 	public boolean isTradingDayOpened() {
@@ -163,7 +164,7 @@ public class TradingDayControlPanel {
 		return availableCommands;
 	}
 
-	public Statuses getProcessStatus() {
+	public PaymentCollectorTradingDayConstants.Status getProcessStatus() {
 		return processStatus;
 	}
 
