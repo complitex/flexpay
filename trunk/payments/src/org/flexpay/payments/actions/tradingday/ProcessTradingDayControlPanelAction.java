@@ -2,7 +2,6 @@ package org.flexpay.payments.actions.tradingday;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.ContextCallback;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
@@ -12,17 +11,13 @@ import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.service.TradingDay;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
-import org.jbpm.JbpmContext;
-import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.annotation.Secured;
 
-import java.util.List;
-
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
 import static org.flexpay.payments.process.handlers.AccounterAssignmentHandler.ACCOUNTER;
+import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
 import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Transitions;
 
 public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSupport {
@@ -84,29 +79,16 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 
             if (command == COMMAND_MARK_CLOSE_DAY || command == COMMAND_UNMARK_CLOSE_DAY) {
 
+                String actor = ACCOUNTER;
+
                 log.debug("Mark/unmark close payment point trayding day ({})", command);
 
-                final String processCommand = command == COMMAND_MARK_CLOSE_DAY ? Transitions.MARK_CLOSE_DAY.getTransitionName() : Transitions.UNMARK_CLOSE_DAY.getTransitionName();
+                preparePanel(actor);
+                tradingDayControlPanel.setCommand(command == COMMAND_MARK_CLOSE_DAY ? Transitions.MARK_CLOSE_DAY.getTransitionName() : Transitions.UNMARK_CLOSE_DAY.getTransitionName());
 
-                List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
+                tradingDayControlPanel.processCommand(paymentPoint.getTradingDayProcessInstanceId());
 
-                for (Cashbox cashbox : cashboxes) {
-
-                    final Long taskInstanceId = cashbox.getTradingDayProcessInstanceId();
-
-                    processManager.execute(new ContextCallback<Void>() {
-                        @Override
-                        public Void doInContext(@NotNull JbpmContext context) {
-                            TaskInstance tInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
-                            if (tInstance.isSignalling()) {
-                                log.debug("Signalling {} transition command", processCommand);
-                                tInstance.getProcessInstance().signal(processCommand);
-                            }
-                            return null;
-                        }
-                    });
-
-                }
+                log.debug("tradingDayControlPanel = {}", tradingDayControlPanel);
 
             } else {
                 log.debug("Command value is incorrect ({}). Skip", command);
