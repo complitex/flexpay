@@ -22,9 +22,10 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 
     public static final short COMMAND_CLOSE = 0;
     public static final short COMMAND_OPEN = 1;
-    public static final short COMMAND_MARK_CLOSE_DAY = 2;
-    public static final short COMMAND_UNMARK_CLOSE_DAY = 3;
-    public static final short COMMAND_CONFIRM_CLOSING_DAY = 4;
+    public static final short COMMAND_CLOSE_ALL_CASHBOXES = 2;
+    public static final short COMMAND_MARK_CLOSE_DAY = 3;
+    public static final short COMMAND_UNMARK_CLOSE_DAY = 4;
+    public static final short COMMAND_CONFIRM_CLOSING_DAY = 5;
 
     private short command;
 	private Cashbox cashbox = new Cashbox();
@@ -76,15 +77,11 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
                 return SUCCESS;
             }
 
-            if (command == COMMAND_MARK_CLOSE_DAY || command == COMMAND_UNMARK_CLOSE_DAY) {
+            if (command == COMMAND_CLOSE_ALL_CASHBOXES) {
 
-                log.debug("Mark/unmark close payment point trayding day ({})", command);
+                log.debug("Close all payment point cashboxes trayding day ({})", command);
 
-                if (command == COMMAND_MARK_CLOSE_DAY) {
-                    paymentPointTradingDayService.stopTradingDay(paymentPoint);
-                } else {
-                    paymentPointTradingDayService.startTradingDay(paymentPoint);
-                }
+                paymentPointTradingDayService.stopTradingDay(paymentPoint);
 
             } else {
                 log.debug("Command value is incorrect ({}). Skip", command);
