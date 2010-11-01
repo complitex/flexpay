@@ -57,6 +57,11 @@ public class TradingDayControlPanel {
 		loadProcessStatus();
 	}
 
+    public void processCommand(Long tradingDayProcessInstanceId) {
+        this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
+		processCommand();
+	}
+
 	private void processCommand() {
 
 		if (isEmpty(command)) {
