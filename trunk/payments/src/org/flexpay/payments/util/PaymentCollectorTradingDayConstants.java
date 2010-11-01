@@ -52,6 +52,7 @@ public abstract class PaymentCollectorTradingDayConstants {
 
         OPEN("Открыть"),
         CLOSE("Закрыть"),
+        CLOSE_ALL_CASHBOXES("Закрыть все кассы"),
         MARK_CLOSE_DAY("Пометить на закрытие"),
         UNMARK_CLOSE_DAY("Отменить пометку"),
 		CONFIRM_CLOSING_DAY("Подтвердить закрытие");

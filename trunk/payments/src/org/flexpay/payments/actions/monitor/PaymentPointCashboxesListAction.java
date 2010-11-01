@@ -80,12 +80,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 
         }
 
-        if (Status.WAIT_APPROVE.equals(processStatus)) {
-            availableCommands.add(new Command(Transition.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
-            availableCommands.add(new Command(Transition.UNMARK_CLOSE_DAY, COMMAND_UNMARK_CLOSE_DAY));
-        } else if (Status.OPEN.equals(processStatus)) {
-            availableCommands.add(new Command(Transition.MARK_CLOSE_DAY, COMMAND_MARK_CLOSE_DAY));
-        }
+        availableCommands.add(new Command(Transition.CLOSE_ALL_CASHBOXES, COMMAND_MARK_CLOSE_DAY));
 
         if (log.isDebugEnabled()) {
             log.debug("Start date={}, finish date={}", formatWithTime(startDate), formatWithTime(finishDate));
