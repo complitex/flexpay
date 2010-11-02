@@ -1355,6 +1355,10 @@
         <role-name>ROLE_MENU_PAYMENTS_CASHBOXES</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
+	<security-role-mapping>
+        <role-name>ROLE_PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION</role-name>
+        <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
+    </security-role-mapping>
 
 	<!-- Menu for accountant (PAYMENTS_FULL ACCESS) -->
 	<!-- First level -->
