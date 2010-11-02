@@ -572,6 +572,10 @@
         <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
         <group-name>EIRC_FULL_ACCESS</group-name>
     </security-role-mapping>
+	<security-role-mapping>
+        <role-name>ROLE_ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
 
 	<!-- EIRC Service types -->
 	<security-role-mapping>
@@ -1010,6 +1014,11 @@
 
     <security-role-mapping>
         <role-name>ROLE_PAYMENTS_TRADING_DAY_ADMIN_ACTION</role-name>
+        <group-name>PAYMENTS_FULL_ACCESS</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
 
