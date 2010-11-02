@@ -20,6 +20,7 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorterById;
+import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
@@ -40,6 +41,7 @@ import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 import static org.flexpay.common.util.DateUtil.now;
 import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
+import static org.flexpay.payments.service.Roles.TRADING_DAY_ACCOUNTER_ACTION;
 
 public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Operation> implements InitializingBean {
 
@@ -203,7 +205,11 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		tradingDayControlPanel = new TradingDayControlPanel(processManager, cashboxTradingDayService, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
+        if (isAuthenticationGranted(TRADING_DAY_ACCOUNTER_ACTION)) {
+            tradingDayControlPanel = new TradingDayControlPanel(processManager, cashboxTradingDayService, AccounterAssignmentHandler.ACCOUNTER, log);
+        } else {
+            tradingDayControlPanel = new TradingDayControlPanel(processManager, cashboxTradingDayService, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
+        }
 	}
 
 	public String getCurrencyName() {

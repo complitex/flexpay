@@ -133,6 +133,8 @@ public class TradingDayControlPanel {
 				return availableTransitions;
 			}
 		});
+
+        Collections.sort(availableCommands);
 	}
 
 	private void loadProcessStatus() {

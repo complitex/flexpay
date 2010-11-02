@@ -8,6 +8,8 @@ import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
+import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
+import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.service.TradingDay;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
@@ -16,7 +18,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.annotation.Secured;
 
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
+import static org.flexpay.payments.service.Roles.TRADING_DAY_ACCOUNTER_ACTION;
 
 public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSupport {
 
@@ -45,8 +48,6 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 
 		if (cashbox != null && cashbox.isNotNew()) {
 
-            String actor = PAYMENT_COLLECTOR;
-
 			Stub<Cashbox> stub = stub(cashbox);
 			cashbox = cashboxService.read(stub);
 			if (cashbox == null) {
@@ -57,10 +58,13 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 				return SUCCESS;
 			}
 
-            log.debug("actor = {}, cashbox = {}", actor, cashbox);
+            log.debug("cashbox = {}", cashbox);
 
-            preparePanel(actor);
-
+            if (isAuthenticationGranted(TRADING_DAY_ACCOUNTER_ACTION)) {
+                preparePanel(AccounterAssignmentHandler.ACCOUNTER);
+            } else {
+                preparePanel(PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR);
+            }
             tradingDayControlPanel.updatePanel(cashbox.getTradingDayProcessInstanceId());
 
             log.debug("tradingDayControlPanel = {}", tradingDayControlPanel);
