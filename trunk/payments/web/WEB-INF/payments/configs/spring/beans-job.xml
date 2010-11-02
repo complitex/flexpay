@@ -119,7 +119,7 @@
 		  abstract="true"
 		  scope="prototype"
 		  class="org.flexpay.payments.process.export.job.SendSignalToCashboxParentJob"
-		  parent="sendSignalToProcessActionHandler"
+		  parent="sendSignalToProcessJob"
 		  p:actorName="CASHBOX_PROCESS"
 		  p:cashboxService-ref="cashboxService" />
 
@@ -135,7 +135,7 @@
 
 	<bean id="sendSignalToCashboxParentCancelJob"
 		  scope="prototype"
-		  parent="sendSignalToCashboxParentActionHandler"
+		  parent="sendSignalToCashboxParentJob"
 		  p:message="Cancel" />
 
 	<bean id="sendSignalToPaymentPointParentJob"
