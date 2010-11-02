@@ -259,7 +259,7 @@
 	</security-role>
 
     <security-role>
-        <role-name>ROLE_PAYMENTS_TRADING_DAY_ADMIN_ACTION</role-name>
+        <role-name>ROLE_PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION</role-name>
     </security-role>
 
     <!-- cashbox roles -->
@@ -274,6 +274,9 @@
     </security-role>
     <security-role>
         <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS</role-name>
     </security-role>
 
     <!-- payment point roles -->

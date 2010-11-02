@@ -1080,6 +1080,14 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 cn: ORGS_CASHBOX_DELETE
 
+# ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS
+
 # MENU_AB, groups, opensso.java.net
 dn: cn=MENU_AB,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
@@ -1723,3 +1731,12 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: buhgalter
 cn: PAYMENTS_TRADING_DAY_ADMIN_ACTION
+
+# PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION, groups, opensso.java.net
+dn: cn=PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION

@@ -230,6 +230,9 @@
     <security-role>
         <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
     </security-role>
+    <security-role>
+        <role-name>ROLE_ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS</role-name>
+    </security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>
