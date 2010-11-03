@@ -16,6 +16,12 @@
     </swimlane>
 
 
+	<swimlane name="Automation">
+        <!--<assignment class="org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler"/>-->
+        <assignment actor-id="AUTOMATION" />
+    </swimlane>
+
+
     <swimlane name="JobManager">
         <assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
     </swimlane>
@@ -56,9 +62,10 @@
             </script>
         </event>
         <task name="CloseTradingDayByAccounter" swimlane="Accounter" />
-        <task name="CloseTradingDayByPaymentCollector" swimlane="PaymentCollector">
-            <timer duedate="#{START_TIME} + 1 business day" transition=".auto"/>
-        </task>
+		<task name="ClostTradingDayByAutomation" swimlane="Automation" >
+			<timer duedate="#{START_TIME} + 1 business day" transition=".auto"/>
+		</task>
+        <task name="CloseTradingDayByPaymentCollector" swimlane="PaymentCollector" />
         <transition to="sendSignalToCashboxParentCloseTradingDayJob" name="Пометить на закрытие" />
         <transition to="sendSignalToCashboxParentCloseTradingDayJob" name=".auto">
 			<script>
@@ -115,9 +122,10 @@
             </script>
         </event>
 
-        <task name="ApproveCloseTradingDay" swimlane="Accounter">
-            <timer duedate="#{START_TIME} + 1 business day" transition="Подтвердить закрытие" />
-        </task>
+		<task name="ApproveCloseTradingDayByAutomation" swimlane="Automation" >
+			<timer duedate="#{START_TIME} + 1 business day" transition=".auto" />
+		</task>
+		<task name="ApproveCloseTradingDayByAccounter" swimlane="Accounter" />
         <transition to="sendSignalToCashboxParentCancelJob" name="Отменить пометку" />
         <transition to="sendSignalToCashboxParentApproveJob" name="Подтвердить закрытие" />
 		<transition to="sendSignalToCashboxParentApproveJob" name=".auto">
@@ -201,9 +209,10 @@
 				</expression>
             </script>
         </event>
-        <task name="ApproveMessage" swimlane="PaymentCollector">
-            <timer duedate="#{START_TIME} + 1 business day" transition="Принять сообщение" />
+        <task name="ApproveMessageByAutomation" swimlane="Automation">
+            <timer duedate="#{START_TIME} + 1 business day" transition=".auto" />
         </task>
+        <task name="ApproveMessageByPaymentCollector" swimlane="PaymentCollector" />
         <transition to="end-state" name="Принять сообщение" />
 		<transition to="end-state" name=".auto" />
     </task-node>
