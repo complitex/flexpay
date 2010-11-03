@@ -13,6 +13,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.dao.CashboxDao;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.CashboxNameTranslation;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
@@ -36,6 +37,9 @@ public class CashboxServiceImpl implements CashboxService {
 	private SessionUtils sessionUtils;
 	private ModificationListener<Cashbox> modificationListener;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	@Transactional (readOnly = false)
@@ -49,6 +53,9 @@ public class CashboxServiceImpl implements CashboxService {
 		return cashbox;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@NotNull
 	@Override
@@ -101,23 +108,35 @@ public class CashboxServiceImpl implements CashboxService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Cashbox read(@NotNull Stub<Cashbox> stub) {
 		return cashboxDao.readFull(stub.getId());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public List<Cashbox> readFull(Collection<Long> ids, boolean preserveOrder) {
 		return cashboxDao.readFullCollection(ids, preserveOrder);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@Transactional (readOnly = false)
 	public void delete(@NotNull Cashbox cashbox) {
 		cashboxDao.delete(cashbox);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@Transactional (readOnly = false)
 	public void disable(Set<Long> objectIds) {
@@ -133,12 +152,18 @@ public class CashboxServiceImpl implements CashboxService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public CashboxFilter initFilter(@NotNull CashboxFilter cashboxFilter) {
 		return initFilter(CollectionUtils.arrayStack(), cashboxFilter);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public CashboxFilter initFilter(@NotNull ArrayStack filters, @NotNull CashboxFilter cashboxFilter) {
@@ -187,16 +212,31 @@ public class CashboxServiceImpl implements CashboxService {
 		return cashboxDao.findCashboxes(pager);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public List<Cashbox> findObjects(Page<Cashbox> pager) {
 		return cashboxDao.findCashboxes(pager);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId) {
 		return cashboxDao.findCashboxesForPaymentPoint(paymentPointId);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	@Override
+	public List<Cashbox> findCashboxesForPaymentCollector(@NotNull Stub<PaymentCollector> paymentCollectorStub, Page<Cashbox> pager) {
+		return cashboxDao.findCashboxesForPaymentCollector(paymentCollectorStub.getId(), pager);
 	}
 
 	@Required

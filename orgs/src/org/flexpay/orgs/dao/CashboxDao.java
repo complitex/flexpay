@@ -15,4 +15,6 @@ public interface CashboxDao extends GenericDao<Cashbox, Long> {
 
     List<Cashbox> findCashboxesForPaymentPoint(@NotNull Long paymentPointId);
 
+    List<Cashbox> findCashboxesForPaymentCollector(@NotNull Long paymentCollectorId, Page<Cashbox> pager);
+
 }

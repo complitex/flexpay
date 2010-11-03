@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -94,6 +95,16 @@ public interface CashboxService {
 	@Secured (Roles.CASHBOX_READ)
 	@NotNull
 	List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId);
+
+	/**
+	 * Get all cashbox stub for payment collector
+	 *
+	 * @param paymentCollectorStub Payment collector stub
+	 * @return List of cashbox objects
+	 */
+	@Secured (Roles.CASHBOX_READ)
+	@NotNull
+	List<Cashbox> findCashboxesForPaymentCollector(Stub<PaymentCollector> paymentCollectorStub, Page<Cashbox> pager);
 
 	/**
 	 * Initialize cashbox filter

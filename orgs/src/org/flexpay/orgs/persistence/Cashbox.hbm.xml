@@ -127,4 +127,17 @@
         where c.status=0 and c.paymentPoint.id=?
     </query>
 
+	<query name="Cashbox.findCashboxesForPaymentCollector.count">
+        select count(*)
+        from Cashbox c
+        where c.status=0 and c.paymentPoint.collector.id=?
+    </query>
+
+	<query name="Cashbox.findCashboxesForPaymentCollector">
+        select distinct c
+        from Cashbox c
+            left join fetch c.names
+        where c.status=0 and c.paymentPoint.collector.id=?
+    </query>
+
 </hibernate-mapping>
