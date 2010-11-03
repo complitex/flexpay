@@ -23,8 +23,7 @@ import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_UNMARK_CLOSE_DAY;
-import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_MARK_CLOSE_DAY;
+import static org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction.COMMAND_CLOSE_ALL_CASHBOXES;
 import static org.flexpay.payments.util.MonitorUtils.*;
 import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.*;
 
@@ -81,7 +80,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
         }
 
         if (Status.CLOSED != processStatus) {
-            availableCommands.add(new Command(Transition.CLOSE_ALL_CASHBOXES, COMMAND_MARK_CLOSE_DAY));
+            availableCommands.add(new Command(Transition.CLOSE_ALL_CASHBOXES, COMMAND_CLOSE_ALL_CASHBOXES));
         }
 
         if (log.isDebugEnabled()) {
