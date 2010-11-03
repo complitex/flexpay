@@ -22,7 +22,7 @@ public class SendSignalToParentProcessHandler implements DecisionHandler {
 			return "close";
 		}
 
-		log.debug("approve");
-		return "approve";
+		log.debug("cancel");
+		return "cancel";
 	}
 }
