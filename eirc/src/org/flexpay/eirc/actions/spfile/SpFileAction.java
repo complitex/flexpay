@@ -3,18 +3,19 @@ package org.flexpay.eirc.actions.spfile;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.service.RegistryFileService;
+import org.flexpay.common.service.impl.RegistryFileServiceFactory;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.process.registry.FileParserJob;
 import org.flexpay.eirc.process.registry.GetRegistryMessageActionHandler;
 import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -39,6 +40,7 @@ public class SpFileAction extends FPActionSupport {
 	private FPFileService fpFileService;
 	private ProcessManager processManager;
     private LineParser lineParser;
+	private RegistryFileServiceFactory registryFileServiceFactory;
 
 	@NotNull
 	@Override
@@ -87,7 +89,13 @@ public class SpFileAction extends FPActionSupport {
 		} else if (DELETE_FROM_DB_ACTION.equals(action)) {
 //			 SzFileUtil.deleteRecords(szFile);
 		} else if (FULL_DELETE_ACTION.equals(action)) {
-			// SzFileUtil.delete(szFile);
+			if (!registryFileServiceFactory.getRegistryFileService().isLoaded(Stub.stub(spFile))) {
+				fpFileService.delete(spFile);
+				log.debug("File {} deleted", spFile);
+				addActionMessage(getText("eirc.registry.file.deleted", "File {0} deleted", spFile.getOriginalName()));
+			} else {
+				log.warn("File {} start processing already", spFile);
+			}
 		}
 
 		return REDIRECT_SUCCESS;
@@ -170,4 +178,8 @@ public class SpFileAction extends FPActionSupport {
         this.lineParser = lineParser;
     }
 
+	@Required
+	public void setRegistryFileServiceFactory(RegistryFileServiceFactory registryFileServiceFactory) {
+		this.registryFileServiceFactory = registryFileServiceFactory;
+	}
 }
