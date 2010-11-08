@@ -37,6 +37,7 @@
 		  p:fpFileService-ref="fpFileService"
 		  p:processManager-ref="processManager"
 		  p:lineParser-ref="mbLineParser"
+		  p:registryFileServiceFactory-ref="registryFileServiceFactory"
 		  scope="prototype" />
 
 	<!-- Quittances -->

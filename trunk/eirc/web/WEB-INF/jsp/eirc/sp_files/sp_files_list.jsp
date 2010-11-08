@@ -24,6 +24,9 @@
 				<s:if test="!isLoaded(id)">
 					<a href="<s:url action="spFileAction"><s:param name="spFile.id" value="%{id}" /><s:param name="action" value="'loadToDb'" /></s:url>">
                         <s:text name="eirc.registry.file.load" /></a>
+					&nbsp;&nbsp;
+					<a href="<s:url action="spFileAction"><s:param name="spFile.id" value="%{id}" /><s:param name="action" value="'fullDelete'" /></s:url>">
+                        <s:text name="eirc.registry.file.delete" /></a>
                     <s:if test="nameOnServer != null">
                         &nbsp;&nbsp;
                     </s:if>
