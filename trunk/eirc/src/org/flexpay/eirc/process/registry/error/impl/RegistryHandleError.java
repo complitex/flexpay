@@ -49,11 +49,9 @@ public class RegistryHandleError implements HandleError {
 		Organization sender = props.getSender();
 		sender = organizationService.readFull(props.getSenderStub());
 		if (sender == null) {
-			if (sender == null) {
-				throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
-			}
-			props.setSender(sender);
+			throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
 		}
+		props.setSender(sender);
 		DataSourceDescription sd = sender.getDataSourceDescription();
 		error.setSourceDescription(sd);
 
