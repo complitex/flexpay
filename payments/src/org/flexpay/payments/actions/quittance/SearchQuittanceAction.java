@@ -71,6 +71,8 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			filterSubservices();
 			filterNegativeSums();
 
+			Long cashboxId = getCashboxId();
+
 			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
 			Long cashboxProcessId = cashbox.getTradingDayProcessInstanceId();
 

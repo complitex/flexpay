@@ -45,7 +45,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 			log.debug("TradingDaySchedulingJob process id not found for Cashbox id = {}", cashbox.getPaymentPoint().getId());
             return TRADING_DAY_CLOSED;
 		} else {
-			log.debug("Found process id {} for cashbox {}", cashboxProcessId, cashboxId);
+			log.debug("Found process id {} for cashbox {}", cashboxProcessId, getCashboxId());
             if (!cashboxTradingDayService.isOpened(cashbox.getTradingDayProcessInstanceId())) {
                 return TRADING_DAY_CLOSED;
             }
@@ -73,6 +73,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	private Cashbox getCashbox() {
+		Long cashboxId = getCashboxId();
 		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
 		log.debug("Found cashbox {}", cashbox);
 		if (cashbox == null) {
