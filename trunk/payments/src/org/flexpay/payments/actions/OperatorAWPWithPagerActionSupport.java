@@ -66,6 +66,11 @@ public abstract class OperatorAWPWithPagerActionSupport<T> extends FPActionWithP
 		return null;
 	}
 
+	@Override
+	public void setCashboxId(Long cashboxId) {
+		
+	}
+
 	@Required
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
