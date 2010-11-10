@@ -827,9 +827,6 @@
         <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
     </security-role>
 	<security-role>
-        <role-name>ROLE_MENU_PAYMENTS_WORKPLACE</role-name>
-    </security-role>
-	<security-role>
         <role-name>ROLE_MENU_ADMIN_CERTIFICATES</role-name>
     </security-role>
     <security-role>

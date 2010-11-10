@@ -193,11 +193,6 @@
         <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
-
-    <security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS_WORKPLACE</role-name>
-        <group-name>PAYMENTS_FULL_ACCESS</group-name>
-    </security-role-mapping>
 	
     <security-role-mapping>
         <role-name>ROLE_MENU_ADMIN_CERTIFICATES</role-name>
@@ -440,11 +435,6 @@
 
 	<security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
-        <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
-    </security-role-mapping>
-
-	<security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS_WORKPLACE</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
 
