@@ -273,17 +273,6 @@
 		   </property>
 	</bean>
 
-	<bean name="payments.workplace" parent="payments.acc"
-		  p:name="payments.workplace"
-		  p:title="payments.menu2.workplace"
-		  p:namespace="/payments"
-		  p:action="accountantAWPStaticPageAction"
-		  p:parent-ref="payments.acc">
-		<property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_WORKPLACE" />
-        </property>
-	</bean>
-
 	<!--level 3 -->
 	<bean name="payments.dictionaries.dictionaries" parent="payments.dictionaries"
           p:name="payments.dictionaries2"
@@ -314,17 +303,6 @@
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
         </property>
     </bean>
-
-	<bean name="payments.workplace.dictionaries" parent="payments.workplace"
-		  p:name="payments.workplace.dictionaries"
-		  p:title="payments.menu3.dictionaries"
-		  p:namespace="/payments"
-		  p:action="accountantAWPStaticPageAction"
-		  p:parent-ref="payments.workplace">
-		<property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_DICTIONARIES" />
-        </property>
-	</bean>
 
 	<!-- level 4 -->
 	<!--<bean name="payments.reports.reports.import" parent="payments.reports.reports"-->
@@ -418,16 +396,4 @@
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
         </property>
     </bean>
-
-	<bean name="payments.workplace.dictionaries.cashboxes" parent="payments.workplace.dictionaries"
-		  p:name="payments.workplace.dictionaries.cashboxes"
-		  p:title="payments.menu4.cashboxes"
-		  p:namespace="/payments"
-		  p:action="workplaceCashboxesList"
-		  p:parent-ref="payments.workplace.dictionaries">
-		<property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CASHBOXES" />
-        </property>
-	</bean>
-
 </beans>
