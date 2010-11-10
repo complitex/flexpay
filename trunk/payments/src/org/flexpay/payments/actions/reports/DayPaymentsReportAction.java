@@ -129,15 +129,15 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 	}
 
 	protected Stub<Cashbox> getCashboxStub() {
-		return new Stub<Cashbox>(cashboxId);
+		return new Stub<Cashbox>(getCashboxId());
 	}
 
 	protected Cashbox getCashbox() {
-		return cashboxService.read(new Stub<Cashbox>(cashboxId));
+		return cashboxService.read(new Stub<Cashbox>(getCashboxId()));
 	}
 
 	protected PaymentPoint getPaymentPoint() {
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		Cashbox cashbox = getCashbox();
 		return paymentPointService.read(cashbox.getPaymentPointStub());
 	}
 

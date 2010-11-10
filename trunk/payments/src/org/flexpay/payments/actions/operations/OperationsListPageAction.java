@@ -31,6 +31,8 @@ public class OperationsListPageAction extends OperatorAWPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
+		Long cashboxId = getCashboxId();
+
 		if (cashboxId == null || cashboxId <= 0) {
 			log.warn("Incorrect cashboxId parameter {}", cashboxId);
 			addActionError(getText("payments.error.cashbox.incorrect_cashbox_id"));

@@ -80,9 +80,9 @@ public class OperationSetStatusAction extends OperatorAWPActionSupport {
 
 	private Organization getSelfOrganization() {
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(getCashboxId()));
 		if (cashbox == null) {
-			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
+			throw new IllegalArgumentException("Invalid cashbox id: " + getCashboxId());
 		}
 		return organizationService.readFull(stub(cashbox.getPaymentPoint().getCollector().getOrganization()));
 	}

@@ -40,18 +40,18 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 	}
 
 	private Cashbox getCashbox() {
-		
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(getCashboxId()));
 
 		if (cashbox == null) {
-			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
+			throw new IllegalArgumentException("Invalid cashbox id: " + getCashboxId());
 		}
 
 		return cashbox;
 	}
 
 	private Stub<Cashbox> getCashboxStub() {
-		return new Stub<Cashbox>(cashboxId);
+		return new Stub<Cashbox>(getCashboxId());
 	}
 
 	@NotNull
