@@ -70,6 +70,11 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 		return null;
 	}
 
+	@Override
+	public void setCashboxId(Long cashboxId) {
+		
+	}
+
 	@Required
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
