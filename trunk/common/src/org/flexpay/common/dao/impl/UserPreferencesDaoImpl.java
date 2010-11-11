@@ -84,13 +84,14 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	}
 
 	@Override
-	public Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate) {
+	public Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate) {
 		try {
 			X509Certificate certificate = (X509Certificate)addCertificateToKeyStore(preferences.getUsername(), inputStreamCertificate);
 			if (certificate != null) {
 				if (isCertificateExist(preferences)) {
 					org.flexpay.common.persistence.Certificate userCertificate = preferences.getCertificate();
 					userCertificate.setDescription(description);
+					userCertificate.setBlocked(blocked);
 					userCertificate.setBeginDate(certificate.getNotBefore());
 					userCertificate.setEndDate(certificate.getNotAfter());
 					userCertificate.setUserPreferences(preferences);

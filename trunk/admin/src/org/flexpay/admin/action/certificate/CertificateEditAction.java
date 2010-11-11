@@ -3,7 +3,6 @@ package org.flexpay.admin.action.certificate;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Certificate;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.CertificateService;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
@@ -47,11 +46,11 @@ public class CertificateEditAction extends FPActionSupport {
 			log.debug("certificateFile={}, certificateFileName={}", certificateFile, certificateFileFileName);
 
 			if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() == null) {
-				certificateService.addCertificate(alias, certificate.getDescription(), new FileInputStream(certificateFile));
+				certificateService.addCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
 			} else if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() != null) {
-				certificateService.replaceCertificate(alias, certificate.getDescription(), new FileInputStream(certificateFile));
+				certificateService.replaceCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
 			} else {
-				certificateService.editCertificateDescription(alias, certificate.getDescription());
+				certificateService.editCertificate(alias, certificate.getDescription(), certificate.isBlocked());
 			}
 			//addActionMessage(getText("admin.certificate.edited"));
 			return REDIRECT_SUCCESS;

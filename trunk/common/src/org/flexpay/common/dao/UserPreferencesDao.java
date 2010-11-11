@@ -31,7 +31,7 @@ public interface UserPreferencesDao {
 
 	List<UserPreferences> listAllUser();
 
-	Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate);
+	Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate);
 
 	Certificate getCertificate(UserPreferences preferences);
 

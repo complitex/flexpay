@@ -20,7 +20,6 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +62,8 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 				certificate.setBeginDate(DateUtil.parseDate(ctx.getStringAttribute("flexpayCertificateBeginDate")));
 				certificate.setEndDate(DateUtil.parseDate(ctx.getStringAttribute("flexpayCertificateEndDate")));
 				certificate.setDescription(ctx.getStringAttribute("flexpayCertificateDescription"));
+				getCertificateBlocked(ctx, certificate);
+
 				preferences.setCertificate(certificate);
 			} catch (ParseException e) {
 				log.warn("Can not set certificate in user preferences", e);
@@ -141,11 +142,13 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			setSingleAttribute(ctx, preferences, "flexpayCertificateBeginDate", "");
 			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", "");
 			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", "");
+			setSingleAttribute(ctx, preferences, "flexpayCertificateBlocked", "");
 			setSingleAttribute(ctx, preferences, "usercertificate", new byte[0]);
 			return;
 		}
 		if (inputStream == null) {
 			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", preferences.getCertificate().getDescription());
+			setCertificateBlocked(ctx, preferences);
 			return;
 		}
 		try {
@@ -168,6 +171,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			setSingleAttribute(ctx, preferences, "flexpayCertificateBeginDate", DateUtil.format(preferences.getCertificate().getBeginDate()));
 			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", DateUtil.format(preferences.getCertificate().getEndDate()));
 			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", preferences.getCertificate().getDescription());
+			setCertificateBlocked(ctx, preferences);
 
 			log.debug("Try set usercertificate: {}", certificateData);
 			setSingleAttribute(ctx, preferences, "usercertificate", certificateData);
@@ -180,6 +184,23 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 				log.error("Close stream", e);
 			}
 		}
+	}
+
+
+	private void getCertificateBlocked(DirContextOperations ctx, Certificate certificate) {
+		String blocked = ctx.getStringAttribute("flexpayCertificateBlocked");
+
+		if ("TRUE".equals(blocked)) {
+			certificate.setBlocked(true);
+		} else if ("FALSE".equals(blocked)) {
+			certificate.setBlocked(false);
+		} else if (blocked != null) {
+			log.warn("Failed flexpayCertificateBlocked={} (Required TRUE/FALSE)", blocked);
+		}
+	}
+
+	private void setCertificateBlocked(DirContextOperations ctx, UserPreferences preferences) {
+		setSingleAttribute(ctx, preferences, "flexpayCertificateBlocked", preferences.getCertificate().isBlocked()? "TRUE": "FALSE");
 	}
 
 	@Override

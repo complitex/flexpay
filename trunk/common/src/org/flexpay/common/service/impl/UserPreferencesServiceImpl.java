@@ -194,9 +194,12 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		return preferences;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate) {
-		return getUserPreferencesDao().editCertificate(preferences, description, inputStreamCertificate);
+	public Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate) {
+		return getUserPreferencesDao().editCertificate(preferences, description, blocked, inputStreamCertificate);
 	}
 
 	@Override

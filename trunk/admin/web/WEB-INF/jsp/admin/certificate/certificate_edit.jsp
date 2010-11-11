@@ -28,6 +28,11 @@
 		</tr>
 
 		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="admin.certificate.blocked" />:</td>
+			<td class="col"><s:checkbox name="certificate.blocked" /></td>
+		</tr>
+
+		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="admin.certificate.file" />:</td>
 			<td class="col"><s:file name="certificateFile" required="false" /></td>
 		</tr>

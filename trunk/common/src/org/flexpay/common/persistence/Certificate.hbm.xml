@@ -40,6 +40,12 @@
 			</column>
 		</property>
 
+		<property name="blocked">
+			<column name="blocked" not-null="false">
+				<comment>Certificate blocked</comment>
+			</column>
+		</property>
+
 		<many-to-one name="userPreferences" class="org.flexpay.common.util.config.UserPreferences"
 					 foreign-key="FK_common_certificates_tbl_user_preference_id">
 			<column name="user_preference_id" not-null="false">
