@@ -5,6 +5,7 @@
         begin_date datetime comment 'Certificate validity begin date',
         end_date datetime comment 'Certificate validity end date',
         description varchar(255) not null comment 'Description',
+        blocked bit comment 'Certificate blocked',
         user_preference_id bigint comment 'User preference reference',
         primary key (id)
     ) comment='Security certificate';

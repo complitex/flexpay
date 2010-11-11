@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface CertificateService {
 
-	void addCertificate(String alias, String description, InputStream inputStream);
+	void addCertificate(String alias, String description, Boolean blocked, InputStream inputStream);
 
-	void replaceCertificate(String alias, String description, InputStream inputStream);
+	void replaceCertificate(String alias, String description, Boolean blocked, InputStream inputStream);
 
-	void editCertificateDescription(String alias, String description);
+	void editCertificate(String alias, String description, Boolean blocked);
 
 	java.security.cert.Certificate getCertificate(String alias);
 

@@ -133,9 +133,10 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @param preferences User preference
 	 * @param description Certificate description
 	 * @param inputStreamCertificate Input Stream certificate
+	 * @param blocked Blocked certificate
 	 * @return  Security certificate instance
 	 */
-	Certificate editCertificate(UserPreferences preferences, String description, InputStream inputStreamCertificate);
+	Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate);
 
 	/**
 	 * Get certificate from user preferences storage

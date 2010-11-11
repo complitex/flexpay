@@ -379,6 +379,10 @@ ul.docs {
     background: yellow;
 }
 
+.cols_1_gray {
+	background: #999999;
+}
+
 .cols_1_highlighted {
     background: #ccccff;
 }

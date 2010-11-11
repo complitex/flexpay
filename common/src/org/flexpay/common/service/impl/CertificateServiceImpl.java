@@ -20,26 +20,26 @@ public class CertificateServiceImpl implements CertificateService {
 	private UserPreferencesService userPreferencesService;
 
 	@Override
-	public void addCertificate(String alias, String description, InputStream inputStream) {
+	public void addCertificate(String alias, String description, Boolean blocked, InputStream inputStream) {
 
 		UserPreferences preferences = getUserPreferences(alias);
 
-		userPreferencesService.editCertificate(preferences, description, inputStream);
+		userPreferencesService.editCertificate(preferences, description, blocked, inputStream);
 	}
 
 	@Override
-	public void replaceCertificate(String alias, String description, InputStream inputStream) {
+	public void replaceCertificate(String alias, String description, Boolean blocked, InputStream inputStream) {
 
 		UserPreferences preferences = getUserPreferences(alias);
 
-		userPreferencesService.editCertificate(preferences, description, inputStream);
+		userPreferencesService.editCertificate(preferences, description, blocked, inputStream);
 	}
 
 	@Override
-	public void editCertificateDescription(String alias, String description) {
+	public void editCertificate(String alias, String description, Boolean blocked) {
 		UserPreferences preferences = getUserPreferences(alias);
 
-		userPreferencesService.editCertificate(preferences, description, null);
+		userPreferencesService.editCertificate(preferences, description, blocked, null);
 	}
 
 	@Override

@@ -298,7 +298,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Override
-	public Certificate editCertificate(UserPreferences person, String description, InputStream inputStreamCertificate) {
+	public Certificate editCertificate(UserPreferences person, String description, Boolean blocked, InputStream inputStreamCertificate) {
 
 		if (inputStreamCertificate == null && person.getCertificate() == null) {
 			log.warn("Empty person`s certificate and input stream certificate is null");
@@ -308,6 +308,9 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		if (inputStreamCertificate == null && person.getCertificate() != null) {
 			org.flexpay.common.persistence.Certificate certificate = person.getCertificate();
 			certificate.setDescription(description);
+			if (blocked != null) {
+				certificate.setBlocked(blocked);
+			}
 
 			DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
 			mapToContextCertificate(person, ctx, inputStreamCertificate, false);
@@ -357,6 +360,9 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 		org.flexpay.common.persistence.Certificate certificate =
 					new org.flexpay.common.persistence.Certificate(person, description, javaCertificate.getNotBefore(), javaCertificate.getNotAfter());
+		if (blocked != null) {
+			certificate.setBlocked(blocked);
+		}
 		person.setCertificate(certificate);
 
 		inputStreamCertificate = new ByteArrayInputStream(certificateData);

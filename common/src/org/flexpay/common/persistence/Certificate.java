@@ -14,6 +14,7 @@ public class Certificate extends DomainObject {
 	private String description;
 	private Date beginDate;
 	private Date endDate;
+	private boolean blocked;
 
 	public Certificate() {
 	}
@@ -27,6 +28,7 @@ public class Certificate extends DomainObject {
 		this.description = description;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
+		this.blocked = false;
 	}
 
 	public UserPreferences getUserPreferences() {
@@ -59,6 +61,14 @@ public class Certificate extends DomainObject {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 	public boolean isTimeUpdate() {
