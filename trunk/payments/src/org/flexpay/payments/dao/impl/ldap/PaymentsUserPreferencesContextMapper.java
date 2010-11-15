@@ -37,6 +37,16 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 	@Override
 	public void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences) {
 
+		if (!preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
+			ctx.addAttributeValue("objectclass", LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
+			preferences.getObjectClasses().add(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
+		}
+
+		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
+		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentPointId", userPreferences.getPaymentPointIdStr());
+		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentCollectorId", userPreferences.getPaymentCollectorIdStr());
+		setSingleAttribute(ctx, preferences, "flexpayPaymentsCashboxId", userPreferences.getCashboxIdStr());
+
 	}
 
 	/**
@@ -48,15 +58,6 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 	@Override
 	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 
-		if (!preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
-			ctx.addAttributeValue("objectclass", LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
-			preferences.getObjectClasses().add(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
-		}
-
-		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
-		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentPointId", userPreferences.getPaymentPointIdStr());
-		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentCollectorId", userPreferences.getPaymentCollectorIdStr());
-		setSingleAttribute(ctx, preferences, "flexpayPaymentsCashboxId", userPreferences.getCashboxIdStr());
 	}
 
 	/**
