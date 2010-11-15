@@ -39,7 +39,7 @@ public class UserPaymentParametersEditAction extends FPActionSupport {
 			paymentsUserPreferences.setPaymentPointId(preference.getPaymentPointId());
 			paymentsUserPreferences.setCashboxId(preference.getCashboxId());
 
-			userPreferencesService.saveAdvancedData(paymentsUserPreferences);
+			userPreferencesService.saveGeneralData(paymentsUserPreferences);
 			return REDIRECT_SUCCESS;
 		}
 
