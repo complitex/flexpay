@@ -5,7 +5,7 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td colspan="6">
-            <%@include file="/WEB-INF/jsp/payments/filters/pager/pager_inner_ajax.jsp"%>
+            <%@include file="/WEB-INF/jsp/eirc/filters/pager/pager_inner_ajax.jsp"%>
         </td>
     </tr>
     <tr>
@@ -49,7 +49,7 @@
     </s:iterator>
     <tr>
         <td colspan="6">
-            <%@include file="/WEB-INF/jsp/payments/filters/pager/pager_inner_ajax.jsp"%>
+            <%@include file="/WEB-INF/jsp/eirc/filters/pager/pager_inner_ajax.jsp"%>
         </td>
     </tr>
 </table>
