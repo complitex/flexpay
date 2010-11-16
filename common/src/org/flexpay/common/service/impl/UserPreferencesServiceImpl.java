@@ -160,14 +160,21 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Create user preferences
+	 *
+	 * @param preferences UserPreferences to create
+	 * @param password User password
+	 * @return Created preferences back, or <code>null</code> if user did not create
+	 * @throws FlexPayExceptionContainer if preferences validation fails
 	 */
 	@Override
 	public UserPreferences createNewUser(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer {
 		validate(preferences);
 
 		log.debug("Create new user preferences {}", preferences);
-		getUserPreferencesDao().createNewUser(preferences, password);
+		if (!getUserPreferencesDao().createNewUser(preferences, password)) {
+			return null;
+		}
 		return preferences;
 	}
 
@@ -175,8 +182,8 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void deleteUser(@NotNull String userName) {
-		getUserPreferencesDao().delete(userName);
+	public boolean deleteUser(@NotNull String userName) {
+		return getUserPreferencesDao().delete(userName);
 	}
 
 	/**

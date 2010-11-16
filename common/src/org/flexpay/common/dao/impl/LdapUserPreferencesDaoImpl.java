@@ -3,6 +3,8 @@ package org.flexpay.common.dao.impl;
 import com.iplanet.sso.SSOException;
 import com.iplanet.sso.SSOToken;
 import com.iplanet.sso.SSOTokenManager;
+import com.sun.identity.entitlement.ApplicationManager;
+import com.sun.identity.entitlement.PrivilegeManager;
 import com.sun.identity.policy.*;
 import com.sun.identity.policy.interfaces.Subject;
 import com.sun.identity.security.cert.AMCertStore;
@@ -121,7 +123,12 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Override
-	public void createNewUser(UserPreferences person, String password) {
+	public boolean createNewUser(UserPreferences person, String password) {
+
+		if (!checkPolicy()) {
+			return false;
+		}
+
 		Name dn = buildDn(person);
 		DirContextOperations ctx = new DirContextAdapter(dn);
 		mapToContextNewUser(person, ctx);
@@ -138,9 +145,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		try {
 			addUserToPolicy(person);
 		} catch (Exception e) {
-			log.warn("Create user. Can not update policy {}", policyNames);
+			log.warn("Created user. Could not update policy {}", policyNames);
 			log.warn("Exception: ", e);
 		}
+		return true;
 	}
 
 	/*
@@ -221,7 +229,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	@SuppressWarnings ({"unchecked"})
 	@Override
-	public void delete(@NotNull String userName) {
+	public boolean delete(@NotNull String userName) {
 		SSOToken ssoToken = null;
 		try {
 			ssoToken = PolicyUtils.getToken();
@@ -249,7 +257,11 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 							subject.setValues(values);
 							log.debug("Replace subject values: {}", subject.getValues());
 							policy.replaceSubject(subjectName, subject, policy.isSubjectExclusive(subjectName));
-							pm.replacePolicy(policy);
+							try {
+								pm.replacePolicy(policy);
+							} catch (NullPointerException e) {
+								// TODO by FP-1166 Ignore null pointer exception
+							}
 						}
 					}
 				} catch (NameNotFoundException e) {
@@ -260,18 +272,20 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 			}
 		} catch (Exception e) {
 			log.warn("Can not remove user from policy`s subject", e);
+			return false;
 		} finally {
 			if (ssoToken != null) {
 				try {
 					SSOTokenManager.getInstance().destroyToken(ssoToken);
 				} catch (SSOException e) {
-					log.warn("Can not destroy token", e);
+					log.warn("Failed destroy token", e);
 				}
 			}
 		}
 		UserPreferences person = userPreferencesFactory.newInstance();
 		person.setUsername(userName);
 		ldapTemplate.unbind(buildDn(person));
+		return true;
 	}
 
 	@Override
@@ -489,6 +503,37 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		}
 	}
 
+	private boolean checkPolicy() {
+		SSOToken ssoToken = null;
+		String currentPolicyName = null;
+		try {
+			ssoToken = PolicyUtils.getToken();
+			log.debug("TokenId: {}", ssoToken.getTokenID());
+			PolicyManager pm = new PolicyManager(ssoToken);
+			for (String policyName : policyNames) {
+				currentPolicyName = policyName;
+				Policy policy = pm.getPolicy(policyName);
+				if (policy == null) {
+					log.error("Null policy '{}'", policyName);
+					return false;
+				}
+			}
+			return true;
+		} catch (Throwable t) {
+			log.error("Failed check policy '{}'", currentPolicyName);
+			log.error("Exception: ", t);
+		} finally {
+			if (ssoToken != null) {
+				try {
+					SSOTokenManager.getInstance().destroyToken(ssoToken);
+				} catch (SSOException e) {
+					log.warn("Failed destroy token", e);
+				}
+			}
+		}
+		return false;
+	}
+
 	@SuppressWarnings ({"unchecked"})
 	private void addUserToPolicy(UserPreferences person) throws Exception {
 		SSOToken ssoToken = null;
@@ -522,7 +567,11 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				} else {
 					policy.addSubject("users", subject, true);
 				}
-				pm.replacePolicy(policy);
+				try {
+					pm.replacePolicy(policy);
+				} catch (NullPointerException e) {
+					// TODO by FP-1166 Ignore null pointer exception
+				}
 			}
 		} finally {
 			if (ssoToken != null) {

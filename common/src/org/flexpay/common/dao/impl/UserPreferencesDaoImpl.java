@@ -67,8 +67,9 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	}
 
 	@Override
-	public void delete(String uid) {
+	public boolean delete(String uid) {
 		getHibernateTemplate().findByNamedQuery("UserPreferences.deleteByName", uid);
+		return true;
 	}
 
 	@Override
@@ -135,7 +136,7 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	}
 
 	@Override
-	public void createNewUser(UserPreferences preferences, String password) {
+	public boolean createNewUser(UserPreferences preferences, String password) {
 		throw new NotImplementedException();
 	}
 
