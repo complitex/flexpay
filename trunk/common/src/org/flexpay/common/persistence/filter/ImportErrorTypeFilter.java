@@ -10,7 +10,8 @@ public class ImportErrorTypeFilter extends ObjectFilter {
 	public static Integer TYPE_NO_ERRORS = 0;
 	public static Integer TYPE_ALL = -1;
 
-	private Integer selectedType = TYPE_ALL;
+	protected Integer selectedType = TYPE_ALL;
+    protected String groupByString = "";
 	protected Map<Integer, String> errorTypes = new TreeMap<Integer, String>();
 
 	public ImportErrorTypeFilter() {
@@ -21,7 +22,15 @@ public class ImportErrorTypeFilter extends ObjectFilter {
 	public void init(ClassToTypeRegistry typeRegistry) {
 	}
 
-	public Integer getSelectedType() {
+    public String getGroupByString() {
+        return groupByString;
+    }
+
+    public void setGroupByString(String groupByString) {
+        this.groupByString = groupByString;
+    }
+
+    public Integer getSelectedType() {
 		return selectedType;
 	}
 

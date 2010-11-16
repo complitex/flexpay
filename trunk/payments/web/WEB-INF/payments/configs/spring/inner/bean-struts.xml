@@ -16,11 +16,14 @@
 	<bean id="setCorrectionAction"
 		  class="org.flexpay.payments.actions.registry.corrections.SetCorrectionAction"
 		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
+		  p:registryRecordService-ref="registryRecordService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
+          p:registryService-ref="registryService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:organizationService-ref="organizationService"
           p:paymentPointService-ref="paymentPointService"
           p:cashboxService-ref="cashboxService"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
           scope="prototype" />
 
 	<bean id="registryViewAction"

@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -88,6 +89,7 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 
 		recordStatusFilter.setRecordStatuses(recordStatusService.listAllStatuses());
 		getImportErrorTypeFilter().init(classToTypeRegistry);
+        importErrorTypeFilter.getErrorTypes().remove(ImportErrorTypeFilter.TYPE_NO_ERRORS);
 
 		if (log.isDebugEnabled()) {
 			watch.stop();
@@ -123,6 +125,10 @@ public class RegistryViewPageAction extends AccountantAWPActionSupport {
 		ServiceType type = serviceTypeService.read(stub(typeStub));
 		return getTranslationName(type.getTypeNames());
 	}
+
+    public int getErrorStatusCode() {
+        return RegistryRecordStatus.PROCESSED_WITH_ERROR;
+    }
 
 	public Registry getRegistry() {
 		return registry;

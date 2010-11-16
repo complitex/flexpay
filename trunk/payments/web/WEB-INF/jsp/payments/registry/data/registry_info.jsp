@@ -28,7 +28,7 @@
 	</tr>
 	<tr class="cols_1">
 		<td class="col">
-            <strong><s:text name="eirc.registry.errors_number" />:</strong> <span id="errorsNumber"></span>
+            <strong><s:text name="eirc.registry.total_errors_number" />:</strong> <span id="errorsNumber"></span>
         </td>
 		<td class="col">
             <strong><s:text name="eirc.status" />:</strong> <s:text name="%{registry.registryStatus.i18nName}" />

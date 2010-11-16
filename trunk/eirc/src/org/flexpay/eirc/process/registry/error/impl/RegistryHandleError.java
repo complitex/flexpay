@@ -5,7 +5,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -20,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 public class RegistryHandleError implements HandleError {
+
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private RegistryWorkflowManager registryWorkflowManager;

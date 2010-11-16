@@ -3,8 +3,11 @@ package org.flexpay.common.dao.registry;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.registry.RecordErrorsGroup;
+import org.flexpay.common.persistence.registry.RecordErrorsType;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -34,6 +37,9 @@ public interface RegistryRecordDaoExt {
 	List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
+    List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+                                       String criteria, List<Object> params, Page<RegistryRecord> pager);
+
     List<RegistryRecord> findRecordsWithThisError(RegistryRecord record, String correctionType, Page<RegistryRecord> pager);
 
 	/**
@@ -44,6 +50,10 @@ public interface RegistryRecordDaoExt {
 	 * @return collection of registries
 	 */
 	List<RegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);
+
+    List<RecordErrorsType> findErrorsTypes(Long registryId);
+
+    List<RecordErrorsGroup> findErrorsGroups(Long registryId, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, Page<RecordErrorsGroup> pager);
 
     void updateErrorStatus(Collection<Long> recordIds, RegistryRecordStatus newStatus);
 
