@@ -117,8 +117,9 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * Delete user preferences by user name
 	 *
 	 * @param userName User name
+	 * @return <code>true</code> if user did not delete, <code>false</code> otherwise
 	 */
-	void deleteUser(@NotNull String userName);
+	boolean deleteUser(@NotNull String userName);
 
 	/**
 	 * Create new instance user preference

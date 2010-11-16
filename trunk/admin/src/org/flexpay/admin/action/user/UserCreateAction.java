@@ -40,7 +40,10 @@ public class UserCreateAction extends FPActionSupport {
 				return INPUT;
 			}
 			try {
-				createUserPreferences();
+				if (!createUserPreferences()) {
+					addActionError("admin.error.user.did_not_create");
+					return REDIRECT_ERROR;
+				}
 				addActionMessage(getText("admin.user.saved"));
 			} catch (FlexPayExceptionContainer e) {
 				log.warn("Can not create user preferences with name {}", model.getUserName());
@@ -52,8 +55,8 @@ public class UserCreateAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	private void createUserPreferences() throws FlexPayExceptionContainer {
-		preferencesService.createNewUser(currentUserPreferences, model.getPassword());
+	private boolean createUserPreferences() throws FlexPayExceptionContainer {
+		return preferencesService.createNewUser(currentUserPreferences, model.getPassword()) != null;
 	}
 
 	private void setUserRole() {

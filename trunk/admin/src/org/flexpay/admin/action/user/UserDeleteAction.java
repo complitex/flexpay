@@ -24,8 +24,16 @@ public class UserDeleteAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
+		boolean userDidNotDeleteByError = false;
 		for (String objectId : objectIds) {
-			preferencesService.deleteUser(objectId);
+			if (getUserPreferences().getUsername().equals(objectId)) {
+				addActionError("admin.error.user.delete_own");
+			} else if (!preferencesService.deleteUser(objectId)) {
+				userDidNotDeleteByError = true;
+			}
+		}
+		if (userDidNotDeleteByError) {
+			addActionError("admin.error.user.did_not_delete");
 		}
 
 		return SUCCESS;
