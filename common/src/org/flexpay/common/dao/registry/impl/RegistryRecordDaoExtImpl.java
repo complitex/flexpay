@@ -449,26 +449,28 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
     /*
 
-                SELECT ie.error_key, count(*)
+                select ie.error_key, rr.import_error_type, count(*) count 
                 FROM common_registry_records_tbl rr
                   inner join common_import_errors_tbl ie on rr.import_error_id = ie.id
                 where registry_id = 131 and record_status_id = 2
-                group by import_error_type;
+                group by rr.import_error_type
+                order by count DESC;
 
      */
 
     @Override
     public List<RecordErrorsType> findErrorsTypes(Long registryId) {
 
-        final StringBuilder sql = new StringBuilder("select ie.error_key, rr.import_error_type, count(*) ");
+        final StringBuilder sql = new StringBuilder("select ie.error_key, rr.import_error_type, count(*) count ");
 
         StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl rr " +
                                                           "   inner join common_import_errors_tbl ie on rr.import_error_id = ie.id " +
                                                           " where rr.registry_id = ? and rr.record_status_id = ? ");
 
-        StringBuilder groupByClause = new StringBuilder(" group by rr.import_error_type");
+        StringBuilder groupOrderByClause = new StringBuilder(" group by rr.import_error_type" +
+                                                             " order by count DESC");
 
-        sql.append(fromWhereClause).append(groupByClause);
+        sql.append(fromWhereClause).append(groupOrderByClause);
 
         final List<Object> params = list();
         params.add(registryId);

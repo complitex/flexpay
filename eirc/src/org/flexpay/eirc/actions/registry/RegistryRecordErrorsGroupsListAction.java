@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorterByName;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorterByNumberOfErrors;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
@@ -61,10 +62,14 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
             watch.start();
         }
 
-        RecordErrorsGroupSorter sorter = null;
+        RecordErrorsGroupSorter sorter;
         if (recordErrorsGroupSorterByName.isActivated()) {
             sorter = recordErrorsGroupSorterByName;
         } else if (recordErrorsGroupSorterByNumberOfErrors.isActivated()) {
+            sorter = recordErrorsGroupSorterByNumberOfErrors;
+        } else {
+            recordErrorsGroupSorterByNumberOfErrors.activate();
+            recordErrorsGroupSorterByNumberOfErrors.setOrder(ObjectSorter.ORDER_DESC);
             sorter = recordErrorsGroupSorterByNumberOfErrors;
         }
 
