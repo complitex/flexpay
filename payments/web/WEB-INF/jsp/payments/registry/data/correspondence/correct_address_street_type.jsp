@@ -1,5 +1,10 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+<s:if test="groupView == null">
+    <%@include file="/WEB-INF/jsp/payments/registry/data/registry_record_info.jsp"%>
+</s:if><s:else>
+    <%@include file="/WEB-INF/jsp/payments/registry/data/registry_records_group_info.jsp"%>
+</s:else>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -21,7 +26,21 @@
 
     function set(id) {
         $.post("<s:url action="setCorrection" includeParams="none" />", {
-                    "record.id":<s:property value="record.id" />,
+                    <s:if test="group != null">
+                        <s:property value="group.townName != null ? '\"group.townName\":\"' + group.townName + '\",' : ''" escape="false" />
+                        <s:property value="group.streetType != null ? '\"group.streetType\":\"' + group.streetType + '\",' : ''" escape="false" />
+                        <s:property value="group.streetName != null ? '\"group.streetName\":\"' + group.streetName + '\",' : ''" escape="false" />
+                        <s:property value="group.buildingNumber != null ? '\"group.buildingNumber\":\"' + group.buildingNumber + '\",' : ''" escape="false" />
+                        <s:property value="group.buildingBulk != null ? '\"group.buildingBulk\":\"' + group.buildingBulk + '\",' : ''" escape="false" />
+                        <s:property value="group.apartmentNumber != null ? '\"group.apartmentNumber\":\"' + group.apartmentNumber + '\",' : ''" escape="false" />
+                        <s:property value="group.lastName != null ? '\"group.lastName\":\"' + group.lastName + '\",' : ''" escape="false" />
+                        <s:property value="group.middleName != null ? '\"group.middleName\":\"' + group.middleName + '\",' : ''" escape="false" />
+                        <s:property value="group.middleName != null ? '\"group.lastName\":\"' + group.middleName + '\",' : ''" escape="false" />
+                        "group.errorType":<s:property value="group.errorType" />,
+                        "registry.id":<s:property value="registry.id" />,
+                    </s:if><s:else>
+                        "record.id":<s:property value="record.id" />,
+                    </s:else>
                     "object.id":id,
                     type:"streetType"
                 }, function(data, status) {

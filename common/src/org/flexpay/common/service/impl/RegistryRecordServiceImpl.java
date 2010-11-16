@@ -9,9 +9,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.service.RegistryRecordService;
 import org.jetbrains.annotations.NotNull;
@@ -114,6 +113,12 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	}
 
     @Override
+    public List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+                                            String criteria, List<Object> params, Page<RegistryRecord> pager) {
+        return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, criteria, params, pager);
+    }
+
+    @Override
     public List<RegistryRecord> listRecords(RegistryRecord record, String correctionType, Page<RegistryRecord> pager) {
         return registryRecordDaoExt.findRecordsWithThisError(record, correctionType, pager);
     }
@@ -123,7 +128,17 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 		return registryRecordDao.listRecordsForExport(registry.getId(), range);
 	}
 
-	/**
+    @Override
+    public List<RecordErrorsGroup> listRecordErrorsGroups(@NotNull Registry registry, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, Page<RecordErrorsGroup> pager) {
+        return registryRecordDaoExt.findErrorsGroups(registry.getId(), sorter, importErrorTypeFilter, groupByString, pager);
+    }
+
+    @Override
+    public List<RecordErrorsType> listRecordErrorsTypes(@NotNull Registry registry) {
+        return registryRecordDaoExt.findErrorsTypes(registry.getId());
+    }
+
+    /**
 	 * Count number of error in registry
 	 *
 	 * @param registry Registry to count errors for

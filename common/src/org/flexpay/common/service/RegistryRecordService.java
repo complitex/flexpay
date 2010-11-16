@@ -6,9 +6,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,6 +62,20 @@ public interface RegistryRecordService {
     /**
      * List registry records
      *
+     * @param registry			  Registry to get records for
+     * @param importErrorTypeFilter Errors type filter
+     * @param recordStatusFilter	Records status filter
+     * @param criteria criteria
+     * @param params params
+     * @param pager				 Page
+     * @return list of filtered registry records
+     */
+    List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+                                      String criteria, List<Object> params, Page<RegistryRecord> pager);
+
+    /**
+     * List registry records
+     *
      * @param record	Record for template
      * @param correctionType Type of correction
      * @param pager				 Page
@@ -78,6 +91,10 @@ public interface RegistryRecordService {
 	 * @return list of filtered registry records
 	 */
 	List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range);
+
+    List<RecordErrorsGroup> listRecordErrorsGroups(@NotNull Registry registry, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, Page<RecordErrorsGroup> pager);
+
+    List<RecordErrorsType> listRecordErrorsTypes(@NotNull Registry registry);
 
 	/**
 	 * Count number of error in registry

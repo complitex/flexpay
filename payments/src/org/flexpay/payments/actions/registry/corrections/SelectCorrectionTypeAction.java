@@ -4,26 +4,51 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.RecordErrorsGroup;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.payments.actions.registry.data.RecordErrorsGroupView;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.persistence.DataCorrection.*;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class SelectCorrectionTypeAction extends FPActionSupport {
 
-	protected ClassToTypeRegistry typeRegistry;
+    private Registry registry = new Registry();
+    private RecordErrorsGroup group;
+    private RecordErrorsGroupView groupView;
 	private RegistryRecord record = new RegistryRecord();
 	private String type;
 
+    protected ClassToTypeRegistry typeRegistry;
 	private RegistryRecordService registryRecordService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
+        if (group != null) {
+
+            Integer objectType = group.getErrorType();
+
+            groupView = new RecordErrorsGroupView(group, typeRegistry);
+            
+            if (checkStreetType(objectType)) {
+                return "correctStreet";
+            } else if (checkStreetTypeType(objectType)) {
+                return "correctStreetType";
+            } else if (checkBuildingType(objectType)) {
+                return "correctBuilding";
+            } else if (checkApartmentType(objectType)) {
+                return "correctApartment";
+            } else if (checkPersonType(objectType)) {
+                return "correctPerson";
+            }
+        }
 
 		if (record == null || record.isNew()) {
 			log.warn("Incorrect registry record id");
@@ -108,7 +133,27 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	public RegistryRecord getRecord() {
+    public RecordErrorsGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(RecordErrorsGroup group) {
+        this.group = group;
+    }
+
+    public RecordErrorsGroupView getGroupView() {
+        return groupView;
+    }
+
+    public Registry getRegistry() {
+        return registry;
+    }
+
+    public void setRegistry(Registry registry) {
+        this.registry = registry;
+    }
+
+    public RegistryRecord getRecord() {
 		return record;
 	}
 

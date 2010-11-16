@@ -70,17 +70,16 @@
             <td class="col"><s:date name="operationDate" format="yyyy/MM/dd" /></td>
             <td class="col"><s:property value="amount" /></td>
             <td class="col">
-							<s:if test="containers.isEmpty()">
-								N/A
-							</s:if>
-							<s:else>
-								<s:set name="lastContainerIndex" value="%{containers.size() - 1}" />
-								<s:iterator value="containers" status="containerStatus" id="container">
-									<s:property value="#container.data" /><s:if test="#containerStatus.index < #lastContainerIndex">; </s:if>
-								</s:iterator>
-							</s:else>
-						</td>
-            <%--<td class="col">N/A</td>--%>
+                <s:if test="containers.isEmpty()">
+                    N/A
+                </s:if>
+                <s:else>
+                    <s:set name="lastContainerIndex" value="%{containers.size() - 1}" />
+                    <s:iterator value="containers" status="containerStatus" id="container">
+                        <s:property value="#container.data" /><s:if test="#containerStatus.index < #lastContainerIndex">; </s:if>
+                    </s:iterator>
+                </s:else>
+            </td>
             <td class="col"><s:text name="%{importError.errorId}" /></td>
             <td class="col"><s:text name="%{recordStatus.i18nName}" /></td>
             <td class="col">
@@ -113,6 +112,7 @@
             overlayClose:true,
             onClose: function() {
                 $.modal.close();
+                updateErrorsNumber();
                 pagerAjax();
             }
         });

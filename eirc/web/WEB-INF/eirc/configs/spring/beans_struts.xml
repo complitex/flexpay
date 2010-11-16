@@ -168,11 +168,14 @@
 		  class="org.flexpay.eirc.actions.registry.corrections.SetCorrectionAction"
 		  p:consumersDataSource-ref="consumersDataSource"
           p:correctionsService-ref="correctionsService"
-          p:recordService-ref="registryRecordService"
+          p:registryRecordService-ref="registryRecordService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
+          p:registryService-ref="registryService"
           p:serviceTypeService-ref="serviceTypeService"
           p:organizationService-ref="organizationService"
           p:paymentPointService-ref="paymentPointService"
           p:cashboxService-ref="cashboxService"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
 		  scope="prototype" />
 
     <bean id="registryViewAction"
@@ -195,6 +198,28 @@
 		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
           scope="prototype"  />
 
+    <bean id="registryRecordsListSimpleAction"
+          class="org.flexpay.eirc.actions.registry.RegistryRecordsListSimpleAction"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
+          p:registryRecordService-ref="registryRecordService"
+		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          scope="prototype"  />
+
+    <bean id="registryRecordErrorsGroupsListAction"
+          class="org.flexpay.eirc.actions.registry.RegistryRecordErrorsGroupsListAction"
+          p:typeRegistry-ref="classToTypeRegistry"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordService-ref="registryRecordService"
+          scope="prototype"  />
+
+    <bean id="registryRecordErrorsTypesListAction"
+          class="org.flexpay.eirc.actions.registry.RegistryRecordErrorsTypesListAction"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordService-ref="registryRecordService"
+          scope="prototype"  />
+
     <bean id="eircRegistryRecordsListAction"
           class="org.flexpay.payments.actions.registry.RegistryRecordsListAction"
           p:classToTypeRegistry-ref="classToTypeRegistry"
@@ -202,6 +227,28 @@
           p:serviceTypeService-ref="serviceTypeService"
           p:registryRecordService-ref="registryRecordService"
 		  p:hintsHandlerFactory-ref="consumerReadHintsHandlerFactory"
+          scope="prototype"  />
+
+    <bean id="eircRegistryRecordsListSimpleAction"
+          class="org.flexpay.eirc.actions.registry.RegistryRecordsListSimpleAction"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
+          p:registryRecordService-ref="registryRecordService"
+		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          scope="prototype"  />
+
+    <bean id="eircRegistryRecordErrorsGroupsListAction"
+          class="org.flexpay.eirc.actions.registry.RegistryRecordErrorsGroupsListAction"
+          p:typeRegistry-ref="classToTypeRegistry"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordService-ref="registryRecordService"
+          scope="prototype"  />
+
+    <bean id="eircRegistryRecordErrorsTypesListAction"
+          class="org.flexpay.eirc.actions.registry.RegistryRecordErrorsTypesListAction"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordService-ref="registryRecordService"
           scope="prototype"  />
 
 	<bean id="processesListPageAction"

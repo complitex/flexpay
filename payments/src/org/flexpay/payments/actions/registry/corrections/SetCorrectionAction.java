@@ -4,12 +4,21 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.registry.RecordErrorsGroup;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryRecordStatusService;
+import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
+import org.flexpay.payments.actions.registry.data.RecordErrorsGroupView;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
@@ -18,17 +27,24 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class SetCorrectionAction extends OperatorAWPActionSupport {
 
 	protected DomainObject object = new DomainObject();
+    protected Registry registry = new Registry();
+    protected RecordErrorsGroup group;
 	protected RegistryRecord record = new RegistryRecord();
 	protected String type;
 
 	protected CorrectionsService correctionsService;
-	protected RegistryRecordService recordService;
+    protected RegistryService registryService;
+	protected RegistryRecordService registryRecordService;
 	protected ServiceTypeService serviceTypeService;
 	protected OrganizationService organizationService;
+    protected ClassToTypeRegistry classToTypeRegistry;
+    protected RegistryRecordStatusService registryRecordStatusService;
 
 	@NotNull
 	@Override
@@ -40,56 +56,119 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 			return SUCCESS;
 		}
 
-		if (record == null || record.isNew()) {
-			log.warn("Incorrect registry record id");
-			addActionError(getText("error.registry.record.not_specified"));
-			return SUCCESS;
-		}
+        RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
+        ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
+        List<RegistryRecord> records = list();
+        boolean isGroup = registry != null && group != null;
+        RecordErrorsGroupView groupView = null;
 
-		Stub<RegistryRecord> stub = stub(record);
-		record = recordService.read(stub);
-		if (record == null) {
-			log.warn("Can't get registry record with id {} from DB", stub.getId());
-			addActionError(getText("error.registry.record.invalid_specified"));
-			return SUCCESS;
-		}
+        if (group != null) {
 
-		EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
-		Organization organization = organizationService.readFull(props.getSenderStub());
-		if (organization == null) {
-			log.warn("Can't get organization with id {} from DB", props.getSenderStub().getId());
-			addActionError(getText("error.eirc.data_source_not_found"));
-			return SUCCESS;
-		}
+            if (registry == null || registry.isNew()) {
+                log.warn("Incorrect registry id");
+                addActionError(getText("error.eirc.invalid_registry_id"));
+                return SUCCESS;
+            }
 
-        if (saveCorrection(record, organization.sourceDescriptionStub()) && record.getImportError() != null) {
+            registry = registryService.read(stub(registry));
 
-            Page<RegistryRecord> pager = new Page<RegistryRecord>(2000);
+            RegistryRecordStatus status = registryRecordStatusService.findByCode(PROCESSED_WITH_ERROR);
+            if (status == null) {
+                log.warn("Can't get status by code from DB ({})", PROCESSED_WITH_ERROR);
+                return SUCCESS;
+            }
+            recordStatusFilter.setSelectedId(status.getId());
+
+            importErrorTypeFilter.setSelectedType(group.getErrorType());
+
+            groupView = new RecordErrorsGroupView(group, classToTypeRegistry);
+
+            records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), new Page<RegistryRecord>(2000));
+            if (records.isEmpty()) {
+                log.warn("Records not found");
+                return SUCCESS;
+            }
+
+        } else {
+
+            if (record == null || record.isNew()) {
+                log.warn("Incorrect registry record id");
+                addActionError(getText("error.registry.record.not_specified"));
+                return SUCCESS;
+            }
+
+            Stub<RegistryRecord> stub = stub(record);
+            record = registryRecordService.read(stub);
+            if (record == null) {
+                log.warn("Can't get registry record with id {} from DB", stub.getId());
+                addActionError(getText("error.registry.record.invalid_specified"));
+                return SUCCESS;
+            }
+
+        }
+
+        Stub<DataSourceDescription> stubDataSourceDescription = getDataSourceDescription(isGroup ? registry : record.getRegistry());
+
+        if (isGroup) {
+            record = records.get(0);
+        }
+
+        if (saveCorrection(record, stubDataSourceDescription) && record.getImportError() != null) {
+
             Long recordsCount = 0L;
+            Page<RegistryRecord> pager = new Page<RegistryRecord>(2000);
 
-            for (;;) {
+            if (isGroup) {
 
-                log.debug("Find records");
-                List<RegistryRecord> records = recordService.listRecords(record, type, pager);
-                int foundRecords = records.size();
-                log.debug("Found {}", foundRecords);
-                log.debug("Processing records from {} to {}", recordsCount, (recordsCount + foundRecords));
-
-                if (records.isEmpty()) {
-                    log.debug("Records list is empty!");
-                    break;
+                for (;;) {
+                    if (records.isEmpty()) {
+                        log.debug("Records list is empty!");
+                        break;
+                    }
+                    registryRecordService.removeError(records);
+                    records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), pager);
                 }
 
-                recordsCount += foundRecords;
-                log.debug("Total processed records {}", recordsCount);
+            } else {
 
-                recordService.removeError(records);
+                for (;;) {
 
+                    log.debug("Find records");
+                    records = registryRecordService.listRecords(record, type, pager);
+                    int foundRecords = records.size();
+                    log.debug("Found {}", foundRecords);
+                    log.debug("Processing records from {} to {}", recordsCount, (recordsCount + foundRecords));
+
+                    if (records.isEmpty()) {
+                        log.debug("Records list is empty!");
+                        break;
+                    }
+
+                    recordsCount += foundRecords;
+                    log.debug("Total processed records {}", recordsCount);
+
+                    registryRecordService.removeError(records);
+
+                }
             }
         }
 
 		return SUCCESS;
 	}
+
+    protected Stub<DataSourceDescription> getDataSourceDescription(Registry registry) {
+
+        EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+        Organization organization = organizationService.readFull(props.getSenderStub());
+        if (organization == null) {
+            log.warn("Can't get organization with id {} from DB", props.getSenderStub().getId());
+            addActionError(getText("error.eirc.data_source_not_found"));
+            return null;
+        }
+
+        return organization.sourceDescriptionStub();
+
+    }
 
 	protected boolean saveCorrection(RegistryRecord record, Stub<DataSourceDescription> sd) {
 		return true;
@@ -108,27 +187,70 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public DomainObject getObject() {
+        return object;
+    }
 
-	public void setObject(DomainObject object) {
-		this.object = object;
-	}
+    public void setObject(DomainObject object) {
+        this.object = object;
+    }
 
-	public void setRecord(RegistryRecord record) {
-		this.record = record;
-	}
+    public Registry getRegistry() {
+        return registry;
+    }
 
-	@Required
+    public void setRegistry(Registry registry) {
+        this.registry = registry;
+    }
+
+    public RecordErrorsGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(RecordErrorsGroup group) {
+        this.group = group;
+    }
+
+    public RegistryRecord getRecord() {
+        return record;
+    }
+
+    public void setRecord(RegistryRecord record) {
+        this.record = record;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
 
-	@Required
-	public void setRecordService(RegistryRecordService recordService) {
-		this.recordService = recordService;
-	}
+    @Required
+    public void setRegistryService(RegistryService registryService) {
+        this.registryService = registryService;
+    }
+
+    @Required
+    public void setRegistryRecordService(RegistryRecordService registryRecordService) {
+        this.registryRecordService = registryRecordService;
+    }
+
+    @Required
+    public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
+        this.classToTypeRegistry = classToTypeRegistry;
+    }
+
+    @Required
+    public void setRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
+        this.registryRecordStatusService = registryRecordStatusService;
+    }
 
 	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {

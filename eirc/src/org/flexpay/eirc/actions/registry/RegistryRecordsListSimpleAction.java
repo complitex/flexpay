@@ -1,43 +1,35 @@
-package org.flexpay.payments.actions.registry;
+package org.flexpay.eirc.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.common.dao.paging.FetchRange;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
-import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.registry.data.RecordErrorsGroupView;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
 
-public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
+public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
 
+    private Long index;
 	private Registry registry = new Registry();
+    private RecordErrorsGroup group = new RecordErrorsGroup();
 	private List<RegistryRecord> records = list();
-    private Map<Integer, ServiceType> types = map();
 
-	protected ImportErrorTypeFilter importErrorTypeFilter = null;
-	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
-
-	private ServiceTypeService serviceTypeService;
 	private RegistryRecordService registryRecordService;
+    private RegistryRecordStatusService registryRecordStatusService;
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private ProcessingReadHintsHandlerFactory hintsHandlerFactory = null;
@@ -52,15 +44,21 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 			return SUCCESS;
 		}
 
+        RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
+        RegistryRecordStatus status = registryRecordStatusService.findByCode(PROCESSED_WITH_ERROR);
+        if (status == null) {
+            log.warn("Can't get status by code from DB ({})", PROCESSED_WITH_ERROR);
+            return SUCCESS;
+        }
+        recordStatusFilter.setSelectedId(status.getId());
+
 		StopWatch watch = new StopWatch();
 		if (log.isDebugEnabled()) {
 			watch.start();
 		}
 
-		if (importErrorTypeFilter == null) {
-			importErrorTypeFilter = new ImportErrorTypeFilter();
-		}
-
+		ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
+        importErrorTypeFilter.setSelectedType(group.getErrorType());
 		importErrorTypeFilter.init(classToTypeRegistry);
 
 		if (log.isDebugEnabled()) {
@@ -70,7 +68,9 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 			watch.start();
 		}
 
-		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
+        RecordErrorsGroupView groupView = new RecordErrorsGroupView(group, classToTypeRegistry);
+
+		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), getPager());
 
 		if (hintsHandlerFactory != null && records.size() > 0) {
 			log.debug("select consumers with eirc account for registry records");
@@ -82,24 +82,6 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 			log.debug("Time spent listing records: {}", watch);
 			log.debug("Total records found: {}", records.size());
 		}
-
-        if (types == null) {
-            types = map();
-        }
-
-/*
-        Set<Integer> typeCodes = set();
-
-        for (RegistryRecord record : records) {
-            typeCodes.add(Integer.parseInt(record.getServiceCode()));
-        }
-
-        List<ServiceType> typesList = serviceTypeService.getByCodes(typeCodes);
-        for (ServiceType type : typesList) {
-            types.put(type.getCode(), type);
-        }
-*/
-
 
 		return SUCCESS;
 	}
@@ -117,11 +99,15 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		return SUCCESS;
 	}
 
-	public String getServiceTypeName(String typeCode) throws FlexPayException {
-		return getTranslationName(types.get(Integer.parseInt(typeCode)).getTypeNames());
-	}
+    public Long getIndex() {
+        return index;
+    }
 
-	public Registry getRegistry() {
+    public void setIndex(Long index) {
+        this.index = index;
+    }
+
+    public Registry getRegistry() {
 		return registry;
 	}
 
@@ -129,31 +115,31 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		this.registry = registry;
 	}
 
-	public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
-		this.importErrorTypeFilter = importErrorTypeFilter;
-	}
+    public RecordErrorsGroup getGroup() {
+        return group;
+    }
 
-	public void setRecordStatusFilter(RegistryRecordStatusFilter recordStatusFilter) {
-		this.recordStatusFilter = recordStatusFilter;
-	}
+    public void setGroup(RecordErrorsGroup group) {
+        this.group = group;
+    }
 
 	public List<RegistryRecord> getRecords() {
 		return records;
 	}
 
-	@Required
+    @Required
 	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
-	@Required
+    @Required
+    public void setRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
+        this.registryRecordStatusService = registryRecordStatusService;
+    }
+
+    @Required
 	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
 		this.classToTypeRegistry = classToTypeRegistry;
-	}
-
-	@Required
-	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
-		this.serviceTypeService = serviceTypeService;
 	}
 
 	public void setHintsHandlerFactory(ProcessingReadHintsHandlerFactory hintsHandlerFactory) {

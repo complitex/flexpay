@@ -557,3 +557,21 @@ input[readonly] {
     font-weight:bold;
     font-size:14px;
 }
+
+.group {
+    cursor: pointer;
+}
+
+.panelGroup {
+	border: 1px solid #B9E3FF;
+	padding: 17px 10px;
+}
+
+.type {
+    cursor: pointer;
+}
+
+.panelType {
+	border: 1px solid #B9E3FF;
+	padding: 17px 10px;
+}
