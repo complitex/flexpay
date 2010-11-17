@@ -27,17 +27,18 @@ public class ProcessViewAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
+		if (Boolean.TRUE.equals(delete)) {
+			log.debug("Try delete process instance {}", process.getProcessInstaceId());
+			processManager.deleteProcessInstance(process);
+			log.debug("Deleted process instance");
+		}
+		
         process = processManager.getProcessInstanceInfo(process.getId());
 		if (process == null) {
 			addActionError(getText("common.processing.process.process_not_found"));
 			return SUCCESS;
 		}
         logText = LogPreviewUtil.getLogLastLines(process.getId());
-		if (Boolean.TRUE.equals(delete)) {
-			log.debug("Try delete process instance {}", process.getProcessInstaceId());
-			processManager.deleteProcessInstance(process);
-			log.debug("Deleted process instance");
-		}
 
         return SUCCESS;
     }
