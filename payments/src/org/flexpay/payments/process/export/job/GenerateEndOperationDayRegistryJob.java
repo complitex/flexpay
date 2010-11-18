@@ -78,7 +78,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		if (paymentCollector == null) {
 			log.error("Payment point was not found (searching by id {})", parameters.get(PAYMENT_COLLECTOR_ID));
 		}
-		return null;
+		return paymentCollector;
 	}
 
 	private Organization getOrganization(Map<Serializable, Serializable> parameters) {

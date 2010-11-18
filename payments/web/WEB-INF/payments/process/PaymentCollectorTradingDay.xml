@@ -161,9 +161,7 @@
 	</decision>
 
 	<task-node name="WaitSubProcessSignal">
-		<task name="ClosePaymentCollectorTradingDay" swimlane="PaymentPointProcess">
-            <!--<timer duedate="#{START_TIME} + 1 business day" transition="CloseTradingDayByTimer" />-->
-        </task>
+		<task name="ClosePaymentCollectorTradingDay" swimlane="PaymentPointProcess" />
         <transition to="WaitSubProcessSignal" name="Close trading day" >
 			<script>
 				<variable name="closedCountPaymentPoints" mapped-name="closedCountPaymentPoints" access="read,write" />
@@ -196,7 +194,6 @@
 				</expression>
 			</script>
 		</transition>
-		<transition to="end-state" name="CloseTradingDayByTimer" />
     </task-node>
 
 	<decision name="ApprovedPaymentPointTradingDay" async="true">
@@ -209,7 +206,7 @@
 				<arraySizeName>approvedClosingCountPaymentPoints</arraySizeName>
 			</action>
 		</event>
-		<transition to="end-state" name="end" />
+		<transition to="generateEndOperationDayRegistryJob" name="end" />
 		<transition to="WaitSubProcessSignal" name="next" />
 	</decision>
 
