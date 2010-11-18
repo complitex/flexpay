@@ -206,7 +206,7 @@
 				<arraySizeName>approvedClosingCountPaymentPoints</arraySizeName>
 			</action>
 		</event>
-		<transition to="generateEndOperationDayRegistryJob" name="end" />
+		<transition to="WaitPaymentPointTradingDay" name="end" />
 		<transition to="WaitSubProcessSignal" name="next" />
 	</decision>
 
