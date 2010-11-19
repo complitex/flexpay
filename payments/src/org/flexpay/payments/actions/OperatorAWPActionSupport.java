@@ -65,7 +65,7 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 		
 		UserPreferences userPreferences = getUserPreferences();
 		if (userPreferences instanceof PaymentsUserPreferences) {
-			return ((PaymentsUserPreferences)userPreferences).getPaymentCollectorId();
+			return ((PaymentsUserPreferences)userPreferences).getCashboxId();
 		}
 		return null;
 	}

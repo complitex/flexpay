@@ -61,7 +61,7 @@ public abstract class OperatorAWPWithPagerActionSupport<T> extends FPActionWithP
 
 		UserPreferences userPreferences = getUserPreferences();
 		if (userPreferences instanceof PaymentsUserPreferences) {
-			return ((PaymentsUserPreferences)userPreferences).getPaymentCollectorId();
+			return ((PaymentsUserPreferences)userPreferences).getCashboxId();
 		}
 		return null;
 	}
