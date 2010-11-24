@@ -241,6 +241,16 @@ ul.docs {
     font-family: tahoma, sans-serif;
     color: #000;
 }
+
+.form-search2 {
+    border: 1px solid #b3b9c3;
+    height: 20px;
+    background: #fff;
+    font-size: 0.8em;
+    font-family: tahoma, sans-serif;
+    color: #000;
+}
+
 .form-textarea {
     border: 1px solid #b3b9c3;
     width:99%;

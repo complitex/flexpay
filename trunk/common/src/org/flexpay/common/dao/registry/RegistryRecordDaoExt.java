@@ -2,11 +2,13 @@ package org.flexpay.common.dao.registry;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.RecordErrorsType;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +39,9 @@ public interface RegistryRecordDaoExt {
 	List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
-    List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+    List<RegistryRecord> filterRecords(Long registryId, Collection<ObjectFilter> filters, Page<RegistryRecord> pager);
+
+    List<RegistryRecord> filterRecords(Long registryId, Collection<ObjectFilter> filters,
                                        String criteria, List<Object> params, Page<RegistryRecord> pager);
 
     List<RegistryRecord> findRecordsWithThisError(RegistryRecord record, String correctionType, Page<RegistryRecord> pager);
@@ -51,9 +55,11 @@ public interface RegistryRecordDaoExt {
 	 */
 	List<RegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);
 
-    List<RecordErrorsType> findErrorsTypes(Long registryId);
+    List<String> findAoutocompleterAddresses(Long registryId, FilterData filterData, Page<String> pager);
 
-    List<RecordErrorsGroup> findErrorsGroups(Long registryId, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, Page<RecordErrorsGroup> pager);
+    List<RecordErrorsType> findErrorsTypes(Long registryId, Collection<ObjectFilter> filters);
+
+    List<RecordErrorsGroup> findErrorsGroups(Long registryId, RecordErrorsGroupSorter sorter, Collection<ObjectFilter> filters, String groupByString, Page<RecordErrorsGroup> pager);
 
     void updateErrorStatus(Collection<Long> recordIds, RegistryRecordStatus newStatus);
 

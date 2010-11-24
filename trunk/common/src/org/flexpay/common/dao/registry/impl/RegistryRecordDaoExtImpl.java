@@ -6,11 +6,14 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.RecordErrorsType;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.filter.StringFilter;
+import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.transform.Number2LongTransformer;
@@ -33,6 +36,7 @@ import java.util.List;
 import static org.flexpay.common.persistence.DataCorrection.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.transform;
+import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 
 public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements RegistryRecordDaoExt {
 
@@ -158,22 +162,144 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 		return result;
 	}
 
+    @SuppressWarnings ({"unchecked"})
+    @Override
+    public List<RegistryRecord> filterRecords(Long registryId, Collection<ObjectFilter> filters, final Page<RegistryRecord> pager) {
+
+        StringBuilder countSql = new StringBuilder("select count(1) ");
+        final StringBuilder selectSql = new StringBuilder("select id ");
+        StringBuilder fromWhereClause = new StringBuilder(
+                "from common_registry_records_tbl use index (I_registry_status, I_registry_errortype) " +
+                "where registry_id=? ");
+
+
+        final List<Object> params = list();
+        params.add(registryId);
+
+        boolean haveFilter = getFilters(fromWhereClause, params, filters);
+
+        final StringBuilder sqlCount = haveFilter ?
+                                       countSql.append(fromWhereClause) :
+                                       new StringBuilder("select records_number from common_registries_tbl where id=?");
+        selectSql.append(fromWhereClause);
+
+        final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
+            public List doInHibernate(Session session) throws HibernateException {
+                log.debug("Filter records sqls: {}\n{}", sqlCount, selectSql);
+
+                StopWatch watch = new StopWatch();
+                watch.start();
+                Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
+                if (count == null) {
+                    count = 0;
+                }
+                watch.stop();
+                log.debug("Time spent for count query: {}", watch);
+                watch.reset();
+
+                pager.setTotalElements(count.intValue());
+
+                watch.start();
+                List result = setParameters(session.createSQLQuery(selectSql.toString()), params)
+                        .setMaxResults(pager.getPageSize())
+                        .setFirstResult(pager.getThisPageFirstElementNumber())
+                        .list();
+                watch.stop();
+                log.debug("Time spent for listing: {}", watch);
+
+                return result;
+            }
+        });
+
+        if (ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
+            public Object doInHibernate(Session session) throws HibernateException {
+                return session.getNamedQuery("RegistryRecord.listRecordsDetails")
+                        .setParameterList("ids", transform(ids, new Number2LongTransformer()))
+                        .list();
+            }
+        });
+
+        watch.stop();
+        log.debug("Time spent for listRecordsDetails: {}", watch);
+
+        return result;
+
+    }
+
+    private boolean getFilters(StringBuilder fromWhereClause, List<Object> params, Collection<ObjectFilter> filters) {
+
+        boolean haveFilter = false;
+
+        for (ObjectFilter filter : filters) {
+
+            if (filter instanceof RegistryRecordStatusFilter && filter.needFilter()) {
+                fromWhereClause.append(" and record_status_id=? ");
+                RegistryRecordStatusFilter registryRecordStatusFilter = (RegistryRecordStatusFilter) filter;
+                params.add(registryRecordStatusFilter.getSelectedId());
+                haveFilter = true;
+            } else if (filter instanceof ImportErrorTypeFilter && filter.needFilter()) {
+                ImportErrorTypeFilter importErrorTypeFilter = (ImportErrorTypeFilter) filter;
+                if (importErrorTypeFilter.needFilterWithoutErrors()) {
+                    fromWhereClause.append(" and import_error_type is null ");
+                } else {
+                    fromWhereClause.append(" and import_error_type=? ");
+                    params.add(importErrorTypeFilter.getSelectedType());
+                }
+                haveFilter = true;
+            } else if (filter instanceof StringFilter) {
+                StringFilter aFilter = (StringFilter) filter;
+                if (aFilter.getType().equals(TYPE_TOWN)) {
+                    fromWhereClause.append(" and upper(town_name) like upper(?) ");
+                    params.add(aFilter.getValue());
+                    haveFilter = true;
+                } else if (aFilter.getType().equals(TYPE_STREET)) {
+                    fromWhereClause.append(" and upper(concat(street_type, ' ', street_name)) like upper(?) ");
+                    params.add(aFilter.getValue());
+                    haveFilter = true;
+                } else if (aFilter.getType().equals(TYPE_BUILDING)) {
+                    fromWhereClause.append(" and upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) like upper(?) ");
+                    params.add(aFilter.getValue());
+                    haveFilter = true;
+                } else if (aFilter.getType().equals(TYPE_APARTMENT)) {
+                    fromWhereClause.append(" and upper(apartment_number) = upper(?) ");
+                    params.add(aFilter.getValue());
+                    haveFilter = true;
+                } else if (aFilter.getType().equals(TYPE_FIO)) {
+                    fromWhereClause.append(" and upper(concat(last_name, ' ', middle_name, ' ', first_name)) like upper(?) ");
+                    params.add(aFilter.getValue());
+                    haveFilter = true;
+                }
+            }
+
+        }
+
+        return haveFilter;
+        
+    }
+
     @SuppressWarnings({"unchecked"})
     @Override
-    public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+    public List<RegistryRecord> filterRecords(Long registryId, Collection<ObjectFilter> filters,
                                               String criteria, List<Object> params, final Page<RegistryRecord> pager) {
 
         final StringBuilder sql = new StringBuilder("select id ");
         final StringBuilder sqlCount = new StringBuilder("select count(*) ");
 
-        StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl c use index (I_registry_status, I_registry_errortype) where registry_id = ? and record_status_id = ? and import_error_type = ? ");
+        StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl c use index (I_registry_status, I_registry_errortype) where registry_id = ? ");
         fromWhereClause.append(criteria);
 
         final List<Object> paramsSql = list();
         paramsSql.add(registryId);
-        paramsSql.add(recordStatusFilter.getSelectedId());
-        paramsSql.add(importErrorTypeFilter.getSelectedType());
         paramsSql.addAll(params);
+        getFilters(fromWhereClause, paramsSql, filters);
 
         sql.append(fromWhereClause);
         sqlCount.append(fromWhereClause);
@@ -447,34 +573,96 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 		});
 	}
 
+    @Override
+    public List<String> findAoutocompleterAddresses(Long registryId, FilterData filterData, final Page<String> pager) {
+
+        final StringBuilder sql = new StringBuilder("select distinct ");
+        StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl rr " +
+                                                          " where registry_id = ? ");
+        StringBuilder orderBy = new StringBuilder(" order by n");
+
+        if (TYPE_TOWN.equals(filterData.getType())) {
+            sql.append("upper(town_name) n ");
+            fromWhereClause.append(" and upper(town_name) like upper(?)");
+        } else if (TYPE_STREET.equals(filterData.getType())) {
+            sql.append("upper(concat(street_type, ' ', street_name)) n ");
+            fromWhereClause.append(" and upper(street_name) like upper(?)");
+        } else if (TYPE_BUILDING.equals(filterData.getType())) {
+            sql.append("upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) n ");
+            fromWhereClause.append(" and upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) like upper(?)");
+        } else if (TYPE_APARTMENT.equals(filterData.getType())) {
+            sql.append("upper(apartment_number) n ");
+            fromWhereClause.append(" and upper(apartment_number) like upper(?)");
+        }
+
+        sql.append(fromWhereClause).append(orderBy);
+
+        final List<Object> params = list();
+        params.add(registryId);
+        params.add(filterData.getString());
+
+        @SuppressWarnings({"unchecked"})
+        final List<String> objects = hibernateTemplate.executeFind(new HibernateCallback() {
+            @Override
+            public List<?> doInHibernate(Session session) throws HibernateException {
+                log.debug("Filter sqls: {}", sql);
+                log.debug("Params: {}", params);
+
+                StopWatch watch = new StopWatch();
+
+                if (log.isDebugEnabled()) {
+                    watch.start();
+                }
+
+                List<?> result = setParameters(session.createSQLQuery(sql.toString()), params).
+                        setMaxResults(pager.getPageSize()).
+                        list();
+
+                if (log.isDebugEnabled()) {
+                    watch.stop();
+                    log.debug("Time spent for listing: {}", watch);
+                    log.debug("Found {} objects", result.size());
+                }
+
+                return result;
+            }
+        });
+
+        if (objects.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return objects;
+    }
+
     /*
 
-                select ie.error_key, rr.import_error_type, count(*) count 
-                FROM common_registry_records_tbl rr
-                  inner join common_import_errors_tbl ie on rr.import_error_id = ie.id
-                where registry_id = 131 and record_status_id = 2
-                group by rr.import_error_type
-                order by count DESC;
+               select ie.error_key, rr.import_error_type, count(*) count
+               FROM common_registry_records_tbl rr
+                 inner join common_import_errors_tbl ie on rr.import_error_id = ie.id
+               where registry_id = 131 and record_status_id = 2
+               group by rr.import_error_type
+               order by count DESC;
 
-     */
+    */
 
     @Override
-    public List<RecordErrorsType> findErrorsTypes(Long registryId) {
+    public List<RecordErrorsType> findErrorsTypes(Long registryId, Collection<ObjectFilter> filters) {
 
         final StringBuilder sql = new StringBuilder("select ie.error_key, rr.import_error_type, count(*) count ");
 
         StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl rr " +
                                                           "   inner join common_import_errors_tbl ie on rr.import_error_id = ie.id " +
-                                                          " where rr.registry_id = ? and rr.record_status_id = ? ");
+                                                          " where rr.registry_id = ? ");
 
         StringBuilder groupOrderByClause = new StringBuilder(" group by rr.import_error_type" +
                                                              " order by count DESC");
 
-        sql.append(fromWhereClause).append(groupOrderByClause);
-
         final List<Object> params = list();
         params.add(registryId);
-        params.add(RegistryRecordStatus.PROCESSED_WITH_ERROR);
+        getFilters(fromWhereClause, params, filters);
+
+        sql.append(fromWhereClause).append(groupOrderByClause);
 
         @SuppressWarnings({"unchecked"})
         final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback() {
@@ -529,7 +717,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
     */
 
     @Override
-    public List<RecordErrorsGroup> findErrorsGroups(Long registryId, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, final Page<RecordErrorsGroup> pager) {
+    public List<RecordErrorsGroup> findErrorsGroups(Long registryId, RecordErrorsGroupSorter sorter, Collection<ObjectFilter> filters, String groupByString, final Page<RecordErrorsGroup> pager) {
 
         final StringBuilder sql = new StringBuilder("select town_name, " +
                                                     "       street_type, " +
@@ -545,18 +733,17 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                                                          "from (" +
                                                          "   select id ");
 
-        StringBuilder fromWhereClause = new StringBuilder("from common_registry_records_tbl c where registry_id = ? and record_status_id = ? and import_error_type = ? ");
+        StringBuilder fromWhereClause = new StringBuilder("from common_registry_records_tbl c where registry_id = ? ");
+
+        final List<Object> params = list();
+        params.add(registryId);
+        getFilters(fromWhereClause, params, filters);
 
         sql.append(fromWhereClause).append(groupByString);
         sqlCount.append(fromWhereClause).append(groupByString).append(" ) cc");
         if (sorter != null) {
             addSorting(sql, sorter);
         }
-
-        final List<Object> params = list();
-        params.add(registryId);
-        params.add(RegistryRecordStatus.PROCESSED_WITH_ERROR);
-        params.add(importErrorTypeFilter.getSelectedType());
 
         @SuppressWarnings({"unchecked"})
         final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback() {
@@ -606,6 +793,17 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         }
 
         List<RecordErrorsGroup> groups = list();
+
+        ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
+
+        for (ObjectFilter filter : filters) {
+
+            if (filter instanceof ImportErrorTypeFilter) {
+                importErrorTypeFilter = (ImportErrorTypeFilter) filter;
+                break;
+            }
+
+        }
 
         for (Object[] o : objects) {
             RecordErrorsGroup group = new RecordErrorsGroup();

@@ -5,8 +5,10 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,18 +61,21 @@ public interface RegistryRecordService {
 	List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter,
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
+    List<RegistryRecord> listRecords(Registry registry, Collection<ObjectFilter> filters, Page<RegistryRecord> pager);
+
+    List<String> listAutocompleterAddresses(Registry registry, FilterData filterData, Page<String> pager);
+
     /**
      * List registry records
      *
      * @param registry			  Registry to get records for
-     * @param importErrorTypeFilter Errors type filter
-     * @param recordStatusFilter	Records status filter
+     * @param filters list of filters
      * @param criteria criteria
      * @param params params
      * @param pager				 Page
      * @return list of filtered registry records
      */
-    List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+    List<RegistryRecord> listRecords(Registry registry, Collection<ObjectFilter> filters,
                                       String criteria, List<Object> params, Page<RegistryRecord> pager);
 
     /**
@@ -92,9 +97,9 @@ public interface RegistryRecordService {
 	 */
 	List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range);
 
-    List<RecordErrorsGroup> listRecordErrorsGroups(@NotNull Registry registry, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, Page<RecordErrorsGroup> pager);
+    List<RecordErrorsGroup> listRecordErrorsGroups(@NotNull Registry registry, RecordErrorsGroupSorter sorter, Collection<ObjectFilter> filters, String groupByString, Page<RecordErrorsGroup> pager);
 
-    List<RecordErrorsType> listRecordErrorsTypes(@NotNull Registry registry);
+    List<RecordErrorsType> listRecordErrorsTypes(@NotNull Registry registry, Collection<ObjectFilter> filters);
 
 	/**
 	 * Count number of error in registry

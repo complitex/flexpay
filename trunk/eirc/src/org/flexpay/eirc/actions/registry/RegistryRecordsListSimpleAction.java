@@ -2,11 +2,13 @@ package org.flexpay.eirc.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
@@ -18,7 +20,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
+import static org.flexpay.common.persistence.registry.filter.StringFilter.TYPE_FIO;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
@@ -28,6 +32,8 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
     private RecordErrorsGroup group = new RecordErrorsGroup();
 	private List<RegistryRecord> records = list();
 
+    private StringFilter fioFilter = new StringFilter();
+    
 	private RegistryRecordService registryRecordService;
     private RegistryRecordStatusService registryRecordStatusService;
 	private ClassToTypeRegistry classToTypeRegistry;
@@ -44,33 +50,26 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
 			return SUCCESS;
 		}
 
-        RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
-        RegistryRecordStatus status = registryRecordStatusService.findByCode(PROCESSED_WITH_ERROR);
-        if (status == null) {
-            log.warn("Can't get status by code from DB ({})", PROCESSED_WITH_ERROR);
-            return SUCCESS;
-        }
-        recordStatusFilter.setSelectedId(status.getId());
-
 		StopWatch watch = new StopWatch();
 		if (log.isDebugEnabled()) {
 			watch.start();
 		}
 
-		ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
-        importErrorTypeFilter.setSelectedType(group.getErrorType());
-		importErrorTypeFilter.init(classToTypeRegistry);
+        List<ObjectFilter> filters = initFilters();
+        if (filters == null) {
+            return SUCCESS;
+        }
 
 		if (log.isDebugEnabled()) {
 			watch.stop();
-			log.debug("Import error type filter init: {}", watch);
+			log.debug("Filters init: {}", watch);
 			watch.reset();
 			watch.start();
 		}
 
         RecordErrorsGroupView groupView = new RecordErrorsGroupView(group, classToTypeRegistry);
 
-		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), getPager());
+		records = registryRecordService.listRecords(registry, filters, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), getPager());
 
 		if (hintsHandlerFactory != null && records.size() > 0) {
 			log.debug("select consumers with eirc account for registry records");
@@ -85,6 +84,35 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
 
 		return SUCCESS;
 	}
+
+    private List<ObjectFilter> initFilters() {
+
+        List<ObjectFilter> filters = list();
+
+        RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
+        RegistryRecordStatus status = registryRecordStatusService.findByCode(PROCESSED_WITH_ERROR);
+        if (status == null) {
+            log.warn("Can't get status by code from DB ({})", PROCESSED_WITH_ERROR);
+            return null;
+        }
+        recordStatusFilter.setSelectedId(status.getId());
+        filters.add(recordStatusFilter);
+
+        ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
+        importErrorTypeFilter.setSelectedType(group.getErrorType());
+        importErrorTypeFilter.init(classToTypeRegistry);
+
+        filters.add(importErrorTypeFilter);
+
+        if (isNotEmpty(fioFilter.getValue())) {
+            fioFilter.setType(TYPE_FIO);
+            fioFilter.setValue("%" + fioFilter.getValue() + "%");
+            filters.add(fioFilter);
+        }
+
+        return filters;
+
+    }
 
 	/**
 	 * Get default error execution result
@@ -121,6 +149,10 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
 
     public void setGroup(RecordErrorsGroup group) {
         this.group = group;
+    }
+
+    public void setFioFilter(StringFilter fioFilter) {
+        this.fioFilter = fioFilter;
     }
 
 	public List<RegistryRecord> getRecords() {

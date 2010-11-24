@@ -2,13 +2,18 @@ package org.flexpay.eirc.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorterByName;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorterByNumberOfErrors;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.registry.data.RecordErrorsGroupView;
@@ -17,6 +22,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
+import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPagerActionSupport<RecordErrorsGroup> {
@@ -27,7 +35,13 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
     private RecordErrorsGroupSorterByNumberOfErrors recordErrorsGroupSorterByNumberOfErrors = new RecordErrorsGroupSorterByNumberOfErrors();
 
     protected ImportErrorTypeFilter importErrorTypeFilter = null;
+    private StringFilter townFilter = new StringFilter();
+    private StringFilter streetFilter = new StringFilter();
+    private StringFilter buildingFilter = new StringFilter();
+    private StringFilter apartmentFilter = new StringFilter();
+    private StringFilter fioFilter = new StringFilter();
 
+    private RegistryRecordStatusService registryRecordStatusService;
     private RegistryRecordService registryRecordService;
     private ClassToTypeRegistry typeRegistry;
 
@@ -46,15 +60,14 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
             watch.start();
         }
 
-        if (importErrorTypeFilter == null) {
-            importErrorTypeFilter = new ImportErrorTypeFilter();
+        List<ObjectFilter> filters = initFilters();
+        if (filters == null) {
+            return SUCCESS;
         }
-
-        importErrorTypeFilter.init(typeRegistry);
 
         if (log.isDebugEnabled()) {
             watch.stop();
-            log.debug("Import error type filter init: {}", watch);
+            log.debug("Filters init: {}", watch);
             watch.reset();
         }
 
@@ -73,7 +86,7 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
             sorter = recordErrorsGroupSorterByNumberOfErrors;
         }
 
-        List<RecordErrorsGroup> groups = registryRecordService.listRecordErrorsGroups(registry, sorter, importErrorTypeFilter, importErrorTypeFilter.getGroupByString(), getPager());
+        List<RecordErrorsGroup> groups = registryRecordService.listRecordErrorsGroups(registry, sorter, filters, importErrorTypeFilter.getGroupByString(), getPager());
         errorGroups = list();
 
         for (RecordErrorsGroup group : groups) {
@@ -87,6 +100,56 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
         }
 
         return SUCCESS;
+    }
+
+    private List<ObjectFilter> initFilters() {
+
+        List<ObjectFilter> filters = list();
+
+        RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
+        RegistryRecordStatus status = registryRecordStatusService.findByCode(PROCESSED_WITH_ERROR);
+        if (status == null) {
+            log.warn("Can't get status by code from DB ({})", PROCESSED_WITH_ERROR);
+            return null;
+        }
+        recordStatusFilter.setSelectedId(status.getId());
+        filters.add(recordStatusFilter);
+
+        if (importErrorTypeFilter == null) {
+            importErrorTypeFilter = new ImportErrorTypeFilter();
+        }
+
+        importErrorTypeFilter.init(typeRegistry);
+
+        filters.add(importErrorTypeFilter);
+
+        if (isNotEmpty(townFilter.getValue())) {
+            townFilter.setType(TYPE_TOWN);
+            townFilter.setValue("%" + townFilter.getValue() + "%");
+            filters.add(townFilter);
+        }
+        if (isNotEmpty(streetFilter.getValue())) {
+            streetFilter.setType(TYPE_STREET);
+            streetFilter.setValue("%" + streetFilter.getValue() + "%");
+            filters.add(streetFilter);
+        }
+        if (isNotEmpty(buildingFilter.getValue())) {
+            buildingFilter.setType(TYPE_BUILDING);
+            buildingFilter.setValue(buildingFilter.getValue() + "%");
+            filters.add(buildingFilter);
+        }
+        if (isNotEmpty(apartmentFilter.getValue())) {
+            apartmentFilter.setType(TYPE_APARTMENT);
+            filters.add(apartmentFilter);
+        }
+        if (isNotEmpty(fioFilter.getValue())) {
+            fioFilter.setType(TYPE_FIO);
+            fioFilter.setValue("%" + fioFilter.getValue() + "%");
+            filters.add(fioFilter);
+        }
+
+        return filters;
+
     }
 
     /**
@@ -112,6 +175,26 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
 
     public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
         this.importErrorTypeFilter = importErrorTypeFilter;
+    }
+
+    public void setTownFilter(StringFilter townFilter) {
+        this.townFilter = townFilter;
+    }
+
+    public void setStreetFilter(StringFilter streetFilter) {
+        this.streetFilter = streetFilter;
+    }
+
+    public void setBuildingFilter(StringFilter buildingFilter) {
+        this.buildingFilter = buildingFilter;
+    }
+
+    public void setApartmentFilter(StringFilter apartmentFilter) {
+        this.apartmentFilter = apartmentFilter;
+    }
+
+    public void setFioFilter(StringFilter fioFilter) {
+        this.fioFilter = fioFilter;
     }
 
     public List<RecordErrorsGroupView> getErrorGroups() {
@@ -143,4 +226,10 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
     public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
         this.typeRegistry = typeRegistry;
     }
+
+    @Required
+    public void setRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
+        this.registryRecordStatusService = registryRecordStatusService;
+    }
+
 }

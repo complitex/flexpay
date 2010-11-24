@@ -8,8 +8,10 @@ import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.service.RegistryRecordService;
@@ -113,9 +115,19 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	}
 
     @Override
-    public List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter, RegistryRecordStatusFilter recordStatusFilter,
+    public List<RegistryRecord> listRecords(Registry registry, Collection<ObjectFilter> filters, Page<RegistryRecord> pager) {
+        return registryRecordDaoExt.filterRecords(registry.getId(), filters, pager);
+    }
+
+    @Override
+    public List<String> listAutocompleterAddresses(Registry registry, FilterData filterData, Page<String> pager) {
+        return registryRecordDaoExt.findAoutocompleterAddresses(registry.getId(), filterData, pager);
+    }
+
+    @Override
+    public List<RegistryRecord> listRecords(Registry registry, Collection<ObjectFilter> filters,
                                             String criteria, List<Object> params, Page<RegistryRecord> pager) {
-        return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, criteria, params, pager);
+        return registryRecordDaoExt.filterRecords(registry.getId(), filters, criteria, params, pager);
     }
 
     @Override
@@ -129,13 +141,13 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	}
 
     @Override
-    public List<RecordErrorsGroup> listRecordErrorsGroups(@NotNull Registry registry, RecordErrorsGroupSorter sorter, ImportErrorTypeFilter importErrorTypeFilter, String groupByString, Page<RecordErrorsGroup> pager) {
-        return registryRecordDaoExt.findErrorsGroups(registry.getId(), sorter, importErrorTypeFilter, groupByString, pager);
+    public List<RecordErrorsGroup> listRecordErrorsGroups(@NotNull Registry registry, RecordErrorsGroupSorter sorter, Collection<ObjectFilter> filters, String groupByString, Page<RecordErrorsGroup> pager) {
+        return registryRecordDaoExt.findErrorsGroups(registry.getId(), sorter, filters, groupByString, pager);
     }
 
     @Override
-    public List<RecordErrorsType> listRecordErrorsTypes(@NotNull Registry registry) {
-        return registryRecordDaoExt.findErrorsTypes(registry.getId());
+    public List<RecordErrorsType> listRecordErrorsTypes(@NotNull Registry registry, Collection<ObjectFilter> filters) {
+        return registryRecordDaoExt.findErrorsTypes(registry.getId(), filters);
     }
 
     /**

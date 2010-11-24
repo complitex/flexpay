@@ -212,10 +212,18 @@
           p:typeRegistry-ref="classToTypeRegistry"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
           scope="prototype"  />
 
     <bean id="registryRecordErrorsTypesListAction"
           class="org.flexpay.eirc.actions.registry.RegistryRecordErrorsTypesListAction"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordService-ref="registryRecordService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
+          scope="prototype"  />
+
+    <bean id="filterAutocompleterAction"
+          class="org.flexpay.payments.actions.registry.filter.FilterAutocompleterAction"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
           scope="prototype"  />
@@ -243,12 +251,14 @@
           p:typeRegistry-ref="classToTypeRegistry"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
           scope="prototype"  />
 
     <bean id="eircRegistryRecordErrorsTypesListAction"
           class="org.flexpay.eirc.actions.registry.RegistryRecordErrorsTypesListAction"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
           scope="prototype"  />
 
 	<bean id="processesListPageAction"
