@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_autocomplete.jsp"%>
 <%@include file="/WEB-INF/jsp/eirc/includes/flexpay_registry.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_core.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_bbq.jsp"%>
@@ -8,6 +9,16 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td>
+            <div id="addressFilters" style="display:inline;" class="col">
+                <s:text name="payments.town" />: <input type="text" name="townFilter" class="text" value="" />
+                <s:text name="payments.street" />: <input type="text" name="streetFilter" class="text" value="" />
+                <s:text name="payments.building" />: <input type="text" name="buildingFilter" class="text" value="" />
+                <s:text name="payments.apartment" />: <input type="text" name="apartmentFilter" class="text" value="" />
+            </div><br>
+            <div style="margin:4px 0;" class="col">
+                <s:text name="payments.fio" />: <input type="text" name="fioFilter" class="text" value="" /><br>
+            </div>
+
             <%@include file="/WEB-INF/jsp/payments/filters/registry_record_status_filter.jsp"%>
             <span id="errorTypeBlock" style="display:none;">
                 <%@include file="/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp"%>
@@ -19,6 +30,7 @@
                     
             <input type="hidden" name="errorType" value="-1" />
             <input type="hidden" name="recordStatus" value="-1" />
+            <input type="hidden" name="fio" value="" />
             <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="submit();" />
             <%@include file="/WEB-INF/jsp/payments/registry/data/registry_info.jsp"%>
         </td>
@@ -31,30 +43,80 @@
 
 <script type="text/javascript">
 
+    FPR.init({
+        registryId : <s:property value="registry.id" />,
+        errorStatusCode : <s:property value="errorStatusCode" />
+    });
+
+    $("#addressFilters").ready(function() {
+
+        var filterUrl = "<s:url action="filterAutocompleter" namespace="/payments" includeParams="none" />";
+
+        FPR.createAutocompleter("input[name=townFilter]", filterUrl, false,
+                                {
+                                    "registry.id":FPR.registryId,
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_TOWN" />
+                                });
+
+        FPR.createAutocompleter("input[name=streetFilter]", filterUrl, false,
+                                {
+                                    "registry.id":FPR.registryId,
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_STREET" />
+                                });
+
+        FPR.createAutocompleter("input[name=buildingFilter]", filterUrl, true,
+                                {
+                                    "registry.id":FPR.registryId,
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_BUILDING" />
+                                });
+
+        FPR.createAutocompleter("input[name=apartmentFilter]", filterUrl, true,
+                                {
+                                    "registry.id":FPR.registryId,
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_APARTMENT" />
+                                });
+
+    });
+
+
     $("#result").ready(function() {
-        FPR.init({
-            registryId : <s:property value="registry.id" />,
-            errorStatusCode : <s:property value="errorStatusCode" />
-        });
         submit();
     });
 
     function submit() {
         FPR.$eType.val(FPR.$ietFilter.val());
         FPR.$rStatus.val(FPR.$rsFilter.val());
+        FPR.$fio.val(FPR.$fioFilter.val());
+        FPR.openedType = -1;
+        FPR.openedGroup = -1;
         pagerAjax();
     }
 
     function pagerAjax(element, resultId) {
 
-        var result = "result";
         var isResult = resultId != undefined && resultId != null;
         var action = "<s:url action="eircRegistryRecordsListAjax" namespace="/eirc" includeParams="none" />";
         var params = {
             "registry.id":FPR.registryId
         };
 
-        if (FPR.$rStatus.val() == FPR.errorStatusCode) {
+        if ($("input[name=townFilter]").val().length > 0) {
+            params["townFilter.value"] = $("input[name=townFilter]").val();
+        }
+        if ($("input[name=streetFilter]").val().length > 0) {
+            params["streetFilter.value"] = $("input[name=streetFilter]").val();
+        }
+        if ($("input[name=buildingFilter]").val().length > 0) {
+            params["buildingFilter.value"] = $("input[name=buildingFilter]").val();
+        }
+        if ($("input[name=apartmentFilter]").val().length > 0) {
+            params["apartmentFilter.value"] = $("input[name=apartmentFilter]").val();
+        }
+        if ($("input[name=fioFilter]").val().length > 0) {
+            params["fioFilter.value"] = $("input[name=fioFilter]").val();
+        }
+
+        if (FPR.$rStatus.val() == FPR.errorStatusCode && FPR.$gErrors.get(0).checked) {
             if (FPR.$eType.val() < 0 && !isResult) {
                 action ="<s:url action="eircRegistryRecordErrorsTypesListAjax" namespace="/eirc" includeParams="none" />";
             } else {
@@ -66,6 +128,7 @@
             }
             if (isResult) {
                 FPR.$eType.val($("#et" + FPR.openedType).val());
+                params["fioFilter.value"] = FPR.$fio.val();
             }
             params["importErrorTypeFilter.selectedType"] = FPR.$eType.val();
 
@@ -77,6 +140,8 @@
             action: action,
             params: params
         };
+
+        $.log(resultId);
 
         if (isResult) {
             opt["resultId"] = resultId;
@@ -107,6 +172,7 @@
         };
 
         FPR.addGroupParams(params, i);
+        params["fioFilter.value"] = FPR.$fio.val();
 
         if (element == null) {
             $("span.innerPaging").find("input[name=curPage]").val(1);

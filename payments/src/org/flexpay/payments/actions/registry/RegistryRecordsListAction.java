@@ -1,37 +1,44 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import static org.flexpay.common.persistence.Stub.stub;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
+import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
+
 
 public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
 
 	private Registry registry = new Registry();
 	private List<RegistryRecord> records = list();
     private Map<Integer, ServiceType> types = map();
+
+    private StringFilter townFilter = new StringFilter();
+    private StringFilter streetFilter = new StringFilter();
+    private StringFilter buildingFilter = new StringFilter();
+    private StringFilter apartmentFilter = new StringFilter();
+    private StringFilter fioFilter = new StringFilter();
 
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
@@ -57,11 +64,7 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 			watch.start();
 		}
 
-		if (importErrorTypeFilter == null) {
-			importErrorTypeFilter = new ImportErrorTypeFilter();
-		}
-
-		importErrorTypeFilter.init(classToTypeRegistry);
+        List<ObjectFilter> filters = initFilters();
 
 		if (log.isDebugEnabled()) {
 			watch.stop();
@@ -70,7 +73,7 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 			watch.start();
 		}
 
-		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
+		records = registryRecordService.listRecords(registry, filters, getPager());
 
 		if (hintsHandlerFactory != null && records.size() > 0) {
 			log.debug("select consumers with eirc account for registry records");
@@ -104,6 +107,49 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		return SUCCESS;
 	}
 
+    private List<ObjectFilter> initFilters() {
+
+        List<ObjectFilter> filters = list();
+
+        filters.add(recordStatusFilter);
+
+        if (importErrorTypeFilter == null) {
+            importErrorTypeFilter = new ImportErrorTypeFilter();
+        }
+
+        importErrorTypeFilter.init(classToTypeRegistry);
+
+        filters.add(importErrorTypeFilter);
+
+        if (isNotEmpty(townFilter.getValue())) {
+            townFilter.setType(TYPE_TOWN);
+            townFilter.setValue("%" + townFilter.getValue() + "%");
+            filters.add(townFilter);
+        }
+        if (isNotEmpty(streetFilter.getValue())) {
+            streetFilter.setType(TYPE_STREET);
+            streetFilter.setValue("%" + streetFilter.getValue() + "%");
+            filters.add(streetFilter);
+        }
+        if (isNotEmpty(buildingFilter.getValue())) {
+            buildingFilter.setType(TYPE_BUILDING);
+            buildingFilter.setValue(buildingFilter.getValue() + "%");
+            filters.add(buildingFilter);
+        }
+        if (isNotEmpty(apartmentFilter.getValue())) {
+            apartmentFilter.setType(TYPE_APARTMENT);
+            filters.add(apartmentFilter);
+        }
+        if (isNotEmpty(fioFilter.getValue())) {
+            fioFilter.setType(TYPE_FIO);
+            fioFilter.setValue("%" + fioFilter.getValue() + "%");
+            filters.add(fioFilter);
+        }
+
+        return filters;
+
+    }
+
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -129,7 +175,27 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		this.registry = registry;
 	}
 
-	public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
+    public void setTownFilter(StringFilter townFilter) {
+        this.townFilter = townFilter;
+    }
+
+    public void setStreetFilter(StringFilter streetFilter) {
+        this.streetFilter = streetFilter;
+    }
+
+    public void setBuildingFilter(StringFilter buildingFilter) {
+        this.buildingFilter = buildingFilter;
+    }
+
+    public void setApartmentFilter(StringFilter apartmentFilter) {
+        this.apartmentFilter = apartmentFilter;
+    }
+
+    public void setFioFilter(StringFilter fioFilter) {
+        this.fioFilter = fioFilter;
+    }
+
+    public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
 		this.importErrorTypeFilter = importErrorTypeFilter;
 	}
 

@@ -12,12 +12,14 @@ function Filter(name, options) {
         rawId: name + "_raw",
         isArray: false,
         display: "input",
+        inputClass: "form-search",
         extraParams: {},
         valueType: "number",
         defaultValue: 0,
         defaultString: "",
         preRequest: true,
         required: true,
+        receiveData: function() {},
         parents: []
     }, options);
 
@@ -39,7 +41,7 @@ function Filter(name, options) {
     }
 
     $("#" + options.rawId).append('<input id="' + options.valueId + '" type="hidden" name="' + name + 'Filter" value="' + options.defaultValue + '" />\n' +
-                                  '<input id="' + options.filterId + '" type="text" tabindex="1" class="form-search" value="' + options.defaultString + '" />');
+                                  '<input id="' + options.filterId + '" type="text" tabindex="1" class="' + options.inputClass + '" value="' + options.defaultString + '" />');
 
     this.listeners = [];
     this.erasers = [];
@@ -126,6 +128,10 @@ function Filter(name, options) {
         return i < 0 ? row[0] : row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
     }
 
+    function receiveData() {
+        options.receiveData();
+    }
+
     function selectItem(event, data) {
         var li = {
             extra:data[1],
@@ -145,6 +151,7 @@ function Filter(name, options) {
                     scroll: true,
                     scrollHeight: 200,
                     formatItem:formatItem,
+                    receiveData: receiveData,
                     extraParams:options.extraParams
                 });
             filter.string.result(selectItem);
@@ -315,20 +322,24 @@ var FF = {
         for (var i in filters) {
 
             var filter = filters[i];
-            var value = filter.value;
-
-            if (filter.isString) {
-                value.val("");
-            } else if (filter.isNumber) {
-                value.val("0");
-            }
-            filter.string.val("").attr("readonly", true);
-            if (filter.string.autocomplete != null) {
-                filter.string.flushCache();
-            }
-            this.eraseChildFilters(filter.name);
-            filter.erase();
+            this.eraseFilter(filter);
         }
+    },
+
+    eraseFilter : function(filter) {
+        var value = filter.value;
+
+        if (filter.isString) {
+            value.val("");
+        } else if (filter.isNumber) {
+            value.val("0");
+        }
+        filter.string.val("").attr("readonly", true);
+        if (filter.string.autocomplete != null) {
+            filter.string.flushCache();
+        }
+        this.eraseChildFilters(filter.name);
+        filter.erase();
     },
 
     getParentParams : function (filter) {
@@ -415,7 +426,7 @@ var FF = {
                         if (data == "" && status == "success") {
                             window.location.href = FP.base;
                         }
-                        filter2.string.autocomplete(FF.parseAutocompleterData(data),
+                        filter2.string.autocomplete(FP.parseAutocompleterData(data),
                             {
                                 delay:30,
                                 minChars:0,
@@ -432,21 +443,6 @@ var FF = {
                     });
             }
         }
-    },
-
-    parseAutocompleterData : function(data) {
-        if (data == null || !data) {
-            return null;
-        }
-        var parsed = [];
-        var rows = data.split("\n");
-        for (var i = 0; i < rows.length; i++) {
-            var row = $.trim(rows[i]);
-            if (row) {
-                parsed[parsed.length] = row.split("|");
-            }
-        }
-        return parsed;
     },
 
     addListener : function(filterName, func) {

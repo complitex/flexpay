@@ -72,6 +72,10 @@
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
+        <action name="filterAutocompleter" class="filterAutocompleterAction">
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+        </action>
+
 		<action name="registriesProcess" class="registriesProcessAction">
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>

@@ -299,6 +299,20 @@ var FP = {
         return temp;
     },
 
+    parseAutocompleterData : function(data) {
+        if (data == null || !data) {
+            return null;
+        }
+        var parsed = [];
+        var rows = data.split("\n");
+        for (var i = 0; i < rows.length; i++) {
+            var row = $.trim(rows[i]);
+            if (row) {
+                parsed[parsed.length] = row.split("|");
+            }
+        }
+        return parsed;
+    },
 
 	/*
 	 * Clipboard function

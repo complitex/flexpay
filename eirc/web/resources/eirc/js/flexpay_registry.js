@@ -10,6 +10,8 @@ var FPR = {
     importErrorTypeFilter : "select[name=importErrorTypeFilter.selectedType]",
     errorTypeFilterSelector : "input[name=errorType]",
     recordStatusFilter : "input[name=recordStatus]",
+    fioFilter : "input[name=fioFilter]",
+    fio : "input[name=fio]",
     groups : [],
 
     $etBlock : $(this.errorTypeBlockSelector),
@@ -18,6 +20,8 @@ var FPR = {
     $ietFilter : $(this.importErrorTypeFilter),
     $eType : $(this.errorTypeFilterSelector),
     $rStatus : $(this.recordStatusFilter),
+    $fioFilter : $(this.fioFilter),
+    $fio : $(this.fio),
 
     init : function(opts) {
 
@@ -33,7 +37,9 @@ var FPR = {
             recordStatusFilterSelector : "select[name=recordStatusFilter.selectedId]",
             importErrorTypeFilter : "select[name=importErrorTypeFilter.selectedType]",
             errorTypeFilterSelector : "input[name=errorType]",
-            recordStatusFilter : "input[name=recordStatus]"
+            recordStatusFilter : "input[name=recordStatus]",
+            fio : "input[name=fio]",
+            fioFilter : "input[name=fioFilter]"
         }, opts);
 
         this.registryId = opt.registryId;
@@ -45,6 +51,8 @@ var FPR = {
         this.importErrorTypeFilter = opt.importErrorTypeFilter;
         this.errorTypeFilterSelector = opt.errorTypeFilterSelector;
         this.recordStatusFilter = opt.recordStatusFilter;
+        this.fio = opt.fio;
+        this.fioFilter = opt.fioFilter;
 
         this.groups = [];
 
@@ -54,6 +62,8 @@ var FPR = {
         this.$ietFilter = $(this.importErrorTypeFilter);
         this.$eType = $(this.errorTypeFilterSelector);
         this.$rStatus = $(this.recordStatusFilter);
+        this.$fioFilter = $(this.fioFilter);
+        this.$fio = $(this.fio);
 
         this.initFilters();
         
@@ -127,6 +137,42 @@ var FPR = {
         }
         if (group.numberOfRecords != null) {
             params["group.numberOfRecords"] = group.numberOfRecords;
+        }
+    },
+
+    createAutocompleter : function(selector, url, isArray, params) {
+        var filter = $(selector);
+        if (isArray) {
+            filter.attr("readonly", true);
+            filter.addClass("ac_loading");
+            $.post(url, params,
+                function(data, status) {
+                    if (data == "" && status == "success") {
+                        window.location.href = FP.base;
+                    }
+                    filter.autocomplete(FP.parseAutocompleterData(data),
+                        {
+                            delay:30,
+                            minChars:0,
+                            cacheLength:10,
+                            scroll: true,
+                            scrollHeight: 200
+                        });
+                    filter.removeAttr("readonly");
+                    filter.removeClass("ac_loading");
+                });
+
+        } else {
+            filter.autocomplete(url,
+                {
+                    delay:30,
+                    minChars:3,
+                    matchContains: true,
+                    cacheLength:10,
+                    scroll: true,
+                    scrollHeight: 200,
+                    extraParams: params
+                });
         }
     }
 

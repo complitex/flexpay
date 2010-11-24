@@ -343,6 +343,7 @@ $.Autocompleter = function(input, options) {
 			autoFill(q, data[0].value);
 			select.show();
 		} else {
+            options.receiveData();
 			hideResultsNow();
 		}
 	}
@@ -434,6 +435,7 @@ $.Autocompleter.defaults = {
 	highlight: function(value, term) {
 		return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
 	},
+    receiveData: function() {},
     scroll: true,
     scrollHeight: 180
 };

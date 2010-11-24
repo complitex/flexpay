@@ -46,4 +46,10 @@
 		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
           scope="prototype"  />
 
+    <bean id="filterAutocompleterAction"
+          class="org.flexpay.payments.actions.registry.filter.FilterAutocompleterAction"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:registryRecordService-ref="registryRecordService"
+          scope="prototype"  />
+
 </beans>

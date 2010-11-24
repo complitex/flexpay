@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.Registry;
@@ -62,6 +63,10 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
         boolean isGroup = registry != null && group != null;
         RecordErrorsGroupView groupView = null;
 
+        List<ObjectFilter> filters = list();
+        filters.add(recordStatusFilter);
+        filters.add(importErrorTypeFilter);
+
         if (group != null) {
 
             if (registry == null || registry.isNew()) {
@@ -83,7 +88,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 
             groupView = new RecordErrorsGroupView(group, classToTypeRegistry);
 
-            records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), new Page<RegistryRecord>(2000));
+            records = registryRecordService.listRecords(registry, filters, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), new Page<RegistryRecord>(2000));
             if (records.isEmpty()) {
                 log.warn("Records not found");
                 return SUCCESS;
@@ -126,7 +131,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
                         break;
                     }
                     registryRecordService.removeError(records);
-                    records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), pager);
+                    records = registryRecordService.listRecords(registry, filters, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), pager);
                 }
 
             } else {
