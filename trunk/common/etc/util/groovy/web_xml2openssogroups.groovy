@@ -1,3 +1,5 @@
+package groovy
+
 assert args.size() == 1, 'Please specify version source web.xml as parameter'
 
 def file = new File(args[0])

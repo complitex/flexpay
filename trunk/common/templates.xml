@@ -173,6 +173,9 @@
 		</fileset>
 	</path>
 
+	<property name="ldap.file.search.result" value="${build.dir}/search_result.ldif"/>
+	<property name="ldap.file.result" value="${build.dir}/result.ldif"/>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -318,6 +321,176 @@
 				<formatter type="brief" usefile="false" />
 			</test>
 		</junit>
+	</target>
+
+	<target name="template.run.ldapmodify">
+		<echo>Run ${ldap.file.ldif}</echo>
+		<java classname="com.sun.identity.shared.ldap.tools.LDAPModify" fork="yes"
+			  outputproperty="ldap.modify.output" resultproperty="ldap.modify.result" >
+			<jvmarg value="-Xmx750m" />
+			<!--<jvmarg value="-Xmx350m" />-->
+			<jvmarg value="-XX:+HeapDumpOnOutOfMemoryError" />
+			<arg line="-h ${ldap.host} -p ${ldap.port} -D '${ldap.userDn}' -w ${ldap.password} -a -f ${ldap.file.ldif}" />
+			<classpath>
+				<fileset dir="${common.dir}/lib/opensso/" includes="openssoclientsdk.jar"/>
+			</classpath>
+		</java>
+		<echo>${ldap.modify.output}</echo>
+		<fail message="Failed ${ldap.file.ldif}">
+			<condition>
+				<or>
+					<equals arg1="${ldap.modify.result}" arg2="1"/>
+					<contains string="${ldap.modify.output}" substring="Exception" />
+				</or>
+			</condition>
+		</fail>
+	</target>
+
+	<target name="template.run.ldapsearch">
+		<java classname="com.sun.identity.shared.ldap.tools.LDAPSearch" fork="yes"
+			  output="${ldap.file.search.result}" resultproperty="ldap.search.result">
+			<jvmarg value="-Xmx750m" />
+			<!--<jvmarg value="-Xmx350m" />-->
+			<jvmarg value="-XX:+HeapDumpOnOutOfMemoryError" />
+			<arg line="-h ${ldap.host} -p ${ldap.port} -D '${ldap.userDn}' -w ${ldap.password} -T -b ${ldap.base} -s sub ${ldap.search}" />
+			<classpath>
+				<fileset dir="${common.dir}/lib/opensso/" includes="openssoclientsdk.jar"/>
+			</classpath>
+		</java>
+		<fail message="Failed parameter '${ldap.search}'">
+			<condition>
+				<equals arg1="${ldap.search.result}" arg2="1"/>
+			</condition>
+		</fail>
+	</target>
+
+	<target name="template.ldap.create-update-file" depends="template.run.ldapsearch">
+		<loadfile property="ldap.search.dn.result" srcfile="${ldap.file.search.result}">
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.LineContainsRegExp">
+					<param type="regexp" value="^dn:*"/>
+				</filterreader>
+			</filterchain>
+		</loadfile>
+		<delete file="${ldap.file.result}" />
+		<touch file="${ldap.file.result}" />
+		<groovy>
+			def items = properties["ldap.search.dn.result"].split('\n')
+			def f1 = new File(properties["ldap.file"])
+			def text = f1.readLines()
+			text.remove(0)
+			def wtr = new File(properties["ldap.file.result"]).newWriter()
+			items.each{
+				wtr.writeLine("$it")
+				for (line in text) {
+					line = line.trim()
+					if (line.size() > 0) {
+						wtr.writeLine("$line")
+					}
+				}
+				wtr.newLine()
+			}
+			wtr.close()
+		</groovy>
+		<property name="ldap.file.ldif" value="${ldap.file.result}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="template.ldap.get-version">
+		<var name="ldap.search" value="flexpayVersion=*" />
+		<antcall target="template.run.ldapsearch" />
+		<loadfile property="ldap.version" srcfile="${ldap.file.search.result}">
+			<filterchain>
+				<linecontainsregexp>
+					<regexp pattern='flexpayVersion: *'/>
+				</linecontainsregexp>
+				<tokenfilter>
+					<replaceregex replace='' pattern='flexpayVersion: ' />
+				</tokenfilter>
+				<striplinebreaks/>
+			</filterchain>
+		</loadfile>
+		<echo message="${ldap.version}"/>
+	</target>
+
+	<target name="template.ldap.update-version">
+		<copy file="common/etc/ldap/update-version.ldif" todir="${build.dir}" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replaceregex replace='${ldap_version}' pattern='@@@VERSION@@@' />
+					<replaceregex replace='${ldap.base}' pattern='@@@BASE@@@' />
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<var name="ldap.file.ldif" value="${build.dir}/update-version.ldif" />
+		<antcall target="template.run.ldapmodify" />
+	</target>
+
+	<target name="template.ldap.update" depends="template.ldap.get-version">
+		<sort id="ldap.updates">
+			<path refid="ldap.files.ldif">
+			</path>
+			<name xmlns="antlib:org.apache.tools.ant.types.resources.comparators" />
+		</sort>
+		<property name="ldap.list.files.sorted" refid="ldap.updates" />
+		<foreach  list="${ldap.list.files.sorted}" delimiter=":" target="template.ldap.update.run.file"
+				  param="ldap.file" inheritall="true" />
+	</target>
+
+	<target name="template.ldap.update.run.file">
+		<groovy>
+			def result = properties["ldap.file"] =~ /(\d\d\d\d_\d\d_\d\d(_\d+)?)\.ldif$/
+			def name = result[0][1]
+			if (result[0][2] == null) {
+				name += "_0"
+			}
+			properties.ldap_version = name
+			properties.run = name > properties["ldap.version"]
+		</groovy>
+		<if>
+			<istrue value="${run}" />
+			<then>
+				<echo message="${ldap.file}" />
+				<loadfile property="ldap.search.attribute" srcfile="${ldap.file}">
+					<filterchain>
+						<linecontainsregexp>
+							<regexp pattern='#[ \t]*attribute:.+$'/>
+						</linecontainsregexp>
+						<tokenfilter>
+							<replaceregex replace='' pattern='#[ \t]*attribute:[ \t]*'/>
+						</tokenfilter>
+						<striplinebreaks/>
+					</filterchain>
+				</loadfile>
+				<if>
+					<isset property="ldap.search.attribute" />
+					<then>
+						<var name="ldap.search" value="${ldap.search.attribute}" />
+						<antcall target="template.ldap.create-update-file"/>
+					</then>
+					<else>
+						<echo>target to template.run.ldapmodify</echo>
+						<var name="ldap.file.ldif" value="${ldap.file}" />
+						<antcall target="template.run.ldapmodify"/>
+					</else>
+				</if>
+				<antcall target="template.ldap.update-version"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="template.ldap.set.flexpay.user">
+		<copy file="common/etc/ldap/set_flexpay_user.ldif" todir="${build.dir}" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replaceregex replace='${ldap.login}' pattern='@@@LOGIN@@@' />
+					<replaceregex replace='${ldap.base}' pattern='@@@BASE@@@' />
+					<replaceregex replace='${ldap.person.class}' pattern='@@@FLEXPAY_PERSON_CLASS@@@' />
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<var name="ldap.file.ldif" value="${build.dir}/set_flexpay_user.ldif" />
+		<antcall target="template.run.ldapmodify" />
 	</target>
 
 	<target name="template.run.standalone">

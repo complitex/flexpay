@@ -45,6 +45,19 @@
         <path location="ab_sync/tests/data" />
     </path>
 
+	<path id="ab_sync.ldap.files.ldif">
+		<path refid="ab.ldap.files.ldif" />
+		<fileset dir="${ab_sync.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path  id="ab_sync.ldap.init.ldif">
+		<fileset dir="${ab_sync.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
 	<target name="ab_sync.help" description="Print ab_sync module build script options">
 		<echo>
 	Ab_sync module build script
@@ -216,6 +229,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="ab_sync.ldap.update">
+		<path id="ldap.files.ldif" refid="ab_sync.ldap.files.ldif" />
+		<antcall target="template.ldap.update" />
+	</target>
+
+	<target name="ab_sync.ldap.init" depends="ab.ldap.init">
+		<property name="ab_sync.ldap.file.ldif" refid="ab_sync.ldap.init.ldif" />
+		<var  name="ldap.file.ldif" value="${ab_sync.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify" />
+	</target>
+
+	<target name="ab_sync.ldap.set.flexpay.user" depends="ab.ldap.init">
+		<if>
+			<isset property="ab_sync.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${ab_sync.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>

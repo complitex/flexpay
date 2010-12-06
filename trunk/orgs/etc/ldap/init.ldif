@@ -1,0 +1,254 @@
+# Groups
+# ORGS_ORGANIZATION_READ, groups, opensso.java.net
+dn: cn=ORGS_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_ORGANIZATION_READ
+
+# ORGS_ORGANIZATION_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_ORGANIZATION_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_ORGANIZATION_CHANGE
+
+# ORGS_ORGANIZATION_ADD, groups, opensso.java.net
+dn: cn=ORGS_ORGANIZATION_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_ORGANIZATION_ADD
+
+# ORGS_ORGANIZATION_DELETE, groups, opensso.java.net
+dn: cn=ORGS_ORGANIZATION_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_ORGANIZATION_DELETE
+
+# ORGS_BANK_READ, groups, opensso.java.net
+dn: cn=ORGS_BANK_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_BANK_READ
+
+# ORGS_BANK_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_BANK_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_BANK_CHANGE
+
+# ORGS_BANK_ADD, groups, opensso.java.net
+dn: cn=ORGS_BANK_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_BANK_ADD
+
+# ORGS_BANK_DELETE, groups, opensso.java.net
+dn: cn=ORGS_BANK_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_BANK_DELETE
+
+# ORGS_SERVICE_ORGANIZATION_READ, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_SERVICE_ORGANIZATION_READ
+
+# ORGS_SERVICE_ORGANIZATION_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_ORGANIZATION_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_SERVICE_ORGANIZATION_CHANGE
+
+# ORGS_SERVICE_ORGANIZATION_ADD, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_ORGANIZATION_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_SERVICE_ORGANIZATION_ADD
+
+# ORGS_SERVICE_ORGANIZATION_DELETE, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_ORGANIZATION_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_SERVICE_ORGANIZATION_DELETE
+
+# ORGS_SERVICE_PROVIDER_READ, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_PROVIDER_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_SERVICE_PROVIDER_READ
+
+# ORGS_SERVICE_PROVIDER_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_PROVIDER_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_SERVICE_PROVIDER_CHANGE
+
+# ORGS_SERVICE_PROVIDER_ADD, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_PROVIDER_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_SERVICE_PROVIDER_ADD
+
+# ORGS_SERVICE_PROVIDER_DELETE, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_PROVIDER_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_SERVICE_PROVIDER_DELETE
+
+# ORGS_PAYMENT_COLLECTOR_READ, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_PAYMENT_COLLECTOR_READ
+
+# ORGS_PAYMENT_COLLECTOR_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_PAYMENT_COLLECTOR_CHANGE
+
+# ORGS_PAYMENT_COLLECTOR_ADD, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_PAYMENT_COLLECTOR_ADD
+
+# ORGS_PAYMENT_COLLECTOR_DELETE, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_PAYMENT_COLLECTOR_DELETE
+
+# ORGS_PAYMENT_POINT_READ, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_POINT_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_PAYMENT_POINT_READ
+
+# ORGS_PAYMENT_POINT_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_POINT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_PAYMENT_POINT_CHANGE
+
+# ORGS_PAYMENT_POINT_ADD, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_POINT_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_PAYMENT_POINT_ADD
+
+# ORGS_PAYMENT_POINT_DELETE, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_POINT_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_PAYMENT_POINT_DELETE
+
+# ORGS_CASHBOX_READ, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: ORGS_CASHBOX_READ
+
+# ORGS_CASHBOX_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_CASHBOX_CHANGE
+
+# ORGS_CASHBOX_ADD, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: ORGS_CASHBOX_ADD
+
+# ORGS_CASHBOX_DELETE, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_CASHBOX_DELETE
+
+# ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS

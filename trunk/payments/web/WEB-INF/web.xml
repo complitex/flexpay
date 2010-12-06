@@ -241,9 +241,33 @@
 	<security-role>
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
 	</security-role>
-	
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_ADD</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_CHANGE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_DELETE</role-name>
+	</security-role>
+
 	<security-role>
 		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_ADD</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_CHANGE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_DELETE</role-name>
 	</security-role>
 
 	<security-role>

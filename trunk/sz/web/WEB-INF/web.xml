@@ -33,6 +33,7 @@
 			/WEB-INF/ab/configs/tiles_ab.xml,
 			/WEB-INF/bti/configs/tiles_bti.xml,
 			/WEB-INF/orgs/configs/tiles_orgs.xml,
+			/WEB-INF/orgs/configs/tiles_admin.xml,
 			/WEB-INF/payments/configs/tiles_payments.xml,
 			/WEB-INF/eirc/configs/tiles_eirc.xml,
 			/WEB-INF/sz/configs/tiles_sz.xml
@@ -92,6 +93,7 @@
 				org/flexpay/ab/struts_config.xml,
 				org/flexpay/bti/struts_config.xml,
 				org/flexpay/orgs/struts_config.xml,
+				org/flexpay/admin/struts_config.xml,
 				org/flexpay/payments/struts_config.xml,
 				org/flexpay/eirc/struts_config.xml,
 				org/flexpay/sz/struts_config.xml
@@ -403,59 +405,6 @@
 	</security-role>
 	<security-role>
 		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
-	</security-role>
-
-	<!-- Accounting -->
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_DELETE</role-name>
 	</security-role>
 
 	<!-- EIRC -->

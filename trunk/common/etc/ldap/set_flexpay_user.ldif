@@ -1,0 +1,4 @@
+dn: uid=@@@LOGIN@@@,ou=people,@@@BASE@@@
+changetype: modify
+add: objectClass
+objectClass: @@@FLEXPAY_PERSON_CLASS@@@

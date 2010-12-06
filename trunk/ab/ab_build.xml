@@ -38,6 +38,19 @@
 		<path location="ab/tests/data" />
 	</path>
 
+	<path id="ab.ldap.files.ldif">
+		<path refid="common.ldap.files.ldif" />
+		<fileset dir="${ab.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path  id="ab.ldap.init.ldif">
+		<fileset dir="${ab.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
 	<target name="ab.help" description="Print ab module build script options">
 		<echo>
 	Ab module build script
@@ -244,6 +257,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="ab.ldap.update">
+		<path id="ldap.files.ldif" refid="ab.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="ab.ldap.init" depends="common.ldap.init">
+		<property name="ab.ldap.file.ldif" refid="ab.ldap.init.ldif" />
+		<var  name="ldap.file.ldif" value="${ab.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="ab.ldap.set.flexpay.user" depends="common.ldap.set.flexpay.user">
+		<if>
+			<isset property="ab.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${ab.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>
