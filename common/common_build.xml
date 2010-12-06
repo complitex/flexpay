@@ -57,6 +57,18 @@
 		<path refid="common.test.classpath" />
 	</path>
 
+	<path id="common.ldap.files.ldif">
+		<fileset dir="${common.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path id="common.ldap.init.ldif">
+		<fileset dir="${common.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
 	<target name="common.help" description="Print common module build script options">
 		<echo>
 	Common module build script
@@ -235,6 +247,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="common.ldap.update">
+		<path id="ldap.files.ldif" refid="common.ldap.files.ldif" />
+		<antcall target="template.ldap.update" />
+	</target>
+
+	<target name="common.ldap.init">
+		<property name="common.ldap.file.ldif" refid="common.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${common.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify" />
+	</target>
+
+	<target name="common.ldap.set.flexpay.user">
+		<if>
+			<isset property="common.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${common.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>

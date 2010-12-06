@@ -7,6 +7,10 @@ def module = args[1]
 
 assert versionStr =~ /\d\d\d\d-\d\d-\d\d(-\d+)?/, 'Need to specify version as parameter in YYYY-MM-DD[-N] format'
 
+def scriptDir = new File(getClass().protectionDomain.codeSource.location.path).parent
+def config = new ConfigSlurper().parse(new File(scriptDir, 'ModuleDependencies.groovy').toURL())
+def modulesDependencies = config.modulesDependencies
+
 class Version implements Comparable {
 	Date date
 	int number
@@ -67,18 +71,6 @@ if (versionStr.count("-") == 3) {
 	versionStr = versionStr.substring(0, "yyyy-MM-dd".size())
 }
 version.date = new SimpleDateFormat("yyyy-MM-dd").parse(versionStr)
-
-def modulesDependencies = [
-        common : ['common'],
-        ab : ['common', 'ab'],
-        bti : ['common', 'ab', 'bti'],
-        tc : ['common', 'ab', 'bti', 'tc'],
-        orgs : ['common', 'orgs'],
-        payments : ['common', 'ab', 'orgs', 'payments'],
-		rent : ['common', 'ab', 'orgs', 'payments', 'rent'],
-        eirc : ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc'],
-        sz : ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc', 'sz']
-]
 
 assert modulesDependencies[module] != null, "Unknown module name ${module}"
 

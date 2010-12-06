@@ -442,62 +442,6 @@
 		<role-name>ROLE_ORGS_PAYMENT_POINT_DELETE</role-name>
 	</security-role>
 
-	<!-- Accounting -->
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_DELETE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_PAYMENTS_DOCUMENT_CHANGE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_DOCUMENT_TYPE_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_OPERATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ACC_EIRC_SUBJECT_DELETE</role-name>
-	</security-role>
-
 	<!-- EIRC -->
 	<security-role>
 		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>

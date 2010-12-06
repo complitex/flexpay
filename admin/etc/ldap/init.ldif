@@ -1,0 +1,32 @@
+# Groups
+# ADMIN_USER_ROLE_READ, groups, opensso.java.net
+dn: cn=ADMIN_USER_ROLE_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ADMIN_USER_ROLE_READ
+
+# MENU_ADMIN, groups, opensso.java.net
+dn: cn=MENU_ADMIN,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_ADMIN
+
+# MENU_ADMIN_USERS, groups, opensso.java.net
+dn: cn=MENU_ADMIN_USERS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_ADMIN_USERS
+
+# MENU_ADMIN_CERTIFICATES, groups, opensso.java.net
+dn: cn=MENU_ADMIN_CERTIFICATES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_ADMIN_CERTIFICATES

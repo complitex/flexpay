@@ -5,6 +5,8 @@
 
 	<property file="sz/sz_build.properties" />
 	<property file="eirc/eirc_build.properties" />
+	<property file="payments/payments_build.properties" />
+	<property file="admin/admin_build.properties" />
 	<property file="bti/bti_build.properties" />
 	<property file="ab/ab_build.properties" />
 	<property file="common/common_build.properties" />
@@ -39,6 +41,19 @@
         <path refid="sz.test.classpath" />
 		<path location="${sz.dir}/tests/data" />
     </path>
+
+	<path id="sz.ldap.files.ldif">
+		<path refid="eirc.ldap.files.ldif" />
+		<fileset dir="${sz.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path id="sz.ldap.init.ldif">
+		<fileset dir="${sz.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
 
 	<target name="sz.help" description="Print sz module build script options">
 		<echo>
@@ -220,6 +235,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="sz.ldap.update">
+		<path id="ldap.files.ldif" refid="sz.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="sz.ldap.init" depends="eirc.ldap.init">
+		<property name="sz.ldap.file.ldif" refid="sz.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${sz.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="sz.ldap.set.flexpay.user" depends="eirc.ldap.set.flexpay.user">
+		<if>
+			<isset property="sz.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${sz.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>

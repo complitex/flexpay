@@ -1,0 +1,400 @@
+# Groups
+# EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS, groups, opensso.java.net
+dn: cn=EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS
+
+# EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS, groups, opensso.java.net
+dn: cn=EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS
+
+# EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS, groups, opensso.java.net
+dn: cn=EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS
+
+# EIRC_ACCOUNT_READ, groups, opensso.java.net
+dn: cn=EIRC_ACCOUNT_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_ACCOUNT_READ
+
+# EIRC_ACCOUNT_CHANGE, groups, opensso.java.net
+dn: cn=EIRC_ACCOUNT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_ACCOUNT_CHANGE
+
+# EIRC_ACCOUNT_ADD, groups, opensso.java.net
+dn: cn=EIRC_ACCOUNT_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_ACCOUNT_ADD
+
+# EIRC_ACCOUNT_DELETE, groups, opensso.java.net
+dn: cn=EIRC_ACCOUNT_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_ACCOUNT_DELETE
+
+# EIRC_FILE_UPLOAD, groups, opensso.java.net
+dn: cn=EIRC_FILE_UPLOAD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_FILE_UPLOAD
+
+# EIRC_FILE_IMPORT, groups, opensso.java.net
+dn: cn=EIRC_FILE_IMPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_FILE_IMPORT
+
+# EIRC_REGISTRY_PROCESS, groups, opensso.java.net
+dn: cn=EIRC_REGISTRY_PROCESS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_REGISTRY_PROCESS
+
+# EIRC_REGISTRY_SET_CORRESPONDENCE, groups, opensso.java.net
+dn: cn=EIRC_REGISTRY_SET_CORRESPONDENCE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_REGISTRY_SET_CORRESPONDENCE
+
+# EIRC_QUITTANCE_CREATE, groups, opensso.java.net
+dn: cn=EIRC_QUITTANCE_CREATE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_QUITTANCE_CREATE
+
+# EIRC_QUITTANCE_CREATE_PRINT_FILE, groups, opensso.java.net
+dn: cn=EIRC_QUITTANCE_CREATE_PRINT_FILE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_QUITTANCE_CREATE_PRINT_FILE
+
+# EIRC_QUITTANCE_READ, groups, opensso.java.net
+dn: cn=EIRC_QUITTANCE_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_QUITTANCE_READ
+
+# EIRC_QUITTANCE_RECEIVE, groups, opensso.java.net
+dn: cn=EIRC_QUITTANCE_RECEIVE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_QUITTANCE_RECEIVE
+
+# EIRC_QUITTANCE_PAY, groups, opensso.java.net
+dn: cn=EIRC_QUITTANCE_PAY,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_QUITTANCE_PAY
+
+# EIRC_QUITTANCE_PAYMENT_READ, groups, opensso.java.net
+dn: cn=EIRC_QUITTANCE_PAYMENT_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: EIRC_QUITTANCE_PAYMENT_READ
+
+# MENU_EIRC, groups, opensso.java.net
+dn: cn=MENU_EIRC,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC
+
+# MENU_EIRC_DICTS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS
+
+# MENU_EIRC_IMPORT, groups, opensso.java.net
+dn: cn=MENU_EIRC_IMPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_IMPORT
+
+# MENU_EIRC_PROCESSING, groups, opensso.java.net
+dn: cn=MENU_EIRC_PROCESSING,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_PROCESSING
+
+# MENU_EIRC_QUITTANCES, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCES
+
+# MENU_EIRC_EIRC_ACCOUNTS, groups, opensso.java.net
+dn: cn=MENU_EIRC_EIRC_ACCOUNTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_EIRC_ACCOUNTS
+
+# MENU_EIRC_ORGANIZATIONS_DICTS, groups, opensso.java.net
+dn: cn=MENU_EIRC_ORGANIZATIONS_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_ORGANIZATIONS_DICTS
+
+# MENU_EIRC_SERVICES_DICTS, groups, opensso.java.net
+dn: cn=MENU_EIRC_SERVICES_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_SERVICES_DICTS
+
+# MENU_EIRC_CASHBOXES_DICTS, groups, opensso.java.net
+dn: cn=MENU_EIRC_CASHBOXES_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_CASHBOXES_DICTS
+
+# MENU_EIRC_DICTS_CASHBOXES, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_CASHBOXES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_CASHBOXES
+
+# MENU_EIRC_IMPORT2, groups, opensso.java.net
+dn: cn=MENU_EIRC_IMPORT2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_IMPORT2
+
+# MENU_EIRC_PROCESSING2, groups, opensso.java.net
+dn: cn=MENU_EIRC_PROCESSING2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_PROCESSING2
+
+# MENU_EIRC_QUITTANCES2, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCES2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCES2
+
+# MENU_EIRC_QUITTANCE_PACKETS, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCE_PACKETS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCE_PACKETS
+
+# MENU_EIRC_EIRC_ACCOUNTS2, groups, opensso.java.net
+dn: cn=MENU_EIRC_EIRC_ACCOUNTS2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_EIRC_ACCOUNTS2
+
+# MENU_EIRC_DICTS_ORGANIZATIONS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_ORGANIZATIONS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_ORGANIZATIONS
+
+# MENU_EIRC_DICTS_BANKS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_BANKS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_BANKS
+
+# MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS
+
+# MENU_EIRC_DICTS_SERVICE_PROVIDERS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_SERVICE_PROVIDERS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_SERVICE_PROVIDERS
+
+# MENU_EIRC_DICTS_PAYMENT_COLLECTORS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_PAYMENT_COLLECTORS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_PAYMENT_COLLECTORS
+
+# MENU_EIRC_DICTS_PAYMENT_POINTS, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_PAYMENT_POINTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_PAYMENT_POINTS
+
+# MENU_EIRC_DICTS_SERVICE_TYPES, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_SERVICE_TYPES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_SERVICE_TYPES
+
+# MENU_EIRC_DICTS_SERVICES, groups, opensso.java.net
+dn: cn=MENU_EIRC_DICTS_SERVICES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_DICTS_SERVICES
+
+# MENU_EIRC_IMPORT_SP_FILES_IMPORT, groups, opensso.java.net
+dn: cn=MENU_EIRC_IMPORT_SP_FILES_IMPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_IMPORT_SP_FILES_IMPORT
+
+# MENU_EIRC_IMPORT_IMPORTED_SP_FILES, groups, opensso.java.net
+dn: cn=MENU_EIRC_IMPORT_IMPORTED_SP_FILES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_IMPORT_IMPORTED_SP_FILES
+
+# MENU_EIRC_IMPORT_REGISTRIES, groups, opensso.java.net
+dn: cn=MENU_EIRC_IMPORT_REGISTRIES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_IMPORT_REGISTRIES
+
+# MENU_EIRC_PROCESSING_PROCESSES, groups, opensso.java.net
+dn: cn=MENU_EIRC_PROCESSING_PROCESSES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_PROCESSING_PROCESSES
+
+# MENU_EIRC_PROCESSING_PROCESS_DEFINITION, groups, opensso.java.net
+dn: cn=MENU_EIRC_PROCESSING_PROCESS_DEFINITION,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_PROCESSING_PROCESS_DEFINITION
+
+# MENU_EIRC_QUITTANCES_GENERATE, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCES_GENERATE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCES_GENERATE
+
+# MENU_EIRC_QUITTANCES_PRINT, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCES_PRINT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCES_PRINT
+
+# MENU_EIRC_QUITTANCES_PAYFORM, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCES_PAYFORM,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCES_PAYFORM
+
+# MENU_EIRC_QUITTANCES_PACKETS, groups, opensso.java.net
+dn: cn=MENU_EIRC_QUITTANCES_PACKETS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_QUITTANCES_PACKETS
+
+# MENU_EIRC_EIRC_ACCOUNTS3, groups, opensso.java.net
+dn: cn=MENU_EIRC_EIRC_ACCOUNTS3,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_EIRC_EIRC_ACCOUNTS3

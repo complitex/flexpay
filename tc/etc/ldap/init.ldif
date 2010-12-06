@@ -1,0 +1,239 @@
+# TC_TARIFF_READ, groups, opensso.java.net
+dn: cn=TC_TARIFF_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_READ
+
+# TC_TARIFF_CHANGE, groups, opensso.java.net
+dn: cn=TC_TARIFF_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CHANGE
+
+# TC_TARIFF_ADD, groups, opensso.java.net
+dn: cn=TC_TARIFF_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_ADD
+
+# TC_TARIFF_DELETE, groups, opensso.java.net
+dn: cn=TC_TARIFF_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_DELETE
+
+# TC_TARIFF_CALCULATION_RESULT_READ, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RESULT_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RESULT_READ
+
+# TC_TARIFF_CALCULATION_RESULT_ADD, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RESULT_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RESULT_ADD
+
+# TC_TARIFF_CALCULATION_RESULT_UPDATE, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RESULT_UPDATE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RESULT_UPDATE
+
+# TC_TARIFF_CALCULATION_RULES_FILE_READ, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RULES_FILE_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RULES_FILE_READ
+
+# TC_TARIFF_CALCULATION_RULES_FILE_CHANGE, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RULES_FILE_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RULES_FILE_CHANGE
+
+# TC_TARIFF_CALCULATION_RULES_FILE_ADD, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RULES_FILE_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RULES_FILE_ADD
+
+# TC_TARIFF_CALCULATION_RULES_FILE_DELETE, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RULES_FILE_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RULES_FILE_DELETE
+
+# TC_TARIFF_CALCULATION_RULES_FILE_TARIFF_CALCULATE, groups, opensso.java.net
+dn: cn=TC_TARIFF_CALCULATION_RULES_FILE_TARIFF_CALCULATE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_CALCULATION_RULES_FILE_TARIFF_CALCULATE
+
+# TC_TARIFF_EXPORT_LOG_RECORD_READ, groups, opensso.java.net
+dn: cn=TC_TARIFF_EXPORT_LOG_RECORD_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_EXPORT_LOG_RECORD_READ
+
+# TC_TARIFF_EXPORT_LOG_RECORD_ADD, groups, opensso.java.net
+dn: cn=TC_TARIFF_EXPORT_LOG_RECORD_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_EXPORT_LOG_RECORD_ADD
+
+# TC_TARIFF_EXPORT_LOG_RECORD_DELETE, groups, opensso.java.net
+dn: cn=TC_TARIFF_EXPORT_LOG_RECORD_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: TC_TARIFF_EXPORT_LOG_RECORD_DELETE
+
+# MENU_TC, groups, opensso.java.net
+dn: cn=MENU_TC,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC
+
+# MENU_TC_DICTS, groups, opensso.java.net
+dn: cn=MENU_TC_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_DICTS
+
+# MENU_TC_IMPORTEXPORT, groups, opensso.java.net
+dn: cn=MENU_TC_IMPORTEXPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_IMPORTEXPORT
+
+# MENU_TC_DATA, groups, opensso.java.net
+dn: cn=,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_DATA
+
+# MENU_TC_OTHER_DICTS, groups, opensso.java.net
+dn: cn=,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_OTHER_DICTS
+
+# MENU_TC_IMPORTEXPORT2, groups, opensso.java.net
+dn: cn=MENU_TC_IMPORTEXPORT2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_IMPORTEXPORT2
+
+# MENU_TC_PROCESSES, groups, opensso.java.net
+dn: cn=MENU_TC_PROCESSES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_PROCESSES
+
+# MENU_TC_DATA2, groups, opensso.java.net
+dn: cn=MENU_TC_DATA2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_DATA2
+
+# MENU_TC_DICTS_CALC_FILES_RULES, groups, opensso.java.net
+dn: cn=MENU_TC_DICTS_CALC_FILES_RULES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_DICTS_CALC_FILES_RULES
+
+# MENU_TC_DICTS_BUILDING_ATTRIBUTES, groups, opensso.java.net
+dn: cn=MENU_TC_DICTS_BUILDING_ATTRIBUTES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_DICTS_BUILDING_ATTRIBUTES
+
+# MENU_TC_IMPORTEXPORT_CALC_RESULTS_EXPORT, groups, opensso.java.net
+dn: cn=MENU_TC_IMPORTEXPORT_CALC_RESULTS_EXPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_IMPORTEXPORT_CALC_RESULTS_EXPORT
+
+# MENU_TC_IMPORTEXPORT_ATTRIBUTES_IMPORT, groups, opensso.java.net
+dn: cn=MENU_TC_IMPORTEXPORT_ATTRIBUTES_IMPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_IMPORTEXPORT_ATTRIBUTES_IMPORT
+
+# MENU_TC_IMPORTEXPORT_PROCESSES, groups, opensso.java.net
+dn: cn=MENU_TC_IMPORTEXPORT_PROCESSES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_IMPORTEXPORT_PROCESSES
+
+# MENU_TC_IMPORTEXPORT_PROCESS_DEF_DEPLOY, groups, opensso.java.net
+dn: cn=MENU_TC_IMPORTEXPORT_PROCESS_DEF_DEPLOY,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_IMPORTEXPORT_PROCESS_DEF_DEPLOY
+
+# MENU_TC_DATA_BUILDING_ATTRIBUTES, groups, opensso.java.net
+dn: cn=MENU_TC_DATA_BUILDING_ATTRIBUTES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: MENU_TC_DATA_BUILDING_ATTRIBUTES

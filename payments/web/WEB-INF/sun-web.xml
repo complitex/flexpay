@@ -109,6 +109,41 @@
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_ADD</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_CHANGE</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_DELETE</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_ADD</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_CHANGE</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_DELETE</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
     <!-- organization roles -->
     <security-role-mapping>
         <role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>

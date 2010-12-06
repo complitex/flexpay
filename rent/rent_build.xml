@@ -3,6 +3,7 @@
 
     <import file="../orgs/orgs_build.xml" />
     <import file="../ab/ab_build.xml" />
+    <import file="../admin/admin_build.xml" />
 	<import file="../payments/payments_build.xml" />
 
 	<property file="rent/rent_build.properties" />
@@ -25,6 +26,7 @@
 	<path id="rent.production.classpath">
         <path refid="orgs.production.classpath" />
         <path refid="ab.production.classpath" />
+        <path refid="admin.production.classpath" />
 		<path refid="payments.production.classpath" />
 		<path refid="rent.lib" />
 	</path>
@@ -32,6 +34,7 @@
 	<path id="rent.test.classpath">
         <path refid="orgs.test.classpath" />
         <path refid="ab.test.classpath" />
+        <path refid="admin.test.classpath" />
 		<path refid="payments.test.classpath" />
 		<path refid="rent.production.classpath" />
 	</path>
@@ -39,10 +42,24 @@
     <path id="rent.runtests.classpath">
         <path refid="orgs.runtests.classpath" />
         <path refid="ab.runtests.classpath" />
+        <path refid="admin.runtests.classpath" />
         <path refid="payments.runtests.classpath" />
         <path refid="rent.test.classpath" />
         <path location="rent/tests/data" />
     </path>
+
+	<path id="rent.ldap.files.ldif">
+		<path refid="payments.ldap.files.ldif" />
+		<fileset dir="${rent.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path id="rent.ldap.init.ldif">
+		<fileset dir="${rent.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
 
 	<target name="rent.help" description="Print rent module build script options">
 		<echo>
@@ -219,6 +236,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="rent.ldap.update">
+		<path id="ldap.files.ldif" refid="rent.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="rent.ldap.init" depends="payments.ldap.init">
+		<property name="rent.ldap.file.ldif" refid="rent.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${rent.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="rent.ldap.set.flexpay.user" depends="payments.ldap.set.flexpay.user">
+		<if>
+			<isset property="rent.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${rent.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>

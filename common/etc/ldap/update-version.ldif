@@ -1,0 +1,4 @@
+dn: @@@BASE@@@
+changetype: modify
+replace: flexpayVersion
+flexpayVersion: @@@VERSION@@@

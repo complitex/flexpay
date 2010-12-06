@@ -1,0 +1,4 @@
+# attribute: &(objectClass=groupofuniquenames)(!(objectClass=flexpayGroup))
+changetype: modify
+add: objectClass
+objectClass: flexpayGroup

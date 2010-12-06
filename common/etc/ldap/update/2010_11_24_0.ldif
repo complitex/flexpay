@@ -1,0 +1,16 @@
+# comment
+dn: cn=schema
+changetype:modify
+add: attributeTypes
+attributeTypes: ( 1.3.6.1.4.1.1466001.1.1.1 NAME 'flexpayVersion' DESC 'Version' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
+-
+add: objectClasses
+objectClasses: ( 1.3.6.1.4.1.1466001.1 NAME 'flexpayBaseDn' DESC 'Flexpay dase dn group' SUP top AUXILIARY MAY ( flexpayVersion ) )
+
+dn: dc=opensso,dc=java,dc=net
+changetype: modify
+add: objectClass
+objectClass: flexpayBaseDn
+-
+add: flexpayVersion
+flexpayVersion: 2010_11_24_0

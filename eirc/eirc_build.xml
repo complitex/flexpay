@@ -42,6 +42,20 @@
         <path location="${eirc.dir}/tests/data" />
     </path>
 
+	<path id="eirc.ldap.files.ldif">
+		<path refid="payments.ldap.files.ldif" />
+		<path refid="bti.ldap.files.ldif" />
+		<fileset dir="${eirc.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path  id="eirc.ldap.init.ldif">
+		<fileset dir="${eirc.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
 	<target name="eirc.help" description="Print eirc build script options">
 		<echo>
 	Eirc module build script
@@ -236,6 +250,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="eirc.ldap.update">
+		<path id="ldap.files.ldif" refid="eirc.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="eirc.ldap.init" depends="payments.ldap.init,bti.ldap.init">
+		<property name="eirc.ldap.file.ldif" refid="eirc.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${eirc.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="eirc.ldap.set.flexpay.user" depends="payments.ldap.set.flexpay.user,bti.ldap.set.flexpay.user">
+		<if>
+			<isset property="eirc.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${eirc.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>

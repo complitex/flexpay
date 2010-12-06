@@ -1,23 +1,30 @@
-# extended LDIF
-#
-# LDAPv3
-# base <ou=groups,dc=opensso,dc=java,dc=net> with scope subtree
-# filter: (objectClass=*)
-# requesting: ALL
-#
+dn: cn=schema
+changetype:modify
+add: attributeTypes
+attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.1 NAME 'flexpayAbCountryFilter' DESC 'Preferred country filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
+attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.3 NAME 'flexpayAbTownFilter' DESC 'Preferred town filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
+attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.2 NAME 'flexpayAbRegionFilter' DESC 'Preferred region filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
+-
+add: objectClasses
+objectClasses: ( 1.3.6.1.4.1.1466000.4096.1 NAME 'flexpayAbPerson' DESC 'Flexpay ab module user' SUP top AUXILIARY MAY ( flexpayAbTownFilter $ flexpayAbRegionFilter $ flexpayAbCountryFilter ) )
 
-# basic, groups, opensso.java.net
-dn: cn=basic,ou=groups,dc=opensso,dc=java,dc=net
+# Groups
+# AB_BASIC, groups, opensso.java.net
+dn: cn=AB_BASIC,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
-cn: basic
+objectClass: flexpayGroup
+cn: AB_BASIC
 
 # AB_COUNTRY_READ, groups, opensso.java.net
 dn: cn=AB_COUNTRY_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_COUNTRY_READ
 
 # AB_COUNTRY_CHANGE, groups, opensso.java.net
@@ -25,6 +32,7 @@ dn: cn=AB_COUNTRY_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_COUNTRY_CHANGE
 
 # AB_COUNTRY_ADD, groups, opensso.java.net
@@ -32,6 +40,7 @@ dn: cn=AB_COUNTRY_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_COUNTRY_ADD
 
 # AB_COUNTRY_DELETE, groups, opensso.java.net
@@ -39,6 +48,7 @@ dn: cn=AB_COUNTRY_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_COUNTRY_DELETE
 
 # AB_REGION_READ, groups, opensso.java.net
@@ -46,6 +56,9 @@ dn: cn=AB_REGION_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_REGION_READ
 
 # AB_REGION_CHANGE, groups, opensso.java.net
@@ -53,6 +66,7 @@ dn: cn=AB_REGION_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_REGION_CHANGE
 
 # AB_REGION_ADD, groups, opensso.java.net
@@ -60,6 +74,7 @@ dn: cn=AB_REGION_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_REGION_ADD
 
 # AB_REGION_DELETE, groups, opensso.java.net
@@ -67,6 +82,7 @@ dn: cn=AB_REGION_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_REGION_DELETE
 
 # AB_TOWN_READ, groups, opensso.java.net
@@ -74,6 +90,9 @@ dn: cn=AB_TOWN_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_TOWN_READ
 
 # AB_TOWN_CHANGE, groups, opensso.java.net
@@ -81,6 +100,7 @@ dn: cn=AB_TOWN_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_TOWN_CHANGE
 
 # AB_TOWN_ADD, groups, opensso.java.net
@@ -88,6 +108,7 @@ dn: cn=AB_TOWN_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_TOWN_ADD
 
 # AB_TOWN_DELETE, groups, opensso.java.net
@@ -95,6 +116,7 @@ dn: cn=AB_TOWN_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_TOWN_DELETE
 
 # AB_TOWN_TYPE_READ, groups, opensso.java.net
@@ -102,6 +124,9 @@ dn: cn=AB_TOWN_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_TOWN_TYPE_READ
 
 # AB_TOWN_TYPE_CHANGE, groups, opensso.java.net
@@ -109,6 +134,7 @@ dn: cn=AB_TOWN_TYPE_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_TOWN_TYPE_CHANGE
 
 # AB_TOWN_TYPE_ADD, groups, opensso.java.net
@@ -116,6 +142,7 @@ dn: cn=AB_TOWN_TYPE_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_TOWN_TYPE_ADD
 
 # AB_TOWN_TYPE_DELETE, groups, opensso.java.net
@@ -123,6 +150,7 @@ dn: cn=AB_TOWN_TYPE_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_TOWN_TYPE_DELETE
 
 # AB_DISTRICT_READ, groups, opensso.java.net
@@ -130,6 +158,9 @@ dn: cn=AB_DISTRICT_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_DISTRICT_READ
 
 # AB_DISTRICT_CHANGE, groups, opensso.java.net
@@ -137,6 +168,7 @@ dn: cn=AB_DISTRICT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_DISTRICT_CHANGE
 
 # AB_DISTRICT_ADD, groups, opensso.java.net
@@ -144,6 +176,7 @@ dn: cn=AB_DISTRICT_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_DISTRICT_ADD
 
 # AB_DISTRICT_DELETE, groups, opensso.java.net
@@ -151,6 +184,7 @@ dn: cn=AB_DISTRICT_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_DISTRICT_DELETE
 
 # AB_STREET_READ, groups, opensso.java.net
@@ -158,6 +192,9 @@ dn: cn=AB_STREET_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_STREET_READ
 
 # AB_STREET_CHANGE, groups, opensso.java.net
@@ -165,6 +202,7 @@ dn: cn=AB_STREET_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_STREET_CHANGE
 
 # AB_STREET_ADD, groups, opensso.java.net
@@ -172,6 +210,7 @@ dn: cn=AB_STREET_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_STREET_ADD
 
 # AB_STREET_DELETE, groups, opensso.java.net
@@ -179,6 +218,7 @@ dn: cn=AB_STREET_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_STREET_DELETE
 
 # AB_STREET_TYPE_READ, groups, opensso.java.net
@@ -186,6 +226,9 @@ dn: cn=AB_STREET_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_STREET_TYPE_READ
 
 # AB_STREET_TYPE_CHANGE, groups, opensso.java.net
@@ -193,6 +236,7 @@ dn: cn=AB_STREET_TYPE_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_STREET_TYPE_CHANGE
 
 # AB_STREET_TYPE_ADD, groups, opensso.java.net
@@ -200,6 +244,7 @@ dn: cn=AB_STREET_TYPE_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_STREET_TYPE_ADD
 
 # AB_STREET_TYPE_DELETE, groups, opensso.java.net
@@ -207,6 +252,7 @@ dn: cn=AB_STREET_TYPE_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_STREET_TYPE_DELETE
 
 # AB_BUILDING_ATTRIBUTE_TYPE_READ, groups, opensso.java.net
@@ -214,6 +260,9 @@ dn: cn=AB_BUILDING_ATTRIBUTE_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_BUILDING_ATTRIBUTE_TYPE_READ
 
 # AB_BUILDING_ATTRIBUTE_TYPE_CHANGE, groups, opensso.java.net
@@ -221,6 +270,7 @@ dn: cn=AB_BUILDING_ATTRIBUTE_TYPE_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_BUILDING_ATTRIBUTE_TYPE_CHANGE
 
 # AB_BUILDING_ATTRIBUTE_TYPE_ADD, groups, opensso.java.net
@@ -228,6 +278,7 @@ dn: cn=AB_BUILDING_ATTRIBUTE_TYPE_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_BUILDING_ATTRIBUTE_TYPE_ADD
 
 # AB_BUILDING_ATTRIBUTE_TYPE_DELETE, groups, opensso.java.net
@@ -235,6 +286,7 @@ dn: cn=AB_BUILDING_ATTRIBUTE_TYPE_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_BUILDING_ATTRIBUTE_TYPE_DELETE
 
 # AB_BUILDING_READ, groups, opensso.java.net
@@ -242,6 +294,9 @@ dn: cn=AB_BUILDING_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_BUILDING_READ
 
 # AB_BUILDING_CHANGE, groups, opensso.java.net
@@ -249,6 +304,7 @@ dn: cn=AB_BUILDING_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_BUILDING_CHANGE
 
 # AB_BUILDING_ADD, groups, opensso.java.net
@@ -256,6 +312,7 @@ dn: cn=AB_BUILDING_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_BUILDING_ADD
 
 # AB_BUILDING_DELETE, groups, opensso.java.net
@@ -263,6 +320,7 @@ dn: cn=AB_BUILDING_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_BUILDING_DELETE
 
 # AB_APARTMENT_READ, groups, opensso.java.net
@@ -270,6 +328,9 @@ dn: cn=AB_APARTMENT_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_APARTMENT_READ
 
 # AB_APARTMENT_CHANGE, groups, opensso.java.net
@@ -277,6 +338,7 @@ dn: cn=AB_APARTMENT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_APARTMENT_CHANGE
 
 # AB_APARTMENT_ADD, groups, opensso.java.net
@@ -284,6 +346,7 @@ dn: cn=AB_APARTMENT_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_APARTMENT_ADD
 
 # AB_APARTMENT_DELETE, groups, opensso.java.net
@@ -291,6 +354,7 @@ dn: cn=AB_APARTMENT_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_APARTMENT_DELETE
 
 # AB_IDENTITY_TYPE_READ, groups, opensso.java.net
@@ -298,6 +362,9 @@ dn: cn=AB_IDENTITY_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_IDENTITY_TYPE_READ
 
 # AB_IDENTITY_TYPE_CHANGE, groups, opensso.java.net
@@ -305,6 +372,7 @@ dn: cn=AB_IDENTITY_TYPE_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_IDENTITY_TYPE_CHANGE
 
 # AB_IDENTITY_TYPE_ADD, groups, opensso.java.net
@@ -312,6 +380,7 @@ dn: cn=AB_IDENTITY_TYPE_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_IDENTITY_TYPE_ADD
 
 # AB_IDENTITY_TYPE_DELETE, groups, opensso.java.net
@@ -319,6 +388,7 @@ dn: cn=AB_IDENTITY_TYPE_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_IDENTITY_TYPE_DELETE
 
 # AB_IDENTITY_READ, groups, opensso.java.net
@@ -326,6 +396,9 @@ dn: cn=AB_IDENTITY_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_IDENTITY_READ
 
 # AB_IDENTITY_CHANGE, groups, opensso.java.net
@@ -333,6 +406,7 @@ dn: cn=AB_IDENTITY_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_IDENTITY_CHANGE
 
 # AB_IDENTITY_ADD, groups, opensso.java.net
@@ -340,6 +414,7 @@ dn: cn=AB_IDENTITY_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_IDENTITY_ADD
 
 # AB_IDENTITY_DELETE, groups, opensso.java.net
@@ -347,6 +422,7 @@ dn: cn=AB_IDENTITY_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_IDENTITY_DELETE
 
 # AB_PERSON_READ, groups, opensso.java.net
@@ -354,6 +430,9 @@ dn: cn=AB_PERSON_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
 cn: AB_PERSON_READ
 
 # AB_PERSON_CHANGE, groups, opensso.java.net
@@ -361,6 +440,7 @@ dn: cn=AB_PERSON_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_PERSON_CHANGE
 
 # AB_PERSON_ADD, groups, opensso.java.net
@@ -368,6 +448,7 @@ dn: cn=AB_PERSON_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_PERSON_ADD
 
 # AB_PERSON_DELETE, groups, opensso.java.net
@@ -375,6 +456,7 @@ dn: cn=AB_PERSON_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: AB_PERSON_DELETE
 
 # MENU_AB, groups, opensso.java.net
@@ -382,19 +464,15 @@ dn: cn=MENU_AB,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB
-
-
-
-
-
-
 
 # MENU_AB_DICTS, groups, opensso.java.net
 dn: cn=MENU_AB_DICTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS
 
 # MENU_AB_ADDRESS_DICTS, groups, opensso.java.net
@@ -402,6 +480,7 @@ dn: cn=MENU_AB_ADDRESS_DICTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_ADDRESS_DICTS
 
 # MENU_AB_PERSON_DICTS, groups, opensso.java.net
@@ -409,6 +488,7 @@ dn: cn=MENU_AB_PERSON_DICTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_PERSON_DICTS
 
 # MENU_AB_TYPE_DICTS, groups, opensso.java.net
@@ -416,6 +496,7 @@ dn: cn=MENU_AB_TYPE_DICTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_TYPE_DICTS
 
 # MENU_AB_OTHER_DICTS, groups, opensso.java.net
@@ -423,6 +504,7 @@ dn: cn=MENU_AB_OTHER_DICTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_OTHER_DICTS
 
 # MENU_AB_DICTS_COUNTRIES, groups, opensso.java.net
@@ -430,6 +512,7 @@ dn: cn=MENU_AB_DICTS_COUNTRIES,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_COUNTRIES
 
 # MENU_AB_DICTS_REGIONS, groups, opensso.java.net
@@ -437,6 +520,7 @@ dn: cn=MENU_AB_DICTS_REGIONS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_REGIONS
 
 # MENU_AB_DICTS_TOWNS, groups, opensso.java.net
@@ -444,6 +528,7 @@ dn: cn=MENU_AB_DICTS_TOWNS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_TOWNS
 
 # MENU_AB_DICTS_DISTRICTS, groups, opensso.java.net
@@ -451,6 +536,7 @@ dn: cn=MENU_AB_DICTS_DISTRICTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_DISTRICTS
 
 # MENU_AB_DICTS_STREETS, groups, opensso.java.net
@@ -458,6 +544,7 @@ dn: cn=MENU_AB_DICTS_STREETS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_STREETS
 
 # MENU_AB_DICTS_BUILDINGS, groups, opensso.java.net
@@ -465,6 +552,7 @@ dn: cn=MENU_AB_DICTS_BUILDINGS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_BUILDINGS
 
 # MENU_AB_DICTS_APARTMENTS, groups, opensso.java.net
@@ -472,6 +560,7 @@ dn: cn=MENU_AB_DICTS_APARTMENTS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_APARTMENTS
 
 # MENU_AB_DICTS_PERSONS, groups, opensso.java.net
@@ -479,6 +568,7 @@ dn: cn=MENU_AB_DICTS_PERSONS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_PERSONS
 
 # MENU_AB_DICTS_TOWN_TYPES, groups, opensso.java.net
@@ -486,6 +576,7 @@ dn: cn=MENU_AB_DICTS_TOWN_TYPES,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_TOWN_TYPES
 
 # MENU_AB_DICTS_STREET_TYPES, groups, opensso.java.net
@@ -493,6 +584,7 @@ dn: cn=MENU_AB_DICTS_STREET_TYPES,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_STREET_TYPES
 
 # MENU_AB_DICTS_IDENTITY_TYPES, groups, opensso.java.net
@@ -500,14 +592,15 @@ dn: cn=MENU_AB_DICTS_IDENTITY_TYPES,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_IDENTITY_TYPES
 
 # MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES, groups, opensso.java.net
-dn: cn=MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES,ou=groups,dc=opensso,dc=java,dc=
- net
+dn: cn=MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES
 
 # MENU_AB_DICTS_MEASURE_UNITS, groups, opensso.java.net
@@ -515,4 +608,5 @@ dn: cn=MENU_AB_DICTS_MEASURE_UNITS,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
+objectClass: flexpayGroup
 cn: MENU_AB_DICTS_MEASURE_UNITS

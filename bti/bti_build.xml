@@ -38,6 +38,19 @@
         <path location="bti/tests/data" />
     </path>
 
+	<path id="bti.ldap.files.ldif">
+		<path refid="ab.ldap.files.ldif" />
+		<fileset dir="${bti.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path id="bti.ldap.init.ldif">
+		<fileset dir="${bti.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
 	<target name="bti.help" description="Print bti module build script options">
 		<echo>
 	Bti module build script
@@ -215,6 +228,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="bti.ldap.update">
+		<path id="ldap.files.ldif" refid="bti.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="bti.ldap.init" depends="ab.ldap.init">
+		<property name="bti.ldap.file.ldif" refid="bti.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${bti.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="bti.ldap.set.flexpay.user" depends="ab.ldap.set.flexpay.user">
+		<if>
+			<isset property="bti.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${bti.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>

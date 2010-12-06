@@ -1,18 +1,8 @@
 import java.util.regex.Pattern
 
-def modulesDependencies = [
-		common: ['common'],
-		ab: ['common', 'ab'],
-		ab_sync: ['common', 'ab'],
-		admin: ['common', 'admin'],
-		bti: ['common', 'ab', 'bti'],
-		tc: ['common', 'ab', 'bti', 'tc'],
-		orgs: ['common', 'orgs'],
-		payments: ['common', 'ab', 'admin', 'orgs', 'payments'],
-		rent: ['common', 'ab', 'orgs', 'payments', 'rent'],
-		eirc: ['common', 'ab', 'admin', 'bti', 'orgs', 'payments', 'eirc'],
-		sz: ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc', 'sz']
-]
+def scriptDir = new File(getClass().protectionDomain.codeSource.location.path).parent
+def config = new ConfigSlurper().parse(new File(scriptDir, 'ModuleDependencies.groovy').toURL())
+def modulesDependencies = config.modulesDependencies
 
 /**
  * Structure of required properties is a following:

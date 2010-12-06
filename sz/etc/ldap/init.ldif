@@ -1,0 +1,112 @@
+# Groups
+# ROLE_SZ_SZ_FILE_READ, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_READ
+
+# ROLE_SZ_SZ_FILE_DELETE, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_DELETE
+
+# ROLE_SZ_SZ_FILE_DOWNLOAD_FILE, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_DOWNLOAD_FILE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_DOWNLOAD_FILE
+
+# ROLE_SZ_SZ_FILE_UPLOAD_FILE, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_UPLOAD_FILE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_UPLOAD_FILE
+
+# ROLE_SZ_SZ_FILE_LOAD_TO_DB, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_LOAD_TO_DB,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_LOAD_TO_DB
+
+# ROLE_SZ_SZ_FILE_LOAD_FROM_DB, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_LOAD_FROM_DB,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_LOAD_FROM_DB
+
+# ROLE_SZ_SZ_FILE_DELETE_FROM_DB, groups, opensso.java.net
+dn: cn=ROLE_SZ_SZ_FILE_DELETE_FROM_DB,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_SZ_SZ_FILE_DELETE_FROM_DB
+
+# ROLE_MENU_SZ, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ
+
+# ROLE_MENU_SZ_DICTS, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ_DICTS
+
+# ROLE_MENU_SZ_IMPORT, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ_IMPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ_IMPORT
+
+# ROLE_MENU_SZ_OTHER_DICTS, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ_OTHER_DICTS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ_OTHER_DICTS
+
+# ROLE_MENU_SZ_IMPORT2, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ_IMPORT2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ_IMPORT2
+
+# ROLE_MENU_SZ_DICTS_IMPORTED_FILES, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ_DICTS_IMPORTED_FILES,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ_DICTS_IMPORTED_FILES
+
+# ROLE_MENU_SZ_IMPORT_UPLOAD, groups, opensso.java.net
+dn: cn=ROLE_MENU_SZ_IMPORT_UPLOAD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: ROLE_MENU_SZ_IMPORT_UPLOAD

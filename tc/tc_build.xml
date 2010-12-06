@@ -39,6 +39,19 @@
 		<path location="${tc.dir}/tests/data" />
 	</path>
 
+	<path id="tc.ldap.files.ldif">
+		<path refid="bti.ldap.files.ldif" />
+		<fileset dir="${tc.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path id="tc.ldap.init.ldif">
+		<fileset dir="${tc.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
 	<target name="tc.help" description="Print tc build script options">
 		<echo>
 	tc module build script
@@ -232,6 +245,27 @@
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>
+	</target>
+
+	<target name="tc.ldap.update">
+		<path id="ldap.files.ldif" refid="tc.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="tc.ldap.init" depends="bti.ldap.init">
+		<property name="tc.ldap.file.ldif" refid="tc.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${tc.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="tc.ldap.set.flexpay.user" depends="bti.ldap.set.flexpay.user">
+		<if>
+			<isset property="tc.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${tc.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
 	</target>
 
 </project>
