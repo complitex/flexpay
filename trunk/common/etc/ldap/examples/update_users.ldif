@@ -1,0 +1,4 @@
+# attribute: flexpayUserRole=cashier
+changetype: modify
+add: memberof
+memberof: cn=COMMON_TEST1,ou=groups,dc=opensso,dc=java,dc=net
