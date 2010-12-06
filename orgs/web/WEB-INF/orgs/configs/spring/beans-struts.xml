@@ -277,4 +277,15 @@
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
+    <!-- Filters actions -->
+    <bean id="paymentPointFilterAjaxAction"
+          class="org.flexpay.orgs.actions.filter.PaymentPointFilterAjaxAction"
+          p:paymentPointService-ref="paymentPointService"
+          scope="prototype" />
+
+    <bean id="cashboxFilterAjaxAction"
+          class="org.flexpay.orgs.actions.filter.CashboxFilterAjaxAction"
+          p:cashboxService-ref="cashboxService"
+          scope="prototype" />
+
 </beans>

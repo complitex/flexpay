@@ -1,6 +1,6 @@
 package org.flexpay.payments.actions.registry.filter;
 
-import org.flexpay.ab.action.filter.FilterObject;
+import org.flexpay.common.persistence.filter.FilterObject;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.Registry;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 
@@ -42,12 +43,16 @@ public class FilterAutocompleterAction extends AccountantAWPActionSupport {
             q = "";
         }
 
-        Page<String> pager = new Page<String>(50);
+        Page<String> pager = new Page<String>(10);
         if (filterData.getType().equals(TYPE_BUILDING) || filterData.getType().equals(TYPE_APARTMENT)) {
             pager = new Page<String>(10000);
-            filterData.setString(q + "%");
+            if (isNotEmpty(q)) {
+                filterData.setString(q + "%");
+            }
         } else {
-            filterData.setString("%" + q + "%");
+            if (isNotEmpty(q)) {
+                filterData.setString("%" + q + "%");
+            }
         }
 
         List<String> result = registryRecordService.listAutocompleterAddresses(registry, filterData, pager);

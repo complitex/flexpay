@@ -32,7 +32,7 @@
 			/WEB-INF/common/configs/tiles_common.xml,
             /WEB-INF/ab/configs/tiles_ab.xml,
             /WEB-INF/admin/configs/tiles_admin.xml,
-            /WEB-INF/payments/configs/tiles_payments.xml
+            /WEB-INF/payments/configs/tiles_payments.xml,
             /WEB-INF/admin/configs/tiles_payments_admin.xml
 		</param-value>
 	</context-param>

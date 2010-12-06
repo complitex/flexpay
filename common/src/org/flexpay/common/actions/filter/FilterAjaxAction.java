@@ -1,12 +1,13 @@
-package org.flexpay.ab.action.filter;
+package org.flexpay.common.actions.filter;
 
-import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.common.persistence.filter.FilterObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 /**
  * Abstract class for address filter-classes
@@ -128,11 +129,6 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 
 	public List<FilterObject> getFoundObjects() {
 		return foundObjects;
-	}
-
-	@Override
-	public AbUserPreferences getUserPreferences() {
-		return (AbUserPreferences) super.getUserPreferences();
 	}
 
 }

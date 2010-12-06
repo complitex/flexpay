@@ -141,8 +141,6 @@
             params: params
         };
 
-        $.log(resultId);
-
         if (isResult) {
             opt["resultId"] = resultId;
         }

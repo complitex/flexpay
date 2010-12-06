@@ -1,13 +1,13 @@
 package org.flexpay.ab.action.filter;
 
-import org.flexpay.ab.action.filter.BuildingFilterAjaxAction;
-import org.flexpay.ab.action.filter.FilterAjaxAction;
+import org.flexpay.common.actions.filter.FilterAjaxAction;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TranslationUtil.getBuildingNumberWithoutHouseType;
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

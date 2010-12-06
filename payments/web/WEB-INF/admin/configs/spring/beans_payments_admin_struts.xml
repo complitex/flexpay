@@ -9,6 +9,9 @@
 	<bean id="userPaymentParametersEditAction"
 		  class="org.flexpay.admin.actions.user.parameters.UserPaymentParametersEditAction"
 		  p:userPreferencesService-ref="userPreferencesService"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
 		  scope="prototype" />
 
 </beans>
