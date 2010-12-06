@@ -1,0 +1,8 @@
+dn: cn=COMMON_TEST1,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+cn: COMMON_TEST1
