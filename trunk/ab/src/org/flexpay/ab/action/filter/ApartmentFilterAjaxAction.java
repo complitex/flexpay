@@ -3,8 +3,11 @@ package org.flexpay.ab.action.filter;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.util.config.AbUserPreferences;
+import org.flexpay.common.actions.filter.FilterAjaxAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.FilterObject;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -88,6 +91,11 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 
 		getUserPreferences().setApartmentFilter(filterValueLong);
 	}
+
+    @Override
+    public AbUserPreferences getUserPreferences() {
+        return (AbUserPreferences) super.getUserPreferences();
+    }
 
 	@Required
 	public void setApartmentService(ApartmentService apartmentService) {

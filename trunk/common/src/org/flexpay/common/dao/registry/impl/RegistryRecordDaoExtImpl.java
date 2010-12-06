@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.flexpay.common.persistence.DataCorrection.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.transform;
@@ -168,25 +169,24 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         StringBuilder countSql = new StringBuilder("select count(1) ");
         final StringBuilder selectSql = new StringBuilder("select id ");
-        StringBuilder fromWhereClause = new StringBuilder(
-                "from common_registry_records_tbl use index (I_registry_status, I_registry_errortype) " +
-                "where registry_id=? ");
+        StringBuilder fromWhere = new StringBuilder(" from common_registry_records_tbl where registry_id=? ");
 
 
         final List<Object> params = list();
         params.add(registryId);
 
-        boolean haveFilter = getFilters(fromWhereClause, params, filters);
+        boolean haveFilter = getFilters(fromWhere, params, filters);
 
         final StringBuilder sqlCount = haveFilter ?
-                                       countSql.append(fromWhereClause) :
+                                       countSql.append(fromWhere) :
                                        new StringBuilder("select records_number from common_registries_tbl where id=?");
-        selectSql.append(fromWhereClause);
+        selectSql.append(fromWhere);
 
         final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
             @Override
             public List doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, selectSql);
+                log.debug("Params: {}", params);
 
                 StopWatch watch = new StopWatch();
                 watch.start();
@@ -212,6 +212,10 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
             }
         });
 
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} records", ids.size());
+        }
+
         if (ids.isEmpty()) {
             return Collections.emptyList();
         }
@@ -234,46 +238,46 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
     }
 
-    private boolean getFilters(StringBuilder fromWhereClause, List<Object> params, Collection<ObjectFilter> filters) {
+    private boolean getFilters(StringBuilder fromWhere, List<Object> params, Collection<ObjectFilter> filters) {
 
         boolean haveFilter = false;
 
         for (ObjectFilter filter : filters) {
 
             if (filter instanceof RegistryRecordStatusFilter && filter.needFilter()) {
-                fromWhereClause.append(" and record_status_id=? ");
+                fromWhere.append(" and record_status_id=? ");
                 RegistryRecordStatusFilter registryRecordStatusFilter = (RegistryRecordStatusFilter) filter;
                 params.add(registryRecordStatusFilter.getSelectedId());
                 haveFilter = true;
             } else if (filter instanceof ImportErrorTypeFilter && filter.needFilter()) {
                 ImportErrorTypeFilter importErrorTypeFilter = (ImportErrorTypeFilter) filter;
                 if (importErrorTypeFilter.needFilterWithoutErrors()) {
-                    fromWhereClause.append(" and import_error_type is null ");
+                    fromWhere.append(" and import_error_type is null ");
                 } else {
-                    fromWhereClause.append(" and import_error_type=? ");
+                    fromWhere.append(" and import_error_type=? ");
                     params.add(importErrorTypeFilter.getSelectedType());
                 }
                 haveFilter = true;
             } else if (filter instanceof StringFilter) {
                 StringFilter aFilter = (StringFilter) filter;
                 if (aFilter.getType().equals(TYPE_TOWN)) {
-                    fromWhereClause.append(" and upper(town_name) like upper(?) ");
+                    fromWhere.append(" and town_name like ? ");
                     params.add(aFilter.getValue());
                     haveFilter = true;
                 } else if (aFilter.getType().equals(TYPE_STREET)) {
-                    fromWhereClause.append(" and upper(concat(street_type, ' ', street_name)) like upper(?) ");
+                    fromWhere.append(" and concat(street_type, ' ', street_name) like ? ");
                     params.add(aFilter.getValue());
                     haveFilter = true;
                 } else if (aFilter.getType().equals(TYPE_BUILDING)) {
-                    fromWhereClause.append(" and upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) like upper(?) ");
+                    fromWhere.append(" and concat(building_number, IFNULL(concat(' ', bulk_number), '')) like ? ");
                     params.add(aFilter.getValue());
                     haveFilter = true;
                 } else if (aFilter.getType().equals(TYPE_APARTMENT)) {
-                    fromWhereClause.append(" and upper(apartment_number) = upper(?) ");
+                    fromWhere.append(" and apartment_number like ? ");
                     params.add(aFilter.getValue());
                     haveFilter = true;
                 } else if (aFilter.getType().equals(TYPE_FIO)) {
-                    fromWhereClause.append(" and upper(concat(last_name, ' ', middle_name, ' ', first_name)) like upper(?) ");
+                    fromWhere.append(" and concat(last_name, ' ', middle_name, ' ', first_name) like ? ");
                     params.add(aFilter.getValue());
                     haveFilter = true;
                 }
@@ -293,16 +297,16 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         final StringBuilder sql = new StringBuilder("select id ");
         final StringBuilder sqlCount = new StringBuilder("select count(*) ");
 
-        StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl c use index (I_registry_status, I_registry_errortype) where registry_id = ? ");
-        fromWhereClause.append(criteria);
+        StringBuilder fromWhere = new StringBuilder("from common_registry_records_tbl c where registry_id = ? ");
+        fromWhere.append(criteria);
 
         final List<Object> paramsSql = list();
         paramsSql.add(registryId);
         paramsSql.addAll(params);
-        getFilters(fromWhereClause, paramsSql, filters);
+        getFilters(fromWhere, paramsSql, filters);
 
-        sql.append(fromWhereClause);
-        sqlCount.append(fromWhereClause);
+        sql.append(fromWhere);
+        sqlCount.append(fromWhere);
 
         log.debug("Pager = {}", pager);
         log.debug("params = {}", paramsSql);
@@ -574,32 +578,43 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	}
 
     @Override
-    public List<String> findAoutocompleterAddresses(Long registryId, FilterData filterData, final Page<String> pager) {
+    public List<String> findAutocompleterAddresses(Long registryId, FilterData filterData, final Page<String> pager) {
 
         final StringBuilder sql = new StringBuilder("select distinct ");
-        StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl rr " +
-                                                          " where registry_id = ? ");
+        StringBuilder fromWhere = new StringBuilder(" from common_registry_records_tbl rr where registry_id = ? ");
         StringBuilder orderBy = new StringBuilder(" order by n");
-
-        if (TYPE_TOWN.equals(filterData.getType())) {
-            sql.append("upper(town_name) n ");
-            fromWhereClause.append(" and upper(town_name) like upper(?)");
-        } else if (TYPE_STREET.equals(filterData.getType())) {
-            sql.append("upper(concat(street_type, ' ', street_name)) n ");
-            fromWhereClause.append(" and upper(street_name) like upper(?)");
-        } else if (TYPE_BUILDING.equals(filterData.getType())) {
-            sql.append("upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) n ");
-            fromWhereClause.append(" and upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) like upper(?)");
-        } else if (TYPE_APARTMENT.equals(filterData.getType())) {
-            sql.append("upper(apartment_number) n ");
-            fromWhereClause.append(" and upper(apartment_number) like upper(?)");
-        }
-
-        sql.append(fromWhereClause).append(orderBy);
 
         final List<Object> params = list();
         params.add(registryId);
-        params.add(filterData.getString());
+
+        boolean stringNotEmpty = isNotEmpty(filterData.getString());
+
+        if (TYPE_TOWN.equals(filterData.getType())) {
+            sql.append("upper(town_name) n ");
+            if (stringNotEmpty) {
+                fromWhere.append(" and town_name like ?");
+            }
+        } else if (TYPE_STREET.equals(filterData.getType())) {
+            sql.append("upper(concat(street_type, ' ', street_name)) n ");
+            if (stringNotEmpty) {
+                fromWhere.append(" and street_name like ?");
+            }
+        } else if (TYPE_BUILDING.equals(filterData.getType())) {
+            sql.append("upper(concat(building_number, IFNULL(concat(' ', bulk_number), ''))) n ");
+            if (stringNotEmpty) {
+                fromWhere.append(" and concat(building_number, IFNULL(concat(' ', bulk_number), '')) like ?");
+            }
+        } else if (TYPE_APARTMENT.equals(filterData.getType())) {
+            sql.append("upper(apartment_number) n ");
+            if (stringNotEmpty) {
+                fromWhere.append(" and apartment_number like ?");
+            }
+        }
+        if (stringNotEmpty) {
+            params.add(filterData.getString());
+        }
+
+        sql.append(fromWhere).append(orderBy);
 
         @SuppressWarnings({"unchecked"})
         final List<String> objects = hibernateTemplate.executeFind(new HibernateCallback() {
@@ -651,7 +666,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         final StringBuilder sql = new StringBuilder("select ie.error_key, rr.import_error_type, count(*) count ");
 
-        StringBuilder fromWhereClause = new StringBuilder(" from common_registry_records_tbl rr " +
+        StringBuilder fromWhere = new StringBuilder(" from common_registry_records_tbl rr " +
                                                           "   inner join common_import_errors_tbl ie on rr.import_error_id = ie.id " +
                                                           " where rr.registry_id = ? ");
 
@@ -660,9 +675,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         final List<Object> params = list();
         params.add(registryId);
-        getFilters(fromWhereClause, params, filters);
+        getFilters(fromWhere, params, filters);
 
-        sql.append(fromWhereClause).append(groupOrderByClause);
+        sql.append(fromWhere).append(groupOrderByClause);
 
         @SuppressWarnings({"unchecked"})
         final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback() {
@@ -733,14 +748,14 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                                                          "from (" +
                                                          "   select id ");
 
-        StringBuilder fromWhereClause = new StringBuilder("from common_registry_records_tbl c where registry_id = ? ");
+        StringBuilder fromWhere = new StringBuilder("from common_registry_records_tbl c where registry_id = ? ");
 
         final List<Object> params = list();
         params.add(registryId);
-        getFilters(fromWhereClause, params, filters);
+        getFilters(fromWhere, params, filters);
 
-        sql.append(fromWhereClause).append(groupByString);
-        sqlCount.append(fromWhereClause).append(groupByString).append(" ) cc");
+        sql.append(fromWhere).append(groupByString);
+        sqlCount.append(fromWhere).append(groupByString).append(" ) cc");
         if (sorter != null) {
             addSorting(sql, sorter);
         }

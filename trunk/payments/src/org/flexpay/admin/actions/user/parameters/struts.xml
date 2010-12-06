@@ -9,8 +9,11 @@
 
 		<action name="userPaymentParametersEdit" class="userPaymentParametersEditAction">
 			<result name="input" type="tiles">admin.payment.parameters.edit</result>
-			<result name="redirectError" type="redirect-action">userPaymentParametersEdit</result>
-			<result name="redirectSuccess" type="redirect-action">usersList</result>
+			<result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">editUser</param>
+                <param name="parse">true</param>
+                <param name="model.userName">${preference.username}</param>
+            </result>
 		</action>
 		
 	</package>

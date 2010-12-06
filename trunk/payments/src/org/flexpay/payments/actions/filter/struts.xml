@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="orgs_filters" namespace="/payments" extends="common">
+
+        <action name="paymentPointFilterAjax" class="paymentPointFilterAjaxAction">
+            <result>/WEB-INF/jsp/orgs/filters/payment_point_filter.jsp</result>
+        </action>
+
+        <action name="cashboxFilterAjax" class="cashboxFilterAjaxAction">
+            <result>/WEB-INF/jsp/orgs/filters/cashbox_filter.jsp</result>
+        </action>
+
+	</package>
+
+</struts>

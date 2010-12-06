@@ -152,7 +152,7 @@ var FPR = {
                     }
                     filter.autocomplete(FP.parseAutocompleterData(data),
                         {
-                            delay:30,
+                            delay:1000,
                             minChars:0,
                             cacheLength:10,
                             scroll: true,

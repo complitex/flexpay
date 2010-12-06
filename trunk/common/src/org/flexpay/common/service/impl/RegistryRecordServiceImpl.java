@@ -121,7 +121,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 
     @Override
     public List<String> listAutocompleterAddresses(Registry registry, FilterData filterData, Page<String> pager) {
-        return registryRecordDaoExt.findAoutocompleterAddresses(registry.getId(), filterData, pager);
+        return registryRecordDaoExt.findAutocompleterAddresses(registry.getId(), filterData, pager);
     }
 
     @Override

@@ -68,6 +68,7 @@
     </package>
 
 	<include file="org/flexpay/payments/actions/cashbox/struts.xml" />
+    <include file="org/flexpay/payments/actions/filter/struts.xml" />
     <include file="org/flexpay/payments/actions/monitor/struts.xml" />
     <include file="org/flexpay/payments/actions/operations/struts.xml" />
     <include file="org/flexpay/payments/actions/paymentpoint/struts.xml" />

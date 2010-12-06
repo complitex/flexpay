@@ -6,9 +6,12 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.AbUserPreferences;
+import org.flexpay.common.actions.filter.FilterAjaxAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.set;
+
+import org.flexpay.common.persistence.filter.FilterObject;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -124,6 +127,11 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		up.setBuildingFilter(0L);
 		up.setApartmentFilter(0L);
 	}
+
+    @Override
+    public AbUserPreferences getUserPreferences() {
+        return (AbUserPreferences) super.getUserPreferences();
+    }
 
 	@Required
 	public void setStreetService(StreetService streetService) {

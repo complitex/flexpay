@@ -55,7 +55,7 @@ public interface RegistryRecordDaoExt {
 	 */
 	List<RegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);
 
-    List<String> findAoutocompleterAddresses(Long registryId, FilterData filterData, Page<String> pager);
+    List<String> findAutocompleterAddresses(Long registryId, FilterData filterData, Page<String> pager);
 
     List<RecordErrorsType> findErrorsTypes(Long registryId, Collection<ObjectFilter> filters);
 
