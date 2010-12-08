@@ -1,7 +1,9 @@
 import java.util.regex.Pattern
 
-def scriptDir = new File(getClass().protectionDomain.codeSource.location.path).parent
-def config = new ConfigSlurper().parse(new File(scriptDir, 'ModuleDependencies.groovy').toURL())
+URL url = new File("common/etc/util/groovy", 'ModuleDependencies.groovy').toURL()
+def configSlurper = new ConfigSlurper()
+configSlurper.classLoader = this.class.getClassLoader()
+def config = configSlurper.parse(url);
 def modulesDependencies = config.modulesDependencies
 
 /**
