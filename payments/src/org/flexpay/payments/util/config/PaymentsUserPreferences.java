@@ -1,5 +1,7 @@
 package org.flexpay.payments.util.config;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.AbUserPreferences;
 
 public class PaymentsUserPreferences extends AbUserPreferences {
@@ -46,4 +48,14 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 	public void setCashboxId(Long cashboxId) {
 		this.cashboxId = cashboxId;
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                appendSuper(super.toString()).
+                append("paymentPointId", paymentPointId).
+                append("paymentCollectorId", paymentCollectorId).
+                append("cashboxId", cashboxId).
+                toString();
+    }
 }

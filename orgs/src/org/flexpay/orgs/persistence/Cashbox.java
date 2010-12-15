@@ -23,7 +23,14 @@ public class Cashbox extends DomainObjectWithStatus {
 	private PaymentPoint paymentPoint;
 	private Long tradingDayProcessInstanceId;
 
-	public Set<CashboxNameTranslation> getNames() {
+    public Cashbox() {
+    }
+
+    public Cashbox(@NotNull Long id) {
+        super(id);
+    }
+
+    public Set<CashboxNameTranslation> getNames() {
 		return names;
 	}
 

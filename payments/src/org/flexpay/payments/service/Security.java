@@ -29,11 +29,6 @@ public abstract class Security extends org.flexpay.common.service.Security {
 	}
 
     /**
-     * Quittance payer process user
-     */
-    private static final String USER_OUTER_REQUEST = "payments-outer_request";
-
-    /**
      * Set of authorities names for quittance finder process user
      */
     private static final List<String> USER_OUTER_REQUEST_AUTHORITIES = list(
@@ -58,8 +53,8 @@ public abstract class Security extends org.flexpay.common.service.Security {
     /**
      * Do syncer user authentication
      */
-    public static void authenticateOuterRequest() {
-        SecurityUtil.authenticate(USER_OUTER_REQUEST, USER_OUTER_REQUEST_AUTHORITIES);
+    public static void authenticateOuterRequest(String login) {
+        SecurityUtil.authenticate(login, USER_OUTER_REQUEST_AUTHORITIES);
     }
 
 	/**

@@ -13,13 +13,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.security.cert.CertificateFactory;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+
 public class CertificateEditAction extends FPActionSupport {
 
 	private String alias;
 	private Certificate certificate = new Certificate();
 	private File certificateFile;
 	private String certificateFileContentType;
-	private String certificateFileFileName;
+	private String certificateFileName;
 
 	private CertificateService certificateService;
 	private UserPreferencesService userPreferencesService;
@@ -27,6 +29,7 @@ public class CertificateEditAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+
 		UserPreferences preference = null;
 		try {
 			preference = userPreferencesService.loadUserByUsername(alias);
@@ -34,28 +37,32 @@ public class CertificateEditAction extends FPActionSupport {
 			log.warn("Search user {}", alias, t);
 		}
 		if (preference == null) {
+            log.error("User not found. Login = {}", alias);
 			addActionError(getText("admin.error.certificate.user_not_found"));
 			return INPUT;
 		}
 
-		if (isSubmit() && getText("common.save").equals(submitted)) {
+		if (isSubmit()) {
 			if (!doValidate()) {
 				return INPUT;
 			}
 
-			log.debug("certificateFile={}, certificateFileName={}", certificateFile, certificateFileFileName);
+			log.debug("certificateFile={}, certificateFileName={}", certificateFile, certificateFileName);
 
-			if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() == null) {
+			if (certificateFile != null && isNotEmpty(certificateFileName) && preference.getCertificate() == null) {
 				certificateService.addCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
-			} else if (certificateFile != null && StringUtils.isNotEmpty(certificateFileFileName) && preference.getCertificate() != null) {
+			} else if (certificateFile != null && isNotEmpty(certificateFileName) && preference.getCertificate() != null) {
 				certificateService.replaceCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
 			} else {
 				certificateService.editCertificate(alias, certificate.getDescription(), certificate.isBlocked());
 			}
-			//addActionMessage(getText("admin.certificate.edited"));
+			addActionMessage(getText("admin.certificate.saved"));
 			return REDIRECT_SUCCESS;
-		} else if (preference.getCertificate() != null) {
+		}
+
+        if (preference.getCertificate() != null) {
 			certificate = preference.getCertificate();
+            certificate.setId(1L);
 		}
 
 		return INPUT;
@@ -63,11 +70,12 @@ public class CertificateEditAction extends FPActionSupport {
 
 	private boolean doValidate() {
 		
-		if (StringUtils.isNotEmpty(certificateFileFileName)) {
+		if (StringUtils.isNotEmpty(certificateFileName)) {
 			try {
 				CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 				certificateFactory.generateCertificate(new FileInputStream(certificateFile));
 			} catch (Exception e) {
+                log.error("Can't get certificate from file", e);
 				addActionError(getText("admin.error.certificate.file_is_bad"));
 				return false;
 			}
@@ -110,12 +118,12 @@ public class CertificateEditAction extends FPActionSupport {
 		this.certificateFileContentType = certificateFileContentType;
 	}
 
-	public String getCertificateFileFileName() {
-		return certificateFileFileName;
+	public String getCertificateFileName() {
+		return certificateFileName;
 	}
 
-	public void setCertificateFileFileName(String certificateFileFileName) {
-		this.certificateFileFileName = certificateFileFileName;
+	public void setCertificateFileName(String certificateFileName) {
+		this.certificateFileName = certificateFileName;
 	}
 
 	@Required

@@ -4,10 +4,13 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.KeyStoreUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.payments.actions.outerrequest.request.response.Response;
 import org.flexpay.payments.actions.outerrequest.request.response.Status;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +31,7 @@ public abstract class Request<R extends Response> implements Serializable {
     protected String login;
     protected String requestSignatureString;
 
+    protected PaymentsUserPreferences paymentsUserPreferences;
     protected R response;
     protected StringBuilder sResponse;
     protected Locale locale = Locale.ENGLISH;
@@ -75,21 +79,39 @@ public abstract class Request<R extends Response> implements Serializable {
 
     protected abstract void addResponseBody(Signature signature) throws FlexPayException;
 
-    public boolean authenticate() throws FlexPayException {
+    public boolean authenticate(UserPreferencesService userPreferencesService) throws FlexPayException {
 
-        Certificate certificate;
+        UserPreferences userPreference;
+
         try {
-            KeyStore keyStore = KeyStoreUtil.loadKeyStore();
-            if (!keyStore.isCertificateEntry(login)) {
-                log.error("Can't load security certificate for user {}", login);
-                return false;
+            userPreference = userPreferencesService.loadUserByUsername(login);
+            if (userPreference instanceof PaymentsUserPreferences) {
+                paymentsUserPreferences = (PaymentsUserPreferences) userPreference;
+            } else {
+                log.debug("This user preferences not instance of PaymentsUserPreferences. Login = {}", login);
+                throw new FlexPayException("This user preferences not instance of PaymentsUserPreferences. Login = " + login);
             }
+        } catch (Throwable t) {
+            log.error("Error getting user preperences for login {}", login, t);
+            throw new FlexPayException("Error getting user preperences for login " + login, t);
+        }
 
-            certificate = keyStore.getCertificate(login);
+        log.debug("User preferences = {}", paymentsUserPreferences);
 
-        } catch (Exception e) {
-            log.error("Error loading certificate from keystore", e);
-            throw new FlexPayException("Error loading certificate from keystore", e);
+        Certificate certificate = userPreferencesService.getCertificate(paymentsUserPreferences);
+        if (certificate == null) {
+            log.error("Error loading certificate from keystore for login {}", login);
+            throw new FlexPayException("Error loading certificate from keystore for login " + login);
+        }
+
+        if (userPreference.getCertificate().isBlocked()) {
+            log.error("Certificate for user with login {} is blocked", login);
+            throw new FlexPayException("Certificate for user with login " + login + " is blocked");
+        }
+
+        if (userPreference.getCertificate().isExpired()) {
+            log.error("Certificate for user with login {} is expired", login);
+            throw new FlexPayException("Certificate for user with login " + login + " is expired");
         }
 
         try {
@@ -228,6 +250,10 @@ public abstract class Request<R extends Response> implements Serializable {
 
     public R getResponse() {
         return response;
+    }
+
+    public PaymentsUserPreferences getPaymentsUserPreferences() {
+        return paymentsUserPreferences;
     }
 
     @Override

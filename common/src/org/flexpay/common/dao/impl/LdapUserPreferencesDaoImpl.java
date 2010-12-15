@@ -22,6 +22,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -390,6 +391,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		return javaCertificate;
 	}
 
+    @Nullable
 	@Override
 	public Certificate getCertificate(UserPreferences preferences) {
 		try {

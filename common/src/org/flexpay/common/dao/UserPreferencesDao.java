@@ -1,6 +1,7 @@
 package org.flexpay.common.dao;
 
 import org.flexpay.common.util.config.UserPreferences;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 import java.security.cert.Certificate;
@@ -33,6 +34,7 @@ public interface UserPreferencesDao {
 
 	Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate);
 
+    @Nullable
 	Certificate getCertificate(UserPreferences preferences);
 
 	void deleteCertificate(UserPreferences preferences);

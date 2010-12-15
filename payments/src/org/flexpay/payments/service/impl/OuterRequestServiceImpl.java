@@ -16,7 +16,9 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.util.*;
+import org.flexpay.common.util.BigDecimalUtil;
+import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -29,7 +31,6 @@ import org.flexpay.payments.actions.outerrequest.request.data.ServicePayDetails;
 import org.flexpay.payments.actions.outerrequest.request.response.*;
 import org.flexpay.payments.actions.outerrequest.request.response.data.*;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.process.export.TradingDaySchedulingJob;
 import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -47,7 +48,6 @@ import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
-import static org.flexpay.common.util.SecurityUtil.getUserName;
 import static org.flexpay.common.util.TranslationUtil.getTranslation;
 
 public class OuterRequestServiceImpl implements OuterRequestService {
@@ -93,12 +93,11 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @NotNull
     @Override
     public PayDebtResponse quittancePay(PayDebtRequest request) throws FlexPayException {
-        Security.authenticateOuterRequest();
 
-        //TODO: Откуда брать айдишник кассы?
-        Cashbox cashbox = new Cashbox();
-        cashbox.setId(1L);
-        Operation oper = operationService.createBlankOperation(SecurityUtil.getUserName(), stub(cashbox));
+        Security.authenticateOuterRequest(request.getLogin());
+
+        Cashbox cashbox = new Cashbox(request.getPaymentsUserPreferences().getCashboxId());
+        Operation oper = operationService.createBlankOperation(request.getPaymentsUserPreferences().getFullName(), stub(cashbox));
         log.debug("Created blank operation: {}", oper);
 
         log.debug("Start filling operation");
@@ -192,9 +191,9 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
         operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 
-        operation.setCreatorUserName(getUserName());
-        operation.setRegisterUserName(getUserName());
-        operation.setCashierFio(getUserName());
+        operation.setCreatorUserName(request.getPaymentsUserPreferences().getFullName());
+        operation.setRegisterUserName(request.getPaymentsUserPreferences().getFullName());
+        operation.setCashierFio(request.getPaymentsUserPreferences().getFullName());
 
         for (ServicePayDetails spDetails : request.getServicePayDetails()) {
 
@@ -359,7 +358,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public ReversalPayResponse reversalPay(ReversalPayRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest();
+        Security.authenticateOuterRequest(request.getLogin());
 
         ReversalPayResponse response = request.getResponse();
 
@@ -399,7 +398,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public RegistryCommentResponse addRegistryComment(RegistryCommentRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest();
+        Security.authenticateOuterRequest(request.getLogin());
 
         RegistryCommentResponse response = request.getResponse();
 
@@ -450,11 +449,11 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public GetRegistryListResponse getRegistryList(GetRegistryListRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest();
+        Security.authenticateOuterRequest(request.getLogin());
 
         GetRegistryListResponse response = request.getResponse();
 
-        List<Registry> registries = list();
+        List<Registry> registries;
 
         if (request.getRegistryType() == null) {
             registries = registryService.findRegistriesInDateInterval(request.getPeriodBeginDateDate(), request.getPeriodEndDateDate());
@@ -500,7 +499,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public GetServiceListResponse getServiceList(GetServiceListRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest();
+        Security.authenticateOuterRequest(request.getLogin());
 
         GetServiceListResponse response = request.getResponse();
 
