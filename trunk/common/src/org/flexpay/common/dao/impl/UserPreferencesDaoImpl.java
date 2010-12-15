@@ -6,6 +6,7 @@ import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.KeyStoreUtil;
 import org.flexpay.common.util.config.UserPreferences;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
@@ -106,6 +107,7 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 		return null;
 	}
 
+    @Nullable
 	@Override
 	public Certificate getCertificate(UserPreferences preferences) {
 		try {

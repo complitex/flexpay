@@ -9,6 +9,7 @@ import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -209,6 +210,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		return getUserPreferencesDao().editCertificate(preferences, description, blocked, inputStreamCertificate);
 	}
 
+    @Nullable
 	@Override
 	public Certificate getCertificate(UserPreferences preferences) {
 		return getUserPreferencesDao().getCertificate(preferences);

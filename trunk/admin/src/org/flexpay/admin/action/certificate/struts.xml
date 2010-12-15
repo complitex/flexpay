@@ -8,8 +8,11 @@
 
 		<action name="certificateEdit" class="certificateEditAction">
 			<result name="input" type="tiles">admin.certificate.edit</result>
-			<result name="redirectError" type="redirect-action">certificateEdit</result>
-			<result name="redirectSuccess" type="redirect-action">usersList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">editUser</param>
+                <param name="parse">true</param>
+                <param name="model.userName">${alias}</param>
+            </result>
 		</action>
 		
 	</package>

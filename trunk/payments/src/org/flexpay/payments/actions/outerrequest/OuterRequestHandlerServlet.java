@@ -2,6 +2,7 @@ package org.flexpay.payments.actions.outerrequest;
 
 import org.apache.commons.digester.Digester;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.payments.actions.outerrequest.request.*;
 import org.flexpay.payments.actions.outerrequest.request.response.Status;
 import org.flexpay.payments.service.OuterRequestService;
@@ -25,6 +26,7 @@ public class OuterRequestHandlerServlet extends HttpServlet {
     public static final String ENCODING = "UTF-8";
 
     protected OuterRequestService outerRequestService;
+    private UserPreferencesService userPreferencesService;
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +36,8 @@ public class OuterRequestHandlerServlet extends HttpServlet {
         ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 
         outerRequestService = (OuterRequestService) context.getBean("outerRequestService");
+        userPreferencesService = (UserPreferencesService) context.getBean("userPreferencesService");
+
     }
 
     @Override
@@ -71,7 +75,7 @@ public class OuterRequestHandlerServlet extends HttpServlet {
         try {
 
             log.debug("Authenticate start");
-            if (!request.authenticate()) {
+            if (!request.authenticate(userPreferencesService)) {
                 writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
                 log.warn("Bad authentication data");
                 return;

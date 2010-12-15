@@ -3,6 +3,7 @@ package org.flexpay.common.service;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
@@ -145,6 +146,7 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @param preferences User preferences
 	 * @return Security certificate
 	 */
+    @Nullable
 	Certificate getCertificate(UserPreferences preferences);
 
 	/**

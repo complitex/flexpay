@@ -1,5 +1,7 @@
 package org.flexpay.ab.util.config;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.config.UserPreferences;
 
 public class AbUserPreferences extends UserPreferences {
@@ -13,7 +15,6 @@ public class AbUserPreferences extends UserPreferences {
 	private Long apartmentFilter = 0L;
 
 	public AbUserPreferences() {
-
 	}
 
 	public Long getCountryFilter() {
@@ -72,4 +73,17 @@ public class AbUserPreferences extends UserPreferences {
 		this.apartmentFilter = apartmentFilter;
 	}
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                appendSuper(super.toString()).
+                append("countryFilter", countryFilter).
+                append("regionFilter", regionFilter).
+                append("townFilter", townFilter).
+                append("districtFilter", districtFilter).
+                append("streetFilter", streetFilter).
+                append("buildingFilter", buildingFilter).
+                append("apartmentFilter", apartmentFilter).
+                toString();
+    }
 }
