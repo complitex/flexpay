@@ -55,7 +55,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			preferences.setPageSize(getFilterValue("flexpayPreferedPagerSize", 20, ctx));
 		}
 
-		Attribute userCertificateAttribute = ctx.getAttributes().get("usercertificate");
+		Attribute userCertificateAttribute = ctx.getAttributes().get("userCertificate");
 		if (userCertificateAttribute != null && StringUtils.isNotEmpty(ctx.getStringAttribute("flexpayCertificateBeginDate"))) {
 			try {
 				Certificate certificate = new Certificate();
@@ -83,7 +83,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 				iterAttributes.close();
 			}
 		} catch (NamingException e) {
-			log.warn("Get attribute usercertificate", e);
+			log.warn("Get attribute userCertificate", e);
 		}
 
 		return preferences;
@@ -143,7 +143,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			setSingleAttribute(ctx, preferences, "flexpayCertificateEndDate", "");
 			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", "");
 			setSingleAttribute(ctx, preferences, "flexpayCertificateBlocked", "");
-			setSingleAttribute(ctx, preferences, "usercertificate", new byte[0]);
+			setSingleAttribute(ctx, preferences, "userCertificate", new byte[0]);
 			return;
 		}
 		if (inputStream == null) {
@@ -173,8 +173,8 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			setSingleAttribute(ctx, preferences, "flexpayCertificateDescription", preferences.getCertificate().getDescription());
 			setCertificateBlocked(ctx, preferences);
 
-			log.debug("Try set usercertificate: {}", certificateData);
-			setSingleAttribute(ctx, preferences, "usercertificate", certificateData);
+			log.debug("Try set userCertificate: {}", certificateData);
+			setSingleAttribute(ctx, preferences, "userCertificate", certificateData);
 		} catch (IOException e) {
 			log.error("Read line", e);
 		} finally {
