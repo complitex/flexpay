@@ -1,6 +1,5 @@
 package org.flexpay.admin.action.certificate;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.service.CertificateService;
@@ -21,7 +20,7 @@ public class CertificateEditAction extends FPActionSupport {
 	private Certificate certificate = new Certificate();
 	private File certificateFile;
 	private String certificateFileContentType;
-	private String certificateFileName;
+	private String certificateFileFileName;
 
 	private CertificateService certificateService;
 	private UserPreferencesService userPreferencesService;
@@ -47,12 +46,14 @@ public class CertificateEditAction extends FPActionSupport {
 				return INPUT;
 			}
 
-			log.debug("certificateFile={}, certificateFileName={}", certificateFile, certificateFileName);
+			log.debug("certificateFile={}, certificateFileFileName={}", certificateFile, certificateFileFileName);
 
-			if (certificateFile != null && isNotEmpty(certificateFileName) && preference.getCertificate() == null) {
-				certificateService.addCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
-			} else if (certificateFile != null && isNotEmpty(certificateFileName) && preference.getCertificate() != null) {
-				certificateService.replaceCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
+			if (certificateFile != null && isNotEmpty(certificateFileFileName)) {
+                if (preference.getCertificate() == null) {
+				    certificateService.addCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
+                } else {
+				    certificateService.replaceCertificate(alias, certificate.getDescription(), certificate.isBlocked(), new FileInputStream(certificateFile));
+                }
 			} else {
 				certificateService.editCertificate(alias, certificate.getDescription(), certificate.isBlocked());
 			}
@@ -70,7 +71,7 @@ public class CertificateEditAction extends FPActionSupport {
 
 	private boolean doValidate() {
 		
-		if (StringUtils.isNotEmpty(certificateFileName)) {
+		if (isNotEmpty(certificateFileFileName)) {
 			try {
 				CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 				certificateFactory.generateCertificate(new FileInputStream(certificateFile));
@@ -118,12 +119,12 @@ public class CertificateEditAction extends FPActionSupport {
 		this.certificateFileContentType = certificateFileContentType;
 	}
 
-	public String getCertificateFileName() {
-		return certificateFileName;
+	public String getCertificateFileFileName() {
+		return certificateFileFileName;
 	}
 
-	public void setCertificateFileName(String certificateFileName) {
-		this.certificateFileName = certificateFileName;
+	public void setCertificateFileFileName(String certificateFileFileName) {
+		this.certificateFileFileName = certificateFileFileName;
 	}
 
 	@Required

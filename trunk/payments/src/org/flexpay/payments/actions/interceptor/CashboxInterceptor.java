@@ -26,7 +26,7 @@ public class CashboxInterceptor extends AbstractInterceptor {
 			Object action = actionInvocation.getAction();
 			if (action instanceof CashboxAware) {
 				Long cashboxId = ((CashboxAware) action).getCashboxId();
-				if (cashboxId == null) {
+				if (cashboxId == null || cashboxId <= 0) {
 					log.info("No cashbox identifier information found. Access denied.");
 					return CASHBOX_AUTHENTICATION_REQUIRED;
 				}

@@ -45,6 +45,7 @@
         <include name="**/?*.dtd" />
         <include name="**/?*.tld" />
         <include name="**/?*.key" />
+        <include name="**/?*.pem" />
     </patternset>
 
     <property name="compiler.args.common" value="${compiler.args}" />

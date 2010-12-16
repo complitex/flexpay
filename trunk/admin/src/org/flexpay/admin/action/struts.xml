@@ -4,6 +4,23 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	
+    <package name="admin" namespace="/admin" extends="common">
+
+        <action name="main" class="menuPageAction">
+            <result type="tiles">admin.main</result>
+        </action>
+
+        <action name="mainUsers" class="menuPageAction">
+            <result type="tiles">admin.main.users</result>
+        </action>
+
+        <action name="mainUsersUsers" class="menuPageAction">
+            <result type="tiles">admin.main.users.users</result>
+        </action>
+
+    </package>
+
+    <include file="org/flexpay/admin/action/certificate/struts.xml" />
+    <include file="org/flexpay/admin/action/user/struts.xml" />
 
 </struts>

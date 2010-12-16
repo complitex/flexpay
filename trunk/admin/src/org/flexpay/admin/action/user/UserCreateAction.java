@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 public class UserCreateAction extends FPActionSupport {
 
 	private UserModel model = UserModel.getInstance();
@@ -41,6 +43,7 @@ public class UserCreateAction extends FPActionSupport {
 			}
 			try {
 				if (!createUserPreferences()) {
+                    log.warn("User preferences with name {} didn't create", model.getUserName());
 					addActionError("admin.error.user.did_not_create");
 					return REDIRECT_ERROR;
 				}
@@ -77,23 +80,23 @@ public class UserCreateAction extends FPActionSupport {
 	}
 
 	private boolean doValidate() {
-		if (StringUtils.isEmpty(model.getUserName())) {
+		if (isEmpty(model.getUserName())) {
 			log.error("User name is required parameter");
 			addActionError(getText("admin.error.user.user_name_empty"));
 		}
-		if (StringUtils.isEmpty(model.getFirstName())) {
+		if (isEmpty(model.getFirstName())) {
 			log.error("First name is required parameter");
 			addActionError(getText("admin.error.user.first_name_empty"));
 		}
-		if (StringUtils.isEmpty(model.getLastName())) {
+		if (isEmpty(model.getLastName())) {
 			log.error("Last name is required parameter");
 			addActionError(getText("admin.error.user.last_name_empty"));
 		}
-		if (StringUtils.isEmpty(model.getPassword())) {
+		if (isEmpty(model.getPassword())) {
 			log.error("Password is required parameter");
 			addActionError(getText("admin.error.user.password_empty"));
 		}
-		if (StringUtils.isEmpty(model.getReEnterPassword())) {
+		if (isEmpty(model.getReEnterPassword())) {
 			log.error("Reenter password is required parameter");
 			addActionError(getText("admin.error.user.reenter_password_empty"));
 		}

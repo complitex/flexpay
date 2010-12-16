@@ -35,7 +35,8 @@ public class GetRegistryListRequest extends Request<GetRegistryListResponse> {
                 addFieldToResponse(signature, "registryType", registryInfo.getRegistryType());
                 addFieldToResponse(signature, "recordsCount", registryInfo.getRecordsCount());
                 addFieldToResponse(signature, "totalSum", registryInfo.getTotalSum());
-                addFieldToResponse(signature, "registryComment", registryInfo.getRegistryComment());
+                String comment = registryInfo.getRegistryComment();
+                addFieldToResponse(signature, "registryComment", comment != null ? comment : "");
                 sResponse.append("</registryInfo>");
             }
         }
