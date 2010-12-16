@@ -5,13 +5,15 @@ import org.apache.commons.digester.Digester;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMReader;
 import org.flexpay.httptester.request.response.Response;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.util.*;
 
 public abstract class Request<R extends Response> {
@@ -104,27 +106,27 @@ public abstract class Request<R extends Response> {
     private String buildSignature() throws Exception {
 
         requestSignature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        requestSignature.initSign(loadPrivateKey(props.getProperty(getAliasPropertyName())));
+        requestSignature.initSign(loadPrivateKey());
 
         addParamsToSignature();
 
         return getStringFromBytes(requestSignature.sign());
     }
 
-    private PrivateKey loadPrivateKey(String alias) throws Exception {
+    private PrivateKey loadPrivateKey() throws Exception {
 
-        KeyStore keyStore = loadKeyStore();
+        BufferedReader br = new BufferedReader(new FileReader("key/" + props.getProperty(getPrivateKeyPropertyName())));
 
-        if (!keyStore.isKeyEntry(alias)) {
-            System.out.println("Entry is not a private key");
-        }
+        Security.addProvider(new BouncyCastleProvider());
+        KeyPair keyPair = (KeyPair) new PEMReader(br).readObject();
 
-        return (PrivateKey) keyStore.getKey(alias, props.getProperty(getPasswordPropertyName()).toCharArray());
+        return keyPair.getPrivate();
     }
 
-    private Certificate loadCertificate() throws Exception{
+    private Certificate loadCertificate() throws Exception {
 
-        KeyStore keyStore = loadKeyStore();
+        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        keyStore.load(getClass().getResourceAsStream("keystore/" + props.getProperty(getKeystorePropertyName())), props.getProperty(getPasswordPropertyName()).toCharArray());
 
         String certAlias = props.getProperty(getCertificateAliasPropertyName());
 
@@ -133,12 +135,6 @@ public abstract class Request<R extends Response> {
         }
 
         return keyStore.getCertificate(certAlias);
-    }
-
-    private KeyStore loadKeyStore() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        keyStore.load(getClass().getResourceAsStream("keystore/" + props.getProperty(getKeystorePropertyName())), props.getProperty(getPasswordPropertyName()).toCharArray());
-        return keyStore;
     }
 
     private String getStringFromBytes(byte[] bytes) {
@@ -175,6 +171,10 @@ public abstract class Request<R extends Response> {
 
     protected String getKeystorePropertyName() {
         return "keystore.file";
+    }
+
+    protected String getPrivateKeyPropertyName() {
+        return "private_key.file";
     }
 
     protected String getSignaturePropertyName() {

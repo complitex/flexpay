@@ -2,12 +2,13 @@ package org.flexpay.admin.action.user;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.service.UserPreferencesService;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class UsersListAction extends FPActionWithPagerSupport<UserPreferences> {
 

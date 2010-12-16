@@ -1,6 +1,9 @@
 package org.flexpay.admin.persistence;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public class UserModel {
 
@@ -69,16 +72,30 @@ public class UserModel {
 	}
 
 	public String getFullName() {
-		if (StringUtils.isEmpty(firstName)) {
+
+		if (isEmpty(firstName)) {
 			return lastName;
-		}
-		if (StringUtils.isEmpty(lastName)) {
+		} else if (isEmpty(lastName)) {
 			return firstName;
 		}
+
 		return firstName + " " + lastName;
 	}
 
 	public static UserModel getInstance() {
 		return new UserModel();
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("userName", userName).
+                append("firstName", firstName).
+                append("lastName", lastName).
+                append("password", password).
+                append("reEnterPassword", reEnterPassword).
+                append("oldPassword", oldPassword).
+                append("roleId", roleId).
+                toString();
+    }
 }

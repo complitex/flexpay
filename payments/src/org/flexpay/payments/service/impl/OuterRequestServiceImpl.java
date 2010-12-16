@@ -619,4 +619,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         this.personService = personService;
     }
 
+    @Required
+    public void setCashboxTradingDayService(TradingDay<Cashbox> cashboxTradingDayService) {
+        this.cashboxTradingDayService = cashboxTradingDayService;
+    }
 }

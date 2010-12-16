@@ -48,15 +48,22 @@ public class OuterRequestHandlerServlet extends HttpServlet {
         Locale locale = httpServletRequest.getLocale();
         httpServletResponse.setLocale(locale);
 
+        log.debug("Parsing outer request started");
+
         OuterRequest outerRequest = parseRequest(httpServletRequest);
         if (outerRequest == null) {
             log.error("Can't parse outer request!");
             return;
         }
+
+        log.debug("Parsing outer request finished");
+
         outerRequest.getRequest().setLocale(locale);
 		try {
-            log.info("outerRequest = {}", outerRequest);
+            log.debug("outerRequest = {}", outerRequest);
+            log.debug("Processing outer request started");
             processRequest(outerRequest, writer);
+            log.debug("Processing outer request finished");
 		} catch (Exception e) {
             log.error("Error", e);
             try {
