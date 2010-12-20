@@ -451,31 +451,35 @@
 			<istrue value="${run}" />
 			<then>
 				<echo message="${ldap.file}" />
-				<loadfile property="ldap.search.attribute" srcfile="${ldap.file}">
-					<filterchain>
-						<linecontainsregexp>
-							<regexp pattern='#[ \t]*attribute:.+$'/>
-						</linecontainsregexp>
-						<tokenfilter>
-							<replaceregex replace='' pattern='#[ \t]*attribute:[ \t]*'/>
-						</tokenfilter>
-						<striplinebreaks/>
-					</filterchain>
-				</loadfile>
-				<if>
-					<isset property="ldap.search.attribute" />
-					<then>
-						<var name="ldap.search" value="${ldap.search.attribute}" />
-						<antcall target="template.ldap.create-update-file"/>
-					</then>
-					<else>
-						<echo>target to template.run.ldapmodify</echo>
-						<var name="ldap.file.ldif" value="${ldap.file}" />
-						<antcall target="template.run.ldapmodify"/>
-					</else>
-				</if>
-				<antcall target="template.ldap.update-version"/>
+				<antcall target="template.ldap.run.file" />
+				<antcall target="template.ldap.update-version" />
 			</then>
+		</if>
+	</target>
+
+	<target name="template.ldap.run.file">
+		<loadfile property="ldap.search.attribute" srcfile="${ldap.file}">
+			<filterchain>
+				<linecontainsregexp>
+					<regexp pattern='#[ \t]*attribute:.+$'/>
+				</linecontainsregexp>
+				<tokenfilter>
+					<replaceregex replace='' pattern='#[ \t]*attribute:[ \t]*'/>
+				</tokenfilter>
+				<striplinebreaks/>
+			</filterchain>
+		</loadfile>
+		<if>
+			<isset property="ldap.search.attribute" />
+			<then>
+				<var name="ldap.search" value="${ldap.search.attribute}" />
+				<antcall target="template.ldap.create-update-file"/>
+			</then>
+			<else>
+				<echo>target to template.run.ldapmodify</echo>
+				<var name="ldap.file.ldif" value="${ldap.file}" />
+				<antcall target="template.run.ldapmodify"/>
+			</else>
 		</if>
 	</target>
 
