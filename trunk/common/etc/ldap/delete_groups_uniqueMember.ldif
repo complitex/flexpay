@@ -1,0 +1,3 @@
+# attribute: objectClass=flexpayGroup
+changetype: modify
+delete: uniqueMember
