@@ -1,5 +1,5 @@
 dn: cn=schema
-changetype:modify
+changetype: modify
 add: attributeTypes
 attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.1 NAME 'flexpayAbCountryFilter' DESC 'Preferred country filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
 attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.3 NAME 'flexpayAbTownFilter' DESC 'Preferred town filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
@@ -23,8 +23,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_COUNTRY_READ
 
 # AB_COUNTRY_CHANGE, groups, opensso.java.net
@@ -57,8 +55,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_REGION_READ
 
 # AB_REGION_CHANGE, groups, opensso.java.net
@@ -91,8 +87,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_TOWN_READ
 
 # AB_TOWN_CHANGE, groups, opensso.java.net
@@ -125,8 +119,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_TOWN_TYPE_READ
 
 # AB_TOWN_TYPE_CHANGE, groups, opensso.java.net
@@ -159,8 +151,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_DISTRICT_READ
 
 # AB_DISTRICT_CHANGE, groups, opensso.java.net
@@ -193,8 +183,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_STREET_READ
 
 # AB_STREET_CHANGE, groups, opensso.java.net
@@ -227,8 +215,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_STREET_TYPE_READ
 
 # AB_STREET_TYPE_CHANGE, groups, opensso.java.net
@@ -261,8 +247,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_BUILDING_ATTRIBUTE_TYPE_READ
 
 # AB_BUILDING_ATTRIBUTE_TYPE_CHANGE, groups, opensso.java.net
@@ -295,8 +279,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_BUILDING_READ
 
 # AB_BUILDING_CHANGE, groups, opensso.java.net
@@ -329,8 +311,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_APARTMENT_READ
 
 # AB_APARTMENT_CHANGE, groups, opensso.java.net
@@ -363,8 +343,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_IDENTITY_TYPE_READ
 
 # AB_IDENTITY_TYPE_CHANGE, groups, opensso.java.net
@@ -397,8 +375,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_IDENTITY_READ
 
 # AB_IDENTITY_CHANGE, groups, opensso.java.net
@@ -431,8 +407,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: AB_PERSON_READ
 
 # AB_PERSON_CHANGE, groups, opensso.java.net
