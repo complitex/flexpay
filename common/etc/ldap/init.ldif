@@ -32,8 +32,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: BASIC
 
 # COMMON_DEVELOPER, groups, opensso.java.net
@@ -50,8 +48,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
 cn: COMMON_PROCESS_READ
 
 # COMMON_PROCESS_DELETE, groups, opensso.java.net
