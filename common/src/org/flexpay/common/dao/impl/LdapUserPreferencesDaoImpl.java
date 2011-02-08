@@ -3,21 +3,17 @@ package org.flexpay.common.dao.impl;
 import com.iplanet.sso.SSOException;
 import com.iplanet.sso.SSOToken;
 import com.iplanet.sso.SSOTokenManager;
-import com.sun.identity.entitlement.ApplicationManager;
-import com.sun.identity.entitlement.PrivilegeManager;
 import com.sun.identity.policy.*;
 import com.sun.identity.policy.interfaces.Subject;
 import com.sun.identity.security.cert.AMCertStore;
 import com.sun.identity.security.cert.AMLDAPCertStoreParameters;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.actions.security.opensso.PolicyUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.dao.impl.ldap.DnBuilder;
 import org.flexpay.common.dao.impl.ldap.LdapConstants;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesDnBuilder;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
@@ -50,6 +46,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import static java.security.cert.CertificateFactory.getInstance;
+import static org.flexpay.common.actions.security.opensso.PolicyUtils.getToken;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Spring LDAP implementation of PersonDao. This implementation uses many Spring LDAP features, such as the {@link
@@ -59,9 +58,10 @@ import static java.security.cert.CertificateFactory.getInstance;
  * @author Ulrik Sandberg
  */
 public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
-	private static final String POLICY_SUBJECT = "AMIdentitySubject";
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+	private static final String POLICY_SUBJECT = "AMIdentitySubject";
 
 	private SimpleLdapTemplate ldapTemplate;
 	private AMLDAPCertStoreParameters ldapCertStoreParameters;
@@ -78,7 +78,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private String url;
 	private String base;
-	private List<String> policyNames;
+	private List<String> policyNames = list();
 
 	private final class PersonContextMapper extends AbstractParameterizedContextMapper<UserPreferences> {
 
@@ -86,7 +86,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		protected UserPreferences doMapFromContext(DirContextOperations ctx) {
 
 			UserPreferences person = userPreferencesFactory.newInstance();
-			person.setObjectClasses(CollectionUtils.set(ctx.getStringAttributes("objectclass")));
+			person.setObjectClasses(set(ctx.getStringAttributes("objectclass")));
 			person.attributes(attributeIds(ctx));
 			log.debug("\nCollected classes: {}\nAttributes: {}", person.getObjectClasses(), person.attributes());
 			if (mapper.supports(person)) {
@@ -99,7 +99,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		private Set<String> attributeIds(DirContextOperations ctx) {
 
 			try {
-				Set<String> result = CollectionUtils.set();
+				Set<String> result = set();
 				NamingEnumeration<String> enumeration = ctx.getAttributes().getIDs();
 				while (enumeration.hasMore()) {
 					result.add(enumeration.next());
@@ -109,7 +109,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				return result;
 			} catch (NamingException e) {
 				log.error("Failed getting attribute ids", e);
-				return CollectionUtils.set();
+				return set();
 			}
 		}
 	}
@@ -220,7 +220,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 					accessPermissionsBuilder.getNameFilter(person.getUserRole().getExternalId()).encode(), new AccessPermissionsContextMapper());
 			log.debug("Found permissions: {}", accessPermissions);
 		} else {
-			accessPermissions = CollectionUtils.list();
+			accessPermissions = list();
 			log.debug("Remove permissions");
 		}
 
@@ -233,7 +233,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	public boolean delete(@NotNull String userName) {
 		SSOToken ssoToken = null;
 		try {
-			ssoToken = PolicyUtils.getToken();
+			ssoToken = getToken();
 			log.debug("TokenId: {}", ssoToken.getTokenID());
 			PolicyManager pm = new PolicyManager(ssoToken);
 			
@@ -243,7 +243,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 					Set<String> subjectNames = policy.getSubjectNames();
 					for (String subjectName : subjectNames) {
 						Subject subject = policy.getSubject(subjectName);
-						Set<Object> deletedSubjectValues = CollectionUtils.set();
+						Set<Object> deletedSubjectValues = set();
 						for (Object val : subject.getValues()) {
 							if (StringUtils.equals(userName, getUserId((String)val))) {
 								deletedSubjectValues.add(val);
@@ -296,7 +296,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 			if (userNames.isEmpty()) {
 				log.debug("Empty user list in policy {}", policyNames);
-				return CollectionUtils.list();
+				return list();
 			}
 
 			log.debug("User names in policy {}: {}", policyNames, userNames);
@@ -309,7 +309,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		} catch (Exception e) {
 			log.error("Can`t create SSOToken", e);
 		}
-		return CollectionUtils.list();
+		return list();
 	}
 
 	@Override
@@ -453,7 +453,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				isUser = true;
 			}
 		}
-		return isUser? id: null;
+		return isUser ? id : null;
 	}
 
 	private AndFilter getUserFilter(List<String> userNames) {
@@ -473,11 +473,11 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private List<String> getUserNames() throws Exception {
 		SSOToken ssoToken = null;
 		try {
-			ssoToken = PolicyUtils.getToken();
+			ssoToken = getToken();
 			log.debug("TokenId: {}", ssoToken.getTokenID());
 			PolicyManager pm = new PolicyManager(ssoToken);
 			
-			List<String> userNames = CollectionUtils.list();
+			List<String> userNames = list();
 			for (String policyName : policyNames) {
 				try {
 					Policy policy = pm.getPolicy(policyName);
@@ -509,7 +509,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		SSOToken ssoToken = null;
 		String currentPolicyName = null;
 		try {
-			ssoToken = PolicyUtils.getToken();
+			ssoToken = getToken();
 			log.debug("TokenId: {}", ssoToken.getTokenID());
 			PolicyManager pm = new PolicyManager(ssoToken);
 			for (String policyName : policyNames) {
@@ -540,7 +540,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private void addUserToPolicy(UserPreferences person) throws Exception {
 		SSOToken ssoToken = null;
 		try {
-			ssoToken = PolicyUtils.getToken();
+			ssoToken = getToken();
 			log.debug("TokenId: {}", ssoToken.getTokenID());
 			PolicyManager pm = new PolicyManager(ssoToken);
 
@@ -550,7 +550,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				Set<String> subjectNames = policy.getSubjectNames();
 				Subject subject;
 				String existSubjectName = null;
-				if (subjectNames.size() > 0) {
+				if (!subjectNames.isEmpty()) {
 					existSubjectName = subjectNames.iterator().next();
 					subject = policy.getSubject(existSubjectName);
 				} else {
@@ -559,7 +559,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				log.debug("Exist subject name {}", existSubjectName);
 				Set<String> values = subject.getValues();
 				if (values == null) {
-					values = CollectionUtils.set();
+					values = set();
 				}
 				values.add("id=" + person.getUsername() + ",ou=user," + base);
 				log.debug("Subject values: {}", values);
@@ -609,7 +609,6 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	@Required
 	public void setPolicyNames(String policyNames) {
 		StringTokenizer stz = new StringTokenizer(policyNames, "|");
-		this.policyNames = CollectionUtils.list();
 		while(stz.hasMoreTokens()) {
 			String token = stz.nextToken().trim();
 			this.policyNames.add(token);
@@ -631,14 +630,17 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		this.userGroupBuilder = userGroupBuilder;
 	}
 
+    @Required
 	public void setAccessPermissionsBuilder(UserPreferencesDnBuilder accessPermissionsBuilder) {
 		this.accessPermissionsBuilder = accessPermissionsBuilder;
 	}
 
+    @Required
 	public void setPeopleBuilder(DnBuilder peopleBuilder) {
 		this.peopleBuilder = peopleBuilder;
 	}
 
+    @Required
 	public void setGroupsBuilder(DnBuilder groupsBuilder) {
 		this.groupsBuilder = groupsBuilder;
 	}

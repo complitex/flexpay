@@ -18,7 +18,7 @@ public class OuDnBuilder implements DnBuilder {
 	public Name buildDn(List<String> names) {
 		DistinguishedName dn = new DistinguishedName();
 		dn.append("ou", ouDistinguishedName);
-		if (names != null && names.size() > 0) {
+		if (names != null && !names.isEmpty()) {
 			dn.append("uid", names.get(0));
 		}
 		return dn;
@@ -26,7 +26,7 @@ public class OuDnBuilder implements DnBuilder {
 
 	@Override
 	public Filter getNameFilter(List<String> names) {
-		if (names != null && names.size() > 0) {
+		if (names != null && !names.isEmpty()) {
 			AndFilter resultFilter = new AndFilter();
 			OrFilter uidFilter = new OrFilter();
 			for (String name : names) {

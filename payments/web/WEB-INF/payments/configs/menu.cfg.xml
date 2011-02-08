@@ -396,4 +396,5 @@
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
         </property>
     </bean>
+
 </beans>

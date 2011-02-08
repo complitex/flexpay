@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -363,10 +364,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
         return namingStrategy;
     }
 
+    @Required
     public void setNamingStrategy(FinderNamingStrategy namingStrategy) {
         this.namingStrategy = namingStrategy;
     }
 
+    @Required
     public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
         this.hibernateTemplate = hibernateTemplate;
     }

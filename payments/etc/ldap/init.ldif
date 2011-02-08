@@ -16,6 +16,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # COMMON_PROCESS_READ, groups, opensso.java.net
 dn: cn=COMMON_PROCESS_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -23,6 +24,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_COUNTRY_READ, groups, opensso.java.net
 dn: cn=AB_COUNTRY_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -30,6 +32,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_REGION_READ, groups, opensso.java.net
 dn: cn=AB_REGION_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -37,6 +40,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_TOWN_READ, groups, opensso.java.net
 dn: cn=AB_TOWN_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -44,6 +48,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_TOWN_TYPE_READ, groups, opensso.java.net
 dn: cn=AB_TOWN_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -51,6 +56,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_DISTRICT_READ, groups, opensso.java.net
 dn: cn=AB_DISTRICT_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -58,6 +64,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_STREET_READ, groups, opensso.java.net
 dn: cn=AB_STREET_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -65,6 +72,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_STREET_TYPE_READ, groups, opensso.java.net
 dn: cn=AB_STREET_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -72,6 +80,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_BUILDING_ATTRIBUTE_TYPE_READ, groups, opensso.java.net
 dn: cn=AB_BUILDING_ATTRIBUTE_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -79,6 +88,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_BUILDING_READ, groups, opensso.java.net
 dn: cn=AB_BUILDING_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -86,6 +96,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_APARTMENT_READ, groups, opensso.java.net
 dn: cn=AB_APARTMENT_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -93,6 +104,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_IDENTITY_TYPE_READ, groups, opensso.java.net
 dn: cn=AB_IDENTITY_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -100,6 +112,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_IDENTITY_READ, groups, opensso.java.net
 dn: cn=AB_IDENTITY_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -107,6 +120,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # AB_PERSON_READ, groups, opensso.java.net
 dn: cn=AB_PERSON_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -114,6 +128,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_ORGANIZATION_READ, groups, opensso.java.net
 dn: cn=ORGS_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -121,6 +136,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_BANK_READ, groups, opensso.java.net
 dn: cn=ORGS_BANK_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -128,6 +144,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_SERVICE_ORGANIZATION_READ, groups, opensso.java.net
 dn: cn=ORGS_SERVICE_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -135,6 +152,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_SERVICE_PROVIDER_READ, groups, opensso.java.net
 dn: cn=ORGS_SERVICE_PROVIDER_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -142,6 +160,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_PAYMENT_COLLECTOR_READ, groups, opensso.java.net
 dn: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -149,6 +168,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_PAYMENT_POINT_READ, groups, opensso.java.net
 dn: cn=ORGS_PAYMENT_POINT_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -156,6 +176,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_CASHBOX_READ, groups, opensso.java.net
 dn: cn=ORGS_CASHBOX_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -163,6 +184,7 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 
 # ORGS_PAYMENT_COLLECTOR_CHANGE, groups, opensso.java.net
 dn: cn=ORGS_PAYMENT_COLLECTOR_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
@@ -220,6 +242,7 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: PAYMENTS_SERVICE_READ
 
 # PAYMENTS_SERVICE_CHANGE, groups, opensso.java.net
@@ -254,7 +277,113 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: PAYMENTS_SERVICE_TYPE_READ
+
+# PAYMENTS_OPERATION_ADD, groups, opensso.java.net
+dn: cn=PAYMENTS_OPERATION_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_OPERATION_ADD
+
+# PAYMENTS_OPERATION_CHANGE, groups, opensso.java.net
+dn: cn=PAYMENTS_OPERATION_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_OPERATION_CHANGE
+
+# PAYMENTS_OPERATION_READ, groups, opensso.java.net
+dn: cn=PAYMENTS_OPERATION_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_OPERATION_READ
+
+# PAYMENTS_OPERATION_DELETE, groups, opensso.java.net
+dn: cn=PAYMENTS_OPERATION_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: PAYMENTS_OPERATION_DELETE
+
+# PAYMENTS_DOCUMENT_TYPE_READ, groups, opensso.java.net
+dn: cn=PAYMENTS_DOCUMENT_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_DOCUMENT_TYPE_READ
+
+# PAYMENTS_DOCUMENT_READ, groups, opensso.java.net
+dn: cn=PAYMENTS_DOCUMENT_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_DOCUMENT_READ
+
+# PAYMENTS_DOCUMENT_CHANGE, groups, opensso.java.net
+dn: cn=PAYMENTS_DOCUMENT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_DOCUMENT_CHANGE
+
+# PAYMENTS_PAYMENTS_REPORT, groups, opensso.java.net
+dn: cn=PAYMENTS_PAYMENTS_REPORT,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_PAYMENTS_REPORT
+
+# PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION, groups, opensso.java.net
+dn: cn=PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION
+
+# PAYMENTS_TRADING_DAY_OPERATION_RETURN, groups, opensso.java.net
+dn: cn=PAYMENTS_TRADING_DAY_OPERATION_RETURN,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_TRADING_DAY_OPERATION_RETURN
 
 # PAYMENTS_SERVICE_TYPE_CHANGE, groups, opensso.java.net
 dn: cn=PAYMENTS_SERVICE_TYPE_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
@@ -280,75 +409,6 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 cn: PAYMENTS_SERVICE_TYPE_DELETE
 
-# PAYMENTS_OPERATION_ADD, groups, opensso.java.net
-dn: cn=PAYMENTS_OPERATION_ADD,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_OPERATION_ADD
-
-# PAYMENTS_OPERATION_CHANGE, groups, opensso.java.net
-dn: cn=PAYMENTS_OPERATION_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_OPERATION_CHANGE
-
-# PAYMENTS_OPERATION_READ, groups, opensso.java.net
-dn: cn=PAYMENTS_OPERATION_READ,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_OPERATION_READ
-
-# PAYMENTS_OPERATION_DELETE, groups, opensso.java.net
-dn: cn=PAYMENTS_OPERATION_DELETE,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-cn: PAYMENTS_OPERATION_DELETE
-
-# PAYMENTS_DOCUMENT_TYPE_READ, groups, opensso.java.net
-dn: cn=PAYMENTS_DOCUMENT_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_DOCUMENT_TYPE_READ
-
-# PAYMENTS_DOCUMENT_READ, groups, opensso.java.net
-dn: cn=PAYMENTS_DOCUMENT_READ,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_DOCUMENT_READ
-
-# PAYMENTS_DOCUMENT_CHANGE, groups, opensso.java.net
-dn: cn=PAYMENTS_DOCUMENT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_DOCUMENT_CHANGE
-
 # PAYMENTS_DEVELOPER, groups, opensso.java.net
 dn: cn=PAYMENTS_DEVELOPER,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
@@ -357,24 +417,9 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 cn: PAYMENTS_DEVELOPER
 
-# PAYMENTS_PAYMENTS_REPORT, groups, opensso.java.net
-dn: cn=PAYMENTS_PAYMENTS_REPORT,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: cashier
-cn: PAYMENTS_PAYMENTS_REPORT
-
-# PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION, groups, opensso.java.net
-dn: cn=PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-cn: PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION
+########################################################################################################################
+#------------------------------------------- MENU ROLES ---------------------------------------------------------------#
+########################################################################################################################
 
 # MENU_PAYMENTS, groups, opensso.java.net
 dn: cn=MENU_PAYMENTS,ou=groups,dc=opensso,dc=java,dc=net
@@ -382,6 +427,8 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS
 
 # MENU_PAYMENTS_ACCOUNTANT, groups, opensso.java.net
@@ -392,6 +439,7 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_ACCOUNTANT
 
 # MENU_PAYMENTS_ADDRESS, groups, opensso.java.net
@@ -400,6 +448,8 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_ADDRESS
 
 # MENU_PAYMENTS_ACCOUNT, groups, opensso.java.net
@@ -408,6 +458,8 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_ACCOUNT
 
 # MENU_PAYMENTS_QUITTANCE, groups, opensso.java.net
@@ -417,6 +469,7 @@ objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_QUITTANCE
 
 # MENU_PAYMENTS_DICTIONARIES, groups, opensso.java.net
@@ -445,6 +498,7 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: buhgalter
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_REPORTS
 
 # MENU_PAYMENTS_MONITOR, groups, opensso.java.net
@@ -463,6 +517,7 @@ objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_OPERATIONS
 
 # MENU_PAYMENTS_OPERATIONS_LIST, groups, opensso.java.net
@@ -472,6 +527,7 @@ objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_OPERATIONS_LIST
 
 # MENU_PAYMENTS_REPORTS_RECEIVED, groups, opensso.java.net
@@ -481,6 +537,7 @@ objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
 flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
 cn: MENU_PAYMENTS_REPORTS_RECEIVED
 
 # MENU_PAYMENTS_REPORTS_IMPORT, groups, opensso.java.net
@@ -498,6 +555,7 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
 cn: MENU_PAYMENTS_REPORTS_ACC_RECEIVED
 
 # MENU_PAYMENTS_REPORTS_ACC_RETURNED, groups, opensso.java.net

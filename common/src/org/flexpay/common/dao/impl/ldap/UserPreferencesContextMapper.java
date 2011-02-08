@@ -51,6 +51,7 @@ public interface UserPreferencesContextMapper {
 	 * @param ctx		 Context
 	 * @param preferences UserPreferences
 	 * @param inputStream certificate stream
+     * @param delete delete
 	 */
 	void doMapToContextCertificate(DirContextOperations ctx, UserPreferences preferences, InputStream inputStream, boolean delete);
 

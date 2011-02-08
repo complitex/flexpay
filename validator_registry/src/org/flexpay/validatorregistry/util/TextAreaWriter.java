@@ -26,6 +26,7 @@ public class TextAreaWriter extends OutputStream {
 	 * @throws java.io.IOException if an I/O error occurs. In particular, an <code>IOException</code> may be thrown if the output
 	 *                             stream has been closed.
 	 */
+    @Override
 	public void write(int b) throws IOException {
 
 		if (b == '\r') {

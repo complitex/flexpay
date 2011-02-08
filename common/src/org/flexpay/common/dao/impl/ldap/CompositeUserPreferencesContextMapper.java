@@ -1,18 +1,19 @@
 package org.flexpay.common.dao.impl.ldap;
 
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
 
 import java.io.InputStream;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 /**
  * Mapper that holds a set of mappers and delegates all the work to them
  */
 public class CompositeUserPreferencesContextMapper implements UserPreferencesContextMapper {
 
-	private List<UserPreferencesContextMapper> mappers = CollectionUtils.list();
+	private List<UserPreferencesContextMapper> mappers = list();
 
 	/**
 	 * Do mapping of context attributes to preferences properties

@@ -19,7 +19,10 @@ import org.springframework.beans.factory.annotation.Required;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.DateUtil.now;
 import static org.flexpay.common.util.SecurityUtil.getUserName;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 import static org.flexpay.payments.persistence.OperationStatus.REGISTERED;
+import static org.flexpay.payments.persistence.OperationStatus.RETURNED;
+import static org.flexpay.payments.service.Roles.TRADING_DAY_OPERATION_RETURN;
 
 public class OperationSetStatusAction extends OperatorAWPActionSupport {
 
@@ -45,6 +48,12 @@ public class OperationSetStatusAction extends OperatorAWPActionSupport {
 			log.warn("Incorrect status code {}", status);
 			return SUCCESS;
 		}
+
+        log.debug("Trying set status {} for operation with id {}", status, operation.getId());
+        if (status == RETURNED && !isAuthenticationGranted(TRADING_DAY_OPERATION_RETURN)) {
+            log.debug("User with login {} can't return payment. Hasn't privileges", getUserPreferences().getUsername());
+            return SUCCESS;
+        }
 
 		OperationStatus operationStatus = operationStatusService.read(status);
 		Stub<Operation> stub = stub(operation);

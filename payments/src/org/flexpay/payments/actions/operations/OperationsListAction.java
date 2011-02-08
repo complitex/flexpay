@@ -129,9 +129,15 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
         if (tradingDayControlPanel.isTradingDayOpened()) {
 
+            log.debug("Get trading day operations (id = {})", cashbox.getTradingDayProcessInstanceId());
+
             if (documentSearch != null && documentSearch) {
                 Date begin = beginDateFilter.getDate();
                 Date end = getEndOfThisDay(endDateFilter.getDate());
+                if (log.isDebugEnabled()) {
+                    log.debug("Search operations for cashboxId = {}, serviceTypeId = {}, beginTime = {}, endTime = {}", new Object[] {cashbox.getId(), serviceTypeFilter.getSelectedId(), formatWithTime(begin), formatWithTime(end)});
+                }
+
                 searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null, stub(this.cashbox), serviceTypeFilter.getSelectedId(), begin, end, minimalSum, maximalSum, getPager());
                 highlightedDocumentIds = list();
 

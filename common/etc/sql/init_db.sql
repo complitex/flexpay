@@ -177,18 +177,3 @@ insert into common_currency_infos_tbl(id, iso_code, gender) values (1, 'UAH', 1)
 select @currency_grivna:=1;
 insert into common_currency_names_tbl(language_id, currency_info_id, name, short_name, fraction_name, fraction_short_name)
 	values (@ru_id, @currency_grivna, 'Гривна', 'грн', 'Копейка', 'коп');
-
--- Init User Roles table
-INSERT INTO common_user_roles_tbl (id, status, external_id) values (1, 0, 'buhgalter');
-SELECT @buhgalter_id:=1;
-INSERT INTO common_user_roles_tbl (id, status, external_id) values (2, 0, 'cashier');
-SELECT @cashier_id:=2;
-
-INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
-	VALUES ('Бухгалтер', @buhgalter_id, @ru_id);
-INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
-	VALUES ('Кассир', @cashier_id, @ru_id);
-INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
-	VALUES ('Accountant', @buhgalter_id, @en_id);
-INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
-	VALUES ('Cashier', @cashier_id, @en_id);

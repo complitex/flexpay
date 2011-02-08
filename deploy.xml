@@ -20,11 +20,11 @@
 		<antcall target="ab.deploy.sjsas.nobuild" />
 	</target>
 
-	<target name="ab.deploy.sjsas.nobuild">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
-		</antcall>
-	</target>
+    <target name="ab.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${ab.war.name}" />
+        </antcall>
+    </target>
 
 	<target name="ab_sync.deploy.sjsas" depends="ab_sync.war">
 		<antcall target="ab_sync.deploy.sjsas.nobuild" />
@@ -76,12 +76,48 @@
 		</antcall>
 	</target>
 
-    <target name="deploy.sjsas">
-        <antcall target="template.deploy.sjsas">
-            <param name="application_archive" value="${distr.dir}/${war.name}" />
-        </antcall>
+<!--
+    <taskdef resource="cargo.tasks">
+        <classpath>
+            <fileset dir="${common.dir}/lib/cargo/">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${common.dir}/lib/cargo/glass">
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${common.dir}/lib/commons/" includes="commons-logging-1.1.1.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="template.deploy.sjsas">
+        <cargo containerid="glassfish3x" home="${sjsas.root}" output="cargoout.log" log="cargo.log" loglevel="debug" action="start">
+            <configuration type="standalone">
+                <property name="cargo.remote.username" value="${sjsas.username}" />
+                <property name="cargo.remote.password" value="${sjsas.password}" />
+                <property name="cargo.rmi.port" value="4848" />
+                <property name="cargo.glassfish.adminPort" value="4848" />
+                <property name="cargo.logging" value="high" />
+                <property name="cargo.hostname" value="${sjsas.host}" />
+                <deployable type="war" file="${application_archive}" />
+            </configuration>
+        </cargo>
+    </target>
+-->
+
+     <target name="template.deploy.sjsas">
+        <exec executable="${sjsas.root}/bin/asadmin.bat" failonerror="true">
+            <arg value="--user=${sjsas.username}"/>
+            <arg value="--passwordfile=${sjsas.password.file}"/>
+            <arg value="--host=${sjsas.host}"/>
+            <arg value="--port=${sjsas.adminPort}"/>
+            <arg value="--interactive=false"/>
+            <arg value="deploy"/>
+            <arg value="--force"/>
+            <arg value="${application_archive}"/>
+        </exec>
     </target>
 
+<!--
 	<taskdef name="sun-appserv-deploy"
 			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
 			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
@@ -95,6 +131,6 @@
 		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
 							file="${application_archive}" asinstalldir="${sjsas.root}" />
 	</target>
-
+-->
 
 </project>

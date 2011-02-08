@@ -44,6 +44,7 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 		return getHibernateTemplate().findByNamedQuery("Diff.findNewRecords", params);
 	}
 
+    @Override
 	public boolean hasDiffs(Long objectId, int objectType) {
 
 		if (log.isDebugEnabled()) {
