@@ -43,7 +43,9 @@
                 <input type="button" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register" />" />
                 <input type="button" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete" />" />
 --%>
+            <sec:authorize ifAllGranted="ROLE_PAYMENTS_TRADING_DAY_OPERATION_RETURN">
                 <input type="button" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return" />" />
+            </sec:authorize>
                 <input type="button" onclick="showDetails();" name="showDetails" class="btn-exit" value="<s:text name="payments.operations.list.with_detailed" />" />
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             </td>
@@ -134,7 +136,9 @@
                 <input type="button" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register" />" />
                 <input type="button" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete" />" />
 --%>
+            <sec:authorize ifAllGranted="ROLE_PAYMENTS_TRADING_DAY_OPERATION_RETURN">
                 <input type="button" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return" />" />
+            </sec:authorize>
                 <input type="button" onclick="showDetails();" name="showDetails" class="btn-exit" value="<s:text name="payments.operations.list.with_detailed" />" />
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             </td>

@@ -40,6 +40,7 @@ public abstract class Roles {
 
     public static final String TRADING_DAY_ADMIN_ACTION = PREFIX + "TRADING_DAY_ADMIN_ACTION";
     public static final String TRADING_DAY_ACCOUNTER_ACTION = PREFIX + "TRADING_DAY_ACCOUNTER_ACTION";
+    public static final String TRADING_DAY_OPERATION_RETURN = PREFIX + "TRADING_DAY_OPERATION_RETURN";
     public static final String PAYMENTS_DEVELOPER = PREFIX + "DEVELOPER";
 
 	// menu roles

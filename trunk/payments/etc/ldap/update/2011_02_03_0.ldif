@@ -1,0 +1,5 @@
+# attribute: flexpayUserRole=buhgalter
+changetype: modify
+add: memberof
+memberof: cn=MENU_PAYMENTS_REPORTS_ACC_RECEIVED,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=PAYMENTS_TRADING_DAY_OPERATION_RETURN,ou=groups,dc=opensso,dc=java,dc=net

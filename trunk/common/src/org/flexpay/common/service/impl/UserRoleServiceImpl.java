@@ -16,6 +16,7 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public class UserRoleServiceImpl implements UserRoleService {
+
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private UserRoleDao userRoleDao;

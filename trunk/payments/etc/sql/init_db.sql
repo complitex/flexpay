@@ -226,3 +226,24 @@ insert into orgs_organization_names_tbl (name, organization_id, language_id)
 	values ('МегаБАНК', @org_megabank, @ru_id);
 insert into orgs_organization_descriptions_tbl (name, organization_id, language_id)
 	values ('МегаБАНК банк', @org_megabank, @ru_id);
+
+-- Init User Roles table
+INSERT INTO common_user_roles_tbl (id, status, external_id) values (1, 0, 'buhgalter');
+SELECT @buhgalter_id:=1;
+INSERT INTO common_user_roles_tbl (id, status, external_id) values (2, 0, 'cashier');
+SELECT @cashier_id:=2;
+INSERT INTO common_user_roles_tbl (id, status, external_id) values (3, 0, 'seniorCashier');
+SELECT @senior_cashier_id:=3;
+
+INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
+	VALUES ('Бухгалтер', @buhgalter_id, @ru_id);
+INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
+	VALUES ('Accountant', @buhgalter_id, @en_id);
+INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
+	VALUES ('Кассир', @cashier_id, @ru_id);
+INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
+	VALUES ('Cashier', @cashier_id, @en_id);
+INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
+	VALUES ('Старший кассир', @senior_cashier_id, @ru_id);
+INSERT INTO common_user_role_name_translations_tbl (name, user_role_id, language_id)
+	VALUES ('Senior cashier', @senior_cashier_id, @en_id);

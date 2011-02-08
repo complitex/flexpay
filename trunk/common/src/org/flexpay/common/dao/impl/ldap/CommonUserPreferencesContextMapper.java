@@ -1,7 +1,6 @@
 package org.flexpay.common.dao.impl.ldap;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserRoleService;
@@ -24,6 +23,9 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+
 public class CommonUserPreferencesContextMapper implements UserPreferencesContextMapper {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -40,7 +42,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 
 		String externalUserRoleName = ctx.getStringAttribute("flexpayUserRole");
 
-		if (StringUtils.isNotEmpty(externalUserRoleName)) {
+		if (isNotEmpty(externalUserRoleName)) {
 			UserRole userRole = userRoleService.findByExternalId(externalUserRoleName);
 			if (userRole == null) {
 				log.warn("Can`t find user role by external name: {}", externalUserRoleName);
@@ -56,7 +58,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		}
 
 		Attribute userCertificateAttribute = ctx.getAttributes().get("userCertificate");
-		if (userCertificateAttribute != null && StringUtils.isNotEmpty(ctx.getStringAttribute("flexpayCertificateBeginDate"))) {
+		if (userCertificateAttribute != null && isNotEmpty(ctx.getStringAttribute("flexpayCertificateBeginDate"))) {
 			try {
 				Certificate certificate = new Certificate();
 				certificate.setBeginDate(DateUtil.parseDate(ctx.getStringAttribute("flexpayCertificateBeginDate")));
@@ -78,7 +80,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 				NamingEnumeration<? extends Attribute> iterAttributes = attributes.getAll();
 				while (iterAttributes.hasMore()) {
 					Attribute attribute = iterAttributes.next();
-					log.debug("attribute '{}' ({}, {})", new Object[]{attribute.getID(), attribute.get().getClass(), attribute.get()});
+					log.debug("attribute '{}' ({}, {})", new Object[] {attribute.getID(), attribute.get().getClass(), attribute.get()});
 				}
 				iterAttributes.close();
 			}
@@ -92,7 +94,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	private Integer getFilterValue(String attributeName, Integer defaultValue, DirContextOperations ctx) {
 		String filterValue = ctx.getStringAttribute(attributeName);
 		try {
-			return StringUtils.isNotBlank(filterValue) ? Integer.parseInt(filterValue) : defaultValue;
+			return isNotBlank(filterValue) ? Integer.parseInt(filterValue) : defaultValue;
 		} catch (NumberFormatException ex) {
 			log.warn("Unexpected int value: {}", filterValue);
 			return defaultValue;

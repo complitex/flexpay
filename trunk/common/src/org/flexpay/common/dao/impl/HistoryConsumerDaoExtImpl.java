@@ -19,6 +19,7 @@ public class HistoryConsumerDaoExtImpl extends HibernateDaoSupport implements Hi
 
 	@NotNull
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<Diff> findNewHistoryRecords(final Long consumerId, final FetchRange range) {
 
 		if (!range.wasInitialized()) {

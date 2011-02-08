@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.security.cert.Certificate;
 import java.util.List;
 
-
 /**
  * Data Access Object interface for the UserPreferences entity.
  */
 public interface UserPreferencesDao {
+
 	boolean createNewUser(UserPreferences preferences, String password);
 
 	void saveAllPreferences(UserPreferences preferences);
@@ -40,4 +40,5 @@ public interface UserPreferencesDao {
 	void deleteCertificate(UserPreferences preferences);
 
 	boolean isCertificateExist(UserPreferences preferences);
+
 }

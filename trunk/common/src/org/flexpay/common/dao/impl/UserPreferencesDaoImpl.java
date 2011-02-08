@@ -1,7 +1,6 @@
 package org.flexpay.common.dao.impl;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.KeyStoreUtil;
@@ -20,6 +19,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserPreferencesDao {
 
 	private static final Logger log = LoggerFactory.getLogger(UserPreferencesDaoImpl.class);
@@ -27,10 +28,10 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	@Override
 	public void saveAllPreferences(UserPreferences preferences) {
 
-		if (StringUtils.isEmpty(preferences.getFullName())) {
+		if (isEmpty(preferences.getFullName())) {
 			preferences.setFullName(preferences.getUsername());
 		}
-		if (StringUtils.isEmpty(preferences.getLastName())) {
+		if (isEmpty(preferences.getLastName())) {
 			preferences.setLastName(preferences.getUsername());
 		}
 
@@ -88,7 +89,7 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	@Override
 	public Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate) {
 		try {
-			X509Certificate certificate = (X509Certificate)addCertificateToKeyStore(preferences.getUsername(), inputStreamCertificate);
+			X509Certificate certificate = (X509Certificate) addCertificateToKeyStore(preferences.getUsername(), inputStreamCertificate);
 			if (certificate != null) {
 				if (isCertificateExist(preferences)) {
 					org.flexpay.common.persistence.Certificate userCertificate = preferences.getCertificate();
