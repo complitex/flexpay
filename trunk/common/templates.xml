@@ -174,7 +174,12 @@
 	</path>
 
 	<property name="ldap.file.search.result" value="${build.dir}/search_result.ldif"/>
-	<property name="ldap.file.result" value="${build.dir}/result.ldif"/>
+    <path id="ldap.file.result.ref">
+        <fileset dir="${build.dir}">
+            <include name="result.ldif" />
+        </fileset>
+    </path>
+    <property name="ldap.file.result" refid="ldap.file.result.ref"/>
 
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
@@ -236,7 +241,7 @@
 				 defaultexcludes="yes" author="true" version="true" use="true"
 				 classpathref="classpath">
 			<bottom>
-				<![CDATA[<i>Copyright &#169; 2008 FlexPay. All Rights Reserved.</i>]]></bottom>
+				<![CDATA[<i>Copyright &#169; 2011 FlexPay. All Rights Reserved.</i>]]></bottom>
 		</javadoc>
 		<copy todir="${build.dir}/docs">
 			<fileset refid="resources" />

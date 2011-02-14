@@ -1,0 +1,42 @@
+# MENU_PAYMENTS_ACC_OPERATIONS, groups, opensso.java.net
+dn: cn=MENU_PAYMENTS_ACC_OPERATIONS,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: MENU_PAYMENTS_ACC_OPERATIONS
+
+# MENU_PAYMENTS_ACC_OPERATIONS_2, groups, opensso.java.net
+dn: cn=MENU_PAYMENTS_ACC_OPERATIONS_2,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: MENU_PAYMENTS_ACC_OPERATIONS_2
+
+# MENU_PAYMENTS_ACC_OPERATIONS_3, groups, opensso.java.net
+dn: cn=MENU_PAYMENTS_ACC_OPERATIONS_3,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+cn: MENU_PAYMENTS_ACC_OPERATIONS_3
+
+# PAYMENTS_DOCUMENT_ADD, groups, opensso.java.net
+dn: cn=PAYMENTS_DOCUMENT_ADD,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: buhgalter
+flexpayGroupRole: cashier
+flexpayGroupRole: seniorCashier
+cn: PAYMENTS_DOCUMENT_ADD
+
+dn: dc=opensso,dc=java,dc=net
+changetype: modify
+replace: flexpayVersion
+flexpayVersion: 2011_02_08_1

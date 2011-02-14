@@ -63,8 +63,8 @@ memberof: cn=PAYMENTS_SERVICE_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_ACCOUNT,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_ADDRESS,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=MENU_PAYMENTS_QUITTANCE,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_OPERATIONS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_OPERATIONS_LIST,ou=groups,dc=opensso,dc=java,dc=net
-memberof: cn=MENU_PAYMENTS_QUITTANCE,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_REPORTS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_REPORTS_RECEIVED,ou=groups,dc=opensso,dc=java,dc=net

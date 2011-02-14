@@ -15,22 +15,32 @@
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
+        <action name="operationsListAccAjax" class="operationsListAccAction">
+            <result>/WEB-INF/jsp/payments/operations/operations_list.jsp</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
+        <action name="operationsListAccountant" class="operationsListAccPageAction">
+            <result type="tiles">payments.operations.listAcc</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
 	</package>
 
-	<package name="operations_operator" namespace="/payments" extends="payments_operator">
+    <package name="operations_operator" namespace="/payments" extends="payments_operator">
 
-		<action name="operationsListOperator" class="operationsListPageAction">
-			<result type="tiles">payments.operations.list</result>
+        <action name="operationsListOperator" class="operationsListPageAction">
+            <result type="tiles">payments.operations.list</result>
             <result name="redirectError" type="redirect-action">
                 <param name="actionName">error</param>
                 <param name="namespace">/common</param>
             </result>
-		</action>
+        </action>
 
-		<action name="createBlankOperation" class="createBlankOperationAction">
-			<result>/WEB-INF/jsp/payments/operations/blank_operation_response.jsp</result>
-		</action>
-		
-	</package>
+        <action name="createBlankOperation" class="createBlankOperationAction">
+            <result>/WEB-INF/jsp/payments/operations/blank_operation_response.jsp</result>
+        </action>
+
+    </package>
 
 </struts>

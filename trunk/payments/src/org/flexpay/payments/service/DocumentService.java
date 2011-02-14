@@ -1,5 +1,6 @@
 package org.flexpay.payments.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -67,13 +68,12 @@ public interface DocumentService {
 	 * Returns list of operation documents which suits search criterias
 	 *
 	 * @param operation	 owner operation
-	 * @param serviceTypeId documnent service type id
-	 * @param minimalSum   minimal document sum
-	 * @param maximalSum   maximal document sum
+     * @param filters filters stack
+     *
 	 * @return list of operation documents which suits search criterias
 	 */
 	@Secured (Roles.DOCUMENT_READ)
-	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum);
+	List<Document> searchDocuments(@NotNull Stub<Operation> operation, @NotNull ArrayStack filters);
 
 	/**
 	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period

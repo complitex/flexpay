@@ -33,6 +33,11 @@
 				<comment>Change</comment>
 			</column>
 		</property>
+        <property name="canReturn">
+            <column name="can_return" not-null="true" default="true">
+                <comment>Can this operation return or not</comment>
+            </column>
+        </property>
 		<property name="creatorUserName">
 			<column name="creator" not-null="false">
 				<comment>Creator username</comment>

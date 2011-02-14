@@ -38,6 +38,11 @@
 				<comment>The Date service is valid till</comment>
 			</column>
 		</property>
+        <property name="canReturn">
+            <column name="can_return" not-null="true" default="true">
+                <comment>Can this service operations return or not</comment>
+            </column>
+        </property>
 		<many-to-one name="serviceProvider" foreign-key="FK_payments_service_service_provider"
 					 class="org.flexpay.orgs.persistence.ServiceProvider">
 			<column name="provider_id" not-null="true">

@@ -69,7 +69,7 @@
 
     function selectPP(start) {
 
-        var isStart = start != undefined && start == true;
+        var isStart = start != undefined && start;
         var $pp = $(pp);
 
         if ($pp.length == 0 || $pp.val() <= 0) {

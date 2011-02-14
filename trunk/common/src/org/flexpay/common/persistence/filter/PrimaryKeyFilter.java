@@ -15,6 +15,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	private Long defaultId;
 	private boolean needAutoChange = true;
 	private boolean allowEmpty = true;
+    private boolean disabled = false;
 
 	public PrimaryKeyFilter() {
 	}
@@ -95,7 +96,15 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		this.allowEmpty = allowEmpty;
 	}
 
-	@Override
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("readOnly", isReadOnly()).

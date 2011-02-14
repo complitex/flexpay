@@ -245,17 +245,6 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: seniorCashier
 
-####################################################################################
-
-# PAYMENTS_TRADING_DAY_OPERATION_RETURN, groups, opensso.java.net
-dn: cn=PAYMENTS_TRADING_DAY_OPERATION_RETURN,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
-flexpayGroupRole: seniorCashier
-
 
 dn: dc=opensso,dc=java,dc=net
 changetype: modify

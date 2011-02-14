@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -18,14 +19,14 @@ import static org.flexpay.common.util.DateUtil.now;
 
 public class OperationsListPageAction extends OperatorAWPActionSupport {
 
-	private Cashbox cashbox = new Cashbox();
-	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private EndDateFilter endDateFilter = new EndDateFilter();
-	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
-	private EndTimeFilter endTimeFilter = new EndTimeFilter();
-	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
+    private Cashbox cashbox = new Cashbox();
+    private BeginDateFilter beginDateFilter = new BeginDateFilter();
+    private EndDateFilter endDateFilter = new EndDateFilter();
+    private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
+    private EndTimeFilter endTimeFilter = new EndTimeFilter();
+    private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
 
-	private ServiceTypeService serviceTypeService;
+    private ServiceTypeService serviceTypeService;
 
 	@NotNull
 	@Override

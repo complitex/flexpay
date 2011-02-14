@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
 	<!-- payments menu coniguration -->
 
@@ -262,15 +259,26 @@
         </property>
     </bean>
 
+    <bean name="payments.operations" parent="payments.acc"
+          p:name="payments.operations"
+          p:title="payments.menu2.operations"
+          p:namespace="/payments"
+          p:action="accountantAWPStaticPageAction"
+          p:parent-ref="payments.acc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACC_OPERATIONS" />
+        </property>
+    </bean>
+
 	<bean name="payments.payment_collector.monitor" parent="payments.acc"
-			 p:name="payments.menu2.payment_point.monitor"
-			 p:title="payments.menu2.payment_point.monitor"
-			 p:namespace="/payments"
-			 p:action="paymentPointsListMonitor"
-			 p:parent-ref="payments.acc">
-		   <property name="userRole">
-			   <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_MONITOR" />
-		   </property>
+          p:name="payments.menu2.payment_point.monitor"
+          p:title="payments.menu2.payment_point.monitor"
+          p:namespace="/payments"
+          p:action="paymentPointsListMonitor"
+          p:parent-ref="payments.acc">
+       <property name="userRole">
+           <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_MONITOR" />
+       </property>
 	</bean>
 
 	<!--level 3 -->
@@ -304,16 +312,28 @@
         </property>
     </bean>
 
+    <bean name="payments.operations.operations" parent="payments.operations"
+          p:name="payments.operations2"
+          p:title="payments.menu3.operations"
+          p:action="accountantAWPStaticPageAction"
+          p:parent-ref="payments.operations">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACC_OPERATIONS_2" />
+        </property>
+    </bean>
+
 	<!-- level 4 -->
-	<!--<bean name="payments.reports.reports.import" parent="payments.reports.reports"-->
-          <!--p:name="payments.reports2.import"-->
-          <!--p:title="payments.menu4.payments_import_report"-->
-          <!--p:action="importPaymentsReport"-->
-          <!--p:parent-ref="payments.reports.reports">-->
-        <!--<property name="userRole">-->
-            <!--<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_IMPORT" />-->
-        <!--</property>-->
-    <!--</bean>-->
+<!--
+	<bean name="payments.reports.reports.import" parent="payments.reports.reports"
+          p:name="payments.reports2.import"
+          p:title="payments.menu4.payments_import_report"
+          p:action="importPaymentsReport"
+          p:parent-ref="payments.reports.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_IMPORT" />
+        </property>
+    </bean>
+-->
 
 	<bean name="payments.reports.reports.acc.received" parent="payments.reports.reports"
           p:name="payments.reports2.acc.received"
@@ -394,6 +414,17 @@
           p:parent-ref="payments.registers.registers">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
+        </property>
+    </bean>
+
+    <bean name="payments.operations.operations.operations" parent="payments.operations.operations"
+          p:name="payments.operations3"
+          p:title="payments.menu4.operations_list"
+          p:namespace="/payments"
+          p:action="operationsListAccountant"
+          p:parent-ref="payments.operations.operations">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACC_OPERATIONS_3" />
         </property>
     </bean>
 

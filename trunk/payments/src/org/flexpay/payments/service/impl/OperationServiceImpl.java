@@ -1,5 +1,6 @@
 package org.flexpay.payments.service.impl;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -173,15 +174,13 @@ public class OperationServiceImpl implements OperationService {
 	}
 
     @Override
-	public List<Operation> searchDocuments(OperationSorter operationSorter, Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,
-										   Date end, BigDecimal minimalSum, BigDecimal maximalSum, Page<Operation> pager) {
-		return operationDaoExt.searchDocuments(operationSorter, cashbox, serviceTypeId, begin, end, minimalSum, maximalSum, pager);
-	}
+    public List<Operation> searchDocuments(OperationSorter operationSorter, @NotNull ArrayStack filters, Page<Operation> pager) {
+        return operationDaoExt.searchDocuments(operationSorter, filters, pager);
+    }
 
     @Override
-	public List<Operation> searchOperations(OperationSorter operationSorter, Long tradingDayProcessId, Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSum,
-											BigDecimal maximalSum, Page<Operation> pager) {
-		return operationDaoExt.searchOperations(operationSorter, tradingDayProcessId, cashbox, begin, end, minimalSum, maximalSum, pager);
+	public List<Operation> searchOperations(OperationSorter operationSorter,  @NotNull ArrayStack filters, Page<Operation> pager) {
+		return operationDaoExt.searchOperations(operationSorter, filters, pager);
 	}
 
 	/**

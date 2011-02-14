@@ -13,6 +13,10 @@ public class ServiceTypeFilter extends PrimaryKeyFilter<ServiceType> {
 		super(-1L);
 	}
 
+    public ServiceTypeFilter(Long selectedId) {
+        super(selectedId);
+    }
+
 	public List<ServiceType> getServiceTypes() {
 		return serviceTypes;
 	}

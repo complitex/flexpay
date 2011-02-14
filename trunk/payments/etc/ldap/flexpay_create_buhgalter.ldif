@@ -57,6 +57,7 @@ memberof: cn=ORGS_PAYMENT_COLLECTOR_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_SERVICE_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_SERVICE_PROVIDER_READ,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=PAYMENTS_DOCUMENT_ADD,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_DOCUMENT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_DOCUMENT_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_DOCUMENT_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
@@ -68,6 +69,7 @@ memberof: cn=PAYMENTS_SERVICE_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_SERVICE_TYPE_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_TRADING_DAY_ADMIN_ACTION,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_TRADING_DAY_ACCOUNTER_ACTION,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=PAYMENTS_TRADING_DAY_OPERATION_RETURN,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_ACCOUNTANT,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_CASHBOXES,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_DICTIONARIES,ou=groups,dc=opensso,dc=java,dc=net
@@ -77,3 +79,6 @@ memberof: cn=MENU_PAYMENTS_REGISTERS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_REPORTS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_REPORTS_ACC_RETURNED,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_REPORTS_IMPORT,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=MENU_PAYMENTS_ACC_OPERATIONS,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=MENU_PAYMENTS_ACC_OPERATIONS_2,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=MENU_PAYMENTS_ACC_OPERATIONS_3,ou=groups,dc=opensso,dc=java,dc=net
