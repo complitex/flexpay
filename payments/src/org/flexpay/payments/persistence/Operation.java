@@ -30,6 +30,7 @@ public class Operation extends DomainObject {
 	private BigDecimal operationSum;
 	private BigDecimal operationInputSum;
 	private BigDecimal change;
+    private Boolean canReturn = true;
 
 	private Date creationDate;
 	private String creatorUserName;
@@ -93,7 +94,15 @@ public class Operation extends DomainObject {
 		this.change = change;
 	}
 
-	public Date getCreationDate() {
+    public Boolean getCanReturn() {
+        return canReturn;
+    }
+
+    public void setCanReturn(Boolean canReturn) {
+        this.canReturn = canReturn;
+    }
+
+    public Date getCreationDate() {
 		return creationDate;
 	}
 
@@ -280,6 +289,7 @@ public class Operation extends DomainObject {
 				append("operationInputSum", operationInputSum).
 				append("operationSum", operationSum).
 				append("change", change).
+                append("canReturn", canReturn).
 				append("creationDate", creationDate).
 				append("creatorUserName", creatorUserName).
 				append("registerDate", registerDate).

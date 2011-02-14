@@ -5,16 +5,20 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.filters.MaximalSumFilter;
+import org.flexpay.payments.persistence.filters.MinimalSumFilter;
+import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
-import java.math.BigDecimal;
+
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.junit.Assert.*;
 
 public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
@@ -34,14 +38,16 @@ public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
 	public void testSearchDocuments() {
 
 		List<Document> result;
-		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION, 99L, new BigDecimal("10.00"), new BigDecimal("20.00") );
+		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION,
+                arrayStack(new ServiceTypeFilter(99L), new MinimalSumFilter("10.00"), new MaximalSumFilter("20.00")));
 		assertNotNull("Result should not be null", result);
 		assertTrue("Result must be be empty on test data", result.isEmpty());
 
 		BigDecimal criteriaSum = new BigDecimal("1235.00");
 		Long criteriaOperationId = 1L;
 		Long criteriaServiceTypeId = 1L;
-		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION, 1L, criteriaSum, criteriaSum);
+        result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION,
+                arrayStack(new ServiceTypeFilter(1L), new MinimalSumFilter("1235.00"), new MaximalSumFilter("1235.00")));
 		assertNotNull("Result should not be null", result);
 		assertTrue("Result must not be empty on test data", !result.isEmpty());
 

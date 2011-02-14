@@ -19,6 +19,7 @@ public class Service extends DomainObjectWithStatus {
     private String externalCode;
     private Date beginDate;
     private Date endDate;
+    private Boolean canReturn = true;
 
 	private ServiceProvider serviceProvider;
 	private ServiceType serviceType;
@@ -102,7 +103,15 @@ public class Service extends DomainObjectWithStatus {
 		this.endDate = endDate;
 	}
 
-	public void setDescription(ServiceDescription serviceDescription) {
+    public Boolean getCanReturn() {
+        return canReturn;
+    }
+
+    public void setCanReturn(Boolean canReturn) {
+        this.canReturn = canReturn;
+    }
+
+    public void setDescription(ServiceDescription serviceDescription) {
 		if (Collections.emptySet().equals(descriptions)) {
 			descriptions = new HashSet<ServiceDescription>();
 		}

@@ -12,12 +12,16 @@ import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentStatus;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.persistence.filters.CashboxTradingDayFilter;
+import org.flexpay.payments.persistence.filters.MaximalSumFilter;
+import org.flexpay.payments.persistence.filters.MinimalSumFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorterById;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
@@ -36,6 +40,7 @@ import java.util.List;
 
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 import static org.flexpay.common.util.DateUtil.now;
@@ -138,11 +143,14 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                     log.debug("Search operations for cashboxId = {}, serviceTypeId = {}, beginTime = {}, endTime = {}", new Object[] {cashbox.getId(), serviceTypeFilter.getSelectedId(), formatWithTime(begin), formatWithTime(end)});
                 }
 
-                searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null, stub(this.cashbox), serviceTypeFilter.getSelectedId(), begin, end, minimalSum, maximalSum, getPager());
+                searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null,
+                                        arrayStack(new CashboxFilter(cashbox), serviceTypeFilter, new BeginDateFilter(begin), new EndDateFilter(end),
+                                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)), getPager());
                 highlightedDocumentIds = list();
 
                 for (Operation operation : searchResults) {
-                    List<Document> docs = documentService.searchDocuments(stub(operation), serviceTypeFilter.getSelectedId(), minimalSum, maximalSum);
+                    List<Document> docs = documentService.searchDocuments(stub(operation), arrayStack(serviceTypeFilter,
+                                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)));
                     for (Document doc : docs) {
                         highlightedDocumentIds.add(doc.getId());
                     }
@@ -165,7 +173,8 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                     log.debug("Trading day process id = {}", tradingDayProcessId);
                 }
                 searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null,
-                        tradingDayProcessId, stub(this.cashbox), begin, end, minimalSum, maximalSum, getPager());
+                        arrayStack(new CashboxTradingDayFilter(tradingDayProcessId), new CashboxFilter(cashbox), new BeginDateFilter(begin), new EndDateFilter(end),
+                                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)), getPager());
             }
         } else if (cashbox.getTradingDayProcessInstanceId() != null) {
 
@@ -191,7 +200,9 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
 				log.debug("Get operations for beginDate {} and endDate {}", begin, end);
 
-				searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null, null, stub(this.cashbox), begin, end, minimalSum, maximalSum, getPager());
+				searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null,
+                        arrayStack(new CashboxFilter(cashbox), new BeginDateFilter(begin), new EndDateFilter(end),
+                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)), getPager());
 
 			}
         }

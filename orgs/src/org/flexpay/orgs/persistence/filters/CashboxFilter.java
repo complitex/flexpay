@@ -1,5 +1,6 @@
 package org.flexpay.orgs.persistence.filters;
 
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -13,6 +14,18 @@ public class CashboxFilter extends PrimaryKeyFilter<Cashbox> {
 	public CashboxFilter() {
 		super(-1L);
 	}
+
+    public CashboxFilter(Long selectedId) {
+        super(selectedId);
+    }
+
+    public CashboxFilter(Stub<Cashbox> stub) {
+        super(stub.getId());
+    }
+
+    public CashboxFilter(Cashbox cashbox) {
+        super(cashbox.getId());
+    }
 
 	public List<Cashbox> getCashboxes() {
 		return cashboxes;

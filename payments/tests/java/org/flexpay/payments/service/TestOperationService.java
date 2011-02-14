@@ -3,19 +3,26 @@ package org.flexpay.payments.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.orgs.persistence.TestData;
+import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.persistence.filters.MaximalSumFilter;
+import org.flexpay.payments.persistence.filters.MinimalSumFilter;
+import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.junit.Assert.*;
 
 public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 
@@ -137,14 +144,13 @@ public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 
 		Date beginDate = dateFormat.parse("2009-04-10 00:00:00");
 		Date endDate = dateFormat.parse("2009-04-20 23:59:59");
-		List<Operation> result = operationService.searchDocuments(null, TestData.CASHBOX_1, 99L, beginDate, endDate,
-								new BigDecimal("10.00"), new BigDecimal("20.00"), new Page<Operation>(10));
+		List<Operation> result = operationService.searchDocuments(null, arrayStack(new CashboxFilter(TestData.CASHBOX_1), new ServiceTypeFilter(99L),
+                new BeginDateFilter(beginDate), new EndDateFilter(endDate), new MinimalSumFilter("10.00"), new MaximalSumFilter("20.00")), new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
 		assertTrue("Result must be be empty on test data", result.isEmpty());
 
-		BigDecimal criteriaSum = new BigDecimal("1235.00");
-		result = operationService.searchDocuments(null, TestData.CASHBOX_1, 1L, beginDate, endDate,
-								criteriaSum, criteriaSum, new Page<Operation>(10));
+		result = operationService.searchDocuments(null, arrayStack(new CashboxFilter(TestData.CASHBOX_1), new ServiceTypeFilter(1L),
+                new BeginDateFilter(beginDate), new EndDateFilter(endDate), new MinimalSumFilter("1235.00"), new MaximalSumFilter("1235.00")), new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
 		assertTrue("Result must not be empty on test data", !result.isEmpty());
 	}
@@ -155,14 +161,13 @@ public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 
 		Date beginDate = dateFormat.parse("2009-04-10 00:00:00");
 		Date endDate = dateFormat.parse("2009-04-20 23:59:59");
-		List<Operation> result = operationService.searchOperations(null, null, TestData.CASHBOX_1, beginDate, endDate,
-								new BigDecimal("10.00"), new BigDecimal("20.00"), new Page<Operation>(10));
+		List<Operation> result = operationService.searchOperations(null, arrayStack(new CashboxFilter(TestData.CASHBOX_1),
+                new BeginDateFilter(beginDate), new EndDateFilter(endDate), new MinimalSumFilter("10.00"), new MaximalSumFilter("20.00")), new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
 		assertTrue("Result must be be empty on test data", result.isEmpty());
 
-		BigDecimal criteriaSum = new BigDecimal("1395.00");
-		result = operationService.searchOperations(null, null, TestData.CASHBOX_1, beginDate, endDate,
-								criteriaSum, criteriaSum, new Page<Operation>(10));
+		result = operationService.searchOperations(null, arrayStack(new CashboxFilter(TestData.CASHBOX_1),
+                    new BeginDateFilter(beginDate), new EndDateFilter(endDate), new MinimalSumFilter("1395.00"), new MaximalSumFilter("1395.00")), new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
 		assertTrue("Result must not be empty on test data", !result.isEmpty());
 	}

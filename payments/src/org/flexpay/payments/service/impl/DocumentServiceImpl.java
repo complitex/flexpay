@@ -1,5 +1,6 @@
 package org.flexpay.payments.service.impl;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -91,12 +92,9 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.readFullCollection(documentIds, true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
     @Override
-	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSum, BigDecimal maximalSum) {
-		return documentDaoExt.searchDocuments(operation, serviceTypeId, minimalSum, maximalSum);
+	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, @NotNull ArrayStack filters) {
+		return documentDaoExt.searchDocuments(operation, filters);
 	}
 
 	/**

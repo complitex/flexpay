@@ -67,7 +67,7 @@ public class OperationsListMonitorPageAction extends OperatorAWPActionSupport {
 		endDateFilter.setDate(now());
 
 		serviceTypeService.initFilter(serviceTypeFilter);
-		serviceTypeFilter.setReadOnly(true);
+		serviceTypeFilter.setDisabled(true);
 	}
 
 	@NotNull

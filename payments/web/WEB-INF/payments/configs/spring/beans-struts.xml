@@ -90,6 +90,26 @@
 		  scope="prototype" />
 
 	<!-- operation-related actions -->
+    <bean id="operationsListAccPageAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.operations.OperationsListAccPageAction"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:crumbNameKey="payments.crumbs.operations_list"
+          scope="prototype" />
+
+    <bean id="operationsListAccAction"
+          parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.operations.OperationsListAccAction"
+          p:documentService-ref="documentService"
+          p:operationService-ref="operationService"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:currencyInfoService-ref="currencyInfoService"
+          scope="prototype" >
+    </bean>
+
     <bean id="operationsListPageAction"
 		  parent="operatorAWPAction"
           class="org.flexpay.payments.actions.operations.OperationsListPageAction"

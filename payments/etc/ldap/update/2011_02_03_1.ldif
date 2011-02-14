@@ -1,6 +1,7 @@
 # attribute: flexpayUserRole=cashier
 changetype: modify
 add: memberof
+memberof: cn=PAYMENTS_DOCUMENT_ADD,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_ADDRESS,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=MENU_PAYMENTS_ACCOUNT,ou=groups,dc=opensso,dc=java,dc=net
