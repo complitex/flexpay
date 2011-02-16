@@ -114,9 +114,11 @@ public class OperationsListAccAction extends AccountantAWPWithPagerActionSupport
         beginDateFilter.setDate(beginTimeFilter.setTime(beginDateFilter.getDate()));
         endDateFilter.setDate(endTimeFilter.setTime(endDateFilter.getDate()));
 
-        log.debug("beginDateFilter = {}, endDateFilter = {}", beginDateFilter, endDateFilter);
-        log.debug("minimaSumFilter = {}, maximalSumFilter = {}", minimalSumFilter, maximalSumFilter);
-        log.debug("paymentPointId = {}, cashboxId = {}, serviceTypeId = {}", new Object[] {paymentPointFilter.getSelectedId(), cashboxFilter.getSelectedId(), serviceTypeFilter.getSelectedId()});
+        if (log.isDebugEnabled()) {
+            log.debug("beginDateFilter = {}, endDateFilter = {}", beginDateFilter, endDateFilter);
+            log.debug("minimaSumFilter = {}, maximalSumFilter = {}", minimalSumFilter, maximalSumFilter);
+            log.debug("paymentPointId = {}, cashboxId = {}, serviceTypeId = {}", new Object[] {paymentPointFilter.getSelectedId(), cashboxFilter.getSelectedId(), serviceTypeFilter.getSelectedId()});
+        }
 
         List<Operation> searchResults;
 

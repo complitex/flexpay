@@ -48,6 +48,11 @@
 				<comment>Debtor key</comment>
 			</column>
 		</property>
+        <property name="canReturn">
+            <column name="can_return" not-null="true" default="true">
+                <comment>Can this document service return or not</comment>
+            </column>
+        </property>
 		<property name="firstName">
 			<column name="first_name" not-null="false">
 				<comment>Prividers consumer first name</comment>

@@ -26,6 +26,7 @@ public class Document extends DomainObject {
 
 	private Organization debtorOrganization;
 	private String debtorId;
+    private Boolean canReturn = true;
 
 	private RegistryRecord registryRecord;
 
@@ -146,6 +147,14 @@ public class Document extends DomainObject {
 	public void setDebtorId(String debtorId) {
 		this.debtorId = debtorId;
 	}
+
+    public Boolean getCanReturn() {
+        return canReturn;
+    }
+
+    public void setCanReturn(Boolean canReturn) {
+        this.canReturn = canReturn;
+    }
 
 	public String getAddress() {
 		return address;
@@ -318,6 +327,7 @@ public class Document extends DomainObject {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", id).
 				append("sum", sum).
+                append("canReturn", canReturn).
 				append("registryRecord", registryRecord).
 				append("documentType", documentType).
 				append("documentStatus", documentStatus).

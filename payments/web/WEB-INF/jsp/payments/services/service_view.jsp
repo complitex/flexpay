@@ -24,6 +24,12 @@
         <td colspan="4" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr class="cols_1">
+        <td class="col_1s" colspan="2"><s:text name="payments.service.can_return" />:</td>
+        <td class="col" colspan="2">
+            <s:if test="service.canReturn"><s:text name="common.yes" /></s:if><s:else><s:text name="common.no" /></s:else>
+        </td>
+    </tr>
+    <tr class="cols_1">
         <td class="col_1s" colspan="2"><s:text name="eirc.service.external_code" />:</td>
         <td class="col" colspan="2">
             <s:property value="service.externalCode" />

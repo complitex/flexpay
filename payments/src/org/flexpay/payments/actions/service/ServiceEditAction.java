@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
@@ -9,8 +8,6 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Service;
@@ -62,39 +59,75 @@ public class ServiceEditAction extends FPActionSupport {
             return REDIRECT_ERROR;
         }
 
-        if (service.isNotNew()) {
-            Stub<Service> stub = stub(service);
-            service = spService.readFull(stub);
-
-            if (service == null) {
-                log.warn("Can't get service with id {} from DB", stub.getId());
-                addActionError(getText("payments.error.service.cant_get_service"));
-                return REDIRECT_ERROR;
-            } else if (service.isNotActive()) {
-                log.warn("Service with id {} is disabled", stub.getId());
-                addActionError(getText("payments.error.service.cant_get_service"));
-                return REDIRECT_ERROR;
-            }
-
-        }
-
-        correctNames();
-        initFilters();
-
-        if (isSubmit()) {
-            if (!doValidate()) {
-                return INPUT;
-            }
-            updateService();
-
-            addActionMessage(getText("payments.service.saved"));
-
+        Service oldService = service.isNew() ? service : spService.readFull(stub(service));
+        if (oldService == null) {
+            addActionError(getText("common.object_not_selected"));
             return REDIRECT_SUCCESS;
         }
 
-		initData();
+        if (isNotSubmit()) {
+            if (service.isNotNew()) {
+                Stub<Service> stub = stub(service);
+                service = spService.readFull(stub);
 
-		return INPUT;
+                if (service == null) {
+                    log.warn("Can't get service with id {} from DB", stub.getId());
+                    addActionError(getText("payments.error.service.cant_get_service"));
+                    return REDIRECT_ERROR;
+                } else if (service.isNotActive()) {
+                    log.warn("Service with id {} is disabled", stub.getId());
+                    addActionError(getText("payments.error.service.cant_get_service"));
+                    return REDIRECT_ERROR;
+                }
+
+            }
+
+            service = oldService;
+
+            correctNames();
+            initFilters();
+            initData();
+
+            return INPUT;
+        }
+
+        if (!doValidate()) {
+            return INPUT;
+        }
+
+        for (Map.Entry<Long, String> name : names.entrySet()) {
+            String value = name.getValue();
+            Language lang = getLang(name.getKey());
+            oldService.setDescription(new ServiceDescription(value, lang));
+        }
+
+        if (parentServiceFilter.needFilter()) {
+            oldService.setParentService(spService.readFull(parentServiceFilter.getSelectedStub()));
+        } else {
+            oldService.setParentService(null);
+        }
+        oldService.setCanReturn(service.getCanReturn());
+        oldService.setExternalCode(service.getExternalCode());
+        oldService.setBeginDate(beginDateFilter.getDate());
+        oldService.setEndDate(endDateFilter.getDate());
+        oldService.setServiceProvider(providerService.read(serviceProviderFilter.getSelectedStub()));
+        oldService.setServiceType(serviceTypeService.read(serviceTypeFilter.getSelectedStub()));
+        MeasureUnit unit = measureUnitFilter.needFilter() ?
+                           measureUnitService.readFull(measureUnitFilter.getSelectedStub()) : null;
+        oldService.setMeasureUnit(unit);
+
+        if (oldService.isNew()) {
+            spService.create(oldService);
+        } else {
+            spService.update(oldService);
+        }
+
+        log.debug("service = {}", oldService);
+
+        addActionMessage(getText("payments.service.saved"));
+
+        return REDIRECT_SUCCESS;
+
 	}
 
     private boolean doValidate() {
@@ -143,45 +176,11 @@ public class ServiceEditAction extends FPActionSupport {
             endDateFilter = new EndDateFilter();
         }
 
-        serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
+        providerService.initServiceProvidersFilter(serviceProviderFilter);
         serviceProviderFilter.setNeedAutoChange(false);
-        serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
-        parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
-        measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);
-    }
-
-    /**
-     * Creates new service if it is a new one
-	 * (haven't been yet persisted) or updates persistent one
-	 *
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer if some errors
-     */
-    private void updateService() throws FlexPayExceptionContainer {
-
-        for (Map.Entry<Long, String> name : names.entrySet()) {
-            String value = name.getValue();
-            Language lang = getLang(name.getKey());
-            service.setDescription(new ServiceDescription(value, lang));
-        }
-
-        if (parentServiceFilter.needFilter()) {
-            service.setParentService(spService.readFull(parentServiceFilter.getSelectedStub()));
-        } else {
-            service.setParentService(null);
-        }
-        service.setBeginDate(beginDateFilter.getDate());
-        service.setEndDate(endDateFilter.getDate());
-        service.setServiceProvider(providerService.read(serviceProviderFilter.getSelectedStub()));
-        service.setServiceType(serviceTypeService.read(serviceTypeFilter.getSelectedStub()));
-        MeasureUnit unit = measureUnitFilter.needFilter() ?
-                           measureUnitService.readFull(measureUnitFilter.getSelectedStub()) : null;
-        service.setMeasureUnit(unit);
-
-        if (service.isNew()) {
-            spService.create(service);
-        } else {
-            spService.update(service);
-        }
+        serviceTypeService.initFilter(serviceTypeFilter);
+        spService.initParentServicesFilter(parentServiceFilter);
+        measureUnitService.initFilter(measureUnitFilter);
     }
 
 	/**

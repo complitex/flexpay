@@ -19,6 +19,10 @@
             </td>
         </tr>        
         <tr valign="top" class="cols_1">
+			<td class="col"><s:text name="payments.service.can_return" />:</td>
+			<td class="col"><s:checkbox name="service.canReturn" /></td>
+		</tr>
+        <tr valign="top" class="cols_1">
 			<td class="col"><s:text name="eirc.service_provider" />*:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%></td>
 		</tr>

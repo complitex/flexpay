@@ -1,6 +1,5 @@
 package org.flexpay.payments.actions.operations;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
@@ -56,8 +55,8 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
-	private BigDecimal minimalSum;
-	private BigDecimal maximalSum;
+    private MinimalSumFilter minimalSumFilter = new MinimalSumFilter();
+    private MaximalSumFilter maximalSumFilter = new MaximalSumFilter();
 	private Boolean documentSearch = false;
     private OperationSorterById operationSorterById = new OperationSorterById();
 
@@ -121,14 +120,21 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 			addActionError(getText("payments.error.operations.list.begin_date_must_be_before_end_date"));
 		}
 
-		if (minimalSum != null && maximalSum != null && minimalSum.compareTo(maximalSum) > 0) {
-			addActionError(getText("payments.error.operations.list.minimal_sum_must_be_not_greater_than_maximal"));
-		}
+        if (minimalSumFilter != null && maximalSumFilter != null && minimalSumFilter.getBdValue() != null && maximalSumFilter.getBdValue() != null
+                && minimalSumFilter.getBdValue().compareTo(maximalSumFilter.getBdValue()) > 0) {
+            addActionError(getText("payments.error.operations.list.minimal_sum_must_be_not_greater_than_maximal"));
+            log.debug("Incorrect minimalSum or maximalSum filter value (minS = {}, maxS = {})", minimalSumFilter.getBdValue(), maximalSumFilter.getBdValue());
+        }
 
 		return !hasActionErrors();
 	}
 
 	private void loadOperations() {
+
+        if (log.isDebugEnabled()) {
+            log.debug("minimaSumFilter = {}, maximalSumFilter = {}", minimalSumFilter, maximalSumFilter);
+            log.debug("cashboxId = {}, serviceTypeId = {}", cashbox.getId(), serviceTypeFilter.getSelectedId());
+        }
 
 		List<Operation> searchResults = list();
 
@@ -137,20 +143,19 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
             log.debug("Get trading day operations (id = {})", cashbox.getTradingDayProcessInstanceId());
 
             if (documentSearch != null && documentSearch) {
-                Date begin = beginDateFilter.getDate();
                 Date end = getEndOfThisDay(endDateFilter.getDate());
+
                 if (log.isDebugEnabled()) {
-                    log.debug("Search operations for cashboxId = {}, serviceTypeId = {}, beginTime = {}, endTime = {}", new Object[] {cashbox.getId(), serviceTypeFilter.getSelectedId(), formatWithTime(begin), formatWithTime(end)});
+                    log.debug("beginDateFilter = {}, endDateFilter = {}", formatWithTime(beginDateFilter.getDate()), formatWithTime(end));
                 }
 
                 searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null,
-                                        arrayStack(new CashboxFilter(cashbox), serviceTypeFilter, new BeginDateFilter(begin), new EndDateFilter(end),
-                                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)), getPager());
+                                        arrayStack(new CashboxFilter(cashbox), serviceTypeFilter, beginDateFilter, new EndDateFilter(end),
+                                                minimalSumFilter, maximalSumFilter), getPager());
                 highlightedDocumentIds = list();
 
                 for (Operation operation : searchResults) {
-                    List<Document> docs = documentService.searchDocuments(stub(operation), arrayStack(serviceTypeFilter,
-                                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)));
+                    List<Document> docs = documentService.searchDocuments(stub(operation), arrayStack(serviceTypeFilter, minimalSumFilter, maximalSumFilter));
                     for (Document doc : docs) {
                         highlightedDocumentIds.add(doc.getId());
                     }
@@ -174,7 +179,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                 }
                 searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null,
                         arrayStack(new CashboxTradingDayFilter(tradingDayProcessId), new CashboxFilter(cashbox), new BeginDateFilter(begin), new EndDateFilter(end),
-                                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)), getPager());
+                                                minimalSumFilter, maximalSumFilter), getPager());
             }
         } else if (cashbox.getTradingDayProcessInstanceId() != null) {
 
@@ -201,8 +206,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 				log.debug("Get operations for beginDate {} and endDate {}", begin, end);
 
 				searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null,
-                        arrayStack(new CashboxFilter(cashbox), new BeginDateFilter(begin), new EndDateFilter(end),
-                                new MinimalSumFilter(minimalSum), new MaximalSumFilter(maximalSum)), getPager());
+                        arrayStack(new CashboxFilter(cashbox), new BeginDateFilter(begin), new EndDateFilter(end), minimalSumFilter, maximalSumFilter), getPager());
 
 			}
         }
@@ -309,29 +313,13 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 		return operations;
 	}
 
-	public void setMinimalSum(String minimalSum) {
-		if (StringUtils.isEmpty(minimalSum)) {
-			return;
-		}
-		try {
-			this.minimalSum = new BigDecimal(minimalSum);
-		} catch (NumberFormatException e) {
-			log.warn("Minimal sum is not set because of bad string parameter value");
-			this.minimalSum = null;
-		}
-	}
+    public void setMinimalSumFilter(MinimalSumFilter minimalSumFilter) {
+        this.minimalSumFilter = minimalSumFilter;
+    }
 
-	public void setMaximalSum(String maximalSum) {
-		if (StringUtils.isEmpty(maximalSum)) {
-			return;
-		}
-		try {
-			this.maximalSum = new BigDecimal(maximalSum);
-		} catch (NumberFormatException e) {
-			log.warn("Maximal sum is not set because of bad string parameter value");
-			this.maximalSum = null;
-		}
-	}
+    public void setMaximalSumFilter(MaximalSumFilter maximalSumFilter) {
+        this.maximalSumFilter = maximalSumFilter;
+    }
 
     public OperationSorterById getOperationSorterById() {
         return operationSorterById;

@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -66,7 +65,7 @@ public class OperationsListPageAction extends OperatorAWPActionSupport {
 		endDateFilter.setDate(now());
 
 		serviceTypeService.initFilter(serviceTypeFilter);
-		serviceTypeFilter.setReadOnly(true);
+        serviceTypeFilter.setDisabled(true);
 	}
 
 	@NotNull

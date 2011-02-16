@@ -9,8 +9,6 @@ public abstract class Roles {
 
     public static final String BASIC = PREFIX + "BASIC";
 
-    public static final String DEVELOPER = PREFIX + "DEVELOPER";
-
     public static final String DOCUMENT_READ = PREFIX + "DOCUMENT_READ";
     public static final String DOCUMENT_CHANGE = PREFIX + "DOCUMENT_CHANGE";
     public static final String DOCUMENT_ADD = PREFIX + "DOCUMENT_ADD";

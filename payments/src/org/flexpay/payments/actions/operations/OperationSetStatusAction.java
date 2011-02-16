@@ -50,8 +50,12 @@ public class OperationSetStatusAction extends OperatorAWPActionSupport {
 		}
 
         log.debug("Trying set status {} for operation with id {}", status, operation.getId());
-        if (status == RETURNED && !isAuthenticationGranted(TRADING_DAY_OPERATION_RETURN)) {
-            log.debug("User with login {} can't return payment. Hasn't privileges", getUserPreferences().getUsername());
+        if (status == RETURNED) {
+            if (!isAuthenticationGranted(TRADING_DAY_OPERATION_RETURN)) {
+                log.debug("User with login {} can't return payment. Hasn't privileges", getUserPreferences().getUsername());
+            } else if (!operation.getCanReturn()) {
+                log.debug("Operation with id {} can't return, because some services not returnable", operation.getId());
+            }
             return SUCCESS;
         }
 

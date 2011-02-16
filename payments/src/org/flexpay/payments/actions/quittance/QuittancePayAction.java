@@ -1,17 +1,16 @@
 package org.flexpay.payments.actions.quittance;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.process.export.TradingDaySchedulingJob;
 import org.flexpay.payments.service.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+
+import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 
 public class QuittancePayAction extends PaymentOperationAction {
 
@@ -58,12 +57,10 @@ public class QuittancePayAction extends PaymentOperationAction {
 			return REDIRECT_SUCCESS;
 		}
 
+        log.debug("Fill new pay operation {}", operation);
+
 		if (isNotEmptyOperation(operation)) {
-			if (operation.isNew()) {
-				operationService.create(operation);
-			} else {
-				operationService.update(operation);
-			}
+            operationService.update(operation);
 		} else {
 			log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
 		}
@@ -83,7 +80,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	private boolean isNotEmptyOperation(Operation operation) {
-		return !BigDecimalUtil.isZero(operation.getOperationSum()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
+		return isNotZero(operation.getOperationSum()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
 	}
 
 	private boolean validateOperation(Operation operation) {
