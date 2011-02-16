@@ -2,9 +2,7 @@
 <%@include file="/WEB-INF/jsp/common/includes/jquery_timeentry.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_bbq.jsp"%>
 <%@include file="/WEB-INF/jsp/payments/includes/stylesheet.jsp"%>
-
-<%-- filters are temporary hidden! --%>
-<%--<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">--%>
+<%@include file="/WEB-INF/jsp/payments/includes/flexpay_operations.jsp"%>
 
 <s:hidden name="documentSearch" />
 
@@ -37,7 +35,6 @@
         </td>
     </tr>
 </table>
-<%--</sec:authorize>--%>
 
 <span id="result"></span>
 
@@ -61,8 +58,8 @@
                 "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").val(),
                 "operationSorterById.active": $("#operationSorterByIdActive").val(),
                 "operationSorterById.order": $("#operationSorterByIdOrder").val(),
-                minimalSum:$("input[name=minimalSum]").val(),
-                maximalSum:$("input[name=maximalSum]").val(),
+                "minimalSumFilter.value":$("input[name=minimalSum]").val(),
+                "maximalSumFilter.value":$("input[name=maximalSum]").val(),
                 documentSearch:$("input[name=documentSearch]").val(),
             }
         });
@@ -84,82 +81,6 @@
             format:"pdf"
         };
         window.open($.param.querystring("<s:url action="paymentOperationReportAction" includeParams="none" />", params), "_blank");
-    }
-
-    function showButtons(state) {
-
-        var reg = $(".btn-register");
-        var ret = $(".btn-return");
-        var del = $(".btn-delete");
-
-        switch (state) {
-            case 1:
-                buttons({disable:false,button:reg}, {button:ret}, {disable:false,button:del});
-                break;
-            case 2:
-                buttons({button:reg}, {disable:false,button:ret}, {button:del});
-                break;
-            case 4:
-                buttons({button:reg}, {button:ret}, {disable:false,button:del});
-                break;
-            case 5:
-                buttons({button:reg}, {button:ret}, {disable:false,button:del});
-                break;
-            default:
-                buttons({button:reg}, {button:ret}, {button:del});
-                break;
-        }
-    }
-
-    function buttons() {
-        for (var i = 0; i < arguments.length; i++) {
-
-            var but = but || {};
-            but = $.extend({
-                disable: true
-            }, arguments[i]);
-
-            if (but.disable) {
-                but.button.attr("disabled", true).removeClass("btn-exit").addClass("btn-search");
-            } else {
-                but.button.removeAttr("disabled").removeClass("btn-search").addClass("btn-exit");
-            }
-        }
-    }
-
-    function showDetails() {
-
-        $("tr.document_row").toggle();
-        //$("tr.operation_footer_row").toggle();
-
-        var par = $("td.th.service_column:hidden").length == 0;
-
-        if (par) {
-            $("tr.brief_operation_header_row").removeClass("brief_operation_header_row").addClass("full_operation_header_row");
-            $("td.service_column").hide();
-            $("td.service_provider_column").hide();
-            $("input[name=showDetails]").each(function() {
-                this.value = "<s:text name="payments.operations.list.with_detailed" />";
-            });
-        } else {
-            $("tr.full_operation_header_row").removeClass("full_operation_header_row").addClass("brief_operation_header_row");
-            $("td.service_column").show();
-            $("td.service_provider_column").show();
-            $("input[name=showDetails]").each(function() {
-                this.value = "<s:text name="payments.operations.list.without_detailed" />";
-            });
-        }
-
-        documentSearch(par);
-    }
-
-    function documentSearch(par) {
-        if (par) {
-            $("#serviceTypeFilter").removeAttr("disabled");
-        } else {
-            $("#serviceTypeFilter").attr("disabled", true);
-        }
-        $("#documentSearch").val(par);
     }
 
 </script>

@@ -38,7 +38,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="14">
+            <td colspan="15">
 <%--
                 <input type="button" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register" />" />
                 <input type="button" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete" />" />
@@ -46,7 +46,7 @@
             <sec:authorize ifAllGranted="ROLE_PAYMENTS_TRADING_DAY_OPERATION_RETURN">
                 <input type="button" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return" />" />
             </sec:authorize>
-                <input type="button" onclick="showDetails();" name="showDetails" class="btn-exit" value="<s:text name="payments.operations.list.with_detailed" />" />
+                <input type="button" onclick="FPO.showDetails();" name="showDetails" class="btn-exit" value="<s:text name="payments.operations.list.with_detailed" />" />
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             </td>
         </tr>
@@ -62,6 +62,7 @@
             <td class="th"><s:text name="payments.operations.list.sum" /></td>
             <td class="th"><s:text name="payments.operations.list.pay_sum" /></td>
             <td class="th"><s:text name="payments.operations.list.change" /></td>
+            <td class="th"><s:text name="payments.operations.list.returnable" /></td>
             <td class="th service_column" style="display:none;"><s:text name="payments.operations.list.service" /></td>
             <td class="th service_provider_column" style="display:none;"><s:text name="payments.operations.list.provider" /></td>
             <td class="th">&nbsp;</td>
@@ -72,7 +73,8 @@
                     <s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
                 <td class="col_oper">
-                    <input type="radio" name="operation.id" onclick="showButtons(<s:property value="operationStatus.code" />);" value="<s:property value="id" />" />
+                    <input type="radio" name="operation.id"
+            <s:if test="canReturn">onclick="FPO.showButtons(<s:property value="operationStatus.code" />);" value="<s:property value="id" />"</s:if><s:else>disabled="disabled"</s:else> />
                 </td>
                 <td align="right"><s:property value="#opStatus.index + pager.thisPageFirstElementNumber + 1" /></td>
                 <td><s:property value="id" /></td>
@@ -82,6 +84,7 @@
                 <td><s:property value="operationSum" /></td>
                 <td><s:property value="operationInputSum" /></td>
                 <td><s:property value="change" /></td>
+                <td><s:if test="canReturn"><s:text name="common.yes" /></s:if><s:else><s:text name="common.no" /></s:else></td>
                 <td class="service_column" style="display:none;">&nbsp;</td>
                 <td class="service_provider_column" style="display:none;">&nbsp;</td>
                 <td>
@@ -104,6 +107,7 @@
                         <td><s:property value="sum" /></td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
+                        <td><s:if test="canReturn"><s:text name="common.yes" /></s:if><s:else><s:text name="common.no" /></s:else></td>
                         <td class="service_column" style="display:none;"><s:property value="service.serviceType.name" /></td>
                         <td class="service_provider_column" style="display:none;" colspan="2"><s:property value="service.serviceProvider.name" /></td>
                     </tr>
@@ -131,7 +135,7 @@
 --%>
         </s:iterator>
         <tr>
-            <td colspan="14">
+            <td colspan="15">
 <%--
                 <input type="button" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register" />" />
                 <input type="button" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete" />" />
@@ -139,7 +143,7 @@
             <sec:authorize ifAllGranted="ROLE_PAYMENTS_TRADING_DAY_OPERATION_RETURN">
                 <input type="button" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return" />" />
             </sec:authorize>
-                <input type="button" onclick="showDetails();" name="showDetails" class="btn-exit" value="<s:text name="payments.operations.list.with_detailed" />" />
+                <input type="button" onclick="FPO.showDetails();" name="showDetails" class="btn-exit" value="<s:text name="payments.operations.list.with_detailed" />" />
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             </td>
         </tr>
@@ -151,12 +155,12 @@
 
     $(function() {
         if ($("#documentSearch").val() == "true") {
-            showDetails();
-            documentSearch(true);
+            FPO.showDetails();
+            FPO.documentSearch(true);
         } else {
-            documentSearch(false);
+            FPO.documentSearch(false);
         }
-        showButtons();
+        FPO.showButtons();
     });
 
 </script>

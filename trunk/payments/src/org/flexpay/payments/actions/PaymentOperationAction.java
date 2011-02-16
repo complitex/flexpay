@@ -1,13 +1,9 @@
 package org.flexpay.payments.actions;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.BigDecimalUtil;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -22,9 +18,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang.StringUtils.*;
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.BigDecimalUtil.isZero;
+import static org.flexpay.common.util.CollectionUtils.*;
+import static org.flexpay.common.util.SecurityUtil.getUserName;
 import static org.flexpay.payments.actions.quittance.SearchQuittanceAction.ServiceFullIndexUtil.getServiceIdFromIndex;
 
 public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
@@ -83,8 +81,8 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		operation.setPaymentPoint(cashbox.getPaymentPoint());
 		operation.setCashbox(cashbox);
 		operation.setRegisterOrganization(organization);
-		operation.setCreatorUserName(SecurityUtil.getUserName());
-		operation.setRegisterUserName(SecurityUtil.getUserName());
+		operation.setCreatorUserName(getUserName());
+		operation.setRegisterUserName(getUserName());
 		operation.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
@@ -92,28 +90,34 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
 		for (String serviceIndex : payments.keySet()) {
 
-			Document document = buildDocument(serviceIndex, cashbox);
+            if (isZero(payments.get(serviceIndex))) {
+                continue;
+            }
 
-			if (StringUtils.isEmpty(operation.getAddress())) {
-				operation.setAddress(document.getAddress());
-				operation.setPayerFIO(StringUtils.stripToEmpty(document.getPayerFIO()));
-			}
+            Document document = buildDocument(operation, serviceIndex, cashbox);
 
-			if (!BigDecimalUtil.isZero(document.getSum())) {
-				operation.addDocument(document);
-			}
+            if (isEmpty(operation.getAddress())) {
+                operation.setAddress(document.getAddress());
+                operation.setPayerFIO(stripToEmpty(document.getPayerFIO()));
+            }
+
+            operation.addDocument(document);
 		}
 	}
 
-	private Document buildDocument(String serviceFullIndex, Cashbox cashbox) throws FlexPayException {
+	private Document buildDocument(Operation operation, String serviceFullIndex, Cashbox cashbox) throws FlexPayException {
 		
 		BigDecimal documentSum = payments.get(serviceFullIndex);
 		String serviceId = getServiceIdFromIndex(serviceFullIndex);
 		Service service = spService.readFull(new Stub<Service>(Long.parseLong(serviceId)));
-		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
+		ServiceProvider serviceProvider = serviceProviderService.read(stub(service.getServiceProvider()));
 		Organization serviceProviderOrganization = serviceProvider.getOrganization();
 
 		String serviceProviderAccount = serviceProviderAccounts.get(serviceFullIndex);
+
+        if (operation.getCanReturn()) {
+            operation.setCanReturn(service.getCanReturn());
+        }
 
 		Document document = new Document();
 		document.setService(service);
@@ -122,17 +126,18 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		document.setSum(documentSum);
 		document.setDebt(debts.get(serviceFullIndex));
 		document.setAddress(addresses.get(serviceFullIndex));
-		document.setPayerFIO(StringUtils.stripToEmpty(payerFios.get(serviceFullIndex)));
+		document.setPayerFIO(stripToEmpty(payerFios.get(serviceFullIndex)));
 		document.setDebtorOrganization(cashbox.getPaymentPoint().getCollector().getOrganization());
 		document.setDebtorId(eircAccounts.get(serviceFullIndex));
 		document.setCreditorOrganization(serviceProviderOrganization);
 		document.setCreditorId(serviceProviderAccount);
+        document.setCanReturn(service.getCanReturn());
 
 		DocumentAddition ercAccountAddition = new DocumentAddition();
 		ercAccountAddition.setAdditionType(documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT));
 		ercAccountAddition.setDocument(document);
 		ercAccountAddition.setStringValue(ercAccounts.get(serviceFullIndex));
-		document.setAdditions(CollectionUtils.set(ercAccountAddition));
+		document.setAdditions(set(ercAccountAddition));
 
 		if (apartmentId != null) {
 			setPayerAddress(document);
@@ -170,7 +175,7 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		String[] pieces = payerFios.get(serviceFullIndex).split(" ");
 		List<String> tokens = list();
 		for (String p : pieces) {
-			if (StringUtils.isNotBlank(p)) {
+			if (isNotBlank(p)) {
 				tokens.add(p);
 			}
 		}

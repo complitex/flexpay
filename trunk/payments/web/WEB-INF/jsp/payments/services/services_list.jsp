@@ -3,7 +3,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td colspan="10">
+        <td colspan="11">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
                    onclick="window.location='<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="0" /></s:url>';"
@@ -22,6 +22,7 @@
         <td class="th"><s:text name="eirc.service.external_code" /></td>
         <td class="th"><s:text name="eirc.service.begin_date" /></td>
         <td class="th"><s:text name="eirc.service.end_date" /></td>
+        <td class="th"><s:text name="payments.service.can_return" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="services" status="status">
@@ -44,13 +45,14 @@
             <td class="col"><s:property value="externalCode" /></td>
             <td class="col"><s:date name="beginDate" format="yyyy/MM/dd" /></td>
             <td class="col"><s:date name="endDate" format="yyyy/MM/dd" /></td>
+            <td class="col"><s:if test="canReturn"><s:text name="common.yes" /></s:if><s:else><s:text name="common.no" /></s:else></td>
             <td class="col">
                 <a href="<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
     <tr>
-        <td colspan="10">
+        <td colspan="11">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
                    onclick="window.location='<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="0" /></s:url>';"

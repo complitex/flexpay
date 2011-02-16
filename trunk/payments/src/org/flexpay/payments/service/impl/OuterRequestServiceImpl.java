@@ -48,6 +48,7 @@ import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 import static org.flexpay.common.util.TranslationUtil.getTranslation;
 
 public class OuterRequestServiceImpl implements OuterRequestService {
@@ -360,6 +361,10 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
         Security.authenticateOuterRequest(request.getLogin());
 
+        if (!isAuthenticationGranted(Roles.TRADING_DAY_OPERATION_RETURN)) {
+            throw new FlexPayException("User has no rights for reverse payment");
+        }
+
         ReversalPayResponse response = request.getResponse();
 
         OperationStatus operationStatus = operationStatusService.read(OperationStatus.RETURNED);
@@ -368,6 +373,9 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.warn("Can't get operation with id {} from DB", request.getOperationId());
             response.setStatus(Status.INCORRECT_OPERATION_ID);
             return response;
+        }
+        if (!operation.getCanReturn()) {
+            throw new FlexPayException("Operation with id " + operation.getId() + " can't return, because has documents for unreturnable services");
         }
 
         if (!request.getTotalPaySum().equals(operation.getOperationSum())) {

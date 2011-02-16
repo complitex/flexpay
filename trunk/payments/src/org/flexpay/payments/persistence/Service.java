@@ -1,6 +1,7 @@
 package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
@@ -228,4 +229,16 @@ public class Service extends DomainObjectWithStatus {
 
 		return null;
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).
+                append("id", id).
+                append("status", status).
+                append("externalCode", externalCode).
+                append("beginDate", beginDate).
+                append("endDate", endDate).
+                append("canReturn", canReturn).
+                toString();
+    }
 }
