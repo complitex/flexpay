@@ -113,6 +113,7 @@ public class OuterRequestHandlerServlet extends HttpServlet {
                 } catch (FlexPayException e) {
                     log.error("Pay can't be reverse", e);
                     writer.write(request.buildResponse(Status.REVERSE_IS_NOT_POSSIBLE));
+                    return;
                 }
             } else if (request instanceof RegistryCommentRequest) {
                 log.debug("Processing registry comment request: {}", request);
@@ -137,9 +138,9 @@ public class OuterRequestHandlerServlet extends HttpServlet {
             } catch (FlexPayException e1) {
                 log.error("Error building response", e1);
             }
+        } finally {
+            log.info("Building response finish");
         }
-
-        log.info("Building response finish");
 
     }
 

@@ -12,7 +12,7 @@
         <tr>
             <td colspan="2">
                 <s:set name="readonly" value="%{region.id > 0}" />
-                <%@include file="../filters/groups/country_ajax.jsp"%>
+                <%@include file="/WEB-INF/jsp/ab/filters/groups/country_ajax.jsp"%>
             </td>
         </tr>
         <tr valign="middle" class="cols_1">

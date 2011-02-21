@@ -24,7 +24,7 @@
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
         <td class="<s:if test="apartmentSorter.activated">th_s</s:if><s:else>th</s:else>" width="58%">
-            <%@include file="../sorters/apartment_sorter_header.jsp"%>
+            <%@include file="/WEB-INF/jsp/ab/sorters/apartment_sorter_header.jsp"%>
         </td>
         <td class="th" width="40%">&nbsp;</td>
     </tr>
