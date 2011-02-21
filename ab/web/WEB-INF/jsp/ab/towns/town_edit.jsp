@@ -12,7 +12,7 @@
 		<tr>
 			<td colspan="2">
                 <s:set name="readonly" value="%{town.id > 0}" />
-				<%@include file="../filters/groups/country_region_ajax.jsp"%>
+				<%@include file="/WEB-INF/jsp/ab/filters/groups/country_region_ajax.jsp"%>
 			</td>
 		</tr>
         <tr valign="middle" class="cols_1">
@@ -26,7 +26,7 @@
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="ab.town_type" />:</td>
 			<td class="col">
-				<%@include file="../filters/town_type_filter.jsp"%>
+				<%@include file="/WEB-INF/jsp/ab/filters/town_type_filter.jsp"%>
 			</td>
 		</tr>
 		<tr valign="top" class="cols_1">

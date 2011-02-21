@@ -19,7 +19,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="<s:if test="countrySorter.activated">th_s</s:if><s:else>th</s:else>">
-            <%@include file="../sorters/country_sorter_header.jsp"%>
+            <%@include file="/WEB-INF/jsp/ab/sorters/country_sorter_header.jsp"%>
         </td>
         <td class="th"><s:text name="ab.country.short_name" /></td>
         <td class="th">&nbsp;</td>

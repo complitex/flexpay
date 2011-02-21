@@ -24,10 +24,10 @@
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
         <td class="<s:if test="streetSorterByName.activated">th_s</s:if><s:else>th</s:else>" width="31%" nowrap>
-            <%@include file="../sorters/street_sort_by_name_header.jsp"%>
+            <%@include file="/WEB-INF/jsp/ab/sorters/street_sort_by_name_header.jsp"%>
         </td>
         <td class="<s:if test="streetSorterByType.activated">th_s</s:if><s:else>th</s:else>" width="32%" nowrap>
-            <%@include file="../sorters/street_sort_by_type_header.jsp"%>
+            <%@include file="/WEB-INF/jsp/ab/sorters/street_sort_by_type_header.jsp"%>
         <td class="th" width="35%">&nbsp;</td>
     </tr>
     <s:iterator value="streets" status="status">

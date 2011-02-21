@@ -8,7 +8,7 @@
 
 	<s:hidden name="building.id" />
 
-	<%@include file="../filters/groups/country_region_town_district_street_ajax.jsp"%>
+	<%@include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_ajax.jsp"%>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<s:iterator value="attributesMap">

@@ -12,7 +12,7 @@
 		<tr>
 			<td colspan="2">
                 <s:set name="readonly" value="%{apartment.id > 0}" />
-				<%@include file="../filters/groups/country_region_town_street_building_ajax.jsp"%>
+				<%@include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp"%>
 			</td>
 		</tr>
 		<tr>
