@@ -113,6 +113,10 @@
 		</property>
 	</bean>
 
+	<bean id="certificateService"
+		  class="org.flexpay.common.service.impl.CertificateServiceImpl"
+		  p:userPreferencesService-ref="userPreferencesService" />
+
 	<bean id="passwordEncoder" 
 		class="org.springframework.security.providers.ldap.authenticator.LdapShaPasswordEncoder" />
 

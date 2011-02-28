@@ -14,6 +14,7 @@ import org.flexpay.common.dao.impl.ldap.DnBuilder;
 import org.flexpay.common.dao.impl.ldap.LdapConstants;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesDnBuilder;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
@@ -111,6 +112,27 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				log.error("Failed getting attribute ids", e);
 				return set();
 			}
+		}
+	}
+
+	private final class GrantedAuthoritiesContextMapper extends AbstractParameterizedContextMapper<List<String>> {
+
+		@Override
+		protected List<String> doMapFromContext(DirContextOperations ctx) {
+			List<String> response = list(ctx.getStringAttributes("memberof"));
+			if (response == null) {
+				return null;
+			}
+			List<String> grantedAuthorities = CollectionUtils.list();
+			for (String memberof : response) {
+				String[] content = StringUtils.split(memberof, ",");
+				for (String field : content) {
+					if (field.startsWith("cn=")) {
+						grantedAuthorities.add("ROLE_" + field.substring(3));
+					}
+				}
+			}
+			return grantedAuthorities;
 		}
 	}
 
@@ -426,6 +448,22 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 			throw new IllegalStateException("Found several users by user name " + userName);
 		}
 		return persons.get(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Nullable
+	public List<String> getGrantedAuthorities(@NotNull UserPreferences preferences) {
+		List<List<String>> grantedAuthorities = ldapTemplate.search(peopleBuilder.buildDn(null),
+				userNameBuilder.getNameFilter(preferences.getUsername()).encode(), new GrantedAuthoritiesContextMapper());
+		if (grantedAuthorities.isEmpty()) {
+			return null;
+		}
+		if (grantedAuthorities.size() > 1) {
+			throw new IllegalStateException("Found several users by user name " + preferences.getUsername());
+		}
+		return grantedAuthorities.get(0);
 	}
 
 	private Name buildDn(UserPreferences person) {

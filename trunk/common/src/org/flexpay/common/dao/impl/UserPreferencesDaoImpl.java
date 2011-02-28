@@ -80,6 +80,14 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 				getHibernateTemplate().findByNamedQuery("UserPreferences.findByName", uid));
 	}
 
+	/**
+	 * Not implemented
+	 */
+	@Override
+	public List<String> getGrantedAuthorities(UserPreferences preferences) {
+		throw new NotImplementedException();
+	}
+
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public List<UserPreferences> listAllUser() {
@@ -138,6 +146,9 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 		return preferences.getCertificate() != null;
 	}
 
+	/**
+	 * Not implemented
+	 */
 	@Override
 	public boolean createNewUser(UserPreferences preferences, String password) {
 		throw new NotImplementedException();

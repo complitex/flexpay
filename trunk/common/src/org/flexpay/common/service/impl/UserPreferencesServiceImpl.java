@@ -56,7 +56,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 
 		UserPreferences preferences = getUserPreferencesDao().findByUserName(username);
 		if (preferences == null) {
-			preferences = userPreferencesFactory.newInstance();
+			throw new UsernameNotFoundException("User name '" + username + "' did not find");
 		}
 
 		// init defaults if needed
@@ -206,19 +206,33 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate) {
+	public Certificate editCertificate(@NotNull UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate) {
 		return getUserPreferencesDao().editCertificate(preferences, description, blocked, inputStreamCertificate);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
     @Nullable
 	@Override
-	public Certificate getCertificate(UserPreferences preferences) {
+	public Certificate getCertificate(@NotNull UserPreferences preferences) {
 		return getUserPreferencesDao().getCertificate(preferences);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void deleteCertificate(UserPreferences preferences) {
+	public void deleteCertificate(@NotNull UserPreferences preferences) {
 		getUserPreferencesDao().deleteCertificate(preferences);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<String> getGrantedAuthorities(@NotNull UserPreferences preferences) {
+		return getUserPreferencesDao().getGrantedAuthorities(preferences);
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
