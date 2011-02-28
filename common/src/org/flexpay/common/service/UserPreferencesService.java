@@ -138,7 +138,7 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @param blocked Blocked certificate
 	 * @return  Security certificate instance
 	 */
-	Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate);
+	Certificate editCertificate(@NotNull UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate);
 
 	/**
 	 * Get certificate from user preferences storage
@@ -147,12 +147,20 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @return Security certificate
 	 */
     @Nullable
-	Certificate getCertificate(UserPreferences preferences);
+	Certificate getCertificate(@NotNull UserPreferences preferences);
 
 	/**
 	 * Delete certificate from user preferences storage
 	 *
 	 * @param preferences  User preferences
 	 */
-	void deleteCertificate(UserPreferences preferences);
+	void deleteCertificate(@NotNull UserPreferences preferences);
+
+	/**
+	 * Get granted authority of user
+	 * @param preferences User prefernces
+	 * @return Granted authorities or <code>null</code> if user did not find
+	 */
+	@Nullable
+	List<String> getGrantedAuthorities(@NotNull UserPreferences preferences);
 }

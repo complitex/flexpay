@@ -30,6 +30,13 @@ public interface UserPreferencesDao {
 
 	UserPreferences findByUserName(String uid);
 
+	/**
+	 * Get granted authority of user
+	 * @param preferences User prefernces
+	 * @return Granted authorities or <code>null</code> if user did not find
+	 */
+	List<String> getGrantedAuthorities(UserPreferences preferences);
+
 	List<UserPreferences> listAllUser();
 
 	Certificate editCertificate(UserPreferences preferences, String description, Boolean blocked, InputStream inputStreamCertificate);
