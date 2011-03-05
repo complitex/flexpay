@@ -1,13 +1,14 @@
 package org.flexpay.eirc.service.importexport;
 
-import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.RawData;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.Registry;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class RawConsumerData extends RawData<Consumer> {
 
@@ -49,6 +50,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	 *
 	 * @return Set of attribute names;
 	 */
+    @Override
 	public Collection<String> getPossibleNames() {
 		return possibleNames;
 	}
@@ -201,14 +203,14 @@ public class RawConsumerData extends RawData<Consumer> {
 	 * @return <code
 	 */
 	public boolean isPersonalInfoEmpty() {
-		return StringUtils.isBlank(getAddressStreet())
-				&& StringUtils.isBlank(getAddressBulk())
-				&& StringUtils.isBlank(getAddressHouse())
-				&& StringUtils.isBlank(getAddressApartment())
-				&& StringUtils.isBlank(getFirstName())
-				&& StringUtils.isBlank(getLastName())
-				&& StringUtils.isBlank(getMiddleName())
-				&& StringUtils.isBlank(getAddressStreetType());
+		return isBlank(getAddressStreet())
+				&& isBlank(getAddressBulk())
+				&& isBlank(getAddressHouse())
+				&& isBlank(getAddressApartment())
+				&& isBlank(getFirstName())
+				&& isBlank(getLastName())
+				&& isBlank(getMiddleName())
+				&& isBlank(getAddressStreetType());
 	}
 
 	/**
@@ -223,4 +225,5 @@ public class RawConsumerData extends RawData<Consumer> {
 				.append(getApartmentId())
 				.toString();
 	}
+
 }

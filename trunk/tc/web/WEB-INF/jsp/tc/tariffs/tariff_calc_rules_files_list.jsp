@@ -79,7 +79,7 @@
     function createDialog() {
 
         $("#calendar").datepicker("dialog", "" , function(dateText) {
-            $("input[name=calcDate]").get(0).value = dateText;
+            $("input[name='calcDate']").get(0).value = dateText;
             $("#fObjects").attr("action", "<s:url action="tariffCalculate" includeParams="none" />").submit();
         },
         {
@@ -91,12 +91,12 @@
     }
 
     function calculate() {
-        var objectIds = $("input[name=objectIds]:checked");
+        var objectIds = $("input[name='objectIds']:checked");
         if (objectIds.length > 1) {
             alert("<s:text name="tc.error.calculate.must_be_one_element_selected" />");
         } else if (objectIds.length == 0) {
         } else {
-            $("input[name=id]").get(0).value = objectIds.get(0).value;
+            $("input[name='id']").get(0).value = objectIds.get(0).value;
             createDialog();
         }
     }

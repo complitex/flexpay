@@ -52,28 +52,28 @@
 
         var filterUrl = "<s:url action="filterAutocompleter" namespace="/payments" includeParams="none" />";
 
-        FPR.createAutocompleter("input[name=townFilter]", filterUrl, false,
+        FPR.createAutocompleter("input[name='townFilter']", filterUrl, false,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_TOWN" />
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_TOWN" />
                                 });
 
-        FPR.createAutocompleter("input[name=streetFilter]", filterUrl, false,
+        FPR.createAutocompleter("input[name='streetFilter']", filterUrl, false,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_STREET" />
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_STREET" />
                                 });
 
-        FPR.createAutocompleter("input[name=buildingFilter]", filterUrl, true,
+        FPR.createAutocompleter("input[name='buildingFilter']", filterUrl, true,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_BUILDING" />
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_BUILDING" />
                                 });
 
-        FPR.createAutocompleter("input[name=apartmentFilter]", filterUrl, true,
+        FPR.createAutocompleter("input[name='apartmentFilter']", filterUrl, true,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.registry.filter.StringFilter@TYPE_APARTMENT" />
+                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_APARTMENT" />
                                 });
 
     });
@@ -100,20 +100,20 @@
             "registry.id":FPR.registryId
         };
 
-        if ($("input[name=townFilter]").val().length > 0) {
-            params["townFilter.value"] = $("input[name=townFilter]").val();
+        if ($("input[name='townFilter']").val().length > 0) {
+            params["townFilter.value"] = $("input[name='townFilter']").val();
         }
-        if ($("input[name=streetFilter]").val().length > 0) {
-            params["streetFilter.value"] = $("input[name=streetFilter]").val();
+        if ($("input[name='streetFilter']").val().length > 0) {
+            params["streetFilter.value"] = $("input[name='streetFilter']").val();
         }
-        if ($("input[name=buildingFilter]").val().length > 0) {
-            params["buildingFilter.value"] = $("input[name=buildingFilter]").val();
+        if ($("input[name='buildingFilter']").val().length > 0) {
+            params["buildingFilter.value"] = $("input[name='buildingFilter']").val();
         }
-        if ($("input[name=apartmentFilter]").val().length > 0) {
-            params["apartmentFilter.value"] = $("input[name=apartmentFilter]").val();
+        if ($("input[name='apartmentFilter']").val().length > 0) {
+            params["apartmentFilter.value"] = $("input[name='apartmentFilter']").val();
         }
-        if ($("input[name=fioFilter]").val().length > 0) {
-            params["fioFilter.value"] = $("input[name=fioFilter]").val();
+        if ($("input[name='fioFilter']").val().length > 0) {
+            params["fioFilter.value"] = $("input[name='fioFilter']").val();
         }
 
         if (FPR.$rStatus.val() == FPR.errorStatusCode && FPR.$gErrors.get(0).checked) {
@@ -145,7 +145,7 @@
             opt["resultId"] = resultId;
         }
         if (FPR.openedType >= 0) {
-            $("input[name=curPage]").val(1);
+            $("input[name='curPage']").val(1);
             opt["resultId"] = "panelType" + FPR.openedType;
         }
 
@@ -160,7 +160,7 @@
     function pagerInnerAjax(element, i) {
 
         if (i == undefined || i == null) {
-            i = $("input[name=index]").val();
+            i = $("input[name='index']").val();
         }
 
         var params = {
@@ -173,7 +173,7 @@
         params["fioFilter.value"] = FPR.$fio.val();
 
         if (element == null) {
-            $("span.innerPaging").find("input[name=curPage]").val(1);
+            $("span.innerPaging").find("input[name='curPage']").val(1);
         }
 
         FP.pagerAjax(element, {
@@ -259,7 +259,7 @@
 
         var src = $.param.querystring("<s:url action="selectCorrectionType" namespace="/payments" includeParams="none" />", params);
         $.modal('<iframe src="' + src + '" height="550" width="800" style="border:0" />', {
-            containerCss:{
+            containerCss: {
                 backgroundColor:"#fff",
                 borderColor:"#0063dc",
                 height:550,
@@ -274,6 +274,60 @@
                 pagerAjax();
             }
         });
+
+    }
+
+    function createItem(i, type) {
+
+        var params = {
+            "registry.id":FPR.registryId,
+            "group.errorType":FPR.$eType.val()
+        };
+
+        FPR.addGroupParams(params, i);
+
+        if (type != null && type != undefined) {
+            $("#selectedGroupIndex").val(i);
+            if (type ==  "st") {
+                $("#stName<s:property value="@org.flexpay.common.util.config.ApplicationConfig@getDefaultLanguage().getId()" />").val(params["group.streetType"]);
+                $("#stShortName<s:property value="@org.flexpay.common.util.config.ApplicationConfig@getDefaultLanguage().getId()" />").val(params["group.streetType"]);
+                $("#streetTypeModal").modal({
+                    containerCss: {
+                        backgroundColor:"#fff",
+                        borderColor:"#0063dc",
+                        height:550,
+                        padding:0,
+                        width:800
+                    },
+                    escClose:true,
+                    overlayClose:true
+                });
+            } else if (type == "b") {
+                $("#address").text((params["group.buildingNumber"] != null ? "<s:text name="ab.buildings_attribute_type.buiding_number" />: " + params["group.buildingNumber"] : "")
+                        + (params["group.buildingBulk"] != null ? "\n<s:text name="ab.buildings_attribute_type.buiding_bulk" />: " + params["group.buildingBulk"] : ""));
+                $("#buildingModal").modal();
+            }
+            return;
+        }
+
+        $("input[id^='stName']").each(function() {
+           params[this.name] = this.value;
+        });
+        $("input[id^='stShortName']").each(function() {
+           params[this.name] = this.value;
+        });
+        $("select[name='districtFilter.selectedId']").each(function() {
+           params["district.id"] = this.value;
+        });
+
+        $.modal.close();
+
+        $.post("<s:url action="registryRecordErrorFixAjax" includeParams="none" />", params,
+            function(data, status) {
+                $("#messagesBlock").html(data);
+                updateErrorsNumber();
+                pagerAjax(null, "panelType" + FPR.openedType);
+            });
 
     }
 

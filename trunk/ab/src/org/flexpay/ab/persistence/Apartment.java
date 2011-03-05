@@ -3,16 +3,18 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.*;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static java.util.Collections.emptySet;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.*;
+import static org.flexpay.common.util.DateUtil.*;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 /**
  * Apartment
@@ -20,8 +22,8 @@ import java.util.*;
 public class Apartment extends DomainObjectWithStatus {
 
 	private Building building;
-	private Set<ApartmentNumber> apartmentNumbers = Collections.emptySet();
-	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
+	private Set<ApartmentNumber> apartmentNumbers = emptySet();
+	private Set<PersonRegistration> personRegistrations = emptySet();
 
 	protected Apartment() {
 	}
@@ -81,16 +83,16 @@ public class Apartment extends DomainObjectWithStatus {
 	 */
 	@Nullable
 	public String getNumber() {
-		return getNumberForDate(DateUtil.now());
+		return getNumberForDate(now());
 	}
 
 	public void setNumber(@Nullable String number) {
-		setNumberForDate(number, DateUtil.now());
+		setNumberForDate(number, now());
 	}
 
 
 	public Set<Person> getPersons() {
-		return getPersons(DateUtil.now());
+		return getPersons(now());
 	}
 
 	public Set<Person> getPersons(Date date) {
@@ -105,7 +107,7 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public Set<PersonRegistration> getValidPersonRegistrations() {
-		return getValidPersonRegistrations(DateUtil.now());
+		return getValidPersonRegistrations(now());
 	}
 
 	public Set<PersonRegistration> getValidPersonRegistrations(Date date) {
@@ -227,11 +229,11 @@ public class Apartment extends DomainObjectWithStatus {
 		if (begin == null || begin.before(getPastInfinite())) {
 			begin = getPastInfinite();
 		}
-		begin = DateUtil.truncateDay(begin);
+		begin = truncateDay(begin);
 		if (end == null || end.after(getFutureInfinite())) {
 			end = getFutureInfinite();
 		}
-		end = DateUtil.truncateDay(end);
+		end = truncateDay(end);
 
 		SortedSet<ApartmentNumber> numbers = treeSet(getApartmentNumbers());
 		List<ApartmentNumber> intersectingNumbers = list();
@@ -249,12 +251,12 @@ public class Apartment extends DomainObjectWithStatus {
 		// check first intersecting interval and add new apartment number with old value
 		ApartmentNumber first = intersectingNumbers.get(0);
 		if (first.getBegin().before(begin)) {
-			addNumber(first.getBegin(), DateUtil.previous(begin), first.getValue());
+			addNumber(first.getBegin(), previous(begin), first.getValue());
 		}
 		// check last intersecting interval and add new apartment number with old value
 		ApartmentNumber last = intersectingNumbers.get(intersectingNumbers.size() - 1);
 		if (last.getEnd().after(end)) {
-			addNumber(DateUtil.next(end), last.getEnd(), last.getValue());
+			addNumber(next(end), last.getEnd(), last.getValue());
 		}
 
 		// add interval with required boundaries

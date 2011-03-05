@@ -1,17 +1,25 @@
 package org.flexpay.eirc.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.StringValueFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorterByName;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorterByNumberOfErrors;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
+import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -21,11 +29,15 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
+import static org.flexpay.common.persistence.filter.StringValueFilter.*;
 import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
-import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPagerActionSupport<RecordErrorsGroup> {
 
@@ -34,16 +46,22 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
     private RecordErrorsGroupSorterByName recordErrorsGroupSorterByName = new RecordErrorsGroupSorterByName();
     private RecordErrorsGroupSorterByNumberOfErrors recordErrorsGroupSorterByNumberOfErrors = new RecordErrorsGroupSorterByNumberOfErrors();
 
+    private Map<Long, String> names = treeMap();
+    private Map<Long, String> shortNames = treeMap();
+
+    protected DistrictFilter districtFilter = new DistrictFilter();
+
     protected ImportErrorTypeFilter importErrorTypeFilter = null;
-    private StringFilter townFilter = new StringFilter();
-    private StringFilter streetFilter = new StringFilter();
-    private StringFilter buildingFilter = new StringFilter();
-    private StringFilter apartmentFilter = new StringFilter();
-    private StringFilter fioFilter = new StringFilter();
+    private StringValueFilter townFilter = new StringValueFilter();
+    private StringValueFilter streetFilter = new StringValueFilter();
+    private StringValueFilter buildingFilter = new StringValueFilter();
+    private StringValueFilter apartmentFilter = new StringValueFilter();
+    private StringValueFilter fioFilter = new StringValueFilter();
 
     private RegistryRecordStatusService registryRecordStatusService;
     private RegistryRecordService registryRecordService;
     private ClassToTypeRegistry typeRegistry;
+    private ParentService<DistrictFilter> parentService;
 
     @NotNull
     @Override
@@ -55,10 +73,14 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
             return SUCCESS;
         }
 
+        districtFilter = parentService.initFilter(districtFilter, new TownFilter(getDefaultTownStub()), getUserPreferences().getLocale());
+
         StopWatch watch = new StopWatch();
         if (log.isDebugEnabled()) {
             watch.start();
         }
+
+        correctNames();
 
         List<ObjectFilter> filters = initFilters();
         if (filters == null) {
@@ -152,6 +174,33 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
 
     }
 
+    private void correctNames() {
+        Map<Long, String> newNames = treeMap();
+        Map<Long, String> newShortNames = treeMap();
+        for (Language lang : getLanguages()) {
+            newNames.put(lang.getId(), names != null && names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+            newShortNames.put(lang.getId(), shortNames != null && shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
+        }
+        names = newNames;
+        shortNames = newShortNames;
+    }
+
+    public boolean checkApartmentType(int i) {
+        return typeRegistry.getType(Apartment.class) == errorGroups.get(i).getGroup().getErrorType();
+    }
+
+    public boolean checkBuildingType(int i) {
+        return typeRegistry.getType(BuildingAddress.class) == errorGroups.get(i).getGroup().getErrorType();
+    }
+
+    public boolean checkStreetType(int i) {
+        return typeRegistry.getType(Street.class) == errorGroups.get(i).getGroup().getErrorType();
+    }
+
+    public boolean checkStreetTypeType(int i) {
+        return typeRegistry.getType(StreetType.class) == errorGroups.get(i).getGroup().getErrorType();
+    }
+
     /**
      * Get default error execution result
      * <p/>
@@ -177,23 +226,23 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
         this.importErrorTypeFilter = importErrorTypeFilter;
     }
 
-    public void setTownFilter(StringFilter townFilter) {
+    public void setTownFilter(StringValueFilter townFilter) {
         this.townFilter = townFilter;
     }
 
-    public void setStreetFilter(StringFilter streetFilter) {
+    public void setStreetFilter(StringValueFilter streetFilter) {
         this.streetFilter = streetFilter;
     }
 
-    public void setBuildingFilter(StringFilter buildingFilter) {
+    public void setBuildingFilter(StringValueFilter buildingFilter) {
         this.buildingFilter = buildingFilter;
     }
 
-    public void setApartmentFilter(StringFilter apartmentFilter) {
+    public void setApartmentFilter(StringValueFilter apartmentFilter) {
         this.apartmentFilter = apartmentFilter;
     }
 
-    public void setFioFilter(StringFilter fioFilter) {
+    public void setFioFilter(StringValueFilter fioFilter) {
         this.fioFilter = fioFilter;
     }
 
@@ -217,6 +266,22 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
         this.recordErrorsGroupSorterByNumberOfErrors = recordErrorsGroupSorterByNumberOfErrors;
     }
 
+    public Map<Long, String> getNames() {
+        return names;
+    }
+
+    public Map<Long, String> getShortNames() {
+        return shortNames;
+    }
+
+    public DistrictFilter getDistrictFilter() {
+        return districtFilter;
+    }
+
+    public void setDistrictFilter(DistrictFilter districtFilter) {
+        this.districtFilter = districtFilter;
+    }
+
     @Required
     public void setRegistryRecordService(RegistryRecordService registryRecordService) {
         this.registryRecordService = registryRecordService;
@@ -232,4 +297,8 @@ public class RegistryRecordErrorsGroupsListAction extends AccountantAWPWithPager
         this.registryRecordStatusService = registryRecordStatusService;
     }
 
+    @Required
+    public void setParentService(ParentService<DistrictFilter> parentService) {
+        this.parentService = parentService;
+    }
 }

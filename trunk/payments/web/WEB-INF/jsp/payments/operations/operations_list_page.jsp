@@ -50,17 +50,17 @@
             params: {
                 "cashbox.id":<s:property value="cashbox.id" />,
                 <sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
-                    "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").val(),
-                    "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").val(),
+                    "beginDateFilter.stringDate":$("input[name='beginDateFilter.stringDate']").val(),
+                    "endDateFilter.stringDate":$("input[name='endDateFilter.stringDate']").val(),
                 </sec:authorize>
-                "beginTimeFilter.stringDate":$("input[name=beginTimeFilter.stringDate]").val(),
-                "endTimeFilter.stringDate":$("input[name=endTimeFilter.stringDate]").val(),
-                "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").val(),
+                "beginTimeFilter.stringDate":$("input[name='beginTimeFilter.stringDate']").val(),
+                "endTimeFilter.stringDate":$("input[name='endTimeFilter.stringDate']").val(),
+                "serviceTypeFilter.selectedId":$("select[name='serviceTypeFilter.selectedId']").val(),
                 "operationSorterById.active": $("#operationSorterByIdActive").val(),
                 "operationSorterById.order": $("#operationSorterByIdOrder").val(),
-                "minimalSumFilter.value":$("input[name=minimalSum]").val(),
-                "maximalSumFilter.value":$("input[name=maximalSum]").val(),
-                documentSearch:$("input[name=documentSearch]").val(),
+                "minimalSumFilter.value":$("input[name='minimalSum']").val(),
+                "maximalSumFilter.value":$("input[name='maximalSum']").val(),
+                documentSearch:$("input[name='documentSearch']").val(),
             }
         });
     }

@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
 
-    var $registryTypeFilter = $("select[name=registryTypeFilter.selectedId]");
+    var $registryTypeFilter = $("select[name='registryTypeFilter.selectedId']");
     var regType = <s:property value="getTypeByCode(@org.flexpay.common.persistence.registry.RegistryType@TYPE_CASH_PAYMENTS).id" />;
 
     $("#filters").ready(function() {
@@ -35,7 +35,7 @@
     });
 
     function registryType() {
-        FP.endis("select[name=serviceProviderFilter.selectedId]", $registryTypeFilter.val() == regType);
+        FP.endis("select[name='serviceProviderFilter.selectedId']", $registryTypeFilter.val() == regType);
     }
 
     $(function() {
@@ -45,17 +45,17 @@
     function pagerAjax(element) {
 
         var params = {
-            "senderOrganizationFilter.selectedId":$("select[name=senderOrganizationFilter.selectedId]").val(),
-            "recipientOrganizationFilter.selectedId":$("select[name=recipientOrganizationFilter.selectedId]").val(),
+            "senderOrganizationFilter.selectedId":$("select[name='senderOrganizationFilter.selectedId']").val(),
+            "recipientOrganizationFilter.selectedId":$("select[name='recipientOrganizationFilter.selectedId']").val(),
             "registryTypeFilter.selectedId":$registryTypeFilter.val(),
             "registrySorterByCreationDate.active": $("#registrySorterByCreationDateActive").val(),
             "registrySorterByCreationDate.order": $("#registrySorterByCreationDateOrder").val(),
-            fromDate:$("input[name=fromDate]").val(),
-            tillDate:$("input[name=tillDate]").val()
+            fromDate:$("input[name='fromDate']").val(),
+            tillDate:$("input[name='tillDate']").val()
         };
 
         if ($registryTypeFilter.val() == regType) {
-            params["serviceProviderFilter.selectedId"] = $("select[name=serviceProviderFilter.selectedId]").val();
+            params["serviceProviderFilter.selectedId"] = $("select[name='serviceProviderFilter.selectedId']").val();
         }
 
         FP.pagerAjax(element, {

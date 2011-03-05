@@ -46,9 +46,9 @@
 
     var defaultCFilter = $("#cFilterBody").html();
 
-    var $c = $("select[name=cashboxFilter.selectedId]");
+    var $c = $("select[name='cashboxFilter.selectedId']");
 
-    $("select[name=paymentPointFilter.selectedId]").get(0).setAttribute("onchange", "selectPP();");
+    $("select[name='paymentPointFilter.selectedId']").get(0).setAttribute("onchange", "selectPP();");
     $c.get(0).setAttribute("onchange", "");
 
     $(function() {
@@ -56,25 +56,25 @@
     });
 
     function pagerAjax(element) {
-        var cValue = $("select[name=cashboxFilter.selectedId]").val();
-        if ($("select[name=cashboxFilter.selectedId]").attr("disabled")) {
+        var cValue = $("select[name='cashboxFilter.selectedId']").val();
+        if ($("select[name='cashboxFilter.selectedId']").attr("disabled")) {
             cValue = -1
         }
         FP.pagerAjax(element, {
             action:"<s:url action="operationsListAccAjax" includeParams="none" />",
             params: {
                 "cashboxFilter.selectedId":cValue,
-                "paymentPointFilter.selectedId":$("select[name=paymentPointFilter.selectedId]").val(),
-                "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").val(),
-                "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").val(),
-                "beginTimeFilter.stringDate":$("input[name=beginTimeFilter.stringDate]").val(),
-                "endTimeFilter.stringDate":$("input[name=endTimeFilter.stringDate]").val(),
-                "serviceTypeFilter.selectedId":$("select[name=serviceTypeFilter.selectedId]").val(),
+                "paymentPointFilter.selectedId":$("select[name='paymentPointFilter.selectedId']").val(),
+                "beginDateFilter.stringDate":$("input[name='beginDateFilter.stringDate']").val(),
+                "endDateFilter.stringDate":$("input[name='endDateFilter.stringDate']").val(),
+                "beginTimeFilter.stringDate":$("input[name='beginTimeFilter.stringDate']").val(),
+                "endTimeFilter.stringDate":$("input[name='endTimeFilter.stringDate']").val(),
+                "serviceTypeFilter.selectedId":$("select[name='serviceTypeFilter.selectedId']").val(),
                 "operationSorterById.active": $("#operationSorterByIdActive").val(),
                 "operationSorterById.order": $("#operationSorterByIdOrder").val(),
-                "minimalSumFilter.value":$("input[name=minimalSum]").val(),
-                "maximalSumFilter.value":$("input[name=maximalSum]").val(),
-                documentSearch:$("input[name=documentSearch]").val()
+                "minimalSumFilter.value":$("input[name='minimalSum']").val(),
+                "maximalSumFilter.value":$("input[name='maximalSum']").val(),
+                documentSearch:$("input[name='documentSearch']").val()
             }
         });
     }
@@ -85,7 +85,7 @@
 
     function selectPP() {
 
-        var $pp = $("select[name=paymentPointFilter.selectedId]");
+        var $pp = $("select[name='paymentPointFilter.selectedId']");
 
         if ($pp.length == 0 || $pp.val() <= 0) {
             eraseCashbox();

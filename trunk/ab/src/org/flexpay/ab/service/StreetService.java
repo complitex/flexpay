@@ -1,5 +1,6 @@
 package org.flexpay.ab.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
@@ -152,4 +153,15 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	@Secured (Roles.STREET_READ)
 	@NotNull
 	List<Street> findSimpleByTown(Stub<Town> townStub, FetchRange range);
+
+    /**
+     * Find street by filters
+     *
+     * @param filters filter stack
+     * @return Street
+     */
+    @Secured (Roles.STREET_READ)
+    @Nullable
+    Street findStreet(ArrayStack filters);
+
 }

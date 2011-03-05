@@ -5,9 +5,9 @@
 
     var defaultPP = "<s:property value="paymentPointFilter.selectedId" />";
     var defaultC = "<s:property value="cashboxFilter.selectedId" />";
-    var pc = "select[name=paymentCollectorFilter.selectedId]";
-    var pp = "select[name=paymentPointFilter.selectedId]";
-    var c = "select[name=cashboxFilter.selectedId]";
+    var pc = "select[name='paymentCollectorFilter.selectedId']";
+    var pp = "select[name='paymentPointFilter.selectedId']";
+    var c = "select[name='cashboxFilter.selectedId']";
     var ppFilterBody = "#ppFilterBody";
     var ppFilter = "#ppFilter";
     var cFilterBody = "#cFilterBody";
@@ -15,7 +15,7 @@
 
     function selectPC(start) {
 
-        var isStart = start != undefined && start == true;
+        var isStart = start != undefined && start;
         var $pc = $(pc);
         var $pp = $(pp);
 

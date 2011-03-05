@@ -17,7 +17,7 @@
     }
 
     function toggleResultsGroup(calcDate) {
-        toggleElements($("tr[id^=tariff_row_][id$=" + calcDate + "]"), "#toggle_result_group_" + calcDate);
+        toggleElements($("tr[id^='tariff_row_'][id$='" + calcDate + "']"), "#toggle_result_group_" + calcDate);
     }
 
     // upload results submission processing

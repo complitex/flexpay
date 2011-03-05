@@ -8,11 +8,11 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.StringValueFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.RecordErrorsType;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.util.CollectionUtils;
@@ -35,9 +35,9 @@ import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.flexpay.common.persistence.DataCorrection.*;
+import static org.flexpay.common.persistence.filter.StringValueFilter.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.transform;
-import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 
 public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements RegistryRecordDaoExt {
 
@@ -258,8 +258,8 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                     params.add(importErrorTypeFilter.getSelectedType());
                 }
                 haveFilter = true;
-            } else if (filter instanceof StringFilter) {
-                StringFilter aFilter = (StringFilter) filter;
+            } else if (filter instanceof StringValueFilter) {
+                StringValueFilter aFilter = (StringValueFilter) filter;
                 if (aFilter.getType().equals(TYPE_TOWN)) {
                     fromWhere.append(" and town_name like ? ");
                     params.add(aFilter.getValue());

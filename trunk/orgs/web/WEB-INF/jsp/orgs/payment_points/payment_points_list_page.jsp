@@ -22,7 +22,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="paymentPointsListAjax" includeParams="none"/>",
             params:{
-                paymentCollectorFilter:$("select[name=paymentCollectorFilter.selectedId]").get(0).value
+                paymentCollectorFilter:$("select[name='paymentCollectorFilter.selectedId']").get(0).value
             }
         });
     }

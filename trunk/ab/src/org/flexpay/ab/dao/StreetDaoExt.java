@@ -1,9 +1,11 @@
 package org.flexpay.ab.dao;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,4 +29,6 @@ public interface StreetDaoExt {
 
 	void deleteStreet(Street street);
 
+    @Nullable
+    Street findStreet(@NotNull ArrayStack filters);
 }

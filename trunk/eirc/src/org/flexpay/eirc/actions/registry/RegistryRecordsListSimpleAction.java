@@ -4,11 +4,11 @@ import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.StringValueFilter;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
@@ -21,8 +21,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_FIO;
 import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
-import static org.flexpay.common.persistence.registry.filter.StringFilter.TYPE_FIO;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
@@ -32,7 +32,7 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
     private RecordErrorsGroup group = new RecordErrorsGroup();
 	private List<RegistryRecord> records = list();
 
-    private StringFilter fioFilter = new StringFilter();
+    private StringValueFilter fioFilter = new StringValueFilter();
     
 	private RegistryRecordService registryRecordService;
     private RegistryRecordStatusService registryRecordStatusService;
@@ -71,7 +71,7 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
 
 		records = registryRecordService.listRecords(registry, filters, groupView.getCriteria(classToTypeRegistry), groupView.getParams(classToTypeRegistry), getPager());
 
-		if (hintsHandlerFactory != null && records.size() > 0) {
+		if (hintsHandlerFactory != null && !records.isEmpty()) {
 			log.debug("select consumers with eirc account for registry records");
 			hintsHandlerFactory.getInstance(null, null, records).read();
 		}
@@ -151,7 +151,7 @@ public class RegistryRecordsListSimpleAction extends AccountantAWPWithPagerActio
         this.group = group;
     }
 
-    public void setFioFilter(StringFilter fioFilter) {
+    public void setFioFilter(StringValueFilter fioFilter) {
         this.fioFilter = fioFilter;
     }
 

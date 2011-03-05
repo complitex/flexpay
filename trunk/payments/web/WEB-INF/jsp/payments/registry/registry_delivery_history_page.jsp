@@ -24,8 +24,8 @@
         FP.pagerAjax(element, {
             action:"<s:url action="registryDeliveryHistoryAjax" namespace="/payments" includeParams="none" />",
             params: {
-                "beginDateFilter.stringDate":$("input[name=beginDateFilter.stringDate]").get(0).value,
-                "endDateFilter.stringDate":$("input[name=endDateFilter.stringDate]").get(0).value
+                "beginDateFilter.stringDate":$("input[name='beginDateFilter.stringDate']").get(0).value,
+                "endDateFilter.stringDate":$("input[name='endDateFilter.stringDate']").get(0).value
             }
         });
     }

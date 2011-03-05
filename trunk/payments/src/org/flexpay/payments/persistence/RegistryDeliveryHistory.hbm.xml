@@ -45,29 +45,30 @@
     <query name="RegistryDeliveryHistory.readFull">
         select distinct o
 		from RegistryDeliveryHistory o
-		left join fetch o.registry reg
+    		left join fetch o.registry
 		where o.id = ?
     </query>
 
     <query name="RegistryDeliveryHistory.listRegistryDeliveryHistories"><![CDATA[
         select distinct o
 		from RegistryDeliveryHistory o
-		inner join fetch o.registry registry
-		inner join fetch o.registry.properties
-		inner join fetch o.registry.registryType
-		where registry.creationDate between ? and ?
-		order by o.deliveryDate desc
+            inner join fetch o.registry r
+            inner join fetch r.properties
+            inner join fetch r.registryType
+		where r.creationDate between ? and ?
+    	order by o.deliveryDate desc
     ]]></query>
 
     <query name="RegistryDeliveryHistory.listRegistryDeliveryHistories.count"><![CDATA[
         select count(o)
 		from RegistryDeliveryHistory o
-		inner join o.registry registry
-		where registry.creationDate between ? and ?
+    		inner join o.registry r
+		where r.creationDate between ? and ?
     ]]></query>
 
     <query name="RegistryDeliveryHistory.deleteByRegistry">
-        delete from RegistryDeliveryHistory where registry.id=?
+        delete from RegistryDeliveryHistory
+        where registry.id=?
     </query>
 
 </hibernate-mapping>

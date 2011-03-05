@@ -85,7 +85,7 @@
 
     function doAction(action) {
         var objectIds = [];
-        $("input[name=objectIds]:checked").each(function() {
+        $("input[name='objectIds']:checked").each(function() {
             objectIds.push(this.value);
         });
         if (objectIds.length == 0) {

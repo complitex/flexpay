@@ -121,7 +121,7 @@
 
     function process() {
         var ids = [];
-        $("input[name=objectIds]:checked").each(function() {
+        $("input[name='objectIds']:checked").each(function() {
             ids[ids.length] = this.value;
         });
         if (ids.length == 0) {

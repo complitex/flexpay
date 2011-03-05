@@ -18,7 +18,7 @@ var FP = {
 
     // Set checkboxes group (names starts with prefix) state to checked
     setCheckboxes : function (checked, prefix) {
-        $("input[type=checkbox][name^=" + prefix + "]").each(function() {
+        $("input[type='checkbox'][name^='" + prefix + "']").each(function() {
             this.checked = checked;
         });
     },
@@ -179,11 +179,11 @@ var FP = {
             if (params[opt.pageSizeChangedName] == null) {
                 params[opt.pageSizeChangedName] = false;
             }
-            var curPage = $(opt.target).find("input[name=curPage]");
+            var curPage = $(opt.target).find("input[name='curPage']");
             if (params[opt.pageNumberName] == null) {
                 params[opt.pageNumberName] = curPage.get(0) != null && curPage.get(0) != undefined ? curPage.val() : 1;
             }
-            var pageSize = $(opt.target).find("select[name=" + pageSizeName + "]");
+            var pageSize = $(opt.target).find("select[name='" + pageSizeName + "']");
             if (pageSize.get(0) != null && pageSize.get(0) != undefined && params[pageSizeName] == null) {
                 params[pageSizeName] = pageSize.val();
             }
@@ -207,7 +207,7 @@ var FP = {
                 params[opt.pageNumberName] = elValue;
             }
             if (params[pageSizeName] == null) {
-                params[pageSizeName] = isSelect ? elValue : $(opt.target).find("select[name=" + pageSizeName + "]").val();
+                params[pageSizeName] = isSelect ? elValue : $(opt.target).find("select[name='" + pageSizeName + "']").val();
             }
         }
 
@@ -233,7 +233,7 @@ var FP = {
                 ids = arg;
             }
             $.protify(ids).each(function(id) {
-                $("input[id=" + id + "]").each(function() {
+                $("input[id='" + id + "']").each(function() {
                     if ($.browser.msie) {
                         var f = new Function(this.onclick.getBody());
                         this.onclick = function() {
@@ -264,7 +264,7 @@ var FP = {
 
         if (name != null) {
             var ids = [];
-            $("input[name=" + name + "]:checked").each(function() {
+            $("input[name='" + name + "']:checked").each(function() {
                 ids[ids.length] = this.value;
             });
             if (ids.length == 0) {
