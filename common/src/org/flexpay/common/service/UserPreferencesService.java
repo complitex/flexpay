@@ -158,9 +158,22 @@ public interface UserPreferencesService extends UserDetailsService {
 
 	/**
 	 * Get granted authority of user
+     *
 	 * @param preferences User prefernces
-	 * @return Granted authorities or <code>null</code> if user did not find
+     *
+	 * @return Granted authorities or <code>null</code> if user not found
 	 */
 	@Nullable
 	List<String> getGrantedAuthorities(@NotNull UserPreferences preferences);
+
+    /**
+     * Is granted role of user
+     *
+     * @param preferences User prefernces
+     * @param role user role name
+     *
+     * @return true if user has this role, false in other one
+     */
+    boolean isGrantedAuthorities(@NotNull UserPreferences preferences, @NotNull String role);
+
 }

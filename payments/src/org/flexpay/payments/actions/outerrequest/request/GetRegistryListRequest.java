@@ -8,9 +8,13 @@ import org.flexpay.payments.actions.outerrequest.request.response.GetRegistryLis
 import org.flexpay.payments.actions.outerrequest.request.response.data.RegistryInfo;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Signature;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class GetRegistryListRequest extends Request<GetRegistryListResponse> {
 
@@ -44,10 +48,8 @@ public class GetRegistryListRequest extends Request<GetRegistryListResponse> {
     }
 
     @Override
-    public void updateRequestSignature(Signature signature) throws Exception {
-        updateSignature(signature, getPeriodBeginDate());
-        updateSignature(signature, getPeriodEndDate());
-        updateSignature(signature, registryType == null ? "" : registryType.toString());
+    public List<byte[]> getFieldsToSign() throws UnsupportedEncodingException {
+        return list(getBytes(getPeriodBeginDate()), getBytes(getPeriodEndDate()), getBytes(registryType == null ? "" : registryType.toString()));
     }
 
     @Override

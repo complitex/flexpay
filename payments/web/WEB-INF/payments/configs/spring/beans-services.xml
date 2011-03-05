@@ -269,6 +269,7 @@
           p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
           p:correctionsService-ref="correctionsService"
           p:cashboxTradingDayService-ref="cashboxTradingDayService"
+          p:userPreferencesService-ref="userPreferencesService"
           p:registryService-ref="registryService" />
 
 	<bean id="paymentsUserPreferencesFactory"

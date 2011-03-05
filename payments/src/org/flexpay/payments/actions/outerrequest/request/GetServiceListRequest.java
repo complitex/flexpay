@@ -8,7 +8,11 @@ import org.flexpay.payments.actions.outerrequest.request.response.GetServiceList
 import org.flexpay.payments.actions.outerrequest.request.response.data.ServiceInfo;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Signature;
+import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class GetServiceListRequest extends Request<GetServiceListResponse> {
 
@@ -44,7 +48,8 @@ public class GetServiceListRequest extends Request<GetServiceListResponse> {
     }
 
     @Override
-    public void updateRequestSignature(Signature signature) throws Exception {
+    public List<byte[]> getFieldsToSign() throws UnsupportedEncodingException {
+        return list();
     }
 
     @Override

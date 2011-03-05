@@ -5,6 +5,7 @@ import org.flexpay.common.exception.CertificateExpiredException;
 import org.flexpay.common.exception.CertificateNotFoundException;
 import org.flexpay.common.exception.InvalidVerifySignatureException;
 import org.flexpay.common.persistence.Certificate;
+import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.security.annotation.Secured;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
@@ -28,5 +29,5 @@ public interface CertificateService {
 	
 	void delete(Certificate certificate);
 
-	void authenticateUserByCertificate(String alias, byte[] signature, List<byte[]> fields) throws InvalidVerifySignatureException, UsernameNotFoundException, CertificateNotFoundException, CertificateBlockedException, CertificateExpiredException;
+	UserPreferences authenticateUserByCertificate(String alias, byte[] signature, List<byte[]> fields) throws InvalidVerifySignatureException, UsernameNotFoundException, CertificateNotFoundException, CertificateBlockedException, CertificateExpiredException;
 }

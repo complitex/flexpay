@@ -83,7 +83,7 @@ public class CertificateServiceImpl implements CertificateService {
 	}
 
 	@Override
-	public void authenticateUserByCertificate(@NotNull String alias, @NotNull byte[] signature, @NotNull List<byte[]> fields)
+	public UserPreferences authenticateUserByCertificate(@NotNull String alias, @NotNull byte[] signature, @NotNull List<byte[]> fields)
 			throws InvalidVerifySignatureException, UsernameNotFoundException, CertificateNotFoundException, CertificateBlockedException, CertificateExpiredException {
 
 		UserPreferences preferences = userPreferencesService.loadUserByUsername(alias);
@@ -120,6 +120,8 @@ public class CertificateServiceImpl implements CertificateService {
 		}
 
 		SecurityUtil.authenticate(alias, userPreferencesService.getGrantedAuthorities(preferences));
+
+        return preferences;
 	}
 
 	@Required

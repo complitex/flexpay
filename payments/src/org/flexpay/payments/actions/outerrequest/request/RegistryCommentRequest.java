@@ -8,9 +8,13 @@ import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.payments.actions.outerrequest.request.response.RegistryCommentResponse;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Signature;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class RegistryCommentRequest extends Request<RegistryCommentResponse> {
 
@@ -26,11 +30,8 @@ public class RegistryCommentRequest extends Request<RegistryCommentResponse> {
     }
 
     @Override
-    public void updateRequestSignature(Signature signature) throws Exception {
-        updateSignature(signature, registryId.toString());
-        updateSignature(signature, orderNumber);
-        updateSignature(signature, getOrderDate());
-        updateSignature(signature, orderComment);
+    public List<byte[]> getFieldsToSign() throws UnsupportedEncodingException {
+        return list(getBytes(registryId.toString()), getBytes(orderNumber), getBytes(getOrderDate()), getBytes(orderComment));
     }
 
     @Override

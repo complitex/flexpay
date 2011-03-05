@@ -3,7 +3,8 @@ package org.flexpay.payments.actions.outerrequest.request;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.*;
+import org.flexpay.common.service.CertificateService;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.KeyStoreUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -11,14 +12,20 @@ import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.payments.actions.outerrequest.request.response.Response;
 import org.flexpay.payments.actions.outerrequest.request.response.Status;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.userdetails.UsernameNotFoundException;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.cert.Certificate;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public abstract class Request<R extends Response> implements Serializable {
 
@@ -79,55 +86,41 @@ public abstract class Request<R extends Response> implements Serializable {
 
     protected abstract void addResponseBody(Signature signature) throws FlexPayException;
 
-    public boolean authenticate(UserPreferencesService userPreferencesService) throws FlexPayException {
+    public boolean authenticate(CertificateService certificateService) throws FlexPayException, UsernameNotFoundException, CertificateNotFoundException, CertificateBlockedException, CertificateExpiredException, InvalidVerifySignatureException {
 
         UserPreferences userPreference;
 
         try {
-            userPreference = userPreferencesService.loadUserByUsername(login);
+            List<byte[]> fields = list(getBytes(requestId));
+            fields.addAll(getFieldsToSign());
+            userPreference = certificateService.authenticateUserByCertificate(login, Hex.decodeHex(requestSignatureString.toCharArray()), fields);
             if (userPreference instanceof PaymentsUserPreferences) {
                 paymentsUserPreferences = (PaymentsUserPreferences) userPreference;
             } else {
                 log.debug("This user preferences not instance of PaymentsUserPreferences. Login = {}", login);
                 throw new FlexPayException("This user preferences not instance of PaymentsUserPreferences. Login = " + login);
             }
+
+            log.debug("User preferences = {}", paymentsUserPreferences);
+
+        } catch (UsernameNotFoundException e) {
+            log.error("Error getting user preperences for login {}", login);
+            throw e;
+        } catch (CertificateNotFoundException e) {
+            log.error("Error loading certificate from keystore for login {}", login);
+            throw e;
+        } catch (CertificateBlockedException e) {
+            log.error("Certificate for user with login {} is blocked", login);
+            throw e;
+        } catch (CertificateExpiredException e) {
+            log.error("Certificate for user with login {} is expired", login);
+            throw e;
+        } catch (InvalidVerifySignatureException e) {
+            log.error("Error checking request digital signature", e);
+            throw e;
         } catch (Throwable t) {
             log.error("Error getting user preperences for login {}", login, t);
             throw new FlexPayException("Error getting user preperences for login " + login, t);
-        }
-
-        log.debug("User preferences = {}", paymentsUserPreferences);
-
-        Certificate certificate = userPreferencesService.getCertificate(paymentsUserPreferences);
-        if (certificate == null) {
-            log.error("Error loading certificate from keystore for login {}", login);
-            throw new FlexPayException("Error loading certificate from keystore for login " + login);
-        }
-
-        if (userPreference.getCertificate().isBlocked()) {
-            log.error("Certificate for user with login {} is blocked", login);
-            throw new FlexPayException("Certificate for user with login " + login + " is blocked");
-        }
-
-        if (userPreference.getCertificate().isExpired()) {
-            log.error("Certificate for user with login {} is expired", login);
-            throw new FlexPayException("Certificate for user with login " + login + " is expired");
-        }
-
-        try {
-            Signature requestSignature = createRequestSignature();
-            requestSignature.initVerify(certificate);
-
-            updateSignature(requestSignature, requestId);
-            updateRequestSignature(requestSignature);
-
-            if (!requestSignature.verify(Hex.decodeHex(requestSignatureString.toCharArray()))) {
-                log.error("Request digital signature is bad");
-                return false;
-            }
-        } catch (Exception e) {
-            log.error("Error checking request digital signature", e);
-            throw new FlexPayException("Error checking request digital signature", e);
         }
 
         return true;
@@ -149,7 +142,7 @@ public abstract class Request<R extends Response> implements Serializable {
         }
     }
 
-    public abstract void updateRequestSignature(Signature signature) throws Exception;
+    public abstract List<byte[]> getFieldsToSign() throws UnsupportedEncodingException;
 
     public abstract boolean validate();
 
@@ -157,6 +150,10 @@ public abstract class Request<R extends Response> implements Serializable {
         if (value != null) {
             signature.update(value.getBytes(CONTENT_ENCODING));
         }
+    }
+
+    protected byte[] getBytes(@NotNull String value) throws UnsupportedEncodingException {
+        return value.getBytes(CONTENT_ENCODING);
     }
 
     protected void addFieldToResponse(Signature signature, String tagName, Object field) throws FlexPayException {

@@ -14,6 +14,7 @@ import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.BigDecimalUtil;
@@ -48,7 +49,6 @@ import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
-import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 import static org.flexpay.common.util.TranslationUtil.getTranslation;
 
 public class OuterRequestServiceImpl implements OuterRequestService {
@@ -75,6 +75,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private MasterIndexService masterIndexService;
     private PersonService personService;
     private RegistryService registryService;
+    private UserPreferencesService userPreferencesService;
 	private TradingDay<Cashbox> cashboxTradingDayService;
 
     @NotNull
@@ -359,9 +360,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public ReversalPayResponse reversalPay(ReversalPayRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest(request.getLogin());
-
-        if (!isAuthenticationGranted(Roles.TRADING_DAY_OPERATION_RETURN)) {
+        if (!userPreferencesService.isGrantedAuthorities(request.getPaymentsUserPreferences(), Roles.TRADING_DAY_OPERATION_RETURN)) {
+            log.debug("User from outer request (username = {}) hasn't rigths for reverse payment", request.getPaymentsUserPreferences().getUsername());
             throw new FlexPayException("User has no rights for reverse payment");
         }
 
@@ -630,5 +630,10 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Required
     public void setCashboxTradingDayService(TradingDay<Cashbox> cashboxTradingDayService) {
         this.cashboxTradingDayService = cashboxTradingDayService;
+    }
+
+    @Required
+    public void setUserPreferencesService(UserPreferencesService userPreferencesService) {
+        this.userPreferencesService = userPreferencesService;
     }
 }
