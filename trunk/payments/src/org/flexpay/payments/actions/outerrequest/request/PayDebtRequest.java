@@ -9,6 +9,7 @@ import org.flexpay.payments.actions.outerrequest.request.response.PayDebtRespons
 import org.flexpay.payments.actions.outerrequest.request.response.data.ServicePayInfo;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.Signature;
 import java.util.List;
@@ -25,16 +26,14 @@ public class PayDebtRequest extends Request<PayDebtResponse> {
     }
 
     @Override
-    public void updateRequestSignature(Signature signature) throws Exception {
-
-        updateSignature(signature, totalPaySum.toString());
-
+    public List<byte[]> getFieldsToSign() throws UnsupportedEncodingException {
+        List<byte[]> bytes = list(getBytes(totalPaySum.toString()));
         for (ServicePayDetails payDetails : servicePayDetails) {
-            updateSignature(signature, payDetails.getServiceId().toString());
-            updateSignature(signature, payDetails.getServiceProviderAccount());
-            updateSignature(signature, payDetails.getPaySum().toString());
+            bytes.add(getBytes(payDetails.getServiceId().toString()));
+            bytes.add(getBytes(payDetails.getServiceProviderAccount()));
+            bytes.add(getBytes(payDetails.getPaySum().toString()));
         }
-
+        return bytes;
     }
 
     @Override

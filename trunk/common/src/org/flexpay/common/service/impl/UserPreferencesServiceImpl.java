@@ -235,7 +235,25 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		return getUserPreferencesDao().getGrantedAuthorities(preferences);
 	}
 
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+    @Override
+    public boolean isGrantedAuthorities(@NotNull UserPreferences preferences, @NotNull String role) {
+
+        List<String> roles = getGrantedAuthorities(preferences);
+        if (roles == null) {
+            log.debug("Can't get roles for userPreferences = {}", preferences);
+            return false;
+        }
+        log.debug("User has {} roles", roles.size());
+        for (String r : roles) {
+            log.debug("Role = {}", r);
+            if (r.equals(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	protected void validate(UserPreferences preferences) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 

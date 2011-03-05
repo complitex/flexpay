@@ -7,8 +7,12 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.payments.actions.outerrequest.request.response.ReversalPayResponse;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.Signature;
+import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class ReversalPayRequest extends Request<ReversalPayResponse> {
 
@@ -20,9 +24,8 @@ public class ReversalPayRequest extends Request<ReversalPayResponse> {
     }
 
     @Override
-    public void updateRequestSignature(Signature signature) throws Exception {
-        updateSignature(signature, operationId.toString());
-        updateSignature(signature, totalPaySum.toString());
+    public List<byte[]> getFieldsToSign() throws UnsupportedEncodingException {
+        return list(getBytes(operationId.toString()), getBytes(totalPaySum.toString()));
     }
 
     @Override

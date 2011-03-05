@@ -5,7 +5,11 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.security.Signature;
+import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public abstract class SearchRequest<R extends SearchResponse> extends Request<R> implements Serializable {
 
@@ -37,9 +41,8 @@ public abstract class SearchRequest<R extends SearchResponse> extends Request<R>
     }
 
     @Override
-    public void updateRequestSignature(Signature signature) throws Exception {
-        updateSignature(signature, searchTypeString);
-        updateSignature(signature, searchCriteria);
+    public List<byte[]> getFieldsToSign() throws UnsupportedEncodingException {
+        return list(getBytes(searchTypeString), getBytes(searchCriteria));
     }
 
     @Override

@@ -1,7 +1,8 @@
 package org.flexpay.payments.actions.outerrequest;
 
 import org.apache.commons.digester.Digester;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.*;
+import org.flexpay.common.service.CertificateService;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.payments.actions.outerrequest.request.*;
 import org.flexpay.payments.actions.outerrequest.request.response.Status;
@@ -9,6 +10,7 @@ import org.flexpay.payments.service.OuterRequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletException;
@@ -26,7 +28,7 @@ public class OuterRequestHandlerServlet extends HttpServlet {
     public static final String ENCODING = "UTF-8";
 
     protected OuterRequestService outerRequestService;
-    private UserPreferencesService userPreferencesService;
+    protected CertificateService certificateService;
 
     @Override
     public void init() throws ServletException {
@@ -36,7 +38,7 @@ public class OuterRequestHandlerServlet extends HttpServlet {
         ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 
         outerRequestService = (OuterRequestService) context.getBean("outerRequestService");
-        userPreferencesService = (UserPreferencesService) context.getBean("userPreferencesService");
+        certificateService = (CertificateService) context.getBean("certificateService");
 
     }
 
@@ -82,9 +84,26 @@ public class OuterRequestHandlerServlet extends HttpServlet {
         try {
 
             log.debug("Authenticate start");
-            if (!request.authenticate(userPreferencesService)) {
+            try {
+                if (!request.authenticate(certificateService)) {
+                    writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
+                    log.warn("Bad authentication data");
+                    return;
+                }
+            } catch (UsernameNotFoundException e) {
                 writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
-                log.warn("Bad authentication data");
+                return;
+            } catch (CertificateNotFoundException e) {
+                writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
+                return;
+            } catch (CertificateBlockedException e) {
+                writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
+                return;
+            } catch (CertificateExpiredException e) {
+                writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
+                return;
+            } catch (InvalidVerifySignatureException e) {
+                writer.write(request.buildResponse(Status.INCORRECT_AUTHENTICATION_DATA));
                 return;
             }
             log.debug("Authenticate finish");
