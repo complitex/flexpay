@@ -13,7 +13,6 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.flexpay.common.service.importexport.*;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.Consumer;
@@ -38,6 +37,7 @@ import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 @Transactional(readOnly = true)
 public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
@@ -102,7 +102,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 			return true;
 		}
 
-		InMemoryRawConsumersDataSource dataSource = new InMemoryRawConsumersDataSource(CollectionUtils.<RegistryRecord>set(data.getRegistryRecord()));
+		InMemoryRawConsumersDataSource dataSource = new InMemoryRawConsumersDataSource(set(data.getRegistryRecord()));
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
 
 		try {

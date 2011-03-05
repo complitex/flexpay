@@ -9,7 +9,7 @@
             action : "<s:url action="spFileUpload" namespace="/eirc" includeParams="none" />",
             validate : function() {
                 var v = "";
-                $("input[type=file]").each(function() {
+                $("input[type='file']").each(function() {
                     if (this.form.id == "inputForm") {
                         v = this.value;
                     }

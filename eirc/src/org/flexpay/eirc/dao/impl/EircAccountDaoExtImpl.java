@@ -87,32 +87,29 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
                         "left join p.personIdentities pi ");
 
         for (ObjectFilter filter : filters) {
-            if (filter.needFilter() && filter instanceof BuildingsFilter) {
-                hqlCount.append("inner join apartment.building b " +
-                                "left join b.buildingses buildingses ");
-                hql.append("inner join fetch apartment.building b " +
-                                "left join b.buildingses buildingses ");
-                break;
-            }
-            if (filter.needFilter() && filter instanceof StreetFilter) {
-                hqlCount.append("inner join apartment.building b " +
-                                "left join b.buildingses buildingses " +
-                                "left join buildingses.street street ");
-                hql.append("inner join fetch apartment.building b " +
-                                "left join b.buildingses buildingses " +
-                                "left join buildingses.street street ");
-                break;
-            }
-            if (filter.needFilter() && filter instanceof TownFilter) {
-                hqlCount.append("inner join apartment.building b " +
-                                "left join b.buildingses buildingses " +
-                                "left join buildingses.street street " +
-                                "left join street.parent town ");
-                hql.append("inner join fetch apartment.building b " +
-                                "left join b.buildingses buildingses " +
-                                "left join buildingses.street street " +
-                                "left join street.parent town ");
-                break;
+            if (filter.needFilter()) {
+                if (filter instanceof BuildingsFilter) {
+                    hqlCount.append("inner join apartment.building b " +
+                                    "left join b.buildingses buildingses ");
+                    hql.append("inner join fetch apartment.building b " +
+                                    "left join b.buildingses buildingses ");
+                } else if (filter instanceof StreetFilter) {
+                    hqlCount.append("inner join apartment.building b " +
+                                    "left join b.buildingses buildingses " +
+                                    "left join buildingses.street street ");
+                    hql.append("inner join fetch apartment.building b " +
+                                    "left join b.buildingses buildingses " +
+                                    "left join buildingses.street street ");
+                } else if (filter instanceof TownFilter) {
+                    hqlCount.append("inner join apartment.building b " +
+                                    "left join b.buildingses buildingses " +
+                                    "left join buildingses.street street " +
+                                    "left join street.parent town ");
+                    hql.append("inner join fetch apartment.building b " +
+                                    "left join b.buildingses buildingses " +
+                                    "left join buildingses.street street " +
+                                    "left join street.parent town ");
+                }
             }
         }
 
@@ -229,25 +226,24 @@ where count.c > 1
         whereClause.append(" where a.status=").append(ObjectWithStatus.STATUS_ACTIVE).append(" and c.end_date = '2100-12-31' and ca.end_date = '2100-12-31' ");
 
         for (ObjectFilter filter : filters) {
-            if (filter.needFilter() && filter instanceof BuildingsFilter) {
-                innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
-                           "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) ");
-                break;
-            }
-            if (filter.needFilter() && filter instanceof StreetFilter) {
-                innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
-                           "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) " +
-                           "left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0) "
-                );
-                break;
-            }
-            if (filter.needFilter() && filter instanceof TownFilter) {
-                innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
-                           "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) " +
-                           "left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0) " +
-                           "left outer join ab_towns_tbl town on town.id=street.town_id "
-                );
-                break;
+
+            if (filter.needFilter()) {
+
+                if (filter instanceof BuildingsFilter) {
+                    innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
+                               "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) ");
+                } else if (filter instanceof StreetFilter) {
+                    innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
+                               "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) " +
+                               "left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0) "
+                    );
+                } else if (filter instanceof TownFilter) {
+                    innerSql.append("inner join ab_buildings_tbl b on b.id=apartment.building_id " +
+                               "left outer join ab_building_addresses_tbl buildingses on b.id=buildingses.building_id and (buildingses.status=0) " +
+                               "left outer join ab_streets_tbl street on street.id=buildingses.street_id and (buildingses.status=0) " +
+                               "left outer join ab_towns_tbl town on town.id=street.town_id "
+                    );
+                }
             }
         }
 

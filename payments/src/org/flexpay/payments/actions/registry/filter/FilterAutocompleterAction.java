@@ -1,9 +1,9 @@
 package org.flexpay.payments.actions.registry.filter;
 
-import org.flexpay.common.persistence.filter.FilterObject;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.registry.filter.FilterData;
+import org.flexpay.common.persistence.filter.FilterObject;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_APARTMENT;
+import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_BUILDING;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
 
 public class FilterAutocompleterAction extends AccountantAWPActionSupport {
 

@@ -16,7 +16,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -32,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Town service layer implementation
@@ -237,7 +238,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		return townDaoExt.findTowns(regionFilter.getSelectedId(), sorters, pager);
 	}
 
-	/**
+    /**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
 	 *
 	 * @param parentFilter	 Filter to init

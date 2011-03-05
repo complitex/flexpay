@@ -17,7 +17,6 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
@@ -25,8 +24,6 @@ import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.PropertiesInitializer;
 import org.flexpay.common.service.PropertiesInitializerHolder;
 import org.flexpay.common.service.internal.SessionUtils;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -38,6 +35,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 @Transactional (readOnly = true)
 public class BuildingServiceImpl implements BuildingService, ParentService<BuildingsFilter> {
@@ -375,7 +376,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
 	}
 
-	/**
+    /**
 	 * Lookup building address by street id.
 	 *
 	 * @param streetStub  Street stub

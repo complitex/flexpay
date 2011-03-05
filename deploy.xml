@@ -1,60 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="flexpay-deploy">
 
-	<import file="sz/sz_build.xml" />
+    <import file="sz/sz_build.xml" />
     <import file="rent/rent_build.xml" />
-	<import file="ab_sync/ab_sync_build.xml" />
-	<import file="tc/tc_build.xml" />
+    <import file="ab_sync/ab_sync_build.xml" />
+    <import file="tc/tc_build.xml" />
 
-	<target name="sz.deploy.sjsas" depends="sz.war">
-		<antcall target="sz.deploy.sjsas.nobuild" />
-	</target>
+    <target name="sz.deploy.sjsas" depends="sz.war">
+        <antcall target="sz.deploy.sjsas.nobuild" />
+    </target>
 
-	<target name="sz.deploy.sjsas.nobuild">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${sz.war.name}" />
-		</antcall>
-	</target>
+    <target name="sz.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${sz.war.name}" />
+            <param name="application_name" value="${sz.app.name}" />
+        </antcall>
+    </target>
 
-	<target name="ab.deploy.sjsas" depends="ab.war">
-		<antcall target="ab.deploy.sjsas.nobuild" />
-	</target>
+    <target name="ab.deploy.sjsas" depends="ab.war">
+        <antcall target="ab.deploy.sjsas.nobuild" />
+    </target>
 
     <target name="ab.deploy.sjsas.nobuild">
         <antcall target="template.deploy.sjsas">
             <param name="application_archive" value="${distr.dir}/${ab.war.name}" />
+            <param name="application_name" value="${ab.app.name}" />
         </antcall>
     </target>
 
-	<target name="ab_sync.deploy.sjsas" depends="ab_sync.war">
-		<antcall target="ab_sync.deploy.sjsas.nobuild" />
-	</target>
+    <target name="ab_sync.deploy.sjsas" depends="ab_sync.war">
+        <antcall target="ab_sync.deploy.sjsas.nobuild" />
+    </target>
 
-	<target name="ab_sync.deploy.sjsas.nobuild">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${ab_sync.war.name}" />
-		</antcall>
-	</target>
+    <target name="ab_sync.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${ab_sync.war.name}" />
+            <param name="application_name" value="${ab_sync.app.name}" />
+        </antcall>
+    </target>
 
-	<target name="tc.deploy.sjsas" depends="tc.war">
-		<antcall target="tc.deploy.sjsas.nobuild" />
-	</target>
+    <target name="tc.deploy.sjsas" depends="tc.war">
+        <antcall target="tc.deploy.sjsas.nobuild" />
+    </target>
 
-	<target name="tc.deploy.sjsas.nobuild">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${tc.war.name}" />
-		</antcall>
-	</target>
+    <target name="tc.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${tc.war.name}" />
+            <param name="application_name" value="${tc.app.name}" />
+        </antcall>
+    </target>
 
-	<target name="payments.deploy.sjsas" depends="payments.war">
-		<antcall target="payments.deploy.sjsas.nobuild" />
-	</target>
+    <target name="payments.deploy.sjsas" depends="payments.war">
+        <antcall target="payments.deploy.sjsas.nobuild" />
+    </target>
 
-	<target name="payments.deploy.sjsas.nobuild">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${payments.war.name}" />
-		</antcall>
-	</target>
+    <target name="payments.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${payments.war.name}" />
+            <param name="application_name" value="${payments.app.name}" />
+        </antcall>
+    </target>
 
     <target name="rent.deploy.sjsas" depends="rent.war">
         <antcall target="rent.deploy.sjsas.nobuild" />
@@ -63,74 +68,42 @@
     <target name="rent.deploy.sjsas.nobuild">
         <antcall target="template.deploy.sjsas">
             <param name="application_archive" value="${distr.dir}/${rent.war.name}" />
+            <param name="application_name" value="${rent.app.name}" />
         </antcall>
     </target>
 
-	<target name="eirc.deploy.sjsas" depends="eirc.war">
-		<antcall target="eirc.deploy.sjsas.nobuild" />
-	</target>
+    <target name="eirc.deploy.sjsas" depends="eirc.war">
+        <antcall target="eirc.deploy.sjsas.nobuild" />
+    </target>
 
-	<target name="eirc.deploy.sjsas.nobuild">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${eirc.war.name}" />
-		</antcall>
-	</target>
+    <target name="eirc.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${eirc.war.name}" />
+            <param name="application_name" value="${eirc.app.name}" />
+        </antcall>
+    </target>
 
-<!--
-    <taskdef resource="cargo.tasks">
-        <classpath>
-            <fileset dir="${common.dir}/lib/cargo/">
-                <include name="*.jar" />
-            </fileset>
-            <fileset dir="${common.dir}/lib/cargo/glass">
-                <include name="*.jar" />
-            </fileset>
-            <fileset dir="${common.dir}/lib/commons/" includes="commons-logging-1.1.1.jar"/>
-        </classpath>
-    </taskdef>
+    <typedef classpath="${sjsas.root}/glassfish/lib/ant/ant-tasks.jar"
+             resource="org/apache/tools/ant/antlib.xml" />
+
+    <target name="glassfish.stop">
+        <glassfish-stop installdir="${sjsas.root}" domain="${sjsas.domain}" />
+    </target>
+
+    <target name="glassfish.start">
+        <glassfish-start installdir="${sjsas.root}" domain="${sjsas.domain}" />
+    </target>
 
     <target name="template.deploy.sjsas">
-        <cargo containerid="glassfish3x" home="${sjsas.root}" output="cargoout.log" log="cargo.log" loglevel="debug" action="start">
-            <configuration type="standalone">
-                <property name="cargo.remote.username" value="${sjsas.username}" />
-                <property name="cargo.remote.password" value="${sjsas.password}" />
-                <property name="cargo.rmi.port" value="4848" />
-                <property name="cargo.glassfish.adminPort" value="4848" />
-                <property name="cargo.logging" value="high" />
-                <property name="cargo.hostname" value="${sjsas.host}" />
-                <deployable type="war" file="${application_archive}" />
-            </configuration>
-        </cargo>
+        <glassfish-start installdir="${sjsas.root}" domain="${sjsas.domain}" />
+        <glassfish-undeploy installdir="${sjsas.root}" user="${sjsas.username}" passwordfile="${sjsas.password.file}"
+                          host="${sjsas.host}" port="${sjsas.adminPort}"
+                          name="${application_name}" />
+        <glassfish-stop installdir="${sjsas.root}" domain="${sjsas.domain}" />
+        <glassfish-start installdir="${sjsas.root}" domain="${sjsas.domain}" />
+        <glassfish-deploy installdir="${sjsas.root}" user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
+                          host="${sjsas.host}" port="${sjsas.adminPort}" force="true"
+                          file="${application_archive}" />
     </target>
--->
-
-     <target name="template.deploy.sjsas">
-        <exec executable="${sjsas.root}/bin/asadmin.bat" failonerror="true">
-            <arg value="--user=${sjsas.username}"/>
-            <arg value="--passwordfile=${sjsas.password.file}"/>
-            <arg value="--host=${sjsas.host}"/>
-            <arg value="--port=${sjsas.adminPort}"/>
-            <arg value="--interactive=false"/>
-            <arg value="deploy"/>
-            <arg value="--force"/>
-            <arg value="${application_archive}"/>
-        </exec>
-    </target>
-
-<!--
-	<taskdef name="sun-appserv-deploy"
-			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
-			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
-
-	<target name="template.deploy.sjsas">
-		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
-							file="${application_archive}" asinstalldir="${sjsas.root}" />
-	</target>
-
-	<target name="template.deploy.exploded.sjsas">
-		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
-							file="${application_archive}" asinstalldir="${sjsas.root}" />
-	</target>
--->
 
 </project>

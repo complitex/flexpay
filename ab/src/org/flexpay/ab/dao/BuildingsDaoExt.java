@@ -53,4 +53,5 @@ public interface BuildingsDaoExt {
 	 */
 	@NotNull
 	List<BuildingAddress> findBuildingAddresses(ArrayStack filters, Collection<? extends ObjectSorter> sorters, Page<BuildingAddress> pager);
+
 }

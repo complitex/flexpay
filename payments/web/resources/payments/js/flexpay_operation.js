@@ -41,14 +41,14 @@ var FPO = {
             $("tr.brief_operation_header_row").removeClass("brief_operation_header_row").addClass("full_operation_header_row");
             $("td.service_column").hide();
             $("td.service_provider_column").hide();
-            $("input[name=showDetails]").each(function() {
+            $("input[name='showDetails']").each(function() {
                 this.value = FPO.messages.listWithDetails;
             });
         } else {
             $("tr.full_operation_header_row").removeClass("full_operation_header_row").addClass("brief_operation_header_row");
             $("td.service_column").show();
             $("td.service_provider_column").show();
-            $("input[name=showDetails]").each(function() {
+            $("input[name='showDetails']").each(function() {
                 this.value = FPO.messages.listWithoutDetails;
             });
         }

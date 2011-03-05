@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.registry.RecordErrorsGroup;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,9 +21,45 @@ public class RecordErrorsGroupView {
 
     }
 
-    public RecordErrorsGroupView(RecordErrorsGroup group, ClassToTypeRegistry typeRegistry) {
+    public RecordErrorsGroupView(@NotNull RecordErrorsGroup group, ClassToTypeRegistry typeRegistry) {
         this.group = group;
         setName(typeRegistry);
+    }
+
+    public String getTownName() {
+        return group.getTownName() != null ? group.getTownName().replace("\"", "\\\"") : null;
+    }
+
+    public String getStreetType() {
+        return group.getStreetType() != null ? group.getStreetType().replace("\"", "\\\"") : null;
+    }
+
+    public String getStreetName() {
+        return group.getStreetName() != null ? group.getStreetName().replace("\"", "\\\"") : null;
+    }
+
+    public String getBuildingNumber() {
+        return group.getBuildingNumber() != null ? group.getBuildingNumber().replace("\"", "\\\"") : null;
+    }
+
+    public String getBuildingBulk() {
+        return group.getBuildingBulk() != null ? group.getBuildingBulk().replace("\"", "\\\"") : null;
+    }
+
+    public String getApartmentNumber() {
+        return group.getApartmentNumber() != null ? group.getApartmentNumber().replace("\"", "\\\"") : null;
+    }
+
+    public String getLastName() {
+        return group.getLastName() != null ? group.getLastName().replace("\"", "\\\"") : null;
+    }
+
+    public String getMiddleName() {
+        return group.getMiddleName() != null ? group.getMiddleName().replace("\"", "\\\"") : null;
+    }
+
+    public String getFirstName() {
+        return group.getFirstName() != null ? group.getFirstName().replace("\"", "\\\"") : null;
     }
 
     public String getName() {
@@ -32,6 +69,8 @@ public class RecordErrorsGroupView {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     public final void setName(ClassToTypeRegistry typeRegistry) {
 

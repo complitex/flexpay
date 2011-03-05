@@ -19,7 +19,6 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -29,13 +28,15 @@ import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.AttributeCopier;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.*;
 
 @Transactional (readOnly = true)
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
@@ -465,7 +466,13 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return filters;
 	}
 
-	/**
+    @Nullable
+    @Override
+    public Street findStreet(ArrayStack filters) {
+        return streetDaoExt.findStreet(filters);
+    }
+
+    /**
 	 * Get DAO implementation working with Name time-dependent objects
 	 *
 	 * @return GenericDao implementation

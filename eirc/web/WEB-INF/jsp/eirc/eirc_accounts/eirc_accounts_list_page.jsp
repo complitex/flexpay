@@ -113,8 +113,8 @@
             "eircAccountSorterByAccountNumber.order": $("#eircAccountSorterByAccountNumberOrder").val(),
             "eircAccountSorterByAddress.active": $("#eircAccountSorterByAddressActive").val(),
             "eircAccountSorterByAddress.order": $("#eircAccountSorterByAddressOrder").val(),
-            "pager.pageNumber":$("input[name=curPage]").val(),
-            "pager.pageSize": $("select[name=pager.pageSize]:first").val()
+            "pager.pageNumber":$("input[name='curPage']").val(),
+            "pager.pageSize": $("select[name='pager.pageSize']:first").val()
         };
 
         if (params != null && params != undefined) {

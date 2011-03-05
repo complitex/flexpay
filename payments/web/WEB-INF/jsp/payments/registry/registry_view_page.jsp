@@ -24,16 +24,16 @@
 
 <script type="text/javascript">
 
-    $("select[name=recordStatusFilter.selectedId]").change(function() {
+    $("select[name='recordStatusFilter.selectedId']").change(function() {
         if (this.value == <s:property value="errorStatusCode" />) {
             $("#errorTypeBlock").show("fast");
         } else {
             $("#errorTypeBlock").hide("fast");
-            $("select[name=importErrorTypeFilter.selectedType]").val(-1);
+            $("select[name='importErrorTypeFilter.selectedType']").val(-1);
         }
     });
 
-    $("select[name=recordStatusFilter.selectedId]").change();
+    $("select[name='recordStatusFilter.selectedId']").change();
 
     $("#result").ready(function() {
         pagerAjax();
@@ -45,8 +45,8 @@
             action: "<s:url action="registryRecordsListAjax" namespace="/payments" includeParams="none" />",
             params: {
                 "registry.id":<s:property value="registry.id" />,
-                "importErrorTypeFilter.selectedType" : $("select[name=importErrorTypeFilter.selectedType]").val(),
-                "recordStatusFilter.selectedId" : $("select[name=recordStatusFilter.selectedId]").val()
+                "importErrorTypeFilter.selectedType" : $("select[name='importErrorTypeFilter.selectedType']").val(),
+                "recordStatusFilter.selectedId" : $("select[name='recordStatusFilter.selectedId']").val()
             }
         });
     }

@@ -47,7 +47,7 @@ function FPFileUploadForm(formId, options) {
     var test = "";
     var test1 = null;
 
-    $("input[type=file]").each(function() {
+    $("input[type='file']").each(function() {
         if (this.form.id == options.formId && test == "") {
             test = this.name;
             test1 = $(this).change(function() {

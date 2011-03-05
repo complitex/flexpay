@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -147,7 +146,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 		@SuppressWarnings ({"unchecked"})
 		List<Registry> rFiles = getHibernateTemplate().executeFind(new HibernateCallback() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery("Registry.getRegistriesFiles")
 						.setParameterList("ids", ids)
 						.list();

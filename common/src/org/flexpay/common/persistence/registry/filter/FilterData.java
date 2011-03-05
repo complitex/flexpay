@@ -3,7 +3,7 @@ package org.flexpay.common.persistence.registry.filter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
+import static org.flexpay.common.persistence.filter.StringValueFilter.*;
 
 public class FilterData {
 

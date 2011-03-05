@@ -11,7 +11,7 @@
 	// sum update
 	function updateTotalPay() {
 		var total = 0.00;
-		var elements = $("input[id^=demoQuittancePayForm_servicePayments_]");
+		var elements = $("input[id^='demoQuittancePayForm_servicePayments_']");
 
 		for (var i = 0; i < elements.length; i++) {
 			var value = $(elements[i]).val();

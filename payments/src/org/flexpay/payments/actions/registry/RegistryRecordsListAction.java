@@ -5,10 +5,9 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.StringValueFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.common.persistence.registry.filter.StringFilter;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -22,11 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.flexpay.common.persistence.registry.RegistryRecordStatus.PROCESSED_WITH_ERROR;
-import static org.flexpay.common.persistence.registry.filter.StringFilter.*;
+import static org.flexpay.common.persistence.filter.StringValueFilter.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
-
 
 public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
 
@@ -34,11 +31,11 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 	private List<RegistryRecord> records = list();
     private Map<Integer, ServiceType> types = map();
 
-    private StringFilter townFilter = new StringFilter();
-    private StringFilter streetFilter = new StringFilter();
-    private StringFilter buildingFilter = new StringFilter();
-    private StringFilter apartmentFilter = new StringFilter();
-    private StringFilter fioFilter = new StringFilter();
+    private StringValueFilter townFilter = new StringValueFilter();
+    private StringValueFilter streetFilter = new StringValueFilter();
+    private StringValueFilter buildingFilter = new StringValueFilter();
+    private StringValueFilter apartmentFilter = new StringValueFilter();
+    private StringValueFilter fioFilter = new StringValueFilter();
 
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
@@ -175,23 +172,23 @@ public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSuppo
 		this.registry = registry;
 	}
 
-    public void setTownFilter(StringFilter townFilter) {
+    public void setTownFilter(StringValueFilter townFilter) {
         this.townFilter = townFilter;
     }
 
-    public void setStreetFilter(StringFilter streetFilter) {
+    public void setStreetFilter(StringValueFilter streetFilter) {
         this.streetFilter = streetFilter;
     }
 
-    public void setBuildingFilter(StringFilter buildingFilter) {
+    public void setBuildingFilter(StringValueFilter buildingFilter) {
         this.buildingFilter = buildingFilter;
     }
 
-    public void setApartmentFilter(StringFilter apartmentFilter) {
+    public void setApartmentFilter(StringValueFilter apartmentFilter) {
         this.apartmentFilter = apartmentFilter;
     }
 
-    public void setFioFilter(StringFilter fioFilter) {
+    public void setFioFilter(StringValueFilter fioFilter) {
         this.fioFilter = fioFilter;
     }
 

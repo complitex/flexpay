@@ -84,11 +84,12 @@
 
         $.getJSON("<s:url action="checkRegistryErrorsNumber" includeParams="none" />", {"registry.id": <s:property value="registry.id" />},
             function(data) {
-                $erNum.text(data.errorsNumber);
+                $("#errorsNumber").text(data.errorsNumber);
                 if (data.errorMessage != "") {
                     $("#messagesBlock").html(data.errorMessage);
                 }
             });
+
     }
 
 

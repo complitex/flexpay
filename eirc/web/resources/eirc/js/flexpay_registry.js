@@ -6,12 +6,12 @@ var FPR = {
     errorStatusCode : -10,
     errorTypeBlockSelector : "#errorTypeBlock",
     groupErrorsSelector : "#groupErrors",
-    recordStatusFilterSelector : "select[name=recordStatusFilter.selectedId]",
-    importErrorTypeFilter : "select[name=importErrorTypeFilter.selectedType]",
-    errorTypeFilterSelector : "input[name=errorType]",
-    recordStatusFilter : "input[name=recordStatus]",
-    fioFilter : "input[name=fioFilter]",
-    fio : "input[name=fio]",
+    recordStatusFilterSelector : "select[name='recordStatusFilter.selectedId']",
+    importErrorTypeFilter : "select[name='importErrorTypeFilter.selectedType']",
+    errorTypeFilterSelector : "input[name='errorType']",
+    recordStatusFilter : "input[name='recordStatus']",
+    fioFilter : "input[name='fioFilter']",
+    fio : "input[name='fio']",
     groups : [],
 
     $etBlock : $(this.errorTypeBlockSelector),
@@ -34,12 +34,12 @@ var FPR = {
             urlSelectCorrectionType : "",
             errorTypeBlockSelector : "#errorTypeBlock",
             groupErrorsSelector : "#groupErrors",
-            recordStatusFilterSelector : "select[name=recordStatusFilter.selectedId]",
-            importErrorTypeFilter : "select[name=importErrorTypeFilter.selectedType]",
-            errorTypeFilterSelector : "input[name=errorType]",
-            recordStatusFilter : "input[name=recordStatus]",
-            fio : "input[name=fio]",
-            fioFilter : "input[name=fioFilter]"
+            recordStatusFilterSelector : "select[name='recordStatusFilter.selectedId']",
+            importErrorTypeFilter : "select[name='importErrorTypeFilter.selectedType']",
+            errorTypeFilterSelector : "input[name='errorType']",
+            recordStatusFilter : "input[name='recordStatus']",
+            fio : "input[name='fio']",
+            fioFilter : "input[name='fioFilter']"
         }, opts);
 
         this.registryId = opt.registryId;
@@ -100,7 +100,7 @@ var FPR = {
                 middleName:p[7],
                 firstName:p[8],
                 numberOfRecords:p[9]
-            }
+            };
         }
     },
 

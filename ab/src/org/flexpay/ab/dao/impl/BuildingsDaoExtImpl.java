@@ -19,6 +19,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -27,6 +29,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class BuildingsDaoExtImpl extends HibernateDaoSupport implements BuildingsDaoExt {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -159,7 +163,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 		return new BuildingsSorterStub();
 	}
 
-	@Required
+    @Required
 	public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
 	}

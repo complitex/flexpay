@@ -34,6 +34,10 @@
             <result>/WEB-INF/jsp/eirc/registry/registry_record_errors_types_list.jsp</result>
         </action>
 
+        <action name="registryRecordErrorFixAjax" class="registryRecordErrorFixAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
 		<action name="registryView" class="registryViewAction">
             <result type="tiles">eirc.registry.view</result>
 			<result name="redirectError" type="redirect-action">registriesList</result>

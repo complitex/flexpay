@@ -123,7 +123,7 @@
             }
 		},
 		setEnumValue : function (value, i) {
-			$("input[type=hidden][name=enumValues[" + i + "]]").val(value);
+			$("input[type='hidden'][name='enumValues[" + i + "]']").val(value);
 			$("#enumValueDisp_" + i).text(value);
 		},
 		getAllValues : function() {

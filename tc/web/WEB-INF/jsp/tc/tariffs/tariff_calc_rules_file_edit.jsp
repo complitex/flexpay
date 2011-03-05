@@ -4,7 +4,7 @@
 <script type="text/javascript">
 
     function validateForm() {
-        var fileVal = $("input[name=upload]").val();
+        var fileVal = $("input[name='upload']").val();
         if (fileVal == null || fileVal == "") {
             alert("<s:text name="common.error.no_file" />");
             return false;

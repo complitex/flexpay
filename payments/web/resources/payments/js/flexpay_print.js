@@ -20,7 +20,7 @@ var FPP = {
     currentFieldIndex : 0,
 
     createFieldChain : function () {
-        var paymentInputs = $("input[id^=payments_]").each(function() {
+        var paymentInputs = $("input[id^='payments_']").each(function() {
             FPP.fieldChain.push(this.id);
         });
         // adding total input sum field to field chain
@@ -280,7 +280,7 @@ var FPP = {
         var input = $("#inputSum");
         var change = $("#changeSum");
 
-        $("input[id^=payments_]").each(function() {
+        $("input[id^='payments_']").each(function() {
             var val = this.value;
             if (!FPP.validate(val)) {
                 total.val("");

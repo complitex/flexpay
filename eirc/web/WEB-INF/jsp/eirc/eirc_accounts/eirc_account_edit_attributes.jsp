@@ -87,10 +87,10 @@
 
         function setValues() {
             $.each([<s:iterator value="attributeTypes" status="i"><s:property value="id" /><s:if test="!#i.last">,</s:if></s:iterator>], function(i, typeId) {
-                $("input[name=attr" + typeId + "]:radio:checked").each(function() {
-                    var checkedValue = $("input[name=\"attributes[" + this.value + "]\"]").val();
-                    $("input[name=attr" + typeId + "]:radio").each(function() {
-                        $("input[name=\"attributes[" + this.value + "]\"]").val(checkedValue);
+                $("input[name='attr" + typeId + "']:radio:checked").each(function() {
+                    var checkedValue = $("input[name='attributes[" + this.value + "]']").val();
+                    $("input[name='attr" + typeId + "']:radio").each(function() {
+                        $("input[name='attributes[" + this.value + "]']").val(checkedValue);
                     });
                 });
             });

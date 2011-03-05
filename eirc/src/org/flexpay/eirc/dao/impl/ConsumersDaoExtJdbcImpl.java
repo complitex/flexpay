@@ -48,7 +48,7 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
 	@Override
 	public Consumer findConsumerByService(String accountNumber, Long code) {
 		Object[] params = {accountNumber, code};
-		List results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByService", params);
+		List<?> results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByService", params);
 		return results.isEmpty() ? null : (Consumer) results.get(0);
 	}
 

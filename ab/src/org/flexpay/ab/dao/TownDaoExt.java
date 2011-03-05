@@ -1,5 +1,6 @@
 package org.flexpay.ab.dao;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
@@ -20,4 +21,8 @@ public interface TownDaoExt {
 	 */
 	@NotNull
 	List<Town> findTowns(Long regionId, Collection<? extends ObjectSorter> sorters, Page<Town> pager);
+
+    @NotNull
+    Town findTown(@NotNull ArrayStack arrayStack);
+
 }
