@@ -6,9 +6,14 @@
     <%@include file="/WEB-INF/jsp/payments/registry/data/registry_records_group_info.jsp"%>
 </s:else>
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
+<table cellpadding="3" cellspacing="1" border="0" width="97%">
     <tr>
         <td id="result"></td>
+    </tr>
+    <tr>
+        <td>
+            <input id="setBut" type="button" class="btn-exit" onclick="set();" value="<s:text name="common.set" />" style="display:none;" />
+        </td>
     </tr>
 </table>
 
@@ -24,7 +29,12 @@
         });
     }
 
-    function set(id) {
+    function showBut() {
+        $("#setBut").show();
+    }
+
+    function set() {
+        var id = $("input[type='radio'][name='objectIds']:checked").val();
         $.post("<s:url action="setCorrection" includeParams="none" />", {
                     <s:if test="group != null">
                         <s:property value="group.townName != null ? '\"group.townName\":\"' + group.townName + '\",' : ''" escape="false" />

@@ -6,7 +6,7 @@
     <%@include file="/WEB-INF/jsp/payments/registry/data/registry_records_group_info.jsp"%>
 </s:else>
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
+<table cellpadding="3" cellspacing="1" border="0" width="97%">
     <tr>
         <td>
             <table width="100%">

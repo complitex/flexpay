@@ -262,9 +262,9 @@
             containerCss: {
                 backgroundColor:"#fff",
                 borderColor:"#0063dc",
-                height:550,
+                height:566,
                 padding:0,
-                width:800
+                width:816
             },
             escClose:true,
             overlayClose:true,
