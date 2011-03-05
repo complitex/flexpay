@@ -20,7 +20,7 @@
         <tr valign="middle" class="cols_1">
             <td class="col_1s" align="right"><s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />&nbsp;</td>
             <td class="col">
-                <input type="radio" name="objectIds" onclick="set(<s:property value="id" />);" value="<s:property value="id" />" />
+                <input type="radio" name="objectIds" onclick="showBut();" value="<s:property value="id" />" />
             </td>
             <td class="col"><s:property value="#person.defaultIdentity.lastName" /></td>
             <td class="col"><s:property value="#person.defaultIdentity.firstName" /></td>

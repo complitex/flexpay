@@ -1,6 +1,40 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
+<script type="text/javascript">
+
+    $(function() {
+
+        FP.switchSorter(["recordErrorsGroupSorterByNameButton", "recordErrorsGroupSorterByNumberOfErrorsButton"]);
+
+        FPR.openedGroup = -1;
+        FPR.groups = [];
+
+        for (var i = 0; i < <s:property value="errorGroups.size()" />; i++) {
+            createGroupCollapser(i);
+        }
+
+        FPR.addGroups([
+            <s:iterator value="errorGroups" status="status">
+                [
+                    <s:if test="group.townName != null">"<s:property value="group.townName" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.streetType != null">"<s:property value="group.streetType" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.streetName != null">"<s:property value="group.streetName" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.buildingNumber != null">"<s:property value="group.buildingNumber" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.buildingBulk != null">"<s:property value="group.buildingBulk" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.apartmentNumber != null">"<s:property value="group.apartmentNumber" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.lastName != null">"<s:property value="group.lastName" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.middleName != null">"<s:property value="group.middleName" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.firstName != null">"<s:property value="group.firstName" />"</s:if><s:else>null</s:else>,
+                    <s:property value="group.numberOfRecords != null ? group.numberOfRecords : 0" />
+                ]<s:property value="#status.index < errorGroups.size() - 1 ? ',' : ''" />
+            </s:iterator>
+        ]);
+
+    });
+
+</script>
+
 <input id="selectedGroupIndex" type="hidden" />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -58,37 +92,3 @@
 <div id="buildingModal" style="display:none;">
     <%@include file="/WEB-INF/jsp/eirc/registry/modal/building_modal.jsp"%>
 </div>
-
-<script type="text/javascript">
-
-    $(function() {
-
-        FP.switchSorter(["recordErrorsGroupSorterByNameButton", "recordErrorsGroupSorterByNumberOfErrorsButton"]);
-
-        FPR.openedGroup = -1;
-        FPR.groups = [];
-
-        for (var i = 0; i < <s:property value="errorGroups.size()" />; i++) {
-            createGroupCollapser(i);
-        }
-
-        FPR.addGroups([
-            <s:iterator value="errorGroups" status="status">
-                [
-                    <s:property value="townName != null ? '\"' + townName + '\",' : 'null,'" escape="false" />
-                    <s:property value="streetType != null ? '\"' + streetType + '\",' : 'null,'" escape="false" />
-                    <s:property value="streetName != null ? '\"' + streetName + '\",' : 'null,'" escape="false" />
-                    <s:property value="buildingNumber != null ? '\"' + buildingNumber + '\",' : 'null,'" escape="false" />
-                    <s:property value="buildingBulk != null ? '\"' + buildingBulk + '\",' : 'null,'" escape="false" />
-                    <s:property value="apartmentNumber != null ? '\"' + apartmentNumber + '\",' : 'null,'" escape="false" />
-                    <s:property value="lastName != null ? '\"' + lastName + '\",' : 'null,'" escape="false" />
-                    <s:property value="middleName != null ? '\"' + middleName + '\",' : 'null,'" escape="false" />
-                    <s:property value="firstName != null ? '\"' + firstName + '\",' : 'null,'" escape="false" />
-                    <s:property value="group.numberOfRecords != null ? group.numberOfRecords : 0" />
-                ]<s:property value="#status.index < errorGroups.size() - 1 ? ',' : ''" />
-            </s:iterator>
-        ]);
-
-    });
-
-</script>

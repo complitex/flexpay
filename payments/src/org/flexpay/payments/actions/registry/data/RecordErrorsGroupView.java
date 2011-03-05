@@ -26,42 +26,6 @@ public class RecordErrorsGroupView {
         setName(typeRegistry);
     }
 
-    public String getTownName() {
-        return group.getTownName() != null ? group.getTownName().replace("\"", "\\\"") : null;
-    }
-
-    public String getStreetType() {
-        return group.getStreetType() != null ? group.getStreetType().replace("\"", "\\\"") : null;
-    }
-
-    public String getStreetName() {
-        return group.getStreetName() != null ? group.getStreetName().replace("\"", "\\\"") : null;
-    }
-
-    public String getBuildingNumber() {
-        return group.getBuildingNumber() != null ? group.getBuildingNumber().replace("\"", "\\\"") : null;
-    }
-
-    public String getBuildingBulk() {
-        return group.getBuildingBulk() != null ? group.getBuildingBulk().replace("\"", "\\\"") : null;
-    }
-
-    public String getApartmentNumber() {
-        return group.getApartmentNumber() != null ? group.getApartmentNumber().replace("\"", "\\\"") : null;
-    }
-
-    public String getLastName() {
-        return group.getLastName() != null ? group.getLastName().replace("\"", "\\\"") : null;
-    }
-
-    public String getMiddleName() {
-        return group.getMiddleName() != null ? group.getMiddleName().replace("\"", "\\\"") : null;
-    }
-
-    public String getFirstName() {
-        return group.getFirstName() != null ? group.getFirstName().replace("\"", "\\\"") : null;
-    }
-
     public String getName() {
         return name;
     }
@@ -69,8 +33,6 @@ public class RecordErrorsGroupView {
     public void setName(String name) {
         this.name = name;
     }
-
-
 
     public final void setName(ClassToTypeRegistry typeRegistry) {
 

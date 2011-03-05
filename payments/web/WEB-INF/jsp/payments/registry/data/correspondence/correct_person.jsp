@@ -24,6 +24,11 @@
     <tr>
         <td id="result"></td>
     </tr>
+    <tr>
+        <td>
+            <input id="setBut" type="button" class="btn-exit" onclick="set();" value="<s:text name="common.set" />" style="display:none;" />
+        </td>
+    </tr>
 </table>
 
 <script type="text/javascript">
@@ -41,18 +46,23 @@
         });
     }
 
-    function set(id) {
+    function showBut() {
+        $("#setBut").show();
+    }
+
+    function set() {
+        var id = $("input[type='radio'][name='objectIds']:checked").val();
         $.post("<s:url action="setCorrection" includeParams="none" />", {
                     <s:if test="group != null">
-                        <s:property value="group.townName != null ? '\"group.townName\":\"' + group.townName + '\",' : ''" escape="false" />
-                        <s:property value="group.streetType != null ? '\"group.streetType\":\"' + group.streetType + '\",' : ''" escape="false" />
-                        <s:property value="group.streetName != null ? '\"group.streetName\":\"' + group.streetName + '\",' : ''" escape="false" />
-                        <s:property value="group.buildingNumber != null ? '\"group.buildingNumber\":\"' + group.buildingNumber + '\",' : ''" escape="false" />
-                        <s:property value="group.buildingBulk != null ? '\"group.buildingBulk\":\"' + group.buildingBulk + '\",' : ''" escape="false" />
-                        <s:property value="group.apartmentNumber != null ? '\"group.apartmentNumber\":\"' + group.apartmentNumber + '\",' : ''" escape="false" />
-                        <s:property value="group.lastName != null ? '\"group.lastName\":\"' + group.lastName + '\",' : ''" escape="false" />
-                        <s:property value="group.middleName != null ? '\"group.middleName\":\"' + group.middleName + '\",' : ''" escape="false" />
-                        <s:property value="group.middleName != null ? '\"group.lastName\":\"' + group.middleName + '\",' : ''" escape="false" />
+                        <s:if test="group.townName != null">"group.townName":"<s:property value="group.townName" />",</s:if>
+                        <s:if test="group.streetType != null">"group.streetType":"<s:property value="group.streetType" />",</s:if>
+                        <s:if test="group.streetName != null">"group.streetName":"<s:property value="group.streetName" />",</s:if>
+                        <s:if test="group.buildingNumber != null">"group.buildingNumber":"<s:property value="group.buildingNumber" />",</s:if>
+                        <s:if test="group.buildingBulk != null">"group.buildingBulk":"<s:property value="group.buildingBulk" />",</s:if>
+                        <s:if test="group.apartmentNumber != null">"group.apartmentNumber":"<s:property value="group.apartmentNumber" />",</s:if>
+                        <s:if test="group.lastName != null">"group.lastName":"<s:property value="group.lastName" />",</s:if>
+                        <s:if test="group.middleName != null">"group.middleName":"<s:property value="group.middleName" />",</s:if>
+                        <s:if test="group.firstName != null">"group.firstName":"<s:property value="group.firstName" />",</s:if>
                         "group.errorType":<s:property value="group.errorType" />,
                         "registry.id":<s:property value="registry.id" />,
                     </s:if><s:else>
