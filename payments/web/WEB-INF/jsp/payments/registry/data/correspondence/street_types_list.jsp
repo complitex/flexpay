@@ -12,7 +12,7 @@
         <tr valign="middle" class="cols_1">
             <td class="col_1s"><s:property value="#rowstatus.index + 1" /></td>
             <td class="col">
-                <input type="radio" name="objectIds" onclick="set(<s:property value="id" />);" value="<s:property value="id" />" />
+                <input type="radio" name="objectIds" onclick="showBut();" value="<s:property value="id" />" />
             </td>
             <td class="col"><s:property value="getTranslationName(translations)" /></td>
             <td class="col"><s:property value="getTranslation(translations).shortName" /></td>
