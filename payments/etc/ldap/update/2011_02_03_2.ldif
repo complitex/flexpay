@@ -190,7 +190,6 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 objectClass: flexpayGroup
-flexpayGroupRole: buhgalter
 flexpayGroupRole: seniorCashier
 
 ########################################################################################################################
@@ -245,6 +244,14 @@ changetype: modify
 add: flexpayGroupRole
 flexpayGroupRole: seniorCashier
 
+# PAYMENTS_TRADING_DAY_OPERATION_RETURN, groups, opensso.java.net
+dn: cn=PAYMENTS_TRADING_DAY_OPERATION_RETURN,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: objectClass
+objectClass: flexpayGroup
+-
+add: flexpayGroupRole
+flexpayGroupRole: buhgalter
 
 dn: dc=opensso,dc=java,dc=net
 changetype: modify
