@@ -28,6 +28,7 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
+    @Override
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -43,7 +44,7 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 
 				processManager.createProcess("GenerateQuittancePDF", contextVariables);
 
-				addActionError(getText("eirc.quittance.printing_started"));
+				addActionMessage(getText("eirc.quittance.printing_started"));
 			}
 		}
 
@@ -85,6 +86,7 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -43,6 +43,7 @@ public class QuittancePayAction extends FPActionSupport {
 	private QuittancePaymentStatusService paymentStatusService;
 
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 
 		if (quittance.getId() == null && StringUtils.isBlank(quittanceNumber)) {
@@ -159,6 +160,7 @@ public class QuittancePayAction extends FPActionSupport {
 	}
 
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
