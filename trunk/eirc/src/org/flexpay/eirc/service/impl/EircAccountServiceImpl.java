@@ -182,6 +182,18 @@ public class EircAccountServiceImpl implements EircAccountService {
 		return accounts.isEmpty() ? null : accounts.get(0);
 	}
 
+    /**
+     * Read account info
+     *
+     * @param stub Account stub
+     * @return EircAccount if found, or <code>null</code> if stub references no object
+     */
+    @Nullable
+    @Override
+    public EircAccount read(@NotNull Stub<EircAccount> stub) {
+        return eircAccountDaoExt.readAccountNotFull(stub.getId());
+    }
+
 	/**
 	 * Read full account info, includes person and service
 	 *

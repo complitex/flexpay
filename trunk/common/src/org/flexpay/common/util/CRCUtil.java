@@ -12,7 +12,7 @@ public class CRCUtil {
 	 *        crc ^= *buf++;
 	 *        i = 8;
 	 *        do {
-	 *           if(crc & 1)
+	 *           if (crc & 1)
 	 *             crc = ( crc >> 1 ) ^ 0x8408;
 	 *           else
 	 *             crc >>= 1;

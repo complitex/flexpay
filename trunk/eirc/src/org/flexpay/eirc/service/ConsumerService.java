@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
@@ -22,6 +23,14 @@ public interface ConsumerService {
 	 * @return Persistent consumer if found, or <code>null</code> otherwise
 	 */
 	Consumer findConsumer(Consumer example);
+
+    /**
+     * Try to find persistent consumer by EIRC account stub
+     *
+     * @param eircAccountStub EIRC account stub
+     * @return List of consumers if found, or <code>null</code> otherwise
+     */
+    List<Consumer> findConsumers(Stub<EircAccount> eircAccountStub);
 
 	/**
 	 * Create or update Consumer object

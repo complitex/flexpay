@@ -28,6 +28,8 @@ public interface EircAccountDaoExt {
 	 */
 	EircAccount findAccount(@NotNull Long apartmentId);
 
+    EircAccount readAccountNotFull(@NotNull Long accountId);
+
     @NotNull
     List<EircAccount> findAccounts(@NotNull Collection<? extends EircAccountSorter> sorters,  @NotNull Collection<ObjectFilter> filters, @NotNull Integer output, Page<EircAccount> pager);
 

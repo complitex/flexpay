@@ -3,6 +3,7 @@ package org.flexpay.eirc.dao;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.EircAccount;
 
 import java.util.Collection;
 import java.util.List;
@@ -66,4 +67,5 @@ public interface ConsumerDao extends GenericDao<Consumer, Long> {
      */
     List<Consumer> findConsumersByERCAccount(String ercAccount);
 
+    List<Consumer> findConsumersByEIRCAccount(Long eircAccountId);
 }

@@ -120,7 +120,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 				newRegistry.setAmount(new BigDecimal(amountStr));
 			}
 			if (messageFieldList.size() > n) {
-				if(!parseContainers(newRegistry, messageFieldList.get(++n))) {
+				if (!parseContainers(newRegistry, messageFieldList.get(++n))) {
 					return null;
 				}
 			}

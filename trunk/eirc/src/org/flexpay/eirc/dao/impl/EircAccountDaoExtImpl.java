@@ -69,6 +69,16 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
 		return (EircAccount) accounts.get(0);
 	}
 
+    @Override
+    public EircAccount readAccountNotFull(@NotNull Long accountId) {
+        List<?> accounts = getHibernateTemplate().findByNamedQuery("EircAccount.read", accountId);
+        if (accounts.isEmpty()) {
+            return null;
+        }
+
+        return (EircAccount) accounts.get(0);
+    }
+
     @SuppressWarnings({"unchecked"})
     private List<EircAccount> getAllEircAccounts(@NotNull Collection<? extends EircAccountSorter> sorters,
                                                  @NotNull Collection<ObjectFilter> filters, final Page<EircAccount> pager) {

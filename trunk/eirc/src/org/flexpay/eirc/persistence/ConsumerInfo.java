@@ -1,12 +1,13 @@
 package org.flexpay.eirc.persistence;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
 import java.util.Set;
+
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * Consumer info is a general consumer info given by provider
@@ -127,12 +128,12 @@ public class ConsumerInfo extends DomainObjectWithStatus {
         StringBuilder sb = new StringBuilder();
         sb.append(lastName);
 
-        if (StringUtils.isNotEmpty(firstName)) {
+        if (isNotEmpty(firstName)) {
             sb.append(" ");
             sb.append(firstName.charAt(0));
             sb.append(".");
 
-            if (StringUtils.isNotEmpty(middleName)) {
+            if (isNotEmpty(middleName)) {
                 sb.append(" ");
                 sb.append(middleName.charAt(0));
                 sb.append(".");
@@ -151,7 +152,7 @@ public class ConsumerInfo extends DomainObjectWithStatus {
         sb.append(" ");
         sb.append(buildingNumber);
 
-        if (StringUtils.isNotEmpty(buildingBulk)) {
+        if (isNotEmpty(buildingBulk)) {
             sb.append("/");
             sb.append(buildingBulk);
         }

@@ -20,6 +20,28 @@
 			<result name="redirectError" type="redirect-action">eircAccountsList</result>
 		</action>
 
+        <action name="eircAccountAddConsumer" class="eircAccountAddConsumerAction">
+            <result name="input" type="tiles">eirc.eirc_account.add_consumer</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">eircAccountView</param>
+                <param name="parse">true</param>
+                <param name="output">${output}</param>
+                <param name="apartmentFilter">${apartmentFilter}</param>
+                <param name="buildingFilter">${buildingFilter}</param>
+                <param name="streetFilter">${streetFilter}</param>
+                <param name="townFilter">${townFilter}</param>
+                <param name="regionFilter">${regionFilter}</param>
+                <param name="countryFilter">${countryFilter}</param>
+                <param name="eircAccountSorterByAccountNumber.active">${eircAccountSorterByAccountNumber.active}</param>
+                <param name="eircAccountSorterByAccountNumber.order">${eircAccountSorterByAccountNumber.order}</param>
+                <param name="eircAccountSorterByAddress.active">${eircAccountSorterByAddress.active}</param>
+                <param name="eircAccountSorterByAddress.order">${eircAccountSorterByAddress.order}</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+                <param name="pager.pageSize">${pager.pageSize}</param>
+                <param name="eircAccount.id">${eircAccount.id}</param>
+            </result>
+        </action>
+
         <action name="eircAccountEditConsumerAttributes" class="eircAccountEditConsumerAttributesAction">
             <result name="input" type="tiles">eirc.eirc_account.edit_consumer_attributes</result>
             <result name="redirectError" type="redirect-action">eircAccountsList</result>
@@ -61,26 +83,25 @@
             </result>
         </action>
 
-		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
-			<result type="tiles">eirc.eirc_account.create.form1</result>
-		</action>
-
-		<action name="eircAccountCreateForm2" class="eircAccountCreateForm2Action">
-			<result type="tiles">eirc.eirc_account.create.form2</result>
-			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
-		</action>
-
 		<action name="eircAccountCreate" class="eircAccountCreateAction">
-			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
-			<result name="redirectForm2" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm2</param>
-				<param name="parse">true</param>
-				<param name="apartmentId">${apartmentId}</param>
-			</result>
+			<result name="input" type="tiles">eirc.eirc_account.create</result>
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">eircAccountView</param>
 				<param name="parse">true</param>
-				<param name="eircAccount.id">${eircAccount.id}</param>
+                <param name="output">${output}</param>
+                <param name="apartmentFilter">${apartmentFilter}</param>
+                <param name="buildingFilter">${buildingFilter}</param>
+                <param name="streetFilter">${streetFilter}</param>
+                <param name="townFilter">${townFilter}</param>
+                <param name="regionFilter">${regionFilter}</param>
+                <param name="countryFilter">${countryFilter}</param>
+                <param name="eircAccountSorterByAccountNumber.active">${eircAccountSorterByAccountNumber.active}</param>
+                <param name="eircAccountSorterByAccountNumber.order">${eircAccountSorterByAccountNumber.order}</param>
+                <param name="eircAccountSorterByAddress.active">${eircAccountSorterByAddress.active}</param>
+                <param name="eircAccountSorterByAddress.order">${eircAccountSorterByAddress.order}</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+                <param name="pager.pageSize">${pager.pageSize}</param>
+                <param name="eircAccount.id">${eircAccount.id}</param>
 			</result>
 		</action>
 

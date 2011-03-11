@@ -325,8 +325,19 @@
           p:crumbNameKey="eirc.crumbs.eirc_account_view"
           p:eircAccountService-ref="eircAccountService"
           p:spService-ref="spService"
-          p:personService-ref="personService"
           p:addressService-ref="addressService"
+          p:consumerService-ref="consumerService"
+          p:consumerAttributeTypeService-ref="consumerAttributeTypeService"
+          scope="prototype" />
+
+    <bean id="eircAccountAddConsumerAction"
+          class="org.flexpay.eirc.actions.eircaccount.EircAccountAddConsumerAction"
+          p:crumbNameKey="eirc.crumbs.eirc_account_add_consumer"
+          p:eircAccountService-ref="eircAccountService"
+          p:spService-ref="spService"
+          p:addressService-ref="addressService"
+          p:consumerService-ref="consumerService"
+          p:consumerInfoService-ref="consumerInfoService"
           p:consumerAttributeTypeService-ref="consumerAttributeTypeService"
           scope="prototype" />
 
@@ -341,19 +352,12 @@
           p:consumerService-ref="consumerService"
           scope="prototype" />
 
-	<bean id="eircAccountCreateForm1Action"
-		  class="org.flexpay.common.actions.StaticPageAction"
-		  p:crumbNameKey="eirc.crumbs.eirc_account_creat_form1"
-		  scope="prototype" />
-
-	<bean id="eircAccountCreateForm2Action"
-		  class="org.flexpay.eirc.actions.eircaccount.EircAccountCreateForm2Action"
-		  p:personService-ref="personService"
-		  scope="prototype" />
-
 	<bean id="eircAccountCreateAction"
 		  class="org.flexpay.eirc.actions.eircaccount.EircAccountCreateAction"
+          p:crumbNameKey="eirc.crumbs.eirc_account_create"
 		  p:eircAccountService-ref="eircAccountService"
+          p:consumerInfoService-ref="consumerInfoService"
+          p:apartmentService-ref="apartmentService"
 		  scope="prototype" />
 
 </beans>

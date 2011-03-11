@@ -15,7 +15,11 @@
         </td>
     </tr>
     <tr>
-        <td id="result" colspan="4"></td>
+        <td id="result" colspan="4">
+            <input type="button" class="btn-exit"
+                   onclick="window.location='<s:url action="eircAccountCreate" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   value="<s:text name="common.new" />" />
+        </td>
     </tr>
 </table>
 

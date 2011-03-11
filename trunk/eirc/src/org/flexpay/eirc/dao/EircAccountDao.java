@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface EircAccountDao extends GenericDao<EircAccount, Long> {
-	
+
 	List<EircAccount> findObjects(Page<EircAccount> pager);
 	
 	List<EircAccount> findByApartment(Long id, Page<EircAccount> pager);

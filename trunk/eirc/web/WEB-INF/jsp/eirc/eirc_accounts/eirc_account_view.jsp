@@ -19,6 +19,7 @@
 	</tr>
 </table>
 
+<s:if test="hasConsumers">
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th" width="1%">&nbsp;</td>
@@ -37,7 +38,7 @@
             <td class="col_1s" align="right"><s:property value="#status.index + 1" /></td>
             <td class="col" nowrap>
                 <s:property value="getServiceDescription(service)" /><br />
-                (<s:property value="consumerInfo.lastName + ' ' + consumerInfo.firstName + ' ' + consumerInfo.middleName" />,&nbsp;<s:text name="eirc.eirc_account.consumer.account_number" />:<s:property value="externalAccountNumber" />)
+                (<s:property value="consumerInfo.FIO" />,&nbsp;<s:text name="eirc.eirc_account.consumer.account_number" />:<s:property value="externalAccountNumber" />)
             </td>
             <s:iterator value="consumerAttributes.get(id)">
                 <td class="col">
@@ -50,6 +51,7 @@
     </s:iterator>
     <tr>
         <td colspan="15">
+            <input type="button" class="btn-exit" value="<s:text name="eirc.eirc_account.add_consumer" />" onclick="addf();" />
             <s:if test="!eircAccount.consumers.isEmpty()">
                 <input type="button" class="btn-exit" value="<s:text name="common.edit" />" onclick="editf();" />
             </s:if>
@@ -57,6 +59,16 @@
         </td>
     </tr>
 </table>
+</s:if><s:else>
+    <table cellpadding="3" cellspacing="1" border="0" width="100%">
+    <tr>
+        <td>
+            <input type="button" class="btn-exit" value="<s:text name="eirc.eirc_account.add_consumer" />" onclick="addf();" />
+            <input type="button" class="btn-exit" value="<s:text name="common.back" />" onclick="backf();" />
+        </td>
+    </tr>
+    </table>
+</s:else>
 
 <script type="text/javascript">
 
@@ -85,6 +97,10 @@
 
     function backf() {
         FP.post("<s:url action="eircAccountsList" includeParams="none" />", params);
+    }
+
+    function addf() {
+        FP.post("<s:url action="eircAccountAddConsumer" includeParams="none" />", params);
     }
 
 </script>
