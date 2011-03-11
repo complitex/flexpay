@@ -25,6 +25,7 @@ public class QuittanceSearchAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -51,6 +52,7 @@ public class QuittanceSearchAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

@@ -30,6 +30,7 @@ public class QuittanceSearchByAccountAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 
 		if (StringUtils.isBlank(accountNumber)) {
@@ -60,6 +61,7 @@ public class QuittanceSearchByAccountAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

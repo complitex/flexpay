@@ -1,6 +1,5 @@
 package org.flexpay.eirc.actions.organization;
 
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircServiceOrganization;

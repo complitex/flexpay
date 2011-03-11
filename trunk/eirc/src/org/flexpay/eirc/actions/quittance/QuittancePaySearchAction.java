@@ -17,6 +17,7 @@ public class QuittancePaySearchAction extends FPActionSupport {
 	private QuittanceService quittanceService;
 
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -55,6 +56,7 @@ public class QuittancePaySearchAction extends FPActionSupport {
 	}
 
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

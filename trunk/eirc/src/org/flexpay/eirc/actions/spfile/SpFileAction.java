@@ -2,13 +2,10 @@ package org.flexpay.eirc.actions.spfile;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
-
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.impl.RegistryFileServiceFactory;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.process.registry.GetRegistryMessageActionHandler;
@@ -25,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class SpFileAction extends FPActionSupport {
 
