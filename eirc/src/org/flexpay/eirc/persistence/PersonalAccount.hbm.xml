@@ -216,6 +216,12 @@
         where c.status=0 and c.externalAccountNumber=?
     </query>
 
+    <query name="Consumer.findConsumersByEIRCAccount">
+        select distinct c
+        from Consumer c
+        where c.status=0 and c.eircAccount.id=?
+    </query>
+
     <query name="Consumer.findConsumersByERCAccountAndServiceType">
         select distinct c
         from Consumer c
@@ -295,15 +301,25 @@
 	</query>
 
 	<query name="EircAccount.findObjects.count">
-		select count(*) from EircAccount a where a.status=0
+		select count(*)
+        from EircAccount a
+        where a.status=0
 	</query>
+
+    <query name="EircAccount.read">
+        select distinct a
+        from EircAccount a
+            left outer join fetch a.consumerInfo
+            left join fetch a.apartment
+        where a.id=? and a.status=0
+    </query>
 
 	<query name="EircAccount.readFull">
 		select distinct a
 		from EircAccount a
 			left outer join fetch a.consumerInfo
 			left join fetch a.consumers c
-			left join fetch c.consumerInfo
+			inner join fetch c.consumerInfo
             left join fetch c.attributes attribute
             left join fetch attribute.type t
 			left join fetch c.responsiblePerson p

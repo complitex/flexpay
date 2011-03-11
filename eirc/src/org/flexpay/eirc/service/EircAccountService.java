@@ -82,6 +82,16 @@ public interface EircAccountService {
 	@Secured (Roles.ACCOUNT_READ)
 	List<EircAccount> getAccounts(@NotNull List<? extends EircAccountSorter> sorters, Collection<ObjectFilter> filters, @NotNull Integer output, Page<EircAccount> pager);
 
+    /**
+     * Read account info
+     *
+     * @param stub Account stub
+     * @return EircAccount if found, or <code>null</code> if stub references no object
+     */
+    @Secured (Roles.ACCOUNT_READ)
+    @Nullable
+    EircAccount read(@NotNull Stub<EircAccount> stub);
+
 	/**
 	 * Read full account info, includes person and service
 	 *

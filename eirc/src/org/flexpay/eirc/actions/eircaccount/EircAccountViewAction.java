@@ -1,16 +1,14 @@
 package org.flexpay.eirc.actions.eircaccount;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.AddressService;
-import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.service.ConsumerAttributeTypeService;
+import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.persistence.Service;
@@ -29,10 +27,11 @@ public class EircAccountViewAction extends EircAccountAction {
 
     private Map<Long, List<ConsumerAttribute>> consumerAttributes = map();
     private List<ConsumerAttributeTypeBase> attributeTypes;
+    private boolean hasConsumers = true;
 
 	private SPService spService;
+    private ConsumerService consumerService;
 	private EircAccountService eircAccountService;
-    private PersonService personService;
     private AddressService addressService;
     private ConsumerAttributeTypeService consumerAttributeTypeService;
 
@@ -47,12 +46,22 @@ public class EircAccountViewAction extends EircAccountAction {
 		}
 
         Stub<EircAccount> stub = stub(eircAccount);
-		eircAccount = eircAccountService.readFull(stub);
+        List<Consumer> consumers = consumerService.findConsumers(stub);
+        if (consumers == null || consumers.isEmpty()) {
+            eircAccount = eircAccountService.read(stub);
+            hasConsumers = false;
+        } else {
+            eircAccount = eircAccountService.readFull(stub);
+        }
 		if (eircAccount == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("eirc.error.account_not_found"));
             log.error("Can't get eirc account with id {} from DB", stub.getId());
 			return REDIRECT_ERROR;
 		}
+
+        if (!hasConsumers) {
+            return SUCCESS;
+        }
 
         attributeTypes = consumerAttributeTypeService.getByUniqueCode(ConsumerAttributes.EIRC_ATTRIBUTES);
 
@@ -110,6 +119,10 @@ public class EircAccountViewAction extends EircAccountAction {
         return attributeTypes;
     }
 
+    public boolean isHasConsumers() {
+        return hasConsumers;
+    }
+
     @Required
 	public void setEircAccountService(EircAccountService eircAccountService) {
 		this.eircAccountService = eircAccountService;
@@ -121,13 +134,13 @@ public class EircAccountViewAction extends EircAccountAction {
 	}
 
     @Required
-    public void setPersonService(PersonService personService) {
-        this.personService = personService;
+    public void setAddressService(AddressService addressService) {
+        this.addressService = addressService;
     }
 
     @Required
-    public void setAddressService(AddressService addressService) {
-        this.addressService = addressService;
+    public void setConsumerService(ConsumerService consumerService) {
+        this.consumerService = consumerService;
     }
 
     @Required

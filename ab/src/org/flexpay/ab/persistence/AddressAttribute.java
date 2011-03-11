@@ -66,7 +66,7 @@ public class AddressAttribute extends DomainObjectWithStatus {
 				.getTranslation(addressAttributeType.getTranslations());
 
 		StringBuilder buf = new StringBuilder();
-		if(typeTranslation != null && StringUtils.isNotBlank(typeTranslation.getShortName())) {
+		if (typeTranslation != null && StringUtils.isNotBlank(typeTranslation.getShortName())) {
 			return typeTranslation.getShortName() + ". ";
 		}
 		if (defaultTranslation != null && StringUtils.isNotBlank(defaultTranslation.getShortName())) {

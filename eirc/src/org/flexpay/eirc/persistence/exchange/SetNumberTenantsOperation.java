@@ -14,10 +14,12 @@ public class SetNumberTenantsOperation extends SetConsumerAttributeOperation {
 		super(factory, datum);
 	}
 
+    @Override
 	protected boolean changed(ConsumerAttribute oldAttribute) {
 		return oldAttribute == null || oldAttribute.getIntValue() == null || !oldAttribute.getIntValue().equals(getValue());
 	}
 
+    @Override
 	protected void setAttributeValue(ConsumerAttribute attribute) {
 		attribute.setIntValue(getValue());
 	}

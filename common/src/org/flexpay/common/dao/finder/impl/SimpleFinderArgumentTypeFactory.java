@@ -10,18 +10,14 @@ public class SimpleFinderArgumentTypeFactory implements FinderArgumentTypeFactor
 
     @Override
 	public Type getArgumentType(Object arg) {
-//        if(arg instanceof Enum)
-//        {
+//        if (arg instanceof Enum) {
 //            return getEnumType(arg.getClass());
-//        }
-//        else
-//        {
+//        } else {
 		return null;
 //        }
 	}
 
-//    private Type getEnumType(Class<? extends Object> argClass)
-//    {
+//    private Type getEnumType(Class<? extends Object> argClass) {
 //        Properties p = new Properties();
 //        p.setProperty("enumClassName", argClass.getName());
 //        Type enumType = TypeFactory.heuristicType("org.hibernate.demo.EnumUserType", p);

@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.ConsumerDao;
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Service;
@@ -51,7 +52,12 @@ public class ConsumerServiceImpl implements ConsumerService {
 		return consumers.isEmpty() ? null : consumers.get(0);
 	}
 
-	/**
+    @Override
+    public List<Consumer> findConsumers(Stub<EircAccount> eircAccountStub) {
+        return consumerDao.findConsumersByEIRCAccount(eircAccountStub.getId());
+    }
+
+    /**
 	 * Find consumer by service provider, account number and subservice code
 	 *
 	 * @param serviceProviderStub ServiceProvider stub
