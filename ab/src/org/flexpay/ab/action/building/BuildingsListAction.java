@@ -6,7 +6,9 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.sorter.BuildingsSorter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.ab.util.TranslationUtil;
+import org.flexpay.common.action.FPActionWithPagerSupport;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -102,6 +104,10 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 	public void setBuildingsSorter(BuildingsSorter buildingsSorter) {
 		this.buildingsSorter = buildingsSorter;
 	}
+
+    public String getBuildingNumber(BuildingAddress address) throws FlexPayException {
+        return TranslationUtil.getBuildingNumber(address, getUserPreferences().getLocale());
+    }
 
 	@Required
 	public void setBuildingService(BuildingService buildingService) {

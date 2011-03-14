@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -17,7 +17,7 @@
 
         <action name="countryCreate" class="countryCreateAction">
             <result type="tiles" name="input">ab.country.create</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">countryView</param>
                 <param name="parse">true</param>
                 <param name="country.id">${country.id}</param>
@@ -26,7 +26,7 @@
 
         <action name="countryView" class="countryViewAction">
             <result type="tiles">ab.country.view</result>
-            <result name="redirectError" type="redirect-action">countriesList</result>
+            <result name="redirectError" type="redirectAction">countriesList</result>
         </action>
 
     </package>

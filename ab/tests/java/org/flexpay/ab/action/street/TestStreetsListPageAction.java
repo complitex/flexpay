@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.action.street.StreetsListPageAction;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.persistence.Town;
@@ -8,7 +7,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleTown;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

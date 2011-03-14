@@ -5,7 +5,7 @@ import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountryStub;
 
-import org.flexpay.common.actions.filter.FilterAjaxAction;
+import org.flexpay.common.action.filter.FilterAjaxAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.set;

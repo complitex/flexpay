@@ -14,7 +14,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="apartmentEdit" includeParams="none"><s:param name="apartment.id" value="0" /></s:url>'"
+                   onclick="window.location='<s:url action="apartmentEdit"><s:param name="apartment.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -37,10 +37,10 @@
                 <input type="checkbox" value="<s:property value="id" />" name="objectIds" />
             </td>
             <td class="col">
-                <a href="<s:url action="apartmentRegistration" includeParams="none"><s:param name="apartment.id" value="id" /><s:param name="buildings.id" value="buildingsFilter.selectedId" /></s:url>"><s:property value="number" /></a>
+                <a href="<s:url action="apartmentRegistration"><s:param name="apartment.id" value="id" /><s:param name="buildings.id" value="buildingsFilter.selectedId" /></s:url>"><s:property value="number" /></a>
             </td>
             <td class="col">
-                <a href="<s:url action="apartmentEdit" includeParams="none"><s:param name="apartment.id" value="id" /><s:param name="buildingsFilter.selectedId" value="buildingsFilter.selectedId" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="apartmentEdit"><s:param name="apartment.id" value="id" /><s:param name="buildingsFilter.selectedId" value="buildingsFilter.selectedId" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -49,7 +49,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="apartmentEdit" includeParams="none"><s:param name="apartment.id" value="0" /></s:url>'"
+                   onclick="window.location='<s:url action="apartmentEdit"><s:param name="apartment.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

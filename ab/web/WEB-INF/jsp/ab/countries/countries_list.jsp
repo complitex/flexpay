@@ -12,7 +12,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="countryCreate" includeParams="none" />';"
+                   onclick="window.location='<s:url action="countryCreate" />';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -28,7 +28,7 @@
         <tr valign="middle" class="cols_1">
             <td class="col_1s" align="right"><s:property value="#rowstatus.index + 1" /></td>
             <td class="col">
-                <a href="<s:url action="regionsList" includeParams="none"><s:param name="countryFilter" value="id" /></s:url>">
+                <a href="<s:url action="regionsList"><s:param name="countryFilter" value="id" /></s:url>">
                     <s:property value="getTranslationName(translations)" /></a>
             </td>
             <td class="col">
@@ -42,7 +42,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="countryCreate" includeParams="none" />';"
+                   onclick="window.location='<s:url action="countryCreate" />';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

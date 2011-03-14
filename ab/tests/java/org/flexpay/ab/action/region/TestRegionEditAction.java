@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.region;
 
-import org.flexpay.ab.action.region.RegionEditAction;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.persistence.Country;
@@ -8,7 +7,7 @@ import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.*;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;

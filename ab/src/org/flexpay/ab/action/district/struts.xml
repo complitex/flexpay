@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -21,12 +21,12 @@
 
 		<action name="districtView" class="districtViewAction">
 			<result type="tiles">ab.district.view</result>
-			<result name="redirectError" type="redirect-action">districtsList</result>
+			<result name="redirectError" type="redirectAction">districtsList</result>
 		</action>
 
 		<action name="districtEdit" class="districtEditAction">
-            <result name="redirectError" type="redirect-action">districtsList</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">districtsList</result>
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">districtView</param>
                 <param name="parse">true</param>
                 <param name="object.id">${district.id}</param>

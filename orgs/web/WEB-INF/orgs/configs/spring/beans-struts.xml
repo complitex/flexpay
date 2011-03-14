@@ -8,7 +8,7 @@
 
 	<!-- Organisation actions -->
     <bean id="organizationViewAction"
-          class="org.flexpay.orgs.actions.organization.OrganizationViewAction"
+          class="org.flexpay.orgs.action.organization.OrganizationViewAction"
           p:organizationService-ref="organizationService"
           p:crumbNameKey="orgs.crumbs.organization_view"
           scope="prototype" />
@@ -18,35 +18,35 @@
           scope="prototype" />
 
 	<bean id="organizationsListAction"
-		  class="org.flexpay.orgs.actions.organization.OrganizationsListAction"
+		  class="org.flexpay.orgs.action.organization.OrganizationsListAction"
 		  p:organizationService-ref="organizationService"
           scope="prototype" />
 
 	<bean id="organizationDeleteAction"
-		  class="org.flexpay.orgs.actions.organization.OrganizationDeleteAction"
+		  class="org.flexpay.orgs.action.organization.OrganizationDeleteAction"
 		  p:organizationService-ref="organizationService"
           scope="prototype" />
 
 	<bean id="organizationEditAction"
-		  class="org.flexpay.orgs.actions.organization.OrganizationEditAction"
+		  class="org.flexpay.orgs.action.organization.OrganizationEditAction"
 		  p:organizationService-ref="organizationService"
           p:crumbNameKey="orgs.crumbs.organization_edit"
           p:crumbCreateKey="orgs.crumbs.organization_create"
           scope="prototype" />
 
 	<bean id="organizationHelper"
-		  class="org.flexpay.orgs.actions.organization.OrganizationHelper"
+		  class="org.flexpay.orgs.action.organization.OrganizationHelper"
 		  p:organizationService-ref="organizationService"
           scope="prototype" />
 
 	<bean id="paymentPointHelper"
-		  class="org.flexpay.orgs.actions.paymentpoint.PaymentPointHelper"
+		  class="org.flexpay.orgs.action.paymentpoint.PaymentPointHelper"
 		  p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
 	<!-- Bank actions -->
     <bean id="bankViewAction"
-          class="org.flexpay.orgs.actions.bank.BankViewAction"
+          class="org.flexpay.orgs.action.bank.BankViewAction"
           p:bankService-ref="bankService"
           p:crumbNameKey="orgs.crumbs.bank_view"
           scope="prototype" />
@@ -56,17 +56,17 @@
           scope="prototype" />
 
 	<bean id="banksListAction"
-		  class="org.flexpay.orgs.actions.bank.BanksListAction"
+		  class="org.flexpay.orgs.action.bank.BanksListAction"
 		  p:bankService-ref="bankService"
           scope="prototype" />
 
 	<bean id="bankDeleteAction"
-		  class="org.flexpay.orgs.actions.bank.BankDeleteAction"
+		  class="org.flexpay.orgs.action.bank.BankDeleteAction"
 		  p:bankService-ref="bankService"
           scope="prototype" />
 
 	<bean id="bankEditAction"
-		  class="org.flexpay.orgs.actions.bank.BankEditAction"
+		  class="org.flexpay.orgs.action.bank.BankEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:bankService-ref="bankService"
           p:crumbCreateKey="orgs.crumbs.bank_create"
@@ -75,7 +75,7 @@
 
 	<!-- Payments Collectors actions -->
     <bean id="paymentCollectorViewAction"
-          class="org.flexpay.orgs.actions.paymentcollector.PaymentCollectorViewAction"
+          class="org.flexpay.orgs.action.paymentcollector.PaymentCollectorViewAction"
           p:collectorService-ref="paymentCollectorService"
           p:crumbNameKey="orgs.crumbs.payment_collector_view"
           scope="prototype" />
@@ -85,18 +85,18 @@
           scope="prototype" />
 
 	<bean id="paymentCollectorsListAction"
-		  class="org.flexpay.orgs.actions.paymentcollector.PaymentCollectorsListAction"
+		  class="org.flexpay.orgs.action.paymentcollector.PaymentCollectorsListAction"
 		  p:organizationService-ref="organizationService"
 		  p:collectorService-ref="paymentCollectorService"
           scope="prototype" />
 
 	<bean id="paymentCollectorDeleteAction"
-		  class="org.flexpay.orgs.actions.paymentcollector.PaymentCollectorDeleteAction"
+		  class="org.flexpay.orgs.action.paymentcollector.PaymentCollectorDeleteAction"
 		  p:collectorService-ref="paymentCollectorService"
           scope="prototype" />
 
 	<bean id="paymentCollectorEditAction"
-		  class="org.flexpay.orgs.actions.paymentcollector.PaymentCollectorEditAction"
+		  class="org.flexpay.orgs.action.paymentcollector.PaymentCollectorEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:collectorService-ref="paymentCollectorService"
 		  p:crumbNameKey="orgs.crumbs.payment_collector_edit"
@@ -105,7 +105,7 @@
 
 	<!-- Service organization actions -->
     <bean id="serviceOrganizationViewAction"
-          class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationViewAction"
+          class="org.flexpay.orgs.action.serviceorganization.ServiceOrganizationViewAction"
           p:serviceOrganizationService-ref="serviceOrganizationService"
           p:crumbNameKey="orgs.crumbs.service_organization_view"
           scope="prototype" />
@@ -115,17 +115,17 @@
           scope="prototype" />
 
 	<bean id="serviceOrganizationsListAction"
-		  class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationsListAction"
+		  class="org.flexpay.orgs.action.serviceorganization.ServiceOrganizationsListAction"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
           scope="prototype" />
 
 	<bean id="serviceOrganizationDeleteAction"
-		  class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationDeleteAction"
+		  class="org.flexpay.orgs.action.serviceorganization.ServiceOrganizationDeleteAction"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
           scope="prototype" />
 
 	<bean id="serviceOrganizationEditAction"
-		  class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationEditAction"
+		  class="org.flexpay.orgs.action.serviceorganization.ServiceOrganizationEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
 		  p:objectsFactory-ref="orgsObjectsFactory"
@@ -135,7 +135,7 @@
 
 	<!-- Service provider actions -->
     <bean id="serviceProviderViewAction"
-          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderViewAction"
+          class="org.flexpay.orgs.action.serviceprovider.ServiceProviderViewAction"
           p:providerService-ref="serviceProviderService"
           p:crumbNameKey="orgs.crumbs.service_provider_view"
           scope="prototype" />
@@ -145,17 +145,17 @@
           scope="prototype" />
 
 	<bean id="serviceProvidersListAction"
-		  class="org.flexpay.orgs.actions.serviceprovider.ServiceProvidersListAction"
+		  class="org.flexpay.orgs.action.serviceprovider.ServiceProvidersListAction"
 		  p:providerService-ref="serviceProviderService"
           scope="prototype" />
 
 	<bean id="serviceProviderDeleteAction"
-		  class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderDeleteAction"
+		  class="org.flexpay.orgs.action.serviceprovider.ServiceProviderDeleteAction"
 		  p:providerService-ref="serviceProviderService"
           scope="prototype" />
 
 	<bean id="serviceProviderEditAction"
-		  class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderEditAction"
+		  class="org.flexpay.orgs.action.serviceprovider.ServiceProviderEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:providerService-ref="serviceProviderService"
           p:crumbCreateKey="orgs.crumbs.service_provider_create"
@@ -163,7 +163,7 @@
           scope="prototype" />
 
     <bean id="serviceProviderCorrectionCreateAction"
-          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionCreateAction"
+          class="org.flexpay.orgs.action.serviceprovider.ServiceProviderCorrectionCreateAction"
           p:classToTypeRegistryOrgs-ref="classToTypeRegistryOrgs"
           p:providerService-ref="serviceProviderService"
           p:correctionsService-ref="correctionsService"
@@ -172,37 +172,37 @@
           scope="prototype" />
 
     <bean id="serviceProviderCorrectionsListAction"
-          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionsListAction"
+          class="org.flexpay.orgs.action.serviceprovider.ServiceProviderCorrectionsListAction"
           p:classToTypeRegistryOrgs-ref="classToTypeRegistryOrgs"
           p:providerService-ref="serviceProviderService"
           p:correctionsService-ref="correctionsService"
           scope="prototype" />
 
     <bean id="serviceProviderCorrectionsListPageAction"
-          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionsListPageAction"
+          class="org.flexpay.orgs.action.serviceprovider.ServiceProviderCorrectionsListPageAction"
           p:providerService-ref="serviceProviderService"
           p:crumbNameKey="orgs.crumbs.service_provider_corrections_list"
           scope="prototype" />
 
 	<!-- Subdivision actions -->
     <bean id="subdivisionsListPageAction"
-          class="org.flexpay.orgs.actions.subdivision.SubdivisionsListPageAction"
+          class="org.flexpay.orgs.action.subdivision.SubdivisionsListPageAction"
           p:crumbNameKey="orgs.crumbs.subdivisions_list"
           scope="prototype" />
 
 	<bean id="subdivisionsListAction"
-		  class="org.flexpay.orgs.actions.subdivision.SubdivisionsListAction"
+		  class="org.flexpay.orgs.action.subdivision.SubdivisionsListAction"
 		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService"
           scope="prototype" />
 
 	<bean id="subdivisionDeleteAction"
-		  class="org.flexpay.orgs.actions.subdivision.SubdivisionDeleteAction"
+		  class="org.flexpay.orgs.action.subdivision.SubdivisionDeleteAction"
 		  p:subdivisionService-ref="subdivisionService"
           scope="prototype" />
 
 	<bean id="subdivisionEditAction"
-		  class="org.flexpay.orgs.actions.subdivision.SubdivisionEditAction"
+		  class="org.flexpay.orgs.action.subdivision.SubdivisionEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService"
           p:crumbCreateKey="orgs.crumbs.subdivision_create"
@@ -210,30 +210,30 @@
           scope="prototype" />
 
     <bean id="subdivisionViewAction"
-          class="org.flexpay.orgs.actions.subdivision.SubdivisionViewAction"
+          class="org.flexpay.orgs.action.subdivision.SubdivisionViewAction"
           p:subdivisionService-ref="subdivisionService"
           p:crumbNameKey="orgs.crumbs.subdivision_view"
           scope="prototype" />
 
     <!-- Payment points actions -->
     <bean id="paymentPointsListPageAction"
-          class="org.flexpay.orgs.actions.paymentpoint.PaymentPointsListPageAction"
+          class="org.flexpay.orgs.action.paymentpoint.PaymentPointsListPageAction"
           p:crumbNameKey="orgs.crumbs.payment_points_list"
           p:collectorService-ref="paymentCollectorService"
           scope="prototype" />
 
     <bean id="paymentPointsListAction"
-          class="org.flexpay.orgs.actions.paymentpoint.PaymentPointsListAction"
+          class="org.flexpay.orgs.action.paymentpoint.PaymentPointsListAction"
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
     <bean id="paymentPointDeleteAction"
-          class="org.flexpay.orgs.actions.paymentpoint.PaymentPointDeleteAction"
+          class="org.flexpay.orgs.action.paymentpoint.PaymentPointDeleteAction"
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
     <bean id="paymentPointEditAction"
-          class="org.flexpay.orgs.actions.paymentpoint.PaymentPointEditAction"
+          class="org.flexpay.orgs.action.paymentpoint.PaymentPointEditAction"
           p:paymentPointService-ref="paymentPointService"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:crumbNameKey="orgs.crumbs.payment_point_edit"
@@ -241,25 +241,25 @@
           scope="prototype" />
 
     <bean id="paymentPointViewAction"
-          class="org.flexpay.orgs.actions.paymentpoint.PaymentPointViewAction"
+          class="org.flexpay.orgs.action.paymentpoint.PaymentPointViewAction"
           p:paymentPointService-ref="paymentPointService"
           p:crumbNameKey="orgs.crumbs.payment_point_view"
           scope="prototype" />
 
 	<!-- cashboxes actions -->
     <bean id="cashboxViewAction"
-          class="org.flexpay.orgs.actions.cashbox.CashboxViewAction"
+          class="org.flexpay.orgs.action.cashbox.CashboxViewAction"
           p:cashboxService-ref="cashboxService"
           p:crumbNameKey="orgs.crumbs.cashbox_view"
           scope="prototype" />
 
 	<bean id="cashboxDeleteAction"
-		  class="org.flexpay.orgs.actions.cashbox.CashboxDeleteAction"
+		  class="org.flexpay.orgs.action.cashbox.CashboxDeleteAction"
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
 	<bean id="cashboxEditAction"
-		  class="org.flexpay.orgs.actions.cashbox.CashboxEditAction"
+		  class="org.flexpay.orgs.action.cashbox.CashboxEditAction"
 		  p:cashboxService-ref="cashboxService"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:crumbNameKey="orgs.crumbs.cashbox_edit"
@@ -267,24 +267,24 @@
 		  scope="prototype" />
 
 	<bean id="cashboxesListAction"
-		  class="org.flexpay.orgs.actions.cashbox.CashboxesListAction"
+		  class="org.flexpay.orgs.action.cashbox.CashboxesListAction"
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
     <bean id="cashboxesListPageAction"
-          class="org.flexpay.orgs.actions.cashbox.CashboxesListPageAction"
+          class="org.flexpay.orgs.action.cashbox.CashboxesListPageAction"
           p:crumbNameKey="orgs.crumbs.cashboxes_list"
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
     <!-- Filters actions -->
     <bean id="paymentPointFilterAjaxAction"
-          class="org.flexpay.orgs.actions.filter.PaymentPointFilterAjaxAction"
+          class="org.flexpay.orgs.action.filter.PaymentPointFilterAjaxAction"
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
     <bean id="cashboxFilterAjaxAction"
-          class="org.flexpay.orgs.actions.filter.CashboxFilterAjaxAction"
+          class="org.flexpay.orgs.action.filter.CashboxFilterAjaxAction"
           p:cashboxService-ref="cashboxService"
           scope="prototype" />
 

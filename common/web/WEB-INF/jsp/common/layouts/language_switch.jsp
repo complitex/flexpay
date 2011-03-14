@@ -6,7 +6,7 @@
             <td>
                 <s:form method="get">
                     <select class="form-select" name="request_locale" onchange="this.form.submit();">
-                        <s:iterator value="@org.flexpay.common.util.config.ApplicationConfig@getLanguages()">
+                        <s:iterator value="getAllLanguages()">
                             <option value="<s:property value="langIsoCode" />"<s:if test="userPreferences.languageCode == langIsoCode"> selected</s:if>><s:property value="name" /></option>
                         </s:iterator>
                     </select>

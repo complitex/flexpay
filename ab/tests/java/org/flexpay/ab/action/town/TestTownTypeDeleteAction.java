@@ -1,11 +1,10 @@
 package org.flexpay.ab.action.town;
 
-import org.flexpay.ab.action.town.TownTypeDeleteAction;
 import org.flexpay.ab.dao.TownTypeDao;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleTownType;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.junit.Assert.*;
 import org.junit.Test;

@@ -37,7 +37,7 @@
                 <input type="checkbox" value="<s:property value="id" />" name="objectIds" />
             </td>
             <td class="col">
-                <a href="<s:url action="apartmentsList" includeParams="none"><s:param name="buildingFilter" value="id" /></s:url>"><s:property value="@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(#buildingAddress, userPreferences.locale)" /></a>
+                <a href="<s:url action="apartmentsList" includeParams="none"><s:param name="buildingFilter" value="id" /></s:url>"><s:property value="getBuildingNumber(#buildingAddress)" /></a>
             </td>
             <td class="col">
                 <a href="<s:url action="buildingView" includeParams="none"><s:param name="building.id" value="building.id" /></s:url>"><s:text name="common.view" /></a>

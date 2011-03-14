@@ -30,7 +30,7 @@
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property value="#status.index + 1" /></td>
 			<td class="col">
-				<a href="<s:url action="personView" includeParams="none"><s:param name="person.id" value="person.id" /></s:url>">
+				<a href="<s:url action="personView"><s:param name="person.id" value="person.id" /></s:url>">
 					<s:property value="person.defaultIdentity.lastName" />
 					<s:property value="person.defaultIdentity.firstName" />
 					<s:property value="person.defaultIdentity.middleName" />
@@ -44,7 +44,7 @@
 	<tr>
 		<td colspan="5" width="100%">
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="apartmentRegistrationsHistory" includeParams="none"><s:param name="apartment.id" value="apartment.id" /><s:param name="buildings.id" value="buildings.id" /></s:url>'"
+				   onclick="window.location='<s:url action="apartmentRegistrationsHistory"><s:param name="apartment.id" value="apartment.id" /><s:param name="buildings.id" value="buildings.id" /></s:url>'"
 				   value="<s:text name="ab.apartment.registrations_history.title" />" />
 		</td>
 	</tr>

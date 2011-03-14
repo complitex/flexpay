@@ -2,7 +2,7 @@ package org.flexpay.admin.action.user;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.admin.persistence.UserModel;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.UserRole;

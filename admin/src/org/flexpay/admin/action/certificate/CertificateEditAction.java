@@ -1,6 +1,6 @@
 package org.flexpay.admin.action.certificate;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.service.CertificateService;
 import org.flexpay.common.service.UserPreferencesService;

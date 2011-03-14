@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp;
 
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.eirc.actions.TestSpFileCreateAction;
+import org.flexpay.eirc.action.TestSpFileCreateAction;
 import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.validation.FileValidator;
 import org.flexpay.eirc.sp.impl.FileValidationSchema;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -21,12 +21,12 @@
 
 		<action name="streetView" class="streetViewAction">
 			<result type="tiles">ab.street.view</result>
-			<result name="redirectError" type="redirect-action">streetsList</result>
+			<result name="redirectError" type="redirectAction">streetsList</result>
 		</action>
 
 		<action name="streetEdit" class="streetEditAction">
-            <result name="redirectError" type="redirect-action">streetsList</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">streetsList</result>
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">streetView</param>
                 <param name="parse">true</param>
                 <param name="object.id">${street.id}</param>
@@ -36,7 +36,7 @@
 
 		<action name="streetDistrictEdit" class="streetDistrictEditAction">
 			<result name="input" type="tiles">ab.street.edit.districts</result>
-			<result name="redirectSuccess" type="redirect-action">
+			<result name="redirectSuccess" type="redirectAction">
 				<param name="actionName">streetView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${street.id}</param>
@@ -49,12 +49,12 @@
 
 		<action name="streetTypeView" class="streetTypeViewAction">
 			<result type="tiles">ab.street_type.view</result>
-            <result name="redirectError" type="redirect-action">streetTypesList</result>
+            <result name="redirectError" type="redirectAction">streetTypesList</result>
 		</action>
 
 		<action name="streetTypeEdit" class="streetTypeEditAction">
-            <result name="redirectError" type="redirect-action">streetTypesList</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">streetTypesList</result>
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">streetTypeView</param>
                 <param name="parse">true</param>
                 <param name="streetType.id">${streetType.id}</param>

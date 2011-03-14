@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.apartment;
 
-import org.flexpay.ab.action.apartment.ApartmentsListPageAction;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
@@ -8,7 +7,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.ab.util.config.AbUserPreferences;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

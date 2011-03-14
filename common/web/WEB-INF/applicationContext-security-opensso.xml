@@ -45,7 +45,7 @@
 		<b:property name="observeOncePerRequest" value="false"/>
 	</b:bean>
 
-	<b:bean class="org.flexpay.common.actions.security.opensso.AuthenticationProvider">
+	<b:bean class="org.flexpay.common.action.security.opensso.AuthenticationProvider">
 		<security:custom-authentication-provider />
 		<b:property name="authenticationUserDetailsService" ref="authenticatedUserDetailsService" />
 	</b:bean>
@@ -104,7 +104,7 @@
 	</b:bean>
 
 	<b:bean id="authenticationProcessingFilter"
-			class="org.flexpay.common.actions.security.FPAuthenticationProcessingFilter">
+			class="org.flexpay.common.action.security.FPAuthenticationProcessingFilter">
 		<security:custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 		<b:property name="defaultTargetUrl" value="/" />
 		<b:property name="authenticationManager" ref="authenticationManager" />

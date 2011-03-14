@@ -10,7 +10,7 @@ import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.actions.TestSpFileCreateAction;
+import org.flexpay.eirc.action.TestSpFileCreateAction;
 import org.flexpay.eirc.process.registry.IterateMBRegistryActionHandler;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.payments.service.EircRegistryService;

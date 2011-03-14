@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="monitor" namespace="/payments" extends="payments">
+
+        <action name="operationsListMonitor" class="operationsListMonitorPageAction">
+            <result type="tiles">payments.operations.list</result>
+            <result name="redirectError" type="redirectAction">
+                <param name="actionName">paymentPointDetailMonitor</param>
+                <param name="parse">true</param>
+                <param name="paymentPoint.id">${cashbox.paymentPoint.id}</param>
+            </result>
+        </action>
+
+        <action name="paymentPointsListMonitor" class="paymentPointsListMonitorPageAction">
+            <result type="tiles">payments.payment_points.list</result>
+            <result name="error" type="tiles">payments.error.payment_collector_authentication_required</result>
+        </action>
+
+        <action name="paymentPointsListMonitorAjax" class="paymentPointsListMonitorAction">
+            <result>/WEB-INF/jsp/payments/monitor/payment_points_list.jsp</result>
+        </action>
+
+        <action name="paymentPointDetailMonitor" class="paymentPointDetailMonitorAction">
+			<result type="tiles">payments.payment_point.detail</result>
+            <result name="redirectError" type="redirectAction">paymentPointsListMonitor</result>
+		</action>
+
+        <action name="paymentPointCashboxesListAjax" class="paymentPointCashboxesListAction">
+            <result>/WEB-INF/jsp/payments/monitor/cashboxes_list.jsp</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
+
+	</package>
+
+</struts>

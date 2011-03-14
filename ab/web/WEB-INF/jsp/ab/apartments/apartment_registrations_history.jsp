@@ -38,7 +38,7 @@
 	<tr>
 		<td colspan="5" width="100%">
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="apartmentRegistration" includeParams="none"><s:param name="apartment.id" value="apartment.id" /><s:param name="buildings.id" value="buildings.id" /></s:url>'"
+				   onclick="window.location='<s:url action="apartmentRegistration"><s:param name="apartment.id" value="apartment.id" /><s:param name="buildings.id" value="buildings.id" /></s:url>'"
 				   value="<s:text name="ab.apartment.registrations.title" />" />
 		</td>
 	</tr>

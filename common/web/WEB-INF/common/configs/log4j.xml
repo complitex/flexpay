@@ -142,7 +142,7 @@
 		<appender-ref ref="flexpay_hist" />
 	</category>
 
-	<category name="org.flexpay.common.actions.interceptor" additivity="false">
+	<category name="org.flexpay.common.action.interceptor" additivity="false">
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
 	</category>
@@ -244,12 +244,12 @@
 	    <appender-ref ref="flexpay"/>
 	</category>
 
-	<category name="org.flexpay.payments.actions.registry" additivity="false">
+	<category name="org.flexpay.payments.action.registry" additivity="false">
 	    <priority value="debug"/>
 	    <appender-ref ref="flexpay"/>
 	</category>
 
-	<category name="org.flexpay.common.actions.security" additivity="false">
+	<category name="org.flexpay.common.action.security" additivity="false">
 		<priority value="debug" />
 		<appender-ref ref="security" />
 	</category>

@@ -15,7 +15,7 @@ import org.flexpay.orgs.persistence.Organization;
 
 import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 
-import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
+import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +115,7 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 
 //		getConsumerAttributeTypeWatch.resume();
 		ConsumerAttributeTypeBase type = factory.getConsumerAttributeTypeService()
-				.readByCode(org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes.ATTR_ERC_ACCOUNT);
+				.readByCode(org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes.ATTR_ERC_ACCOUNT);
 //		getConsumerAttributeTypeWatch.suspend();
 		if (type == null) {
 			throw new FlexPayException("Cannot find attribute " + ConsumerAttributes.ATTR_ERC_ACCOUNT);

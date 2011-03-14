@@ -4,7 +4,7 @@ import net.sourceforge.navigator.menu.MenuComponent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.actions.breadcrumbs.Crumb;
+import org.flexpay.common.action.breadcrumbs.Crumb;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;

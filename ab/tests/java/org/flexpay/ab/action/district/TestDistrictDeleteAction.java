@@ -1,11 +1,10 @@
 package org.flexpay.ab.action.district;
 
-import org.flexpay.ab.action.district.DistrictDeleteAction;
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.junit.Assert.*;
 import org.junit.Test;

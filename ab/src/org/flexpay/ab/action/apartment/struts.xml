@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -20,13 +20,13 @@
         </action>
 
 		<action name="apartmentEdit" class="apartmentEditAction">
-            <result name="redirectError" type="redirect-action">apartmentsList</result>
+            <result name="redirectError" type="redirectAction">apartmentsList</result>
 			<result name="input" type="tiles">ab.apartment.edit</result>
-			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
+			<result name="redirectSuccess" type="redirectAction">apartmentsList</result>
 		</action>
 
 		<action name="apartmentRegistration" class="apartmentRegistrationAction">
-            <result name="redirectError" type="redirect-action">apartmentsList</result>
+            <result name="redirectError" type="redirectAction">apartmentsList</result>
 			<result type="tiles">ab.apartment.registrations</result>
 		</action>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -16,15 +16,15 @@
         </action>
 
 		<action name="editUser" class="editUserAction">
-			<result name="redirectError" type="redirect-action">usersList</result>
+			<result name="redirectError" type="redirectAction">usersList</result>
 			<result name="input" type="tiles">admin.user.edit</result>
-			<result name="redirectSuccess" type="redirect-action">usersList</result>
+			<result name="redirectSuccess" type="redirectAction">usersList</result>
 		</action>
 
 		<action name="createUser" class="createUserAction">
-			<result name="redirectError" type="redirect-action">usersList</result>
+			<result name="redirectError" type="redirectAction">usersList</result>
 			<result name="input" type="tiles">admin.user.create</result>
-			<result name="redirectSuccess" type="redirect-action">usersList</result>
+			<result name="redirectSuccess" type="redirectAction">usersList</result>
 		</action>
 
 		<action name="deleteUser" class="deleteUserAction">

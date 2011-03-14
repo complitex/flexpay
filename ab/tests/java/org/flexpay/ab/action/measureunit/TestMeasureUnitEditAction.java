@@ -1,11 +1,10 @@
 package org.flexpay.ab.action.measureunit;
 
-import org.flexpay.ab.action.measureunit.MeasureUnitEditAction;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleMeasureUnit;
 import static org.flexpay.ab.util.TestUtils.initNames;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.dao.MeasureUnitDao;
 import org.flexpay.common.persistence.MeasureUnit;
 import static org.flexpay.common.util.CollectionUtils.treeMap;

@@ -1,11 +1,10 @@
 package org.flexpay.ab.action.apartment;
 
-import org.flexpay.ab.action.apartment.ApartmentDeleteAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleApartment;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.junit.Assert.*;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
-import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.action.outerrequest.request.SearchRequest;
+import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
 import org.jetbrains.annotations.NotNull;
 
 public interface QuittanceDetailsFinder {

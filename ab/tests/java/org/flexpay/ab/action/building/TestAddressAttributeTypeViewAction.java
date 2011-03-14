@@ -1,12 +1,11 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.action.building.AddressAttributeTypeViewAction;
 import org.flexpay.ab.dao.AddressAttributeTypeDao;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleAddressAttributeType;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

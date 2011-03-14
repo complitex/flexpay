@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="processing" namespace="/eirc" extends="common">
+
+		<!-- Menu item -->
+		<action name="processing" class="staticPageAction">
+			<result type="tiles">eirc.processing</result>
+		</action>
+
+		<action name="processesList" class="processesListPageAction">
+			<result type="tiles">eirc.process.list</result>
+		</action>
+
+        <action name="processesListAjax" class="processesListAction">
+            <result>/WEB-INF/jsp/common/processing/processes_list.jsp</result>
+        </action>
+
+        <action name="processDelete" class="processDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
+		<action name="processView" class="processViewAction">
+			<result type="tiles">eirc.process.view</result>
+		</action>
+
+		<action name="processesCleanup" class="processesCleanupAction">
+			<result type="tiles">eirc.process.cleanup</result>
+			<result name="redirectSuccess" type="redirectAction">processesList</result>
+		</action>
+
+		<action name="processDefinitionDeploy" class="processDefinitionDeployAction">
+			<result name="redirectSuccess" type="redirectAction">processesList</result>
+			<result name="input" type="tiles">eirc.process.deploy_definition</result>
+		</action>
+
+	</package>
+
+</struts>

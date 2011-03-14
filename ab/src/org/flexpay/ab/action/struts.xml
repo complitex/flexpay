@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
 <struts>
 
 	<package name="ab" namespace="/ab" extends="common">
@@ -36,7 +37,6 @@
 
     </package>
 
-	<include file="org/flexpay/common/actions/struts.xml" />
 	<include file="org/flexpay/ab/action/person/struts.xml" />
 	<include file="org/flexpay/ab/action/identity/struts.xml" />
     <include file="org/flexpay/ab/action/country/struts.xml" />

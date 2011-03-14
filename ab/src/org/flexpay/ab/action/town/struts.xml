@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -21,12 +21,12 @@
 
 		<action name="townView" class="townViewAction">
 			<result type="tiles">ab.town.view</result>
-			<result name="redirectError" type="redirect-action">townsList</result>
+			<result name="redirectError" type="redirectAction">townsList</result>
 		</action>
 
 		<action name="townEdit" class="townEditAction">
-            <result name="redirectError" type="redirect-action">townsList</result>
-			<result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">townsList</result>
+			<result name="redirectSuccess" type="redirectAction">
 				<param name="actionName">townView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${town.id}</param>
@@ -40,12 +40,12 @@
 
 		<action name="townTypeView" class="townTypeViewAction">
 			<result type="tiles">ab.town_type.view</result>
-            <result name="redirectError" type="redirect-action">townTypesList</result>
+            <result name="redirectError" type="redirectAction">townTypesList</result>
 		</action>
 
 		<action name="townTypeEdit" class="townTypeEditAction">
-            <result name="redirectError" type="redirect-action">townTypesList</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">townTypesList</result>
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">townTypeView</param>
                 <param name="parse">true</param>
                 <param name="townType.id">${townType.id}</param>

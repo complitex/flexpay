@@ -28,10 +28,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>
-            /WEB-INF/common/configs/tiles_common.xml,
-            /WEB-INF/admin/configs/tiles_admin.xml
-        </param-value>
+		<param-value>/WEB-INF/common/configs/tiles-common.xml,/WEB-INF/admin/configs/tiles-admin.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -71,7 +68,6 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -79,26 +75,38 @@
 
 	<filter>
 		<filter-name>actionFilter</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+        <init-param>
+            <param-name>actionPackages</param-name>
+            <param-value>org.flexpay.admin.action.*,org.flexpay.common.action.*</param-value>
+        </init-param>
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/admin/struts_config.xml
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts-config.xml,org/flexpay/admin/struts-config.xml
 			</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
-		<filter-name>actionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>/struts/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
 
 	<servlet>
 		<servlet-name>fileDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+		<servlet-class>org.flexpay.common.action.FileDownloadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>fileDownloadServlet</servlet-name>
@@ -133,20 +141,6 @@
 			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
-
-
-	<security-role>
-		<role-name>ROLE_BASIC</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_DEVELOPER</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_MENU_ADMIN</role-name>
-	</security-role>
-	<security-role>
-        <role-name>ROLE_MENU_ADMIN_CERTIFICATES</role-name>
-    </security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>

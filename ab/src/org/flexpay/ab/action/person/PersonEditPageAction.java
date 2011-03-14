@@ -3,7 +3,7 @@ package org.flexpay.ab.action.person;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
@@ -78,6 +78,14 @@ public class PersonEditPageAction extends FPActionSupport {
 	public void setPerson(Person person) {
 		this.person = person;
 	}
+
+    public short getSexMan() {
+        return PersonIdentity.SEX_MAN;
+    }
+
+    public short getSexWoman() {
+        return PersonIdentity.SEX_WOMAN;
+    }
 
 	public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;

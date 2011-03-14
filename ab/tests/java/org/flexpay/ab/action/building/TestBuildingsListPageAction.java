@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.action.building.BuildingsListPageAction;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.dao.StreetDaoExt;
 import org.flexpay.ab.persistence.Street;
@@ -8,7 +7,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
 import org.flexpay.ab.util.config.AbUserPreferences;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

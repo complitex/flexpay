@@ -3,7 +3,7 @@ package org.flexpay.ab.action.country;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.sorter.CountrySorter;
 import org.flexpay.ab.service.CountryService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;

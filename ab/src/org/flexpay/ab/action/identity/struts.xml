@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -9,12 +9,12 @@
 
 		<action name="identityTypeView" class="identityTypeViewAction">
 			<result type="tiles">ab.identity_type.view</result>
-            <result name="redirectError" type="redirect-action">identityTypesList</result>
+            <result name="redirectError" type="redirectAction">identityTypesList</result>
 		</action>
 
 		<action name="identityTypeEdit" class="identityTypeEditAction">
-            <result name="redirectError" type="redirect-action">identityTypesList</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">identityTypesList</result>
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">identityTypeView</param>
                 <param name="parse">true</param>
                 <param name="identityType.id">${identityType.id}</param>

@@ -1,0 +1,50 @@
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="admin.layout.standart" template="/WEB-INF/jsp/common/layouts/standart.jsp">
+		<put-attribute name="title" value="admin.main.title" />
+		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+        <put-attribute name="breadCrumbs" value="/WEB-INF/jsp/common/layouts/bread_crumbs.jsp" />
+        <put-attribute name="language" value="/WEB-INF/jsp/common/layouts/language_switch.jsp" />
+		<put-attribute name="tip" value="/WEB-INF/jsp/common/includes/tip.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
+	</definition>
+
+	<definition name="admin.layout.content" template="/WEB-INF/jsp/common/layouts/content_only.jsp">
+	</definition>
+
+	<definition name="admin.main" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.main.title" />
+	</definition>
+
+	<definition name="admin.main.users" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.menu2.users" />
+	</definition>
+	<definition name="admin.main.users.users" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.menu2.users" />
+	</definition>
+
+	<!-- User -->
+	<definition name="admin.user.list" extends="admin.main.users">
+		<put-attribute name="title" value="admin.user.list" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/users_list_page.jsp" />
+	</definition>
+	<definition name="admin.user.edit" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.user.edit" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_edit.jsp" />
+	</definition>
+	<definition name="admin.user.create" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.user.create" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_create.jsp" />
+	</definition>
+
+	<!-- certificates -->
+	<definition name="admin.certificate.edit" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.certificate.edit" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/certificate/certificate_edit.jsp" />
+	</definition>
+
+</tiles-definitions>

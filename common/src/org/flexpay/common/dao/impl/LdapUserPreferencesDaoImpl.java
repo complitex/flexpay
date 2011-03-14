@@ -47,7 +47,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import static java.security.cert.CertificateFactory.getInstance;
-import static org.flexpay.common.actions.security.opensso.PolicyUtils.getToken;
+import static org.flexpay.common.action.security.opensso.PolicyUtils.getToken;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 

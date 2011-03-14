@@ -1,6 +1,6 @@
 package org.flexpay.admin.action.user;
 
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;

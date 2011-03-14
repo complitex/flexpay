@@ -1,9 +1,8 @@
 package org.flexpay.ab.action.person;
 
-import org.flexpay.ab.action.person.PersonsListAction;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

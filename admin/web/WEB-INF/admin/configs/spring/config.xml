@@ -9,7 +9,7 @@
     <import resource="beans-struts.xml" />
 
 	<import resource="stand-alone-tasks.xml" />
-	<import resource="data_export.xml" />
+	<import resource="data-export.xml" />
 
     <import resource="../menu.cfg.xml" />
 

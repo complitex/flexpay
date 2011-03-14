@@ -5,7 +5,7 @@ import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.AbUserPreferences;
-import org.flexpay.common.actions.filter.FilterAjaxAction;
+import org.flexpay.common.action.filter.FilterAjaxAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.set;

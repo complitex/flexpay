@@ -2,7 +2,7 @@ package org.flexpay.eirc.process.quittance;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.eirc.actions.quittance.QuittancePayAction;
+import org.flexpay.eirc.action.quittance.QuittancePayAction;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.junit.Test;

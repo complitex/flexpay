@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -21,12 +21,12 @@
 
         <action name="buildingView" class="buildingViewAction">
             <result type="tiles">ab.building.view</result>
-            <result name="redirectError" type="redirect-action">buildingsList</result>
+            <result name="redirectError" type="redirectAction">buildingsList</result>
         </action>
 
 		<action name="buildingCreate" class="buildingCreateAction">
 			<result name="input" type="tiles">ab.buildings.create</result>
-			<result name="redirectSuccess" type="redirect-action">
+			<result name="redirectSuccess" type="redirectAction">
 				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
 				<param name="building.id">${building.id}</param>
@@ -35,8 +35,8 @@
 
 		<action name="buildingAddressEdit" class="buildingAddressEditAction">
 			<result name="input" type="tiles">ab.buildings.edit_address</result>
-			<result name="redirectError" type="redirect-action">buildingsList</result>
-			<result name="redirectSuccess" type="redirect-action">
+			<result name="redirectError" type="redirectAction">buildingsList</result>
+			<result name="redirectSuccess" type="redirectAction">
 				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
 				<param name="building.id">${building.id}</param>
@@ -64,9 +64,9 @@
         </action>
 
 		<action name="addressAttributeTypeEdit" class="addressAttributeTypeEditAction">
-            <result name="redirectError" type="redirect-action">addressAttributeTypesList</result>
+            <result name="redirectError" type="redirectAction">addressAttributeTypesList</result>
 			<result name="input" type="tiles">ab.buildings_attribute_type.edit</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">addressAttributeTypeView</param>
                 <param name="parse">true</param>
                 <param name="attributeType.id">${attributeType.id}</param>
@@ -75,7 +75,7 @@
 
         <action name="addressAttributeTypeView" class="addressAttributeTypeViewAction">
             <result type="tiles">ab.buildings_attribute_type.view</result>
-            <result name="redirectError" type="redirect-action">addressAttributeTypesList</result>
+            <result name="redirectError" type="redirectAction">addressAttributeTypesList</result>
         </action>
 
 	</package>

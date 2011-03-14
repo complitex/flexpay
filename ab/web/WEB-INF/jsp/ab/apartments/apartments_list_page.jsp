@@ -9,7 +9,7 @@
     <tr>
         <td id="result">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="apartmentEdit" includeParams="none"><s:param name="apartment.id" value="0" /></s:url>'"
+                   onclick="window.location='<s:url action="apartmentEdit"><s:param name="apartment.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -23,20 +23,20 @@
 
         FF.addListener("building", function(filter) {
             FP.pagerAjax(null, {
-                action:"<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none" />",
+                action:"<s:url action="apartmentsListAjax" namespace="/dicts" />",
                 params:{buildingFilter: filter.value.val()}
             });
         });
         FF.addEraser("building", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
-                    + 'onclick="window.location=\'<s:url action="apartmentEdit" includeParams="none"><s:param name="apartment.id" value="0" /></s:url>\'" '
+                    + 'onclick="window.location=\'<s:url action="apartmentEdit"><s:param name="apartment.id" value="0" /></s:url>\'" '
                     + 'value="<s:text name="common.new" />" />');
         });
     });
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="apartmentsListAjax" namespace="/dicts" />",
             params:{
                 buildingFilter: FF.filters["building"].value.val(),
                 "apartmentSorter.active": $("#apartmentSorterActive").val(),
@@ -50,7 +50,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="apartmentDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="apartmentDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

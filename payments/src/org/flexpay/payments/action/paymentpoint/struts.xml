@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="payment_points" namespace="/payments" extends="common">
+
+        <action name="paymentPointView" class="paymentsPaymentPointViewAction">
+            <result type="tiles">payments.organization.payment_point.view</result>
+            <result name="redirectError" type="redirectAction">paymentPointsList</result>
+        </action>
+
+		<action name="paymentPointEdit" class="paymentsPaymentPointEditAction">
+			<result name="input" type="tiles">payments.organization.payment_point.edit</result>
+            <result name="redirectSuccess" type="redirectAction">
+                <param name="actionName">paymentPointView</param>
+                <param name="parse">true</param>
+                <param name="point.id">${point.id}</param>
+            </result>
+		</action>
+
+        <action name="paymentPointsList" class="paymentsPaymentPointsListPageAction">
+            <result type="tiles">payments.organization.payment_points.list</result>
+        </action>
+
+        <action name="paymentPointsListAjax" class="paymentsPaymentPointsListAction">
+            <result>/WEB-INF/jsp/orgs/payment_points/payment_points_list.jsp</result>
+        </action>
+
+		<action name="paymentPointDelete" class="paymentsPaymentPointDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
+
+	</package>
+
+</struts>

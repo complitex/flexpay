@@ -28,9 +28,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>
-			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/bti/configs/tiles_bti.xml
-		</param-value>
+		<param-value>/WEB-INF/common/configs/tiles-common.xml,/WEB-INF/ab/configs/tiles-ab.xml,/WEB-INF/bti/configs/tiles-bti.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -77,26 +75,34 @@
 
 	<filter>
 		<filter-name>actionFilter</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/bti/struts_config.xml
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts-config.xml,org/flexpay/ab/struts-config.xml,org/flexpay/bti/struts-config.xml
 			</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
-		<filter-name>actionFilter</filter-name>
-		<url-pattern>*.action</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>/struts/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
 
 	<servlet>
 		<servlet-name>fileDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+		<servlet-class>org.flexpay.common.action.FileDownloadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>fileDownloadServlet</servlet-name>
@@ -108,12 +114,10 @@
 		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>spring-ws</servlet-name>
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
-
 
 	<security-constraint>
 		<web-resource-collection>
@@ -133,194 +137,6 @@
 		</auth-constraint>
 
 	</security-constraint>
-
-
-	<security-role>
-		<role-name>ROLE_BASIC</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_DEVELOPER</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
-	</security-role>
-
-	<!-- Country roles -->
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_DELETE</role-name>
-	</security-role>
-	<!-- Region roles -->
-	<security-role>
-		<role-name>ROLE_AB_REGION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_REGION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_REGION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_REGION_DELETE</role-name>
-	</security-role>
-	<!-- Town roles -->
-	<security-role>
-		<role-name>ROLE_AB_TOWN_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_DELETE</role-name>
-	</security-role>
-	<!-- Town type roles -->
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- District roles -->
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_DELETE</role-name>
-	</security-role>
-	<!-- Street roles -->
-	<security-role>
-		<role-name>ROLE_AB_STREET_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_DELETE</role-name>
-	</security-role>
-	<!-- Street type roles -->
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- Building attribute type roles -->
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- Building roles -->
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_DELETE</role-name>
-	</security-role>
-	<!-- Apartment roles -->
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_DELETE</role-name>
-	</security-role>
-	<!-- Identity type roles -->
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- Identity roles -->
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_DELETE</role-name>
-	</security-role>
-	<!-- Person roles -->
-	<security-role>
-		<role-name>ROLE_AB_PERSON_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_PERSON_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_PERSON_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_PERSON_DELETE</role-name>
-	</security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>

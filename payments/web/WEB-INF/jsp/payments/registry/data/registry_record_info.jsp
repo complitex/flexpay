@@ -16,7 +16,7 @@
 	</tr>
 	<tr class="cols_1">
 		<td class="col">
-            <strong><s:text name="eirc.registry.record.address" />:</strong> <s:property value="#addressVal" escape="false" />
+            <strong><s:text name="eirc.registry.record.address" />:</strong> <s:property value="#addressVal" escapeHtml="false" />
         </td>
 		<td class="col">
             <strong><s:text name="eirc.registry.record.fio" />:</strong>

@@ -1,36 +1,49 @@
 /*
- * Copyright (c) 2002-2006 by OpenSymphony
- * All rights reserved.
+ * Copyright 2002-2006,2009 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.opensymphony.xwork2.util;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ModelDriven;
-
-import ognl.OgnlRuntime;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.opensymphony.xwork2.conversion.impl.XWorkConverter;
+import com.opensymphony.xwork2.util.reflection.ReflectionProviderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
  * Provides support for localization in XWork.
- *
+ * <p/>
  * <!-- START SNIPPET: searchorder -->
  * Resource bundles are searched in the following order:<p/>
  * <p/>
  * <ol>
  * <li>ActionClass.properties</li>
- * <li>BaseClass.properties (all the way to Object.properties)</li>
  * <li>Interface.properties (every interface and sub-interface)</li>
+ * <li>BaseClass.properties (all the way to Object.properties)</li>
  * <li>ModelDriven's model (if implements ModelDriven), for the model object repeat from 1</li>
  * <li>package.properties (of the directory where class is located and every parent directory all the way to the root directory)</li>
  * <li>search up the i18n message key hierarchy itself</li>
@@ -38,9 +51,9 @@ import java.util.*;
  * </ol>
  * <p/>
  * <!-- END SNIPPET: searchorder -->
- *
+ * <p/>
  * <!-- START SNIPPET: packagenote -->
- * To clarify #5, while traversing the package hierarchy, WW will look for a file package.properties:<p/>
+ * To clarify #5, while traversing the package hierarchy, Struts 2 will look for a file package.properties:<p/>
  * com/<br/>
  * &nbsp; acme/<br/>
  * &nbsp; &nbsp; package.properties<br/>
@@ -53,7 +66,7 @@ import java.util.*;
  * not found com/acme/package.properties, if not found com/package.properties, etc.
  * <p/>
  * <!-- END SNIPPET: packagenote -->
- *
+ * <p/>
  * <!-- START SNIPPET: globalresource -->
  * A global resource bundle could be specified programatically, as well as the locale.
  * <p/>
@@ -63,20 +76,20 @@ import java.util.*;
  * @author Mark Woon
  * @author Rainer Hermanns
  * @author tm_jee
- *
- * @version $Date: 2007-09-03 05:36:45 +0200 (Mon, 03 Sep 2007) $ $Id: LocalizedTextUtil.java 1590 2007-09-03 03:36:45Z mrdon $
+ * @version $Date: 2010-04-12 13:28:09 +0200 (Mon, 12 Apr 2010) $ $Id: LocalizedTextUtil.java 933195 2010-04-12 11:28:09Z lukaszlenart $
  */
 @SuppressWarnings({"unchecked"})
 public class LocalizedTextUtil {
 
-	private static final Log _log = LogFactory.getLog(LocalizedTextUtil.class);
-
-    private static List DEFAULT_RESOURCE_BUNDLES = null;
-    private static final Log LOG = LogFactory.getLog(LocalizedTextUtil.class);
+    private static final List<String> DEFAULT_RESOURCE_BUNDLES = new CopyOnWriteArrayList<String>();
+    private static final Logger LOG = LoggerFactory.getLogger(LocalizedTextUtil.class);
     private static boolean reloadBundles = false;
-    private static final Map<String, String> misses = new HashMap<String, String>();
-    private static final Map messageFormats = new HashMap();
+    private static final ResourceBundle EMPTY_BUNDLE = new EmptyResourceBundle();
+    private static final ConcurrentMap<String, ResourceBundle> bundlesMap = new ConcurrentHashMap<String, ResourceBundle>();
+    private static final Map<MessageFormatKey, MessageFormat> messageFormats = new HashMap<MessageFormatKey, MessageFormat>();
 
+    private static ClassLoader delegatedClassLoader;
+    
     static {
         clearDefaultResourceBundles();
     }
@@ -86,16 +99,22 @@ public class LocalizedTextUtil {
      * Clears the internal list of resource bundles.
      */
     public static void clearDefaultResourceBundles() {
-    	if (DEFAULT_RESOURCE_BUNDLES != null) {
-    		DEFAULT_RESOURCE_BUNDLES.clear();
-    	}
-        DEFAULT_RESOURCE_BUNDLES = Collections.synchronizedList(new ArrayList());
-        DEFAULT_RESOURCE_BUNDLES.add("com/opensymphony/xwork2/xwork-messages");
+        if (DEFAULT_RESOURCE_BUNDLES != null) {
+            synchronized (DEFAULT_RESOURCE_BUNDLES) {
+                DEFAULT_RESOURCE_BUNDLES.clear();
+                DEFAULT_RESOURCE_BUNDLES.add("com/opensymphony/xwork2/xwork-messages");
+            }
+        } else {
+            synchronized (DEFAULT_RESOURCE_BUNDLES) {
+                DEFAULT_RESOURCE_BUNDLES.add("com/opensymphony/xwork2/xwork-messages");
+            }
+        }
     }
 
     /**
      * Should resorce bundles be reloaded.
-     * @param reloadBundles  reload bundles?
+     *
+     * @param reloadBundles reload bundles?
      */
     public static void setReloadBundles(boolean reloadBundles) {
         LocalizedTextUtil.reloadBundles = reloadBundles;
@@ -106,12 +125,14 @@ public class LocalizedTextUtil {
      * <p/>
      * If the bundle already exists in the list it will be readded.
      *
-     * @param resourceBundleName   the name of the bundle to add.
+     * @param resourceBundleName the name of the bundle to add.
      */
     public static void addDefaultResourceBundle(String resourceBundleName) {
         //make sure this doesn't get added more than once
-        DEFAULT_RESOURCE_BUNDLES.remove(resourceBundleName);
-        DEFAULT_RESOURCE_BUNDLES.add(0, resourceBundleName);
+        synchronized (DEFAULT_RESOURCE_BUNDLES) {
+            DEFAULT_RESOURCE_BUNDLES.remove(resourceBundleName);
+            DEFAULT_RESOURCE_BUNDLES.add(0, resourceBundleName);
+        }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added default resource bundle '" + resourceBundleName + "' to default resource bundles = " + DEFAULT_RESOURCE_BUNDLES);
@@ -123,13 +144,13 @@ public class LocalizedTextUtil {
      * with language "en", country "US" and variant "foo". This will parse the output of
      * {@link java.util.Locale#toString()}.
      *
-     * @param localeStr The locale String to parse.
+     * @param localeStr     The locale String to parse.
      * @param defaultLocale The locale to use if localeStr is <tt>null</tt>.
      * @return requested Locale
      */
     public static Locale localeFromString(String localeStr, Locale defaultLocale) {
-        if ((localeStr == null) || (localeStr.trim().length() == 0) || (localeStr.equals("_"))) {
-            if ( defaultLocale != null) {
+        if ((localeStr == null) || (localeStr.trim().length() == 0) || ("_".equals(localeStr))) {
+            if (defaultLocale != null) {
                 return defaultLocale;
             }
             return Locale.getDefault();
@@ -169,11 +190,9 @@ public class LocalizedTextUtil {
      * @return a localized message based on the specified key, or null if no localized message can be found for it
      */
     public static String findDefaultText(String aTextName, Locale locale) {
-        List localList = DEFAULT_RESOURCE_BUNDLES; // it isn't sync'd, but this is so rare, let's do it anyway
+        List<String> localList = DEFAULT_RESOURCE_BUNDLES;
 
-        for (Iterator iterator = localList.iterator(); iterator.hasNext();) {
-            String bundleName = (String) iterator.next();
-
+        for (String bundleName : localList) {
             ResourceBundle bundle = findResourceBundle(bundleName, locale);
             if (bundle != null) {
                 reloadBundles();
@@ -201,7 +220,7 @@ public class LocalizedTextUtil {
         String defaultText = findDefaultText(aTextName, locale);
         if (defaultText != null) {
             MessageFormat mf = buildMessageFormat(defaultText, locale);
-            return mf.format(params);
+            return formatWithNullDetection(mf, params);
         }
         return null;
     }
@@ -210,39 +229,87 @@ public class LocalizedTextUtil {
      * Finds the given resorce bundle by it's name.
      * <p/>
      * Will use <code>Thread.currentThread().getContextClassLoader()</code> as the classloader.
+     * If {@link #delegatedClassLoader} is defined and the bundle cannot be found the current
+     * classloader it will delegate to that.
      *
-     * @param aBundleName  the name of the bundle (usually it's FQN classname).
-     * @param locale       the locale.
-     * @return  the bundle, <tt>null</tt> if not found.
+     * @param aBundleName the name of the bundle (usually it's FQN classname).
+     * @param locale      the locale.
+     * @return the bundle, <tt>null</tt> if not found.
      */
     public static ResourceBundle findResourceBundle(String aBundleName, Locale locale) {
-        synchronized (misses) {
-            String key = createMissesKey(aBundleName, locale);
-            try {
-                if (!misses.containsKey(key)) {
-					// see http://globalizer.wordpress.com/2008/11/07/ok-so-it-was-broken-and-should-have-been-fixed/
-					// for details
-					ResourceBundle.Control control = ResourceBundle.Control
-							.getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT);
-                    return ResourceBundle.getBundle(aBundleName, locale,
-							Thread.currentThread().getContextClassLoader(), control);
+        String key = createMissesKey(aBundleName, locale);
+
+        ResourceBundle bundle;
+
+        try {
+            if (!bundlesMap.containsKey(key)) {
+                bundle = ResourceBundle.getBundle(
+                        aBundleName,
+                        locale,
+                        Thread.currentThread().getContextClassLoader());
+                bundlesMap.put(key, bundle);
+            }
+
+            bundle = bundlesMap.get(key);
+        } catch (MissingResourceException ex) {
+            if ( delegatedClassLoader != null) {
+                try {
+                    if (!bundlesMap.containsKey(key)) {
+                        bundle = ResourceBundle.getBundle(
+                                aBundleName,
+                                locale,
+                                delegatedClassLoader);
+                        bundlesMap.put(key, bundle);
+                    }
+
+                    bundle = bundlesMap.get(key);
+                    
+                } catch (MissingResourceException e) {
+                    bundle = EMPTY_BUNDLE;
+                    bundlesMap.put(key, bundle);
                 }
-            } catch (MissingResourceException ex) {
-                misses.put(key, aBundleName);
+            } else {
+                bundle = EMPTY_BUNDLE;
+                bundlesMap.put(key, bundle);
             }
         }
-
-        return null;
+        return (bundle == EMPTY_BUNDLE) ? null : bundle;
     }
+
+    /**
+     * Sets a {@link ClassLoader} to look up the bundle from if none can be found on the current thread's classloader
+     *
+     * @param classLoader
+     */
+    public static void setDelegatedClassLoader(final ClassLoader classLoader) {
+        synchronized (bundlesMap) {
+            delegatedClassLoader = classLoader;
+        }
+    }
+
+    /**
+     * Removes the bundle from any cached "misses"
+     *
+     * @param bundleName
+     */
+    public static void clearBundle(final String bundleName) {
+        synchronized (bundlesMap) {
+            bundlesMap.remove(bundleName);
+        }
+    }
+
 
     /**
      * Creates a key to used for lookup/storing in the bundle misses cache.
      *
-     * @param aBundleName  the name of the bundle (usually it's FQN classname).
-     * @param locale       the locale.
+     * @param aBundleName the name of the bundle (usually it's FQN classname).
+     * @param locale      the locale.
      * @return the key to use for lookup/storing in the bundle misses cache.
      */
-    private static String createMissesKey(String aBundleName, Locale locale) {
+    private static String createMissesKey
+            (String
+                    aBundleName, Locale
+                    locale) {
         return aBundleName + "_" + locale.toString();
     }
 
@@ -252,7 +319,11 @@ public class LocalizedTextUtil {
      *
      * @see #findText(Class aClass, String aTextName, Locale locale, String defaultMessage, Object[] args)
      */
-    public static String findText(Class aClass, String aTextName, Locale locale) {
+    public static String findText
+            (Class
+                    aClass, String
+                    aTextName, Locale
+                    locale) {
         return findText(aClass, aTextName, locale, aTextName, new Object[0]);
     }
 
@@ -294,7 +365,12 @@ public class LocalizedTextUtil {
      *                       resource bundle
      * @return the localized text, or null if none can be found and no defaultMessage is provided
      */
-    public static String findText(Class aClass, String aTextName, Locale locale, String defaultMessage, Object[] args) {
+    public static String findText
+            (Class
+                    aClass, String
+                    aTextName, Locale
+                    locale, String
+                    defaultMessage, Object[] args) {
         ValueStack valueStack = ActionContext.getContext().getValueStack();
         return findText(aClass, aTextName, locale, defaultMessage, args, valueStack);
 
@@ -342,14 +418,20 @@ public class LocalizedTextUtil {
      *                       one in the ActionContext ThreadLocal
      * @return the localized text, or null if none can be found and no defaultMessage is provided
      */
-    public static String findText(Class aClass, String aTextName, Locale locale, String defaultMessage, Object[] args, ValueStack valueStack) {
+    public static String findText
+            (Class
+                    aClass, String
+                    aTextName, Locale
+                    locale, String
+                    defaultMessage, Object[] args, ValueStack
+                    valueStack) {
         String indexedTextName = null;
         if (aTextName == null) {
             LOG.warn("Trying to find text with null key!");
             aTextName = "";
         }
         // calculate indexedTextName (collection[*]) if applicable
-        if (aTextName.indexOf("[") != -1) {
+        if (aTextName.contains("[")) {
             int i = -1;
 
             indexedTextName = aTextName;
@@ -436,29 +518,29 @@ public class LocalizedTextUtil {
             if (prop != null) {
                 Object obj = valueStack.findValue(prop);
                 try {
-                	Object actionObj = OgnlUtil.getRealTarget(prop, valueStack.getContext(), valueStack.getRoot());
-                	if (actionObj != null) {
-                		PropertyDescriptor propertyDescriptor = OgnlRuntime.getPropertyDescriptor(actionObj.getClass(), prop);
+                    Object actionObj = ReflectionProviderFactory.getInstance().getRealTarget(prop, valueStack.getContext(), valueStack.getRoot());
+                    if (actionObj != null) {
+                        PropertyDescriptor propertyDescriptor = ReflectionProviderFactory.getInstance().getPropertyDescriptor(actionObj.getClass(), prop);
 
-                		if (propertyDescriptor != null) {
-                			Class clazz=propertyDescriptor.getPropertyType();
+                        if (propertyDescriptor != null) {
+                            Class clazz = propertyDescriptor.getPropertyType();
 
-                			if (clazz != null) {
-                				if (obj != null)
-                					valueStack.push(obj);
-                				msg = findText(clazz, newKey, locale, null, args);
-                				if (obj != null)
-                					valueStack.pop();
+                            if (clazz != null) {
+                                if (obj != null)
+                                    valueStack.push(obj);
+                                msg = findText(clazz, newKey, locale, null, args);
+                                if (obj != null)
+                                    valueStack.pop();
 
-                				if (msg != null) {
-                					return msg;
-                				}
-                			}
-                		}
-                	}
+                                if (msg != null) {
+                                    return msg;
+                                }
+                            }
+                        }
+                    }
                 }
-                catch(Exception e) {
-                	_log.debug("unable to find property "+prop, e);
+                catch (Exception e) {
+                    LOG.debug("unable to find property " + prop, e);
                 }
             }
         }
@@ -469,7 +551,7 @@ public class LocalizedTextUtil {
             result = getDefaultMessage(aTextName, locale, valueStack, args, defaultMessage);
         } else {
             result = getDefaultMessage(aTextName, locale, valueStack, args, null);
-            if (result.message != null) {
+            if (result != null && result.message != null) {
                 return result.message;
             }
             result = getDefaultMessage(indexedTextName, locale, valueStack, args, defaultMessage);
@@ -477,11 +559,11 @@ public class LocalizedTextUtil {
 
         // could we find the text, if not log a warn
         if (unableToFindTextForKey(result)) {
-        	String warn = "Unable to find text for key '" + aTextName + "' ";
-        	if (indexedTextName != null) {
-        		warn += " or indexed key '" + indexedTextName + "' ";
-        	}
-        	warn += "in class '" + aClass.getName() + "' and locale '" + locale + "'";
+            String warn = "Unable to find text for key '" + aTextName + "' ";
+            if (indexedTextName != null) {
+                warn += " or indexed key '" + indexedTextName + "' ";
+            }
+            warn += "in class '" + aClass.getName() + "' and locale '" + locale + "'";
             LOG.debug(warn);
         }
 
@@ -491,21 +573,23 @@ public class LocalizedTextUtil {
     /**
      * Determines if we found the text in the bundles.
      *
-     * @param result   the result so far
-     * @return  <tt>true</tt> if we could <b>not</b> find the text, <tt>false</tt> if the text was found (=success).
+     * @param result the result so far
+     * @return <tt>true</tt> if we could <b>not</b> find the text, <tt>false</tt> if the text was found (=success).
      */
-    private static boolean unableToFindTextForKey(GetDefaultMessageReturnArg result) {
-    	if (result == null || result.message == null) {
-    		return true;
-    	}
+    private static boolean unableToFindTextForKey
+            (GetDefaultMessageReturnArg
+                    result) {
+        if (result == null || result.message == null) {
+            return true;
+        }
 
-		// did we find it in the bundle, then no problem?
-    	if (result.foundInBundle) {
-			return false;
-		}
+        // did we find it in the bundle, then no problem?
+        if (result.foundInBundle) {
+            return false;
+        }
 
-    	// not found in bundle
-    	return true;
+        // not found in bundle
+        return true;
     }
 
     /**
@@ -517,7 +601,11 @@ public class LocalizedTextUtil {
      *
      * @see #findText(java.util.ResourceBundle, String, java.util.Locale, String, Object[])
      */
-    public static String findText(ResourceBundle bundle, String aTextName, Locale locale) {
+    public static String findText
+            (ResourceBundle
+                    bundle, String
+                    aTextName, Locale
+                    locale) {
         return findText(bundle, aTextName, locale, aTextName, new Object[0]);
     }
 
@@ -530,13 +618,18 @@ public class LocalizedTextUtil {
      * <p/>
      * If a message is <b>not</b> found a WARN log will be logged.
      *
-     * @param bundle     the bundle
-     * @param aTextName  the key
-     * @param locale     the locale
-     * @param defaultMessage  the default message to use if no message was found in the bundle
-     * @param args       arguments for the message formatter.
+     * @param bundle         the bundle
+     * @param aTextName      the key
+     * @param locale         the locale
+     * @param defaultMessage the default message to use if no message was found in the bundle
+     * @param args           arguments for the message formatter.
      */
-    public static String findText(ResourceBundle bundle, String aTextName, Locale locale, String defaultMessage, Object[] args) {
+    public static String findText
+            (ResourceBundle
+                    bundle, String
+                    aTextName, Locale
+                    locale, String
+                    defaultMessage, Object[] args) {
         ValueStack valueStack = ActionContext.getContext().getValueStack();
         return findText(bundle, aTextName, locale, defaultMessage, args, valueStack);
     }
@@ -550,38 +643,49 @@ public class LocalizedTextUtil {
      * <p/>
      * If a message is <b>not</b> found a WARN log will be logged.
      *
-     * @param bundle     the bundle
-     * @param aTextName  the key
-     * @param locale     the locale
-     * @param defaultMessage  the default message to use if no message was found in the bundle
-     * @param args       arguments for the message formatter.
-     * @param valueStack the OGNL value stack.
+     * @param bundle         the bundle
+     * @param aTextName      the key
+     * @param locale         the locale
+     * @param defaultMessage the default message to use if no message was found in the bundle
+     * @param args           arguments for the message formatter.
+     * @param valueStack     the OGNL value stack.
      */
-    public static String findText(ResourceBundle bundle, String aTextName, Locale locale, String defaultMessage, Object[] args, ValueStack valueStack) {
+    public static String findText
+            (ResourceBundle
+                    bundle, String
+                    aTextName, Locale
+                    locale, String
+                    defaultMessage, Object[] args, ValueStack
+                    valueStack) {
         try {
             reloadBundles();
 
             String message = TextParseUtil.translateVariables(bundle.getString(aTextName), valueStack);
             MessageFormat mf = buildMessageFormat(message, locale);
 
-            return mf.format(args);
+            return formatWithNullDetection(mf, args);
         } catch (MissingResourceException ex) {
-        	// ignore
+            // ignore
         }
 
         GetDefaultMessageReturnArg result = getDefaultMessage(aTextName, locale, valueStack, args, defaultMessage);
         if (unableToFindTextForKey(result)) {
             LOG.warn("Unable to find text for key '" + aTextName + "' in ResourceBundles for locale '" + locale + "'");
         }
-        return result.message;
+        return result != null ? result.message : null;
     }
 
     /**
      * Gets the default message.
      */
-    private static GetDefaultMessageReturnArg getDefaultMessage(String key, Locale locale, ValueStack valueStack, Object[] args, String defaultMessage) {
+    private static GetDefaultMessageReturnArg getDefaultMessage
+            (String
+                    key, Locale
+                    locale, ValueStack
+                    valueStack, Object[] args, String
+                    defaultMessage) {
         GetDefaultMessageReturnArg result = null;
-    	boolean found = true;
+        boolean found = true;
 
         if (key != null) {
             String message = findDefaultText(key, locale);
@@ -595,7 +699,7 @@ public class LocalizedTextUtil {
             if (message != null) {
                 MessageFormat mf = buildMessageFormat(TextParseUtil.translateVariables(message, valueStack), locale);
 
-                String msg = mf.format(args);
+                String msg = formatWithNullDetection(mf, args);
                 result = new GetDefaultMessageReturnArg(msg, found);
             }
         }
@@ -606,7 +710,12 @@ public class LocalizedTextUtil {
     /**
      * Gets the message from the named resource bundle.
      */
-    private static String getMessage(String bundleName, Locale locale, String key, ValueStack valueStack, Object[] args) {
+    private static String getMessage
+            (String
+                    bundleName, Locale
+                    locale, String
+                    key, ValueStack
+                    valueStack, Object[] args) {
         ResourceBundle bundle = findResourceBundle(bundleName, locale);
         if (bundle == null) {
             return null;
@@ -617,20 +726,35 @@ public class LocalizedTextUtil {
         try {
             String message = TextParseUtil.translateVariables(bundle.getString(key), valueStack);
             MessageFormat mf = buildMessageFormat(message, locale);
-            return mf.format(args);
+            return formatWithNullDetection(mf, args);
         } catch (MissingResourceException e) {
             return null;
         }
     }
 
-    private static MessageFormat buildMessageFormat(String pattern, Locale locale) {
+    private static String formatWithNullDetection(MessageFormat mf, Object[] args) {
+        String message = mf.format(args);
+        if ("null".equals(message)) {
+            return null;
+        } else {
+            return message;
+        }
+    }
+
+    private static MessageFormat buildMessageFormat
+            (String
+                    pattern, Locale
+                    locale) {
         MessageFormatKey key = new MessageFormatKey(pattern, locale);
-        MessageFormat format = (MessageFormat) messageFormats.get(key);
-        if (format == null) {
-            format = new MessageFormat(pattern);
-            format.setLocale(locale);
-            format.applyPattern(pattern);
-            messageFormats.put(key, format);
+        MessageFormat format = null;
+        synchronized (messageFormats) {
+            format = (MessageFormat) messageFormats.get(key);
+            if (format == null) {
+                format = new MessageFormat(pattern);
+                format.setLocale(locale);
+                format.applyPattern(pattern);
+                messageFormats.put(key, format);
+            }
         }
 
         return format;
@@ -640,9 +764,16 @@ public class LocalizedTextUtil {
      * Traverse up class hierarchy looking for message.  Looks at class, then implemented interface,
      * before going up hierarchy.
      */
-    private static String findMessage(Class clazz, String key, String indexedKey, Locale locale, Object[] args, Set checked, ValueStack valueStack) {
+    private static String findMessage
+            (Class
+                    clazz, String
+                    key, String
+                    indexedKey, Locale
+                    locale, Object[] args, Set<String>
+                    checked, ValueStack
+                    valueStack) {
         if (checked == null) {
-            checked = new TreeSet();
+            checked = new TreeSet<String>();
         } else if (checked.contains(clazz.getName())) {
             return null;
         }
@@ -665,15 +796,15 @@ public class LocalizedTextUtil {
         // look in properties of implemented interfaces
         Class[] interfaces = clazz.getInterfaces();
 
-        for (int x = 0; x < interfaces.length; x++) {
-            msg = getMessage(interfaces[x].getName(), locale, key, valueStack, args);
+        for (Class anInterface : interfaces) {
+            msg = getMessage(anInterface.getName(), locale, key, valueStack, args);
 
             if (msg != null) {
                 return msg;
             }
 
             if (indexedKey != null) {
-                msg = getMessage(interfaces[x].getName(), locale, indexedKey, valueStack, args);
+                msg = getMessage(anInterface.getName(), locale, indexedKey, valueStack, args);
 
                 if (msg != null) {
                     return msg;
@@ -685,8 +816,8 @@ public class LocalizedTextUtil {
         if (clazz.isInterface()) {
             interfaces = clazz.getInterfaces();
 
-            for (int x = 0; x < interfaces.length; x++) {
-                msg = findMessage(interfaces[x], key, indexedKey, locale, args, checked, valueStack);
+            for (Class anInterface : interfaces) {
+                msg = findMessage(anInterface, key, indexedKey, locale, args, checked, valueStack);
 
                 if (msg != null) {
                     return msg;
@@ -737,7 +868,11 @@ public class LocalizedTextUtil {
     }
 
 
-    private static void clearMap(Class cl, Object obj, String name)
+    private static void clearMap
+            (Class
+                    cl, Object
+                    obj, String
+                    name)
             throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
             InvocationTargetException {
         Field field = cl.getDeclaredField(name);
@@ -756,12 +891,11 @@ public class LocalizedTextUtil {
     /**
      * Clears all the internal lists.
      */
-    public static void reset() {
+    public static void reset
+            () {
         clearDefaultResourceBundles();
 
-        synchronized (misses) {
-            misses.clear();
-        }
+        bundlesMap.clear();
 
         synchronized (messageFormats) {
             messageFormats.clear();
@@ -777,6 +911,7 @@ public class LocalizedTextUtil {
             this.locale = locale;
         }
 
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof MessageFormatKey)) return false;
@@ -791,6 +926,7 @@ public class LocalizedTextUtil {
             return true;
         }
 
+        @Override
         public int hashCode() {
             int result;
             result = (pattern != null ? pattern.hashCode() : 0);
@@ -800,12 +936,25 @@ public class LocalizedTextUtil {
     }
 
     static class GetDefaultMessageReturnArg {
-    	String message;
-    	boolean foundInBundle;
+        String message;
+        boolean foundInBundle;
 
-    	public GetDefaultMessageReturnArg(String message, boolean foundInBundle) {
-			this.message = message;
-			this.foundInBundle = foundInBundle;
-		}
+        public GetDefaultMessageReturnArg(String message, boolean foundInBundle) {
+            this.message = message;
+            this.foundInBundle = foundInBundle;
+        }
     }
+
+    private static class EmptyResourceBundle extends ResourceBundle {
+        @Override
+        public Enumeration<String> getKeys() {
+            return null; // dummy
+        }
+
+        @Override
+        protected Object handleGetObject(String key) {
+            return null; // dummy
+        }
+    }
+
 }

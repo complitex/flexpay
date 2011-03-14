@@ -1,9 +1,8 @@
 package org.flexpay.payments.action.reports;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.flexpay.orgs.persistence.TestData.CASHBOX_1;
 import static org.flexpay.orgs.persistence.TestData.CASHBOX_2;
-import org.flexpay.payments.actions.reports.PaymentOperationReportAction;
 import static org.flexpay.payments.persistence.TestData.OPERATION;
 import static org.flexpay.payments.persistence.TestData.OPERATION_2;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
