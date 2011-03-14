@@ -4,7 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;

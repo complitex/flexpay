@@ -3,7 +3,7 @@ package org.flexpay.ab.action.district;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.TownService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;

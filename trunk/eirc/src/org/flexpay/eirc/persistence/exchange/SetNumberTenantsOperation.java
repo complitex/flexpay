@@ -1,7 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
-import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
+import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 
 import java.util.List;
 

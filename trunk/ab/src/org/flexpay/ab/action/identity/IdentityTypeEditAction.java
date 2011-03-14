@@ -3,7 +3,7 @@ package org.flexpay.ab.action.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;

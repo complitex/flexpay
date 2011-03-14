@@ -8,13 +8,13 @@
 
     <!-- SZ files -->
     <bean id="szFileCreatePageAction"
-          class="org.flexpay.sz.actions.szfile.SzFileCreatePageAction"
+          class="org.flexpay.sz.action.szfile.SzFileCreatePageAction"
           p:osznService-ref="osznService"
           p:crumbNameKey="sz.crumbs.sz_files_import"
           scope="prototype" />
 
     <bean id="szFileUploadAction"
-          class="org.flexpay.sz.actions.szfile.SzFileUploadAction"
+          class="org.flexpay.sz.action.szfile.SzFileUploadAction"
           p:osznService-ref="osznService"
           p:szFileService-ref="szFileService"
           p:fpFileService-ref="fpFileService"
@@ -26,12 +26,12 @@
 		  scope="prototype" />
 
     <bean id="szFilesListAction"
-          class="org.flexpay.sz.actions.szfile.SzFilesListAction"
+          class="org.flexpay.sz.action.szfile.SzFilesListAction"
           p:szFileService-ref="szFileService"
 		  scope="prototype" />
 
 	<bean id="szFileOperationAction"
-          class="org.flexpay.sz.actions.szfile.SzFileOperationAction"
+          class="org.flexpay.sz.action.szfile.SzFileOperationAction"
           p:fpFileService-ref="fpFileService"
           p:moduleName="${flexpay.module.name.sz}"
           p:szFileService-ref="szFileService"

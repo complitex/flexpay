@@ -28,7 +28,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/common/configs/tiles_orgs.xml</param-value>
+		<param-value>/WEB-INF/common/configs/tiles-common.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -76,22 +76,34 @@
 
 	<filter>
 		<filter-name>actionFilter</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+        <init-param>
+            <param-name>actionPackages</param-name>
+            <param-value>org.flexpay.orgs.action.*,org.flexpay.common.action.*</param-value>
+        </init-param>
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/orgs/struts_config.xml
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts-config.xml,org/flexpay/orgs/struts-config.xml
 			</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
-		<filter-name>actionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>/struts/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
 
 	<servlet>
 		<servlet-name>spring-ws</servlet-name>
@@ -106,7 +118,7 @@
 
 	<servlet>
 		<servlet-name>fileDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+		<servlet-class>org.flexpay.common.action.FileDownloadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>fileDownloadServlet</servlet-name>
@@ -130,109 +142,6 @@
 			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
-
-	<security-role>
-		<role-name>ROLE_BASIC</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_DEVELOPER</role-name>
-	</security-role>
-
-	<!-- Organisations roles -->
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_POINT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_POINT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_PAYMENT_POINT_DELETE</role-name>
-	</security-role>
-
-	<!-- cashbox roles -->
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_READ</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_CHANGE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_ADD</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_READ_ALIAS_PAYMENT_COLLECTORS</role-name>
-    </security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>

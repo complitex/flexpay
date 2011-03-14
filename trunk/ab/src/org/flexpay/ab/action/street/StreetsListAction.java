@@ -7,7 +7,7 @@ import org.flexpay.ab.persistence.sorter.StreetSorterByName;
 import org.flexpay.ab.persistence.sorter.StreetSorterByType;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.TownService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;

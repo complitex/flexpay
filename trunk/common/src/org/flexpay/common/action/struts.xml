@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<constant name="struts.objectFactory" value="spring"/>
+	<constant name="struts.devMode" value="true"/>
+	<constant name="struts.configuration.xml.reload" value="true"/>
+	<constant name="struts.ui.theme" value="simple"/>
+	<constant name="struts.multipart.maxSize" value="1073741824"/>
+
+	<include file="struts-default.xml" />
+	<include file="struts-plugin.xml" />
+
+	<package name="common" namespace="/common" extends="tiles-default">
+
+		<result-types>
+			<result-type name="rawtext"
+						 class="com.davidjc.ajaxfileupload.result.RawTextResult"/>
+		</result-types>
+
+		<interceptors>
+            <interceptor name="menuInterceptor"
+                         class="org.flexpay.common.action.interceptor.MenuInterceptor" />
+            <interceptor name="breadCrumb"
+                         class="org.flexpay.common.action.interceptor.BreadCrumbInterceptor" />
+			<interceptor-stack name="commonDefaultStack">
+				<interceptor-ref name="defaultStack" />
+                <interceptor-ref name="menuInterceptor" />
+                <interceptor-ref name="breadCrumb" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="commonDefaultStack"/>
+
+		<action name="fileUploadProgress"
+				class="org.flexpay.common.action.FileUploadProgressAction">
+			<result type="rawtext"/>
+		</action>
+
+		<action name="welcome">
+			<result type="tiles">common.welcome</result>
+		</action>
+
+	</package>
+
+	<package name="common1" namespace="/common" extends="common">
+
+		<action name="updateUserPrefs" class="org.flexpay.common.action.UserPreferencesUpdateAction">
+			<result>/WEB-INF/jsp/common/user_prefs.jsp</result>
+		</action>
+
+		<action name="print" class="printAction">
+			<result>/WEB-INF/jsp/common/printing/container.jsp</result>
+		</action>
+
+		<action name="about" class="staticPageAction">
+			<result>/WEB-INF/jsp/common/about.jsp</result>
+		</action>
+
+		<action name="user" class="staticPageAction">
+			<result>/WEB-INF/jsp/common/user.jsp</result>
+		</action>
+
+		<action name="diff" class="staticPageAdminAction">
+			<result>/WEB-INF/jsp/common/diff.txt</result>
+		</action>
+
+        <action name="error" class="staticPageAction">
+            <result>/WEB-INF/jsp/common/error.jsp</result>
+        </action>
+
+	</package>
+
+</struts>

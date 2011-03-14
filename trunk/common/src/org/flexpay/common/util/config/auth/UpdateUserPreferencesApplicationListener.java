@@ -1,6 +1,6 @@
 package org.flexpay.common.util.config.auth;
 
-import org.flexpay.common.actions.security.LogoutEvent;
+import org.flexpay.common.action.security.LogoutEvent;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;

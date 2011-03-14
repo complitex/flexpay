@@ -14,11 +14,11 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.Security;
-import org.flexpay.payments.actions.outerrequest.request.GetDebtInfoRequest;
-import org.flexpay.payments.actions.outerrequest.request.GetQuittanceDebtInfoRequest;
-import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
-import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
-import org.flexpay.payments.actions.outerrequest.request.response.Status;
+import org.flexpay.payments.action.outerrequest.request.GetDebtInfoRequest;
+import org.flexpay.payments.action.outerrequest.request.GetQuittanceDebtInfoRequest;
+import org.flexpay.payments.action.outerrequest.request.SearchRequest;
+import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.action.outerrequest.request.response.Status;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -33,7 +33,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.actions.outerrequest.request.SearchRequest.*;
+import static org.flexpay.payments.action.outerrequest.request.SearchRequest.*;
 
 public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 

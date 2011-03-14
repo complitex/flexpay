@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.persistence.sorter.DistrictSorter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.TownService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;

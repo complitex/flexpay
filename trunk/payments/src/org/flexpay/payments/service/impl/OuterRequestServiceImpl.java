@@ -27,10 +27,10 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.outerrequest.request.*;
-import org.flexpay.payments.actions.outerrequest.request.data.ServicePayDetails;
-import org.flexpay.payments.actions.outerrequest.request.response.*;
-import org.flexpay.payments.actions.outerrequest.request.response.data.*;
+import org.flexpay.payments.action.outerrequest.request.*;
+import org.flexpay.payments.action.outerrequest.request.data.ServicePayDetails;
+import org.flexpay.payments.action.outerrequest.request.response.*;
+import org.flexpay.payments.action.outerrequest.request.response.data.*;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
@@ -270,7 +270,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     public String getErcAccount(List<ServiceDetails.ServiceAttribute> attributes) {
 
         for (ServiceDetails.ServiceAttribute attribute : attributes) {
-            if (attribute.getName().equals(org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes.ATTR_ERC_ACCOUNT)) {
+            if (attribute.getName().equals(org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes.ATTR_ERC_ACCOUNT)) {
                 return attribute.getValue();
             }
         }

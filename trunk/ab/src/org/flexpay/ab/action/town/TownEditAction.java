@@ -5,7 +5,7 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;

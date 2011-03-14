@@ -671,14 +671,8 @@
 				<xslt in="${build.dir}/web/WEB-INF/web.xml"
 					  out="${build.dir}/web/WEB-INF/web.xml-tmp"
 					  style="${common.dir}/etc/util/opensso/WebXml.xsl" />
-				<xslt in="${build.dir}/web/WEB-INF/sun-web.xml"
-					  out="${build.dir}/web/WEB-INF/sun-web.xml-tmp"
-					  style="${common.dir}/etc/util/opensso/SunWebXml.xsl" />
 				<move file="${build.dir}/web/WEB-INF/web.xml-tmp"
 					  tofile="${build.dir}/web/WEB-INF/web.xml"
-					  overwrite="true" />
-				<move file="${build.dir}/web/WEB-INF/sun-web.xml-tmp"
-					  tofile="${build.dir}/web/WEB-INF/sun-web.xml"
 					  overwrite="true" />
 			</then>
 			<else>

@@ -3,7 +3,7 @@ package org.flexpay.ab.action.region;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.util.config.AbUserPreferences;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

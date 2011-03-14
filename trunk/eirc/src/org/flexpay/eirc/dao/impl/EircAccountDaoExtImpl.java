@@ -12,7 +12,7 @@ import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
 import org.flexpay.eirc.persistence.sorter.EircAccountSorterStub;
-import org.flexpay.payments.actions.outerrequest.request.response.data.ConsumerAttributes;
+import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

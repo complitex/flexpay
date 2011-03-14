@@ -10,12 +10,11 @@ import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.actions.spfile.SpFileUploadAction;
+import org.flexpay.eirc.action.spfile.SpFileUploadAction;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.payments.util.impl.PaymentsTestRegistryUtil;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +50,7 @@ public class TestParseFPRegistryProcess extends EircSpringBeanAwareTestCase {
 	@Qualifier ("eircTestRegistryUtil")
 	private PaymentsTestRegistryUtil registryUtil;
 
-	private static final String TEST_FILE = "org/flexpay/eirc/actions/sp/ree.txt";
+	private static final String TEST_FILE = "org/flexpay/eirc/action/sp/ree.txt";
 
 	@Test
 	public void testRegistryProcess() throws Throwable {

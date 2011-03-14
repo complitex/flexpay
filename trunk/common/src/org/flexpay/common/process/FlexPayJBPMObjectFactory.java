@@ -32,6 +32,7 @@ public class FlexPayJBPMObjectFactory extends JbpmObjectFactory implements Initi
 	 * do workaround
 	 * @throws Exception
 	 */
+    @Override
 	public void afterPropertiesSet() throws Exception {
 		if (configurationFile != null) {
 			LOG.info("creating JbpmConfiguration from resource ", configurationFile.getDescription());

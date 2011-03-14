@@ -1,6 +1,6 @@
 package org.flexpay.admin.action.user;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.service.UserPreferencesService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

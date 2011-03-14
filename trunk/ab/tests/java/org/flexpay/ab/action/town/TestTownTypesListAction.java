@@ -1,8 +1,7 @@
 package org.flexpay.ab.action.town;
 
-import org.flexpay.ab.action.town.TownTypesListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;

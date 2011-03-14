@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -21,12 +21,12 @@
 
         <action name="regionView" class="regionViewAction">
             <result type="tiles">ab.region.view</result>
-            <result name="redirectError" type="redirect-action">regionsList</result>
+            <result name="redirectError" type="redirectAction">regionsList</result>
         </action>
 
         <action name="regionEdit" class="regionEditAction">
-            <result name="redirectError" type="redirect-action">regionsList</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectError" type="redirectAction">regionsList</result>
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">regionView</param>
                 <param name="parse">true</param>
                 <param name="object.id">${region.id}</param>

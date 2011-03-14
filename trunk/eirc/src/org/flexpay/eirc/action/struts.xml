@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+    <package name="eirc" namespace="/eirc" extends="common">
+
+        <action name="main" class="menuPageAction">
+            <result type="tiles">eirc.main</result>
+        </action>
+
+        <action name="mainDicts" class="menuPageAction">
+            <result type="tiles">eirc.main.dicts</result>
+        </action>
+
+        <action name="mainImport" class="menuPageAction">
+            <result type="tiles">eirc.main.import</result>
+        </action>
+
+        <action name="mainProcessing" class="menuPageAction">
+            <result type="tiles">eirc.main.processing</result>
+        </action>
+
+        <action name="mainQuittances" class="menuPageAction">
+            <result type="tiles">eirc.main.quittances</result>
+        </action>
+
+        <action name="mainEircAccounts" class="menuPageAction">
+            <result type="tiles">eirc.main.quittances</result>
+        </action>
+
+        <action name="mainOrganizationsDicts" class="menuPageAction">
+            <result type="tiles">eirc.main.organizations_dicts</result>
+        </action>
+
+        <action name="mainServicesDicts" class="menuPageAction">
+            <result type="tiles">eirc.main.services_dicts</result>
+        </action>
+
+        <action name="mainCashboxesDicts" class="menuPageAction">
+            <result type="tiles">eirc.main.cashboxes_dicts</result>
+        </action>
+
+        <action name="mainImportImport" class="menuPageAction">
+            <result type="tiles">eirc.main.import_import</result>
+        </action>
+
+        <action name="mainProcessingProcessing" class="menuPageAction">
+            <result type="tiles">eirc.main.processing_processing</result>
+        </action>
+
+        <action name="mainQuittancesQuittances" class="menuPageAction">
+            <result type="tiles">eirc.main.quittances_quittances</result>
+        </action>
+
+        <action name="mainQuittancesPayment" class="menuPageAction">
+            <result type="tiles">eirc.main.quittances_payment</result>
+        </action>
+
+        <action name="mainQuittancesPackets" class="menuPageAction">
+            <result type="tiles">eirc.main.quittances_packets</result>
+        </action>
+
+        <action name="mainEircAccountsAccounts" class="menuPageAction">
+            <result type="tiles">eirc.main.quittances</result>
+        </action>
+
+    </package>
+
+    <include file="org/flexpay/eirc/action/cashbox/struts.xml" />
+    <include file="org/flexpay/eirc/action/eircaccount/struts.xml" />
+    <include file="org/flexpay/eirc/action/organization/struts.xml" />
+    <include file="org/flexpay/eirc/action/serviceprovider/struts.xml" />
+    <include file="org/flexpay/eirc/action/service/struts.xml" />
+    <include file="org/flexpay/eirc/action/processing/struts.xml" />
+    <include file="org/flexpay/eirc/action/registry/struts.xml" />
+    <include file="org/flexpay/eirc/action/quittance/struts.xml" />
+    <include file="org/flexpay/eirc/action/spfile/sruts.xml" />
+
+</struts>

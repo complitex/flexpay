@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.action.building.BuildingCreateAction;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.dao.StreetDao;
@@ -13,7 +12,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
 import static org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.junit.Assert.*;
 import org.junit.Test;

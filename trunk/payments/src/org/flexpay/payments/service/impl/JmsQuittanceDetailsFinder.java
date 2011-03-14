@@ -1,9 +1,9 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.payments.actions.outerrequest.request.SearchRequest;
-import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
-import org.flexpay.payments.actions.outerrequest.request.response.Status;
+import org.flexpay.payments.action.outerrequest.request.SearchRequest;
+import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.action.outerrequest.request.response.Status;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

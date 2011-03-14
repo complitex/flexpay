@@ -17,15 +17,15 @@
         FPR.addGroups([
             <s:iterator value="errorGroups" status="status">
                 [
-                    <s:if test="group.townName != null">"<s:property value="group.townName" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.streetType != null">"<s:property value="group.streetType" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.streetName != null">"<s:property value="group.streetName" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.buildingNumber != null">"<s:property value="group.buildingNumber" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.buildingBulk != null">"<s:property value="group.buildingBulk" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.apartmentNumber != null">"<s:property value="group.apartmentNumber" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.lastName != null">"<s:property value="group.lastName" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.middleName != null">"<s:property value="group.middleName" />"</s:if><s:else>null</s:else>,
-                    <s:if test="group.firstName != null">"<s:property value="group.firstName" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.townName != null">"<s:property value="group.townName" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.streetType != null">"<s:property value="group.streetType" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.streetName != null">"<s:property value="group.streetName" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.buildingNumber != null">"<s:property value="group.buildingNumber" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.buildingBulk != null">"<s:property value="group.buildingBulk" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.apartmentNumber != null">"<s:property value="group.apartmentNumber" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.lastName != null">"<s:property value="group.lastName" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.middleName != null">"<s:property value="group.middleName" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
+                    <s:if test="group.firstName != null">"<s:property value="group.firstName" escapeHtml="false" escapeJavaScript="true" />"</s:if><s:else>null</s:else>,
                     <s:property value="group.numberOfRecords != null ? group.numberOfRecords : 0" />
                 ]<s:property value="#status.index < errorGroups.size() - 1 ? ',' : ''" />
             </s:iterator>

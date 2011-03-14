@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.StreetDistrictRelation;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;

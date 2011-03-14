@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+    <package name="payments" namespace="/payments" extends="common">
+
+        <action name="main" class="menuPageAction">
+            <result type="tiles">payments.main</result>
+        </action>
+
+        <action name="accountantAWPStaticPageAction" class="accountantAWPStaticPageAction">
+            <result type="tiles">payments.accountant</result>
+        </action>
+
+    </package>
+
+    <package name="payments_operator" namespace="/payments" extends="common">
+
+        <interceptors>
+            <interceptor name="cashboxInterceptor" class="cashboxInterceptor"/>
+
+            <interceptor-stack name="paymentsDefaultStack">
+                <interceptor-ref name="commonDefaultStack"/>
+                <interceptor-ref name="cookie">
+                    <param name="cookiesName">cashboxId</param>
+                </interceptor-ref>
+                <interceptor-ref name="cashboxInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="paymentsDefaultStack"/>
+
+        <global-results>
+            <result name="cashboxAuthenticationRequired" type="tiles">payments.error.cashbox_authentication_required</result>
+            <result name="tradingDayClosed" type="tiles">payments.error.trading_day_closed</result>
+        </global-results>
+
+        <action name="main" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.quittance.search.address</result>
+        </action>
+
+        <action name="mainByAddressOperations" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.main.by_address.operations</result>
+        </action>
+
+        <action name="mainByAddressReports" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.main.by_address.reports</result>
+        </action>
+
+        <action name="mainByEircaccountOperations" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.main.by_eircaccount.operations</result>
+        </action>
+
+        <action name="mainByEircaccountReports" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.main.by_eircaccount.reports</result>
+        </action>
+
+        <action name="mainByQuittanceOperations" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.main.by_quittance.operations</result>
+        </action>
+
+        <action name="mainByQuittanceReports" class="operatorAWPStaticPageAction">
+            <result type="tiles">payments.main.by_quittance.reports</result>
+        </action>
+
+    </package>
+
+	<include file="org/flexpay/payments/action/cashbox/struts.xml" />
+    <include file="org/flexpay/payments/action/filter/struts.xml" />
+    <include file="org/flexpay/payments/action/monitor/struts.xml" />
+    <include file="org/flexpay/payments/action/operations/struts.xml" />
+    <include file="org/flexpay/payments/action/paymentpoint/struts.xml" />
+    <include file="org/flexpay/payments/action/quittance/struts.xml" />
+    <include file="org/flexpay/payments/action/registry/struts.xml" />
+    <include file="org/flexpay/payments/action/reports/struts.xml" />
+    <include file="org/flexpay/payments/action/tradingday/struts.xml" />
+	<include file="org/flexpay/payments/action/workplace/struts.xml" />
+
+</struts>

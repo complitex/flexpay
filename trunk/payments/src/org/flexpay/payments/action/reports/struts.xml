@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="reports_operator" namespace="/payments" extends="payments_operator">
+
+		<action name="dayReceivedPaymentsReport" class="dayReceivedPaymentsReportAction">
+			<result type="tiles">payments.report.day.received</result>
+			<result name="file" type="redirectAction">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+		<action name="dayReturnedPaymentsReport" class="dayReturnedPaymentsReportAction">
+			<result type="tiles">payments.report.day.returned</result>
+			<result name="file" type="redirectAction">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+	</package>
+
+	<package name="reports" namespace="/payments" extends="payments">
+
+		<action name="accReceivedPaymentsReport" class="accReceivedPaymentsReportAction">
+			<result type="tiles">payments.report.acc.received</result>
+			<result name="file" type="redirectAction">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+		<action name="accReturnedPaymentsReport" class="accReturnedPaymentsReportAction">
+			<result type="tiles">payments.report.acc.returned</result>
+			<result name="file" type="redirectAction">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+        <action name="accPaymentsRegistriesReport" class="accPaymentsRegistriesReportAction">
+            <result type="tiles">payments.report.acc.payments_registries</result>
+            <result name="file" type="redirectAction">
+                <param name="actionName">print</param>
+                <param name="namespace">/common</param>
+                <param name="parse">true</param>
+                <param name="file.id">${report.id}</param>
+            </result>
+        </action>
+
+		<action name="importPaymentsReport" class="importPaymentsReportAction">
+			<result name="input" type="tiles">payments.report.importPaymentsReport</result>
+			<result type="stream">
+				<param name="contentType">text/csv</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentLength">${file.size}</param>
+				<param name="contentDisposition">filename="${file.originalName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+
+		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
+            <result name="redirectError" type="redirectAction">
+                <param name="actionName">error</param>
+                <param name="namespace">/common</param>
+            </result>
+			<result name="file" type="redirectAction">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+		<action name="accBlankOperationReport" class="accBlankOperationReportAction">
+			<result type="tiles">payments.report.blank.operation</result>
+		</action>
+
+	</package>
+
+</struts>

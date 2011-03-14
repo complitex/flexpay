@@ -10,7 +10,7 @@
 
     $(function() {
         FP.pagerAjax(null, {
-            action:"<s:url action="countriesListAjax" namespace="/dicts" includeParams="none" />"
+            action:"<s:url action="countriesListAjax" namespace="/dicts" />"
         });
     });
 
@@ -20,7 +20,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="countriesListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="countriesListAjax" namespace="/dicts" />",
             params:{
                 "countrySorter.active": $("#countrySorterActive").val(),
                 "countrySorter.order": $("#countrySorterOrder").val()

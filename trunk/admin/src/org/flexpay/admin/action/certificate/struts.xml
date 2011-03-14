@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
 <struts>
 
 	<package name="certificates" namespace="/admin" extends="common">
 
 		<action name="certificateEdit" class="certificateEditAction">
 			<result name="input" type="tiles">admin.certificate.edit</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result name="redirectSuccess" type="redirectAction">
                 <param name="actionName">editUser</param>
                 <param name="parse">true</param>
                 <param name="model.userName">${alias}</param>

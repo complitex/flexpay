@@ -11,7 +11,7 @@
     <import resource="beans-struts.xml" />
     <import resource="beans-schedule.xml" />
     <import resource="beans-job.xml" />
-    <import resource="data_export.xml" />
+    <import resource="data-export.xml" />
 
 	<import resource="stand-alone-tasks.xml" />
 

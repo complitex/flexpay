@@ -2,7 +2,7 @@ package org.flexpay.ab.action.person;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;

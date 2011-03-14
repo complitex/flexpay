@@ -3,7 +3,6 @@ package org.flexpay.eirc.util.standalone;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryDao;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
@@ -14,8 +13,8 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.standalone.StandaloneTask;
-import org.flexpay.eirc.actions.spfile.SpFileAction;
-import org.flexpay.eirc.actions.spfile.SpFileUploadAction;
+import org.flexpay.eirc.action.spfile.SpFileAction;
+import org.flexpay.eirc.action.spfile.SpFileUploadAction;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.slf4j.Logger;
@@ -60,11 +59,11 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void loadRegistryOpenAccountsBig() throws Throwable {
-		uploadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt.gz");
+		uploadRegistry("org/flexpay/eirc/action/sp/ree_open.txt.gz");
 	}
 
 	private void loadRegistryQuittancesBig() throws Throwable {
-		uploadRegistry("org/flexpay/eirc/actions/sp/ree_quittances.2008.06.txt.gz");
+		uploadRegistry("org/flexpay/eirc/action/sp/ree_quittances.2008.06.txt.gz");
 	}
 
 	private void importOpenAccounts() throws Throwable {

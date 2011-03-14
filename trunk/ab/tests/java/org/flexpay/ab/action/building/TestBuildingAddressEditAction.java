@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.action.building.BuildingAddressEditAction;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Building;
@@ -9,7 +8,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.junit.Assert.*;
 import org.junit.Test;

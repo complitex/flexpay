@@ -1,6 +1,5 @@
 package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.action.street.StreetEditAction;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.dao.TownDao;
@@ -11,7 +10,7 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.*;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;

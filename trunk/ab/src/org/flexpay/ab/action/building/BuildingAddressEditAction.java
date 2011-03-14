@@ -7,7 +7,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;

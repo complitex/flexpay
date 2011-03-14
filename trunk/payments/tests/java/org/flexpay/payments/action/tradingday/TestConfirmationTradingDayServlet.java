@@ -6,7 +6,6 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.payments.actions.tradingday.ConfirmationTradingDayServlet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

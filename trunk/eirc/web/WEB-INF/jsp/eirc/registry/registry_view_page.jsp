@@ -55,25 +55,25 @@
         FPR.createAutocompleter("input[name='townFilter']", filterUrl, false,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_TOWN" />
+                                    "filterData.type":<s:property value="getFilterTypeTown()" />
                                 });
 
         FPR.createAutocompleter("input[name='streetFilter']", filterUrl, false,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_STREET" />
+                                    "filterData.type":<s:property value="getFilterTypeStreet()" />
                                 });
 
         FPR.createAutocompleter("input[name='buildingFilter']", filterUrl, true,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_BUILDING" />
+                                    "filterData.type":<s:property value="getFilterTypeBuilding()" />
                                 });
 
         FPR.createAutocompleter("input[name='apartmentFilter']", filterUrl, true,
                                 {
                                     "registry.id":FPR.registryId,
-                                    "filterData.type":<s:property value="@org.flexpay.common.persistence.filter.StringValueFilter@TYPE_APARTMENT" />
+                                    "filterData.type":<s:property value="getFilterTypeApartment()" />
                                 });
 
     });
@@ -289,8 +289,8 @@
         if (type != null && type != undefined) {
             $("#selectedGroupIndex").val(i);
             if (type ==  "st") {
-                $("#stName<s:property value="@org.flexpay.common.util.config.ApplicationConfig@getDefaultLanguage().getId()" />").val(params["group.streetType"]);
-                $("#stShortName<s:property value="@org.flexpay.common.util.config.ApplicationConfig@getDefaultLanguage().getId()" />").val(params["group.streetType"]);
+                $("#stName<s:property value="getDefaultLanguage().getId()" />").val(params["group.streetType"]);
+                $("#stShortName<s:property value="getDefaultLanguage().getId()" />").val(params["group.streetType"]);
                 $("#streetTypeModal").modal({
                     containerCss: {
                         backgroundColor:"#fff",

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<include file="org/flexpay/common/action/struts.xml" />
+	<include file="org/flexpay/ab/action/struts.xml" />
+	<include file="org/flexpay/bti/action/struts.xml" />
+	<include file="org/flexpay/tc/action/struts.xml" />
+	<include file="org/flexpay/tc/i18n/struts.xml" />
+
+</struts>

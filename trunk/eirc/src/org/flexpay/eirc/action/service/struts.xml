@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="eirc-service" namespace="/eirc" extends="common">
+
+		<!-- Service Types -->
+        <action name="serviceTypeView" class="serviceTypeViewAction">
+            <result type="tiles">eirc.service_type.view</result>
+            <result name="redirectError" type="redirectAction">serviceTypesList</result>
+        </action>
+
+		<action name="serviceTypesList" class="serviceTypesListPageAction">
+			<result type="tiles">eirc.service_types.list</result>
+		</action>
+
+        <action name="serviceTypesListAjax" class="serviceTypesListAction">
+            <result>/WEB-INF/jsp/payments/service_types/service_types_list.jsp</result>
+        </action>
+
+		<action name="serviceTypeDelete" class="serviceTypeDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
+
+		<action name="serviceTypeEdit" class="serviceTypeEditAction">
+            <result name="input" type="tiles">eirc.service_type.edit</result>
+            <result name="redirectSuccess" type="redirectAction">
+                <param name="actionName">serviceTypeView</param>
+                <param name="parse">true</param>
+                <param name="serviceType.id">${serviceType.id}</param>
+            </result>
+		</action>
+
+        <action name="serviceTypeCorrectionCreate" class="serviceTypeCorrectionCreateAction">
+            <result name="input" type="tiles">eirc.service_type.create_correction</result>
+            <result name="redirectSuccess" type="redirectAction">
+                <param name="actionName">serviceTypeCorrectionsList</param>
+                <param name="parse">true</param>
+                <param name="serviceType.id">${serviceType.id}</param>
+            </result>
+        </action>
+
+        <action name="serviceTypeCorrectionsListAjax" class="serviceTypeCorrectionsListAction">
+            <result>/WEB-INF/jsp/payments/service_types/service_type_corrections_list.jsp</result>
+            <result name="redirectError" type="redirectAction">serviceTypesList</result>
+        </action>
+
+        <action name="serviceTypeCorrectionsList" class="serviceTypeCorrectionsListPageAction">
+            <result type="tiles">eirc.service_type.corrections_list</result>
+            <result name="redirectError" type="redirectAction">servicerTypesList</result>
+        </action>
+
+		<!-- Services -->
+        <action name="serviceView" class="serviceViewAction">
+            <result type="tiles">eirc.service.view</result>
+            <result name="redirectError" type="redirectAction">servicesList</result>
+        </action>
+
+        <action name="servicesList" class="servicesListPageAction">
+            <result type="tiles">eirc.services.list</result>
+        </action>
+
+        <action name="servicesListAjax" class="servicesListAction">
+            <result>/WEB-INF/jsp/payments/services/services_list.jsp</result>
+        </action>
+
+		<action name="serviceEdit" class="serviceEditAction">
+            <result name="redirectError" type="redirectAction">servicesList</result>
+			<result name="input" type="tiles">eirc.service.edit</result>
+            <result name="redirectSuccess" type="redirectAction">
+                <param name="actionName">serviceView</param>
+                <param name="parse">true</param>
+                <param name="service.id">${service.id}</param>
+            </result>
+		</action>
+
+	</package>
+
+</struts>

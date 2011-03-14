@@ -1,7 +1,7 @@
 package org.flexpay.payments.action.reports;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.actions.PaymentOperationAction;
+import org.flexpay.common.action.FPActionSupport;
+import org.flexpay.payments.action.PaymentOperationAction;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;

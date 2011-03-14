@@ -1,10 +1,9 @@
 package org.flexpay.payments.action.reports;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.payments.actions.reports.ImportPaymentsReportAction;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

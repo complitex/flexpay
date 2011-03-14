@@ -1,8 +1,8 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.payments.actions.outerrequest.request.*;
-import org.flexpay.payments.actions.outerrequest.request.response.*;
+import org.flexpay.payments.action.outerrequest.request.*;
+import org.flexpay.payments.action.outerrequest.request.response.*;
 import org.jetbrains.annotations.NotNull;
 
 public interface OuterRequestService {

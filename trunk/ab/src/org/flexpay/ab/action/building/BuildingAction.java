@@ -3,7 +3,7 @@ package org.flexpay.ab.action.building;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

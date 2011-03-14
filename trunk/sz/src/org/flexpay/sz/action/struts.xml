@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="sz" namespace="/sz" extends="common">
+
+		<action name="main" class="menuPageAction">
+			<result type="tiles">sz.dictionaries</result>
+		</action>
+
+        <action name="mainDicts" class="menuPageAction">
+            <result type="tiles">sz.main.dics</result>
+        </action>
+
+        <action name="mainImport" class="menuPageAction">
+            <result type="tiles">sz.main.import</result>
+        </action>
+
+        <action name="mainOtherDicts" class="menuPageAction">
+            <result type="tiles">sz.main.other_dics</result>
+        </action>
+
+        <action name="mainImportImport" class="menuPageAction">
+            <result type="tiles">sz.main.import_import</result>
+        </action>
+
+	</package>
+
+    <include file="org/flexpay/sz/action/szfile/sruts.xml" />
+
+</struts>

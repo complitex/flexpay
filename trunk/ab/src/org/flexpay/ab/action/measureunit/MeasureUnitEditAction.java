@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.measureunit;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;

@@ -9,7 +9,7 @@
     <import resource="common/configs/spring/config.xml" />
     <import resource="ab/configs/spring/config.xml" />
 	<import resource="admin/configs/spring/config.xml" />
-	<import resource="admin/configs/spring/config_payments_admin.xml" />
+	<import resource="admin/configs/spring/config-payments-admin.xml" />
 	<import resource="bti/configs/spring/config.xml" />
 	<import resource="orgs/configs/spring/config.xml" />
 	<import resource="payments/configs/spring/config.xml" />

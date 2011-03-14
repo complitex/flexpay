@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
 
 <struts>
 
@@ -9,12 +9,12 @@
 
 		<action name="personView" class="personViewAction">
 			<result type="tiles">ab.person.view</result>
-            <result name="redirectError" type="redirect-action">personsList</result>
+            <result name="redirectError" type="redirectAction">personsList</result>
 		</action>
 
 		<action name="personEdit" class="personEditAction">
 			<result name="input" type="tiles">ab.person.edit</result>
-            <result name="redirectError" type="redirect-action">personsList</result>
+            <result name="redirectError" type="redirectAction">personsList</result>
 		</action>
 
         <action name="personsList" class="personsListPageAction">

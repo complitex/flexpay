@@ -2,7 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.AddressAttributeTypeService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;

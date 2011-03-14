@@ -3,7 +3,7 @@ package org.flexpay.eirc.sp;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.eirc.actions.TestSpFileCreateAction;
+import org.flexpay.eirc.action.TestSpFileCreateAction;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.payments.service.EircRegistryService;
 import org.junit.Test;

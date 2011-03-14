@@ -2,7 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;

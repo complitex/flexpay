@@ -2,7 +2,7 @@ package org.flexpay.ab.action.street;
 
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

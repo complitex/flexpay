@@ -1,0 +1,30 @@
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="common.layout.simple" template="/WEB-INF/jsp/common/layouts/simple.jsp">
+        <put-attribute name="title" value="Flexpay common" />
+        <put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
+	</definition>
+
+    <definition name="common.login" extends="common.layout.simple">
+		<put-attribute name="body" value="/WEB-INF/jsp/common/login.jsp" />
+	</definition>
+
+    <definition name="common.login-failed" extends="common.layout.simple">
+		<put-attribute name="body" value="/WEB-INF/jsp/common/login-failed.jsp" />
+	</definition>
+
+    <definition name="common.forbidden" extends="common.layout.simple">
+		<put-attribute name="body" value="/WEB-INF/jsp/common/forbidden.jsp" />
+	</definition>
+
+    <definition name="common.welcome" extends="common.layout.simple">
+		<put-attribute name="body" value="/WEB-INF/jsp/common/welcome.jsp" />
+	</definition>
+
+</tiles-definitions>

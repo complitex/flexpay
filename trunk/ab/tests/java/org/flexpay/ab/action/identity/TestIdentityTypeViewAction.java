@@ -1,12 +1,11 @@
 package org.flexpay.ab.action.identity;
 
-import org.flexpay.ab.action.identity.IdentityTypeViewAction;
 import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleIdentityType;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

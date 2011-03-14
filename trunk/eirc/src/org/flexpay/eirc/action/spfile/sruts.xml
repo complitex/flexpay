@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="spfile" namespace="/eirc" extends="common">
+
+		<!-- SP Files -->
+        <action name="spFileUpload" class="spFileUploadAction">
+            <result>/WEB-INF/jsp/eirc/sp_files/response.jsp</result>
+        </action>
+
+		<action name="spFileCreate" class="spFileCreatePageAction">
+			<result type="tiles">eirc.spfile.upload.form</result>
+		</action>
+
+		<action name="spFilesList" class="spFilesListPageAction">
+			<result type="tiles">eirc.spfiles.list</result>
+		</action>
+
+        <action name="spFilesListAjax" class="spFilesListAction">
+            <result>/WEB-INF/jsp/eirc/sp_files/sp_files_list.jsp</result>
+        </action>
+
+		<action name="spFileAction" class="spFileAction">
+			<result name="redirectSuccess" type="redirectAction">spFilesList</result>
+			<result name="redirectError" type="redirectAction">spFilesList</result>
+		</action>
+
+	</package>
+
+</struts>

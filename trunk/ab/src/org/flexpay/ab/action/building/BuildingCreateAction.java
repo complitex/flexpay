@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;

@@ -27,7 +27,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml</param-value>
+		<param-value>/WEB-INF/common/configs/tiles-common.xml,/WEB-INF/ab/configs/tiles-ab.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -49,11 +49,6 @@
         </auth-constraint>
 
     </security-constraint>
-
-	<!-- Deny access to all resources, this module is for internal scheduling tasks only-->
-	<security-role>
-        <role-name>notExistingRole</role-name>
-    </security-role>
 
     <login-config>
         <auth-method>FORM</auth-method>

@@ -7,19 +7,19 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="staticPageAction"
-		  class="org.flexpay.common.actions.StaticPageAction"
+		  class="org.flexpay.common.action.StaticPageAction"
           scope="prototype" />
 
 	<bean id="staticPageAdminAction"
-		  class="org.flexpay.common.actions.StaticPageAdminAction"
+		  class="org.flexpay.common.action.StaticPageAdminAction"
           scope="prototype" />
 
 	<bean id="menuPageAction"
-		  class="org.flexpay.common.actions.MenuPageAction"
+		  class="org.flexpay.common.action.MenuPageAction"
           scope="prototype" />
 
 	<bean id="printAction"
-		  class="org.flexpay.common.actions.FilePrintAction"
+		  class="org.flexpay.common.action.FilePrintAction"
           p:fpFileService-ref="fpFileService"
           scope="prototype" />
 
@@ -28,7 +28,7 @@
 		  p:preferencesService-ref="userPreferencesService" />
 
 	<bean id="processesCleanupAction"
-		  class="org.flexpay.common.actions.jbpm.ProcessesCleanupAction"
+		  class="org.flexpay.common.action.jbpm.ProcessesCleanupAction"
 		  p:processManager-ref="processManager"
           scope="prototype" />
 

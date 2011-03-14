@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+    <constant name="struts.custom.i18n.resources"
+              value="org/flexpay/common/i18n/common-messages,
+                     org/flexpay/common/i18n/common-errors,
+                     org/flexpay/ab/i18n/errors,
+                     org/flexpay/ab/i18n/messages,
+                     org/flexpay/admin/i18n/errors,
+                     org/flexpay/admin/i18n/messages,
+                     org/flexpay/admin/i18n/userPaymentParameters,
+                     org/flexpay/orgs/i18n/errors,
+                     org/flexpay/orgs/i18n/messages,
+                     org/flexpay/payments/i18n/errors,
+                     org/flexpay/payments/i18n/messages,
+                     org/flexpay/payments/i18n/responseStatuses,
+                     org/flexpay/eirc/i18n/errors,
+                     org/flexpay/eirc/i18n/messages" />
+
+</struts>

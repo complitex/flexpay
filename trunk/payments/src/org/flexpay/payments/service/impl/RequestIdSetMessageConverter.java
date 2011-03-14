@@ -1,6 +1,6 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.payments.actions.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;

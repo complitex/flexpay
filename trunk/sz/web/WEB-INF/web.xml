@@ -28,16 +28,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>
-			/WEB-INF/common/configs/tiles_common.xml,
-			/WEB-INF/ab/configs/tiles_ab.xml,
-			/WEB-INF/bti/configs/tiles_bti.xml,
-			/WEB-INF/orgs/configs/tiles_orgs.xml,
-			/WEB-INF/orgs/configs/tiles_admin.xml,
-			/WEB-INF/payments/configs/tiles_payments.xml,
-			/WEB-INF/eirc/configs/tiles_eirc.xml,
-			/WEB-INF/sz/configs/tiles_sz.xml
-		</param-value>
+		<param-value>/WEB-INF/common/configs/tiles-common.xml,/WEB-INF/ab/configs/tiles-ab.xml,/WEB-INF/bti/configs/tiles-bti.xml,/WEB-INF/admin/configs/tiles-admin.xml,/WEB-INF/payments/configs/tiles-payments.xml,/WEB-INF/admin/configs/tiles-payments-admin.xml,/WEB-INF/eirc/configs/tiles-eirc.xml,/WEB-INF/sz/configs/tiles-sz.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -84,30 +75,42 @@
 
 	<filter>
 		<filter-name>actionFilter</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+        <init-param>
+            <param-name>actionPackages</param-name>
+            <param-value>org.flexpay.sz.action.*,org.flexpay.eirc.action.*,org.flexpay.payments.action.*,org.flexpay.admin.action.*,org.flexpay.orgs.action.*,org.flexpay.bti.action.*,org.flexpay.ab.action.*,org.flexpay.common.action.*</param-value>
+        </init-param>
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
 				struts-default.xml,struts-plugin.xml,
-				org/flexpay/common/struts_config.xml,
-				org/flexpay/ab/struts_config.xml,
-				org/flexpay/bti/struts_config.xml,
-				org/flexpay/orgs/struts_config.xml,
-				org/flexpay/admin/struts_config.xml,
-				org/flexpay/payments/struts_config.xml,
-				org/flexpay/eirc/struts_config.xml,
-				org/flexpay/sz/struts_config.xml
+				org/flexpay/common/struts-config.xml,
+				org/flexpay/ab/struts-config.xml,
+				org/flexpay/bti/struts-config.xml,
+				org/flexpay/orgs/struts-config.xml,
+				org/flexpay/admin/struts-config.xml,
+				org/flexpay/payments/struts-config.xml,
+				org/flexpay/eirc/struts-config.xml,
+				org/flexpay/sz/struts-config.xml
 			</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
-		<filter-name>actionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>actionFilter</filter-name>
+        <url-pattern>/struts/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
 
 	<servlet>
 		<servlet-name>spring-ws</servlet-name>
@@ -122,7 +125,7 @@
 
 	<servlet>
 		<servlet-name>fileDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+		<servlet-class>org.flexpay.common.action.FileDownloadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>fileDownloadServlet</servlet-name>
@@ -131,7 +134,7 @@
 
     <servlet>
         <servlet-name>processLogDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
+		<servlet-class>org.flexpay.common.action.ProcessLogDownloadServlet</servlet-class>
 	</servlet>    
 	<servlet-mapping>
 		<servlet-name>processLogDownloadServlet</servlet-name>
@@ -140,7 +143,7 @@
 
     <servlet>
         <servlet-name>processRequestServlet</servlet-name>
-        <servlet-class>org.flexpay.payments.actions.outerrequest.OuterRequestHandlerServlet</servlet-class>
+        <servlet-class>org.flexpay.payments.action.outerrequest.OuterRequestHandlerServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>processRequestServlet</servlet-name>
@@ -165,549 +168,6 @@
 		</auth-constraint>
 
 	</security-constraint>
-
-
-	<security-role>
-		<role-name>ROLE_BASIC</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_DEVELOPER</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
-	</security-role>
-
-	<!-- Country roles -->
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_COUNTRY_DELETE</role-name>
-	</security-role>
-	<!-- Region roles -->
-	<security-role>
-		<role-name>ROLE_AB_REGION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_REGION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_REGION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_REGION_DELETE</role-name>
-	</security-role>
-	<!-- Town roles -->
-	<security-role>
-		<role-name>ROLE_AB_TOWN_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_DELETE</role-name>
-	</security-role>
-	<!-- Town type roles -->
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_TOWN_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- District roles -->
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_DISTRICT_DELETE</role-name>
-	</security-role>
-	<!-- Street roles -->
-	<security-role>
-		<role-name>ROLE_AB_STREET_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_DELETE</role-name>
-	</security-role>
-	<!-- Street type roles -->
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_STREET_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- Building attribute type roles -->
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- Building roles -->
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_BUILDING_DELETE</role-name>
-	</security-role>
-	<!-- Apartment roles -->
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_APARTMENT_DELETE</role-name>
-	</security-role>
-	<!-- Identity type roles -->
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_TYPE_DELETE</role-name>
-	</security-role>
-	<!-- Identity roles -->
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_IDENTITY_DELETE</role-name>
-	</security-role>
-	<!-- Person roles -->
-	<security-role>
-		<role-name>ROLE_AB_PERSON_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_PERSON_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_PERSON_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_AB_PERSON_DELETE</role-name>
-	</security-role>
-
-	<!-- Organisations roles -->
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_ORGANIZATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_BANK_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
-	</security-role>
-
-	<!-- EIRC -->
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_ACCOUNT_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_ACCOUNT_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_ACCOUNT_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_TYPE_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_TYPE_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_TYPE_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_FILE_UPLOAD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_FILE_IMPORT</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_REGISTRY_PROCESS</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_REGISTRY_SET_CORRESPONDENCE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_QUITTANCE_CREATE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_QUITTANCE_CREATE_PRINT_FILE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_QUITTANCE_PAY</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
-	</security-role>
-
-	<!-- SZ roles -->
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_DELETE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_DOWNLOAD_FILE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_UPLOAD_FILE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_LOAD_TO_DB</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_LOAD_FROM_DB</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_SZ_SZ_FILE_DELETE_FROM_DB</role-name>
-	</security-role>
-
-    <!-- cashbox roles -->
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_READ</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_CHANGE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_ADD</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
-    </security-role>
-
-    <!-- Menu -->
-    <security-role>
-        <role-name>ROLE_MENU_AB</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_ADDRESS_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_PERSON_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_TYPE_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_OTHER_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_COUNTRIES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_REGIONS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_TOWNS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_DISTRICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_STREETS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_APARTMENTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_PERSONS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_TOWN_TYPES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_STREET_TYPES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_IDENTITY_TYPES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_AB_DICTS_MEASURE_UNITS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_PROCESSING</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_ORGANIZATIONS_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_SERVICES_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_CASHBOXES_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT2</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_PROCESSING2</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCES2</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCE_PACKETS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS2</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_ORGANIZATIONS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_BANKS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_SERVICE_PROVIDERS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_SERVICE_TYPES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_SERVICES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_CASHBOXES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT_REGISTRIES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_PROCESSING_PROCESSES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_PROCESSING_PROCESS_DEFINITION</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCES_GENERATE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCES_PRINT</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCES_PAYFORM</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_QUITTANCES_PACKETS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_EIRC_EIRC_ACCOUNTS3</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ_IMPORT</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ_OTHER_DICTS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ_IMPORT2</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ_DICTS_IMPORTED_FILES</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_MENU_SZ_IMPORT_UPLOAD</role-name>
-    </security-role>
-
-	<security-role>
-		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
-	</security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>

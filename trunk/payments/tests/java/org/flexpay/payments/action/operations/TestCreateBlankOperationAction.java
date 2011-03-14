@@ -1,6 +1,5 @@
 package org.flexpay.payments.action.operations;
 
-import org.flexpay.payments.actions.operations.CreateBlankOperationAction;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

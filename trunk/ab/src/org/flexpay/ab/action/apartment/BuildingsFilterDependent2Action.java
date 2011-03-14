@@ -4,7 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.util.TranslationUtil;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;

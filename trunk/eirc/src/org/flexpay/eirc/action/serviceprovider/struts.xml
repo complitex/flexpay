@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+		"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="eirc-service-providers" namespace="/eirc" extends="common">
+
+		<!-- Service Providers -->
+        <action name="serviceProviderView" class="serviceProviderViewAction">
+            <result type="tiles">eirc.service_provider.view</result>
+            <result name="redirectError" type="redirectAction">serviceProvidersList</result>
+        </action>
+
+        <action name="serviceProviderEdit" class="serviceProviderEditAction">
+            <result name="input" type="tiles">eirc.service_provider.edit</result>
+            <result name="redirectSuccess" type="redirectAction">
+                <param name="actionName">serviceProviderView</param>
+                <param name="parse">true</param>
+                <param name="provider.id">${provider.id}</param>
+            </result>
+        </action>
+
+		<action name="serviceProvidersList" class="serviceProvidersListPageAction">
+			<result type="tiles">eirc.service_providers.list</result>
+		</action>
+
+        <action name="serviceProvidersListAjax" class="serviceProvidersListAction">
+            <result>/WEB-INF/jsp/orgs/service_providers/service_providers_list.jsp</result>
+        </action>
+
+		<action name="serviceProviderDelete" class="serviceProviderDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
+
+        <action name="serviceProviderCorrectionCreate" class="serviceProviderCorrectionCreateAction">
+            <result name="input" type="tiles">eirc.service_provider.create_correction</result>
+            <result name="redirectSuccess" type="redirectAction">
+                <param name="actionName">serviceProviderCorrectionsList</param>
+                <param name="parse">true</param>
+                <param name="provider.id">${provider.id}</param>
+            </result>
+        </action>
+
+        <action name="serviceProviderCorrectionsListAjax" class="serviceProviderCorrectionsListAction">
+            <result>/WEB-INF/jsp/orgs/service_providers/service_provider_corrections_list.jsp</result>
+            <result name="redirectError" type="redirectAction">serviceProvidersList</result>
+        </action>
+
+        <action name="serviceProviderCorrectionsList" class="serviceProviderCorrectionsListPageAction">
+            <result type="tiles">eirc.service_provider.corrections_list</result>
+            <result name="redirectError" type="redirectAction">serviceProvidersList</result>
+        </action>
+
+	</package>
+
+</struts>

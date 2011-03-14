@@ -8,13 +8,13 @@
 
 	<!-- Corrections -->
 	<bean id="selectCorrectionTypeAction"
-		  class="org.flexpay.payments.actions.registry.corrections.SelectCorrectionTypeAction"
+		  class="org.flexpay.payments.action.registry.corrections.SelectCorrectionTypeAction"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:typeRegistry-ref="classToTypeRegistry"
           scope="prototype" />
 
 	<bean id="setCorrectionAction"
-		  class="org.flexpay.payments.actions.registry.corrections.SetCorrectionAction"
+		  class="org.flexpay.payments.action.registry.corrections.SetCorrectionAction"
 		  p:correctionsService-ref="correctionsService"
 		  p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
@@ -27,7 +27,7 @@
           scope="prototype" />
 
 	<bean id="registryViewAction"
-		  class="org.flexpay.payments.actions.registry.RegistryViewPageAction"
+		  class="org.flexpay.payments.action.registry.RegistryViewPageAction"
 		  p:crumbNameKey="payments.crumbs.registry_view"
 		  p:registryService-ref="registryService"
 		  p:classToTypeRegistry-ref="classToTypeRegistry"
@@ -38,7 +38,7 @@
           scope="prototype"  />
 
     <bean id="registryRecordsListAction"
-          class="org.flexpay.payments.actions.registry.RegistryRecordsListAction"
+          class="org.flexpay.payments.action.registry.RegistryRecordsListAction"
           p:classToTypeRegistry-ref="classToTypeRegistry"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:serviceTypeService-ref="serviceTypeService"
@@ -47,7 +47,7 @@
           scope="prototype"  />
 
     <bean id="filterAutocompleterAction"
-          class="org.flexpay.payments.actions.registry.filter.FilterAutocompleterAction"
+          class="org.flexpay.payments.action.registry.filter.FilterAutocompleterAction"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
           scope="prototype"  />

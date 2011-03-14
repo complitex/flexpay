@@ -1,13 +1,12 @@
 package org.flexpay.ab.action.person;
 
-import org.flexpay.ab.action.person.PersonViewAction;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimplePerson;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.action.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

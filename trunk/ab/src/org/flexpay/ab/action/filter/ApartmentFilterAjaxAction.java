@@ -4,7 +4,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.util.config.AbUserPreferences;
-import org.flexpay.common.actions.filter.FilterAjaxAction;
+import org.flexpay.common.action.filter.FilterAjaxAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.FilterObject;
