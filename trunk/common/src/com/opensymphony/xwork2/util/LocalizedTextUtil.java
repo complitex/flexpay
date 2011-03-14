@@ -20,8 +20,8 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.conversion.impl.XWorkConverter;
 import com.opensymphony.xwork2.util.reflection.ReflectionProviderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -82,7 +82,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class LocalizedTextUtil {
 
     private static final List<String> DEFAULT_RESOURCE_BUNDLES = new CopyOnWriteArrayList<String>();
-    private static final Logger LOG = LoggerFactory.getLogger(LocalizedTextUtil.class);
+    private static final Log LOG = LogFactory.getLog(LocalizedTextUtil.class);
     private static boolean reloadBundles = false;
     private static final ResourceBundle EMPTY_BUNDLE = new EmptyResourceBundle();
     private static final ConcurrentMap<String, ResourceBundle> bundlesMap = new ConcurrentHashMap<String, ResourceBundle>();

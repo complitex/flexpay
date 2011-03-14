@@ -19,8 +19,8 @@ import com.opensymphony.xwork2.inject.Container;
 import com.opensymphony.xwork2.util.ValueStack;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.security.Authentication;
 
 import java.io.Serializable;
@@ -49,7 +49,7 @@ public class ActionContext implements Serializable {
 
     static ThreadLocal actionContext = new ThreadLocal();
 
-    private final static Logger log = LoggerFactory.getLogger(ActionContext.class);
+    private final static Log log = LogFactory.getLog(ActionContext.class);
 
     /**
      * Constant that indicates the action is running under a "development mode".
