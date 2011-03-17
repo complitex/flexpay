@@ -1,129 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="tcTariffToAttributeNameMapper" class="org.flexpay.tc.service.importexport.TariffToAttributeNameMapper">
-		<property name="attributeName2tariffCodes">
-			<map>
-				<entry value="010">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF" />
-					</key>
-				</entry>
-				<entry value="020">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF" />
-					</key>
-				</entry>
-				<entry value="030">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_BASEMENTS_CLEANUP_TARIFF" />
-					</key>
-				</entry>
-				<entry value="040">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_BIG_GARBAGE_REMOVAL_TARIFF" />
-					</key>
-				</entry>
-				<entry value="050">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_LIFT_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="060">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="070">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="080">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="090">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="100">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="110">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_BOILERS_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="120">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_VENT_CHANNEL_SUPPORT_TARIFF" />
-					</key>
-				</entry>
-				<entry value="130">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_COURT_TOILETS_CLEANUP_TARIFF" />
-					</key>
-				</entry>
-				<entry value="140">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIFF" />
-					</key>
-				</entry>
-				<entry value="150">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WATER_PUMPS_ELECTRICITY_TARIFF" />
-					</key>
-				</entry>
-				<entry value="160">
-					<key>
-						<util:constant
-								static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_LIFT_ENERGYSAVE_TARIFF" />
-					</key>
-				</entry>
-			</map>
-		</property>
-	</bean>
+    <bean id="tcTariffToAttributeNameMapper" class="org.flexpay.tc.service.importexport.TariffToAttributeNameMapper">
+        <property name="attributeName2tariffCodes">
+            <map>
+                <entry value="010">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="020">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="030">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_BASEMENTS_CLEANUP_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="040">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_BIG_GARBAGE_REMOVAL_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="050">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_LIFT_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="060">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="070">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="080">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="090">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="100">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="110">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_BOILERS_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="120">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_VENT_CHANNEL_SUPPORT_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="130">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_COURT_TOILETS_CLEANUP_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="140">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="150">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_WATER_PUMPS_ELECTRICITY_TARIFF" />
+                    </key>
+                </entry>
+                <entry value="160">
+                    <key>
+                        <util:constant
+                                static-field="org.flexpay.bti.persistence.building.BuildingAttributeConfig.ATTR_LIFT_ENERGYSAVE_TARIFF" />
+                    </key>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
-	<bean id="buildingAttributeDataProcessor2" class="org.flexpay.tc.service.importexport.TariffResultsDataProcessor"
-		  p:tariffToAttributeNameMapper-ref="tcTariffToAttributeNameMapper"
-		  p:tariffService-ref="tariffService"
-		  p:calculationResultService-ref="tariffCalculationResultService"
-		  p:buildingService-ref="buildingService" />
+    <bean id="buildingAttributeDataProcessor2"
+          class="org.flexpay.tc.service.importexport.TariffResultsDataProcessor"
+          p:tariffToAttributeNameMapper-ref="tcTariffToAttributeNameMapper"
+          p:tariffService-ref="tariffService"
+          p:calculationResultService-ref="tariffCalculationResultService"
+          p:buildingService-ref="buildingService" />
 
-	<bean parent="buildingAttributeDataProcessorsChain">
-		<property name="processors">
-			<set merge="true">
-				<ref bean="buildingAttributeDataProcessor2" />
-			</set>
-		</property>
-	</bean>
+    <bean parent="buildingAttributeDataProcessorsChain">
+        <property name="processors">
+            <set merge="true">
+                <ref bean="buildingAttributeDataProcessor2" />
+            </set>
+        </property>
+    </bean>
 
 </beans>

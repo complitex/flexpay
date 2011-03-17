@@ -6,7 +6,7 @@ import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 

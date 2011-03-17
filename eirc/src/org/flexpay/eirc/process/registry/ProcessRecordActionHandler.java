@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class ProcessRecordActionHandler extends FlexPayActionHandler {
 	private PropertiesFactory propertiesFactory;
 	private ConsumerService consumerService;
@@ -55,7 +57,7 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 		}
 		List<RegistryRecord> records = (List<RegistryRecord>)parameters.get(ProcessRegistryMessageActionHandler.PARAM_REGISTRY_RECORDS);
 		if (records == null) {
-			records = new ArrayList<RegistryRecord>();
+			records = list();
 		}
 		records.add(record);
 		if (!parameters.containsKey(ProcessRegistryMessageActionHandler.PARAM_REGISTRY_RECORDS)) {

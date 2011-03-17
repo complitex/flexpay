@@ -10,7 +10,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;

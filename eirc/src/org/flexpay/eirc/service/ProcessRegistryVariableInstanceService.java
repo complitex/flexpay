@@ -5,7 +5,7 @@ import org.flexpay.common.service.Roles;
 import org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 public interface ProcessRegistryVariableInstanceService {
 

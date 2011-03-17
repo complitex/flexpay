@@ -14,7 +14,7 @@ import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

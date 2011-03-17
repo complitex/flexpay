@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Module orgs standalone tasks -->
-	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder" factory-method="getInstance"
-			parent="commonStandAloneTasksHolder">
-		<property name="standaloneTasks">
-			<list>
-			</list>
-		</property>
-	</bean>
+    <!-- Module orgs standalone tasks -->
+    <bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder" factory-method="getInstance"
+          parent="commonStandAloneTasksHolder">
+        <property name="standaloneTasks">
+            <list>
+            </list>
+        </property>
+    </bean>
 
 </beans>

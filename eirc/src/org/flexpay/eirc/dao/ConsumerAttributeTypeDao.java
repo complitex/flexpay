@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ConsumerAttributeTypeDao extends GenericDao<ConsumerAttributeTypeBase, Long> {
 
-    List<ConsumerAttributeTypeBase> findAtributeTypeByCodes(Collection<String> codes);
+    List<ConsumerAttributeTypeBase> findAttributeTypeByCodes(Collection<String> codes);
 
 	List<ConsumerAttributeTypeBase> listAttributeTypes(Page<ConsumerAttributeTypeBase> pager);
 

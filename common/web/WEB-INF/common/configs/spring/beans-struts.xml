@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="staticPageAction"
-		  class="org.flexpay.common.action.StaticPageAction"
+    <bean id="staticPageAction"
+          class="org.flexpay.common.action.StaticPageAction"
           scope="prototype" />
 
-	<bean id="staticPageAdminAction"
-		  class="org.flexpay.common.action.StaticPageAdminAction"
+    <bean id="staticPageAdminAction"
+          class="org.flexpay.common.action.StaticPageAdminAction"
           scope="prototype" />
 
-	<bean id="menuPageAction"
-		  class="org.flexpay.common.action.MenuPageAction"
+    <bean id="menuPageAction"
+          class="org.flexpay.common.action.MenuPageAction"
           scope="prototype" />
 
-	<bean id="printAction"
-		  class="org.flexpay.common.action.FilePrintAction"
+    <bean id="printAction"
+          class="org.flexpay.common.action.FilePrintAction"
           p:fpFileService-ref="fpFileService"
           scope="prototype" />
 
-	<!-- Locale setter bean -->
-	<bean class="org.flexpay.common.util.config.auth.UpdateUserPreferencesApplicationListener"
-		  p:preferencesService-ref="userPreferencesService" />
+    <!-- Locale setter bean -->
+    <bean class="org.flexpay.common.util.config.auth.UpdateUserPreferencesApplicationListener"
+          p:preferencesService-ref="userPreferencesService" />
 
-	<bean id="processesCleanupAction"
-		  class="org.flexpay.common.action.jbpm.ProcessesCleanupAction"
-		  p:processManager-ref="processManager"
+    <bean id="processesCleanupAction"
+          class="org.flexpay.common.action.jbpm.ProcessesCleanupAction"
+          p:processManager-ref="processManager"
           scope="prototype" />
 
 </beans>

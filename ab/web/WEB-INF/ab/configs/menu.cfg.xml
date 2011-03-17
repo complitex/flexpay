@@ -1,193 +1,190 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<!--level1-->
-	<bean name="ab" parent="fpMenu"
-		  p:name="ab"
-		  p:title="ab.menu.ab"
+    <!--level1-->
+    <bean name="ab" parent="fpMenu"
+          p:name="ab"
+          p:title="ab.menu.ab"
           p:namespace="/ab"
-		  p:action="main"
-		  p:parent-ref="fpMenu">
+          p:action="main"
+          p:parent-ref="fpMenu">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB" />
         </property>
     </bean>
 
-	<!--level2-->
-	<bean name="ab.dicts" parent="ab"
-		  p:name="ab.dicts"
-		  p:title="ab.menu.dicts"
-		  p:action="mainDicts"
-		  p:parent-ref="ab">
+    <!--level2-->
+    <bean name="ab.dicts" parent="ab"
+          p:name="ab.dicts"
+          p:title="ab.menu.dicts"
+          p:action="mainDicts"
+          p:parent-ref="ab">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS" />
         </property>
     </bean>
 
-	<!--level3-->
-	<bean name="ab.address_dictionaries" parent="ab.dicts"
-		  p:name="ab.address_dictionaries"
-		  p:title="ab.menu.address_dictionaries"
+    <!--level3-->
+    <bean name="ab.address_dictionaries" parent="ab.dicts"
+          p:name="ab.address_dictionaries"
+          p:title="ab.menu.address_dictionaries"
           p:namespace="/dicts"
           p:action="mainAddressDicts"
-		  p:parent-ref="ab.dicts">
+          p:parent-ref="ab.dicts">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_ADDRESS_DICTS" />
         </property>
     </bean>
-	<bean name="ab.person_dictionaries" parent="ab.dicts"
-		  p:name="ab.person_dictionaries"
-		  p:title="ab.menu.person_dictionaries"
+    <bean name="ab.person_dictionaries" parent="ab.dicts"
+          p:name="ab.person_dictionaries"
+          p:title="ab.menu.person_dictionaries"
           p:namespace="/dicts"
           p:action="mainPersonDicts"
-		  p:parent-ref="ab.dicts">
+          p:parent-ref="ab.dicts">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_PERSON_DICTS" />
         </property>
     </bean>
-	<bean name="ab.type_dictionaries" parent="ab.dicts"
-		  p:name="ab.type_dictionaries"
-		  p:title="ab.menu.type_dictionaries"
+    <bean name="ab.type_dictionaries" parent="ab.dicts"
+          p:name="ab.type_dictionaries"
+          p:title="ab.menu.type_dictionaries"
           p:namespace="/dicts"
           p:action="mainTypeDicts"
-		  p:parent-ref="ab.dicts">
+          p:parent-ref="ab.dicts">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_TYPE_DICTS" />
         </property>
     </bean>
-	<bean name="ab.other_dictionaries" parent="ab.dicts"
-		  p:name="ab.other_dictionaries"
-		  p:title="ab.menu.other_dictionaries"
+    <bean name="ab.other_dictionaries" parent="ab.dicts"
+          p:name="ab.other_dictionaries"
+          p:title="ab.menu.other_dictionaries"
           p:namespace="/dicts"
           p:action="mainOtherDicts"
-		  p:parent-ref="ab.dicts">
+          p:parent-ref="ab.dicts">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_OTHER_DICTS" />
         </property>
     </bean>
 
-	<!--level4-->
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.counties"
-		  p:title="ab.menu.dict.countries"
-		  p:action="countriesList"
-		  p:parent-ref="ab.address_dictionaries">
+    <!--level4-->
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.counties"
+          p:title="ab.menu.dict.countries"
+          p:action="countriesList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_COUNTRIES" />
         </property>
     </bean>
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.regions"
-		  p:title="ab.menu.dict.regions"
-		  p:action="regionsList"
-		  p:parent-ref="ab.address_dictionaries">
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.regions"
+          p:title="ab.menu.dict.regions"
+          p:action="regionsList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_REGIONS" />
         </property>
     </bean>
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.towns"
-		  p:title="ab.menu.dict.towns"
-		  p:action="townsList"
-		  p:parent-ref="ab.address_dictionaries">
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.towns"
+          p:title="ab.menu.dict.towns"
+          p:action="townsList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_TOWNS" />
         </property>
     </bean>
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.districts"
-		  p:title="ab.menu.dict.districts"
-		  p:action="districtsList"
-		  p:parent-ref="ab.address_dictionaries">
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.districts"
+          p:title="ab.menu.dict.districts"
+          p:action="districtsList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_DISTRICTS" />
         </property>
     </bean>
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.streets"
-		  p:title="ab.menu.dict.streets"
-		  p:action="streetsList"
-		  p:parent-ref="ab.address_dictionaries">
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.streets"
+          p:title="ab.menu.dict.streets"
+          p:action="streetsList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_STREETS" />
         </property>
     </bean>
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.buildings"
-		  p:title="ab.menu.dict.buildings"
-		  p:action="buildingsList"
-		  p:parent-ref="ab.address_dictionaries">
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.buildings"
+          p:title="ab.menu.dict.buildings"
+          p:action="buildingsList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_BUILDINGS" />
         </property>
     </bean>
-	<bean parent="ab.address_dictionaries"
-		  p:name="ab.apartments"
-		  p:title="ab.menu.dict.apartments"
-		  p:action="apartmentsList"
-		  p:parent-ref="ab.address_dictionaries">
+    <bean parent="ab.address_dictionaries"
+          p:name="ab.apartments"
+          p:title="ab.menu.dict.apartments"
+          p:action="apartmentsList"
+          p:parent-ref="ab.address_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_APARTMENTS" />
         </property>
     </bean>
-	<bean parent="ab.person_dictionaries"
-		  p:name="ab.persons"
-		  p:title="ab.menu.dict.persons"
-		  p:action="personsList"
-		  p:parent-ref="ab.person_dictionaries">
+    <bean parent="ab.person_dictionaries"
+          p:name="ab.persons"
+          p:title="ab.menu.dict.persons"
+          p:action="personsList"
+          p:parent-ref="ab.person_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_PERSONS" />
         </property>
     </bean>
-	<bean parent="ab.type_dictionaries"
-		  p:name="ab.town_types"
-		  p:title="ab.menu.dict.town_types"
-		  p:action="townTypesList"
-		  p:parent-ref="ab.type_dictionaries">
+    <bean parent="ab.type_dictionaries"
+          p:name="ab.town_types"
+          p:title="ab.menu.dict.town_types"
+          p:action="townTypesList"
+          p:parent-ref="ab.type_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_TOWN_TYPES" />
         </property>
     </bean>
-	<bean parent="ab.type_dictionaries"
-		  p:name="ab.street_types"
-		  p:title="ab.menu.dict.street_types"
-		  p:action="streetTypesList"
-		  p:parent-ref="ab.type_dictionaries">
+    <bean parent="ab.type_dictionaries"
+          p:name="ab.street_types"
+          p:title="ab.menu.dict.street_types"
+          p:action="streetTypesList"
+          p:parent-ref="ab.type_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_STREET_TYPES" />
         </property>
     </bean>
-	<bean parent="ab.type_dictionaries"
-		  p:name="ab.identity_types"
-		  p:title="ab.menu.dict.identity_types"
-		  p:action="identityTypesList"
-		  p:parent-ref="ab.type_dictionaries">
+    <bean parent="ab.type_dictionaries"
+          p:name="ab.identity_types"
+          p:title="ab.menu.dict.identity_types"
+          p:action="identityTypesList"
+          p:parent-ref="ab.type_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_IDENTITY_TYPES" />
         </property>
     </bean>
-	<bean parent="ab.type_dictionaries"
-		  p:name="ab.attribute_types"
-		  p:title="ab.menu.dict.attribute_types"
-		  p:action="addressAttributeTypesList"
-		  p:parent-ref="ab.type_dictionaries">
+    <bean parent="ab.type_dictionaries"
+          p:name="ab.attribute_types"
+          p:title="ab.menu.dict.attribute_types"
+          p:action="addressAttributeTypesList"
+          p:parent-ref="ab.type_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES" />
         </property>
     </bean>
-	<bean parent="ab.other_dictionaries"
-		  p:name="ab.measure_units"
-		  p:title="ab.menu.dict.measure_units"
-		  p:action="measureUnitsList"
-		  p:parent-ref="ab.other_dictionaries">
+    <bean parent="ab.other_dictionaries"
+          p:name="ab.measure_units"
+          p:title="ab.menu.dict.measure_units"
+          p:action="measureUnitsList"
+          p:parent-ref="ab.other_dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.ab.service.Roles.ROLE_MENU_AB_DICTS_MEASURE_UNITS" />
         </property>

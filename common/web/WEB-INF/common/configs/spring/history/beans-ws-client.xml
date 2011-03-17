@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Deployed single instance -->
-	<bean id="soapOutHistoryTransport"
-		  class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
-		  p:url="http://dev.flexpay.complitex:8080/payments/ws/ShareHistory" />
+    <!-- Deployed single instance -->
+    <bean id="soapOutHistoryTransport"
+          class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
+          p:url="http://dev.flexpay.complitex:8080/payments/ws/ShareHistory" />
 
-	<!-- Test internal localhost server via Java 6 HTTP server -->
-	<!--<bean id="soapOutHistoryTransport"-->
-		  <!--class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"-->
-		  <!--p:url="http://localhost:58080/ShareHistory" />-->
+    <!-- Test internal localhost server via Java 6 HTTP server -->
+<!--
+    <bean id="soapOutHistoryTransport"
+          class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
+          p:url="http://localhost:58080/ShareHistory" />
+-->
 
-	<!-- Integration test with OpenESB configured broadcast -->
-	<!--<bean id="soapOutHistoryTransport"-->
-		  <!--class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"-->
-		  <!--p:url="http://192.168.1.107:39080/historyBroadcast/sourceEndpoint" />-->
+    <!-- Integration test with OpenESB configured broadcast -->
+<!--
+    <bean id="soapOutHistoryTransport"
+          class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
+          p:url="http://192.168.1.107:39080/historyBroadcast/sourceEndpoint" />
+-->
 
 </beans>

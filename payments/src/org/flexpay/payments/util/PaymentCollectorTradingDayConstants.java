@@ -6,7 +6,6 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 
 import java.util.Map;
 
-import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.PairUtil.pair;
 

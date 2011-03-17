@@ -167,7 +167,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 	@Override
 	public void deleteQuittances(final Long registryId) {
-		getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback<Void>() {
 			@Override
 			public Void doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Registry.deleteQuittances").setLong(1, registryId).executeUpdate();

@@ -5,10 +5,11 @@ import org.flexpay.common.persistence.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.util.List;
+
+import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 public class LanguageDaoImpl implements LanguageDao {
 
@@ -24,7 +25,7 @@ public class LanguageDaoImpl implements LanguageDao {
     @Nullable
     @Override
     public Language getLanguageByIsoCode(@NotNull String langIsoCode) {
-        return (Language)DataAccessUtils.uniqueResult(hibernateTemplate.findByNamedQuery("Language.getLanguageByIsoCode", langIsoCode));
+        return (Language) uniqueResult((List<?>) hibernateTemplate.findByNamedQuery("Language.getLanguageByIsoCode", langIsoCode));
     }
 
     @Required

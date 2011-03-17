@@ -21,6 +21,7 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 
 	@NotNull
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<Diff> findNewHistoryRecords(final FetchRange range) {
 
 		if (!range.wasInitialized()) {
@@ -59,7 +60,7 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 
 	@Override
 	public void removeDiffs(final int processingStatus) {
-		getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Diff.deleteRecordsByDiffStatus")
@@ -75,7 +76,7 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 
 	@Override
 	public void updateDiffsProcessingStatus(final int statusOld, final int statusNew) {
-		getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Diff.updateStatus")

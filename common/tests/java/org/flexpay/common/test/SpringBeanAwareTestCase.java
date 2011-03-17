@@ -1,10 +1,8 @@
 package org.flexpay.common.test;
 
-import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.quartz.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.service.Roles.*;
 
 /**
  * Base class for all SpringFramework initialised beans aware tests
@@ -63,7 +64,7 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	 */
 	@Before
 	public void authenticateTestUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				BASIC,
 				PROCESS_DEFINITION_UPLOAD_NEW,
 				PROCESS_READ,

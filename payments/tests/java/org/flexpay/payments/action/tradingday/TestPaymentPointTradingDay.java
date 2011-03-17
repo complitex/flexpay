@@ -16,15 +16,14 @@ import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.jbpm.graph.def.Transition;
-import org.jbpm.graph.exe.ProcessInstance;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -32,9 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static org.flexpay.common.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT;
@@ -54,8 +51,9 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 	private CashboxService cashboxService;
 
 	@Before
+    @Override
 	public void authenticateTestUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				org.flexpay.common.service.Roles.BASIC,
 				org.flexpay.orgs.service.Roles.BASIC,
 				PROCESS_READ,

@@ -11,7 +11,7 @@ import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 import java.util.Date;

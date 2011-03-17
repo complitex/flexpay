@@ -41,7 +41,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 					 "(SELECT 1 FROM ab_apartment_numbers_tbl n WHERE n.apartment_id=a.id AND n.value=? AND n.end_date>?)";
 
 		Object[] args = {building.getId(), number, DateUtil.now()};
-		List<?> result = getJdbcTemplate().query(sql, args, new SingleColumnRowMapper(Long.class));
+		List<?> result = getJdbcTemplate().query(sql, args, new SingleColumnRowMapper<Long>(Long.class));
 
 		return result.isEmpty() ? null : new Stub<Apartment>((Long) result.get(0));
 	}

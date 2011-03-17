@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -48,7 +50,7 @@ public class TestDateIntervalUtil {
 
 	@Before
 	public void initTest() {
-		simple = new ArrayList<DI>();
+		simple = list();
 		simple.add(new DI(priceNull));
 		date_2004_12_31 = DateUtil.parseBeginDate("2004/12/31");
 		date_2005_01_01 = DateUtil.next(date_2004_12_31);
@@ -61,7 +63,7 @@ public class TestDateIntervalUtil {
 	 */
 	@Test
 	public void testIntervalJoin() {
-		List<DI> dis = new ArrayList<DI>();
+		List<DI> dis = list();
 		dis.add(new DI(datePastInfinite, date_2004_12_31, price15));
 		dis.add(new DI(date_2005_01_01, date_2005_12_31, price15));
 		dis.add(new DI(date_2006_01_01, dateFutureInfinite, price15));

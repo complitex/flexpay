@@ -1,12 +1,11 @@
 package org.flexpay.orgs.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.orgs.dao.ServiceProviderDao;
@@ -23,9 +22,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 @Transactional (readOnly = true)
 public class ServiceProviderServiceImpl implements ServiceProviderService {
@@ -45,6 +46,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @return ServiceProvider
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public <T extends ServiceProvider> T read(@NotNull Stub<T> stub) {
 		log.debug("Service provider read {}", stub);
 		return (T) serviceProviderDao.readFull(stub.getId());
@@ -57,6 +59,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @return ServiceProvider instance
 	 * @throws IllegalArgumentException if provider cannot be found
 	 */
+    @Override
 	public ServiceProvider getProvider(@NotNull Stub<Organization> orgStub) throws IllegalArgumentException {
 		ServiceProvider serviceProvider = serviceProviderDaoExt.findByNumber(orgStub.getId());
 		if (serviceProvider == null) {
@@ -73,6 +76,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @return List of service providers
 	 */
 	@NotNull
+    @Override
 	public List<ServiceProvider> listInstances(@NotNull Page<ServiceProvider> pager) {
 		return serviceProviderDao.findProviders(pager);
 	}
@@ -84,6 +88,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         * @return List of service providers
 	 */
 	@NotNull
+    @Override
 	public List<ServiceProvider> listInstances(@NotNull FetchRange range) {
 		return serviceProviderDao.listInstancesWithIdentities(range);
 	}
@@ -94,6 +99,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param objectIds Set of service provider identifiers
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void disable(@NotNull Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			ServiceProvider provider = serviceProviderDao.read(id);
@@ -115,6 +121,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 */
 	@NotNull
 	@Transactional (readOnly = false)
+    @Override
 	public ServiceProvider create(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
 		validate(serviceProvider);
 		serviceProvider.setId(null);
@@ -136,6 +143,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@NotNull
 	@Transactional (readOnly = false)
+    @Override
 	public ServiceProvider update(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
 		validate(serviceProvider);
 
@@ -189,9 +197,10 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @return filter
 	 */
 	@NotNull
+    @Override
 	public OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull ServiceProvider sp) {
 		List<Organization> organizations = serviceProviderDao.findProviderlessOrgs();
-		List<Organization> providerlessOrgs = new ArrayList<Organization>();
+		List<Organization> providerlessOrgs = list();
 		Long orgId = sp.getOrganization() != null ? sp.getOrganizationStub().getId() : null;
 		OUTER:
 		for (Organization org : organizations) {
@@ -224,6 +233,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param filter ServiceProviderFilter to initialize
 	 * @return ServiceProviderFilter back
 	 */
+    @Override
 	public ServiceProviderFilter initServiceProvidersFilter(ServiceProviderFilter filter) {
 
 		if (filter == null) {

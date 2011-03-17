@@ -1,199 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="streetTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abStreetTypeFlexpayCache</prop>
-				<prop key="getAll">cacheName=abStreetTypeFlexpayCache</prop>
-				<prop key="list">cacheName=abStreetTypeFlexpayCache</prop>
-				<prop key="findTypeByName">cacheName=abStreetTypeFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="streetTypeServiceTarget" />
-	</bean>
+    <bean id="streetTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="streetTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abStreetTypeFlexpayCache</prop>
+                <prop key="getAll">cacheName=abStreetTypeFlexpayCache</prop>
+                <prop key="list">cacheName=abStreetTypeFlexpayCache</prop>
+                <prop key="findTypeByName">cacheName=abStreetTypeFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="identityTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abIdentityTypeFlexpayCache</prop>
-				<prop key="get*">cacheName=abIdentityTypeFlexpayCache</prop>
-				<prop key="findTypeByName">cacheName=abIdentityTypeFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abIdentityTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abIdentityTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abIdentityTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="identityTypeServiceTarget" />
-	</bean>
+    <bean id="identityTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="identityTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abIdentityTypeFlexpayCache</prop>
+                <prop key="get*">cacheName=abIdentityTypeFlexpayCache</prop>
+                <prop key="findTypeByName">cacheName=abIdentityTypeFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abIdentityTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abIdentityTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abIdentityTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="townTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abTownTypeFlexpayCache</prop>
-				<prop key="findTypeByName">cacheName=abTownTypeFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abTownTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abTownTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abTownTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="townTypeServiceTarget" />
-	</bean>
+    <bean id="townTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="townTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abTownTypeFlexpayCache</prop>
+                <prop key="findTypeByName">cacheName=abTownTypeFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abTownTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abTownTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abTownTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="districtService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abDistrictFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abDistrictFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abDistrictFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abDistrictFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="districtServiceTarget" />
-	</bean>
+    <bean id="districtService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="districtServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abDistrictFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abDistrictFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abDistrictFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abDistrictFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="streetService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abStreetFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+    <bean id="streetService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="streetServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abStreetFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
                 <prop key="saveDistricts">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="streetServiceTarget" />
-	</bean>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="countryService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abCountryFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="countryServiceTarget" />
-	</bean>
+    <bean id="countryService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="countryServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abCountryFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="regionService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abRegionFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="regionServiceTarget" />
-	</bean>
+    <bean id="regionService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="regionServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abRegionFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="townService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abTownFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abTownFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abTownFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abTownFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="townServiceTarget" />
-	</bean>
+    <bean id="townService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="townServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abTownFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abTownFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abTownFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abTownFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="buildingService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFullAddresses">cacheName=abBuildingFlexpayCache</prop>
-				<prop key="findAddresses">cacheName=abBuildingFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="buildingServiceTarget" />
-	</bean>
+    <bean id="buildingService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="buildingServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFullAddresses">cacheName=abBuildingFlexpayCache</prop>
+                <prop key="findAddresses">cacheName=abBuildingFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="addressAttributeTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=abAddressAttributeTypeFlexpayCache</prop>
-				<prop key="getAll">cacheName=abAddressAttributeTypeFlexpayCache</prop>
-				<prop key="list">cacheName=abAddressAttributeTypeFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="addressAttributeTypeServiceTarget" />
-	</bean>
+    <bean id="addressAttributeTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="addressAttributeTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=abAddressAttributeTypeFlexpayCache</prop>
+                <prop key="getAll">cacheName=abAddressAttributeTypeFlexpayCache</prop>
+                <prop key="list">cacheName=abAddressAttributeTypeFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>

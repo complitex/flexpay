@@ -1,56 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="classToTypeRegistryBti"
-		  autowire-candidate="false"
-		  class="org.flexpay.bti.service.importexport.impl.ClassToTypeRegistryBti" />
+    <bean id="classToTypeRegistryBti"
+          autowire-candidate="false"
+          class="org.flexpay.bti.service.importexport.impl.ClassToTypeRegistryBti" />
 
-	<bean id="classToTypeRegistryFactoryBti"
-		  depends-on="classToTypeRegistryFactoryAb"
-		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
-		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
-				<property name="registries">
-					<list>
-						<ref bean="classToTypeRegistryBti" />
-						<ref bean="classToTypeRegistryAb" />
-						<ref bean="classToTypeRegistryCommon" />
-					</list>
-				</property>
-			</bean>
-		</property>
-	</bean>
+    <bean id="classToTypeRegistryFactoryBti"
+          depends-on="classToTypeRegistryFactoryAb"
+          class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
+        <property name="registry">
+            <bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
+                <property name="registries">
+                    <list>
+                        <ref bean="classToTypeRegistryBti" />
+                        <ref bean="classToTypeRegistryAb" />
+                        <ref bean="classToTypeRegistryCommon" />
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="cncsvAttributeNameMapper"
-		  class="org.flexpay.bti.service.importexport.impl.CNCSVAttributeNameMapper" />
+    <bean id="cncsvAttributeNameMapper"
+          class="org.flexpay.bti.service.importexport.impl.CNCSVAttributeNameMapper" />
 
-	<bean id="csvBuildingAttributesImporter"
-		  class="org.flexpay.bti.service.importexport.impl.CSVBuildingAttributesImporter"
-		  p:sourceDescription-ref="cnDataSourceDescription"
-		  p:attributeNameMapper-ref="cncsvAttributeNameMapper"
-		  p:correctionsService-ref="correctionsService" />
+    <bean id="csvBuildingAttributesImporter"
+          class="org.flexpay.bti.service.importexport.impl.CSVBuildingAttributesImporter"
+          p:sourceDescription-ref="cnDataSourceDescription"
+          p:attributeNameMapper-ref="cncsvAttributeNameMapper"
+          p:correctionsService-ref="correctionsService" />
 
-	<bean id="buildingAttributeDataProcessor"
-		  class="org.flexpay.bti.service.importexport.impl.BuildingAttributeDataProcessorImpl"
-		  p:attributeTypeService-ref="buildingAttributeTypeService"
-		  p:buildingService-ref="btiBuildingService" />
+    <bean id="buildingAttributeDataProcessor"
+          class="org.flexpay.bti.service.importexport.impl.BuildingAttributeDataProcessorImpl"
+          p:attributeTypeService-ref="buildingAttributeTypeService"
+          p:buildingService-ref="btiBuildingService" />
 
-	<bean id="buildingAttributeDataProcessorsChainFactory"
-		  class="org.flexpay.bti.service.importexport.impl.ChainAttributeDataProcessorFactory" />
+    <bean id="buildingAttributeDataProcessorsChainFactory"
+          class="org.flexpay.bti.service.importexport.impl.ChainAttributeDataProcessorFactory" />
 
-	<bean id="buildingAttributeDataProcessorsChain"
-		  factory-bean="buildingAttributeDataProcessorsChainFactory" factory-method="getInstance">
-		<property name="processors">
-			<set>
-				<ref bean="buildingAttributeDataProcessor" />
-			</set>
-		</property>
-	</bean>
+    <bean id="buildingAttributeDataProcessorsChain"
+          factory-bean="buildingAttributeDataProcessorsChainFactory" factory-method="getInstance">
+        <property name="processors">
+            <set>
+                <ref bean="buildingAttributeDataProcessor" />
+            </set>
+        </property>
+    </bean>
 
 </beans>

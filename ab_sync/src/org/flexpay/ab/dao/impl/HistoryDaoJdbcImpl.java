@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +36,10 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @param pager Page instance
 	 * @return List of HistoryRecord instances
 	 */
-	public List<HistoryRec> getRecords(Page pager) {
-		return getSimpleJdbcTemplate().query(sqlGetRecords, new ParameterizedRowMapper<HistoryRec>() {
+    @Override
+	public List<HistoryRec> getRecords(Page<?> pager) {
+		return getSimpleJdbcTemplate().query(sqlGetRecords, new RowMapper<HistoryRec>() {
+            @Override
 			public HistoryRec mapRow(ResultSet rs, int i) throws SQLException {
 				HistoryRec record = new HistoryRec();
 
@@ -64,6 +66,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @param records List of history records to mark as processed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
+    @Override
 	public void setProcessed(List<HistoryRec> records) {
 
 		if (records.isEmpty()) {
@@ -73,6 +76,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 
 		Collection<Long> ids = CollectionUtils.transform(records, new Transformer<HistoryRec, Long>() {
 			@NotNull
+            @Override
 			public Long transform(@NotNull HistoryRec historyRec) {
 				return historyRec.getId();
 			}
@@ -120,6 +124,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @param record HistoryRecord
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
+    @Override
 	public void addRecord(HistoryRec record) {
 
 		// check if record was already dumped

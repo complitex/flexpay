@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.sql.SQLException;
-
 public class RegistryFileDaoExtImpl extends HibernateDaoSupport implements RegistryFileDaoExt {
 
 	/**
@@ -20,9 +18,9 @@ public class RegistryFileDaoExtImpl extends HibernateDaoSupport implements Regis
 	 */
 	@Override
 	public boolean isLoaded(@NotNull final Long fileId) {
-		return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
+		return getHibernateTemplate().execute(new HibernateCallback<Boolean>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Boolean doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.getNamedQuery("Registry.listRegistries.count");
 				qCount.setLong(0, fileId);
 				Number count = (Number) qCount.uniqueResult();

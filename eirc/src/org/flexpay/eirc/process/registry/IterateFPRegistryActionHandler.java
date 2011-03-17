@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 @Transactional (readOnly = true)
 public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
     private static final String RESULT_END = "end";
@@ -89,7 +91,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
 		log.debug("start action");
-		List<RegistryRecord> records = new ArrayList<RegistryRecord>();
+		List<RegistryRecord> records = list();
 
 		Long spFileId = (Long) parameters.get(PARAM_FILE_ID);
 		FPFile spFile = fpFileService.read(new Stub<FPFile>(spFileId));
@@ -200,8 +202,8 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	@SuppressWarnings ({"unchecked"})
 	private List<SpFileReader.Message> getMessages(SpFileReader reader, List<SpFileReader.Message> listMessage) throws FlexPayException {
 		if (listMessage == null) {
-			listMessage = new ArrayList<SpFileReader.Message>();
-		} else if (listMessage.size() > 0) {
+			listMessage = list();
+		} else if (!listMessage.isEmpty()) {
 			return listMessage;
 		}
 

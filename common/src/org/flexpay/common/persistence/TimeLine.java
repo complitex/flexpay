@@ -7,6 +7,8 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import java.io.Serializable;
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 /**
  * Storage for a sorted list of intervals covering time line
  */
@@ -62,7 +64,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 	 */
 	public List<DI> getIntervals() {
 		if (!intervalsChecked) {
-			List<DI> dis = new ArrayList<DI>();
+			List<DI> dis = list();
 			for (DI di : intervals) {
 				if (di != null && di.getInvalidDate().equals(ApplicationConfig.getFutureInfinite())) {
 					dis.add(di);

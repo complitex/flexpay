@@ -16,7 +16,7 @@ public interface ImportErrorService {
 	 * @param clazz Objects type
 	 * @return list of import errors
 	 */
-	List<ImportError> getImportErrors(Page pager, Class<? extends DomainObject> clazz);
+	List<ImportError> getImportErrors(Page<ImportError> pager, Class<? extends DomainObject> clazz);
 
 	/**
 	 * List import errors for data source
@@ -26,7 +26,7 @@ public interface ImportErrorService {
 	 * @param clazz Import objects type
 	 * @return list of errors
 	 */
-	List<ImportError> listDataSourceErrorsByType(Page pager, DataSourceDescription ds, Class<? extends DomainObject> clazz);
+	List<ImportError> listDataSourceErrorsByType(Page<ImportError> pager, DataSourceDescription ds, Class<? extends DomainObject> clazz);
 
 	/**
 	 * List data source decriptions having import errors of specified type

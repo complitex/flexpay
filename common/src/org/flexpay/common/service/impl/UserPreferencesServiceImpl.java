@@ -3,11 +3,10 @@ package org.flexpay.common.service.impl;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.service.UserPreferencesDefaults;
+import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
-import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -15,18 +14,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.InputStream;
 import java.security.cert.Certificate;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class UserPreferencesServiceImpl implements UserPreferencesService, InitializingBean {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private List<UserPreferencesDefaults> defaultsSetters = CollectionUtils.list();
+	private List<UserPreferencesDefaults> defaultsSetters = list();
 	private String usedDao;
 	private Map<String, UserPreferencesDao> userPreferencesDaos;
 	private UserPreferencesFactory userPreferencesFactory;
@@ -41,9 +42,9 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	 * <code>UserDetails</code> object that comes back may have a username that is of a different case than what was
 	 * actually requested..
 	 *
-	 * @param username the username presented to the {@link org.springframework.security.providers.dao.DaoAuthenticationProvider}
+	 * @param username the username presented to the {@link org.springframework.security.authentication.dao.DaoAuthenticationProvider}
 	 * @return a fully populated user record (never <code>null</code>)
-	 * @throws org.springframework.security.userdetails.UsernameNotFoundException
+	 * @throws org.springframework.security.core.userdetails.UsernameNotFoundException
 	 *          if the user could not be found or the user has no GrantedAuthority
 	 * @throws org.springframework.dao.DataAccessException
 	 *          if user could not be found for a repository-specific reason

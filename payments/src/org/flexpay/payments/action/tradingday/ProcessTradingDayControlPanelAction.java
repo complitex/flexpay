@@ -15,7 +15,7 @@ import org.flexpay.payments.service.TradingDay;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;

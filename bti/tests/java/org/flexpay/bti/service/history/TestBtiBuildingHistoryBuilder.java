@@ -50,7 +50,7 @@ public class TestBtiBuildingHistoryBuilder extends BtiSpringBeanAwareTestCase {
 		BtiBuilding copy = (BtiBuilding) objectsFactory.newBuilding();
 
 		historyBuilder.patch(copy, diff);
-		validateAtrtibutes(building, copy);
+		validateAttrtibutes(building, copy);
 
 		BuildingAttributeType typeBuildYear = attributeTypeService.findTypeByName(
 				BuildingAttributeConfig.ATTR_BUILD_YEAR);
@@ -62,10 +62,10 @@ public class TestBtiBuildingHistoryBuilder extends BtiSpringBeanAwareTestCase {
 
 		diff = historyBuilder.diff(copy, building);
 		historyBuilder.patch(copy, diff);
-		validateAtrtibutes(building, copy);
+		validateAttrtibutes(building, copy);
 	}
 
-	private void validateAtrtibutes(BtiBuilding building, BtiBuilding copy) {
+	private void validateAttrtibutes(BtiBuilding building, BtiBuilding copy) {
 		Set<BuildingAttributeType> types = building.attributeTypes();
 		assertEquals("Wrong attribute types number", types, copy.attributeTypes());
 

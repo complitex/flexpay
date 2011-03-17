@@ -1,98 +1,91 @@
-<b:beans xmlns="http://www.springframework.org/schema/security"
-		 xmlns:b="http://www.springframework.org/schema/beans"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns:p="http://www.springframework.org/schema/p"
-		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-	<http entry-point-ref="preAuthenticatedProcessingFilterEntryPoint" session-fixation-protection="none" auto-config="false">
-		<intercept-url pattern="/resources/common/jsp/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/confirmationTradingDay*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/resources/**" filters="none" />
-		<intercept-url pattern="/confirmationTradingDay*" filters="none" />
-		<intercept-url pattern="/dicts/**" access="ROLE_BASIC" />
-		<!--<concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />-->
-	</http>
+    <security:http entry-point-ref="preAuthenticatedProcessingFilterEntryPoint" auto-config="false">
+        <security:intercept-url pattern="/resources/common/jsp/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/confirmationTradingDay*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/resources/**" filters="none" />
+        <security:intercept-url pattern="/confirmationTradingDay*" filters="none" />
+        <security:intercept-url pattern="/dicts/**" access="ROLE_BASIC" />
+        <!--<concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />-->
+        <security:custom-filter position="PRE_AUTH_FILTER" ref="myPreAuthFilter" />
+        <security:custom-filter position="LOGOUT_FILTER" ref="logoutFilter" />
+        <security:custom-filter position="FORM_LOGIN_FILTER" ref="authenticationProcessingFilter" />
+    </security:http>
 
-	<global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="preAuthenticatedAuthenticationProvider"  />
+    </security:authentication-manager>
+    <security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
 
-	<b:bean id="myPreAuthFilter"
-			class="org.springframework.security.ui.preauth.j2ee.J2eePreAuthenticatedProcessingFilter">
-		<custom-filter position="PRE_AUTH_FILTER" />
-		<!--suppress SpringModelInspection -->
-		<b:property name="authenticationManager" ref="authenticationManager" />
-		<b:property name="authenticationDetailsSource" ref="authenticationDetailsSource" />
-		<b:property name="continueFilterChainOnUnsuccessfulAuthentication" value="false" />
-	</b:bean>
+    <bean id="myPreAuthFilter"
+          class="org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter"
+          p:authenticationManager-ref="authenticationManager"
+          p:authenticationDetailsSource-ref="authenticationDetailsSource"
+          p:continueFilterChainOnUnsuccessfulAuthentication="false" />
 
-	<b:bean id="authenticationDetailsSource"
-			class="org.springframework.security.ui.preauth.j2ee.J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource">
-		<b:property name="mappableRolesRetriever" ref="j2eeMappableRolesRetriever" />
-		<b:property name="userRoles2GrantedAuthoritiesMapper" ref="j2eeUserRoles2GrantedAuthoritiesMapper" />
-	</b:bean>
+    <bean id="authenticationDetailsSource"
+          class="org.springframework.security.web.authentication.preauth.j2ee.J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource"
+          p:mappableRolesRetriever-ref="j2eeMappableRolesRetriever"
+          p:userRoles2GrantedAuthoritiesMapper-ref="j2eeUserRoles2GrantedAuthoritiesMapper" />
 
-	<b:bean id="j2eeUserRoles2GrantedAuthoritiesMapper"
-			class="org.springframework.security.authoritymapping.SimpleAttributes2GrantedAuthoritiesMapper">
-		<b:property name="convertAttributeToUpperCase" value="true" />
-	</b:bean>
+    <bean id="j2eeUserRoles2GrantedAuthoritiesMapper"
+          class="org.springframework.security.core.authority.mapping.SimpleAttributes2GrantedAuthoritiesMapper"
+          p:convertAttributeToUpperCase="true" />
 
-	<b:bean id="j2eeMappableRolesRetriever"
-			class="org.springframework.security.ui.preauth.j2ee.WebXmlMappableAttributesRetriever">
+    <bean id="j2eeMappableRolesRetriever"
+          class="org.springframework.security.web.authentication.preauth.j2ee.WebXmlMappableAttributesRetriever" />
 
-		<b:property name="webXmlInputStream">
-			<b:bean factory-bean="webXmlResource" factory-method="getInputStream" />
-		</b:property>
-	</b:bean>
+    <bean id="webXmlResource"
+          class="org.springframework.web.context.support.ServletContextResource">
+        <constructor-arg ref="servletContext" />
+        <constructor-arg value="/WEB-INF/web.xml" />
+    </bean>
 
-	<b:bean id="webXmlResource" class="org.springframework.web.context.support.ServletContextResource">
-		<b:constructor-arg ref="servletContext" />
-		<b:constructor-arg value="/WEB-INF/web.xml" />
-	</b:bean>
+    <bean id="servletContext"
+          class="org.springframework.web.context.support.ServletContextFactoryBean" />
 
-	<b:bean id="servletContext" class="org.springframework.web.context.support.ServletContextFactoryBean" />
+    <bean id="preAuthenticatedProcessingFilterEntryPoint"
+          class="org.springframework.security.web.authentication.preauth.PreAuthenticatedProcessingFilterEntryPoint" />
 
-	<b:bean id="preAuthenticatedProcessingFilterEntryPoint"
-			class="org.springframework.security.ui.preauth.PreAuthenticatedProcessingFilterEntryPoint" />
+    <bean id="preAuthenticatedAuthenticationProvider"
+          class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider"
+          p:preAuthenticatedUserDetailsService-ref="userPreferencesAuthenticationService" />
 
-	<b:bean id="preAuthenticatedAuthenticationProvider"
-			class="org.springframework.security.providers.preauth.PreAuthenticatedAuthenticationProvider">
-		<custom-authentication-provider />
-		<b:property name="preAuthenticatedUserDetailsService" ref="userPreferencesAuthenticationService" />
-	</b:bean>
+    <bean id="preAuthenticatedUserDetailsService"
+          class="org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService" />
 
-	<b:bean id="preAuthenticatedUserDetailsService"
-			class="org.springframework.security.providers.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService" />
+    <bean id="userPreferencesAuthenticationService"
+          class="org.flexpay.common.service.impl.UserPreferencesAuthenticationService"
+          p:detailsService-ref="preAuthenticatedUserDetailsService"
+          p:userPreferencesService-ref="userPreferencesService" />
 
-	<b:bean id="userPreferencesAuthenticationService"
-			class="org.flexpay.common.service.impl.UserPreferencesAuthenticationService"
-			p:detailsService-ref="preAuthenticatedUserDetailsService"
-			p:userPreferencesService-ref="userPreferencesService" />
+    <!-- ===================== LOGOUT FILTER ==================== -->
+    <bean id="logoutFilter"
+          class="org.springframework.security.web.authentication.logout.LogoutFilter"
+          p:filterProcessesUrl="/logout">
+        <constructor-arg index="0" value="/" />
+        <constructor-arg index="1">
+            <list>
+                <ref bean="logoutEventBroadcaster" />
+                <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+                    <property name="invalidateHttpSession" value="true" />
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
 
-	<!-- ===================== LOGOUT FILTER ==================== -->
-	<b:bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
-		<custom-filter position="LOGOUT_FILTER" />
-		<b:constructor-arg index="0" value="/" />
-		<b:constructor-arg index="1">
-			<b:list>
-				<b:ref bean="logoutEventBroadcaster" />
-				<b:bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler">
-					<b:property name="invalidateHttpSession" value="true" />
-				</b:bean>
-			</b:list>
-		</b:constructor-arg>
-		<b:property name="filterProcessesUrl" value="/logout" />
-	</b:bean>
+    <bean id="logoutEventBroadcaster"
+          class="org.flexpay.common.action.security.LogoutEventBroadcaster" />
 
-	<b:bean id="logoutEventBroadcaster"
-			class="org.flexpay.common.action.security.LogoutEventBroadcaster" />
+    <bean id="authenticationProcessingFilter"
+          class="org.flexpay.common.action.security.FPAuthenticationProcessingFilter"
+          p:postOnly="false"
+          p:filterProcessesUrl="/"
+          p:authenticationManager-ref="authenticationManager" />
 
-	<authentication-manager alias="authenticationManager" />
-
-	<b:bean id="authenticationProcessingFilter"
-			class="org.flexpay.common.action.security.FPAuthenticationProcessingFilter">
-		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
-		<b:property name="defaultTargetUrl" value="/" />
-		<b:property name="authenticationManager" ref="authenticationManager" />
-	</b:bean>
-
-</b:beans>
+</beans>

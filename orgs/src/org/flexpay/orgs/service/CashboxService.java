@@ -8,7 +8,7 @@ import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 import org.apache.commons.collections.ArrayStack;
 
 import java.util.Collection;

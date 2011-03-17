@@ -330,22 +330,6 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	}
 
 	/**
-	 * Get building apartment belongs to
-	 *
-	 * @param apartmentStub Apartment stub
-	 * @return Building stub
-	 */
-	@NotNull
-	@Override
-	public Building getBuilding(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException {
-		Apartment apartment = apartmentDao.read(apartmentStub.getId());
-		if (apartment == null) {
-			throw new FlexPayException("Invalid id", "common.error.invalid_id");
-		}
-		return apartment.getBuilding();
-	}
-
-	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
 	 *
 	 * @param parentFilter	 Filter to init

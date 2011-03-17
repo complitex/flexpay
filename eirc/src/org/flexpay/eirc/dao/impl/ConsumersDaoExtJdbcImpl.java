@@ -3,7 +3,7 @@ package org.flexpay.eirc.dao.impl;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.persistence.Consumer;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -30,7 +30,7 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
 		return getSimpleJdbcTemplate().query(
 				"select id from eirc_consumers_tbl " +
 				"where person_id=? and service_id=? and external_account_number=? and apartment_id=?",
-				new ParameterizedRowMapper<Consumer>() {
+				new RowMapper<Consumer>() {
                     @Override
 					public Consumer mapRow(ResultSet rs, int i) throws SQLException {
 						return new Consumer(rs.getLong("id"));

@@ -1,70 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--level1-->
     <bean name="sz" parent="fpMenu"
-            p:name="sz"
-            p:title="sz.menu1.title"
-            p:namespace="/sz"
-            p:action="main"
-            p:parent-ref="fpMenu"
-            p:userRole="ROLE_MENU_SZ"
-            />
+          p:name="sz"
+          p:title="sz.menu1.title"
+          p:namespace="/sz"
+          p:action="main"
+          p:parent-ref="fpMenu">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ" />
+        </property>
+    </bean>
 
     <!--level2-->
     <bean name="sz_dicts" parent="sz"
-            p:name="sz.dicts"
-            p:title="sz.menu2.dictionaries"
-            p:action="mainDicts"
-            p:parent-ref="sz"
-            p:userRole="ROLE_MENU_SZ_DICTS"
-            />
+          p:name="sz.dicts"
+          p:title="sz.menu2.dictionaries"
+          p:action="mainDicts"
+          p:parent-ref="sz">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ_DICTS" />
+        </property>
+    </bean>
     <bean name="sz_import" parent="sz"
-            p:name="sz.import"
-            p:title="sz.menu2.import"
-            p:action="mainImport"
-            p:parent-ref="sz"
-            p:userRole="ROLE_MENU_SZ_IMPORT"
-            />
+          p:name="sz.import"
+          p:title="sz.menu2.import"
+          p:action="mainImport"
+          p:parent-ref="sz">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ_IMPORT" />
+        </property>
+    </bean>
 
     <!--level3-->
-    <bean name="sz_dicts_otherDictionaries"  parent="sz_dicts"
-            p:name="sz.other_dicts"
-            p:title="sz.menu2.dictionaries"
-            p:action="mainOtherDicts"
-            p:parent-ref="sz_dicts"
-            p:userRole="ROLE_MENU_SZ_OTHER_DICTS"
-            />
-    <bean name="sz_import_import"  parent="sz_import"
-            p:name="sz.import2"
-            p:title="sz.menu2.import"
-            p:action="mainImportImport"
-            p:parent-ref="sz_import"
-            p:userRole="ROLE_MENU_SZ_IMPORT2"
-            />
+    <bean name="sz_dicts_otherDictionaries" parent="sz_dicts"
+          p:name="sz.other_dicts"
+          p:title="sz.menu2.dictionaries"
+          p:action="mainOtherDicts"
+          p:parent-ref="sz_dicts">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ_OTHER_DICTS" />
+        </property>
+    </bean>
+    <bean name="sz_import_import" parent="sz_import"
+          p:name="sz.import2"
+          p:title="sz.menu2.import"
+          p:action="mainImportImport"
+          p:parent-ref="sz_import">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ_IMPORT2" />
+        </property>
+    </bean>
 
     <!--level4-->
-    <bean  parent="sz_dicts_otherDictionaries"
-            p:name="sz.import_files_list"
-            p:title="sz.menu34.files"
-            p:action="szFilesList"
-            p:parent-ref="sz_dicts_otherDictionaries"
-            p:userRole="ROLE_MENU_SZ_DICTS_IMPORTED_FILES"
-            />
-    <bean  parent="sz_import_import"
-            p:name="sz.upload"
-            p:title="sz.menu34.files.upload"
-            p:action="szFileCreate"
-            p:parent-ref="sz_import_import"
-            p:userRole="ROLE_MENU_SZ_IMPORT_UPLOAD"
-            />
+    <bean parent="sz_dicts_otherDictionaries"
+          p:name="sz.import_files_list"
+          p:title="sz.menu34.files"
+          p:action="szFilesList"
+          p:parent-ref="sz_dicts_otherDictionaries">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ_DICTS_IMPORTED_FILES" />
+        </property>
+    </bean>
+    <bean parent="sz_import_import"
+          p:name="sz.upload"
+          p:title="sz.menu34.files.upload"
+          p:action="szFileCreate"
+          p:parent-ref="sz_import_import">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.sz.service.Roles.ROLE_MENU_SZ_IMPORT_UPLOAD" />
+        </property>
+    </bean>
 
 </beans>

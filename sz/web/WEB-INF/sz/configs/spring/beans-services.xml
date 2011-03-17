@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <bean id="szApplicationConfig"
+          class="org.flexpay.sz.util.config.ApplicationConfig"
+          p:szDataRoot="${app.config.sz.dataRoot}"
+          p:szDefaultDbfFileEncoding="${app.config.sz.defaultDbfFileEncoding}" />
 
-	<bean id="szApplicationConfig"
-		  class="org.flexpay.sz.util.config.ApplicationConfig"
-		  p:szDataRoot="${app.config.sz.dataRoot}"
-		  p:szDefaultDbfFileEncoding="${app.config.sz.defaultDbfFileEncoding}" />
+    <bean id="szFileService"
+          class="org.flexpay.sz.service.impl.SzFileServiceImpl"
+          p:szFileDao-ref="szFileDao"
+          p:szFileDaoExt-ref="szFileDaoExt" />
 
-	<bean id="szFileService"
-		  class="org.flexpay.sz.service.impl.SzFileServiceImpl"
-		  p:szFileDao-ref="szFileDao"
-		  p:szFileDaoExt-ref="szFileDaoExt" />
+    <bean id="osznService"
+          class="org.flexpay.sz.service.impl.OsznServiceImpl"
+          p:osznDao-ref="osznDao" />
 
-	<bean id="osznService"
-		  class="org.flexpay.sz.service.impl.OsznServiceImpl"
-		  p:osznDao-ref="osznDao" />
+    <bean id="characteristicRecordService"
+          class="org.flexpay.sz.service.impl.CharacteristicRecordServiceImpl"
+          p:characteristicRecordDao-ref="characteristicRecordDao" />
 
-	<bean id="characteristicRecordService"
-		  class="org.flexpay.sz.service.impl.CharacteristicRecordServiceImpl"
-		  p:characteristicRecordDao-ref="characteristicRecordDao" />
+    <bean id="subsidyRecordService"
+          class="org.flexpay.sz.service.impl.SubsidyRecordServiceImpl"
+          p:subsidyRecordDao-ref="subsidyRecordDao" />
 
-	<bean id="subsidyRecordService"
-		  class="org.flexpay.sz.service.impl.SubsidyRecordServiceImpl"
-		  p:subsidyRecordDao-ref="subsidyRecordDao" />
+    <bean id="serviceTypeRecordService"
+          class="org.flexpay.sz.service.impl.ServiceTypeRecordServiceImpl"
+          p:serviceTypeRecordDao-ref="serviceTypeRecordDao" />
 
-	<bean id="serviceTypeRecordService"
-		  class="org.flexpay.sz.service.impl.ServiceTypeRecordServiceImpl"
-		  p:serviceTypeRecordDao-ref="serviceTypeRecordDao" />
+    <bean id="szCorrectionsService"
+          class="org.flexpay.sz.service.impl.CorrectionsServiceImpl"
+          p:apartmentCorrectionDao-ref="apartmentCorrectionDao"
+          p:buildingCorrectionDao-ref="buildingCorrectionDao"
+          p:districtCorrectionDao-ref="districtCorrectionDao"
+          p:streetCorrectionDao-ref="streetCorrectionDao" />
 
-	<bean id="szCorrectionsService"
-		  class="org.flexpay.sz.service.impl.CorrectionsServiceImpl"
-		  p:apartmentCorrectionDao-ref="apartmentCorrectionDao"
-		  p:buildingCorrectionDao-ref="buildingCorrectionDao"
-		  p:districtCorrectionDao-ref="districtCorrectionDao"
-		  p:streetCorrectionDao-ref="streetCorrectionDao" />
-
-	<bean id="processManagerSz" parent="processManagerEirc" autowire-candidate="false">
-		<property name="definitionPaths">
-			<list merge="true">
-				<value>WEB-INF/sz/process</value>
-			</list>
-		</property>
-	</bean>
+    <bean id="processManagerSz" parent="processManagerEirc" autowire-candidate="false">
+        <property name="definitionPaths">
+            <list merge="true">
+                <value>WEB-INF/sz/process</value>
+            </list>
+        </property>
+    </bean>
 
 </beans>

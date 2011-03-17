@@ -1,92 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="osznDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.OsznDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.Oszn" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="szFileDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.SzFileDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.SzFile" />
-			</bean>
-		</property>
-	</bean>
-
-    <bean id="szFileDaoExt" class="org.flexpay.sz.dao.impl.SzFileDaoExtImpl">
-        <property name="hibernateTemplate" ref="hibernateTemplate" />
+    <bean id="osznDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.OsznDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.Oszn" />
+            </bean>
+        </property>
     </bean>
 
-	<bean id="characteristicRecordDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.CharacteristicRecordDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.CharacteristicRecord" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="szFileDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.SzFileDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.SzFile" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="subsidyRecordDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.SubsidyRecordDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.SubsidyRecord" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="szFileDaoExt"
+          class="org.flexpay.sz.dao.impl.SzFileDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="serviceTypeRecordDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.ServiceTypeRecordDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.ServiceTypeRecord" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="characteristicRecordDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.CharacteristicRecordDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.CharacteristicRecord" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="apartmentCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.ApartmentCorrectionDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="subsidyRecordDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.SubsidyRecordDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.SubsidyRecord" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="buildingCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.BuildingCorrectionDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.corrections.BuildingNumberCorrection" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="serviceTypeRecordDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.ServiceTypeRecordDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.ServiceTypeRecord" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="districtCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.DistrictCorrectionDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.corrections.DistrictCorrection" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="apartmentCorrectionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.ApartmentCorrectionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="streetCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.sz.dao.StreetCorrectionDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.corrections.StreetCorrection" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="buildingCorrectionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.BuildingCorrectionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.corrections.BuildingNumberCorrection" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="districtCorrectionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.DistrictCorrectionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.corrections.DistrictCorrection" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="streetCorrectionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.sz.dao.StreetCorrectionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.sz.persistence.corrections.StreetCorrection" />
+            </bean>
+        </property>
+    </bean>
 
 </beans>
         

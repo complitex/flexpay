@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class TariffCalcResultExportAction extends FPActionSupport {
 
 	private String date;
@@ -51,7 +53,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	}
 
 	private List<String> formatDates(List<Date> dates) {
-		List<String> formattedDates = new ArrayList<String>();
+		List<String> formattedDates = list();
 		FastDateFormat df = FastDateFormat.getInstance("yyyy/MM/dd");
 		for (Date date : dates) {
 			formattedDates.add(df.format(date));

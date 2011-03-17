@@ -3,6 +3,8 @@ package org.flexpay.tc.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class TariffConfig {
 
 	// Уборка территории
@@ -45,7 +47,7 @@ public class TariffConfig {
 	public static final String TARIFF_SERVICE_ELECTRIC_RANGES = "190";
 
 	public static List<String> getAllTariffCodes() {
-		List<String> codes = new ArrayList<String>();
+		List<String> codes = list();
 
 		codes.add(TARIFF_CLEANING_TERRITORY);
 		codes.add(TARIFF_CLEANING_REFUSE_CHUTES);

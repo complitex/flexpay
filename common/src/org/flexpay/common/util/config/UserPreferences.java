@@ -11,14 +11,11 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.SecurityUtil;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class UserPreferences extends DomainObject implements Serializable, UserDetails {
 
@@ -188,7 +185,7 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 	 * @return the authorities, sorted by natural key (never <code>null</code>)
 	 */
 	@Override
-	public GrantedAuthority[] getAuthorities() {
+	public Collection<GrantedAuthority> getAuthorities() {
 		return targetDetails.getAuthorities();
 	}
 

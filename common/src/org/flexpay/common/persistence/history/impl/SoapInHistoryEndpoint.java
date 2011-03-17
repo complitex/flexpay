@@ -57,6 +57,7 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 	 * @param requestElement the contents of the SOAP message as JDOM element
 	 * @return the response element. Can be <code>null</code> to specify no response.
 	 */
+    @Override
 	protected Element invokeInternal(Element requestElement) throws Exception {
 
 		Security.authenticateSyncer();

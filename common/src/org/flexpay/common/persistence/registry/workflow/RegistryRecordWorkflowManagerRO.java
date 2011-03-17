@@ -36,11 +36,11 @@ public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowMa
 		targets.add(PROCESSED_WITH_ERROR);
 		transitions.put(LOADED, targets);
 
-		targets = new ArrayList<Integer>();
+		targets = list();
 		targets.add(FIXED);
 		transitions.put(PROCESSED_WITH_ERROR, targets);
 
-		targets = new ArrayList<Integer>();
+		targets = list();
 		targets.add(PROCESSED);
 		targets.add(PROCESSED_WITH_ERROR);
 		transitions.put(FIXED, targets);

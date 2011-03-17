@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Define struts actions beans -->
+    <!-- Define struts actions beans -->
 
-	<!-- tariff calculation rules files section -->
-	<bean id="tariffCalcRulesFilesListAction"
+    <!-- tariff calculation rules files section -->
+    <bean id="tariffCalcRulesFilesListAction"
           class="org.flexpay.tc.action.tariff.TariffCalcRulesFilesListAction"
-		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
-		  scope="prototype" />
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          scope="prototype" />
 
-    <bean id="tariffCalcRulesFilesListPageAction" parent="staticPageAction"
+    <bean id="tariffCalcRulesFilesListPageAction"
+          parent="staticPageAction"
           p:crumbNameKey="tc.crumbs.rules_files.list"
           scope="prototype" />
 
@@ -24,24 +23,24 @@
           p:crumbNameKey="tc.crumbs.rules_file.view"
           scope="prototype" />
 
-	<bean id="tariffCalcRulesFileEditAction"
+    <bean id="tariffCalcRulesFileEditAction"
           class="org.flexpay.tc.action.tariff.TariffCalcRulesFileEditAction"
-		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
-		  p:fpFileService-ref="fpFileService"
-		  p:moduleName="${flexpay.module.name.tc}"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          p:fpFileService-ref="fpFileService"
+          p:moduleName="${flexpay.module.name.tc}"
           p:crumbNameKey="tc.crumbs.rules_file.edit"
           p:crumbCreateKey="tc.crumbs.rules_file.create"
-		  scope="prototype" />
+          scope="prototype" />
 
-	<bean id="tariffCalcRulesFileDeleteAction"
+    <bean id="tariffCalcRulesFileDeleteAction"
           class="org.flexpay.tc.action.tariff.TariffCalcRulesFileDeleteAction"
-		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
-		  scope="prototype" />
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          scope="prototype" />
 
-	<bean id="tariffCalculateAction"
+    <bean id="tariffCalculateAction"
           class="org.flexpay.tc.action.tariff.TariffCalculateAction"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
     <bean id="tariffCalcResultExportAction"
           class="org.flexpay.tc.action.tariff.TariffCalcResultExportAction"
@@ -50,9 +49,9 @@
           p:crumbNameKey="tc.crumbs.calc_resilts.export"
           scope="prototype" />
 
-	<!-- end of tariff calculation rules files section -->
+    <!-- end of tariff calculation rules files section -->
 
-	<!-- building attributes section -->
+    <!-- building attributes section -->
     <bean id="tcBuildingsListPageAction"
           parent="staticPageAction"
           p:crumbNameKey="tc.crumbs.buildings_with_attributes.list"
@@ -63,11 +62,11 @@
           p:attributeTypeService-ref="buildingAttributeTypeService"
           scope="prototype" />
 
-	<bean id="buildingAttributesSaveAction"
-		  class="org.flexpay.tc.action.buildingattributes.BuildingAttributesSaveAction"
-		  p:btiBuildingService-ref="btiBuildingService"
-		  p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
-		  scope="prototype" />
+    <bean id="buildingAttributesSaveAction"
+          class="org.flexpay.tc.action.buildingattributes.BuildingAttributesSaveAction"
+          p:btiBuildingService-ref="btiBuildingService"
+          p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
+          scope="prototype" />
 
     <bean id="buildingAttributesEditBlockAction"
           class="org.flexpay.tc.action.buildingattributes.BuildingAttributesEditBlockAction"
@@ -83,7 +82,8 @@
           p:crumbNameKey="tc.crumbs.building_attributes.edit"
           scope="prototype" />
 
-    <bean id="buildingAttributeTypesListPageAction" parent="staticPageAction"
+    <bean id="buildingAttributeTypesListPageAction"
+          parent="staticPageAction"
           p:crumbNameKey="tc.crumbs.building_attribute_types.list"
           scope="prototype" />
 
@@ -108,42 +108,42 @@
           p:crumbNameKey="tc.crumbs.building_attribute_type.view"
           scope="prototype" />
 
-	<!-- end of building attributes section -->
+    <!-- end of building attributes section -->
 
-	<!-- building tc results section -->
-	<bean id="buildingTCResultsListAction"
-		  class="org.flexpay.tc.action.tcresults.BuildingTCResultsListAction"
-		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-		  p:tariffService-ref="tariffService"
-		  p:addressService-ref="addressService"
-		  p:buildingService-ref="buildingService"
+    <!-- building tc results section -->
+    <bean id="buildingTCResultsListAction"
+          class="org.flexpay.tc.action.tcresults.BuildingTCResultsListAction"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:tariffService-ref="tariffService"
+          p:addressService-ref="addressService"
+          p:buildingService-ref="buildingService"
           p:crumbNameKey="tc.crumbs.building_tc_results.list"
-		  scope="prototype" />
+          scope="prototype" />
 
-	<bean id="buildingTCResultsEditAction"
-		  class="org.flexpay.tc.action.tcresults.BuildingTCResultsEditAction"
-		  p:tariffService-ref="tariffService"
-		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-		  p:addressService-ref="addressService"
-		  p:buildingService-ref="buildingService"
-		  scope="prototype" />
+    <bean id="buildingTCResultsEditAction"
+          class="org.flexpay.tc.action.tcresults.BuildingTCResultsEditAction"
+          p:tariffService-ref="tariffService"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:addressService-ref="addressService"
+          p:buildingService-ref="buildingService"
+          scope="prototype" />
 
-	<bean id="buildingTCResultsUploadAction"
-		  class="org.flexpay.tc.action.tcresults.BuildingTCResultsUploadAction"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
-	<!-- end of building tc results section -->
+    <bean id="buildingTCResultsUploadAction"
+          class="org.flexpay.tc.action.tcresults.BuildingTCResultsUploadAction"
+          p:processManager-ref="processManager"
+          scope="prototype" />
+    <!-- end of building tc results section -->
 
-	<!-- processing -->
+    <!-- processing -->
     <bean id="processesListPageAction"
           class="org.flexpay.common.action.processing.ProcessesListPageAction"
           p:crumbNameKey="tc.crumbs.processes.list"
           p:processManager-ref="processManager"
           scope="prototype" />
 
-	<bean id="processesListAction"
-		  class="org.flexpay.common.action.processing.ProcessesListAction"
-		  p:processManager-ref="processManager"
+    <bean id="processesListAction"
+          class="org.flexpay.common.action.processing.ProcessesListAction"
+          p:processManager-ref="processManager"
           scope="prototype" />
 
     <bean id="processDeleteAction"
@@ -151,17 +151,17 @@
           p:processManager-ref="processManager"
           scope="prototype" />
 
-	<bean id="processViewAction"
-		  class="org.flexpay.common.action.processing.ProcessViewAction"
+    <bean id="processViewAction"
+          class="org.flexpay.common.action.processing.ProcessViewAction"
           p:crumbNameKey="tc.crumbs.process.view"
-		  p:processManager-ref="processManager"
+          p:processManager-ref="processManager"
           scope="prototype" />
 
-	<bean id="processDefinitionDeployAction"
-		  class="org.flexpay.common.action.processing.ProcessDefinitionDeployAction"
+    <bean id="processDefinitionDeployAction"
+          class="org.flexpay.common.action.processing.ProcessDefinitionDeployAction"
           p:crumbNameKey="tc.crumbs.process.definition_deploy"
           p:fpFileService-ref="fpFileService"
-		  p:processManager-ref="processManager"
+          p:processManager-ref="processManager"
           p:moduleName="${flexpay.module.name.tc}"
           scope="prototype" />
 

@@ -13,7 +13,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;
@@ -156,18 +156,6 @@ public interface ApartmentService {
 	@Secured (Roles.APARTMENT_READ)
 	@Nullable
 	String getApartmentNumber(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException;
-
-	/**
-	 * Get building apartment belongs to
-	 *
-	 * @param apartmentStub Apartment stub
-	 * @return Building stub
-	 * @throws FlexPayException if stub references invalid object
-	 * @deprecated use {@link org.flexpay.ab.persistence.Apartment#getBuilding()} instead
-	 */
-	@Secured (Roles.APARTMENT_READ)
-	@NotNull
-	Building getBuilding(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException;
 
 	/**
 	 * Find apartments ids for town in range

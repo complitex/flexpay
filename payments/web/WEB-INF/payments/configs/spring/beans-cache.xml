@@ -1,143 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Module payments caches config -->
-	<bean id="documentTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="read">cacheName=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="save">cacheNames=flexpayCache</prop>
-				<prop key="delete">cacheNames=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="documentTypeServiceTarget" />
-	</bean>
+    <!-- Module payments caches config -->
+    <bean id="documentTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="documentTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="read">cacheName=flexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="save">cacheNames=flexpayCache</prop>
+                <prop key="delete">cacheNames=flexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="documentStatusService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="read">cacheName=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="save">cacheNames=flexpayCache</prop>
-				<prop key="delete">cacheNames=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="documentStatusServiceTarget" />
-	</bean>
+    <bean id="documentStatusService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="documentStatusServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="read">cacheName=flexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="save">cacheNames=flexpayCache</prop>
+                <prop key="delete">cacheNames=flexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="spService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=paymentsServiceCache</prop>
-				<prop key="findServices">cacheName=paymentsServiceCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="spServiceTarget" />
-	</bean>
+    <bean id="spService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="spServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=paymentsServiceCache</prop>
+                <prop key="findServices">cacheName=paymentsServiceCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="serviceTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="read">cacheName=paymentsServiceTypeCache</prop>
-				<prop key="get*">cacheName=paymentsServiceTypeCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="serviceTypeServiceTarget" />
-	</bean>
+    <bean id="serviceTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="serviceTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="read">cacheName=paymentsServiceTypeCache</prop>
+                <prop key="get*">cacheName=paymentsServiceTypeCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="serviceProviderServiceAttribute"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
+    <bean id="serviceProviderServiceAttribute"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="serviceProviderServiceAttributeTarget">
+         <property name="cachingModels">
+            <props>
                 <prop key="listServiceProviderAttributes">cacheName=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="save*">cacheNames=flexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="serviceProviderServiceAttributeTarget" />
-	</bean>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="save*">cacheNames=flexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="operationLevelService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
+    <bean id="operationLevelService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="operationLevelServiceTarget">
+        <property name="cachingModels">
+            <props>
                 <prop key="read">cacheName=flexpayPaymentsROCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-			</props>
-		</property>
-		<property name="target" ref="operationLevelServiceTarget" />
-	</bean>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="operationStatusService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
+    <bean id="operationStatusService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="operationStatusServiceTarget">
+        <property name="cachingModels">
+            <props>
                 <prop key="read">cacheName=flexpayPaymentsROCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-			</props>
-		</property>
-		<property name="target" ref="operationStatusServiceTarget" />
-	</bean>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="operationTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
+    <bean id="operationTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="operationTypeServiceTarget">
+        <property name="cachingModels">
+            <props>
                 <prop key="read">cacheName=flexpayPaymentsROCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-			</props>
-		</property>
-		<property name="target" ref="operationTypeServiceTarget" />
-	</bean>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+            </props>
+        </property>
+    </bean>
 
 </beans>

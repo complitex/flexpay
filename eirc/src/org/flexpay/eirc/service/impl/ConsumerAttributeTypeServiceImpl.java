@@ -140,7 +140,7 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 	 */
 	@Override
 	public ConsumerAttributeTypeBase readByCode(String code) {
-		ConsumerAttributeTypeBase type = attributeTypeDaoExt.findAtributeTypeByCode(code);
+		ConsumerAttributeTypeBase type = attributeTypeDaoExt.findAttributeTypeByCode(code);
 		if (type != null) {
 			return readFull(stub(type));
 		}
@@ -150,7 +150,7 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
     @NotNull
     @Override
     public List<ConsumerAttributeTypeBase> getByUniqueCode(Collection<String> codes) {
-        return attributeTypeDao.findAtributeTypeByCodes(codes);
+        return attributeTypeDao.findAttributeTypeByCodes(codes);
     }
 
     @Override

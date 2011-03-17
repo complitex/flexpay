@@ -14,6 +14,8 @@ import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.payments.service.EircRegistryService;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -43,7 +45,7 @@ public class TestSetNumberOfHabitantsOperation extends EircSpringBeanAwareTestCa
 		assertNotNull("Registry not found", registry);
 		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), new FetchRange());
 		for (RegistryRecord record : records) {
-			List<String> containers = new ArrayList<String>();
+			List<String> containers = list();
 
 			for (RegistryRecordContainer c : record.getContainers()) {
 				if (c != null) {

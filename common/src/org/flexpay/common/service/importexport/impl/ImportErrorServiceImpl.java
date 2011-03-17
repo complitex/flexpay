@@ -25,7 +25,8 @@ public class ImportErrorServiceImpl implements ImportErrorService {
 	 * @param clazz Objects type
 	 * @return list of import errors
 	 */
-	public List<ImportError> getImportErrors(Page pager, Class<? extends DomainObject> clazz) {
+    @Override
+	public List<ImportError> getImportErrors(Page<ImportError> pager, Class<? extends DomainObject> clazz) {
 		return errorDao.listErrors(pager, registry.getType(clazz));
 	}
 
@@ -37,7 +38,8 @@ public class ImportErrorServiceImpl implements ImportErrorService {
 	 * @param clazz Import objects type
 	 * @return list of errors
 	 */
-	public List<ImportError> listDataSourceErrorsByType(Page pager, DataSourceDescription ds, Class<? extends DomainObject> clazz) {
+    @Override
+	public List<ImportError> listDataSourceErrorsByType(Page<ImportError> pager, DataSourceDescription ds, Class<? extends DomainObject> clazz) {
 		return errorDao.listDataSourceErrors(pager, ds.getId(), registry.getType(clazz));
 	}
 
@@ -47,6 +49,7 @@ public class ImportErrorServiceImpl implements ImportErrorService {
 	 * @param clazz Objects type
 	 * @return list of data source descriptions
 	 */
+    @Override
 	public List<DataSourceDescription> listDescriptions(Class<? extends DomainObject> clazz) {
 		return errorDao.listDescriptions(registry.getType(clazz));
 	}
@@ -57,6 +60,7 @@ public class ImportErrorServiceImpl implements ImportErrorService {
 	 * @param importError ImportError
 	 */
 	@Transactional(readOnly = false)
+    @Override
 	public void addError(ImportError importError) {
 		errorDao.create(importError);
 	}

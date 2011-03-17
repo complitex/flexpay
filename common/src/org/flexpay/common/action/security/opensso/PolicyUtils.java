@@ -9,11 +9,10 @@ import java.security.PrivilegedAction;
 
 public class PolicyUtils {
 
-	private PolicyUtils() {}
-
+    @SuppressWarnings({"unchecked"})
     public static SSOToken getToken() throws Exception {
 		AdminTokenAction action = AdminTokenAction.getInstance();
-        SSOToken ssoToken = (SSOToken) AccessController.doPrivileged((PrivilegedAction<AdminTokenAction>)action);
+        SSOToken ssoToken = (SSOToken) AccessController.doPrivileged((PrivilegedAction<AdminTokenAction>) action);
 		new ServiceTypeManager(ssoToken);
 
 		return ssoToken;

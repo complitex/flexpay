@@ -2,7 +2,7 @@ package org.flexpay.ab.dao.impl;
 
 import org.flexpay.ab.dao.UpdateConfigDao;
 import org.flexpay.ab.persistence.UpdateConfig;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +17,10 @@ public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements Upd
 	 *
 	 * @return UpdateConfig instance
 	 */
+    @Override
 	public UpdateConfig getConfig() {
-		return getSimpleJdbcTemplate().queryForObject("select * from ab_sync_config_tbl", new ParameterizedRowMapper<UpdateConfig>() {
+		return getSimpleJdbcTemplate().queryForObject("select * from ab_sync_config_tbl", new RowMapper<UpdateConfig>() {
+            @Override
 			public UpdateConfig mapRow(ResultSet rs, int i) throws SQLException {
 				UpdateConfig config = new UpdateConfig();
 				config.setLastUpdateDate(rs.getTimestamp("last_update"));
@@ -34,6 +36,7 @@ public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements Upd
 	 * @param config UpdateConfig to store
 	 */
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
+    @Override
 	public void saveConfig(UpdateConfig config) {
 		getSimpleJdbcTemplate().update("update ab_sync_config_tbl set last_update=?, last_record_id=?",
 				config.getLastUpdateDate(), config.getLastDumpedRecordId());

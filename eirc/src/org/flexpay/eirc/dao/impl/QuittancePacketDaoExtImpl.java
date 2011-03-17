@@ -9,11 +9,12 @@ import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
+
+import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements QuittancePacketDaoExt {
 
@@ -48,8 +49,8 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 	@NotNull
 	@Override
 	public Long nextPacketNumber() {
-		Object[] result = (Object[]) DataAccessUtils.uniqueResult(
-				getHibernateTemplate().findByNamedQuery("QuittancePacket.nextPacketNumber"));
+		Object[] result = (Object[]) uniqueResult((List<?>) getHibernateTemplate().
+                findByNamedQuery("QuittancePacket.nextPacketNumber"));
 
 		log.debug("Next packet result: {}, {}", result);
 

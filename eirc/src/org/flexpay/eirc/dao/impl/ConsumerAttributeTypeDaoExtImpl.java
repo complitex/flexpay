@@ -1,24 +1,27 @@
 package org.flexpay.eirc.dao.impl;
 
 import org.flexpay.eirc.dao.ConsumerAttributeTypeDaoExt;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnum;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnum;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.dao.support.DataAccessUtils;
+
+import java.util.List;
+
+import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 public class ConsumerAttributeTypeDaoExtImpl extends HibernateDaoSupport implements ConsumerAttributeTypeDaoExt {
 
 	@Override
 	public ConsumerAttributeTypeSimple readFullSimpleType(Long id) {
-		return (ConsumerAttributeTypeSimple) DataAccessUtils.uniqueResult(getHibernateTemplate()
-				.findByNamedQuery("ConsumerAttributeTypeBase.readFull", id));
+		return (ConsumerAttributeTypeSimple) uniqueResult((List<?>) getHibernateTemplate().
+                findByNamedQuery("ConsumerAttributeTypeBase.readFull", id));
 	}
 
 	@Override
 	public ConsumerAttributeTypeEnum readFullEnumType(Long id) {
-		ConsumerAttributeTypeEnum type = (ConsumerAttributeTypeEnum) DataAccessUtils.uniqueResult(
-				getHibernateTemplate().findByNamedQuery("ConsumerAttributeTypeBase.readFull", id));
+		ConsumerAttributeTypeEnum type = (ConsumerAttributeTypeEnum) uniqueResult((List<?>) getHibernateTemplate().
+                findByNamedQuery("ConsumerAttributeTypeBase.readFull", id));
 		if (type != null) {
 			getHibernateTemplate().initialize(type.getValues());
 		}
@@ -26,8 +29,8 @@ public class ConsumerAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 	}
 
 	@Override
-	public ConsumerAttributeTypeBase findAtributeTypeByCode(String code) {
-		return (ConsumerAttributeTypeBase) DataAccessUtils.uniqueResult(getHibernateTemplate()
-				.findByNamedQuery("ConsumerAttributeTypeBase.findAtributeTypeByCode", code));
+	public ConsumerAttributeTypeBase findAttributeTypeByCode(String code) {
+		return (ConsumerAttributeTypeBase) uniqueResult((List<?>) getHibernateTemplate().
+                findByNamedQuery("ConsumerAttributeTypeBase.findAttributeTypeByCode", code));
 	}
 }

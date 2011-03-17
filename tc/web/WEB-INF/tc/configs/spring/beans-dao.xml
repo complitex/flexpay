@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!--  Dao Layer instances -->
+    <!--  Dao Layer instances -->
 
-	<bean id="tariffDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.tc.persistence.Tariff" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="tariffDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.tc.dao.TariffDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.tc.persistence.Tariff" />
+            </bean>
+        </property>
+    </bean>
 
-    <bean id="tariffExportLogRecordDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffExportLogRecordDao"/>
+    <bean id="tariffExportLogRecordDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.tc.dao.TariffExportLogRecordDao">
         <property name="target">
             <bean parent="abstractDaoTarget">
                 <constructor-arg value="org.flexpay.tc.persistence.TariffExportLogRecord"/>
@@ -27,29 +26,32 @@
         </property>
     </bean>
     
-	<bean id="tariffDaoExt" class="org.flexpay.tc.dao.impl.TariffDaoExtImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+    <bean id="tariffDaoExt"
+          class="org.flexpay.tc.dao.impl.TariffDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="tariffCalculationResultDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationResultDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.tc.persistence.TariffCalculationResult" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="tariffCalculationResultDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.tc.dao.TariffCalculationResultDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.tc.persistence.TariffCalculationResult" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="tariffCalculationRulesFileDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationRulesFileDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.tc.persistence.TariffCalculationRulesFile" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="tariffCalculationRulesFileDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.tc.dao.TariffCalculationRulesFileDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.tc.persistence.TariffCalculationRulesFile" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="tariffExportCodeDaoExt" class="org.flexpay.tc.dao.impl.TariffExportCodeDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate"
-			/>
+    <bean id="tariffExportCodeDaoExt"
+          class="org.flexpay.tc.dao.impl.TariffExportCodeDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
+
 </beans>

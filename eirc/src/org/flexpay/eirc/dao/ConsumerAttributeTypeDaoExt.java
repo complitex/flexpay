@@ -10,5 +10,5 @@ public interface ConsumerAttributeTypeDaoExt {
 
 	ConsumerAttributeTypeEnum readFullEnumType(Long id);
 
-	ConsumerAttributeTypeBase findAtributeTypeByCode(String code);
+	ConsumerAttributeTypeBase findAttributeTypeByCode(String code);
 }

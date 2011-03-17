@@ -263,7 +263,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	@Override
 	public void deleteProcessInstances(final DateRange range, final String name) {
 
-		hibernateTemplate.execute(new HibernateCallback() {
+		hibernateTemplate.execute(new HibernateCallback<Void>() {
 			@Override
 			public Void doInHibernate(Session session) throws HibernateException {
 				Query instancesCount = session.getNamedQuery("Process.listForDelete.count");

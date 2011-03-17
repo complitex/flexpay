@@ -539,7 +539,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	 */
     @Override
 	public int getErrorsNumber(final Long registryId) {
-		Number count = (Number) hibernateTemplate.execute(new HibernateCallback() {
+		Number count = (Number) hibernateTemplate.execute(new HibernateCallback<Object>() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0 and rr.importError.status=0")
@@ -907,7 +907,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
     @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId, @NotNull Long restrictionMinId) {
 		List<?> result = hibernateTemplate
-				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats.restriction", new Object[]{registryId, restrictionMinId});
+				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats.restriction", registryId, restrictionMinId);
 		Object[] objs = (Object[]) result.get(0);
 
 		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1], (Long) objs[2]);
