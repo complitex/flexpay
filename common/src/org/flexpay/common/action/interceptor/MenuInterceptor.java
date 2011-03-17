@@ -15,6 +15,7 @@ public class MenuInterceptor extends AbstractInterceptor {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
+    @Override
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 
 		log.debug("Menu interceptor");
