@@ -163,7 +163,7 @@ public class DisplayMenuTag extends TagSupport {
 				String menuParam = request.getParameter("menu");
 
 				if (menuParam == null || !menuParam.equals(menu.getName())) {
-					request.getParameterMap().put("menu", menu.getName());
+					request.getParameterMap().put("menu", new String[] {menu.getName()});
 				}
 
 				Map<String, Object> params = new HashMap<String, Object>();

@@ -12,16 +12,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.*;
 import java.security.Principal;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 
@@ -114,12 +108,12 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		}
 
 		@Override
-		public Enumeration getHeaders(String s) {
+		public Enumeration<String> getHeaders(String s) {
 			return null;
 		}
 
 		@Override
-		public Enumeration getHeaderNames() {
+		public Enumeration<String> getHeaderNames() {
 			return null;
 		}
 
@@ -213,13 +207,36 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 			return false;
 		}
 
-		@Override
+        @Override
+        public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+            return false;
+        }
+
+        @Override
+        public void login(String s, String s1) throws ServletException {
+        }
+
+        @Override
+        public void logout() throws ServletException {
+        }
+
+        @Override
+        public Collection<Part> getParts() throws IOException, ServletException {
+            return null;
+        }
+
+        @Override
+        public Part getPart(String s) throws IOException, ServletException {
+            return null;
+        }
+
+        @Override
 		public Object getAttribute(String s) {
 			return null;
 		}
 
 		@Override
-		public Enumeration getAttributeNames() {
+		public Enumeration<String> getAttributeNames() {
 			return null;
 		}
 
@@ -247,10 +264,8 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 			return null;
 		}
 
-
-
 		@Override
-		public Enumeration getParameterNames() {
+		public Enumeration<String> getParameterNames() {
 			return null;
 		}
 
@@ -260,7 +275,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		}
 
 		@Override
-		public Map getParameterMap() {
+		public Map<String, String[]> getParameterMap() {
 			return null;
 		}
 
@@ -313,7 +328,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		}
 
 		@Override
-		public Enumeration getLocales() {
+		public Enumeration<Locale> getLocales() {
 			return null;
 		}
 
@@ -351,7 +366,42 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		public int getLocalPort() {
 			return 0;
 		}
-	}
+
+        @Override
+        public ServletContext getServletContext() {
+            return null;
+        }
+
+        @Override
+        public AsyncContext startAsync() throws IllegalStateException {
+            return null;
+        }
+
+        @Override
+        public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
+            return null;
+        }
+
+        @Override
+        public boolean isAsyncStarted() {
+            return false;
+        }
+
+        @Override
+        public boolean isAsyncSupported() {
+            return false;
+        }
+
+        @Override
+        public AsyncContext getAsyncContext() {
+            return null;
+        }
+
+        @Override
+        public DispatcherType getDispatcherType() {
+            return null;
+        }
+    }
 
 	private class HttpServletResponseStub implements HttpServletResponse {
 
@@ -435,7 +485,27 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		public void setStatus(int i, String s) {
 		}
 
-		@Override
+        @Override
+        public int getStatus() {
+            return 0;
+        }
+
+        @Override
+        public String getHeader(String s) {
+            return null;
+        }
+
+        @Override
+        public Collection<String> getHeaders(String s) {
+            return null;
+        }
+
+        @Override
+        public Collection<String> getHeaderNames() {
+            return null;
+        }
+
+        @Override
 		public String getCharacterEncoding() {
 			return null;
 		}
