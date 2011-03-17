@@ -1,150 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="consumerDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ConsumerDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.Consumer" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="consumerDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.ConsumerDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.Consumer" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="consumerDaoExt"
-		  class="org.flexpay.eirc.dao.impl.ConsumersDaoExtJdbcImpl"
-		  p:dataSource-ref="dataSource"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="consumerDaoExt"
+          class="org.flexpay.eirc.dao.impl.ConsumersDaoExtJdbcImpl"
+          p:dataSource-ref="dataSource"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="consumerAttributeTypeDaoExt"
-		  class="org.flexpay.eirc.dao.impl.ConsumerAttributeTypeDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="consumerAttributeTypeDaoExt"
+          class="org.flexpay.eirc.dao.impl.ConsumerAttributeTypeDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="consumerAttributeTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ConsumerAttributeTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="consumerAttributeTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.ConsumerAttributeTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="eircAccountDaoExt"
-		  class="org.flexpay.eirc.dao.impl.EircAccountDaoExtImpl"
+    <bean id="eircAccountDaoExt"
+          class="org.flexpay.eirc.dao.impl.EircAccountDaoExtImpl"
           p:eircAccountDao-ref="eircAccountDao"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="eircRegistryRecordPropertiesDao"
-		  class="org.flexpay.eirc.dao.impl.EircRegistryRecordPropertiesDaoImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="eircRegistryRecordPropertiesDao"
+          class="org.flexpay.eirc.dao.impl.EircRegistryRecordPropertiesDaoImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="quittanceDaoExt"
-		  class="org.flexpay.eirc.dao.impl.QuittanceDaoExtImpl"
+    <bean id="quittanceDaoExt"
+          class="org.flexpay.eirc.dao.impl.QuittanceDaoExtImpl"
           p:dataSource-ref="dataSource" />
 
-	<bean id="quittanceReportDao"
-		  class="org.flexpay.eirc.dao.impl.QuittanceReportDaoImpl"
-		  p:jdbcTemplate-ref="jdbcTemplate" />
+    <bean id="quittanceReportDao"
+          class="org.flexpay.eirc.dao.impl.QuittanceReportDaoImpl"
+          p:jdbcTemplate-ref="jdbcTemplate" />
 
-	<bean id="eircAccountDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.EircAccountDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.EircAccount" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="eircAccountDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.EircAccountDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.EircAccount" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="consumerInfoDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ConsumerInfoDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.ConsumerInfo" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="consumerInfoDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.ConsumerInfoDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.ConsumerInfo" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="servedBuildingDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ServedBuildingDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.ServedBuilding" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="servedBuildingDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.ServedBuildingDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.ServedBuilding" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="quittanceDetailsDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.QuittanceDetailsDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.account.QuittanceDetails" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="quittanceDetailsDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.QuittanceDetailsDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.account.QuittanceDetails" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="quittanceDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.QuittanceDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.account.Quittance" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="quittanceDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.QuittanceDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.account.Quittance" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="quittancePacketDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.QuittancePacketDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.QuittancePacket" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="quittancePacketDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.QuittancePacketDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.QuittancePacket" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="quittancePacketDaoExt"
-		  class="org.flexpay.eirc.dao.impl.QuittancePacketDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="quittancePacketDaoExt"
+          class="org.flexpay.eirc.dao.impl.QuittancePacketDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="quittancePaymentDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.QuittancePaymentDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.QuittancePayment" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="quittancePaymentDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.QuittancePaymentDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.QuittancePayment" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="quittancePaymentStatusDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.QuittancePaymentStatusDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.QuittancePaymentStatus" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="quittancePaymentStatusDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.QuittancePaymentStatusDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.QuittancePaymentStatus" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="processRegistryVariableInstanceDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ProcessRegistryVariableInstanceDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="processRegistryVariableInstanceDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.eirc.dao.ProcessRegistryVariableInstanceDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance" />
+            </bean>
+        </property>
+    </bean>
 
 </beans>

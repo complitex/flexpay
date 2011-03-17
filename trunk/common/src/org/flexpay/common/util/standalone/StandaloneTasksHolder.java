@@ -6,11 +6,11 @@ import org.quartz.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +49,7 @@ public class StandaloneTasksHolder {
 	}
 
 	public static void authenticateStandaloneUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				BASIC,
 				PROCESS_DEFINITION_UPLOAD_NEW,
 				PROCESS_READ

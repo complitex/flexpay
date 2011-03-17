@@ -1,126 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<!--level1-->
-	<bean name="tc" parent="fpMenu"
-		  p:name="tc"
-		  p:title="tc.menu1.title"
+    <!--level1-->
+    <bean name="tc" parent="fpMenu"
+          p:name="tc"
+          p:title="tc.menu1.title"
           p:namespace="/tc"
-		  p:action="main"
-		  p:parent-ref="fpMenu"
-		  p:userRole="ROLE_MENU_TC"
-			/>
+          p:action="main"
+          p:parent-ref="fpMenu">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC" />
+        </property>
+    </bean>
 
-	<!--level2-->
-	<bean name="tc_dicts" parent="tc"
-		  p:name="tc.dicts"
-		  p:title="tc.menu2.dictionaries"
-		  p:action="mainDicts"
-		  p:parent-ref="tc"
-		  p:userRole="ROLE_MENU_TC_DICTS"
-			/>
-	<bean name="tc_importexport" parent="tc"
-		  p:name="tc.importexport"
-		  p:title="tc.menu2.importexport"
-		  p:action="mainImportExport"
-		  p:parent-ref="tc"
-		  p:userRole="ROLE_MENU_TC_IMPORTEXPORT"
-			/>
-	<bean name="tc_data" parent="tc"
-		  p:name="tc.data"
-		  p:title="tc.menu2.data"
-		  p:action="mainData"
-		  p:parent-ref="tc"
-		  p:userRole="ROLE_MENU_TC_DATA"
-			/>
+    <!--level2-->
+    <bean name="tc_dicts" parent="tc"
+          p:name="tc.dicts"
+          p:title="tc.menu2.dictionaries"
+          p:action="mainDicts"
+          p:parent-ref="tc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_DICTS" />
+        </property>
+    </bean>
+    <bean name="tc_importexport" parent="tc"
+          p:name="tc.importexport"
+          p:title="tc.menu2.importexport"
+          p:action="mainImportExport"
+          p:parent-ref="tc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_IMPORTEXPORT" />
+        </property>
+    </bean>
+    <bean name="tc_data" parent="tc"
+          p:name="tc.data"
+          p:title="tc.menu2.data"
+          p:action="mainData"
+          p:parent-ref="tc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_DATA" />
+        </property>
+    </bean>
 
-	<!--level3-->
-	<bean name="tc_dicts_otherDictionaries" parent="tc_dicts"
-		  p:name="tc.other_dicts"
-		  p:title="tc.menu2.dictionaries"
+    <!--level3-->
+    <bean name="tc_dicts_otherDictionaries" parent="tc_dicts"
+          p:name="tc.other_dicts"
+          p:title="tc.menu2.dictionaries"
           p:action="mainOtherDicts"
-		  p:parent-ref="tc_dicts"
-		  p:userRole="ROLE_MENU_TC_OTHER_DICTS"
-			/>
-	<bean name="tc_importexport_importexport" parent="tc_importexport"
-		  p:name="tc.importexport2"
-		  p:title="tc.menu2.importexport"
+          p:parent-ref="tc_dicts">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_OTHER_DICTS" />
+        </property>
+    </bean>
+    <bean name="tc_importexport_importexport" parent="tc_importexport"
+          p:name="tc.importexport2"
+          p:title="tc.menu2.importexport"
           p:action="mainImportExport2"
-		  p:parent-ref="tc_importexport"
-		  p:userRole="ROLE_MENU_TC_IMPORTEXPORT2"
-			/>
-	<bean name="tc_importexport_processes" parent="tc_importexport"
-		  p:name="tc.processes"
-		  p:title="tc.menu34.processes"
+          p:parent-ref="tc_importexport">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_IMPORTEXPORT2" />
+        </property>
+    </bean>
+    <bean name="tc_importexport_processes" parent="tc_importexport"
+          p:name="tc.processes"
+          p:title="tc.menu34.processes"
           p:action="mainProcesses"
-		  p:parent-ref="tc_importexport"
-		  p:userRole="ROLE_MENU_TC_PROCESSES"
-			/>
-	<bean name="tc_data_data" parent="tc_data"
-		  p:name="tc.data2"
-		  p:title="tc.menu2.data"
+          p:parent-ref="tc_importexport">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_PROCESSES" />
+        </property>
+    </bean>
+    <bean name="tc_data_data" parent="tc_data"
+          p:name="tc.data2"
+          p:title="tc.menu2.data"
           p:action="mainData2"
-		  p:parent-ref="tc_data"
-		  p:userRole="ROLE_MENU_TC_DATA2"
-			/>
+          p:parent-ref="tc_data">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_DATA2" />
+        </property>
+    </bean>
 
-	<!--level4-->
-	<bean parent="tc_dicts_otherDictionaries"
-		  p:name="tc.rules_files"
-		  p:title="tc.menu34.rules_files"
-		  p:action="rulesFilesList"
-		  p:parent-ref="tc_dicts_otherDictionaries"
-		  p:userRole="ROLE_MENU_TC_DICTS_CALC_FILES_RULES"
-			/>
-	<bean parent="tc_dicts_otherDictionaries"
-		  p:name="tc.building_attribute_types"
-		  p:title="bti.building.attribute.types"
-		  p:action="buildingAttributeTypesList"
-		  p:parent-ref="tc_dicts_otherDictionaries"
-		  p:userRole="ROLE_MENU_TC_DICTS_BUILDING_ATTRIBUTES"
-			/>
-	<bean parent="tc_importexport_importexport"
-		  p:name="tc.calc_result_export"
-		  p:title="tc.menu34.calc_results_export"
-		  p:action="calcResultExport"
-		  p:parent-ref="tc_importexport_importexport"
-		  p:userRole="ROLE_MENU_TC_IMPORTEXPORT_CALC_RESULTS_EXPORT"
-			/>
-	<bean parent="tc_importexport_importexport"
-		  p:name="tc.attributes_import"
-		  p:title="bti.building.attribute.import"
-		  p:action="buildingAttributesImport"
-		  p:parent-ref="tc_importexport_importexport"
-		  p:userRole="ROLE_MENU_TC_IMPORTEXPORT_ATTRIBUTES_IMPORT"
-			/>
-	<bean parent="tc_importexport_processes"
-		  p:name="tc.processes_list"
-		  p:title="common.processing.process_list"
-		  p:action="processesList"
-		  p:parent-ref="tc_importexport_processes"
-		  p:userRole="ROLE_MENU_TC_IMPORTEXPORT_PROCESSES"
-			/>
-	<bean parent="tc_importexport_processes"
-		  p:name="tc.process_definition"
-		  p:title="common.processing.definition"
-		  p:action="processDefinitionDeploy"
-		  p:parent-ref="tc_importexport_processes"
-		  p:userRole="ROLE_MENU_TC_IMPORTEXPORT_PROCESS_DEF_DEPLOY"
-			/>
-	<bean parent="tc_data_data"
-		  p:name="tc.building_attributes"
-		  p:title="tc.menu34.building_attributes"
-		  p:action="buildingsList"
-		  p:parent-ref="tc_data_data"
-		  p:userRole="ROLE_MENU_TC_DATA_BUILDING_ATTRIBUTES"
-			/>
+    <!--level4-->
+    <bean parent="tc_dicts_otherDictionaries"
+          p:name="tc.rules_files"
+          p:title="tc.menu34.rules_files"
+          p:action="rulesFilesList"
+          p:parent-ref="tc_dicts_otherDictionaries">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_DICTS_CALC_FILES_RULES" />
+        </property>
+    </bean>
+    <bean parent="tc_dicts_otherDictionaries"
+          p:name="tc.building_attribute_types"
+          p:title="bti.building.attribute.types"
+          p:action="buildingAttributeTypesList"
+          p:parent-ref="tc_dicts_otherDictionaries">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_DICTS_BUILDING_ATTRIBUTES" />
+        </property>
+    </bean>
+    <bean parent="tc_importexport_importexport"
+          p:name="tc.calc_result_export"
+          p:title="tc.menu34.calc_results_export"
+          p:action="calcResultExport"
+          p:parent-ref="tc_importexport_importexport">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_IMPORTEXPORT_CALC_RESULTS_EXPORT" />
+        </property>
+    </bean>
+    <bean parent="tc_importexport_importexport"
+          p:name="tc.attributes_import"
+          p:title="bti.building.attribute.import"
+          p:action="buildingAttributesImport"
+          p:parent-ref="tc_importexport_importexport">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_IMPORTEXPORT_ATTRIBUTES_IMPORT" />
+        </property>
+    </bean>
+    <bean parent="tc_importexport_processes"
+          p:name="tc.processes_list"
+          p:title="common.processing.process_list"
+          p:action="processesList"
+          p:parent-ref="tc_importexport_processes">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_IMPORTEXPORT_PROCESSES" />
+        </property>
+    </bean>
+    <bean parent="tc_importexport_processes"
+          p:name="tc.process_definition"
+          p:title="common.processing.definition"
+          p:action="processDefinitionDeploy"
+          p:parent-ref="tc_importexport_processes">
+        <property name="userRole">
+           - <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_IMPORTEXPORT_PROCESS_DEF_DEPLOY" />
+        </property>
+    </bean>
+    <bean parent="tc_data_data"
+          p:name="tc.building_attributes"
+          p:title="tc.menu34.building_attributes"
+          p:action="buildingsList"
+          p:parent-ref="tc_data_data">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.tc.service.Roles.ROLE_MENU_TC_DATA_BUILDING_ATTRIBUTES" />
+        </property>
+    </bean>
 
 </beans>

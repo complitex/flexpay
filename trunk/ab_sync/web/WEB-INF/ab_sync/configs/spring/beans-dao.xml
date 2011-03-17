@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:jee="http://www.springframework.org/schema/jee"
-	   xsi:schemaLocation="
-	   http://www.springframework.org/schema/beans 
-	   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-	   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="syncABDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
-		<property name="url" value="${ab.sync.CALCULATION_CENTR_URL}" />
-		<property name="driverClassName" value="${ab.sync.CALCULATION_CENTR_DRIVER}" />
-		<property name="username" value="${ab.sync.CALCULATION_CENTR_USERNAME}" />
-		<property name="password" value="${ab.sync.CALCULATION_CENTR_PASSWD}" />
-	</bean>
+    <bean id="syncABDataSource" 
+          class="org.springframework.jdbc.datasource.SingleConnectionDataSource"
+          p:url="${ab.sync.CALCULATION_CENTR_URL}"
+          p:driverClassName="${ab.sync.CALCULATION_CENTR_DRIVER}"
+          p:username="${ab.sync.CALCULATION_CENTR_USERNAME}"
+          p:password="${ab.sync.CALCULATION_CENTR_PASSWD}" />
 
-	<!-- Look up data source via JNDI -->
-	<!--<jee:jndi-lookup id="syncABDataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
+    <!-- Look up data source via JNDI -->
+    <!--<jee:jndi-lookup id="syncABDataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
 
-	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.impl.HistoryDaoJdbcImpl">
-		<property name="dataSource" ref="dataSource" />
-		<property name="sqlGetRecords" value="${ab.sync.history.source.sql}" />
-	</bean>
+    <bean id="historyDaoJdbc"
+          class="org.flexpay.ab.dao.impl.HistoryDaoJdbcImpl"
+          p:dataSource-ref="dataSource"
+          p:sqlGetRecords="${ab.sync.history.source.sql}" />
 
-	<bean id="historySourceDao" class="org.flexpay.ab.dao.impl.HistorySourceDaoImpl">
-		<constructor-arg index="0">
-			<props>
-				<prop key="historyTableName">${ab.sync.history.table.name}</prop>
-				<prop key="fieldRecordId">${ab.sync.history.table.field.fieldRecordId}</prop>
-				<prop key="fieldRecordDate">${ab.sync.history.table.field.fieldRecordDate}</prop>
-				<prop key="fieldOldValue">${ab.sync.history.table.field.fieldOldValue}</prop>
-				<prop key="fieldCurrentValue">${ab.sync.history.table.field.fieldCurrentValue}</prop>
-				<prop key="fieldObjectTypeId">${ab.sync.history.table.field.fieldObjectTypeId}</prop>
-				<prop key="fieldObjectId">${ab.sync.history.table.field.fieldObjectId}</prop>
-				<prop key="fieldFieldName">${ab.sync.history.table.field.fieldFieldName}</prop>
-				<prop key="fieldActionType">${ab.sync.history.table.field.fieldActionType}</prop>
-				<prop key="sqlGetRecords">${ab.sync.history.sqlGetRecords}</prop>
-			</props>
-		</constructor-arg>
-		<property name="dataSource" ref="syncABDataSource" />
-	</bean>
+    <bean id="historySourceDao"
+          class="org.flexpay.ab.dao.impl.HistorySourceDaoImpl"
+          p:dataSource-ref="syncABDataSource">
+        <constructor-arg index="0">
+            <props>
+                <prop key="historyTableName">${ab.sync.history.table.name}</prop>
+                <prop key="fieldRecordId">${ab.sync.history.table.field.fieldRecordId}</prop>
+                <prop key="fieldRecordDate">${ab.sync.history.table.field.fieldRecordDate}</prop>
+                <prop key="fieldOldValue">${ab.sync.history.table.field.fieldOldValue}</prop>
+                <prop key="fieldCurrentValue">${ab.sync.history.table.field.fieldCurrentValue}</prop>
+                <prop key="fieldObjectTypeId">${ab.sync.history.table.field.fieldObjectTypeId}</prop>
+                <prop key="fieldObjectId">${ab.sync.history.table.field.fieldObjectId}</prop>
+                <prop key="fieldFieldName">${ab.sync.history.table.field.fieldFieldName}</prop>
+                <prop key="fieldActionType">${ab.sync.history.table.field.fieldActionType}</prop>
+                <prop key="sqlGetRecords">${ab.sync.history.sqlGetRecords}</prop>
+            </props>
+        </constructor-arg>
+    </bean>
 
-	<bean id="syncConfigDaoJdbc" class="org.flexpay.ab.dao.impl.UpdateConfigDaoJdbcImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <bean id="syncConfigDaoJdbc"
+          class="org.flexpay.ab.dao.impl.UpdateConfigDaoJdbcImpl"
+          p:dataSource-ref="dataSource" />
 
 </beans>

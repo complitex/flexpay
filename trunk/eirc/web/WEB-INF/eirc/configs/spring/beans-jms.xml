@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:jms="http://www.springframework.org/schema/jms"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	   http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd">
 
-	<jms:listener-container connection-factory="springConnectionFactory">
+    <jms:listener-container connection-factory="springConnectionFactory">
+        <jms:listener destination="findQuittanceRequestQueue" ref="findQuittanceListener" />
+    </jms:listener-container>
 
-		<jms:listener destination="findQuittanceRequestQueue" ref="findQuittanceListener" />
+    <bean id="findQuittanceListener"
+          class="org.springframework.jms.listener.adapter.MessageListenerAdapter"
+          p:defaultListenerMethod="findQuittance"
+          p:messageConverter-ref="requestIdSetMessageConverter">
+        <constructor-arg ref="eircQuittanceDetailsFinder" />
+    </bean>
 
-	</jms:listener-container>
-
-	<bean id="findQuittanceListener"
-		  class="org.springframework.jms.listener.adapter.MessageListenerAdapter"
-		  p:defaultListenerMethod="findQuittance"
-		  p:messageConverter-ref="requestIdSetMessageConverter">
-		<constructor-arg ref="eircQuittanceDetailsFinder" />
-	</bean>
-
-	<bean id="requestIdSetMessageConverter"
-		  class="org.flexpay.payments.service.impl.RequestIdSetMessageConverter">
-		<property name="delegate">
-			<bean class="org.springframework.jms.support.converter.SimpleMessageConverter" />
-		</property>
-	</bean>
+    <bean id="requestIdSetMessageConverter"
+          class="org.flexpay.payments.service.impl.RequestIdSetMessageConverter">
+        <property name="delegate">
+            <bean class="org.springframework.jms.support.converter.SimpleMessageConverter" />
+        </property>
+    </bean>
 
 </beans>

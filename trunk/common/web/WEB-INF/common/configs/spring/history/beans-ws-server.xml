@@ -1,86 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Web container dispatcher -->
-	<bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter"
-		  p:messageFactory-ref="messageFactory" />
+    <!-- Web container dispatcher -->
+    <bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter"
+          p:messageFactory-ref="messageFactory" />
 
-	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"
-		  p:defaultHandler-ref="messageDispatcher" />
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"
+          p:defaultHandler-ref="messageDispatcher" />
 
-	<bean id="soapHandler" class="org.springframework.ws.transport.http.WebServiceMessageReceiverHttpHandler"
-		  p:messageFactory-ref="messageFactory"
-		  p:messageReceiver-ref="messageDispatcher" />
+    <bean id="soapHandler" 
+          class="org.springframework.ws.transport.http.WebServiceMessageReceiverHttpHandler"
+          p:messageFactory-ref="messageFactory"
+          p:messageReceiver-ref="messageDispatcher" />
 
-	<bean id="wsdlHandler"
-		  class="org.springframework.ws.transport.http.WsdlDefinitionHttpHandler"
-		  p:definition-ref="historyShareWsdlDefinition" />
+    <bean id="wsdlHandler"
+          class="org.springframework.ws.transport.http.WsdlDefinitionHttpHandler"
+          p:definition-ref="historyShareWsdlDefinition" />
 
-	<bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher"
-		  p:endpointMappings-ref="payloadMapping" />
+    <bean id="messageDispatcher" 
+          class="org.springframework.ws.soap.server.SoapMessageDispatcher"
+          p:endpointMappings-ref="payloadMapping" />
 
+    <!-- History share -->
+    <bean id="historyShareWsdlDefinition"
+          class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition"
+          p:schemaCollection-ref="schemaCollection"
+          p:portTypeName="HistoryShare"
+          p:targetNamespace="http://flexpay.org/schemas/history"
+          p:locationUri="/ShareHistory" />
 
-	<!-- History share -->
-	<bean id="historyShareWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
-		<property name="schemaCollection" ref="schemaCollection" />
-		<property name="portTypeName" value="HistoryShare" />
-		<property name="targetNamespace" value="http://flexpay.org/schemas/history" />
-		<property name="locationUri" value="/ShareHistory" />
-	</bean>
+    <bean id="schemaCollection"
+          class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection"
+          p:inline="true">
+        <description>
+            This bean wrap the messages.xsd (which imports types.xsd), and inlines them as a one.
+        </description>
+        <property name="xsds">
+            <list>
+                <value>classpath:org/flexpay/common/persistence/history/history-share.xsd</value>
+            </list>
+        </property>
+    </bean>
 
-	<bean id="schemaCollection" class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
-		<description>
-			This bean wrap the messages.xsd (which imports types.xsd), and inlines them as a one.
-		</description>
-		<property name="xsds">
-			<list>
-				<value>classpath:org/flexpay/common/persistence/history/history-share.xsd</value>
-			</list>
-		</property>
-		<property name="inline" value="true" />
-	</bean>
+    <bean id="payloadMapping"
+          class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
+        <description>
+            This endpoint mapping uses the qualified name of the payload (body contents) to determine the endpoint for
+            an incoming message. Every message is passed to the default endpoint. Additionally, messages are logged
+            using the logging interceptor.
+        </description>
+        <property name="mappings">
+            <props>
+                <prop key="{http://flexpay.org/schemas/history}SaveHistoryRequest">soapInHistoryEndpoint</prop>
+            </props>
+        </property>
+        <property name="interceptors">
+            <list>
+                <ref local="loggingInterceptor" />
+                <ref local="validatingInterceptor" />
+            </list>
+        </property>
+    </bean>
 
-	<bean id="payloadMapping" class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
-		<description>
-			This endpoint mapping uses the qualified name of the payload (body contents) to determine the endpoint for
-			an incoming message. Every message is passed to the default endpoint. Additionally, messages are logged
-			using the logging interceptor.
-		</description>
-		<property name="mappings">
-			<props>
-				<prop key="{http://flexpay.org/schemas/history}SaveHistoryRequest">soapInHistoryEndpoint</prop>
-			</props>
-		</property>
-		<property name="interceptors">
-			<list>
-				<ref local="loggingInterceptor" />
-				<ref local="validatingInterceptor" />
-			</list>
-		</property>
-	</bean>
+    <bean id="validatingInterceptor"
+          class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor"
+          p:xsdSchemaCollection-ref="schemaCollection"
+          p:validateRequest="true"
+          p:validateResponse="true">
+        <description>
+            This interceptor validates both incoming and outgoing message contents according to XML Schema files.
+        </description>
+    </bean>
 
-	<bean id="validatingInterceptor"
-		  class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor">
-		<description>
-			This interceptor validates both incoming and outgoing message contents according to XML Schema files.
-		</description>
-		<property name="xsdSchemaCollection" ref="schemaCollection" />
-		<property name="validateRequest" value="true" />
-		<property name="validateResponse" value="true" />
-	</bean>
+    <bean id="loggingInterceptor" class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor">
+        <description>
+            This interceptor logs the message payload.
+        </description>
+    </bean>
 
-	<bean id="loggingInterceptor" class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor">
-		<description>
-			This interceptor logs the message payload.
-		</description>
-	</bean>
-
-	<bean id="soapInHistoryEndpoint"
-		  class="org.flexpay.common.persistence.history.impl.SoapInHistoryEndpoint"
-		  p:fileService-ref="fpFileService"
-		  p:unpackManager-ref="historyUnpackManager" />
+    <bean id="soapInHistoryEndpoint"
+          class="org.flexpay.common.persistence.history.impl.SoapInHistoryEndpoint"
+          p:fileService-ref="fpFileService"
+          p:unpackManager-ref="historyUnpackManager" />
 
 </beans>

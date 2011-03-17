@@ -2,102 +2,106 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="registriesListActionEirc" parent="registriesListAction"
-		  p:moduleName="${flexpay.module.name.eirc}"
+    <bean id="registriesListActionEirc"
+          parent="registriesListAction"
+          p:moduleName="${flexpay.module.name.eirc}"
           scope="prototype" />
 
-	<!-- SP files -->
-	<bean id="spFileCreatePageAction" parent="staticPageAction"
-		  p:crumbNameKey="eirc.crumbs.sp_file_import"
-		  scope="prototype" />
+    <!-- SP files -->
+    <bean id="spFileCreatePageAction"
+          parent="staticPageAction"
+          p:crumbNameKey="eirc.crumbs.sp_file_import"
+          scope="prototype" />
 
-	<bean id="spFileUploadAction"
-		  class="org.flexpay.eirc.action.spfile.SpFileUploadAction"
-		  p:fpFileService-ref="fpFileService"
-		  p:moduleName="${flexpay.module.name.eirc}"
-		  scope="prototype" />
+    <bean id="spFileUploadAction"
+          class="org.flexpay.eirc.action.spfile.SpFileUploadAction"
+          p:fpFileService-ref="fpFileService"
+          p:moduleName="${flexpay.module.name.eirc}"
+          scope="prototype" />
 
-	<bean id="spFilesListPageAction" parent="staticPageAction"
-		  p:crumbNameKey="eirc.crumbs.sp_files_list"
-		  scope="prototype" />
+    <bean id="spFilesListPageAction"
+          parent="staticPageAction"
+          p:crumbNameKey="eirc.crumbs.sp_files_list"
+          scope="prototype" />
 
-	<bean id="spFilesListAction"
-		  class="org.flexpay.eirc.action.spfile.SpFilesListAction"
-		  p:fpFileService-ref="fpFileService"
-		  p:registryFileService-ref="registryFileService"
-		  p:moduleName="${flexpay.module.name.eirc}"
-		  scope="prototype" />
+    <bean id="spFilesListAction"
+          class="org.flexpay.eirc.action.spfile.SpFilesListAction"
+          p:fpFileService-ref="fpFileService"
+          p:registryFileService-ref="registryFileService"
+          p:moduleName="${flexpay.module.name.eirc}"
+          scope="prototype" />
 
-	<bean id="spFileAction"
-		  class="org.flexpay.eirc.action.spfile.SpFileAction"
-		  p:fpFileService-ref="fpFileService"
-		  p:processManager-ref="processManager"
-		  p:lineParser-ref="mbLineParser"
-		  p:registryFileServiceFactory-ref="registryFileServiceFactory"
-		  scope="prototype" />
+    <bean id="spFileAction"
+          class="org.flexpay.eirc.action.spfile.SpFileAction"
+          p:fpFileService-ref="fpFileService"
+          p:processManager-ref="processManager"
+          p:lineParser-ref="mbLineParser"
+          p:registryFileServiceFactory-ref="registryFileServiceFactory"
+          scope="prototype" />
 
-	<!-- Quittances -->
-	<bean id="quittanceGenerateAction"
-		  class="org.flexpay.eirc.action.quittance.QuittanceGenerateAction"
-		  p:serviceOrganizationService-ref="serviceOrganizationService"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
+    <!-- Quittances -->
+    <bean id="quittanceGenerateAction"
+          class="org.flexpay.eirc.action.quittance.QuittanceGenerateAction"
+          p:serviceOrganizationService-ref="serviceOrganizationService"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="printTicketsAction"
-		  class="org.flexpay.eirc.action.quittance.QuittanceGeneratePDFAction"
-		  p:processManager-ref="processManager"
-		  p:serviceOrganizationService-ref="serviceOrganizationService"
-		  scope="prototype" />
+    <bean id="printTicketsAction"
+          class="org.flexpay.eirc.action.quittance.QuittanceGeneratePDFAction"
+          p:processManager-ref="processManager"
+          p:serviceOrganizationService-ref="serviceOrganizationService"
+          scope="prototype" />
 
-	<bean id="quittanceSearchAction"
-		  class="org.flexpay.eirc.action.quittance.QuittanceSearchAction"
-		  p:quittanceService-ref="quittanceService"
-		  scope="prototype" />
+    <bean id="quittanceSearchAction"
+          class="org.flexpay.eirc.action.quittance.QuittanceSearchAction"
+          p:quittanceService-ref="quittanceService"
+          scope="prototype" />
 
-	<bean id="quittanceSearchByAccountAction"
-		  class="org.flexpay.eirc.action.quittance.QuittanceSearchByAccountAction"
-		  p:quittanceService-ref="quittanceService"
-		  p:accountService-ref="eircAccountService"
-		  scope="prototype" />
+    <bean id="quittanceSearchByAccountAction"
+          class="org.flexpay.eirc.action.quittance.QuittanceSearchByAccountAction"
+          p:quittanceService-ref="quittanceService"
+          p:accountService-ref="eircAccountService"
+          scope="prototype" />
 
-	<bean id="quittanceSearchByAddressAction"
-		  autowire-candidate="false"
-		  class="org.flexpay.eirc.action.quittance.QuittanceSearchByAddressAction"
-		  p:quittanceService-ref="quittanceService"
-		  p:eircAccountService-ref="eircAccountService"
-		  p:personService-ref="personService"
-		  p:parentService-ref="apartmentService"
-		  p:addressService-ref="addressService"
-		  scope="prototype" />
+    <bean id="quittanceSearchByAddressAction"
+          autowire-candidate="false"
+          class="org.flexpay.eirc.action.quittance.QuittanceSearchByAddressAction"
+          p:quittanceService-ref="quittanceService"
+          p:eircAccountService-ref="eircAccountService"
+          p:personService-ref="personService"
+          p:parentService-ref="apartmentService"
+          p:addressService-ref="addressService"
+          scope="prototype" />
 
-	<!-- Quittance packets -->
-	<bean id="quittancePacketsListAction"
-		  class="org.flexpay.eirc.action.quittance.QuittancePacketsListAction"
-		  p:quittancePacketService-ref="quittancePacketService"
-		  scope="prototype" />
+    <!-- Quittance packets -->
+    <bean id="quittancePacketsListAction"
+          class="org.flexpay.eirc.action.quittance.QuittancePacketsListAction"
+          p:quittancePacketService-ref="quittancePacketService"
+          scope="prototype" />
 
-    <bean id="quittancePacketsListPageAction" parent="staticPageAction"
+    <bean id="quittancePacketsListPageAction"
+          parent="staticPageAction"
           p:crumbNameKey="eirc.crumbs.quitance_packets_list"
           scope="prototype" />
 
-	<bean id="quittancePacketEditAction"
-		  class="org.flexpay.eirc.action.quittance.QuittancePacketEditAction"
-		  p:paymentPointHelper-ref="paymentPointHelper"
-		  p:paymentPointService-ref="paymentPointService"
-		  p:quittancePacketService-ref="quittancePacketService"
+    <bean id="quittancePacketEditAction"
+          class="org.flexpay.eirc.action.quittance.QuittancePacketEditAction"
+          p:paymentPointHelper-ref="paymentPointHelper"
+          p:paymentPointService-ref="paymentPointService"
+          p:quittancePacketService-ref="quittancePacketService"
           p:crumbCreateKey="eirc.crumbs.quitance_packet_create"
           p:crumbNameKey="eirc.crumbs.quitance_packet_edit"
-		  scope="prototype" />
+          scope="prototype" />
 
-	<bean id="quittancePaymentsListAction"
-		  class="org.flexpay.eirc.action.quittance.QuittancePaymentsListAction"
-		  p:addressService-ref="addressService"
-		  p:eircAccountService-ref="eircAccountService"
-		  p:quittancePacketService-ref="quittancePacketService"
+    <bean id="quittancePaymentsListAction"
+          class="org.flexpay.eirc.action.quittance.QuittancePaymentsListAction"
+          p:addressService-ref="addressService"
+          p:eircAccountService-ref="eircAccountService"
+          p:quittancePacketService-ref="quittancePacketService"
           p:crumbNameKey="eirc.crumbs.quitance_packet_view"
-		  scope="prototype" />
+          scope="prototype" />
 
     <bean id="quittancePacketViewAction"
           class="org.flexpay.eirc.action.quittance.QuittancePacketViewAction"
@@ -105,26 +109,26 @@
           p:quittancePacketService-ref="quittancePacketService"
           scope="prototype" />
 
-	<bean id="quittancePaySearchAction"
-		  class="org.flexpay.eirc.action.quittance.QuittancePaySearchAction"
-		  p:quittanceService-ref="quittanceService"
-		  scope="prototype" />
+    <bean id="quittancePaySearchAction"
+          class="org.flexpay.eirc.action.quittance.QuittancePaySearchAction"
+          p:quittanceService-ref="quittanceService"
+          scope="prototype" />
 
-	<bean id="quittancePayAction"
-		  class="org.flexpay.eirc.action.quittance.QuittancePayAction"
-		  p:quittanceService-ref="quittanceService"
-		  p:quittancePaymentService-ref="quittancePaymentService"
-		  p:paymentStatusService-ref="quittancePaymentStatusService"
-		  p:numberService-ref="quittanceNumberService"
-		  scope="prototype" />
+    <bean id="quittancePayAction"
+          class="org.flexpay.eirc.action.quittance.QuittancePayAction"
+          p:quittanceService-ref="quittanceService"
+          p:quittancePaymentService-ref="quittancePaymentService"
+          p:paymentStatusService-ref="quittancePaymentStatusService"
+          p:numberService-ref="quittanceNumberService"
+          scope="prototype" />
 
-	<!-- Served buildings actions -->
-	<bean id="serviceOrganizationListServedBuildingsAction"
-		  class="org.flexpay.eirc.action.organization.ServiceOrganizationListServedBuildingsAction"
-		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
-		  p:addressService-ref="addressService"
+    <!-- Served buildings actions -->
+    <bean id="serviceOrganizationListServedBuildingsAction"
+          class="org.flexpay.eirc.action.organization.ServiceOrganizationListServedBuildingsAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          p:addressService-ref="addressService"
           p:streetService-ref="streetService"
-		  scope="prototype" />
+          scope="prototype" />
 
     <bean id="serviceOrganizationListServedBuildingsPageAction"
           class="org.flexpay.eirc.action.organization.ServiceOrganizationListServedBuildingsPageAction"
@@ -145,26 +149,26 @@
           p:addressService-ref="addressService"
           scope="prototype" />
 
-	<bean id="serviceOrganizationAddServedBuildingsAction"
-		  class="org.flexpay.eirc.action.organization.ServiceOrganizationAddServedBuildingsAction"
-		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
-		  scope="prototype" />
+    <bean id="serviceOrganizationAddServedBuildingsAction"
+          class="org.flexpay.eirc.action.organization.ServiceOrganizationAddServedBuildingsAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          scope="prototype" />
 
-	<bean id="serviceOrganizationRemoveServedBuildingsAction"
-		  class="org.flexpay.eirc.action.organization.ServiceOrganizationRemoveServedBuildingsAction"
-		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
-		  scope="prototype" />
+    <bean id="serviceOrganizationRemoveServedBuildingsAction"
+          class="org.flexpay.eirc.action.organization.ServiceOrganizationRemoveServedBuildingsAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          scope="prototype" />
 
-	<!-- Corrections -->
-	<bean id="selectCorrectionTypeAction"
-		  class="org.flexpay.eirc.action.registry.corrections.SelectCorrectionTypeAction"
-		  p:registryRecordService-ref="registryRecordService"
-		  p:typeRegistry-ref="classToTypeRegistry"
-		  scope="prototype" />
+    <!-- Corrections -->
+    <bean id="selectCorrectionTypeAction"
+          class="org.flexpay.eirc.action.registry.corrections.SelectCorrectionTypeAction"
+          p:registryRecordService-ref="registryRecordService"
+          p:typeRegistry-ref="classToTypeRegistry"
+          scope="prototype" />
 
-	<bean id="setCorrectionAction"
-		  class="org.flexpay.eirc.action.registry.corrections.SetCorrectionAction"
-		  p:consumersDataSource-ref="consumersDataSource"
+    <bean id="setCorrectionAction"
+          class="org.flexpay.eirc.action.registry.corrections.SetCorrectionAction"
+          p:consumersDataSource-ref="consumersDataSource"
           p:correctionsService-ref="correctionsService"
           p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
@@ -174,7 +178,7 @@
           p:paymentPointService-ref="paymentPointService"
           p:cashboxService-ref="cashboxService"
           p:classToTypeRegistry-ref="classToTypeRegistry"
-		  scope="prototype" />
+          scope="prototype" />
 
     <bean id="registryViewAction"
           class="org.flexpay.eirc.action.registry.RegistryViewPageAction"
@@ -185,16 +189,16 @@
           p:classToTypeRegistry-ref="classToTypeRegistry"
           p:serviceTypeService-ref="serviceTypeService"
           p:recordStatusService-ref="registryRecordStatusService"
-          scope="prototype"  />
+          scope="prototype" />
 
-	<bean id="registryRecordsListAction"
+    <bean id="registryRecordsListAction"
           class="org.flexpay.payments.action.registry.RegistryRecordsListAction"
           p:classToTypeRegistry-ref="classToTypeRegistry"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:serviceTypeService-ref="serviceTypeService"
           p:registryRecordService-ref="registryRecordService"
-		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
-          scope="prototype"  />
+          p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          scope="prototype" />
 
     <bean id="registryRecordsListSimpleAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordsListSimpleAction"
@@ -202,8 +206,8 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
           p:registryRecordService-ref="registryRecordService"
-		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
-          scope="prototype"  />
+          p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          scope="prototype" />
 
     <bean id="registryRecordErrorsGroupsListAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordErrorsGroupsListAction"
@@ -212,20 +216,20 @@
           p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
           p:parentService-ref="districtService"
-          scope="prototype"  />
+          scope="prototype" />
 
     <bean id="registryRecordErrorsTypesListAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordErrorsTypesListAction"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
-          scope="prototype"  />
+          scope="prototype" />
 
     <bean id="filterAutocompleterAction"
           class="org.flexpay.payments.action.registry.filter.FilterAutocompleterAction"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
-          scope="prototype"  />
+          scope="prototype" />
 
     <bean id="eircRegistryRecordsListAction"
           class="org.flexpay.payments.action.registry.RegistryRecordsListAction"
@@ -233,8 +237,8 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           p:serviceTypeService-ref="serviceTypeService"
           p:registryRecordService-ref="registryRecordService"
-		  p:hintsHandlerFactory-ref="consumerReadHintsHandlerFactory"
-          scope="prototype"  />
+          p:hintsHandlerFactory-ref="consumerReadHintsHandlerFactory"
+          scope="prototype" />
 
     <bean id="eircRegistryRecordsListSimpleAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordsListSimpleAction"
@@ -242,8 +246,8 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
           p:registryRecordService-ref="registryRecordService"
-		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
-          scope="prototype"  />
+          p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          scope="prototype" />
 
     <bean id="eircRegistryRecordErrorsGroupsListAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordErrorsGroupsListAction"
@@ -252,7 +256,7 @@
           p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
           p:parentService-ref="districtService"
-          scope="prototype"  />
+          scope="prototype" />
 
     <bean id="registryRecordErrorFixAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordErrorFixAction"
@@ -269,44 +273,44 @@
           p:consumersDataSource-ref="consumersDataSource"
           p:correctionsService-ref="correctionsService"
           p:organizationService-ref="organizationService"
-          scope="prototype"  />
+          scope="prototype" />
 
     <bean id="eircRegistryRecordErrorsTypesListAction"
           class="org.flexpay.eirc.action.registry.RegistryRecordErrorsTypesListAction"
           p:paymentCollectorService-ref="paymentCollectorService"
           p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
-          scope="prototype"  />
+          scope="prototype" />
 
-	<bean id="processesListPageAction"
-		  class="org.flexpay.common.action.processing.ProcessesListPageAction"
-		  p:crumbNameKey="eirc.crumbs.processes.list"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
+    <bean id="processesListPageAction"
+          class="org.flexpay.common.action.processing.ProcessesListPageAction"
+          p:crumbNameKey="eirc.crumbs.processes.list"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="processesListAction"
-		  class="org.flexpay.common.action.processing.ProcessesListAction"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
+    <bean id="processesListAction"
+          class="org.flexpay.common.action.processing.ProcessesListAction"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="processDeleteAction"
-		  class="org.flexpay.common.action.processing.ProcessDeleteAction"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
+    <bean id="processDeleteAction"
+          class="org.flexpay.common.action.processing.ProcessDeleteAction"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="processViewAction"
-		  class="org.flexpay.common.action.processing.ProcessViewAction"
-		  p:crumbNameKey="eirc.crumbs.process.view"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
+    <bean id="processViewAction"
+          class="org.flexpay.common.action.processing.ProcessViewAction"
+          p:crumbNameKey="eirc.crumbs.process.view"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="processDefinitionDeployAction"
-		  class="org.flexpay.common.action.processing.ProcessDefinitionDeployAction"
-		  p:crumbNameKey="eirc.crumbs.process.definition_deploy"
-		  p:fpFileService-ref="fpFileService"
-		  p:processManager-ref="processManager"
-		  p:moduleName="${flexpay.module.name.eirc}"
-		  scope="prototype" />
+    <bean id="processDefinitionDeployAction"
+          class="org.flexpay.common.action.processing.ProcessDefinitionDeployAction"
+          p:crumbNameKey="eirc.crumbs.process.definition_deploy"
+          p:fpFileService-ref="fpFileService"
+          p:processManager-ref="processManager"
+          p:moduleName="${flexpay.module.name.eirc}"
+          scope="prototype" />
 
     <bean id="eircAccountsListAction"
           class="org.flexpay.eirc.action.eircaccount.EircAccountsListAction"
@@ -352,12 +356,12 @@
           p:consumerService-ref="consumerService"
           scope="prototype" />
 
-	<bean id="eircAccountCreateAction"
-		  class="org.flexpay.eirc.action.eircaccount.EircAccountCreateAction"
+    <bean id="eircAccountCreateAction"
+          class="org.flexpay.eirc.action.eircaccount.EircAccountCreateAction"
           p:crumbNameKey="eirc.crumbs.eirc_account_create"
-		  p:eircAccountService-ref="eircAccountService"
+          p:eircAccountService-ref="eircAccountService"
           p:consumerInfoService-ref="consumerInfoService"
           p:apartmentService-ref="apartmentService"
-		  scope="prototype" />
+          scope="prototype" />
 
 </beans>

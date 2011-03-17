@@ -4,7 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.sz.persistence.SzFile;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;

@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;

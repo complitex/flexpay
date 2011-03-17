@@ -3,14 +3,17 @@ package org.flexpay.common.util;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
+import java.util.Collection;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public abstract class SecurityUtil {
 
@@ -42,11 +45,9 @@ public abstract class SecurityUtil {
 	 */
 	public static void authenticate(String userName, List<String> authorities) {
 
-		GrantedAuthority[] grantedAuthorities = new GrantedAuthority[authorities.size()];
-		int n = 0;
+		List<GrantedAuthority> grantedAuthorities = list();
 		for (String authority : authorities) {
-			grantedAuthorities[n] = new GrantedAuthorityImpl(authority);
-			++n;
+			grantedAuthorities.add(new GrantedAuthorityImpl(authority));
 		}
 
 		User user = new User(userName, "", true, true, true, true, grantedAuthorities);
@@ -58,13 +59,13 @@ public abstract class SecurityUtil {
 		return new GrantedAuthorityImpl(authName);
 	}
 
-	public static GrantedAuthority[] auths(String... authNames) {
-		List<GrantedAuthority> authorities = CollectionUtils.list();
+	public static List<GrantedAuthority> auths(String... authNames) {
+		List<GrantedAuthority> authorities = list();
 		for (String auth : authNames) {
 			authorities.add(auth(auth));
 		}
 
-		return authorities.toArray(new GrantedAuthority[authorities.size()]);
+		return authorities;
 	}
 
 	/**
@@ -80,7 +81,7 @@ public abstract class SecurityUtil {
 			return false;
 		}
 
-		GrantedAuthority[] authorities = auth.getAuthorities();
+		Collection<GrantedAuthority> authorities = auth.getAuthorities();
 		if (authorities == null) {
 			return false;
 		}

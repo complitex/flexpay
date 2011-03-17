@@ -1,99 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Data sources -->
-	<bean id="consumersDataSource"
-		  class="org.flexpay.eirc.dao.importexport.RawConsumersDataSource"
+    <!-- Data sources -->
+    <bean id="consumersDataSource"
+          class="org.flexpay.eirc.dao.importexport.RawConsumersDataSource"
           p:registryRecordDao-ref="spRegistryRecordDao"
           p:registryRecordDaoExt-ref="spRegistryRecordDaoExt" />
 
-	<bean id="classToTypeRegistryEirc"
-		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.importexport.impl.ClassToTypeRegistryEirc" />
+    <bean id="classToTypeRegistryEirc"
+          autowire-candidate="false"
+          class="org.flexpay.eirc.service.importexport.impl.ClassToTypeRegistryEirc" />
 
-	<bean id="classToTypeRegistryFactoryEirc"
-		  depends-on="classToTypeRegistryFactoryBti,classToTypeRegistryFactoryPayments"
-		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
-		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
-				<property name="registries">
-					<list>
-						<ref bean="classToTypeRegistryEirc" />
-						<ref bean="classToTypeRegistryBti" />
-						<ref bean="classToTypeRegistryAb" />
-						<ref bean="classToTypeRegistryPayments" />
-						<ref bean="classToTypeRegistryOrgs" />
-						<ref bean="classToTypeRegistryCommon" />
-					</list>
-				</property>
-			</bean>
-		</property>
-	</bean>
+    <bean id="classToTypeRegistryFactoryEirc"
+          depends-on="classToTypeRegistryFactoryBti,classToTypeRegistryFactoryPayments"
+          class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
+        <property name="registry">
+            <bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
+                <property name="registries">
+                    <list>
+                        <ref bean="classToTypeRegistryEirc" />
+                        <ref bean="classToTypeRegistryBti" />
+                        <ref bean="classToTypeRegistryAb" />
+                        <ref bean="classToTypeRegistryPayments" />
+                        <ref bean="classToTypeRegistryOrgs" />
+                        <ref bean="classToTypeRegistryCommon" />
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="eircImportUtil"
-		  class="org.flexpay.eirc.service.importexport.ImportUtil"
-		  p:personService-ref="personService" />
+    <bean id="eircImportUtil"
+          class="org.flexpay.eirc.service.importexport.ImportUtil"
+          p:personService-ref="personService" />
 
-	<!-- Import-Export services -->
-	<bean id="importServiceEircTx" parent="importServiceAb"
-		  class="org.flexpay.eirc.service.importexport.EircImportServiceTxImpl"
-		  p:consumerService-ref="consumerService"
-		  p:importUtil-ref="eircImportUtil"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO" />
+    <!-- Import-Export services -->
+    <bean id="importServiceEircTx"
+          parent="importServiceAb"
+          class="org.flexpay.eirc.service.importexport.EircImportServiceTxImpl"
+          p:consumerService-ref="consumerService"
+          p:importUtil-ref="eircImportUtil"
+          p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO" />
 
-	<bean id="importServiceEircTx2" parent="importServiceAb"
-		  class="org.flexpay.eirc.service.importexport.EircImportServiceTx2Impl"
-		  p:importConsumerService-ref="importConsumerDataTx" />
+    <bean id="importServiceEircTx2"
+          parent="importServiceAb"
+          class="org.flexpay.eirc.service.importexport.EircImportServiceTx2Impl"
+          p:importConsumerService-ref="importConsumerDataTx" />
 
-	<bean id="importConsumerDataTx"
-		  class="org.flexpay.eirc.service.importexport.EircImportConsumerDataTxImpl"
-		  p:consumerService-ref="consumerService"
-		  p:importUtil-ref="eircImportUtil"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
-		  p:classToTypeRegistry-ref="classToTypeRegistry"
-		  p:errorsSupport-ref="importErrorSupport"
-		  p:rawConsumersDataSource-ref="consumersDataSource"
-		  p:apartmentService-ref="apartmentService"
-		  p:correctionsService-ref="correctionsService"
-		  p:streetTypeService-ref="streetTypeService"
-		  p:buildingService-ref="buildingService" />
+    <bean id="importConsumerDataTx"
+          class="org.flexpay.eirc.service.importexport.EircImportConsumerDataTxImpl"
+          p:consumerService-ref="consumerService"
+          p:importUtil-ref="eircImportUtil"
+          p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:errorsSupport-ref="importErrorSupport"
+          p:rawConsumersDataSource-ref="consumersDataSource"
+          p:apartmentService-ref="apartmentService"
+          p:correctionsService-ref="correctionsService"
+          p:streetTypeService-ref="streetTypeService"
+          p:buildingService-ref="buildingService" />
 
-	<bean id="importServiceEirc"
-		  class="org.flexpay.eirc.service.importexport.EircImportService"
-		  p:eircImportServiceTx-ref="importServiceEircTx"
-		  p:streetService-ref="streetService" />
+    <bean id="importServiceEirc"
+          class="org.flexpay.eirc.service.importexport.EircImportService"
+          p:eircImportServiceTx-ref="importServiceEircTx"
+          p:streetService-ref="streetService" />
 
-	<bean id="spFilesExchangeHelper"
-		  class="org.flexpay.eirc.service.exchange.ExchangeHelperImpl">
-		<property name="apartmentService" ref="apartmentService" />
-		<property name="buildingService" ref="buildingService" />
-		<property name="streetService" ref="streetService" />
-		<property name="townService" ref="townService" />
-		<property name="personService" ref="personService" />
-	</bean>
+    <bean id="spFilesExchangeHelper"
+          class="org.flexpay.eirc.service.exchange.ExchangeHelperImpl"
+          p:apartmentService-ref="apartmentService"
+          p:buildingService-ref="buildingService"
+          p:streetService-ref="streetService"
+          p:townService-ref="townService"
+          p:personService-ref="personService" />
 
-	<bean id="processRecordsRangeService"
-		  class="org.flexpay.eirc.service.importexport.impl.ProcessRecordsRangeServiceImpl"
-		  p:handleError-ref="registryHandleError"
-		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
-		  p:streetService-ref="streetService"
-		  p:organizationService-ref="organizationService"
-		  p:processorTx-ref="serviceProviderFileProcessorRecordsTx" />
+    <bean id="processRecordsRangeService"
+          class="org.flexpay.eirc.service.importexport.impl.ProcessRecordsRangeServiceImpl"
+          p:handleError-ref="registryHandleError"
+          p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+          p:streetService-ref="streetService"
+          p:organizationService-ref="organizationService"
+          p:processorTx-ref="serviceProviderFileProcessorRecordsTx" />
 
 
-	<bean id="processRegistryService"
-		  class="org.flexpay.eirc.service.importexport.impl.ProcessRegistryServiceImpl"
-		  p:processor-ref="registryProcessor"
-		  p:registryService-ref="registryService"
-		  p:registryFileService-ref="registryFileService"
-		  p:registryWorkflowManager-ref="registryWorkflowManager"
-		  p:processRecordsRangeService-ref="processRecordsRangeService"
-		  p:transactionManager-ref="transactionManager"
-		  p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService" />
+    <bean id="processRegistryService"
+          class="org.flexpay.eirc.service.importexport.impl.ProcessRegistryServiceImpl"
+          p:processor-ref="registryProcessor"
+          p:registryService-ref="registryService"
+          p:registryFileService-ref="registryFileService"
+          p:registryWorkflowManager-ref="registryWorkflowManager"
+          p:processRecordsRangeService-ref="processRecordsRangeService"
+          p:transactionManager-ref="transactionManager"
+          p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService" />
 
 </beans>

@@ -147,9 +147,9 @@
     maxElementsInMemory:
     Sets the maximum number of objects that will be created in memory
 
-	maxElementsOnDisk:
+    maxElementsOnDisk:
     Sets the maximum number of objects that will be maintained in the DiskStore
-	The default value is zero, meaning unlimited.
+    The default value is zero, meaning unlimited.
 
     eternal:
     Sets whether elements are eternal. If eternal,  timeouts are ignored and the
@@ -268,288 +268,288 @@
             memoryStoreEvictionPolicy="LRU"
             />
 
-	<!-- JBPM Caches -->
-	<cache name="org.jbpm.module.def.ModuleDefinition"
-			maxElementsInMemory="100"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <!-- JBPM Caches -->
+    <cache name="org.jbpm.module.def.ModuleDefinition"
+            maxElementsInMemory="100"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Node"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Node"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.instantiation.Delegation"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.instantiation.Delegation"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ProcessDefinition"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ProcessDefinition"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Transition"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Transition"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.Task"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.Task"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Event"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Event"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.context.def.VariableAccess"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.context.def.VariableAccess"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.TaskController"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.TaskController"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ExceptionHandler"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ExceptionHandler"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.Task.exceptionHandlers"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.Task.exceptionHandlers"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Transition.exceptionHandlers"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Transition.exceptionHandlers"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ProcessDefinition.nodes"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ProcessDefinition.nodes"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ProcessDefinition.actions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ProcessDefinition.actions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Node.arrivingTransitions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Node.arrivingTransitions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Node.exceptionHandlers"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Node.exceptionHandlers"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.TaskMgmtDefinition.tasks"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.TaskMgmtDefinition.tasks"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ProcessDefinition.exceptionHandlers"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ProcessDefinition.exceptionHandlers"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.action.Script.variableAccesses"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.action.Script.variableAccesses"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Node.events"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Node.events"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ProcessDefinition.definitions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ProcessDefinition.definitions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.file.def.FileDefinition.processFiles"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.file.def.FileDefinition.processFiles"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Node.leavingTransitions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Node.leavingTransitions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.node.ProcessState.variableAccesses"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.node.ProcessState.variableAccesses"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ProcessDefinition.events"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ProcessDefinition.events"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.TaskMgmtDefinition.swimlanes"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.TaskMgmtDefinition.swimlanes"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.Task.events"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.Task.events"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.node.TaskNode.tasks"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.node.TaskNode.tasks"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.node.Decision.decisionConditions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.node.Decision.decisionConditions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Transition.events"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Transition.events"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.Swimlane.tasks"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.Swimlane.tasks"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.ExceptionHandler.actions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.ExceptionHandler.actions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.taskmgmt.def.TaskController.variableAccesses"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.taskmgmt.def.TaskController.variableAccesses"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Event.actions"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Event.actions"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.SuperState.nodes"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.SuperState.nodes"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="org.jbpm.graph.def.Action"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="org.jbpm.graph.def.Action"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<!-- Timestamps cache -->
-	<cache name="org.hibernate.cache.UpdateTimestampsCache"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <!-- Timestamps cache -->
+    <cache name="org.hibernate.cache.UpdateTimestampsCache"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<!-- Query cache -->
-	<cache name="org.hibernate.cache.StandardQueryCache"
-			maxElementsInMemory="500"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <!-- Query cache -->
+    <cache name="org.hibernate.cache.StandardQueryCache"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<!-- Spring services cache -->
-	<cache name="flexpayCache"
-			maxElementsInMemory="5000"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <!-- Spring services cache -->
+    <cache name="flexpayCache"
+            maxElementsInMemory="5000"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
-	<cache name="commonFlexpayCache"
-			maxElementsInMemory="100"
-			eternal="true"
-			overflowToDisk="true"
-			memoryStoreEvictionPolicy="LRU"
-			/>
+    <cache name="commonFlexpayCache"
+            maxElementsInMemory="100"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
 </ehcache>

@@ -8,7 +8,6 @@ import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.io.InputStream;
@@ -20,6 +19,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserPreferencesDao {
 
@@ -76,8 +76,8 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 
 	@Override
 	public UserPreferences findByUserName(String uid) {
-		return (UserPreferences) DataAccessUtils.uniqueResult(
-				getHibernateTemplate().findByNamedQuery("UserPreferences.findByName", uid));
+		return (UserPreferences) uniqueResult((List<?>) getHibernateTemplate().
+                findByNamedQuery("UserPreferences.findByName", uid));
 	}
 
 	/**

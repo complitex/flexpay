@@ -1,11 +1,7 @@
-/*
- * Created on Sep 13, 2006
- *
- */
 package org.flexpay.common.action.security;
 
-import org.springframework.security.event.authentication.AbstractAuthenticationEvent;
-import org.springframework.security.Authentication;
+import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
+import org.springframework.security.core.Authentication;
 
 /**
  * @author pea1

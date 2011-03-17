@@ -4,11 +4,13 @@ import static org.flexpay.ab.service.Roles.*;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.junit.Before;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
+
+import java.util.List;
 
 public class BtiSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 
@@ -16,8 +18,9 @@ public class BtiSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	 * Authenticate test user
 	 */
 	@Before
+    @Override
 	public void authenticateTestUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				APARTMENT_READ,
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				BUILDING_READ,

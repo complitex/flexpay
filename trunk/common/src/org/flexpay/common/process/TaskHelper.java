@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -132,7 +131,8 @@ public abstract class TaskHelper {
 						return Collections.emptySet();
 					}
 					//Set<?> transitions = processInstance.getRootToken().getAvailableTransitions();
-					Set<?> transitions = new HashSet(actorTask.getToken().getAvailableTransitions());
+					Set<?> transitions = set();
+                    transitions.addAll(actorTask.getToken().getAvailableTransitions());
 					if (log.isDebugEnabled()) {
 						log.debug("Count transitions {}", transitions.size());
 						for (Object o : transitions) {

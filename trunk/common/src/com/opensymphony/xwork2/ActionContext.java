@@ -21,7 +21,7 @@ import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.Authentication;
+import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;
 import java.util.HashMap;

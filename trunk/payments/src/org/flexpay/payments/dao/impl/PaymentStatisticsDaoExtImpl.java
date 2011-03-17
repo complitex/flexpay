@@ -23,9 +23,8 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public List<ServicePaymentsStatistics> getServicePaymentStats(Date begin, Date end) {
-		Date[] params = {begin, end, begin, end};
 		List<?> data = getHibernateTemplate()
-				.findByNamedQuery("ServicePaymentsStatistics.collect", params);
+				.findByNamedQuery("ServicePaymentsStatistics.collect", begin, end, begin, end);
 
 		List<ServicePaymentsStatistics> result = list();
 		for (Object obj : data) {

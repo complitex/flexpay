@@ -6,8 +6,8 @@ import net.sourceforge.navigator.menu.MenuRepository;
 import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -57,10 +57,10 @@ public class UseMenuDisplayerTag extends TagSupport {
 		displayerInstance.init(pageContext, displayerMapping);
 		displayerInstance.setUserPreferences(UserPreferences.getPreferences());
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-		if (null == currentUser || null == currentUser.getAuthorities() || currentUser.getAuthorities().length < 1) {
+		if (null == currentUser || null == currentUser.getAuthorities() || currentUser.getAuthorities().isEmpty()) {
 			displayerInstance.setRolesGranted(Collections.emptyList());
 		} else {
-			displayerInstance.setRolesGranted(Arrays.asList(currentUser.getAuthorities()));
+			displayerInstance.setRolesGranted(currentUser.getAuthorities());
 		}
 
 		pageContext.setAttribute(DISPLAYER_KEY, displayerInstance);

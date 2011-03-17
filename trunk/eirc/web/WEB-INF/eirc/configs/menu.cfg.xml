@@ -1,62 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<!--level1-->
-	<bean name="eirc" parent="fpMenu"
-		  p:name="eirc"
-		  p:title="eirc.menu1.title"
+    <!--level1-->
+    <bean name="eirc" parent="fpMenu"
+          p:name="eirc"
+          p:title="eirc.menu1.title"
           p:namespace="/eirc"
-		  p:action="main"
-		  p:parent-ref="fpMenu">
+          p:action="main"
+          p:parent-ref="fpMenu">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC" />
         </property>
     </bean>
 
-	<!--level2-->
-	<bean name="eirc_dicts" parent="eirc"
-		  p:name="eirc.dicts"
-		  p:title="eirc.menu2.dictionaries"
-		  p:action="mainDicts"
-		  p:parent-ref="eirc">
+    <!--level2-->
+    <bean name="eirc_dicts" parent="eirc"
+          p:name="eirc.dicts"
+          p:title="eirc.menu2.dictionaries"
+          p:action="mainDicts"
+          p:parent-ref="eirc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS" />
         </property>
     </bean>
 
-	<bean name="eirc_import" parent="eirc"
-		  p:name="eirc.import"
-		  p:title="eirc.menu2.import"
-		  p:action="mainImport"
-		  p:parent-ref="eirc">
+    <bean name="eirc_import" parent="eirc"
+          p:name="eirc.import"
+          p:title="eirc.menu2.import"
+          p:action="mainImport"
+          p:parent-ref="eirc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_IMPORT" />
         </property>
     </bean>
 
-	<bean name="eirc_processing" parent="eirc"
-		  p:name="eirc.processing"
-		  p:title="eirc.menu2.processing"
-		  p:action="mainProcessing"
-		  p:parent-ref="eirc">
+    <bean name="eirc_processing" parent="eirc"
+          p:name="eirc.processing"
+          p:title="eirc.menu2.processing"
+          p:action="mainProcessing"
+          p:parent-ref="eirc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_PROCESSING" />
         </property>
     </bean>
 
-	<bean name="eirc_quittances" parent="eirc"
-		  p:name="eirc.quittances"
-		  p:title="eirc.menu2.tickets"
-		  p:action="mainQuittances"
-		  p:parent-ref="eirc">
+    <bean name="eirc_quittances" parent="eirc"
+          p:name="eirc.quittances"
+          p:title="eirc.menu2.tickets"
+          p:action="mainQuittances"
+          p:parent-ref="eirc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES" />
         </property>
@@ -72,28 +69,28 @@
         </property>
     </bean>
 
-	<!--level3-->
-	<bean name="eirc_dicts_organizations" parent="eirc_dicts"
-		  p:name="eirc.organizations"
-		  p:title="eirc.organizations"
+    <!--level3-->
+    <bean name="eirc_dicts_organizations" parent="eirc_dicts"
+          p:name="eirc.organizations"
+          p:title="eirc.organizations"
           p:action="mainOrganizationsDicts"
-		  p:parent-ref="eirc_dicts">
+          p:parent-ref="eirc_dicts">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_ORGANIZATIONS_DICTS" />
         </property>
     </bean>
 
-	<bean name="eirc_dicts_services" parent="eirc_dicts"
-		  p:name="eirc.services"
-		  p:title="eirc.services"
+    <bean name="eirc_dicts_services" parent="eirc_dicts"
+          p:name="eirc.services"
+          p:title="eirc.services"
           p:action="mainServicesDicts"
-		  p:parent-ref="eirc_dicts">
+          p:parent-ref="eirc_dicts">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_SERVICES_DICTS" />
         </property>
     </bean>
 
-	<bean name="eirc_dicts_payment_collectors" parent="eirc_dicts"
+    <bean name="eirc_dicts_payment_collectors" parent="eirc_dicts"
           p:name="eirc.payment_collectors"
           p:title="eirc.payment_collectors"
           p:action="mainCashboxesDicts"
@@ -103,53 +100,53 @@
         </property>
     </bean>
 
-	<bean name="eirc_import_import" parent="eirc_import"
-		  p:name="eirc.import2"
-		  p:title="eirc.menu2.import"
+    <bean name="eirc_import_import" parent="eirc_import"
+          p:name="eirc.import2"
+          p:title="eirc.menu2.import"
           p:action="mainImportImport"
-		  p:parent-ref="eirc_import">
+          p:parent-ref="eirc_import">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_IMPORT2" />
         </property>
     </bean>
 
-	<bean name="eirc_processing_processing" parent="eirc_processing"
-		  p:name="eirc.processing2"
-		  p:title="eirc.menu2.processing"
+    <bean name="eirc_processing_processing" parent="eirc_processing"
+          p:name="eirc.processing2"
+          p:title="eirc.menu2.processing"
           p:action="mainProcessingProcessing"
-		  p:parent-ref="eirc_processing">
+          p:parent-ref="eirc_processing">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_PROCESSING2" />
         </property>
     </bean>
 
-	<bean name="eirc_quittances_quittances" parent="eirc_quittances"
-		  p:name="eirc.quittances2"
-		  p:title="eirc.menu2.tickets"
+    <bean name="eirc_quittances_quittances" parent="eirc_quittances"
+          p:name="eirc.quittances2"
+          p:title="eirc.menu2.tickets"
           p:action="mainQuittancesQuittances"
-		  p:parent-ref="eirc_quittances">
+          p:parent-ref="eirc_quittances">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES2" />
         </property>
     </bean>
 
 <!--
-	<bean name="eirc_quittances_payment" parent="eirc_quittances"
-		  p:name="eirc.quittance_payment"
-		  p:title="eirc.quittances.quittance_pay.title"
+    <bean name="eirc_quittances_payment" parent="eirc_quittances"
+          p:name="eirc.quittance_payment"
+          p:title="eirc.quittances.quittance_pay.title"
           p:action="mainQuittancesPayment"
-		  p:parent-ref="eirc_quittances">
+          p:parent-ref="eirc_quittances">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
         </property>
     </bean>
 -->
 
-	<bean name="eirc_quittances_packets" parent="eirc_quittances"
-		  p:name="eirc.packets"
-		  p:title="eirc.quittance.packets"
+    <bean name="eirc_quittances_packets" parent="eirc_quittances"
+          p:name="eirc.packets"
+          p:title="eirc.quittance.packets"
           p:action="mainQuittancesPackets"
-		  p:parent-ref="eirc_quittances">
+          p:parent-ref="eirc_quittances">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PACKETS" />
         </property>
@@ -165,195 +162,195 @@
         </property>
     </bean>
 
-	<!--level4-->
-	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.organizations2"
-		  p:title="eirc.organizations"
-		  p:action="organizationsList"
-		  p:parent-ref="eirc_dicts_organizations">
+    <!--level4-->
+    <bean parent="eirc_dicts_organizations"
+          p:name="eirc.organizations2"
+          p:title="eirc.organizations"
+          p:action="organizationsList"
+          p:parent-ref="eirc_dicts_organizations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_ORGANIZATIONS" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.banks"
-		  p:title="eirc.banks"
-		  p:action="banksList"
-		  p:parent-ref="eirc_dicts_organizations">
+    <bean parent="eirc_dicts_organizations"
+          p:name="eirc.banks"
+          p:title="eirc.banks"
+          p:action="banksList"
+          p:parent-ref="eirc_dicts_organizations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_BANKS" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.service_organizations"
-		  p:title="eirc.service_organizations"
-		  p:action="serviceOrganizationsList"
-		  p:parent-ref="eirc_dicts_organizations">
+    <bean parent="eirc_dicts_organizations"
+          p:name="eirc.service_organizations"
+          p:title="eirc.service_organizations"
+          p:action="serviceOrganizationsList"
+          p:parent-ref="eirc_dicts_organizations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.service_providers"
-		  p:title="eirc.service_providers"
-		  p:action="serviceProvidersList"
-		  p:parent-ref="eirc_dicts_organizations">
+    <bean parent="eirc_dicts_organizations"
+          p:name="eirc.service_providers"
+          p:title="eirc.service_providers"
+          p:action="serviceProvidersList"
+          p:parent-ref="eirc_dicts_organizations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_SERVICE_PROVIDERS" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_services"
-		  p:name="eirc.service_types"
-		  p:title="payments.service_types"
-		  p:action="serviceTypesList"
-		  p:parent-ref="eirc_dicts_services">
+    <bean parent="eirc_dicts_services"
+          p:name="eirc.service_types"
+          p:title="payments.service_types"
+          p:action="serviceTypesList"
+          p:parent-ref="eirc_dicts_services">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_SERVICE_TYPES" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_services"
-		  p:name="eirc.services2"
-		  p:title="eirc.services"
-		  p:action="servicesList"
-		  p:parent-ref="eirc_dicts_services">
+    <bean parent="eirc_dicts_services"
+          p:name="eirc.services2"
+          p:title="eirc.services"
+          p:action="servicesList"
+          p:parent-ref="eirc_dicts_services">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_SERVICES" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_payment_collectors"
-		  p:name="eirc.payment_collectors2"
-		  p:title="eirc.payment_collectors"
-		  p:action="paymentCollectorsList"
-		  p:parent-ref="eirc_dicts_payment_collectors">
+    <bean parent="eirc_dicts_payment_collectors"
+          p:name="eirc.payment_collectors2"
+          p:title="eirc.payment_collectors"
+          p:action="paymentCollectorsList"
+          p:parent-ref="eirc_dicts_payment_collectors">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS" />
         </property>
     </bean>
 
-	<bean parent="eirc_dicts_payment_collectors"
-		  p:name="eirc.payment_points"
-		  p:title="eirc.payment_points"
-		  p:action="paymentPointsList"
-		  p:parent-ref="eirc_dicts_payment_collectors">
+    <bean parent="eirc_dicts_payment_collectors"
+          p:name="eirc.payment_points"
+          p:title="eirc.payment_points"
+          p:action="paymentPointsList"
+          p:parent-ref="eirc_dicts_payment_collectors">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS" />
         </property>
     </bean>
 
-	<bean parent="eirc_import_import"
-		  p:name="eirc.sp_file_create"
-		  p:title="eirc.menu34.files.upload"
-		  p:action="spFileCreate"
-		  p:parent-ref="eirc_import_import">
+    <bean parent="eirc_import_import"
+          p:name="eirc.sp_file_create"
+          p:title="eirc.menu34.files.upload"
+          p:action="spFileCreate"
+          p:parent-ref="eirc_import_import">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT" />
         </property>
     </bean>
 
-	<bean parent="eirc_import_import"
-		  p:name="eirc.sp_files"
-		  p:title="eirc.menu34.file_list"
-		  p:action="spFilesList"
-		  p:parent-ref="eirc_import_import">
+    <bean parent="eirc_import_import"
+          p:name="eirc.sp_files"
+          p:title="eirc.menu34.file_list"
+          p:action="spFilesList"
+          p:parent-ref="eirc_import_import">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES" />
         </property>
     </bean>
 
-	<bean parent="eirc_import_import"
-		  p:name="eirc.registries"
-		  p:title="eirc.menu34.registries"
+    <bean parent="eirc_import_import"
+          p:name="eirc.registries"
+          p:title="eirc.menu34.registries"
           p:namespace="/eirc"
-		  p:action="registriesList"
-		  p:parent-ref="eirc_import_import">
+          p:action="registriesList"
+          p:parent-ref="eirc_import_import">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_IMPORT_REGISTRIES" />
         </property>
     </bean>
 
-	<bean parent="eirc_processing_processing"
-		  p:name="eirc.processes"
-		  p:title="common.processing.process_list"
-		  p:action="processesList"
-		  p:parent-ref="eirc_processing_processing">
+    <bean parent="eirc_processing_processing"
+          p:name="eirc.processes"
+          p:title="common.processing.process_list"
+          p:action="processesList"
+          p:parent-ref="eirc_processing_processing">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_PROCESSING_PROCESSES" />
         </property>
     </bean>
 
-	<bean parent="eirc_processing_processing"
-		  p:name="eirc.process_definition"
-		  p:title="common.processing.definition"
-		  p:action="processDefinitionDeploy"
-		  p:parent-ref="eirc_processing_processing">
+    <bean parent="eirc_processing_processing"
+          p:name="eirc.process_definition"
+          p:title="common.processing.definition"
+          p:action="processDefinitionDeploy"
+          p:parent-ref="eirc_processing_processing">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_PROCESSING_PROCESS_DEFINITION" />
         </property>
     </bean>
 
-	<bean parent="eirc_quittances_quittances"
-		  p:name="eirc.quittance_generate"
-		  p:title="eirc.menu34.quittances.generate_quittances"
-		  p:action="quittanceGenerate"
-		  p:parent-ref="eirc_quittances_quittances">
+    <bean parent="eirc_quittances_quittances"
+          p:name="eirc.quittance_generate"
+          p:title="eirc.menu34.quittances.generate_quittances"
+          p:action="quittanceGenerate"
+          p:parent-ref="eirc_quittances_quittances">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_GENERATE" />
         </property>
     </bean>
 
-	<bean parent="eirc_quittances_quittances"
-		  p:name="eirc.print_quittances"
-		  p:title="eirc.menu34.tickets.print_tickets"
-		  p:action="printQuittances"
-		  p:parent-ref="eirc_quittances_quittances">
+    <bean parent="eirc_quittances_quittances"
+          p:name="eirc.print_quittances"
+          p:title="eirc.menu34.tickets.print_tickets"
+          p:action="printQuittances"
+          p:parent-ref="eirc_quittances_quittances">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PRINT" />
         </property>
     </bean>
 
 <!--
-	<bean parent="eirc_quittances_payment"
-		  p:name="eirc.quittance_pay_form"
-		  p:title="eirc.quittances.payment.number_search"
-		  p:action="quittancePaySearch"
-		  p:parent-ref="eirc_quittances_payment">
+    <bean parent="eirc_quittances_payment"
+          p:name="eirc.quittance_pay_form"
+          p:title="eirc.quittances.payment.number_search"
+          p:action="quittancePaySearch"
+          p:parent-ref="eirc_quittances_payment">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
         </property>
     </bean>
 
-	<bean parent="eirc_quittances_payment"
-		  p:name="eirc.quittance_search_account"
-		  p:title="eirc.quittances.payment.account_search"
-		  p:action="findQuittanceByAccountNumber"
-		  p:parent-ref="eirc_quittances_payment">
+    <bean parent="eirc_quittances_payment"
+          p:name="eirc.quittance_search_account"
+          p:title="eirc.quittances.payment.account_search"
+          p:action="findQuittanceByAccountNumber"
+          p:parent-ref="eirc_quittances_payment">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
         </property>
     </bean>
 
-	<bean parent="eirc_quittances_payment"
-		  p:name="eirc.quittance_search_address"
-		  p:title="eirc.quittances.payment.apartment_search"
-		  p:action="findQuittanceByAddress"
-		  p:parent-ref="eirc_quittances_payment">
+    <bean parent="eirc_quittances_payment"
+          p:name="eirc.quittance_search_address"
+          p:title="eirc.quittances.payment.apartment_search"
+          p:action="findQuittanceByAddress"
+          p:parent-ref="eirc_quittances_payment">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
         </property>
     </bean>
 -->
 
-	<bean parent="eirc_quittances_packets"
-		  p:name="eirc.quittance_packet"
-		  p:title="eirc.quittance.packets"
-		  p:action="quittancePacketList"
-		  p:parent-ref="eirc_quittances_packets">
+    <bean parent="eirc_quittances_packets"
+          p:name="eirc.quittance_packet"
+          p:title="eirc.quittance.packets"
+          p:action="quittancePacketList"
+          p:parent-ref="eirc_quittances_packets">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PACKETS" />
         </property>

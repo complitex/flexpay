@@ -8,12 +8,15 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 import org.junit.Before;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.Collection;
+import java.util.List;
 
 @ContextConfiguration(locations = {
 		"ab-beans.xml"
@@ -26,7 +29,7 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	@Before
 	@Override
 	public void authenticateTestUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				COUNTRY_READ,
 				COUNTRY_ADD,
 				COUNTRY_CHANGE,

@@ -25,7 +25,7 @@
 	</path>
 
 	<path id="spring.lib">
-		<fileset dir="${common.dir}/lib/spring2">
+		<fileset dir="${common.dir}/lib/spring3">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -276,7 +276,7 @@
 		<war destfile="${warfile}" update="true">
 			<lib dir="${common.dir}/lib/antlr" />
 			<lib dir="${common.dir}/lib/hibernate3" />
-			<lib dir="${common.dir}/lib/spring2" />
+			<lib dir="${common.dir}/lib/spring3" />
 			<lib dir="${common.dir}/lib/commons" />
 			<lib dir="${common.dir}/lib/struts2" />
 			<lib dir="${common.dir}/lib/log4j" />

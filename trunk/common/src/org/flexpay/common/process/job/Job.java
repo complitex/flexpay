@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -47,6 +47,7 @@ public abstract class Job implements Runnable {
 		this.id = Long.toString(Math.abs(random.nextLong()), Character.MAX_RADIX);
 	}
 
+    @Override
 	public void run() {
 
 		JobManager jobMgr = JobManager.getInstance();

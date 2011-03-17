@@ -1,246 +1,251 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!--  Dao Layer instances -->
-	<bean id="countryDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.CountryDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Country" />
-			</bean>
-		</property>
-	</bean>
+    <!--  Dao Layer instances -->
+    <bean id="countryDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.CountryDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Country" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="regionDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.RegionDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Region" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="regionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.RegionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Region" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="regionNameDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.RegionNameDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.RegionName" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="regionNameDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.RegionNameDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.RegionName" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Town DAO objects -->
-	<bean id="townDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.TownDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Town" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Town DAO objects -->
+    <bean id="townDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.TownDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Town" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="townNameDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.TownNameDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.TownName" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="townNameDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.TownNameDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.TownName" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Town District DAO objects -->
-	<bean id="districtDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.DistrictDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.District" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Town District DAO objects -->
+    <bean id="districtDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.DistrictDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.District" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="districtNameDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.DistrictNameDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.DistrictName" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="districtNameDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.DistrictNameDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.DistrictName" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Street DAO objects -->
-	<bean id="streetDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.StreetDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Street" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Street DAO objects -->
+    <bean id="streetDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.StreetDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Street" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="streetNameDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.StreetNameDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.StreetName" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="streetNameDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.StreetNameDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.StreetName" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Town type DAO objects -->
-	<bean id="townTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.TownTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.TownType" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Town type DAO objects -->
+    <bean id="townTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.TownTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.TownType" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Street type DAO objects -->
-	<bean id="streetTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.StreetTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.StreetType" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Street type DAO objects -->
+    <bean id="streetTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.StreetTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.StreetType" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Buildings -->
-	<bean id="buildingDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.BuildingDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Building" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Buildings -->
+    <bean id="buildingDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.BuildingDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Building" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="buildingsDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.BuildingsDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.BuildingAddress" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="buildingsDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.BuildingsDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.BuildingAddress" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="addressAttributeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.AddressAttributeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.AddressAttribute" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="addressAttributeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.AddressAttributeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.AddressAttribute" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="addressAttributeTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.AddressAttributeTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg
-						value="org.flexpay.ab.persistence.AddressAttributeType" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="addressAttributeTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.AddressAttributeTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg
+                        value="org.flexpay.ab.persistence.AddressAttributeType" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.impl.BuildingsDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate"
-		  p:addressAttributeTypeService-ref="addressAttributeTypeService" />
+    <bean id="buildingsDaoExt"
+          class="org.flexpay.ab.dao.impl.BuildingsDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate"
+          p:addressAttributeTypeService-ref="addressAttributeTypeService" />
 
-	<bean id="apartmentDaoExt"
-		  class="org.flexpay.ab.dao.impl.ApartmentDaoExtImpl"
-		  p:dataSource-ref="dataSource"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="apartmentDaoExt"
+          class="org.flexpay.ab.dao.impl.ApartmentDaoExtImpl"
+          p:dataSource-ref="dataSource"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="streetDaoExt" class="org.flexpay.ab.dao.impl.StreetDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="streetDaoExt"
+          class="org.flexpay.ab.dao.impl.StreetDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="districtDaoExt" class="org.flexpay.ab.dao.impl.DistrictDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="districtDaoExt"
+          class="org.flexpay.ab.dao.impl.DistrictDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="townDaoExt" class="org.flexpay.ab.dao.impl.TownDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="townDaoExt"
+          class="org.flexpay.ab.dao.impl.TownDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="regionDaoExt" class="org.flexpay.ab.dao.impl.RegionDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="regionDaoExt"
+          class="org.flexpay.ab.dao.impl.RegionDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="countryDaoExt" class="org.flexpay.ab.dao.impl.CountryDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="countryDaoExt"
+          class="org.flexpay.ab.dao.impl.CountryDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="personDaoExt" class="org.flexpay.ab.dao.impl.PersonDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="personDaoExt"
+          class="org.flexpay.ab.dao.impl.PersonDaoExtImpl"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<!-- Apartments -->
-	<bean id="apartmentDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.ApartmentDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Apartment" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Apartments -->
+    <bean id="apartmentDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.ApartmentDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Apartment" />
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Person identities -->
-	<bean id="identityTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.IdentityTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.IdentityType" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Person identities -->
+    <bean id="identityTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.IdentityTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.IdentityType" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="personDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.PersonDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Person" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="personDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.PersonDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.Person" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="personAttributeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.PersonAttributeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.PersonAttribute" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="personAttributeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.PersonAttributeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.PersonAttribute" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="personRegistrationDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.ab.dao.PersonRegistrationDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.PersonRegistration" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="personRegistrationDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.ab.dao.PersonRegistrationDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.ab.persistence.PersonRegistration" />
+            </bean>
+        </property>
+    </bean>
 
 </beans>

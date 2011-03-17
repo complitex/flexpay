@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class DateIntervalUtil {
 
 	/**
@@ -249,7 +251,7 @@ public class DateIntervalUtil {
 	 * @return new time line
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> TimeLine<T, DI> addInterval(TimeLine<T, DI> tl, DI di) {
-		List<DI> tlNew = new ArrayList<DI>();
+		List<DI> tlNew = list();
 		for (DI diOld : tl.getIntervals()) {
 			diOld.invalidate();
 			tlNew.addAll(intersect(diOld, di));
@@ -272,7 +274,7 @@ public class DateIntervalUtil {
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> TimeLine<T, DI> deleteInterval(TimeLine<T, DI> tl, DI di) {
 
-		List<DI> dis = new ArrayList<DI>();
+		List<DI> dis = list();
 
 		// if interval covers the whole time line - return time line with empty data
 		if (coversTimeLine(di)) {
@@ -314,8 +316,8 @@ public class DateIntervalUtil {
 	 * @return intervals pairs of time line having no intersections
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> Pair<TimeLine<T, DI>, TimeLine<T, DI>> split(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
-		List<DI> disOld = new ArrayList<DI>();
-		List<DI> disNew = new ArrayList<DI>();
+		List<DI> disOld = list();
+		List<DI> disNew = list();
 
 		Iterator<DI> itOld = oldTl.getIntervals().iterator();
 		Iterator<DI> itNew = newTl.getIntervals().iterator();
@@ -376,7 +378,7 @@ public class DateIntervalUtil {
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> List<Pair<DI, DI>> diff(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
 		Pair<TimeLine<T, DI>, TimeLine<T, DI>> splittedPair = split(oldTl, newTl);
-		List<Pair<DI, DI>> diffs = new ArrayList<Pair<DI, DI>>();
+		List<Pair<DI, DI>> diffs = list();
 		Iterator<DI> itOld = splittedPair.getFirst().getIntervals().iterator();
 		Iterator<DI> itNew = splittedPair.getSecond().getIntervals().iterator();
 		for (; itOld.hasNext() && itNew.hasNext();) {

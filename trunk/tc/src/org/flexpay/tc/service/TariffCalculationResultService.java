@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.math.BigDecimal;
 import java.util.Date;

@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!-- Corrections -->
-	<bean id="selectCorrectionTypeAction"
-		  class="org.flexpay.payments.action.registry.corrections.SelectCorrectionTypeAction"
-		  p:registryRecordService-ref="registryRecordService"
-		  p:typeRegistry-ref="classToTypeRegistry"
+    <!-- Corrections -->
+    <bean id="selectCorrectionTypeAction"
+          class="org.flexpay.payments.action.registry.corrections.SelectCorrectionTypeAction"
+          p:registryRecordService-ref="registryRecordService"
+          p:typeRegistry-ref="classToTypeRegistry"
           scope="prototype" />
 
-	<bean id="setCorrectionAction"
-		  class="org.flexpay.payments.action.registry.corrections.SetCorrectionAction"
-		  p:correctionsService-ref="correctionsService"
-		  p:registryRecordService-ref="registryRecordService"
+    <bean id="setCorrectionAction"
+          class="org.flexpay.payments.action.registry.corrections.SetCorrectionAction"
+          p:correctionsService-ref="correctionsService"
+          p:registryRecordService-ref="registryRecordService"
           p:registryRecordStatusService-ref="registryRecordStatusService"
           p:registryService-ref="registryService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:organizationService-ref="organizationService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:organizationService-ref="organizationService"
           p:paymentPointService-ref="paymentPointService"
           p:cashboxService-ref="cashboxService"
           p:classToTypeRegistry-ref="classToTypeRegistry"
           scope="prototype" />
 
-	<bean id="registryViewAction"
-		  class="org.flexpay.payments.action.registry.RegistryViewPageAction"
-		  p:crumbNameKey="payments.crumbs.registry_view"
-		  p:registryService-ref="registryService"
-		  p:classToTypeRegistry-ref="classToTypeRegistry"
+    <bean id="registryViewAction"
+          class="org.flexpay.payments.action.registry.RegistryViewPageAction"
+          p:crumbNameKey="payments.crumbs.registry_view"
+          p:registryService-ref="registryService"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
           p:organizationService-ref="organizationService"
           p:paymentCollectorService-ref="paymentCollectorService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:recordStatusService-ref="registryRecordStatusService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:recordStatusService-ref="registryRecordStatusService"
           scope="prototype"  />
 
     <bean id="registryRecordsListAction"
@@ -43,7 +41,7 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           p:serviceTypeService-ref="serviceTypeService"
           p:registryRecordService-ref="registryRecordService"
-		  p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
+          p:hintsHandlerFactory-ref="eircAccountReadHintsHandlerFactory"
           scope="prototype"  />
 
     <bean id="filterAutocompleterAction"

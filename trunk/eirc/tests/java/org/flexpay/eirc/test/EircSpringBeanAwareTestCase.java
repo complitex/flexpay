@@ -10,12 +10,14 @@ import static org.flexpay.eirc.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 import org.junit.Before;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.List;
 
 @ContextConfiguration(locations = {
 		"eirc-beans.xml"
@@ -26,8 +28,9 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	 * Authenticate test user
 	 */
 	@Before
+    @Override
 	public void authenticateTestUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				QUITTANCE_READ,
 				ACCOUNT_READ,
 				PERSON_READ,

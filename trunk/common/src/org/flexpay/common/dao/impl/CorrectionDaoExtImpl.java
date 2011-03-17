@@ -81,11 +81,11 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	public DataCorrection findCorrection(final String externalId, final int type, final Stub<DataSourceDescription> sd) {
 
 		Object[] params = {externalId, type, sd.getId()};
-		List<?> result = getJdbcTemplate().query("select id, internal_object_id from common_data_corrections_tbl " +
+		List<DataCorrection> result = getJdbcTemplate().query("select id, internal_object_id from common_data_corrections_tbl " +
 												 "where external_object_id=? and object_type=? and data_source_description_id=?",
-				params, new RowMapper() {
+				params, new RowMapper<DataCorrection>() {
                     @Override
-					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+					public DataCorrection mapRow(ResultSet rs, int rowNum) throws SQLException {
 						DataCorrection correction = new DataCorrection();
 						correction.setId(rs.getLong("id"));
 						correction.setInternalObjectId(rs.getLong("internal_object_id"));
@@ -97,7 +97,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 					}
 				});
 
-		return result.isEmpty() ? null : (DataCorrection) result.get(0);
+		return result.isEmpty() ? null : result.get(0);
 	}
 
 	/**
@@ -113,11 +113,11 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 							   final Stub<DataSourceDescription> sd) {
 
 		Object[] params = {externalId, type, sd.getId()};
-		List<?> result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +
+		List<Long> result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +
 												 "where external_object_id=? and object_type=? and data_source_description_id=?",
-				params, new SingleColumnRowMapper(Long.class));
+				params, new SingleColumnRowMapper<Long>(Long.class));
 
-		return result.isEmpty() ? null : (Long) result.get(0);
+		return result.isEmpty() ? null : result.get(0);
 	}
 
 	@Nullable
@@ -126,20 +126,20 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 								final Long dataSourceDescriptionId) {
 
 		Object[] params = {internalId, type, dataSourceDescriptionId};
-		List<?> result = getJdbcTemplate().query("select external_object_id from common_data_corrections_tbl " +
+		List<String> result = getJdbcTemplate().query("select external_object_id from common_data_corrections_tbl " +
 												 "where internal_object_id=? and object_type=? and data_source_description_id=?",
-				params, new SingleColumnRowMapper(String.class));
+				params, new SingleColumnRowMapper<String>(String.class));
 
-		return result.isEmpty() ? null : (String) result.get(0);
+		return result.isEmpty() ? null : result.get(0);
 	}
 
 	private Long getInternalCommonId(final String externalId, final int type) {
 		Object[] params = {externalId, type};
-		List<?> result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +
+		List<Long> result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +
 												 "where external_object_id=? and object_type=? and data_source_description_id IS NULL",
-				params, new SingleColumnRowMapper(Long.class));
+				params, new SingleColumnRowMapper<Long>(Long.class));
 
-		return result.isEmpty() ? null : (Long) result.get(0);
+		return result.isEmpty() ? null : result.get(0);
 	}
 
     @Required

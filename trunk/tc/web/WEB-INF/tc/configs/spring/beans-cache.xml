@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="tariffService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="read*">cacheName=tcFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable*">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="tariffServiceTarget" />
-	</bean>
+    <bean id="tariffService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="tariffServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="read*">cacheName=tcFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable*">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
     <bean id="tariffCalculationRulesFileService"
-          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-        <property name="cacheProviderFacade" ref="cacheProviderFacade" />
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="tariffCalculationRulesFileServiceTarget">
         <property name="cachingModels">
             <props>
                 <prop key="read*">cacheName=tcFlexpayCache</prop>
@@ -40,7 +39,6 @@
                 <prop key="delete*">cacheNames=tcFlexpayCache;flushBeforeMethodExecution=true</prop>
             </props>
         </property>
-        <property name="target" ref="tariffCalculationRulesFileServiceTarget" />
     </bean>
 
 </beans>

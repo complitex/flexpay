@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.Roles;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Date;
 import java.util.List;

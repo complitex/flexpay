@@ -12,7 +12,7 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.math.BigDecimal;
 import java.util.Collection;

@@ -2,18 +2,21 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="processManagerPayments" parent="processManager" autowire-candidate="false">
-		<property name="definitionPaths">
-			<list merge="true">
-				<value>WEB-INF/payments/process</value>
-			</list>
-		</property>
-	</bean>
+    <bean id="processManagerPayments" 
+          parent="processManager" 
+          autowire-candidate="false">
+        <property name="definitionPaths">
+            <list merge="true">
+                <value>WEB-INF/payments/process</value>
+            </list>
+        </property>
+    </bean>
 
-    <bean name="jobGeneratePaymentsRegistry" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="org.flexpay.payments.process.export.GeneratePaymentsRegistry" />
+    <bean name="jobGeneratePaymentsRegistry"
+          class="org.springframework.scheduling.quartz.JobDetailBean"
+          p:jobClass="org.flexpay.payments.process.export.GeneratePaymentsRegistry">
         <property name="jobDataAsMap">
             <map>
                 <entry key="processManager" value-ref="processManagerPayments" />
@@ -25,8 +28,9 @@
         </property>
     </bean>
 
-    <bean name="jobTradingDay" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="org.flexpay.payments.process.export.TradingDaySchedulingJob" />
+    <bean name="jobTradingDay"
+          class="org.springframework.scheduling.quartz.JobDetailBean"
+          p:jobClass="org.flexpay.payments.process.export.TradingDaySchedulingJob">
         <property name="jobDataAsMap">
             <map>
                 <entry key="paymentCollectorService" value-ref="paymentCollectorService" />
@@ -35,18 +39,20 @@
         </property>
     </bean>
 
-    <bean id="jobGeneratePaymentsRegistryTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="jobGeneratePaymentsRegistry" />
-		<property name="cronExpression" value="${payments.cron.schedule.sync}" />
-	</bean>
+    <bean id="jobGeneratePaymentsRegistryTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerBean"
+          p:jobDetail-ref="jobGeneratePaymentsRegistry"
+          p:cronExpression="${payments.cron.schedule.sync}" />
 
-    <bean id="jobTradingDayTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="jobTradingDay" />
-		<property name="cronExpression" value="${trading.day.cron.schedule.sync}" />
-	</bean>
+    <bean id="jobTradingDayTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerBean"
+          p:jobDetail-ref="jobTradingDay"
+          p:cronExpression="${trading.day.cron.schedule.sync}" />
 
 
-    <bean id="schedulerFactoryBeanRegistry" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean id="schedulerFactoryBeanRegistry"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+          p:startupDelay="20">
         <property name="triggers">
             <list>
                 <ref bean="jobGeneratePaymentsRegistryTrigger" />
@@ -58,8 +64,6 @@
                 <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
             </props>
         </property>
-        <property name="startupDelay" value="20" />
     </bean>
-
 
 </beans>

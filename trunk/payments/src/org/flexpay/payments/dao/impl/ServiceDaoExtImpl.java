@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -65,7 +67,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 													"where 1=1 ");
 		final StringBuilder hqlCount = new StringBuilder("select count(*) from Service o " +
 														 "inner join o.serviceType t inner join o.serviceProvider p where 1=1 ");
-		final List<Object> params = new ArrayList<Object>();
+		final List<Object> params = list();
 
 		for (ObjectFilter filter : filters) {
 			if (!filter.needFilter()) {

@@ -1,78 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean name="tariffCalculationJob"
-		  class="org.flexpay.tc.process.TariffCalculationJob"
-		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-		  p:btiBuildingService-ref="btiBuildingService"
-		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
-		  p:lockManager-ref="lockManager"
-		  p:tariffService-ref="tariffService"
-		  p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
-		  scope="prototype" />
-
-	<bean name="tariffCalcResultExportJob"
-		  class="org.flexpay.tc.process.TariffCalcResultExportJob"
-		  p:lockManager-ref="lockManager"
-		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
+    <bean name="tariffCalculationJob"
+          class="org.flexpay.tc.process.TariffCalculationJob"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:btiBuildingService-ref="btiBuildingService"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          p:lockManager-ref="lockManager"
           p:tariffService-ref="tariffService"
-		  p:exporter-ref="jdbcCNExporter"
-		  scope="prototype">
-		<property name="subServiceExportCodes">
-			<list>
-				<value>010</value>
-				<value>020</value>
-				<value>030</value>
-				<value>040</value>
-				<value>050</value>
-				<value>060</value>
-				<value>070</value>
-				<value>080</value>
-				<value>090</value>
-				<value>100</value>
-				<value>110</value>
-				<value>120</value>
-				<value>130</value>
-				<value>140</value>
-				<value>150</value>
-				<value>160</value>
-			</list>
-		</property>
-	</bean>
+          p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
+          scope="prototype" />
 
-	<bean name="tariffCalcResultExportForBuildingJob"
-		  class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
-		  p:lockManager-ref="lockManager"
-		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-		  p:buildingService-ref="buildingServiceTarget"
+    <bean name="tariffCalcResultExportJob"
+          class="org.flexpay.tc.process.TariffCalcResultExportJob"
+          p:lockManager-ref="lockManager"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:tariffService-ref="tariffService"
-		  p:exporter-ref="jdbcCNExporter"
-		  scope="prototype">
-		<property name="subServiceExportCodes">
-			<list>
-				<value>010</value>
-				<value>020</value>
-				<value>030</value>
-				<value>040</value>
-				<value>050</value>
-				<value>060</value>
-				<value>070</value>
-				<value>080</value>
-				<value>090</value>
-				<value>100</value>
-				<value>110</value>
-				<value>120</value>
-				<value>130</value>
-				<value>140</value>
-				<value>150</value>
-				<value>160</value>
-			</list>
-		</property>
-	</bean>
+          p:exporter-ref="jdbcCNExporter"
+          scope="prototype">
+        <property name="subServiceExportCodes">
+            <list>
+                <value>010</value>
+                <value>020</value>
+                <value>030</value>
+                <value>040</value>
+                <value>050</value>
+                <value>060</value>
+                <value>070</value>
+                <value>080</value>
+                <value>090</value>
+                <value>100</value>
+                <value>110</value>
+                <value>120</value>
+                <value>130</value>
+                <value>140</value>
+                <value>150</value>
+                <value>160</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="tariffCalcResultExportForBuildingJob"
+          class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
+          p:lockManager-ref="lockManager"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:buildingService-ref="buildingServiceTarget"
+          p:tariffService-ref="tariffService"
+          p:exporter-ref="jdbcCNExporter"
+          scope="prototype">
+        <property name="subServiceExportCodes">
+            <list>
+                <value>010</value>
+                <value>020</value>
+                <value>030</value>
+                <value>040</value>
+                <value>050</value>
+                <value>060</value>
+                <value>070</value>
+                <value>080</value>
+                <value>090</value>
+                <value>100</value>
+                <value>110</value>
+                <value>120</value>
+                <value>130</value>
+                <value>140</value>
+                <value>150</value>
+                <value>160</value>
+            </list>
+        </property>
+    </bean>
+
 </beans>

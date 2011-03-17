@@ -2,16 +2,17 @@ package org.flexpay.common.exception;
 
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 /**
  * Container for a FlexPayExceptions, followed to the first 10 exceptions are thrown away
  */
 public class FlexPayExceptionContainer extends Exception {
 
-	private Collection<FlexPayException> exceptions = new ArrayList<FlexPayException>();
+    private Collection<FlexPayException> exceptions = list();
 
 	public FlexPayExceptionContainer() {
 	}

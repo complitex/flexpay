@@ -7,7 +7,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;

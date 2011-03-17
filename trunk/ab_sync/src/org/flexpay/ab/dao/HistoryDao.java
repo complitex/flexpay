@@ -13,7 +13,7 @@ public interface HistoryDao {
 	 * @param pager Page instance
 	 * @return List of HistoryRecord instances
 	 */
-	List<HistoryRec> getRecords(Page pager);
+	List<HistoryRec> getRecords(Page<?> pager);
 
 	/**
 	 * Set records as processed

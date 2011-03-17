@@ -82,7 +82,7 @@ public class EircAccountCreateAction extends FPActionSupport {
 
         eircAccountService.create(eircAccount);
 
-        log.info("Eirc account with id {} creatred", eircAccount.getId());
+        log.info("Eirc account with id {} created", eircAccount.getId());
 
         return REDIRECT_SUCCESS;
     }

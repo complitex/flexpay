@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
 	public static final String PARAM_FILE_ID = "fileId";
     public static final String PARAM_READER = "reader";
@@ -31,11 +33,11 @@ public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
     public String execute2(Map<String, Object> parameters) throws FlexPayException {
 		log.debug("start action");
 		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
-		if (listMessage != null && listMessage.size() > 0) {
+		if (listMessage != null && !listMessage.isEmpty()) {
 			return RESULT_NEXT;
 		}
 		if (listMessage == null) {
-			listMessage = new ArrayList<SpFileReader.Message>();
+			listMessage = list();
 		}
 
         Long spFileId = (Long) parameters.get(PARAM_FILE_ID);

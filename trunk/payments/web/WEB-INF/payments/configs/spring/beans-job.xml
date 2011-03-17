@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="generatePaymentRegistryFileNameJob"
-		  class="org.flexpay.payments.process.export.job.GeneratePaymentsRegistryFileNameJob"
-		  p:registryService-ref="registryService"
-		  scope="prototype" />
+    <bean id="generatePaymentRegistryFileNameJob"
+          class="org.flexpay.payments.process.export.job.GeneratePaymentsRegistryFileNameJob"
+          p:registryService-ref="registryService"
+          scope="prototype" />
 
-	<bean id="createFPFileJob"
+    <bean id="createFPFileJob"
           class="org.flexpay.payments.process.export.job.CreateFPFileJob"
           p:fpFileService-ref="fpFileService"
           p:moduleName="${flexpay.module.name.payments}"
@@ -23,7 +20,7 @@
     <bean id="deleteFPFileJob"
           class="org.flexpay.payments.process.export.job.DeleteFPFileJob"
           p:fpFileService-ref="fpFileService"
-		  p:registryService-ref="registryService"
+          p:registryService-ref="registryService"
           scope="prototype" />
 
     <bean id="generatePaymentsDBRegistryJob"
@@ -40,7 +37,7 @@
           p:registryService-ref="registryService"
           p:registryFPFileTypeService-ref="registryFPFileTypeService"
           p:organizationService-ref="organizationService"
-		  p:signatureService-ref="rsaSignatureService"
+          p:signatureService-ref="rsaSignatureService"
           scope="prototype" />
 
     <bean id="generatePaymentsFPRegistryJob"
@@ -75,134 +72,134 @@
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
-	<bean id="getPaymentPointsActionHandler"
-		  class="org.flexpay.payments.process.export.handler.GetPaymentPointsActionHandler"
-		  p:paymentCollectorService-ref="paymentCollectorService"
-		  scope="prototype" />
+    <bean id="getPaymentPointsActionHandler"
+          class="org.flexpay.payments.process.export.handler.GetPaymentPointsActionHandler"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          scope="prototype" />
 
-	<bean id="getCashboxesActionHandler"
-		  class="org.flexpay.payments.process.export.handler.GetCashboxesActionHandler"
-		  p:cashboxService-ref="cashboxService"
-		  scope="prototype" />
+    <bean id="getCashboxesActionHandler"
+          class="org.flexpay.payments.process.export.handler.GetCashboxesActionHandler"
+          p:cashboxService-ref="cashboxService"
+          scope="prototype" />
 
-	<bean id="selectNextPaymentPointActionHandler"
-		  class="org.flexpay.payments.process.export.handler.SelectNextPaymentPointActionHandler"
-		  scope="prototype" />
+    <bean id="selectNextPaymentPointActionHandler"
+          class="org.flexpay.payments.process.export.handler.SelectNextPaymentPointActionHandler"
+          scope="prototype" />
 
-	<bean id="selectNextCashboxActionHandler"
-		  class="org.flexpay.payments.process.export.handler.SelectNextCashboxActionHandler"
-		  scope="prototype" />
+    <bean id="selectNextCashboxActionHandler"
+          class="org.flexpay.payments.process.export.handler.SelectNextCashboxActionHandler"
+          scope="prototype" />
 
-	<bean id="addProcessIdToPaymentCollectorActionHandler"
-		  class="org.flexpay.payments.process.export.handler.AddProcessIdToPaymentCollectorActionHandler"
-		  p:paymentCollectorService-ref="paymentCollectorService"
-		  scope="prototype" />
+    <bean id="addProcessIdToPaymentCollectorActionHandler"
+          class="org.flexpay.payments.process.export.handler.AddProcessIdToPaymentCollectorActionHandler"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          scope="prototype" />
 
-	<bean id="addProcessIdToPaymentPointActionHandler"
-		  class="org.flexpay.payments.process.export.handler.AddProcessIdToPaymentPointActionHandler"
-		  p:paymentPointService-ref="paymentPointService"
-		  scope="prototype" />
+    <bean id="addProcessIdToPaymentPointActionHandler"
+          class="org.flexpay.payments.process.export.handler.AddProcessIdToPaymentPointActionHandler"
+          p:paymentPointService-ref="paymentPointService"
+          scope="prototype" />
 
-	<bean id="addProcessIdToCashboxActionHandler"
-		  class="org.flexpay.payments.process.export.handler.AddProcessIdToCashboxActionHandler"
-		  p:cashboxService-ref="cashboxService"
-		  scope="prototype" />
-
-
-	<bean id="sendSignalToProcessJob"
-		  abstract="true"
-		  scope="prototype"
-		  class="org.flexpay.payments.process.export.job.SendSignalToProcessJob"
-		  p:processManager-ref="processManager" />
-
-	<bean id="sendSignalToCashboxParentJob"
-		  abstract="true"
-		  scope="prototype"
-		  class="org.flexpay.payments.process.export.job.SendSignalToCashboxParentJob"
-		  parent="sendSignalToProcessJob"
-		  p:actorName="CASHBOX_PROCESS"
-		  p:cashboxService-ref="cashboxService" />
-
-	<bean id="sendSignalToCashboxParentCloseTradingDayJob"
-		  scope="prototype"
-		  parent="sendSignalToCashboxParentJob"
-		  p:message="Close trading day" />
-
-	<bean id="sendSignalToCashboxParentApproveJob"
-		  scope="prototype"
-		  parent="sendSignalToCashboxParentJob"
-		  p:message="Approve" />
-
-	<bean id="sendSignalToCashboxParentCancelJob"
-		  scope="prototype"
-		  parent="sendSignalToCashboxParentJob"
-		  p:message="Cancel" />
-
-	<bean id="sendSignalToPaymentPointParentJob"
-		  abstract="true"
-		  scope="prototype"
-		  class="org.flexpay.payments.process.export.job.SendSignalToPaymentPointParentJob"
-		  parent="sendSignalToProcessJob"
-		  p:actorName="PAYMENT_POINT_PROCESS"
-		  p:paymentPointService-ref="paymentPointService" />
-
-	<bean id="sendSignalToPaymentPointParentCloseTradingDayJob"
-		  scope="prototype"
-		  parent="sendSignalToPaymentPointParentJob"
-		  p:message="Close trading day" />
-
-	<bean id="sendSignalToPaymentPointParentApproveJob"
-		  scope="prototype"
-		  parent="sendSignalToPaymentPointParentJob"
-		  p:message="Approve" />
-
-	<bean id="sendSignalToPaymentPointParentCancelJob"
-		  scope="prototype"
-		  parent="sendSignalToPaymentPointParentJob"
-		  p:message="Cancel" />
+    <bean id="addProcessIdToCashboxActionHandler"
+          class="org.flexpay.payments.process.export.handler.AddProcessIdToCashboxActionHandler"
+          p:cashboxService-ref="cashboxService"
+          scope="prototype" />
 
 
-	<bean id="sendSignalToProcessActionHandler"
-		  abstract="true"
-		  class="org.flexpay.payments.process.export.handler.SendSignalToProcessActionHandler"
-		  p:processManager-ref="processManager" />
+    <bean id="sendSignalToProcessJob"
+          abstract="true"
+          scope="prototype"
+          class="org.flexpay.payments.process.export.job.SendSignalToProcessJob"
+          p:processManager-ref="processManager" />
 
-	<bean id="sendSignalToCashboxParentActionHandler"
-		  abstract="true"
-		  class="org.flexpay.payments.process.export.handler.SendSignalToCashboxParentActionHandler"
-		  parent="sendSignalToProcessActionHandler"
-		  p:actorName="CASHBOX_PROCESS"
-		  p:cashboxService-ref="cashboxService" />
+    <bean id="sendSignalToCashboxParentJob"
+          abstract="true"
+          scope="prototype"
+          class="org.flexpay.payments.process.export.job.SendSignalToCashboxParentJob"
+          parent="sendSignalToProcessJob"
+          p:actorName="CASHBOX_PROCESS"
+          p:cashboxService-ref="cashboxService" />
 
-	<bean id="sendSignalToCashboxParentCloseTradingDay"
-		  parent="sendSignalToCashboxParentActionHandler"
-		  p:message="Close trading day" />
+    <bean id="sendSignalToCashboxParentCloseTradingDayJob"
+          scope="prototype"
+          parent="sendSignalToCashboxParentJob"
+          p:message="Close trading day" />
 
-	<bean id="sendSignalToCashboxParentApprove"
-		  parent="sendSignalToCashboxParentActionHandler"
-		  p:message="Approve" />
+    <bean id="sendSignalToCashboxParentApproveJob"
+          scope="prototype"
+          parent="sendSignalToCashboxParentJob"
+          p:message="Approve" />
 
-	<bean id="sendSignalToCashboxParentCancel"
-		  parent="sendSignalToCashboxParentActionHandler"
-		  p:message="Cancel" />
+    <bean id="sendSignalToCashboxParentCancelJob"
+          scope="prototype"
+          parent="sendSignalToCashboxParentJob"
+          p:message="Cancel" />
 
-	<bean id="sendSignalToPaymentPointParentActionHandler"
-		  abstract="true"
-		  class="org.flexpay.payments.process.export.handler.SendSignalToPaymentPointParentActionHandler"
-		  parent="sendSignalToProcessActionHandler"
-		  p:actorName="PAYMENT_POINT_PROCESS"
-		  p:paymentPointService-ref="paymentPointService" />
+    <bean id="sendSignalToPaymentPointParentJob"
+          abstract="true"
+          scope="prototype"
+          class="org.flexpay.payments.process.export.job.SendSignalToPaymentPointParentJob"
+          parent="sendSignalToProcessJob"
+          p:actorName="PAYMENT_POINT_PROCESS"
+          p:paymentPointService-ref="paymentPointService" />
 
-	<bean id="sendSignalToPaymentPointParentCloseTradingDay"
-		  parent="sendSignalToPaymentPointParentActionHandler"
-		  p:message="Close trading day" />
+    <bean id="sendSignalToPaymentPointParentCloseTradingDayJob"
+          scope="prototype"
+          parent="sendSignalToPaymentPointParentJob"
+          p:message="Close trading day" />
 
-	<bean id="sendSignalToPaymentPointParentApprove"
-		  parent="sendSignalToPaymentPointParentActionHandler"
-		  p:message="Approve" />
+    <bean id="sendSignalToPaymentPointParentApproveJob"
+          scope="prototype"
+          parent="sendSignalToPaymentPointParentJob"
+          p:message="Approve" />
 
-	<bean id="sendSignalToPaymentPointParentCancel"
-		  parent="sendSignalToPaymentPointParentActionHandler"
-		  p:message="Cancel" />
+    <bean id="sendSignalToPaymentPointParentCancelJob"
+          scope="prototype"
+          parent="sendSignalToPaymentPointParentJob"
+          p:message="Cancel" />
+
+
+    <bean id="sendSignalToProcessActionHandler"
+          abstract="true"
+          class="org.flexpay.payments.process.export.handler.SendSignalToProcessActionHandler"
+          p:processManager-ref="processManager" />
+
+    <bean id="sendSignalToCashboxParentActionHandler"
+          abstract="true"
+          class="org.flexpay.payments.process.export.handler.SendSignalToCashboxParentActionHandler"
+          parent="sendSignalToProcessActionHandler"
+          p:actorName="CASHBOX_PROCESS"
+          p:cashboxService-ref="cashboxService" />
+
+    <bean id="sendSignalToCashboxParentCloseTradingDay"
+          parent="sendSignalToCashboxParentActionHandler"
+          p:message="Close trading day" />
+
+    <bean id="sendSignalToCashboxParentApprove"
+          parent="sendSignalToCashboxParentActionHandler"
+          p:message="Approve" />
+
+    <bean id="sendSignalToCashboxParentCancel"
+          parent="sendSignalToCashboxParentActionHandler"
+          p:message="Cancel" />
+
+    <bean id="sendSignalToPaymentPointParentActionHandler"
+          abstract="true"
+          class="org.flexpay.payments.process.export.handler.SendSignalToPaymentPointParentActionHandler"
+          parent="sendSignalToProcessActionHandler"
+          p:actorName="PAYMENT_POINT_PROCESS"
+          p:paymentPointService-ref="paymentPointService" />
+
+    <bean id="sendSignalToPaymentPointParentCloseTradingDay"
+          parent="sendSignalToPaymentPointParentActionHandler"
+          p:message="Close trading day" />
+
+    <bean id="sendSignalToPaymentPointParentApprove"
+          parent="sendSignalToPaymentPointParentActionHandler"
+          p:message="Approve" />
+
+    <bean id="sendSignalToPaymentPointParentCancel"
+          parent="sendSignalToPaymentPointParentActionHandler"
+          p:message="Cancel" />
 
 </beans>

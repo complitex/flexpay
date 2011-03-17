@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 
 public class JobManager implements BeanFactoryAware {
 
@@ -51,7 +53,7 @@ public class JobManager implements BeanFactoryAware {
 	}
 
 	public synchronized List<Job> getJobList() {
-		List<Job> result = new ArrayList<Job>();
+		List<Job> result = list();
 		result.addAll(runningJobs.values());
 		result.addAll(sleepingJobs.values());
 		result.addAll(waitingJobs);

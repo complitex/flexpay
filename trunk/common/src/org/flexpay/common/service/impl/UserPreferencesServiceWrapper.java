@@ -1,12 +1,12 @@
 package org.flexpay.common.service.impl;
 
-import org.springframework.security.userdetails.UserDetailsService;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.UsernameNotFoundException;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.dao.DataAccessException;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class UserPreferencesServiceWrapper implements UserDetailsService {
 
@@ -19,9 +19,9 @@ public class UserPreferencesServiceWrapper implements UserDetailsService {
 	 * <code>UserDetails</code> object that comes back may have a username that is of a different case than what was
 	 * actually requested..
 	 *
-	 * @param username the username presented to the {@link org.springframework.security.providers.dao.DaoAuthenticationProvider}
+	 * @param username the username presented to the {@link org.springframework.security.authentication.dao.DaoAuthenticationProvider}
 	 * @return a fully populated user record (never <code>null</code>)
-	 * @throws org.springframework.security.userdetails.UsernameNotFoundException
+	 * @throws org.springframework.security.core.userdetails.UsernameNotFoundException
 	 *          if the user could not be found or the user has no GrantedAuthority
 	 * @throws org.springframework.dao.DataAccessException
 	 *          if user could not be found for a repository-specific reason

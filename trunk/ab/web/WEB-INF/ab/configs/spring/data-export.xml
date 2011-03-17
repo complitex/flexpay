@@ -2,107 +2,108 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="dataExportDao"
-		  class="org.flexpay.ab.dao.importexport.impl.HarkovCenterNachisleniyDataSource"
-		  p:jdbcTemplate-ref="dataExportJdbcTemplate" />
+    <bean id="dataExportDao"
+          class="org.flexpay.ab.dao.importexport.impl.HarkovCenterNachisleniyDataSource"
+          p:jdbcTemplate-ref="dataExportJdbcTemplate" />
 
-	<bean id="allObjectsDao"
-		  class="org.flexpay.ab.service.importexport.impl.AllObjectsDao"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+    <bean id="allObjectsDao"
+          class="org.flexpay.ab.service.importexport.impl.AllObjectsDao"
+          p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<!-- Data sources -->
-	<bean id="districtJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.DistrictJdbcDataSource"
-		  p:source-ref="dataExportDao" />
+    <!-- Data sources -->
+    <bean id="districtJdbcDataSource"
+          class="org.flexpay.ab.dao.importexport.DistrictJdbcDataSource"
+          p:source-ref="dataExportDao" />
 
-	<bean id="streetTypeJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.StreetTypeJdbcDataSource"
-		  p:source-ref="dataExportDao" />
+    <bean id="streetTypeJdbcDataSource"
+          class="org.flexpay.ab.dao.importexport.StreetTypeJdbcDataSource"
+          p:source-ref="dataExportDao" />
 
-	<bean id="streetJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.StreetJdbcDataSource"
-		  p:source-ref="dataExportDao" />
+    <bean id="streetJdbcDataSource"
+          class="org.flexpay.ab.dao.importexport.StreetJdbcDataSource"
+          p:source-ref="dataExportDao" />
 
-	<bean id="buildingsJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.BuildingsJdbcDataSource"
-		  p:source-ref="dataExportDao" />
+    <bean id="buildingsJdbcDataSource"
+          class="org.flexpay.ab.dao.importexport.BuildingsJdbcDataSource"
+          p:source-ref="dataExportDao" />
 
-	<bean id="apartmentJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.ApartmentJdbcDataSource"
-		  p:source-ref="dataExportDao" />
+    <bean id="apartmentJdbcDataSource"
+          class="org.flexpay.ab.dao.importexport.ApartmentJdbcDataSource"
+          p:source-ref="dataExportDao" />
 
-	<bean id="personJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.PersonJdbcDataSource"
-		  p:source-ref="dataExportDao" />
+    <bean id="personJdbcDataSource"
+          class="org.flexpay.ab.dao.importexport.PersonJdbcDataSource"
+          p:source-ref="dataExportDao" />
 
-	<!-- Data converters -->
-	<bean id="districtDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawDistrictDataConverter" />
+    <!-- Data converters -->
+    <bean id="districtDataConverter"
+          class="org.flexpay.ab.service.importexport.RawDistrictDataConverter" />
 
-	<bean id="streetTypeDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawStreetTypeDataConverter" />
+    <bean id="streetTypeDataConverter"
+          class="org.flexpay.ab.service.importexport.RawStreetTypeDataConverter" />
 
-	<bean id="streetDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawStreetDataConverter" />
+    <bean id="streetDataConverter"
+          class="org.flexpay.ab.service.importexport.RawStreetDataConverter" />
 
-	<bean id="buildingsDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawBuildingsDataConverter"
-		  p:factory-ref="objectsFactory" />
+    <bean id="buildingsDataConverter"
+          class="org.flexpay.ab.service.importexport.RawBuildingsDataConverter"
+          p:factory-ref="objectsFactory" />
 
-	<bean id="apartmentDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawApartmentDataConverter"
-		  p:buildingService-ref="buildingService"
-		  p:factory-ref="objectsFactory" />
+    <bean id="apartmentDataConverter"
+          class="org.flexpay.ab.service.importexport.RawApartmentDataConverter"
+          p:buildingService-ref="buildingService"
+          p:factory-ref="objectsFactory" />
 
-	<bean id="personDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawPersonDataConverter"
-		  p:identityTypeService-ref="identityTypeService" />
+    <bean id="personDataConverter"
+          class="org.flexpay.ab.service.importexport.RawPersonDataConverter"
+          p:identityTypeService-ref="identityTypeService" />
 
-	<bean id="classToTypeRegistryAb"
-		  autowire-candidate="false"
-		  class="org.flexpay.ab.service.importexport.impl.ClassToTypeRegistryAb" />
+    <bean id="classToTypeRegistryAb"
+          autowire-candidate="false"
+          class="org.flexpay.ab.service.importexport.impl.ClassToTypeRegistryAb" />
 
-	<bean id="classToTypeRegistryFactoryAb"
-		  depends-on="classToTypeRegistryFactory"
-		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
-		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
-				<property name="registries">
-					<list>
-						<ref bean="classToTypeRegistryAb" />
-						<ref bean="classToTypeRegistryCommon" />
-					</list>
-				</property>
-			</bean>
-		</property>
-	</bean>
+    <bean id="classToTypeRegistryFactoryAb"
+          depends-on="classToTypeRegistryFactory"
+          class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
+        <property name="registry">
+            <bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
+                <property name="registries">
+                    <list>
+                        <ref bean="classToTypeRegistryAb" />
+                        <ref bean="classToTypeRegistryCommon" />
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<!-- Import-Export services -->
-	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportServiceImpl"
-		p:districtDataSource-ref="districtJdbcDataSource"
-		p:districtDataConverter-ref="districtDataConverter"
-		p:streetTypeDataSource-ref="streetTypeJdbcDataSource"
-		p:buildingsDataSource-ref="buildingsJdbcDataSource"
-		p:apartmentDataSource-ref="apartmentJdbcDataSource"
-		p:personDataSource-ref="personJdbcDataSource"
-		p:streetTypeDataConverter-ref="streetTypeDataConverter"
-		p:streetDataSource-ref="streetJdbcDataSource"
-		p:streetDataConverter-ref="streetDataConverter"
-		p:buildingsDataConverter-ref="buildingsDataConverter"
-		p:apartmentDataConverter-ref="apartmentDataConverter"
-		p:personDataConverter-ref="personDataConverter"
-		p:correctionsService-ref="correctionsService"
-		p:districtService-ref="districtService"
-		p:streetTypeService-ref="streetTypeService"
-		p:streetService-ref="streetService"
-		p:buildingService-ref="buildingService"
-		p:apartmentService-ref="apartmentService"
-		p:personService-ref="personService"
-		p:allObjectsDao-ref="allObjectsDao"
-		p:errorsSupport-ref="importErrorSupport"
-		p:importErrorService-ref="importErrorService"
-		p:registry-ref="classToTypeRegistry" />
+    <!-- Import-Export services -->
+    <bean id="importServiceAb" 
+          class="org.flexpay.ab.service.importexport.ImportServiceImpl"
+          p:districtDataSource-ref="districtJdbcDataSource"
+          p:districtDataConverter-ref="districtDataConverter"
+          p:streetTypeDataSource-ref="streetTypeJdbcDataSource"
+          p:buildingsDataSource-ref="buildingsJdbcDataSource"
+          p:apartmentDataSource-ref="apartmentJdbcDataSource"
+          p:personDataSource-ref="personJdbcDataSource"
+          p:streetTypeDataConverter-ref="streetTypeDataConverter"
+          p:streetDataSource-ref="streetJdbcDataSource"
+          p:streetDataConverter-ref="streetDataConverter"
+          p:buildingsDataConverter-ref="buildingsDataConverter"
+          p:apartmentDataConverter-ref="apartmentDataConverter"
+          p:personDataConverter-ref="personDataConverter"
+          p:correctionsService-ref="correctionsService"
+          p:districtService-ref="districtService"
+          p:streetTypeService-ref="streetTypeService"
+          p:streetService-ref="streetService"
+          p:buildingService-ref="buildingService"
+          p:apartmentService-ref="apartmentService"
+          p:personService-ref="personService"
+          p:allObjectsDao-ref="allObjectsDao"
+          p:errorsSupport-ref="importErrorSupport"
+          p:importErrorService-ref="importErrorService"
+          p:registry-ref="classToTypeRegistry" />
 
 </beans>

@@ -2,144 +2,143 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <!-- The created cache manager is an instance of net.sf.ehcache.CacheManager -->
+    <bean id="cacheManager"
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="WEB-INF/common/configs/spring/ehcache-spring.xml" />
 
-	<!-- The created cache manager is an instance of net.sf.ehcache.CacheManager -->
-	<bean id="cacheManager"
-		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-		  p:configLocation="WEB-INF/common/configs/spring/ehcache-spring.xml" />
+    <bean id="cacheProviderFacade"
+          class="org.springmodules.cache.provider.ehcache.EhCacheFacade"
+          p:cacheManager-ref="cacheManager" />
 
-	<bean id="cacheProviderFacade"
-		  class="org.springmodules.cache.provider.ehcache.EhCacheFacade"
-		  p:cacheManager-ref="cacheManager" />
+    <bean id="languageService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="languageServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="get*">cacheName=commonFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="update*">cacheNames=commonFlexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="languageService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="get*">cacheName=commonFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="update*">cacheNames=commonFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="languageServiceTarget" />
-	</bean>
+    <bean id="currencyInfoService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="currencyInfoServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="get*">cacheName=commonFlexpayCache</prop>
+                <prop key="list*">cacheName=commonFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="update*">cacheNames=commonFlexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="currencyInfoService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="get*">cacheName=commonFlexpayCache</prop>
-				<prop key="list*">cacheName=commonFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="update*">cacheNames=commonFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="currencyInfoServiceTarget" />
-	</bean>
+    <bean id="measureUnitService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="measureUnitServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="read*">cacheName=commonMeasureUnitFlexpayCache</prop>
+                <prop key="list*">cacheName=commonMeasureUnitFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable*">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="measureUnitService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="read*">cacheName=commonMeasureUnitFlexpayCache</prop>
-				<prop key="list*">cacheName=commonMeasureUnitFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable*">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-		<property name="target" ref="measureUnitServiceTarget" />
-	</bean>
+    <bean id="masterIndexService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="masterIndexServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="getMasterSourceDescription">cacheName=commonMasterIndexCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="masterIndexService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="getMasterSourceDescription">cacheName=commonMasterIndexCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="masterIndexServiceTarget" />
-	</bean>
+    <bean id="registryArchiveStatusService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="registryArchiveStatusServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="read">cacheName=flexpayCache</prop>
+                <prop key="findByCode">cacheName=flexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="registryArchiveStatusService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="read">cacheName=flexpayCache</prop>
-				<prop key="findByCode">cacheName=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="registryArchiveStatusServiceTarget" />
-	</bean>
+    <bean id="registryStatusService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="registryStatusServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="findByCode">cacheName=flexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="registryStatusService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="findByCode">cacheName=flexpayCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="registryStatusServiceTarget" />
-	</bean>
+    <bean id="registryRecordStatusService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="registryRecordStatusServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="findByCode">cacheName=commonRegistryRecordStatusCache</prop>
+                <prop key="findAllStatuses">cacheName=commonRegistryRecordStatusCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="registryRecordStatusService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
-		<property name="cachingModels">
-			<props>
-				<prop key="findByCode">cacheName=commonRegistryRecordStatusCache</prop>
-				<prop key="findAllStatuses">cacheName=commonRegistryRecordStatusCache</prop>
-			</props>
-		</property>
-		<property name="target" ref="registryRecordStatusServiceTarget" />
-	</bean>
-
-	<bean id="registryFPFileTypeService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+    <bean id="registryFPFileTypeService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
           p:cacheProviderFacade-ref="cacheProviderFacade"
           p:target-ref="registryFPFileTypeServiceTarget">
-		<property name="cachingModels">
-			<props>
-				<prop key="read">cacheName=flexpayCache</prop>
-				<prop key="findByCode">cacheName=flexpayCache</prop>
-			</props>
-		</property>
-	</bean>
+        <property name="cachingModels">
+            <props>
+                <prop key="read">cacheName=flexpayCache</prop>
+                <prop key="findByCode">cacheName=flexpayCache</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="userRoleService"
-		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+    <bean id="userRoleService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
           p:cacheProviderFacade-ref="cacheProviderFacade"
           p:target-ref="userRoleServiceTarget">
-		<property name="cachingModels">
-			<props>
-				<prop key="readFull">cacheName=commonUserRoleFlexpayCache</prop>
-			</props>
-		</property>
-		<property name="flushingModels">
-			<props>
-				<prop key="create">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
-			</props>
-		</property>
-	</bean>
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=commonUserRoleFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>

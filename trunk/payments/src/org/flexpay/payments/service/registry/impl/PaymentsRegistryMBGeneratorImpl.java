@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 /**
  * Generate the payments registry in MB format.
@@ -255,7 +256,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 	@NotNull
 	private String[] createInfoLine(Registry registry, @NotNull RegistryRecord record, @NotNull String serviceProviderId) throws FlexPayException {
-		List<String> infoLine = new ArrayList<String>();
+		List<String> infoLine = list();
 		//граница таблицы
 		infoLine.add(createCellData("", 0, ' '));
 

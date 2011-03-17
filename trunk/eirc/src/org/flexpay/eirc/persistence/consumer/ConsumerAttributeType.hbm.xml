@@ -164,7 +164,7 @@
 		where t.status=0
 	</query>
 
-	<query name="ConsumerAttributeTypeBase.findAtributeTypeByCode">
+	<query name="ConsumerAttributeTypeBase.findAttributeTypeByCode">
 		from ConsumerAttributeTypeBase t
 		where t.status=0 and t.uniqueCode=?
 	</query>
@@ -188,7 +188,7 @@
         order by id
     </query>
 
-    <query name="ConsumerAttributeTypeBase.findAtributeTypeByCodes">
+    <query name="ConsumerAttributeTypeBase.findAttributeTypeByCodes">
         from ConsumerAttributeTypeBase t
             left join fetch t.names
             left join fetch t.measureUnit mu

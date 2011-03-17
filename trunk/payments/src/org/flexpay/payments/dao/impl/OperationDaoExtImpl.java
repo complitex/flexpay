@@ -285,7 +285,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 
 	@Override
 	public void deleteAllBlankOperations() {
-		getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Operation.deleteAllBlankOperations").setLong(0, 6).executeUpdate();

@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 @Transactional (readOnly = true)
 public class RegistryServiceImpl implements RegistryService {
 
@@ -124,7 +126,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 		registryDao.update(registry);
 
-        List<RegistryContainer> removeContainers = new ArrayList<RegistryContainer>();
+        List<RegistryContainer> removeContainers = list();
         for (RegistryContainer container : registry.getContainers()) {
             if (container.isNew() && !StringUtils.isEmpty(container.getData())) {
 			    registryContainerDao.create(container);

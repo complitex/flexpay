@@ -6,13 +6,9 @@ import org.flexpay.common.exception.CertificateNotFoundException;
 import org.flexpay.common.exception.InvalidVerifySignatureException;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.util.config.UserPreferences;
-import org.springframework.security.annotation.Secured;
-import org.springframework.security.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
 import java.util.List;
 
 public interface CertificateService {

@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="propertyConfigurer"
-		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations" value="/WEB-INF/*.properties" />
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
-		<property name="fileEncoding" value="UTF-8" />
-	</bean>
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:locations="/WEB-INF/*.properties"
+          p:ignoreUnresolvablePlaceholders="true"
+          p:fileEncoding="UTF-8" />
 
-	<import resource="beans-jmx.xml" />
-	<import resource="beans-jms.xml" />
-	<import resource="beans-mail.xml" />
+    <import resource="beans-jmx.xml" />
+    <import resource="beans-jms.xml" />
+    <import resource="beans-mail.xml" />
 
-	<import resource="beans-data-source.xml" />
-	<import resource="hibernate.xml" />
-	<import resource="beans-cache.xml" />
-	<import resource="beans-dao.xml" />
-	<import resource="beans-services.xml" />
-	<import resource="beans-schedule.xml" />
-	<import resource="beans-struts.xml" />
-	<import resource="beans-jbpm.xml" />
-	<import resource="beans-ldap.xml" />
+    <import resource="beans-data-source.xml" />
+    <import resource="hibernate.xml" />
+    <import resource="beans-cache.xml" />
+    <import resource="beans-dao.xml" />
+    <import resource="beans-services.xml" />
+    <import resource="beans-schedule.xml" />
+    <import resource="beans-struts.xml" />
+    <import resource="beans-jbpm.xml" />
+    <import resource="beans-ldap.xml" />
 
-	<import resource="stand-alone-tasks.xml" />
-	<import resource="data-export.xml" />
+    <import resource="stand-alone-tasks.xml" />
+    <import resource="data-export.xml" />
 
-	<import resource="history/config.xml" />
+    <import resource="history/config.xml" />
 
-	<import resource="beans-self-testing.xml" />
+    <import resource="beans-self-testing.xml" />
 
-	<import resource="../menu.cfg.xml" />
+    <import resource="../menu.cfg.xml" />
 
 </beans>

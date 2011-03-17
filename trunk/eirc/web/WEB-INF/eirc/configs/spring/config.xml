@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <import resource="beans-dao.xml" />
-	<import resource="beans-logic.xml" />
+    <import resource="beans-logic.xml" />
     <import resource="beans-services.xml" />
     <import resource="beans-cache.xml" />
-	<import resource="beans-reports.xml" />
+    <import resource="beans-reports.xml" />
     <import resource="beans-struts.xml" />
     <import resource="data-export.xml" />
     <import resource="beans-jms.xml" />
 
-	<import resource="beans-self-testing.xml" />
-	<import resource="stand-alone-tasks.xml" />
+    <import resource="beans-self-testing.xml" />
+    <import resource="stand-alone-tasks.xml" />
     <import resource="beans-jbpm.xml"/>
 
     <import resource="../menu.cfg.xml"/>

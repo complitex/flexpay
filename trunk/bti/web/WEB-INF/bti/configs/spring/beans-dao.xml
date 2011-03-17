@@ -1,103 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
-		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<!--  Dao Layer instances -->
+    <!--  Dao Layer instances -->
 
-	<!-- Apartments -->
-	<bean id="apartmentAttributeTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeType" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Apartments -->
+    <bean id="apartmentAttributeTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.ApartmentAttributeTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeType" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="apartmentAttributeTypeEnumDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeTypeEnumDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnum" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="apartmentAttributeTypeEnumDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.ApartmentAttributeTypeEnumDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnum" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="apartmentAttributeTypeDaoExt" class="org.flexpay.bti.dao.impl.ApartmentAttributeTypeDaoExtImpl"
-		  p:sessionFactory-ref="flexpaySessionFactory"
-		  p:attributeTypeDao-ref="apartmentAttributeTypeDao"
-		  p:attributeTypeEnumDao-ref="apartmentAttributeTypeEnumDao" />
+    <bean id="apartmentAttributeTypeDaoExt"
+          class="org.flexpay.bti.dao.impl.ApartmentAttributeTypeDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory"
+          p:attributeTypeDao-ref="apartmentAttributeTypeDao"
+          p:attributeTypeEnumDao-ref="apartmentAttributeTypeEnumDao" />
 
-	<bean id="apartmentAttributeGroupDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeGroupDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeGroup" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="apartmentAttributeGroupDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.ApartmentAttributeGroupDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeGroup" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="apartmentAttributeDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttribute" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="apartmentAttributeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.ApartmentAttributeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttribute" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="btiApartmentDaoExt"
-		  class="org.flexpay.bti.dao.impl.BtiApartmentDaoExtImpl"
-		  p:sessionFactory-ref="flexpaySessionFactory" />
+    <bean id="btiApartmentDaoExt"
+          class="org.flexpay.bti.dao.impl.BtiApartmentDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory" />
 
-	<!-- Buildings -->
-	<bean id="buildingAttributeTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeType" />
-			</bean>
-		</property>
-	</bean>
+    <!-- Buildings -->
+    <bean id="buildingAttributeTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.BuildingAttributeTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeType" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="buildingAttributeTypeEnumDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeEnumDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="buildingAttributeTypeEnumDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.BuildingAttributeTypeEnumDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="buildingAttributeTypeDaoExt" class="org.flexpay.bti.dao.impl.BuildingAttributeTypeDaoExtImpl"
-		  p:sessionFactory-ref="flexpaySessionFactory"
-		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
-		  p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
+    <bean id="buildingAttributeTypeDaoExt"
+          class="org.flexpay.bti.dao.impl.BuildingAttributeTypeDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory"
+          p:attributeTypeDao-ref="buildingAttributeTypeDao"
+          p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
 
-	<bean id="buildingAttributeGroupDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeGroupDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeGroup" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="buildingAttributeGroupDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.BuildingAttributeGroupDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeGroup" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="buildingAttributeDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttribute" />
-			</bean>
-		</property>
-	</bean>
+    <bean id="buildingAttributeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.bti.dao.BuildingAttributeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttribute" />
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="btiBuildingDaoExt" class="org.flexpay.bti.dao.impl.BtiBuildingDaoExtImpl"
-		  p:sessionFactory-ref="flexpaySessionFactory" />
+    <bean id="btiBuildingDaoExt"
+          class="org.flexpay.bti.dao.impl.BtiBuildingDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory" />
 
 </beans>

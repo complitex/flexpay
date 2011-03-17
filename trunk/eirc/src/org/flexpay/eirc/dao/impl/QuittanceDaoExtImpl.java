@@ -7,8 +7,8 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import java.sql.ResultSet;
@@ -16,8 +16,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import static org.flexpay.common.util.CollectionUtils.ar;
 
 public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements QuittanceDaoExt {
 
@@ -92,7 +90,7 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
 						   "	inner join ab_buildings_tbl b on b.id=ap.building_id " +
 						   "	inner join ab_districts_tbl d on b.district_id=d.id " +
 						   "where d.town_id=? and b.eirc_service_organization_id=? and acc.status=0";
-		return getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now, townId, organisationId));
+		return getJdbcTemplate().update(insertSql, dateFrom, dateTill, now, townId, organisationId);
 	}
 
 	private long generateDetailsReferences(Date dateFrom, Date dateTill, Date now) {
@@ -105,7 +103,7 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
 						   "	left join eirc_quittance_details_tbl qd on qd.consumer_id=con.id " +
 						   "where q.order_number=0 and q.date_from=? and q.date_till=? " +
 						   "	and q.creation_date=? and qd.month>=? and qd.month<?";
-		return getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now, dateFrom, dateTill));
+		return getJdbcTemplate().update(insertSql, dateFrom, dateTill, now, dateFrom, dateTill);
 	}
 
 	private long updateOrderNumbers(Date dateFrom, Date dateTill, Date now) {
@@ -124,13 +122,13 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
 								   "from eirc_quittances_tbl q " +
 								   "where q.date_till>=? " +
 								   "group by q.eirc_account_id)";
-		getJdbcTemplate().update(sqlTempQuittances, ar(dateTill));
+		getJdbcTemplate().update(sqlTempQuittances, dateTill);
 
 		String insertSql = "update eirc_quittances_tbl q " +
 						   "	inner join tmp_eirc_quittances_tbl t on (q.eirc_account_id = t.eirc_account_id) " +
 						   "set q.order_number=(t.order_number + 1) " +
 						   "where q.order_number=0 and q.date_from=? and q.date_till=? and q.creation_date=?";
-		long count = getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now));
+		long count = getJdbcTemplate().update(insertSql, dateFrom, dateTill, now);
 
 		getJdbcTemplate().update("drop table tmp_eirc_quittances_tbl");
 
@@ -160,7 +158,7 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
                            "        where q1.eirc_account_id in (:accountIds) " +
                            "        group by q1.eirc_account_id " +
                            "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
-                           "order by q.date_from desc",	new ParameterizedRowMapper<Quittance>() {
+                           "order by q.date_from desc",	new RowMapper<Quittance>() {
                             @Override
                             public Quittance mapRow(ResultSet rs, int i) throws SQLException {
                                 log.debug("ResultSet = {}", rs);
@@ -190,7 +188,7 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
                            "        where q1.eirc_account_id in (:accountIds) and s.type_id=:serviceTypeId " +
                            "        group by q1.eirc_account_id " +
                            "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
-                           "order by q.date_from desc", new ParameterizedRowMapper<Quittance>() {
+                           "order by q.date_from desc", new RowMapper<Quittance>() {
                             @Override
                             public Quittance mapRow(ResultSet rs, int i) throws SQLException {
                                 log.debug("ResultSet = {}", rs);
@@ -214,7 +212,7 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
                            "        where a.consumer_info_id in (:consumerIds) " +
                            "        group by q1.eirc_account_id " +
                            "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
-                           "order by q.date_from desc", new ParameterizedRowMapper<Quittance>() {
+                           "order by q.date_from desc", new RowMapper<Quittance>() {
                             @Override
                             public Quittance mapRow(ResultSet rs, int i) throws SQLException {
                                 log.debug("ResultSet = {}", rs);

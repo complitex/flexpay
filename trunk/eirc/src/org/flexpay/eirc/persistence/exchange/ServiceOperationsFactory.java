@@ -24,6 +24,8 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class ServiceOperationsFactory {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -72,7 +74,7 @@ public class ServiceOperationsFactory {
 		}
 
 		// get a list of operations
-		List<Operation> operations = new ArrayList<Operation>();
+		List<Operation> operations = list();
 		for (RegistryRecordContainer container : containers) {
 			if (container == null || StringUtils.isEmpty(container.getData())) {
 				continue;
@@ -112,7 +114,7 @@ public class ServiceOperationsFactory {
 		}
 
 		List<RegistryContainer> containers = registry.getContainers();
-		List<Operation> operations = new ArrayList<Operation>();
+		List<Operation> operations = list();
 		for (RegistryContainer container : containers) {
 			if (container == null || StringUtils.isEmpty(container.getData())) {
 				continue;

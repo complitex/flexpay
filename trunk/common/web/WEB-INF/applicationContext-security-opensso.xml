@@ -1,113 +1,125 @@
-<b:beans xmlns:security="http://www.springframework.org/schema/security"
-		 xmlns:b="http://www.springframework.org/schema/beans"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns:p="http://www.springframework.org/schema/p"
-		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-	<security:authentication-manager alias="authenticationManager" />
+    <security:http entry-point-ref="authenticationEntryPoint">
+        <security:custom-filter position="FORM_LOGIN_FILTER" ref="authenticationProcessingFilter" />
+    </security:http>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="authenticationProvider"  />
+    </security:authentication-manager>
     <security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
 
-	<b:bean id="filterChainProxy"
-			class="org.springframework.security.util.FilterChainProxy">
-		<security:filter-chain-map path-type="ant">
-			<security:filter-chain pattern="/ws/**" filters="none" />
-			<security:filter-chain pattern="/**"
-								   filters="httpSessionContextIntegrationFilter,logoutFilter,openssoFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor" />
-		</security:filter-chain-map>
-	</b:bean>
+    <bean id="filterChainProxy"
+          class="org.springframework.security.web.FilterChainProxy">
+        <security:filter-chain-map path-type="ant">
+            <security:filter-chain pattern="/ws/**" filters="none" />
+            <security:filter-chain pattern="/**"
+                                   filters="securityContextPersistenceFilter,logoutFilter,openssoFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterSecurityInterceptor" />
+        </security:filter-chain-map>
+    </bean>
 
-	<b:alias name="filterChainProxy" alias="springSecurityFilterChain" />
+    <alias name="filterChainProxy" alias="springSecurityFilterChain" />
 
-	<b:bean id="httpSessionContextIntegrationFilter"
-			class="org.springframework.security.context.HttpSessionContextIntegrationFilter">
-		<b:property name="allowSessionCreation" value="true" />
-		<b:property name="forceEagerSessionCreation" value="true" />
-	</b:bean>
+    <bean id="securityContextPersistenceFilter"
+          class="org.springframework.security.web.context.SecurityContextPersistenceFilter"
+          p:forceEagerSessionCreation="true" />
 
-	<b:bean id="filterInvocationInterceptor"
-			class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
-		<b:property name="authenticationManager" ref="authenticationManager" />
-		<b:property name="accessDecisionManager" ref="accessDecisionManager" />
-		<b:property name="objectDefinitionSource">
-			<b:bean class="com.sun.identity.provider.springsecurity.OpenSSOObjectDefinitionSource">
-				<b:property name="anonymousUrls">
-					<b:list>
-						<b:value>/logout*</b:value>
-						<b:value>/denied*</b:value>
-						<b:value>/resources/*</b:value>
-						<b:value>/confirmationTradingDay*</b:value>
-						<b:value>/process*</b:value>
-					</b:list>
-				</b:property>
-			</b:bean>
-		</b:property>
-		<b:property name="observeOncePerRequest" value="false"/>
-	</b:bean>
+    <bean id="filterSecurityInterceptor"
+          class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor"
+          p:authenticationManager-ref="authenticationManager"
+          p:accessDecisionManager-ref="accessDecisionManager"
+          p:observeOncePerRequest="false">
+        <property name="objectDefinitionSource">
+            <bean class="org.flexpay.common.action.security.opensso.OpenSSOObjectDefinitionSource">
+                <property name="anonymousUrls">
+                    <list>
+                        <value>/logout*</value>
+                        <value>/denied*</value>
+                        <value>/resources/*</value>
+                        <value>/confirmationTradingDay*</value>
+                        <value>/process*</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<b:bean class="org.flexpay.common.action.security.opensso.AuthenticationProvider">
-		<security:custom-authentication-provider />
-		<b:property name="authenticationUserDetailsService" ref="authenticatedUserDetailsService" />
-	</b:bean>
+    <bean id="authenticationProvider"
+          class="org.flexpay.common.action.security.opensso.OpenSSOAuthenticationProvider"
+          p:authenticationUserDetailsService-ref="authenticatedUserDetailsService" />
 
-	<b:bean id="authenticatedUserDetailsService"
-			class="org.flexpay.common.service.impl.UserPreferencesAuthenticationService"
-			p:userPreferencesService-ref="userPreferencesService" />
+    <bean id="authenticatedUserDetailsService"
+          class="org.flexpay.common.service.impl.UserPreferencesAuthenticationService"
+          p:userPreferencesService-ref="userPreferencesService" />
 
-	<b:bean id="openssoFilter" class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilter">
-		<b:property name="authenticationManager" ref="authenticationManager" />
-		<b:property name="authenticationFailureUrl" value="/resources/common/jsp/forbidden.jsp" />
-		<b:property name="defaultTargetUrl" value="/" />
-		<b:property name="filterProcessesUrl" value="/j_spring_security_check" />
-	</b:bean>
+    <bean id="openssoFilter" 
+          class="org.flexpay.common.action.security.opensso.OpenSSOProcessingFilter"
+          p:postOnly="false"
+          p:authenticationManager-ref="authenticationManager"
+          p:authenticationFailureHandler-ref="authenticationFailureHandler"
+          p:authenticationSuccessHandler-ref="authenticationSuccessHandler"
+          p:filterProcessesUrl="/j_spring_security_check" />
 
-	<b:bean id="authenticationEntryPoint"
-			class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilterEntryPoint">
-		<b:property name="loginUrl" value="${app.config.common.opensso.url}" />
-		<b:property name="filterProcessesUrl" value="/j_spring_security_check" />
-	</b:bean>
+    <bean id="authenticationFailureHandler"
+          class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"
+          p:defaultFailureUrl="/resources/common/jsp/forbidden.jsp" />
 
-	<b:bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
-		<b:property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
-		<b:property name="accessDeniedHandler">
-			<b:bean class="org.springframework.security.ui.AccessDeniedHandlerImpl">
-				<b:property name="errorPage" value="/resources/common/jsp/forbidden.jsp" />
-			</b:bean>
-		</b:property>
-	</b:bean>
+    <bean id="authenticationSuccessHandler"
+          class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"
+          p:defaultTargetUrl="/" />
 
-	<b:bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
-		<b:constructor-arg value="/" />
-		<b:constructor-arg>
-			<b:list>
-				<b:bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler">
-					<b:property name="invalidateHttpSession" value="true" />
-				</b:bean>
-				<b:bean id="openSsoLogoutHandler"
-						class="com.sun.identity.provider.springsecurity.OpenSSOLogoutHandler" />
-			</b:list>
-		</b:constructor-arg>
-		<b:property name="filterProcessesUrl" value="/logout" />
-	</b:bean>
+    <bean id="accessDeniedHandler"
+          class="org.springframework.security.web.access.AccessDeniedHandlerImpl"
+          p:errorPage="/resources/common/jsp/forbidden.jsp" />
 
-	<!--
-		Using Affirmative voter will DENY all that which is not
-		explicitly allowed.
-	-->
-	<b:bean name="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
-		<b:property name="decisionVoters">
-			<b:list>
-				<b:bean class="com.sun.identity.provider.springsecurity.OpenSSOVoter" />
-			</b:list>
-		</b:property>
-		<b:property name="allowIfAllAbstainDecisions" value="true" />
-	</b:bean>
+    <bean id="authenticationEntryPoint"
+          class="org.flexpay.common.action.security.opensso.OpenSSOProcessingFilterEntryPoint"
+          p:loginUrl="${app.config.common.opensso.url}"
+          p:filterProcessesUrl="/j_spring_security_check" />
 
-	<b:bean id="authenticationProcessingFilter"
-			class="org.flexpay.common.action.security.FPAuthenticationProcessingFilter">
-		<security:custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
-		<b:property name="defaultTargetUrl" value="/" />
-		<b:property name="authenticationManager" ref="authenticationManager" />
-	</b:bean>
+    <bean id="exceptionTranslationFilter"
+          class="org.springframework.security.web.access.ExceptionTranslationFilter"
+          p:authenticationEntryPoint-ref="authenticationEntryPoint"
+          p:accessDeniedHandler-ref="accessDeniedHandler" />
 
-</b:beans>
+    <bean id="logoutFilter"
+          class="org.springframework.security.web.authentication.logout.LogoutFilter"
+          p:filterProcessesUrl="/logout">
+        <constructor-arg value="/" />
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"
+                      p:invalidateHttpSession="true" />
+                <bean id="openSsoLogoutHandler"
+                      class="org.flexpay.common.action.security.opensso.OpenSSOLogoutHandler" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!--
+        Using Affirmative voter will DENY all that which is not
+        explicitly allowed.
+    -->
+    <bean name="accessDecisionManager" 
+          class="org.springframework.security.access.vote.AffirmativeBased"
+          p:allowIfAllAbstainDecisions="true">
+        <property name="decisionVoters">
+            <list>
+                <bean class="org.flexpay.common.action.security.opensso.OpenSSOVoter" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="authenticationProcessingFilter"
+          class="org.flexpay.common.action.security.FPAuthenticationProcessingFilter"
+          p:postOnly="false"
+          p:authenticationSuccessHandler-ref="authenticationSuccessHandler"
+          p:authenticationManager-ref="authenticationManager" />
+
+</beans>

@@ -5,13 +5,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class MenuComponent extends MenuBase implements Serializable, InitializingBean {
 
@@ -19,7 +20,7 @@ public class MenuComponent extends MenuBase implements Serializable, Initializin
 
     protected static MenuComponent[] _menuComponent = new MenuComponent[0];
 
-    protected List<MenuComponent> menuComponents = new ArrayList<MenuComponent>();
+    protected List<MenuComponent> menuComponents = list();
     protected MenuComponent parent;
 	protected String name;
 	protected String userRole;

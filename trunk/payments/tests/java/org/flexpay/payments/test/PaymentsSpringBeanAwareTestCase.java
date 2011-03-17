@@ -1,23 +1,26 @@
 package org.flexpay.payments.test;
 
-import static org.flexpay.ab.service.Roles.*;
-import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
-import static org.flexpay.orgs.service.Roles.*;
-import static org.flexpay.payments.service.Roles.*;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-import org.springframework.security.userdetails.User;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.Resource;
+import java.util.List;
+
+import static org.flexpay.ab.service.Roles.*;
+import static org.flexpay.common.service.Roles.PROCESS_DELETE;
+import static org.flexpay.common.service.Roles.PROCESS_READ;
+import static org.flexpay.orgs.service.Roles.*;
+import static org.flexpay.payments.service.Roles.*;
 
 @ContextConfiguration (locations = {
 		"payments-beans.xml"
@@ -31,8 +34,9 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	 * Authenticate test user
 	 */
 	@Before
+    @Override
 	public void authenticateTestUser() {
-		GrantedAuthority[] authorities = SecurityUtil.auths(
+		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				PERSON_READ,
 				APARTMENT_READ,
 				BUILDING_ATTRIBUTE_TYPE_READ,
