@@ -1,7 +1,10 @@
 package org.flexpay.common.locking;
 
-import org.flexpay.common.util.CollectionUtils;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
+import org.hibernate.StatelessSession;
+import org.hibernate.Transaction;
+import org.hibernate.type.StandardBasicTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -11,12 +14,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.map;
+
 public class LockManager {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HibernateTemplate hibernateTemplate;
-	private Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
+	private Map<String, StatelessSession> lockedSessions = map();
 
 	/**
 	 * Private constructor
@@ -43,7 +48,7 @@ public class LockManager {
 
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
-		List list = acquireLock(session, semaphoreID);
+		List<?> list = acquireLock(session, semaphoreID);
 		if (list == null) {
 			log.debug("Semaphore already locked: {}", semaphoreID);
 			session.getTransaction().commit();
@@ -79,8 +84,8 @@ public class LockManager {
 
 		SQLQuery sqlQuery = session.createSQLQuery(
 				"select semaphoreID from common_semaphores_tbl where semaphoreID=:semaphoreID for update");
-		sqlQuery.addScalar("semaphoreID", Hibernate.STRING).setString("semaphoreID", semaphoreID);
-		List list;
+		sqlQuery.addScalar("semaphoreID", StandardBasicTypes.STRING).setString("semaphoreID", semaphoreID);
+		List<?> list;
 		try {
 			list = sqlQuery.list();
 		} catch (HibernateException e) {
