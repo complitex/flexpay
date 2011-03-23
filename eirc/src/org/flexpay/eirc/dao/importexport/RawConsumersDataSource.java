@@ -6,11 +6,12 @@ import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 

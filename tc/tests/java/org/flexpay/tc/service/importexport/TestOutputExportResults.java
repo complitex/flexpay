@@ -11,18 +11,15 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.jetbrains.annotations.NotNull;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,6 +29,10 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
+import static org.junit.Assert.assertNotNull;
 
 public class TestOutputExportResults extends SpringBeanAwareTestCase {
 

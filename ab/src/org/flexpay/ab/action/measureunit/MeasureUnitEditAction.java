@@ -5,14 +5,15 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.MeasureUnitService;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
-import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 public class MeasureUnitEditAction extends FPActionSupport {
 

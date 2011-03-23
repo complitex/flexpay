@@ -4,11 +4,12 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 public class TestUtils {
 

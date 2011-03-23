@@ -1,11 +1,9 @@
 package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

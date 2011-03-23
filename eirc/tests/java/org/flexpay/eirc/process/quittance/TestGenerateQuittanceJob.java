@@ -7,13 +7,14 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.service.ServiceOrganizationService;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestGenerateQuittanceJob extends EircSpringBeanAwareTestCase {
 

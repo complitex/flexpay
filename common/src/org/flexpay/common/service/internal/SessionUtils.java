@@ -1,7 +1,5 @@
 package org.flexpay.common.service.internal;
 
-import org.flexpay.common.persistence.DomainObject;
-
 import java.util.Collection;
 
 /**

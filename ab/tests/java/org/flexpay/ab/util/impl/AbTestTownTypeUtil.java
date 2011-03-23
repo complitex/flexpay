@@ -5,10 +5,8 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.ab.util.TestTownTypeUtil;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -17,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Set;
+
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class AbTestTownTypeUtil implements TestTownTypeUtil {
 

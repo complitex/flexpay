@@ -1,12 +1,13 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.bti.persistence.building.BtiBuilding;
-import org.flexpay.ab.service.ObjectsFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import static org.junit.Assert.assertTrue;
+import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestObjectsFactory extends BtiSpringBeanAwareTestCase {
 

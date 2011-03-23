@@ -3,11 +3,12 @@ package org.flexpay.ab.action.building;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class AddressAttributeTypesListAction extends FPActionSupport {
 

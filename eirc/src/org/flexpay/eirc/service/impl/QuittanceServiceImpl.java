@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.impl;
 
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;

@@ -1,13 +1,10 @@
 package org.flexpay.payments.export;
 
-import static junit.framework.Assert.assertTrue;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
-
 import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class TestTradingDay extends PaymentsSpringBeanAwareTestCase {
 

@@ -1,7 +1,5 @@
 package org.flexpay.orgs.service.history;
 
-import static org.flexpay.common.persistence.Stub.stub;
-
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
@@ -16,6 +14,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class PaymentPointHistoryGenerator implements HistoryGenerator<PaymentPoint> {
 

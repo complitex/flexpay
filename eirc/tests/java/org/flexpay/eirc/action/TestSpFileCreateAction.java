@@ -8,8 +8,6 @@ import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.action.spfile.SpFileUploadAction;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.jetbrains.annotations.NotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 

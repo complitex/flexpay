@@ -9,15 +9,16 @@ import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class RawApartmentDataConverter implements DataConverter<Apartment, RawApartmentData> {
 

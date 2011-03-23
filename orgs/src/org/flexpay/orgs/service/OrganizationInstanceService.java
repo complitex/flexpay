@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,8 +1,8 @@
 package org.flexpay.bti.service.history;
 
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
-import org.flexpay.bti.persistence.building.BuildingAttributeTypeName;
 import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeName;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
 import org.flexpay.bti.test.TestData;
@@ -10,12 +10,11 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.DiffProcessor;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import static org.junit.Assert.*;
 
 public class TestBuildingAttributeTypeHistoryBuilder extends BtiSpringBeanAwareTestCase {
 

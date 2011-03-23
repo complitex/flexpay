@@ -1,8 +1,9 @@
 package org.flexpay.ab.persistence.sorter;
 
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
 /**
  * Sorter that sorts streets by type

@@ -3,10 +3,11 @@ package org.flexpay.common.persistence.registry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.PairUtil.pair;
 
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.PairUtil.pair;
 
 public class RegistryRecordStatus extends DomainObject {
 

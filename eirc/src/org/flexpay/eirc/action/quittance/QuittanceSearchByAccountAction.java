@@ -1,12 +1,12 @@
 package org.flexpay.eirc.action.quittance;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.action.FPActionSupport;
-import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.service.EircAccountService;
+import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;

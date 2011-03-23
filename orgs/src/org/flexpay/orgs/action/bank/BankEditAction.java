@@ -2,8 +2,6 @@ package org.flexpay.orgs.action.bank;
 
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Bank;
 import org.flexpay.orgs.persistence.BankDescription;
@@ -15,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class BankEditAction extends FPActionSupport {
 

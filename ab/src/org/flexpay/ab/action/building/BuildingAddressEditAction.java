@@ -10,12 +10,13 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 
 public class BuildingAddressEditAction extends FPActionSupport {
 

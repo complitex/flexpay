@@ -12,13 +12,14 @@ import org.flexpay.eirc.process.quittance.report.SubServiceTotals;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestQuittanceInfoGenerator extends EircSpringBeanAwareTestCase {
 

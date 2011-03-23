@@ -1,15 +1,16 @@
 package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.SubdivisionService;
 import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.junit.Assert.*;
 
 public class TestSubdivisionHistoryBuilder extends OrgsSpringBeanAwareTestCase {
 

@@ -7,7 +7,6 @@ import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BuildingAttributesEditBlockAction extends FPActionSupport {
 

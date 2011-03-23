@@ -6,10 +6,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Transactional (readOnly = true)
 public class EircImportServiceTx2Impl extends ImportServiceImpl implements EircImportServiceTx {

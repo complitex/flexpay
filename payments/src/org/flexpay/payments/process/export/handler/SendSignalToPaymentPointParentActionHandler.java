@@ -1,7 +1,6 @@
 package org.flexpay.payments.process.export.handler;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.springframework.beans.factory.annotation.Required;

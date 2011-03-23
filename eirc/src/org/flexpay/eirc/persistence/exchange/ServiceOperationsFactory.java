@@ -1,14 +1,15 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.bti.service.ApartmentAttributeTypeService;
 import org.flexpay.bti.service.BtiApartmentService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.RegistryFileService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
 import org.flexpay.eirc.service.*;
@@ -19,9 +20,7 @@ import org.flexpay.payments.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;

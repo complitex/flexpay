@@ -1,8 +1,8 @@
 package org.flexpay.eirc.dao;
 
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnum;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 
 public interface ConsumerAttributeTypeDaoExt {
 

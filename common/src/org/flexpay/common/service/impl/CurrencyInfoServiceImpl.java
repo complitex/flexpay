@@ -1,8 +1,8 @@
 package org.flexpay.common.service.impl;
 
-import org.flexpay.common.service.CurrencyInfoService;
-import org.flexpay.common.persistence.CurrencyInfo;
 import org.flexpay.common.dao.CurrencyInfoDao;
+import org.flexpay.common.persistence.CurrencyInfo;
+import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Required;
 

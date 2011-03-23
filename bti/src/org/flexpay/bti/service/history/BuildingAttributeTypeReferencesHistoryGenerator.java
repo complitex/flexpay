@@ -1,8 +1,7 @@
 package org.flexpay.bti.service.history;
 
-import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
-import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

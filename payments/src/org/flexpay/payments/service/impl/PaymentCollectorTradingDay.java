@@ -1,13 +1,11 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.process.export.ExportJobParameterNames;
 import org.flexpay.payments.service.GeneralizationTradingDay;
 import org.flexpay.payments.service.TradingDay;

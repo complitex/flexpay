@@ -5,8 +5,8 @@ import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryConsumptionGroup;
 import org.flexpay.common.util.CollectionUtils;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class HistoryPackingContext {
 

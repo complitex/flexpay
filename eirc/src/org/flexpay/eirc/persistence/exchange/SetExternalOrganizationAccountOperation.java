@@ -12,15 +12,14 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateConsumer;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.orgs.persistence.Organization;
-
-import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
-
 import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 
 public class SetExternalOrganizationAccountOperation extends AbstractChangePersonalAccountOperation {
 

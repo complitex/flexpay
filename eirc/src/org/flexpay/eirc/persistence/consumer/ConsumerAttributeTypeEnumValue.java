@@ -1,7 +1,7 @@
 package org.flexpay.eirc.persistence.consumer;
 
-import org.flexpay.common.persistence.ValueObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.flexpay.common.persistence.ValueObject;
 
 public class ConsumerAttributeTypeEnumValue extends ValueObject {
 

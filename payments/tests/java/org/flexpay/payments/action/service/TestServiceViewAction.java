@@ -3,10 +3,11 @@ package org.flexpay.payments.action.service;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestServiceViewAction  extends PaymentsSpringBeanAwareTestCase {
 

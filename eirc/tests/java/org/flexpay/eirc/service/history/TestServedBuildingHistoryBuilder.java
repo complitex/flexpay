@@ -1,24 +1,25 @@
 package org.flexpay.eirc.service.history;
 
 import org.flexpay.ab.persistence.Building;
-import static org.flexpay.ab.persistence.TestData.IVANOVA_2;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.ServiceOrganization;
-import static org.flexpay.orgs.persistence.TestData.SRV_ORG_UCHASTOK45;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
+
+import static org.flexpay.ab.persistence.TestData.IVANOVA_2;
+import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.orgs.persistence.TestData.SRV_ORG_UCHASTOK45;
+import static org.junit.Assert.*;
 
 public class TestServedBuildingHistoryBuilder extends EircSpringBeanAwareTestCase {
 

@@ -1,13 +1,12 @@
 package org.flexpay.ab.service;
 
-import static org.flexpay.ab.service.Roles.*;
-import static org.flexpay.common.service.Roles.PROCESS_READ;
-import static org.flexpay.common.util.CollectionUtils.list;
-
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 
 import java.util.List;
+
+import static org.flexpay.ab.service.Roles.*;
+import static org.flexpay.common.service.Roles.PROCESS_READ;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public abstract class SyncSecurity {
 

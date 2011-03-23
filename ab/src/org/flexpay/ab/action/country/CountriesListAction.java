@@ -5,13 +5,14 @@ import org.flexpay.ab.persistence.sorter.CountrySorter;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
-import static org.flexpay.common.persistence.DomainObject.collectionIds;
-import static org.flexpay.common.util.CollectionUtils.arrayStack;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class CountriesListAction extends FPActionSupport {
 

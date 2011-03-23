@@ -2,19 +2,19 @@ package org.flexpay.common.action.jbpm;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.action.FPActionSupport;
-import org.flexpay.common.process.*;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.sql.SQLException;
+
+import static org.junit.Assert.*;
 
 public class TestProcessesCleanupAction extends SpringBeanAwareTestCase {
 

@@ -41,6 +41,7 @@ import java.util.Map;
  * @author Lucian Chirita (lucianc@users.sourceforge.net)
  * @version $Id: JRVirtualizationContext.java 3659 2010-03-31 10:20:49Z shertage $
  */
+@SuppressWarnings({"RawUseOfParameterizedType", "unchecked"})
 public class JRVirtualizationContext implements Serializable
 {
 	private static final long serialVersionUID = JRConstants.SERIAL_VERSION_UID;

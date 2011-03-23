@@ -11,12 +11,13 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
 /**
  * Dummy implementation, does nothing usefull

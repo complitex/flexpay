@@ -1,14 +1,15 @@
 package org.flexpay.common.persistence.morphology.number;
 
 import org.flexpay.common.persistence.morphology.Gender;
-import static org.flexpay.common.persistence.morphology.Gender.*;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.map;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.morphology.Gender.*;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class RuNumberToTextConverter implements NumberToTextConverter {
 

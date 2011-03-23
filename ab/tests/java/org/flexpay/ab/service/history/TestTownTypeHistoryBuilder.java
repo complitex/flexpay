@@ -4,9 +4,10 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.history.Diff;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.*;
 
 public class TestTownTypeHistoryBuilder extends AbSpringBeanAwareTestCase {
 

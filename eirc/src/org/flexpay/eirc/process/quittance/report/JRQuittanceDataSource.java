@@ -7,7 +7,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.ServedBuilding;
@@ -36,6 +35,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class JRQuittanceDataSource implements JRRewindableDataSource {
 

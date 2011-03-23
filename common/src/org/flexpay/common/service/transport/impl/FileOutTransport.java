@@ -4,10 +4,10 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.file.FPFile;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * OutTransport implementation that simply copies source file to configured directory

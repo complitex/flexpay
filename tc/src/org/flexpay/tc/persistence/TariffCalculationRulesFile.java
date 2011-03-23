@@ -3,9 +3,9 @@ package org.flexpay.tc.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileType;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 

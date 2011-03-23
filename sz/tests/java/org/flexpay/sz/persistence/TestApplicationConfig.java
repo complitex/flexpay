@@ -1,8 +1,9 @@
 package org.flexpay.sz.persistence;
 
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountry;
 import org.junit.Test;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountry;
 
 public class TestApplicationConfig extends AbSpringBeanAwareTestCase {
 

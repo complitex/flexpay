@@ -1,11 +1,12 @@
 package org.flexpay.tc.action.tariff;
 
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class TariffCalcRulesFileViewAction extends FPActionSupport {
 

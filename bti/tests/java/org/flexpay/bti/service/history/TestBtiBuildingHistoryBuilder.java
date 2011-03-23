@@ -6,23 +6,24 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.persistence.building.BuildingAttribute;
-import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.persistence.building.BuildingAttributeConfig;
-import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.flexpay.common.util.DateUtil;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.text.ParseException;
 import java.util.Set;
 import java.util.SortedSet;
-import java.text.ParseException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestBtiBuildingHistoryBuilder extends BtiSpringBeanAwareTestCase {
 

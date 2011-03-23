@@ -5,11 +5,12 @@ import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimplePerson;
 import org.flexpay.common.action.FPActionSupport;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.util.TestUtils.createSimplePerson;
+import static org.junit.Assert.*;
 
 public class TestPersonEditPageAction extends AbSpringBeanAwareTestCase {
 

@@ -6,17 +6,16 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.dao.PaymentPointDao;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentPointName;
-import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Payment points service implementation

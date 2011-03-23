@@ -3,7 +3,6 @@ package org.flexpay.payments.process.export.job;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
-import org.jbpm.job.Job;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;

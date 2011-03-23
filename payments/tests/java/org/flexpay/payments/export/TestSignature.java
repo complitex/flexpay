@@ -1,18 +1,19 @@
 package org.flexpay.payments.export;
 
-import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
 import org.apache.commons.io.IOUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.Signature;
 import java.security.PublicKey;
+import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.io.ByteArrayOutputStream;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestSignature extends PaymentsSpringBeanAwareTestCase {
 

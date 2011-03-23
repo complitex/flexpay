@@ -6,7 +6,6 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
@@ -20,6 +19,8 @@ import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ObjectIdentifierSyncOperation extends ContainerOperation {
 

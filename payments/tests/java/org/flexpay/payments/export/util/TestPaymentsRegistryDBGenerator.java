@@ -1,6 +1,5 @@
 package org.flexpay.payments.export.util;
 
-import static junit.framework.Assert.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
@@ -20,6 +19,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static junit.framework.Assert.*;
 
 public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTestCase {
 

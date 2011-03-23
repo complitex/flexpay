@@ -9,12 +9,13 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 

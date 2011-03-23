@@ -1,7 +1,7 @@
 package org.flexpay.eirc.dao.importexport;
 
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 public class RawConsumersDataUtil {

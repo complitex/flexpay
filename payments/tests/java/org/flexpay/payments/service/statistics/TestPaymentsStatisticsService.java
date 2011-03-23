@@ -1,13 +1,14 @@
 package org.flexpay.payments.service.statistics;
 
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 
 public class TestPaymentsStatisticsService extends PaymentsSpringBeanAwareTestCase {
 

@@ -3,7 +3,6 @@ package org.flexpay.eirc.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,6 +10,8 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 public class QuittancePacket extends DomainObjectWithStatus {
 

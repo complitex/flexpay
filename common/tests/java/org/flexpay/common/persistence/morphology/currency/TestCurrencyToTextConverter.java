@@ -1,12 +1,13 @@
 package org.flexpay.common.persistence.morphology.currency;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.service.CurrencyInfoService;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestCurrencyToTextConverter extends SpringBeanAwareTestCase {
 

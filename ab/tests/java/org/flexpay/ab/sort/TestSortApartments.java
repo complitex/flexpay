@@ -12,12 +12,13 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 
 public class TestSortApartments extends AbSpringBeanAwareTestCase {
 

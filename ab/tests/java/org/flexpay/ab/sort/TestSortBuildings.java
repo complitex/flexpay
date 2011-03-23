@@ -8,12 +8,13 @@ import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.junit.Assert.assertNotSame;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.junit.Assert.assertNotSame;
 
 public class TestSortBuildings extends AbSpringBeanAwareTestCase {
 

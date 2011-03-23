@@ -3,16 +3,17 @@ package org.flexpay.eirc.reports.quittance;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
-import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNonNegative;
 import org.flexpay.eirc.process.quittance.report.ServiceTotals;
 import org.flexpay.eirc.process.quittance.report.ServiceTotalsComparator;
+import org.flexpay.payments.persistence.ServiceType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
+
+import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNonNegative;
 
 /**
  * Container for all necessary Quittance information with calculated sums, service

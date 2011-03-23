@@ -1,8 +1,8 @@
 package org.flexpay.common.persistence.registry.workflow;
 
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryStatus;
-import org.flexpay.common.persistence.ImportError;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

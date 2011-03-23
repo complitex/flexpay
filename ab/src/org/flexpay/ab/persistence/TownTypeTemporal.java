@@ -2,9 +2,10 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TypeDateInterval;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 import java.util.Date;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 /**
  * Temporal value of town type

@@ -74,6 +74,7 @@ public abstract class TaskHelper {
 		return getTransitions(processManager, actorName, processInstanceId, transitionName, log, true);
 	}
 
+    @SuppressWarnings({"unchecked"})
     public static Set<?> getTransitions(@NotNull final ProcessManager processManager, @NotNull final String actorName, final long processInstanceId,
                                       @Nullable final String transitionName, @NotNull final Logger log, boolean required) {
 

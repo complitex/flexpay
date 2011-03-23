@@ -2,12 +2,13 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestPerson extends AbSpringBeanAwareTestCase {
 

@@ -1,9 +1,9 @@
 package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentCollectorDescription;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

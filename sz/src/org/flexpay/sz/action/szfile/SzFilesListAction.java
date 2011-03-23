@@ -2,13 +2,14 @@ package org.flexpay.sz.action.szfile;
 
 import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class SzFilesListAction extends FPActionWithPagerSupport<SzFile> {
 

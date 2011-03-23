@@ -5,15 +5,14 @@ import org.flexpay.ab.service.history.BuildingHistoryBuilder;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.persistence.building.BuildingAttribute;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
-import org.flexpay.bti.service.importexport.impl.ClassToTypeRegistryBti;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
-import static org.flexpay.common.persistence.ValueObject.*;
+import org.flexpay.bti.service.importexport.impl.ClassToTypeRegistryBti;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
-import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper;
 import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper;
 import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +21,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Date;
 import java.util.Set;
 import java.util.SortedSet;
+
+import static org.flexpay.common.persistence.ValueObject.*;
 
 public class BtiBuildingHistoryBuilder extends BuildingHistoryBuilder {
 

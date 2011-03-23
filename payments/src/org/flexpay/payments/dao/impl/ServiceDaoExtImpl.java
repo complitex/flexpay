@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

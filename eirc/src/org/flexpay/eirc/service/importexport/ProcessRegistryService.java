@@ -2,7 +2,6 @@ package org.flexpay.eirc.service.importexport;
 
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance;

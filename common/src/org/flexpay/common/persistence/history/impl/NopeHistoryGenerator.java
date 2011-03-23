@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history.impl;
 
-import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

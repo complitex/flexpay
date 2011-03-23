@@ -17,10 +17,10 @@ package com.opensymphony.xwork2;
 
 import com.opensymphony.xwork2.inject.Container;
 import com.opensymphony.xwork2.util.ValueStack;
-import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.config.UserPreferences;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;

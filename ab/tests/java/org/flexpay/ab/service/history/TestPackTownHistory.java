@@ -7,12 +7,13 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.service.HistoryConsumerService;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestPackTownHistory extends AbSpringBeanAwareTestCase {
 

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.registry;
 
-import static org.flexpay.ab.persistence.TestData.IVANOVA_27_1;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -13,18 +12,20 @@ import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
-import static org.flexpay.orgs.persistence.TestData.ORG_CN;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.SPService;
-import static org.flexpay.payments.test.TestData.SRV_KVARPLATA;
-import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+
+import static org.flexpay.ab.persistence.TestData.IVANOVA_27_1;
+import static org.flexpay.orgs.persistence.TestData.ORG_CN;
+import static org.flexpay.payments.test.TestData.SRV_KVARPLATA;
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 
 public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCase {
 

@@ -7,14 +7,15 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.junit.Assert.*;
 
 public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 

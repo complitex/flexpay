@@ -3,11 +3,9 @@ package org.flexpay.common.service.impl;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class UserPreferencesAuthenticationService implements AuthenticationUserDetailsService {

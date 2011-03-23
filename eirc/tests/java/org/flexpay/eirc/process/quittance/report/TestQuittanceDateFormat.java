@@ -1,12 +1,13 @@
 package org.flexpay.eirc.process.quittance.report;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestQuittanceDateFormat {
 

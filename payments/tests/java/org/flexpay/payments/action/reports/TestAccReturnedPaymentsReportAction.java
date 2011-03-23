@@ -2,10 +2,11 @@ package org.flexpay.payments.action.reports;
 
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestAccReturnedPaymentsReportAction extends PaymentsSpringBeanAwareTestCase {
 

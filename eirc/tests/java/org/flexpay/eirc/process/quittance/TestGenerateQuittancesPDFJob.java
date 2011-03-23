@@ -5,8 +5,6 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class TestGenerateQuittancesPDFJob extends EircSpringBeanAwareTestCase {
 

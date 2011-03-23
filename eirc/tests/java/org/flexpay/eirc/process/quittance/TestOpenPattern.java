@@ -3,13 +3,14 @@ package org.flexpay.eirc.process.quittance;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import org.apache.commons.io.IOUtils;
-import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
+import static org.junit.Assert.assertNotNull;
 
 public class TestOpenPattern {
 

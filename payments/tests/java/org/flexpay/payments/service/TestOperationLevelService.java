@@ -3,13 +3,13 @@ package org.flexpay.payments.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.payments.persistence.OperationLevel;
-import static org.flexpay.payments.persistence.OperationLevel.*;
 import org.flexpay.payments.persistence.OperationLevelTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.util.config.ApplicationConfig;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.payments.persistence.OperationLevel.*;
+import static org.junit.Assert.*;
 
 public class TestOperationLevelService extends PaymentsSpringBeanAwareTestCase {
 

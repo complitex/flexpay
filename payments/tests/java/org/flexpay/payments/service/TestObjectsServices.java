@@ -1,17 +1,24 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.*;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.MeasureUnitName;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.MeasureUnitService;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.*;
-import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceDescription;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class TestObjectsServices extends PaymentsSpringBeanAwareTestCase {
 

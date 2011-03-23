@@ -6,7 +6,6 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BuildingAttributesEditPageAction extends FPActionSupport {
 

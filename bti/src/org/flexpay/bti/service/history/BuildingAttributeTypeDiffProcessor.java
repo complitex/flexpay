@@ -1,8 +1,8 @@
 package org.flexpay.bti.service.history;
 
-import org.flexpay.common.persistence.history.DiffProcessor;
-import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.DiffProcessor;
 
 public class BuildingAttributeTypeDiffProcessor implements DiffProcessor<BuildingAttributeType> {
 

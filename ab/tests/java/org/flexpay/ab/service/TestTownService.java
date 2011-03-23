@@ -2,18 +2,19 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegion;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegion;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
+import static org.junit.Assert.assertEquals;
 
 public class TestTownService extends AbSpringBeanAwareTestCase {
 

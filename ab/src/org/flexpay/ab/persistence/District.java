@@ -3,13 +3,14 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 public class District extends NameTimeDependentChild<DistrictName, DistrictNameTemporal> {
 

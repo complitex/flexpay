@@ -2,7 +2,6 @@ package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.FilterHandler;
 import org.flexpay.common.persistence.filter.*;
-import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;

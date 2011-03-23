@@ -8,10 +8,11 @@ import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import static org.junit.Assert.*;
 
 public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 

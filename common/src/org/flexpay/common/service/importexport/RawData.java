@@ -3,12 +3,13 @@ package org.flexpay.common.service.importexport;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
-import static org.flexpay.common.util.CollectionUtils.map;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
 
 /**
  * Raw import data for DomainObject

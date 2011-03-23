@@ -3,9 +3,10 @@ package org.flexpay.payments.action.registry;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestRegistryViewPageAction extends PaymentsSpringBeanAwareTestCase {
 

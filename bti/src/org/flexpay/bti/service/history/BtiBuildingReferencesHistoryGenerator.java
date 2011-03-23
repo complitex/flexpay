@@ -1,7 +1,7 @@
 package org.flexpay.bti.service.history;
 
-import org.flexpay.ab.service.history.BuildingReferencesHistoryGenerator;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.history.BuildingReferencesHistoryGenerator;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.jetbrains.annotations.NotNull;

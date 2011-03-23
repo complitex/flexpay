@@ -6,8 +6,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Bank;
 import org.flexpay.orgs.persistence.BankDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
-import org.flexpay.orgs.persistence.filters.BankFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.access.annotation.Secured;

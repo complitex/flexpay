@@ -1,9 +1,9 @@
 package org.flexpay.eirc.persistence.exchange.delayed;
 
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.bti.service.BtiApartmentService;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 
 public class DelayedUpdateApartmentAttributes implements DelayedUpdate {
 

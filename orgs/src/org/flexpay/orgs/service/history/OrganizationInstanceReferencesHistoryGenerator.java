@@ -1,8 +1,8 @@
 package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
-import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.flexpay.orgs.persistence.OrganizationInstance;
+import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.jetbrains.annotations.NotNull;
 
 public class OrganizationInstanceReferencesHistoryGenerator<

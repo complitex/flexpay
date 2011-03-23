@@ -3,10 +3,11 @@ package org.flexpay.common.dao;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateCallback;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestCountOptimize extends SpringBeanAwareTestCase {
 

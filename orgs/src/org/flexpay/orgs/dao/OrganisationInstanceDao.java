@@ -1,8 +1,8 @@
 package org.flexpay.orgs.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;

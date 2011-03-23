@@ -6,14 +6,12 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.action.TestSpFileCreateAction;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.payments.service.EircRegistryService;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
-
-import static junit.framework.Assert.assertNotNull;
 
 public class TestMbChargesFileParser extends TestSpFileCreateAction {
 

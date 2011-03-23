@@ -1,12 +1,12 @@
 package org.flexpay.bti.service.history;
 
+import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
+import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
-import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

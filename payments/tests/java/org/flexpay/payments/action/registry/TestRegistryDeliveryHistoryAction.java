@@ -3,10 +3,11 @@ package org.flexpay.payments.action.registry;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestRegistryDeliveryHistoryAction extends PaymentsSpringBeanAwareTestCase {
 

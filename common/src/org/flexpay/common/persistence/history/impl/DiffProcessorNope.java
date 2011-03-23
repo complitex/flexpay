@@ -1,8 +1,8 @@
 package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.history.DiffProcessor;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.DiffProcessor;
 
 public class DiffProcessorNope<T extends DomainObject> implements DiffProcessor<T> {
 

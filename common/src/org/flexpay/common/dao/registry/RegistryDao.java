@@ -3,7 +3,6 @@ package org.flexpay.common.dao.registry;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;

@@ -4,10 +4,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecordProperties;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.Nullable;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class EircRegistryRecordProperties extends RegistryRecordProperties {
 

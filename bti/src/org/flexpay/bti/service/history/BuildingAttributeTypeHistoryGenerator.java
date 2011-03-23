@@ -2,7 +2,6 @@ package org.flexpay.bti.service.history;
 
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -13,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BuildingAttributeTypeHistoryGenerator implements HistoryGenerator<BuildingAttributeType> {
 

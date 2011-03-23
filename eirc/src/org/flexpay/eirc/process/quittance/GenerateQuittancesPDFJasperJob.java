@@ -8,8 +8,6 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
-import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.reports.quittance.QuittancePrintInfoData;
@@ -22,6 +20,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
+import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
 
 public class GenerateQuittancesPDFJasperJob extends Job {
 

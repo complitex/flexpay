@@ -1,7 +1,5 @@
 package org.flexpay.payments.export.util;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
@@ -10,8 +8,8 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.ReaderCallback;
-import org.flexpay.payments.service.registry.impl.RegistryWriterImpl;
 import org.flexpay.payments.service.registry.RegistryWriter;
+import org.flexpay.payments.service.registry.impl.RegistryWriterImpl;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.SignatureException;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 

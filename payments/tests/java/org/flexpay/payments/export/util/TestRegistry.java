@@ -1,22 +1,22 @@
 package org.flexpay.payments.export.util;
 
-import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.common.service.*;
-import org.flexpay.common.persistence.registry.*;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.service.*;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.junit.Test;
-import static org.junit.Assert.assertNotSame;
 
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
 public class TestRegistry extends PaymentsSpringBeanAwareTestCase {
     @Autowired

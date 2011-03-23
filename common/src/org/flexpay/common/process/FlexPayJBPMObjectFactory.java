@@ -1,17 +1,17 @@
 package org.flexpay.common.process;
 
-import org.springmodules.workflow.jbpm31.JbpmObjectFactory;
+import org.jbpm.JbpmConfiguration;
 import org.jbpm.configuration.ObjectFactoryImpl;
 import org.jbpm.configuration.ObjectFactoryParser;
-import org.jbpm.JbpmConfiguration;
-import org.springframework.core.io.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Required;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springmodules.workflow.jbpm31.JbpmObjectFactory;
 
-import java.io.*;
+import java.io.InputStream;
 
 /**
  * Workaround http://www.jboss.org/index.html?module=bb&op=viewtopic&p=4181668#4181668

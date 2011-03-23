@@ -1,9 +1,9 @@
 package org.flexpay.tc.service;
 
-import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.flexpay.common.persistence.Stub;
-import org.springframework.security.access.annotation.Secured;
+import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.access.annotation.Secured;
 
 public interface TariffExportLogRecordService {
 

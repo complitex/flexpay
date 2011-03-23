@@ -1,25 +1,21 @@
 package org.flexpay.eirc.action;
 
 import org.flexpay.common.action.FPActionSupport;
-
-import static junit.framework.Assert.assertNull;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryFileService;
-import static org.flexpay.common.util.CollectionUtils.ar;
-
 import org.flexpay.common.util.impl.CommonTestRegistryUtil;
 import org.flexpay.eirc.action.spfile.SpFileAction;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
+
+import static junit.framework.Assert.assertNull;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.junit.Assert.*;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
 

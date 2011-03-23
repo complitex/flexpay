@@ -5,12 +5,13 @@ import org.flexpay.ab.service.importexport.RawPersonData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 

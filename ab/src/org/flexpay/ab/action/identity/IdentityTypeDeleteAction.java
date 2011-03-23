@@ -2,11 +2,12 @@ package org.flexpay.ab.action.identity;
 
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class IdentityTypeDeleteAction extends FPActionSupport {
 

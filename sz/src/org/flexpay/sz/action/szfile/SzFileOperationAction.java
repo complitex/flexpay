@@ -4,11 +4,7 @@ import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
-
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.sz.persistence.SzFile;
-import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -16,6 +12,10 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 
 public class SzFileOperationAction extends FPActionSupport {
 

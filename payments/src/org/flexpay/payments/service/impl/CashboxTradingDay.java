@@ -3,7 +3,6 @@ package org.flexpay.payments.service.impl;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.TaskHelper;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.service.GeneralizationTradingDay;
 import org.jetbrains.annotations.NotNull;
 

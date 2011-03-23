@@ -6,11 +6,12 @@ import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 

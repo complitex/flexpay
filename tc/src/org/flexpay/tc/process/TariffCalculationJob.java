@@ -5,7 +5,6 @@ import org.drools.RuleBaseFactory;
 import org.drools.WorkingMemory;
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
@@ -26,6 +25,8 @@ import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 
 public class TariffCalculationJob extends Job {
 

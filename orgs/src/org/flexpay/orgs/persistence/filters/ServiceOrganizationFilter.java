@@ -1,6 +1,5 @@
 package org.flexpay.orgs.persistence.filters;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
 

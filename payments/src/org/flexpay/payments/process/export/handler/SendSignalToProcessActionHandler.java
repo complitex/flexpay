@@ -4,9 +4,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.handler.FlexPayActionHandler;
-import org.jbpm.JbpmException;
-import org.jbpm.graph.def.Transition;
-import org.jbpm.graph.exe.ProcessInstance;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;

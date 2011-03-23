@@ -1,8 +1,8 @@
 package org.flexpay.common.service.history;
 
-import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
-import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

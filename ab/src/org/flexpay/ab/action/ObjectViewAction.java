@@ -2,10 +2,11 @@ package org.flexpay.ab.action;
 
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.*;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public abstract class ObjectViewAction<
 		TV extends TemporaryValue<TV>,

@@ -1,6 +1,5 @@
 package org.flexpay.tc.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;

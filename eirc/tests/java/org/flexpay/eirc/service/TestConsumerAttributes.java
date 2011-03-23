@@ -8,13 +8,14 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.sql.SQLException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestConsumerAttributes extends EircSpringBeanAwareTestCase {
 

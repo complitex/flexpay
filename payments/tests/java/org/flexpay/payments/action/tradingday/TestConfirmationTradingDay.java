@@ -1,8 +1,5 @@
 package org.flexpay.payments.action.tradingday;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
@@ -17,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
 

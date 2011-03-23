@@ -11,13 +11,14 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
-import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 

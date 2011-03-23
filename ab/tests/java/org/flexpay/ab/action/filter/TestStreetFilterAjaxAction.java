@@ -1,14 +1,14 @@
 package org.flexpay.ab.action.filter;
 
-import org.flexpay.common.action.filter.FilterAjaxAction;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
-
+import org.flexpay.common.action.filter.FilterAjaxAction;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.*;
 
 public class TestStreetFilterAjaxAction extends AbSpringBeanAwareTestCase {
 

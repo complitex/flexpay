@@ -8,9 +8,10 @@ import org.flexpay.orgs.persistence.BankDescription;
 import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.orgs.service.BankService;
 import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.*;
 
 public class TestBankHistoryBuilder extends OrgsSpringBeanAwareTestCase {
 

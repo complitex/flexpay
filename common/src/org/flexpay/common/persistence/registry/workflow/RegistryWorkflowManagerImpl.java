@@ -6,7 +6,6 @@ import org.flexpay.common.dao.registry.RegistryDaoExt;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryStatus;
-import static org.flexpay.common.persistence.registry.RegistryStatus.*;
 import org.flexpay.common.service.RegistryStatusService;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
@@ -19,6 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.registry.RegistryStatus.*;
 
 /**
  * Helper class for registries workflow

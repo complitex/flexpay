@@ -1,13 +1,13 @@
 package org.flexpay.eirc.sp.impl;
 
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 

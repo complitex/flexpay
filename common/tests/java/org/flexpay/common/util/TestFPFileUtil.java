@@ -1,12 +1,12 @@
 package org.flexpay.common.util;
 
 import org.flexpay.common.util.config.ApplicationConfig;
-
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-import java.util.Calendar;
 import java.io.File;
+import java.util.Calendar;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestFPFileUtil {
 

@@ -7,7 +7,6 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.tc.dao.TariffCalculationRulesFileDao;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

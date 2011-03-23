@@ -1,9 +1,9 @@
 package org.flexpay.common.service.impl;
 
-import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.service.UserPreferencesDefaults;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.util.config.UserPreferences;
 
 public class UserPreferencesDefaultsCommon implements UserPreferencesDefaults {
 

@@ -4,11 +4,11 @@ import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class TestUserPreferencesService extends PaymentsSpringBeanAwareTestCase {
 

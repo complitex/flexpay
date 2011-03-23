@@ -1,9 +1,8 @@
 package org.flexpay.common.persistence;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.NonNls;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Attribute

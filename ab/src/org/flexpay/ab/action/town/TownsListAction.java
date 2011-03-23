@@ -8,14 +8,15 @@ import org.flexpay.ab.persistence.sorter.TownSorterByType;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.action.FPActionWithPagerSupport;
-import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.util.CollectionUtils.arrayStack;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class TownsListAction extends FPActionWithPagerSupport<Town> {
 

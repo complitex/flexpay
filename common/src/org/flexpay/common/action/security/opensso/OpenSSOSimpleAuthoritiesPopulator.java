@@ -9,7 +9,6 @@ import com.sun.identity.idm.IdUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 

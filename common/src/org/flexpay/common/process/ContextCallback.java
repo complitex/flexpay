@@ -1,8 +1,7 @@
 package org.flexpay.common.process;
 
-import org.jetbrains.annotations.NotNull;
 import org.jbpm.JbpmContext;
-import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jetbrains.annotations.NotNull;
 
 public interface ContextCallback<T> {
 

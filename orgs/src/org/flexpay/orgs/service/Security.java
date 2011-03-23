@@ -1,6 +1,7 @@
 package org.flexpay.orgs.service;
 
 import org.flexpay.common.util.CollectionUtils;
+
 import static org.flexpay.orgs.service.Roles.*;
 
 public abstract class Security extends org.flexpay.common.service.Security {

@@ -5,13 +5,14 @@ import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.history.Diff;
-import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestIdentityTypeHistoryBuilder extends AbSpringBeanAwareTestCase {
 

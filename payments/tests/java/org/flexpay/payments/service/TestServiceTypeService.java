@@ -5,15 +5,16 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
+import static org.junit.Assert.*;
 
 public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 

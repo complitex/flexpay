@@ -2,7 +2,6 @@ package org.flexpay.orgs.action.serviceprovider;
 
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
@@ -15,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ServiceProviderEditAction extends FPActionSupport {
 

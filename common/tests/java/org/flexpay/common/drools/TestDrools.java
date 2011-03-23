@@ -5,11 +5,12 @@ import org.drools.RuleBaseFactory;
 import org.drools.WorkingMemory;
 import org.drools.compiler.PackageBuilder;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import java.io.Reader;
 import java.io.StringReader;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test If drools library configured properly

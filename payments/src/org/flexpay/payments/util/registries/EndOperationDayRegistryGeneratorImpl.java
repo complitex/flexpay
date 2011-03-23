@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.persistence.DocumentAdditionType;

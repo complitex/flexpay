@@ -2,7 +2,6 @@ package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.locking.LockManager;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.service.transport.OutTransport;
 import org.slf4j.Logger;
@@ -10,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class HistoryConsumptionGroupsDistributor {
 

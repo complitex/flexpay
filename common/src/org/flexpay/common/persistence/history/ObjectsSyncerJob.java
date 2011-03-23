@@ -1,11 +1,11 @@
 package org.flexpay.common.persistence.history;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.common.service.Security;
-import org.flexpay.common.locking.LockManager;
-import org.flexpay.common.dao.paging.FetchRange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;

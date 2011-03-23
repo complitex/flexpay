@@ -4,8 +4,8 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 public interface BtiBuildingDaoExt {
 

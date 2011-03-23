@@ -2,14 +2,15 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestApartment extends AbSpringBeanAwareTestCase {
 

@@ -1,9 +1,10 @@
 package org.flexpay.eirc.util.config;
 
-import static org.flexpay.ab.util.config.ApplicationConfig.*;
 import org.flexpay.common.util.config.TestCommonConfigLoader;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Test is config loads OK

@@ -9,14 +9,15 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.dao.paging.Page;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.junit.Assert.assertFalse;
 
 public class TestHQLSortBuildings extends AbSpringBeanAwareTestCase {
 

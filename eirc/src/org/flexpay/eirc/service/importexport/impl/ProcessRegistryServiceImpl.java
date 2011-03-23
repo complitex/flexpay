@@ -16,7 +16,6 @@ import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.persistence.exchange.SetExternalOrganizationAccountOperation;
 import org.flexpay.eirc.persistence.exchange.SetResponsiblePersonOperation;
 import org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance;
-import org.flexpay.eirc.process.registry.error.HandleError;
 import org.flexpay.eirc.service.ProcessRegistryVariableInstanceService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.eirc.service.importexport.ProcessRecordsRangeService;

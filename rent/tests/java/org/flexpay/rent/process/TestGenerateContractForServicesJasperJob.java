@@ -2,14 +2,9 @@ package org.flexpay.rent.process;
 
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.rent.reports.contract.ContractForServicesAppendix1Form;
 import org.flexpay.rent.reports.contract.ContractForServicesForm;
 import org.flexpay.rent.test.RentSpringBeanAwareTestCase;
-
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,6 +12,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwareTestCase {
 

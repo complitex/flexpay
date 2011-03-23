@@ -2,10 +2,11 @@ package org.flexpay.common.service;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.UserPreferences;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import org.junit.Test;
 
 public class TestUserPreferencesService extends SpringBeanAwareTestCase {
 

@@ -2,10 +2,11 @@ package org.flexpay.ab.action.country;
 
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.action.FPActionSupport;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TestCountriesListAction extends AbSpringBeanAwareTestCase {
 

@@ -9,8 +9,6 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.tc.test.TcSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +16,9 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TestImportTcBuildingAttributes extends TcSpringBeanAwareTestCase {
 

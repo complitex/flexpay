@@ -4,11 +4,12 @@ import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleRegion;
 import org.flexpay.common.action.FPActionSupport;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleRegion;
+import static org.junit.Assert.*;
 
 public class TestRegionViewAction extends AbSpringBeanAwareTestCase {
 

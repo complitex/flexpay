@@ -2,9 +2,10 @@ package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.service.importexport.RawData;
-import static org.flexpay.common.util.CollectionUtils.set;
 
 import java.util.Collection;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class RawStreetData extends RawData<Street> {
 

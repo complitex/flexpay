@@ -10,14 +10,15 @@ import org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.HistoryConsumerService;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestSoapHistoryTransport extends AbSpringBeanAwareTestCase {
 

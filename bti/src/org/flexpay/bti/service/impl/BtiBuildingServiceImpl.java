@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 @Transactional (readOnly = true)
 public class BtiBuildingServiceImpl implements BtiBuildingService {

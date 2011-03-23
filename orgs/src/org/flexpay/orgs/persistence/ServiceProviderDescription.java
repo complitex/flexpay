@@ -1,7 +1,7 @@
 package org.flexpay.orgs.persistence;
 
-import org.jetbrains.annotations.NotNull;
 import org.flexpay.common.persistence.Language;
+import org.jetbrains.annotations.NotNull;
 
 public class ServiceProviderDescription extends OrganizationInstanceDescription {
 

@@ -1,15 +1,15 @@
 package org.flexpay.common.dao;
 
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestMeasureUnitDao extends SpringBeanAwareTestCase {
 

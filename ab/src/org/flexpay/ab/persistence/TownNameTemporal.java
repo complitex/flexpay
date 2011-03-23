@@ -1,9 +1,10 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.NameDateInterval;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 import java.util.Date;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 public class TownNameTemporal extends NameDateInterval<TownName, TownNameTemporal> {
 

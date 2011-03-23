@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp.impl.validation;
 
-import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
+import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;

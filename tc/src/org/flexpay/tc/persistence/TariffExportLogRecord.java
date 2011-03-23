@@ -1,9 +1,9 @@
 package org.flexpay.tc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.ab.persistence.Building;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.persistence.DomainObject;
 
 import java.util.Date;
 

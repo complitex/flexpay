@@ -14,13 +14,14 @@ import org.flexpay.payments.persistence.DocumentAdditionType;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.OperationService;
-import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 
 public class PaymentOperationDelayedUpdate implements
 		DelayedUpdate, UpdatesListener, PaymentPointAwareUpdate, ExternalOrganizationAccountAwareUpdate {

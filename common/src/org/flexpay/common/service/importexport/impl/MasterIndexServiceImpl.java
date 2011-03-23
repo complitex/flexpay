@@ -5,18 +5,19 @@ import org.flexpay.common.dao.DataSourceDescriptionDao;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional
 public class MasterIndexServiceImpl implements MasterIndexService {

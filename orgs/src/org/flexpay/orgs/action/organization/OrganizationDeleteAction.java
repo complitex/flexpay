@@ -1,12 +1,13 @@
 package org.flexpay.orgs.action.organization;
 
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.orgs.service.OrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class OrganizationDeleteAction extends FPActionSupport {
 

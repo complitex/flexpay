@@ -2,19 +2,19 @@ package org.flexpay.payments.service;
 
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.TestData;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.dao.ServiceDaoExt;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestServiceDao extends PaymentsSpringBeanAwareTestCase {
 

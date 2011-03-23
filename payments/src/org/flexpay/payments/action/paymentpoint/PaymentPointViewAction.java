@@ -1,11 +1,12 @@
 package org.flexpay.payments.action.paymentpoint;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.action.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class PaymentPointViewAction extends AccountantAWPActionSupport {
 

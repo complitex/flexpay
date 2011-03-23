@@ -1,8 +1,9 @@
 package org.flexpay.common.persistence.morphology.number;
 
 import org.flexpay.common.persistence.morphology.Gender;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestEnNumberToTextConverter {
 
