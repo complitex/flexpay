@@ -17,7 +17,7 @@
     <tr>
         <td id="result" colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="eircAccountCreate" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="eircAccountCreate"><s:param name="region.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -37,7 +37,7 @@
             return;
         }
         var opt = {
-            action: "<s:url action="eircAccountsListAjax" namespace="/eirc" includeParams="none" />",
+            action: "<s:url action="eircAccountsListAjax" namespace="/eirc" />",
             params: {
                 output: $("#output").val(),
                 apartmentFilter: af,

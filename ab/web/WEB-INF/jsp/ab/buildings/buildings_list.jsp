@@ -14,7 +14,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location = '<s:url action="buildingCreate" includeParams="none" />'"
+                   onclick="window.location = '<s:url action="buildingCreate" />'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -37,10 +37,10 @@
                 <input type="checkbox" value="<s:property value="id" />" name="objectIds" />
             </td>
             <td class="col">
-                <a href="<s:url action="apartmentsList" includeParams="none"><s:param name="buildingFilter" value="id" /></s:url>"><s:property value="getBuildingNumber(#buildingAddress)" /></a>
+                <a href="<s:url action="apartmentsList"><s:param name="buildingFilter" value="id" /></s:url>"><s:property value="getBuildingNumber(#buildingAddress)" /></a>
             </td>
             <td class="col">
-                <a href="<s:url action="buildingView" includeParams="none"><s:param name="building.id" value="building.id" /></s:url>"><s:text name="common.view" /></a>
+                <a href="<s:url action="buildingView"><s:param name="building.id" value="building.id" /></s:url>"><s:text name="common.view" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -49,7 +49,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location = '<s:url action="buildingCreate" includeParams="none" />'"
+                   onclick="window.location = '<s:url action="buildingCreate" />'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

@@ -6,7 +6,7 @@
     <tr>
         <td><s:text name="payments.payment_points.list.last_update" />:&nbsp;<s:property value="updated" /></td>
         <td align="left">
-            <input type="button" value="<s:text name="payments.payment_points.list.update" />" onclick="window.location='<s:url action="paymentPointDetailMonitor" includeParams="none"><s:param name="paymentPoint.id" value="paymentPoint.id" /></s:url>';" />
+            <input type="button" value="<s:text name="payments.payment_points.list.update" />" onclick="window.location='<s:url action="paymentPointDetailMonitor"><s:param name="paymentPoint.id" value="paymentPoint.id" /></s:url>';" />
         </td>
     </tr>
     <tr>
@@ -42,7 +42,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="paymentPointCashboxesListAjax" includeParams="none"/>",
+            action:"<s:url action="paymentPointCashboxesListAjax"/>",
             params: {
                 "paymentPoint.id":<s:property value="paymentPoint.id" />
             }

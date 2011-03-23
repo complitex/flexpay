@@ -51,7 +51,7 @@
             <td class="col"><s:text name="%{registryStatus.i18nName}" /></td>
             <td class="col">
                 <s:if test="registryType.code == @org.flexpay.common.persistence.registry.RegistryType@TYPE_CASH_PAYMENTS">
-                    <a href="<s:url action="registryCommentaryEdit" includeParams="none">
+                    <a href="<s:url action="registryCommentaryEdit">
                                 <s:param name="registry.id" value="id" />
                                 <s:param name="senderOrganizationFilter.selectedId" value="senderOrganizationFilter.selectedId" />
                                 <s:param name="recipientOrganizationFilter.selectedId" value="recipientOrganizationFilter.selectedId" />
@@ -65,17 +65,17 @@
                 </s:if>
             </td>
             <td class="col">
-                <a href="<s:url action="registryView" namespace="/payments" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
+                <a href="<s:url action="registryView" namespace="/payments"><s:param name="registry.id" value="id" /></s:url>">
                     <s:text name="common.view" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url value="/download/%{files.get(mbType).id}.registry" includeParams="none" />">
+                <a href="<s:url value="/download/%{files.get(mbType).id}.registry" />">
                     <s:property value="files.get(mbType).originalName" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url value="/download/%{files.get(fpType).id}.registry" includeParams="none" />">
+                <a href="<s:url value="/download/%{files.get(fpType).id}.registry" />">
                     <s:property value="files.get(fpType).originalName" />
                 </a>
             </td>

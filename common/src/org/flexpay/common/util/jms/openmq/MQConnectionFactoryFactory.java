@@ -27,6 +27,7 @@ public class MQConnectionFactoryFactory {
 			log.info("MQConnectionFactoryFactory.createConnectionFactory() failed", e);
 			throw new RuntimeException("MQConnectionFactoryFactory.createConnectionFactory() failed: ", e);
 		}
+        log.debug("connectionFactory = {}", cf);
 		return cf;
 	}
 

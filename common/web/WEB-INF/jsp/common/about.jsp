@@ -12,7 +12,7 @@
 		<td>@@@TIME@@@</td>
 	</tr>
 	<tr>
-		<td colspan="2"><a title="<s:text name="common.build.view_changes"/>" href="<s:url action="diff" namespace="/common" includeParams="none"/>"><s:text name="common.build.changed_files" /></a></td>
+		<td colspan="2"><a title="<s:text name="common.build.view_changes"/>" href="<s:url action="diff" namespace="/common"/>"><s:text name="common.build.changed_files" /></a></td>
 	</tr>
 	<tr>
 		<td colspan="2">

@@ -29,7 +29,7 @@
         <tr>
             <td><s:property value="#iterStatus.index + pager.thisPageFirstElementNumber + 1" /></td>
             <td>
-                <a href="<s:url action="paymentPointDetailMonitor" includeParams="none"><s:param name="paymentPoint.id" value="id" /></s:url>">
+                <a href="<s:url action="paymentPointDetailMonitor"><s:param name="paymentPoint.id" value="id" /></s:url>">
                     <s:property value="name" />
                 </a>
             </td>

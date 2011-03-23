@@ -22,7 +22,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="registryDeliveryHistoryAjax" namespace="/payments" includeParams="none" />",
+            action:"<s:url action="registryDeliveryHistoryAjax" namespace="/payments" />",
             params: {
                 "beginDateFilter.stringDate":$("input[name='beginDateFilter.stringDate']").get(0).value,
                 "endDateFilter.stringDate":$("input[name='endDateFilter.stringDate']").get(0).value
@@ -31,7 +31,7 @@
     }
 
     function sendAjax() {
-        FP.serviceElements("<s:url action="registryDeliveryHistorySend" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="registryDeliveryHistorySend" />", "objectIds", pagerAjax);
     }
 
 </script>

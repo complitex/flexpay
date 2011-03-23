@@ -13,7 +13,7 @@
         <td id="result">
 <%--
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage" includeParams="none"><s:param name="serviceOrganization.id" value="serviceOrganization.id" /></s:url>'"
+                   onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage"><s:param name="serviceOrganization.id" value="serviceOrganization.id" /></s:url>'"
                    value="<s:text name="eirc.add_served_buildings" />" />
 --%>
         </td>
@@ -29,7 +29,7 @@
 <%--
         FF.addListener("street", function(filter) {
             FP.pagerAjax(null, {
-                action:"<s:url action="serviceOrganizationListServedBuildingsAjax" includeParams="none" />",
+                action:"<s:url action="serviceOrganizationListServedBuildingsAjax" />",
                 params: {
                     streetFilter: filter.value.val(),
                     "serviceOrganization.id": <s:property value="serviceOrganization.id" />
@@ -42,7 +42,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="serviceOrganizationListServedBuildingsAjax" includeParams="none" />",
+            action:"<s:url action="serviceOrganizationListServedBuildingsAjax" />",
             params:{
 //                streetFilter: FF.filters["street"].value.val(),
                 "serviceOrganization.id": <s:property value="serviceOrganization.id" />
@@ -51,7 +51,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="serviceOrganizationRemoveServedBuildings" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="serviceOrganizationRemoveServedBuildings" />", "objectIds", pagerAjax);
     }
 
 </script>

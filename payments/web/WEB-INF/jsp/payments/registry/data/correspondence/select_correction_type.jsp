@@ -42,6 +42,6 @@
             "record.id":<s:property value="record.id" />,
             type:type
         };
-        location.href=$.param.querystring("<s:url action="selectCorrectionType" includeParams="none" />", params);
+        location.href=$.param.querystring("<s:url action="selectCorrectionType" />", params);
     }
 </script>

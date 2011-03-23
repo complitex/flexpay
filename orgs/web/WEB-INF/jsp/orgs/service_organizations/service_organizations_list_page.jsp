@@ -15,12 +15,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="serviceOrganizationsListAjax" includeParams="none"/>"
+            action:"<s:url action="serviceOrganizationsListAjax"/>"
         });
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="serviceOrganizationDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="serviceOrganizationDelete" />", "objectIds", pagerAjax);
     }
 
 </script>

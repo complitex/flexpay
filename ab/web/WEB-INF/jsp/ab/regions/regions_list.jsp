@@ -14,7 +14,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="regionEdit"><s:param name="region.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -35,11 +35,11 @@
                 <input type="checkbox" value="<s:property value="id" />" name="objectIds" />
             </td>
             <td class="col">
-                <a href="<s:url action="townsList" includeParams="none"><s:param name="regionFilter" value="id" /></s:url>"><s:property value="getTranslationName(getCurrentName().translations)" /></a>
+                <a href="<s:url action="townsList"><s:param name="regionFilter" value="id" /></s:url>"><s:property value="getTranslationName(getCurrentName().translations)" /></a>
             </td>
             <td class="col">
-                <a href="<s:url action="regionView" includeParams="none"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>
-                <a href="<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="regionView"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>
+                <a href="<s:url action="regionEdit"><s:param name="region.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -48,7 +48,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="regionEdit"><s:param name="region.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

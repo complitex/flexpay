@@ -1,29 +1,25 @@
 /*
- * ============================================================================
- * GNU Lesser General Public License
- * ============================================================================
- *
- * JasperReports - Free Java report-generating library.
- * Copyright (C) 2001-2009 JasperSoft Corporation http://www.jaspersoft.com
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307, USA.
- *
- * JasperSoft Corporation
- * 539 Bryant Street, Suite 100
- * San Francisco, CA 94107
+ * JasperReports - Free Java Reporting Library.
+ * Copyright (C) 2001 - 2009 Jaspersoft Corporation. All rights reserved.
  * http://www.jaspersoft.com
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is part of JasperReports.
+ *
+ * JasperReports is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * JasperReports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JasperReports. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -36,8 +32,23 @@
  */
 package net.sf.jasperreports.engine.export;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.base.JRBaseFont;
+import net.sf.jasperreports.engine.export.legacy.BorderOffset;
+import net.sf.jasperreports.engine.fonts.FontFace;
+import net.sf.jasperreports.engine.fonts.FontFamily;
+import net.sf.jasperreports.engine.fonts.FontInfo;
+import net.sf.jasperreports.engine.type.*;
+import net.sf.jasperreports.engine.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
@@ -48,96 +59,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.AttributedCharacterIterator;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import net.sf.jasperreports.engine.JRAbstractExporter;
-import net.sf.jasperreports.engine.JRAlignment;
-import net.sf.jasperreports.engine.JRAnchor;
-import net.sf.jasperreports.engine.JRElement;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JRFont;
-import net.sf.jasperreports.engine.JRGenericPrintElement;
-import net.sf.jasperreports.engine.JRHyperlink;
-import net.sf.jasperreports.engine.JRImage;
-import net.sf.jasperreports.engine.JRImageRenderer;
-import net.sf.jasperreports.engine.JRLine;
-import net.sf.jasperreports.engine.JRLineBox;
-import net.sf.jasperreports.engine.JRPen;
-import net.sf.jasperreports.engine.JRPrintAnchor;
-import net.sf.jasperreports.engine.JRPrintElement;
-import net.sf.jasperreports.engine.JRPrintEllipse;
-import net.sf.jasperreports.engine.JRPrintFrame;
-import net.sf.jasperreports.engine.JRPrintHyperlink;
-import net.sf.jasperreports.engine.JRPrintImage;
-import net.sf.jasperreports.engine.JRPrintLine;
-import net.sf.jasperreports.engine.JRPrintPage;
-import net.sf.jasperreports.engine.JRPrintRectangle;
-import net.sf.jasperreports.engine.JRPrintText;
-import net.sf.jasperreports.engine.JRRenderable;
-import net.sf.jasperreports.engine.JRReportFont;
-import net.sf.jasperreports.engine.JRRuntimeException;
-import net.sf.jasperreports.engine.JRStyle;
-import net.sf.jasperreports.engine.JRTextElement;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.base.JRBaseFont;
-import net.sf.jasperreports.engine.export.legacy.BorderOffset;
-import net.sf.jasperreports.engine.fonts.FontFace;
-import net.sf.jasperreports.engine.fonts.FontFamily;
-import net.sf.jasperreports.engine.fonts.FontInfo;
-import net.sf.jasperreports.engine.util.BreakIteratorSplitCharacter;
-import net.sf.jasperreports.engine.util.JRFontUtil;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.util.JRProperties;
-import net.sf.jasperreports.engine.util.JRStyledText;
-import net.sf.jasperreports.engine.util.JRTextAttribute;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Image;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.SplitCharacter;
-import com.lowagie.text.pdf.*;
 
 
 /**
  * Exports a JasperReports document to PDF format. It has binary output type and exports the document to
  * a free-form layout.
- * <p>
- * Since classic AWT fonts can be sometimes very different from PDF fonts, a font mapping feature was added.
- * By using the {@link net.sf.jasperreports.engine.JRExporterParameter#FONT_MAP} parameter, a logical font like "sansserif" can be mapped
- * to a system specific font, like "Helvetica-BoldOblique". PDF font mapping is a little more complicated, because
- * for a logical font, PDF can provide two or more fonts, from the same family but with different styles (like
- * "Helvetica", "Helvetica-Bold", "Helvetica-BoldOblique"). So every key in the map is a simple bean containing
- * font family, bold and italic flag, and every value is another bean containing the PDF font name, encoding and
- * embedding flag.
- * @see net.sf.jasperreports.engine.export.FontKey
- * @see net.sf.jasperreports.engine.export.PdfFont
+ * 
  * @author Teodor Danciu (teodord@users.sourceforge.net)
- * @version $Id: JRPdfExporter.java 2753 2009-05-04 11:27:28Z teodord $
+ * @version $Id: JRPdfExporter.java 4188 2011-02-17 07:29:34Z teodord $
  */
-@SuppressWarnings ({"RawUseOfParameterizedType", "unchecked"})
 public class JRPdfExporter extends JRAbstractExporter
 {
 
 	private static final Logger log = LoggerFactory.getLogger(JRPdfExporter.class);
-
+	
 	/**
-	 * @deprecated Replaced by {@link net.sf.jasperreports.engine.export.JRPdfExporterParameter#PROPERTY_FORCE_SVG_SHAPES}.
+	 * @deprecated Replaced by {@link JRPdfExporterParameter#PROPERTY_FORCE_SVG_SHAPES}.
 	 */
 	public static final String PDF_FORCE_SVG_SHAPES = JRPdfExporterParameter.PROPERTY_FORCE_SVG_SHAPES;
 
@@ -145,11 +84,10 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	/**
 	 * The exporter key, as used in
-	 * {@link net.sf.jasperreports.engine.export.GenericElementHandlerEnviroment#getHandler(net.sf.jasperreports.engine.JRGenericElementType, String)}.
+	 * {@link GenericElementHandlerEnviroment#getHandler(net.sf.jasperreports.engine.JRGenericElementType, String)}.
 	 */
-	public static final String PDF_EXPORTER_KEY =
-		JRProperties.PROPERTY_PREFIX + "pdf";
-
+	public static final String PDF_EXPORTER_KEY = JRProperties.PROPERTY_PREFIX + "pdf";
+	
 	private static final String EMPTY_BOOKMARK_TITLE = "";
 
 	/**
@@ -171,22 +109,22 @@ public class JRPdfExporter extends JRAbstractExporter
 			return pdfWriter;
 		}
 	}
-
+	
 	/**
 	 *
 	 */
-	protected Document document = null;
-	protected PdfContentByte pdfContentByte = null;
-	protected PdfWriter pdfWriter = null;
+	protected Document document;
+	protected PdfContentByte pdfContentByte;
+	protected PdfWriter pdfWriter;
 
-	protected Document imageTesterDocument = null;
-	protected PdfContentByte imageTesterPdfContentByte = null;
-
+	protected Document imageTesterDocument;
+	protected PdfContentByte imageTesterPdfContentByte;
+	
 	protected JRPdfExporterTagHelper tagHelper = new JRPdfExporterTagHelper(this);
 
-	protected JRExportProgressMonitor progressMonitor = null;
+	protected JRExportProgressMonitor progressMonitor;
 
-	protected int reportIndex = 0;
+	protected int reportIndex;
 
 	/**
 	 *
@@ -198,24 +136,30 @@ public class JRPdfExporter extends JRAbstractExporter
 	protected boolean is128BitKey;
 	protected String userPassword;
 	protected String ownerPassword;
-	protected int permissions = 0;
+	protected int permissions;
 	protected Character pdfVersion;
 	protected String pdfJavaScript;
+	protected String printScaling;
+	
+	private boolean collapseMissingBookmarkLevels;
 
 	/**
 	 *
 	 */
-	protected Map loadedImagesMap = null;
-	protected Image pxImage = null;
+	protected Map loadedImagesMap;
+	protected Image pxImage;
 
-	private BookmarkStack bookmarkStack = null;
+	private BookmarkStack bookmarkStack;
 
-	private Map fontMap = null;
+	/**
+	 * @deprecated
+	 */
+	private Map fontMap;
 
 	private SplitCharacter splitCharacter;
-
+	
 	protected JRPdfExporterContext exporterContext = new ExporterContext();
-
+	
 	/**
 	 *
 	 */
@@ -259,7 +203,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 			/*   */
 			setInput();
-
+	
 			if (!parameters.containsKey(JRExporterParameter.FILTER))
 			{
 				filter = createFilter(PDF_EXPORTER_PROPERTIES_PREFIX);
@@ -271,7 +215,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				setPageRange();
 			}
 
-			isCreatingBatchModeBookmarks =
+			isCreatingBatchModeBookmarks = 
 				getBooleanParameter(
 					JRPdfExporterParameter.IS_CREATING_BATCH_MODE_BOOKMARKS,
 					JRPdfExporterParameter.PROPERTY_CREATE_BATCH_MODE_BOOKMARKS,
@@ -285,34 +229,34 @@ public class JRPdfExporter extends JRAbstractExporter
 					false
 					);
 
-			isCompressed =
+			isCompressed = 
 				getBooleanParameter(
 					JRPdfExporterParameter.IS_COMPRESSED,
 					JRPdfExporterParameter.PROPERTY_COMPRESSED,
 					false
 					);
 
-			isEncrypted =
+			isEncrypted = 
 				getBooleanParameter(
 					JRPdfExporterParameter.IS_ENCRYPTED,
 					JRPdfExporterParameter.PROPERTY_ENCRYPTED,
 					false
 					);
 
-			is128BitKey =
+			is128BitKey = 
 				getBooleanParameter(
 					JRPdfExporterParameter.IS_128_BIT_KEY,
 					JRPdfExporterParameter.PROPERTY_128_BIT_KEY,
 					false
 					);
 
-			userPassword =
+			userPassword = 
 				getStringParameter(
 					JRPdfExporterParameter.USER_PASSWORD,
 					JRPdfExporterParameter.PROPERTY_USER_PASSWORD
 					);
 
-			ownerPassword =
+			ownerPassword = 
 				getStringParameter(
 					JRPdfExporterParameter.OWNER_PASSWORD,
 					JRPdfExporterParameter.PROPERTY_OWNER_PASSWORD
@@ -321,10 +265,10 @@ public class JRPdfExporter extends JRAbstractExporter
 			Integer permissionsParameter = (Integer)parameters.get(JRPdfExporterParameter.PERMISSIONS);
 			if (permissionsParameter != null)
 			{
-				permissions = permissionsParameter.intValue();
+				permissions = permissionsParameter;
 			}
 
-			pdfVersion =
+			pdfVersion = 
 				getCharacterParameter(
 						JRPdfExporterParameter.PDF_VERSION,
 						JRPdfExporterParameter.PROPERTY_PDF_VERSION
@@ -335,19 +279,29 @@ public class JRPdfExporter extends JRAbstractExporter
 			setSplitCharacter();
 			setHyperlinkProducerFactory();
 
-			pdfJavaScript =
+			pdfJavaScript = 
 				getStringParameter(
 					JRPdfExporterParameter.PDF_JAVASCRIPT,
 					JRPdfExporterParameter.PROPERTY_PDF_JAVASCRIPT
 					);
 
-			tagHelper.setTagged(
+			printScaling =
+				getStringParameter(
+					JRPdfExporterParameter.PRINT_SCALING,
+					JRPdfExporterParameter.PROPERTY_PRINT_SCALING
+					);
+
+			tagHelper.setTagged( 
 				getBooleanParameter(
 					JRPdfExporterParameter.IS_TAGGED,
 					JRPdfExporterParameter.PROPERTY_TAGGED,
 					false
 					)
 				);
+			
+			// no export param for this
+			collapseMissingBookmarkLevels = JRProperties.getBooleanProperty(jasperPrint, 
+					JRPdfExporterParameter.PROPERTY_COLLAPSE_MISSING_BOOKMARK_LEVELS, false);
 
 			OutputStream os = (OutputStream)parameters.get(JRExporterParameter.OUTPUT_STREAM);
 			if (os != null)
@@ -408,7 +362,7 @@ public class JRPdfExporter extends JRAbstractExporter
 		Boolean useFillSplitCharacterParam = (Boolean) parameters.get(JRPdfExporterParameter.FORCE_LINEBREAK_POLICY);
 		if (useFillSplitCharacterParam == null)
 		{
-			useFillSplitCharacter =
+			useFillSplitCharacter = 
 				JRProperties.getBooleanProperty(
 					jasperPrint.getPropertiesMap(),
 					JRPdfExporterParameter.PROPERTY_FORCE_LINEBREAK_POLICY,
@@ -417,7 +371,7 @@ public class JRPdfExporter extends JRAbstractExporter
 		}
 		else
 		{
-			useFillSplitCharacter = useFillSplitCharacterParam.booleanValue();
+			useFillSplitCharacter = useFillSplitCharacterParam;
 		}
 
 		if (useFillSplitCharacter)
@@ -457,58 +411,82 @@ public class JRPdfExporter extends JRAbstractExporter
 			pdfWriter.setCloseStream(false);
 
 			tagHelper.setPdfWriter(pdfWriter);
-
+			
 			if (pdfVersion != null)
+			{
 				pdfWriter.setPdfVersion(pdfVersion.charValue());
-
+			}
 			if (isCompressed)
+			{
 				pdfWriter.setFullCompression();
-
+			}
 			if (isEncrypted)
 			{
 				pdfWriter.setEncryption(
-					userPassword.getBytes(),
-					ownerPassword.getBytes(),
-					permissions,
-					PdfEncryption.STANDARD_ENCRYPTION_128
+					is128BitKey,
+					userPassword,
+					ownerPassword,
+					permissions
 					);
 			}
-
+			
 			pdfWriter.setRgbTransparencyBlending(true);
+
+			if (printScaling != null) 
+			{
+				if (JRPdfExporterParameter.PRINT_SCALING_DEFAULT.equals(printScaling))
+				{
+					pdfWriter.addViewerPreference(PdfName.PRINTSCALING, PdfName.APPDEFAULT);
+				}
+				else if (JRPdfExporterParameter.PRINT_SCALING_NONE.equals(printScaling))
+				{
+					pdfWriter.addViewerPreference(PdfName.PRINTSCALING, PdfName.NONE);
+				}
+			}
 
 			// Add meta-data parameters to generated PDF document
 			// mtclough@users.sourceforge.net 2005-12-05
 			String title = (String)parameters.get(JRPdfExporterParameter.METADATA_TITLE);
 			if( title != null )
+			{
 				document.addTitle(title);
-
+			}
 			String author = (String)parameters.get(JRPdfExporterParameter.METADATA_AUTHOR);
 			if( author != null )
+			{
 				document.addAuthor(author);
-
+			}
 			String subject = (String)parameters.get(JRPdfExporterParameter.METADATA_SUBJECT);
 			if( subject != null )
+			{
 				document.addSubject(subject);
-
+			}
 			String keywords = (String)parameters.get(JRPdfExporterParameter.METADATA_KEYWORDS);
 			if( keywords != null )
+			{
 				document.addKeywords(keywords);
-
+			}
 			String creator = (String)parameters.get(JRPdfExporterParameter.METADATA_CREATOR);
 			if( creator != null )
+			{
 				document.addCreator(creator);
+			}
 			else
+			{
 				document.addCreator("JasperReports (" + jasperPrint.getName() + ")");
+			}
 
 			document.open();
-
+			
 			if(pdfJavaScript != null)
+			{
 				pdfWriter.addJavaScript(pdfJavaScript);
+			}
 
 			pdfContentByte = pdfWriter.getDirectContent();
 
 			tagHelper.init(pdfContentByte);
-
+			
 			initBookmarks();
 
 			PdfWriter imageTesterPdfWriter =
@@ -525,8 +503,22 @@ public class JRPdfExporter extends JRAbstractExporter
 			{
 				setJasperPrint((JasperPrint)jasperPrintList.get(reportIndex));
 				loadedImagesMap = new HashMap();
-				document.setPageSize(new Rectangle(jasperPrint.getPageWidth(), jasperPrint.getPageHeight()));
-
+				
+				Rectangle pageSize;
+				switch (jasperPrint.getOrientationValue())
+				{
+				case LANDSCAPE:
+					// using rotate to indicate landscape page
+					pageSize = new Rectangle(jasperPrint.getPageHeight(),
+							jasperPrint.getPageWidth()).rotate();
+					break;
+				default:
+					pageSize = new Rectangle(jasperPrint.getPageWidth(), 
+							jasperPrint.getPageHeight());
+					break;
+				}
+				document.setPageSize(pageSize);
+				
 				BorderOffset.setLegacy(
 					JRProperties.getBooleanProperty(jasperPrint, BorderOffset.PROPERTY_LEGACY_BORDER_OFFSET, false)
 					);
@@ -538,7 +530,8 @@ public class JRPdfExporter extends JRAbstractExporter
 					{
 						document.newPage();
 
-						if( isCreatingBatchModeBookmarks ){
+						if( isCreatingBatchModeBookmarks )
+						{
 							//add a new level to our outline for this report
 							addBookmark(0, jasperPrint.getName(), 0, 0);
 						}
@@ -549,7 +542,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 					for(int pageIndex = startPageIndex; pageIndex <= endPageIndex; pageIndex++)
 					{
-						if (Thread.currentThread().isInterrupted())
+						if (Thread.interrupted())
 						{
 							throw new JRException("Current thread interrupted.");
 						}
@@ -557,7 +550,7 @@ public class JRPdfExporter extends JRAbstractExporter
 						JRPrintPage page = (JRPrintPage)pages.get(pageIndex);
 
 						document.newPage();
-
+						
 						pdfContentByte = pdfWriter.getDirectContent();
 
 						pdfContentByte.setLineCap(2);//PdfContentByte.LINE_CAP_PROJECTING_SQUARE since iText 1.02b
@@ -596,7 +589,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				{
 					document.close();
 				}
-				catch (Throwable e)
+				catch (Exception e)
 				{
 					// ignore, let the original exception propagate
 				}
@@ -605,7 +598,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				{
 					imageTesterDocument.close();
 				}
-				catch (Throwable e)
+				catch (Exception e)
 				{
 					// ignore, let the original exception propagate
 				}
@@ -619,17 +612,21 @@ public class JRPdfExporter extends JRAbstractExporter
 	protected void writePageAnchor(int pageIndex) throws DocumentException {
 		Map pdfFontAttrs = getDefaultPdfFontAttributes();
 		Chunk chunk;
-		if (pdfFontAttrs == null) {
+		if (pdfFontAttrs == null) 
+		{
 			chunk = new Chunk(" ");
-		} else {
-			Font pdfFont = getFont(pdfFontAttrs, getLocale());
+		} 
+		else 
+		{
+			// no underline or strikethrough
+			Font pdfFont = getFont(pdfFontAttrs, getLocale(), false);
 			chunk = new Chunk(" ", pdfFont);
 		}
-
+		
 		chunk.setLocalDestination(JR_PAGE_ANCHOR_PREFIX + reportIndex + "_" + (pageIndex + 1));
 
 		tagHelper.startPageAnchor();
-
+		
 		ColumnText colText = new ColumnText(pdfContentByte);
 		colText.setSimpleColumn(
 			new Phrase(chunk),
@@ -649,19 +646,26 @@ public class JRPdfExporter extends JRAbstractExporter
 	protected Map getDefaultPdfFontAttributes() {
 		Map attrs;
 		JRStyle style = jasperPrint.getDefaultStyle();
-		if (style != null) {
+		if (style != null) 
+		{
 			attrs = new HashMap();
+			//FIXME font name for extensions
 			attrs.put(JRTextAttribute.PDF_FONT_NAME, style.getPdfFontName());
 			attrs.put(JRTextAttribute.PDF_ENCODING, style.getPdfEncoding());
 			attrs.put(JRTextAttribute.IS_PDF_EMBEDDED, style.isPdfEmbedded());
-		} else {
+		} 
+		else 
+		{
 			JRReportFont font = jasperPrint.getDefaultFont();
-			if (font != null) {
+			if (font != null) 
+			{
 				attrs = new HashMap();
 				attrs.put(JRTextAttribute.PDF_FONT_NAME, font.getPdfFontName());
 				attrs.put(JRTextAttribute.PDF_ENCODING, font.getPdfEncoding());
 				attrs.put(JRTextAttribute.IS_PDF_EMBEDDED, font.isPdfEmbedded() ? Boolean.TRUE : Boolean.FALSE);
-			} else {
+			} 
+			else 
+			{
 				attrs = null;
 			}
 		}
@@ -674,10 +678,10 @@ public class JRPdfExporter extends JRAbstractExporter
 	protected void exportPage(JRPrintPage page) throws JRException, DocumentException, IOException
 	{
 		tagHelper.startPage();
-
+		
 		Collection elements = page.getElements();
 		exportElements(elements);
-
+		
 		tagHelper.endPage();
 
 		if (progressMonitor != null)
@@ -688,48 +692,33 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	protected void exportElements(Collection elements) throws DocumentException, IOException, JRException
 	{
-		if (elements != null && !elements.isEmpty())
+		if (elements != null && elements.size() > 0)
 		{
-			for(Iterator it = elements.iterator(); it.hasNext();)
-			{
-				JRPrintElement element = (JRPrintElement)it.next();
+            for (Object element1 : elements) {
+                JRPrintElement element = (JRPrintElement) element1;
 
-				if (filter == null || filter.isToExport(element))
-				{
-					tagHelper.startElement(element);
+                if (filter == null || filter.isToExport(element)) {
+                    tagHelper.startElement(element);
 
-					if (element instanceof JRPrintLine)
-					{
-						exportLine((JRPrintLine)element);
-					}
-					else if (element instanceof JRPrintRectangle)
-					{
-						exportRectangle((JRPrintRectangle)element);
-					}
-					else if (element instanceof JRPrintEllipse)
-					{
-						exportEllipse((JRPrintEllipse)element);
-					}
-					else if (element instanceof JRPrintImage)
-					{
-						exportImage((JRPrintImage)element);
-					}
-					else if (element instanceof JRPrintText)
-					{
-						exportText((JRPrintText)element);
-					}
-					else if (element instanceof JRPrintFrame)
-					{
-						exportFrame((JRPrintFrame)element);
-					}
-					else if (element instanceof JRGenericPrintElement)
-					{
-						exportGenericElement((JRGenericPrintElement) element);
-					}
+                    if (element instanceof JRPrintLine) {
+                        exportLine((JRPrintLine) element);
+                    } else if (element instanceof JRPrintRectangle) {
+                        exportRectangle((JRPrintRectangle) element);
+                    } else if (element instanceof JRPrintEllipse) {
+                        exportEllipse((JRPrintEllipse) element);
+                    } else if (element instanceof JRPrintImage) {
+                        exportImage((JRPrintImage) element);
+                    } else if (element instanceof JRPrintText) {
+                        exportText((JRPrintText) element);
+                    } else if (element instanceof JRPrintFrame) {
+                        exportFrame((JRPrintFrame) element);
+                    } else if (element instanceof JRGenericPrintElement) {
+                        exportGenericElement((JRGenericPrintElement) element);
+                    }
 
-					tagHelper.endElement(element);
-				}
-			}
+                    tagHelper.endElement(element);
+                }
+            }
 		}
 	}
 
@@ -739,21 +728,17 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	protected void exportLine(JRPrintLine line)
 	{
-		float lineWidth = line.getLinePen().getLineWidth().floatValue();
+		float lineWidth = line.getLinePen().getLineWidth();
 		if (lineWidth > 0f)
 		{
 			preparePen(pdfContentByte, line.getLinePen(), PdfContentByte.LINE_CAP_BUTT);
 
 			if (line.getWidth() == 1)
 			{
-				if (line.getHeight() == 1)
-				{
-					//Nothing to draw
-				}
-				else
+				if (line.getHeight() != 1)
 				{
 					//Vertical line
-					if (line.getLinePen().getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+					if (line.getLinePen().getLineStyleValue() == LineStyleEnum.DOUBLE)
 					{
 						pdfContentByte.moveTo(
 							line.getX() + getOffsetX() + 0.5f - lineWidth / 3,
@@ -765,7 +750,7 @@ public class JRPdfExporter extends JRAbstractExporter
 							);
 
 						pdfContentByte.stroke();
-
+						
 						pdfContentByte.moveTo(
 							line.getX() + getOffsetX() + 0.5f + lineWidth / 3,
 							jasperPrint.getPageHeight() - line.getY() - getOffsetY()
@@ -793,7 +778,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				if (line.getHeight() == 1)
 				{
 					//Horizontal line
-					if (line.getLinePen().getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+					if (line.getLinePen().getLineStyleValue() == LineStyleEnum.DOUBLE)
 					{
 						pdfContentByte.moveTo(
 							line.getX() + getOffsetX(),
@@ -805,7 +790,7 @@ public class JRPdfExporter extends JRAbstractExporter
 							);
 
 						pdfContentByte.stroke();
-
+						
 						pdfContentByte.moveTo(
 							line.getX() + getOffsetX(),
 							jasperPrint.getPageHeight() - line.getY() - getOffsetY() - 0.5f - lineWidth / 3
@@ -830,13 +815,13 @@ public class JRPdfExporter extends JRAbstractExporter
 				else
 				{
 					//Oblique line
-					if (line.getDirection() == JRLine.DIRECTION_TOP_DOWN)
+					if (line.getDirectionValue() == LineDirectionEnum.TOP_DOWN)
 					{
-						if (line.getLinePen().getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+						if (line.getLinePen().getLineStyleValue() == LineStyleEnum.DOUBLE)
 						{
-							double xtrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getWidth(), 2) / Math.pow(line.getHeight(), 2)));
-							double ytrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getHeight(), 2) / Math.pow(line.getWidth(), 2)));
-
+							double xtrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getWidth(), 2) / Math.pow(line.getHeight(), 2))); 
+							double ytrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getHeight(), 2) / Math.pow(line.getWidth(), 2))); 
+							
 							pdfContentByte.moveTo(
 								line.getX() + getOffsetX() + (float)xtrans,
 								jasperPrint.getPageHeight() - line.getY() - getOffsetY() + (float)ytrans
@@ -847,7 +832,7 @@ public class JRPdfExporter extends JRAbstractExporter
 								);
 
 							pdfContentByte.stroke();
-
+							
 							pdfContentByte.moveTo(
 								line.getX() + getOffsetX() - (float)xtrans,
 								jasperPrint.getPageHeight() - line.getY() - getOffsetY() - (float)ytrans
@@ -871,11 +856,11 @@ public class JRPdfExporter extends JRAbstractExporter
 					}
 					else
 					{
-						if (line.getLinePen().getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+						if (line.getLinePen().getLineStyleValue() == LineStyleEnum.DOUBLE)
 						{
-							double xtrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getWidth(), 2) / Math.pow(line.getHeight(), 2)));
-							double ytrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getHeight(), 2) / Math.pow(line.getWidth(), 2)));
-
+							double xtrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getWidth(), 2) / Math.pow(line.getHeight(), 2))); 
+							double ytrans = lineWidth / (3 * Math.sqrt(1 + Math.pow(line.getHeight(), 2) / Math.pow(line.getWidth(), 2))); 
+							
 							pdfContentByte.moveTo(
 								line.getX() + getOffsetX() + (float)xtrans,
 								jasperPrint.getPageHeight() - line.getY() - getOffsetY() - line.getHeight() - (float)ytrans
@@ -932,10 +917,10 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		preparePen(pdfContentByte, rectangle.getLinePen(), PdfContentByte.LINE_CAP_PROJECTING_SQUARE);
 
-		float lineWidth = rectangle.getLinePen().getLineWidth().floatValue();
+		float lineWidth = rectangle.getLinePen().getLineWidth();
 		float lineOffset = BorderOffset.getOffset(rectangle.getLinePen());
-
-		if (rectangle.getMode() == JRElement.MODE_OPAQUE)
+		
+		if (rectangle.getModeValue() == ModeEnum.OPAQUE)
 		{
 			pdfContentByte.roundRectangle(
 				rectangle.getX() + getOffsetX(),
@@ -950,7 +935,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		if (lineWidth > 0f)
 		{
-			if (rectangle.getLinePen().getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+			if (rectangle.getLinePen().getLineStyleValue() == LineStyleEnum.DOUBLE)
 			{
 				pdfContentByte.roundRectangle(
 					rectangle.getX() + getOffsetX() - lineWidth / 3,
@@ -961,7 +946,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					);
 
 				pdfContentByte.stroke();
-
+				
 				pdfContentByte.roundRectangle(
 					rectangle.getX() + getOffsetX() + lineWidth / 3,
 					jasperPrint.getPageHeight() - rectangle.getY() - getOffsetY() - rectangle.getHeight() + lineWidth / 3,
@@ -969,7 +954,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					rectangle.getHeight() - 2 * lineWidth / 3,
 					rectangle.getRadius()
 					);
-
+				
 				pdfContentByte.stroke();
 			}
 			else
@@ -1003,10 +988,10 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		preparePen(pdfContentByte, ellipse.getLinePen(), PdfContentByte.LINE_CAP_PROJECTING_SQUARE);
 
-		float lineWidth = ellipse.getLinePen().getLineWidth().floatValue();
+		float lineWidth = ellipse.getLinePen().getLineWidth();
 		float lineOffset = BorderOffset.getOffset(ellipse.getLinePen());
-
-		if (ellipse.getMode() == JRElement.MODE_OPAQUE)
+		
+		if (ellipse.getModeValue() == ModeEnum.OPAQUE)
 		{
 			pdfContentByte.ellipse(
 				ellipse.getX() + getOffsetX(),
@@ -1020,7 +1005,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		if (lineWidth > 0f)
 		{
-			if (ellipse.getLinePen().getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+			if (ellipse.getLinePen().getLineStyleValue() == LineStyleEnum.DOUBLE)
 			{
 				pdfContentByte.ellipse(
 					ellipse.getX() + getOffsetX() - lineWidth / 3,
@@ -1063,7 +1048,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	protected void exportImage(JRPrintImage printImage) throws DocumentException, IOException,  JRException
 	{
 		log.debug("Exporting image");
-		if (printImage.getMode() == JRElement.MODE_OPAQUE)
+		if (printImage.getModeValue() == ModeEnum.OPAQUE)
 		{
 			pdfContentByte.setRGBColorFill(
 				printImage.getBackcolor().getRed(),
@@ -1079,10 +1064,10 @@ public class JRPdfExporter extends JRAbstractExporter
 			pdfContentByte.fill();
 		}
 
-		int topPadding = printImage.getLineBox().getTopPadding().intValue();
-		int leftPadding = printImage.getLineBox().getLeftPadding().intValue();
-		int bottomPadding = printImage.getLineBox().getBottomPadding().intValue();
-		int rightPadding = printImage.getLineBox().getRightPadding().intValue();
+		int topPadding = printImage.getLineBox().getTopPadding();
+		int leftPadding = printImage.getLineBox().getLeftPadding();
+		int bottomPadding = printImage.getLineBox().getBottomPadding();
+		int rightPadding = printImage.getLineBox().getRightPadding();
 
 		int availableImageWidth = printImage.getWidth() - leftPadding - rightPadding;
 		availableImageWidth = (availableImageWidth < 0)?0:availableImageWidth;
@@ -1100,9 +1085,9 @@ public class JRPdfExporter extends JRAbstractExporter
 		{
 			if (renderer.getType() == JRRenderable.TYPE_IMAGE)
 			{
-				// Image renderers are all asked for their image data at some point.
+				// Image renderers are all asked for their image data at some point. 
 				// Better to test and replace the renderer now, in case of lazy load error.
-				renderer = JRImageRenderer.getOnErrorRendererForImageData(renderer, printImage.getOnErrorType());
+				renderer = JRImageRenderer.getOnErrorRendererForImageData(renderer, printImage.getOnErrorTypeValue());
 			}
 		}
 		else
@@ -1127,22 +1112,22 @@ public class JRPdfExporter extends JRAbstractExporter
 				float xalignFactor = getXAlignFactor(printImage);
 				float yalignFactor = getYAlignFactor(printImage);
 
-				switch(printImage.getScaleImage())
+				switch(printImage.getScaleImageValue())
 				{
-					case JRImage.SCALE_IMAGE_CLIP :
+					case CLIP :
 					{
-						// Image load might fail, from given image data.
+						// Image load might fail, from given image data. 
 						// Better to test and replace the renderer now, in case of lazy load error.
-						renderer =
+						renderer = 
 							JRImageRenderer.getOnErrorRendererForDimension(
-								renderer,
-								printImage.getOnErrorType()
+								renderer, 
+								printImage.getOnErrorTypeValue()
 								);
 						if (renderer == null)
 						{
 							break;
 						}
-
+						
 						int normalWidth = availableImageWidth;
 						int normalHeight = availableImageHeight;
 
@@ -1163,7 +1148,7 @@ public class JRPdfExporter extends JRAbstractExporter
 							new BufferedImage(minWidth, minHeight, BufferedImage.TYPE_INT_ARGB);
 
 						Graphics2D g = bi.createGraphics();
-						if (printImage.getMode() == JRElement.MODE_OPAQUE)
+						if (printImage.getModeValue() == ModeEnum.OPAQUE)
 						{
 							g.setColor(printImage.getBackcolor());
 							g.fillRect(0, 0, minWidth, minHeight);
@@ -1189,7 +1174,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 						break;
 					}
-					case JRImage.SCALE_IMAGE_FILL_FRAME :
+					case FILL_FRAME :
 					{
 						if (printImage.isUsingCache() && loadedImagesMap.containsKey(renderer))
 						{
@@ -1204,10 +1189,10 @@ public class JRPdfExporter extends JRAbstractExporter
 							}
 							catch(Exception e)
 							{
-								JRImageRenderer tmpRenderer =
+								JRImageRenderer tmpRenderer = 
 									JRImageRenderer.getOnErrorRendererForImage(
-										JRImageRenderer.getInstance(renderer.getImageData()),
-										printImage.getOnErrorType()
+										JRImageRenderer.getInstance(renderer.getImageData()), 
+										printImage.getOnErrorTypeValue()
 										);
 								if (tmpRenderer == null)
 								{
@@ -1226,7 +1211,7 @@ public class JRPdfExporter extends JRAbstractExporter
 						image.scaleAbsolute(availableImageWidth, availableImageHeight);
 						break;
 					}
-					case JRImage.SCALE_IMAGE_RETAIN_SHAPE :
+					case RETAIN_SHAPE :
 					default :
 					{
 						if (printImage.isUsingCache() && loadedImagesMap.containsKey(renderer))
@@ -1242,10 +1227,10 @@ public class JRPdfExporter extends JRAbstractExporter
 							}
 							catch(Exception e)
 							{
-								JRImageRenderer tmpRenderer =
+								JRImageRenderer tmpRenderer = 
 									JRImageRenderer.getOnErrorRendererForImage(
-										JRImageRenderer.getInstance(renderer.getImageData()),
-										printImage.getOnErrorType()
+										JRImageRenderer.getInstance(renderer.getImageData()), 
+										printImage.getOnErrorTypeValue()
 										);
 								if (tmpRenderer == null)
 								{
@@ -1261,6 +1246,7 @@ public class JRPdfExporter extends JRAbstractExporter
 							}
 						}
 
+                        log.debug("Releasing template!");
 						image.scaleToFit(availableImageWidth, availableImageHeight);
 
 						xoffset = (int)(xalignFactor * (availableImageWidth - image.getPlainWidth()));
@@ -1291,7 +1277,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 				double ratioX = 1f;
 				double ratioY = 1f;
-
+				
 				Rectangle2D clip = null;
 
 				Dimension2D dimension = renderer.getDimension();
@@ -1301,13 +1287,13 @@ public class JRPdfExporter extends JRAbstractExporter
 					normalHeight = dimension.getHeight();
 					displayWidth = normalWidth;
 					displayHeight = normalHeight;
-
+					
 					float xalignFactor = getXAlignFactor(printImage);
 					float yalignFactor = getYAlignFactor(printImage);
 
-					switch (printImage.getScaleImage())
+					switch (printImage.getScaleImageValue())
 					{
-						case JRImage.SCALE_IMAGE_CLIP:
+						case CLIP:
 						{
 							xoffset = (int) (xalignFactor * (availableImageWidth - normalWidth));
 							yoffset = (int) (yalignFactor * (availableImageHeight - normalHeight));
@@ -1320,7 +1306,7 @@ public class JRPdfExporter extends JRAbstractExporter
 									);
 							break;
 						}
-						case JRImage.SCALE_IMAGE_FILL_FRAME:
+						case FILL_FRAME:
 						{
 							ratioX = availableImageWidth / normalWidth;
 							ratioY = availableImageHeight / normalHeight;
@@ -1330,7 +1316,7 @@ public class JRPdfExporter extends JRAbstractExporter
 							yoffset = 0;
 							break;
 						}
-						case JRImage.SCALE_IMAGE_RETAIN_SHAPE:
+						case RETAIN_SHAPE:
 						default:
 						{
 							ratioX = availableImageWidth / normalWidth;
@@ -1356,8 +1342,8 @@ public class JRPdfExporter extends JRAbstractExporter
 				{
 					g.setClip(clip);
 				}
-
-				if (printImage.getMode() == JRElement.MODE_OPAQUE)
+				
+				if (printImage.getModeValue() == ModeEnum.OPAQUE)
 				{
 					g.setColor(printImage.getBackcolor());
 					g.fillRect(0, 0, (int)displayWidth, (int)displayHeight);
@@ -1380,9 +1366,6 @@ public class JRPdfExporter extends JRAbstractExporter
 					);
 				pdfContentByte.restoreState();
 
-				log.debug("Releasing template!");
-				pdfWriter.releaseTemplate(template);
-
 				Image image = getPxImage();
 				image.scaleAbsolute(availableImageWidth, availableImageHeight);
 				chunk = new Chunk(image, 0, 0);
@@ -1404,7 +1387,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				setHyperlinkInfo(chunk, printImage);
 
 				tagHelper.startImage(printImage);
-
+				
 				ColumnText colText = new ColumnText(pdfContentByte);
 				int upperY = jasperPrint.getPageHeight() - printImage.getY() - topPadding - getOffsetY() - yoffset;
 				int lowerX = printImage.getX() + leftPadding + getOffsetX() + xoffset;
@@ -1426,13 +1409,13 @@ public class JRPdfExporter extends JRAbstractExporter
 
 
 		if (
-			printImage.getLineBox().getTopPen().getLineWidth().floatValue() <= 0f &&
-			printImage.getLineBox().getLeftPen().getLineWidth().floatValue() <= 0f &&
-			printImage.getLineBox().getBottomPen().getLineWidth().floatValue() <= 0f &&
-			printImage.getLineBox().getRightPen().getLineWidth().floatValue() <= 0f
+			printImage.getLineBox().getTopPen().getLineWidth() <= 0f &&
+			printImage.getLineBox().getLeftPen().getLineWidth() <= 0f &&
+			printImage.getLineBox().getBottomPen().getLineWidth() <= 0f &&
+			printImage.getLineBox().getRightPen().getLineWidth() <= 0f
 			)
 		{
-			if (printImage.getLinePen().getLineWidth().floatValue() > 0f)
+			if (printImage.getLinePen().getLineWidth() > 0f)
 			{
 				exportPen(printImage.getLinePen(), printImage);
 			}
@@ -1451,19 +1434,19 @@ public class JRPdfExporter extends JRAbstractExporter
 	private float getXAlignFactor(JRPrintImage printImage)
 	{
 		float xalignFactor = 0f;
-		switch (printImage.getHorizontalAlignment())
+		switch (printImage.getHorizontalAlignmentValue())
 		{
-			case JRAlignment.HORIZONTAL_ALIGN_RIGHT :
+			case RIGHT :
 			{
 				xalignFactor = 1f;
 				break;
 			}
-			case JRAlignment.HORIZONTAL_ALIGN_CENTER :
+			case CENTER :
 			{
 				xalignFactor = 0.5f;
 				break;
 			}
-			case JRAlignment.HORIZONTAL_ALIGN_LEFT :
+			case LEFT :
 			default :
 			{
 				xalignFactor = 0f;
@@ -1477,19 +1460,19 @@ public class JRPdfExporter extends JRAbstractExporter
 	private float getYAlignFactor(JRPrintImage printImage)
 	{
 		float yalignFactor = 0f;
-		switch (printImage.getVerticalAlignment())
+		switch (printImage.getVerticalAlignmentValue())
 		{
-			case JRAlignment.VERTICAL_ALIGN_BOTTOM :
+			case BOTTOM :
 			{
 				yalignFactor = 1f;
 				break;
 			}
-			case JRAlignment.VERTICAL_ALIGN_MIDDLE :
+			case MIDDLE :
 			{
 				yalignFactor = 0.5f;
 				break;
 			}
-			case JRAlignment.VERTICAL_ALIGN_TOP :
+			case TOP :
 			default :
 			{
 				yalignFactor = 0f;
@@ -1505,115 +1488,118 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	protected void setHyperlinkInfo(Chunk chunk, JRPrintHyperlink link)
 	{
-		switch(link.getHyperlinkType())
+		if (link != null)
 		{
-			case JRHyperlink.HYPERLINK_TYPE_REFERENCE :
+			switch(link.getHyperlinkTypeValue())
 			{
-				if (link.getHyperlinkReference() != null)
+				case REFERENCE :
 				{
-					switch(link.getHyperlinkTarget())
+					if (link.getHyperlinkReference() != null)
 					{
-						case JRHyperlink.HYPERLINK_TARGET_BLANK :
+						switch(link.getHyperlinkTargetValue())
 						{
-							chunk.setAction(
-								PdfAction.javaScript(
-									"if (app.viewerVersion < 7)"
-										+ "{this.getURL(\"" + link.getHyperlinkReference() + "\");}"
-										+ "else {app.launchURL(\"" + link.getHyperlinkReference() + "\", true);};",
-									pdfWriter
-									)
-								);
-							break;
-						}
-						case JRHyperlink.HYPERLINK_TARGET_SELF :
-						default :
-						{
-							chunk.setAnchor(link.getHyperlinkReference());
-							break;
-						}
-					}
-				}
-				break;
-			}
-			case JRHyperlink.HYPERLINK_TYPE_LOCAL_ANCHOR :
-			{
-				if (link.getHyperlinkAnchor() != null)
-				{
-					chunk.setLocalGoto(link.getHyperlinkAnchor());
-				}
-				break;
-			}
-			case JRHyperlink.HYPERLINK_TYPE_LOCAL_PAGE :
-			{
-				if (link.getHyperlinkPage() != null)
-				{
-					chunk.setLocalGoto(JR_PAGE_ANCHOR_PREFIX + reportIndex + "_" + link.getHyperlinkPage().toString());
-				}
-				break;
-			}
-			case JRHyperlink.HYPERLINK_TYPE_REMOTE_ANCHOR :
-			{
-				if (
-					link.getHyperlinkReference() != null &&
-					link.getHyperlinkAnchor() != null
-					)
-				{
-					chunk.setRemoteGoto(
-						link.getHyperlinkReference(),
-						link.getHyperlinkAnchor()
-						);
-				}
-				break;
-			}
-			case JRHyperlink.HYPERLINK_TYPE_REMOTE_PAGE :
-			{
-				if (
-					link.getHyperlinkReference() != null &&
-					link.getHyperlinkPage() != null
-					)
-				{
-					chunk.setRemoteGoto(
-						link.getHyperlinkReference(),
-						link.getHyperlinkPage().intValue()
-						);
-				}
-				break;
-			}
-			case JRHyperlink.HYPERLINK_TYPE_CUSTOM :
-			{
-				if (hyperlinkProducerFactory != null)
-				{
-					String hyperlink = hyperlinkProducerFactory.produceHyperlink(link);
-					if (hyperlink != null)
-					{
-						switch(link.getHyperlinkTarget())
-						{
-							case JRHyperlink.HYPERLINK_TARGET_BLANK :
+							case BLANK :
 							{
 								chunk.setAction(
 									PdfAction.javaScript(
 										"if (app.viewerVersion < 7)"
-											+ "{this.getURL(\"" + hyperlink + "\");}"
-											+ "else {app.launchURL(\"" + hyperlink + "\", true);};",
+											+ "{this.getURL(\"" + link.getHyperlinkReference() + "\");}"
+											+ "else {app.launchURL(\"" + link.getHyperlinkReference() + "\", true);};",
 										pdfWriter
 										)
 									);
 								break;
 							}
-							case JRHyperlink.HYPERLINK_TARGET_SELF :
+							case SELF :
 							default :
 							{
-								chunk.setAnchor(hyperlink);
+								chunk.setAnchor(link.getHyperlinkReference());
 								break;
 							}
 						}
 					}
+					break;
 				}
-			}
-			case JRHyperlink.HYPERLINK_TYPE_NONE :
-			default :
-			{
-				break;
+				case LOCAL_ANCHOR :
+				{
+					if (link.getHyperlinkAnchor() != null)
+					{
+						chunk.setLocalGoto(link.getHyperlinkAnchor());
+					}
+					break;
+				}
+				case LOCAL_PAGE :
+				{
+					if (link.getHyperlinkPage() != null)
+					{
+						chunk.setLocalGoto(JR_PAGE_ANCHOR_PREFIX + reportIndex + "_" + link.getHyperlinkPage().toString());
+					}
+					break;
+				}
+				case REMOTE_ANCHOR :
+				{
+					if (
+						link.getHyperlinkReference() != null &&
+						link.getHyperlinkAnchor() != null
+						)
+					{
+						chunk.setRemoteGoto(
+							link.getHyperlinkReference(),
+							link.getHyperlinkAnchor()
+							);
+					}
+					break;
+				}
+				case REMOTE_PAGE :
+				{
+					if (
+						link.getHyperlinkReference() != null &&
+						link.getHyperlinkPage() != null
+						)
+					{
+						chunk.setRemoteGoto(
+							link.getHyperlinkReference(),
+							link.getHyperlinkPage()
+							);
+					}
+					break;
+				}
+				case CUSTOM :
+				{
+					if (hyperlinkProducerFactory != null)
+					{
+						String hyperlink = hyperlinkProducerFactory.produceHyperlink(link);
+						if (hyperlink != null)
+						{
+							switch(link.getHyperlinkTargetValue())
+							{
+								case BLANK :
+								{
+									chunk.setAction(
+										PdfAction.javaScript(
+											"if (app.viewerVersion < 7)"
+												+ "{this.getURL(\"" + hyperlink + "\");}"
+												+ "else {app.launchURL(\"" + hyperlink + "\", true);};",
+											pdfWriter
+											)
+										);
+									break;
+								}
+								case SELF :
+								default :
+								{
+									chunk.setAnchor(hyperlink);
+									break;
+								}
+							}
+						}
+					}
+				}
+				case NONE :
+				default :
+				{
+					break;
+				}
 			}
 		}
 	}
@@ -1636,15 +1622,22 @@ public class JRPdfExporter extends JRAbstractExporter
 		boolean firstChunk = true;
 		while(runLimit < styledText.length() && (runLimit = iterator.getRunLimit()) <= styledText.length())
 		{
-			Chunk chunk = getChunk(iterator.getAttributes(), text.substring(iterator.getIndex(), runLimit), locale);
-
+			Map attributes = iterator.getAttributes();
+			Chunk chunk = getChunk(attributes, text.substring(iterator.getIndex(), runLimit), locale);
+			
 			if (firstChunk)
 			{
 				// only set anchor + bookmark for the first chunk in the text
 				setAnchor(chunk, textElement, textElement);
 			}
-
-			setHyperlinkInfo(chunk, textElement);
+			
+			JRPrintHyperlink hyperlink = textElement;
+			if (hyperlink.getHyperlinkTypeValue() == HyperlinkTypeEnum.NONE)
+			{
+				hyperlink = (JRPrintHyperlink)attributes.get(JRTextAttribute.HYPERLINK);
+			}
+			
+			setHyperlinkInfo(chunk, hyperlink);
 			phrase.add(chunk);
 
 			iterator.setIndex(runLimit);
@@ -1660,9 +1653,24 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	protected Chunk getChunk(Map attributes, String text, Locale locale)
 	{
-		Font font = getFont(attributes, locale);
+		// underline and strikethrough are set on the chunk below
+		Font font = getFont(attributes, locale, false);
 
 		Chunk chunk = new Chunk(text, font);
+		
+		if (hasUnderline(attributes))
+		{
+			// using the same values as sun.font.Fond2D
+			chunk.setUnderline(null, 0, 1f / 18, 0, -1f / 12, 0);
+		}
+		
+		if (hasStrikethrough(attributes))
+		{
+			// using the same thickness as sun.font.Fond2D.
+			// the position is calculated in Fond2D based on the ascent, defaulting 
+			// to iText default position which depends on the font size
+			chunk.setUnderline(null, 0, 1f / 18, 0, 1f / 3, 0);
+		}
 
 		Color backcolor = (Color)attributes.get(TextAttribute.BACKGROUND);
 		if (backcolor != null)
@@ -1677,7 +1685,7 @@ public class JRPdfExporter extends JRAbstractExporter
 			{
 				chunk.setTextRise(font.getCalculatedLeading(1f)/2);
 			}
-			else if (script != null && TextAttribute.SUPERSCRIPT_SUB.equals(script))
+			else if (TextAttribute.SUPERSCRIPT_SUB.equals(script))
 			{
 				chunk.setTextRise(-font.getCalculatedLeading(1f)/2);
 			}
@@ -1692,11 +1700,28 @@ public class JRPdfExporter extends JRAbstractExporter
 		return chunk;
 	}
 
+	protected boolean hasUnderline(Map textAttributes)
+	{
+		Integer underline = (Integer) textAttributes.get(TextAttribute.UNDERLINE);
+		return TextAttribute.UNDERLINE_ON.equals(underline);
+	}
+
+	protected boolean hasStrikethrough(Map textAttributes)
+	{
+		Boolean strike = (Boolean) textAttributes.get(TextAttribute.STRIKETHROUGH);
+		return TextAttribute.STRIKETHROUGH_ON.equals(strike);
+	}
+
 
 	/**
-	 *
+	 * Creates a PDF font.
+	 * 
+	 * @param attributes the text attributes of the font
+	 * @param locale the locale for which to create the font
+	 * @param setFontLines whether to set underline and strikethrough as font style
+	 * @return the PDF font for the specified attributes
 	 */
-	protected Font getFont(Map attributes, Locale locale)
+	protected Font getFont(Map attributes, Locale locale, boolean setFontLines)
 	{
 		JRFont jrFont = new JRBaseFont(attributes);
 
@@ -1704,6 +1729,16 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		Color forecolor = (Color)attributes.get(TextAttribute.FOREGROUND);
 
+		// use the same font scale ratio as in JRStyledText.getAwtAttributedString
+		float fontSizeScale = 1f;
+		Integer scriptStyle = (Integer) attributes.get(TextAttribute.SUPERSCRIPT);
+		if (scriptStyle != null && (
+				TextAttribute.SUPERSCRIPT_SUB.equals(scriptStyle)
+				|| TextAttribute.SUPERSCRIPT_SUPER.equals(scriptStyle)))
+		{
+			fontSizeScale = 2f / 3;
+		}
+		
 		Font font = null;
 		PdfFont pdfFont = null;
 		FontKey key = new FontKey(jrFont.getFontName(), jrFont.isBold(), jrFont.isItalic());
@@ -1717,48 +1752,85 @@ public class JRPdfExporter extends JRAbstractExporter
 			FontInfo fontInfo = JRFontUtil.getFontInfo(jrFont.getFontName(), locale);
 			if (fontInfo == null)
 			{
+				//fontName NOT found in font extensions
 				pdfFont = new PdfFont(jrFont.getPdfFontName(), jrFont.getPdfEncoding(), jrFont.isPdfEmbedded());
 			}
 			else
 			{
+				//fontName found in font extensions
 				FontFamily family = fontInfo.getFontFamily();
 				FontFace face = fontInfo.getFontFace();
 				int faceStyle = java.awt.Font.PLAIN;
 
 				if (face == null)
 				{
+					//fontName matches family name in font extension
 					if (jrFont.isBold() && jrFont.isItalic())
 					{
 						face = family.getBoldItalicFace();
 						faceStyle = java.awt.Font.BOLD | java.awt.Font.ITALIC;
 					}
-
+					
 					if (face == null && jrFont.isBold())
 					{
 						face = family.getBoldFace();
 						faceStyle = java.awt.Font.BOLD;
 					}
-
+					
 					if (face == null && jrFont.isItalic())
 					{
 						face = family.getItalicFace();
 						faceStyle = java.awt.Font.ITALIC;
 					}
-
+					
 					if (face == null)
 					{
 						face = family.getNormalFace();
 						faceStyle = java.awt.Font.PLAIN;
 					}
-
-					if (face == null)
-					{
-						throw new JRRuntimeException("Font family '" + family.getName() + "' does not have the normal font face.");
-					}
+						
+//					if (face == null)
+//					{
+//						throw new JRRuntimeException("Font family '" + family.getName() + "' does not have the normal font face.");
+//					}
 				}
 				else
 				{
+					//fontName matches face name in font extension; not family name
 					faceStyle = fontInfo.getStyle();
+				}
+				
+				String pdfFontName = null;
+				int pdfFontStyle = java.awt.Font.PLAIN;
+				if (jrFont.isBold() && jrFont.isItalic())
+				{
+					pdfFontName = family.getBoldItalicPdfFont();
+					pdfFontStyle = java.awt.Font.BOLD | java.awt.Font.ITALIC;
+				}
+				
+				if (pdfFontName == null && jrFont.isBold())
+				{
+					pdfFontName = family.getBoldPdfFont();
+					pdfFontStyle = java.awt.Font.BOLD;
+				}
+				
+				if (pdfFontName == null && jrFont.isItalic())
+				{
+					pdfFontName = family.getItalicPdfFont();
+					pdfFontStyle = java.awt.Font.ITALIC;
+				}
+				
+				if (pdfFontName == null)
+				{
+					pdfFontName = family.getNormalPdfFont();
+					pdfFontStyle = java.awt.Font.PLAIN;
+				}
+
+				if (pdfFontName == null)
+				{
+					//in theory, face file cannot be null here
+					pdfFontName = (face == null || face.getFile() == null ? jrFont.getPdfFontName() : face.getFile());
+					pdfFontStyle = faceStyle;//FIXMEFONT not sure this is correct, in case we inherit pdfFontName from default properties
 				}
 
 //				String ttf = face.getFile();
@@ -1766,29 +1838,34 @@ public class JRPdfExporter extends JRAbstractExporter
 //				{
 //					throw new JRRuntimeException("The '" + face.getName() + "' font face in family '" + family.getName() + "' returns a null file.");
 //				}
-
-				pdfFont =
+				
+				pdfFont = 
 					new PdfFont(
-						face.getFile() == null ? jrFont.getPdfFontName() : face.getFile(),
+						pdfFontName, 
 						family.getPdfEncoding() == null ? jrFont.getPdfEncoding() : family.getPdfEncoding(),
- 						family.isPdfEmbedded() == null ? jrFont.isPdfEmbedded() : family.isPdfEmbedded().booleanValue(),
-						jrFont.isBold() && ((faceStyle & java.awt.Font.BOLD) == 0),
-						jrFont.isItalic() && ((faceStyle & java.awt.Font.ITALIC) == 0)
+ 						family.isPdfEmbedded() == null ? jrFont.isPdfEmbedded() : family.isPdfEmbedded(),
+						jrFont.isBold() && ((pdfFontStyle & java.awt.Font.BOLD) == 0), 
+						jrFont.isItalic() && ((pdfFontStyle & java.awt.Font.ITALIC) == 0)
 						);
 			}
 		}
 
+		int pdfFontStyle = (pdfFont.isPdfSimulatedBold() ? Font.BOLD : 0)
+				| (pdfFont.isPdfSimulatedItalic() ? Font.ITALIC : 0);
+		if (setFontLines)
+		{
+			pdfFontStyle |= (jrFont.isUnderline() ? Font.UNDERLINE : 0)
+					| (jrFont.isStrikeThrough() ? Font.STRIKETHRU : 0);
+		}
+		
 		try
 		{
 			font = FontFactory.getFont(
 				pdfFont.getPdfFontName(),
 				pdfFont.getPdfEncoding(),
 				pdfFont.isPdfEmbedded(),
-				jrFont.getFontSize(),
-				(pdfFont.isPdfSimulatedBold() ? Font.BOLD : 0)
-					| (pdfFont.isPdfSimulatedItalic() ? Font.ITALIC : 0)
-					| (jrFont.isUnderline() ? Font.UNDERLINE : 0)
-					| (jrFont.isStrikeThrough() ? Font.STRIKETHRU : 0),
+				jrFont.getFontSize() * fontSizeScale,
+				pdfFontStyle,
 				forecolor
 				);
 
@@ -1813,7 +1890,7 @@ public class JRPdfExporter extends JRAbstractExporter
 			}
 			catch(JRException e)
 			{
-				throw
+				throw //NOPMD
 					new JRRuntimeException(
 						"Could not load the following font : "
 						+ "\npdfFontName   : " + pdfFont.getPdfFontName()
@@ -1849,11 +1926,8 @@ public class JRPdfExporter extends JRAbstractExporter
 			font =
 				new Font(
 					baseFont,
-					jrFont.getFontSize(),
-					((pdfFont.isPdfSimulatedBold()) ? Font.BOLD : 0)
-						| ((pdfFont.isPdfSimulatedItalic()) ? Font.ITALIC : 0)
-						| (jrFont.isUnderline() ? Font.UNDERLINE : 0)
-						| (jrFont.isStrikeThrough() ? Font.STRIKETHRU : 0),
+					jrFont.getFontSize() * fontSizeScale,
+					pdfFontStyle,
 					forecolor
 					);
 		}
@@ -1865,7 +1939,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	/**
 	 *
 	 */
-	protected void exportText(JRPrintText text) throws DocumentException
+	public void exportText(JRPrintText text) throws DocumentException
 	{
 		JRStyledText styledText = getStyledText(text, false);
 
@@ -1880,19 +1954,19 @@ public class JRPdfExporter extends JRAbstractExporter
 		int y = text.getY() + getOffsetY();
 		int width = text.getWidth();
 		int height = text.getHeight();
-		int topPadding = text.getLineBox().getTopPadding().intValue();
-		int leftPadding = text.getLineBox().getLeftPadding().intValue();
-		int bottomPadding = text.getLineBox().getBottomPadding().intValue();
-		int rightPadding = text.getLineBox().getRightPadding().intValue();
+		int topPadding = text.getLineBox().getTopPadding();
+		int leftPadding = text.getLineBox().getLeftPadding();
+		int bottomPadding = text.getLineBox().getBottomPadding();
+		int rightPadding = text.getLineBox().getRightPadding();
 
 		int xFillCorrection = 0;
 		int yFillCorrection = 0;
 
 		double angle = 0;
 
-		switch (text.getRotation())
+		switch (text.getRotationValue())
 		{
-			case JRTextElement.ROTATION_LEFT :
+			case LEFT :
 			{
 				y = text.getY() + getOffsetY() + text.getHeight();
 				xFillCorrection = 1;
@@ -1906,7 +1980,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				angle = Math.PI / 2;
 				break;
 			}
-			case JRTextElement.ROTATION_RIGHT :
+			case RIGHT :
 			{
 				x = text.getX() + getOffsetX() + text.getWidth();
 				yFillCorrection = -1;
@@ -1920,7 +1994,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				angle = - Math.PI / 2;
 				break;
 			}
-			case JRTextElement.ROTATION_UPSIDE_DOWN :
+			case UPSIDE_DOWN :
 			{
 				x = text.getX() + getOffsetX() + text.getWidth();
 				y = text.getY() + getOffsetY() + text.getHeight();
@@ -1933,7 +2007,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				angle = Math.PI;
 				break;
 			}
-			case JRTextElement.ROTATION_NONE :
+			case NONE :
 			default :
 			{
 			}
@@ -1943,7 +2017,7 @@ public class JRPdfExporter extends JRAbstractExporter
 		atrans.rotate(angle, x, jasperPrint.getPageHeight() - y);
 		pdfContentByte.transform(atrans);
 
-		if (text.getMode() == JRElement.MODE_OPAQUE)
+		if (text.getModeValue() == ModeEnum.OPAQUE)
 		{
 			Color backcolor = text.getBackcolor();
 			pdfContentByte.setRGBColorFill(
@@ -1962,12 +2036,12 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		if (textLength > 0)
 		{
-			int horizontalAlignment = Element.ALIGN_LEFT;
-			switch (text.getHorizontalAlignment())
+			int horizontalAlignment;
+			switch (text.getHorizontalAlignmentValue())
 			{
-				case JRAlignment.HORIZONTAL_ALIGN_LEFT :
+				case LEFT :
 				{
-					if (text.getRunDirection() == JRPrintText.RUN_DIRECTION_LTR)
+					if (text.getRunDirectionValue() == RunDirectionEnum.LTR)
 					{
 						horizontalAlignment = Element.ALIGN_LEFT;
 					}
@@ -1977,14 +2051,14 @@ public class JRPdfExporter extends JRAbstractExporter
 					}
 					break;
 				}
-				case JRAlignment.HORIZONTAL_ALIGN_CENTER :
+				case CENTER :
 				{
 					horizontalAlignment = Element.ALIGN_CENTER;
 					break;
 				}
-				case JRAlignment.HORIZONTAL_ALIGN_RIGHT :
+				case RIGHT :
 				{
-					if (text.getRunDirection() == JRPrintText.RUN_DIRECTION_LTR)
+					if (text.getRunDirectionValue() == RunDirectionEnum.LTR)
 					{
 						horizontalAlignment = Element.ALIGN_RIGHT;
 					}
@@ -1994,7 +2068,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					}
 					break;
 				}
-				case JRAlignment.HORIZONTAL_ALIGN_JUSTIFIED :
+				case JUSTIFIED :
 				{
 					horizontalAlignment = Element.ALIGN_JUSTIFIED;
 					break;
@@ -2005,20 +2079,20 @@ public class JRPdfExporter extends JRAbstractExporter
 				}
 			}
 
-			float verticalOffset = 0f;
-			switch (text.getVerticalAlignment())
+			float verticalOffset;
+			switch (text.getVerticalAlignmentValue())
 			{
-				case JRAlignment.VERTICAL_ALIGN_TOP :
+				case TOP :
 				{
 					verticalOffset = 0f;
 					break;
 				}
-				case JRAlignment.VERTICAL_ALIGN_MIDDLE :
+				case MIDDLE :
 				{
 					verticalOffset = (height - topPadding - bottomPadding - text.getTextHeight()) / 2f;
 					break;
 				}
-				case JRAlignment.VERTICAL_ALIGN_BOTTOM :
+				case BOTTOM :
 				{
 					verticalOffset = height - topPadding - bottomPadding - text.getTextHeight();
 					break;
@@ -2030,7 +2104,7 @@ public class JRPdfExporter extends JRAbstractExporter
 			}
 
 			tagHelper.startText();
-
+			
 			ColumnText colText = new ColumnText(pdfContentByte);
 			colText.setSimpleColumn(
 				getPhrase(styledText, text),
@@ -2052,12 +2126,12 @@ public class JRPdfExporter extends JRAbstractExporter
 
 			colText.setLeading(0, text.getLineSpacingFactor());// * text.getFont().getSize());
 			colText.setRunDirection(
-				text.getRunDirection() == JRPrintText.RUN_DIRECTION_LTR
+				text.getRunDirectionValue() == RunDirectionEnum.LTR
 				? PdfWriter.RUN_DIRECTION_LTR : PdfWriter.RUN_DIRECTION_RTL
 				);
 
 			colText.go();
-
+			
 			tagHelper.endText();
 		}
 
@@ -2107,21 +2181,21 @@ public class JRPdfExporter extends JRAbstractExporter
 	 *
 	 */
 	protected void exportTopPen(
-		JRPen topPen,
-		JRPen leftPen,
-		JRPen rightPen,
+		JRPen topPen, 
+		JRPen leftPen, 
+		JRPen rightPen, 
 		JRPrintElement element)
 	{
-		if (topPen.getLineWidth().floatValue() > 0f)
+		if (topPen.getLineWidth() > 0f)
 		{
-			float leftOffset = leftPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(leftPen);
-			float rightOffset = rightPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(rightPen);
-
+			float leftOffset = leftPen.getLineWidth() / 2 - BorderOffset.getOffset(leftPen);
+			float rightOffset = rightPen.getLineWidth() / 2 - BorderOffset.getOffset(rightPen);
+			
 			preparePen(pdfContentByte, topPen, PdfContentByte.LINE_CAP_BUTT);
-
-			if (topPen.getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+			
+			if (topPen.getLineStyleValue() == LineStyleEnum.DOUBLE)
 			{
-				float topOffset = topPen.getLineWidth().floatValue();
+				float topOffset = topPen.getLineWidth();
 
 				pdfContentByte.moveTo(
 					element.getX() + getOffsetX() - leftOffset,
@@ -2165,16 +2239,16 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	protected void exportLeftPen(JRPen topPen, JRPen leftPen, JRPen bottomPen, JRPrintElement element)
 	{
-		if (leftPen.getLineWidth().floatValue() > 0f)
+		if (leftPen.getLineWidth() > 0f)
 		{
-			float topOffset = topPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(topPen);
-			float bottomOffset = bottomPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(bottomPen);
+			float topOffset = topPen.getLineWidth() / 2 - BorderOffset.getOffset(topPen);
+			float bottomOffset = bottomPen.getLineWidth() / 2 - BorderOffset.getOffset(bottomPen);
 
 			preparePen(pdfContentByte, leftPen, PdfContentByte.LINE_CAP_BUTT);
 
-			if (leftPen.getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+			if (leftPen.getLineStyleValue() == LineStyleEnum.DOUBLE)
 			{
-				float leftOffset = leftPen.getLineWidth().floatValue();
+				float leftOffset = leftPen.getLineWidth();
 
 				pdfContentByte.moveTo(
 					element.getX() + getOffsetX() - leftOffset / 3,
@@ -2218,16 +2292,16 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	protected void exportBottomPen(JRPen leftPen, JRPen bottomPen, JRPen rightPen, JRPrintElement element)
 	{
-		if (bottomPen.getLineWidth().floatValue() > 0f)
+		if (bottomPen.getLineWidth() > 0f)
 		{
-			float leftOffset = leftPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(leftPen);
-			float rightOffset = rightPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(rightPen);
-
+			float leftOffset = leftPen.getLineWidth() / 2 - BorderOffset.getOffset(leftPen);
+			float rightOffset = rightPen.getLineWidth() / 2 - BorderOffset.getOffset(rightPen);
+			
 			preparePen(pdfContentByte, bottomPen, PdfContentByte.LINE_CAP_BUTT);
-
-			if (bottomPen.getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+			
+			if (bottomPen.getLineStyleValue() == LineStyleEnum.DOUBLE)
 			{
-				float bottomOffset = bottomPen.getLineWidth().floatValue();
+				float bottomOffset = bottomPen.getLineWidth();
 
 				pdfContentByte.moveTo(
 					element.getX() + getOffsetX() - leftOffset,
@@ -2271,16 +2345,16 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	protected void exportRightPen(JRPen topPen, JRPen bottomPen, JRPen rightPen, JRPrintElement element)
 	{
-		if (rightPen.getLineWidth().floatValue() > 0f)
+		if (rightPen.getLineWidth() > 0f)
 		{
-			float topOffset = topPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(topPen);
-			float bottomOffset = bottomPen.getLineWidth().floatValue() / 2 - BorderOffset.getOffset(bottomPen);
+			float topOffset = topPen.getLineWidth() / 2 - BorderOffset.getOffset(topPen);
+			float bottomOffset = bottomPen.getLineWidth() / 2 - BorderOffset.getOffset(bottomPen);
 
 			preparePen(pdfContentByte, rightPen, PdfContentByte.LINE_CAP_BUTT);
 
-			if (rightPen.getLineStyle().byteValue() == JRPen.LINE_STYLE_DOUBLE)
+			if (rightPen.getLineStyleValue() == LineStyleEnum.DOUBLE)
 			{
-				float rightOffset = rightPen.getLineWidth().floatValue();
+				float rightOffset = rightPen.getLineWidth();
 
 				pdfContentByte.moveTo(
 					element.getX() + getOffsetX() + element.getWidth() + rightOffset / 3,
@@ -2324,13 +2398,13 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	private static void preparePen(PdfContentByte pdfContentByte, JRPen pen, int lineCap)
 	{
-		float lineWidth = pen.getLineWidth().floatValue();
+		float lineWidth = pen.getLineWidth();
 
 		if (lineWidth <= 0)
 		{
 			return;
 		}
-
+		
 		pdfContentByte.setLineWidth(lineWidth);
 		pdfContentByte.setLineCap(lineCap);
 
@@ -2341,15 +2415,15 @@ public class JRPdfExporter extends JRAbstractExporter
 			color.getBlue()
 			);
 
-		switch (pen.getLineStyle().byteValue())
+		switch (pen.getLineStyleValue())
 		{
-			case JRPen.LINE_STYLE_DOUBLE :
+			case DOUBLE :
 			{
 				pdfContentByte.setLineWidth(lineWidth / 3);
 				pdfContentByte.setLineDash(0f);
 				break;
 			}
-			case JRPen.LINE_STYLE_DOTTED :
+			case DOTTED :
 			{
 				switch (lineCap)
 				{
@@ -2366,7 +2440,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				}
 				break;
 			}
-			case JRPen.LINE_STYLE_DASHED :
+			case DASHED :
 			{
 				switch (lineCap)
 				{
@@ -2383,7 +2457,7 @@ public class JRPdfExporter extends JRAbstractExporter
 				}
 				break;
 			}
-			case JRPen.LINE_STYLE_SOLID :
+			case SOLID :
 			default :
 			{
 				pdfContentByte.setLineDash(0f);
@@ -2400,30 +2474,25 @@ public class JRPdfExporter extends JRAbstractExporter
 			List fontFiles = JRProperties.getProperties(JRProperties.PDF_FONT_FILES_PREFIX);
 			if (!fontFiles.isEmpty())
 			{
-				for (Iterator i = fontFiles.iterator(); i.hasNext();)
-				{
-					JRProperties.PropertySuffix font = (JRProperties.PropertySuffix) i.next();
-					String file = font.getValue();
-					if (file.toLowerCase().endsWith(".ttc"))
-					{
-						FontFactory.register(file);
-					}
-					else
-					{
-						String alias = font.getSuffix();
-						FontFactory.register(file, alias);
-					}
-				}
+                for (Object fontFile : fontFiles) {
+                    JRProperties.PropertySuffix font = (JRProperties.PropertySuffix) fontFile;
+                    String file = font.getValue();
+                    if (file.toLowerCase().endsWith(".ttc")) {
+                        FontFactory.register(file);
+                    } else {
+                        String alias = font.getSuffix();
+                        FontFactory.register(file, alias);
+                    }
+                }
 			}
 
 			List fontDirs = JRProperties.getProperties(JRProperties.PDF_FONT_DIRS_PREFIX);
 			if (!fontDirs.isEmpty())
 			{
-				for (Iterator i = fontDirs.iterator(); i.hasNext();)
-				{
-					JRProperties.PropertySuffix dir = (JRProperties.PropertySuffix) i.next();
-					FontFactory.registerDirectory(dir.getValue());
-				}
+                for (Object fontDir : fontDirs) {
+                    JRProperties.PropertySuffix dir = (JRProperties.PropertySuffix) fontDir;
+                    FontFactory.registerDirectory(dir.getValue());
+                }
 			}
 
 			fontsRegistered = true;
@@ -2493,17 +2562,22 @@ public class JRPdfExporter extends JRAbstractExporter
 	protected void addBookmark(int level, String title, int x, int y)
 	{
 		Bookmark parent = bookmarkStack.peek();
-		while(parent.level > level - 1)
+		// searching for parent
+		while(parent.level >= level)
 		{
 			bookmarkStack.pop();
 			parent = bookmarkStack.peek();
 		}
 
-		for (int i = parent.level + 1; i < level; ++i)
+		if (!collapseMissingBookmarkLevels)
 		{
-			Bookmark emptyBookmark = new Bookmark(parent, parent.pdfOutline.getPdfDestination(), EMPTY_BOOKMARK_TITLE);
-			bookmarkStack.push(emptyBookmark);
-			parent = emptyBookmark;
+			// creating empty bookmarks in order to preserve the bookmark level
+			for (int i = parent.level + 1; i < level; ++i)
+			{
+				Bookmark emptyBookmark = new Bookmark(parent, parent.pdfOutline.getPdfDestination(), EMPTY_BOOKMARK_TITLE);
+				bookmarkStack.push(emptyBookmark);
+				parent = emptyBookmark;
+			}
 		}
 
 		Bookmark bookmark = new Bookmark(parent, x, jasperPrint.getPageHeight() - y, title);
@@ -2528,7 +2602,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	protected void exportFrame(JRPrintFrame frame) throws DocumentException, IOException, JRException
 	{
-		if (frame.getMode() == JRElement.MODE_OPAQUE)
+		if (frame.getModeValue() == ModeEnum.OPAQUE)
 		{
 			int x = frame.getX() + getOffsetX();
 			int y = frame.getY() + getOffsetY();
@@ -2599,7 +2673,10 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		public BaseFont awtToPdf(java.awt.Font font)
 		{
-			return getFont(font.getAttributes(), null).getBaseFont();
+			// not setting underline and strikethrough as we only need the base font.
+			// underline and strikethrough will not work here because PdfGraphics2D
+			// doesn't check the font attributes.
+			return getFont(font.getAttributes(), null, false).getBaseFont();
 		}
 
 		public java.awt.Font pdfToAwt(BaseFont font, int size)
@@ -2609,23 +2686,31 @@ public class JRPdfExporter extends JRAbstractExporter
 	}
 
 
+	/**
+	 *
+	 */
 	protected void exportGenericElement(JRGenericPrintElement element)
 	{
-		GenericElementPdfHandler handler = (GenericElementPdfHandler)
+		GenericElementPdfHandler handler = (GenericElementPdfHandler) 
 				GenericElementHandlerEnviroment.getHandler(
 						element.getGenericType(), PDF_EXPORTER_KEY);
-
+		
 		if (handler != null)
 		{
 			handler.exportElement(exporterContext, element);
 		}
 		else
 		{
-			if (log.isDebugEnabled())
-			{
-				log.debug("No PDF generic element handler for "
-						+ element.getGenericType());
-			}
+            log.debug("No PDF generic element handler for {}", element.getGenericType());
 		}
+	}
+
+	
+	/**
+	 *
+	 */
+	protected String getExporterKey()
+	{
+		return PDF_EXPORTER_KEY;
 	}
 }

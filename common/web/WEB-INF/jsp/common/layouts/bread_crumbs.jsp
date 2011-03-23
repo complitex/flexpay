@@ -3,7 +3,7 @@
 <s:iterator	value="userPreferences.crumbs" status="status">
     <nobr>
         <s:if test="!#status.last">
-            <a href="<s:url value="%{getUrl()}" includeParams="none" />" class="crumb"><s:text name="%{wildPortionOfName}"/></a>
+            <a href="<s:url value="%{getUrl()}" />" class="crumb"><s:text name="%{wildPortionOfName}"/></a>
         </s:if><s:else>
             <strong><s:text name="%{wildPortionOfName}"/></strong>
         </s:else>

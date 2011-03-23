@@ -9,7 +9,7 @@
 
     function showAttributesBlock() {
         FP.showShadow("shadow", "attributesBlock");
-        $.post("<s:url action="buildingAttributesEditBlock" includeParams="none" />",
+        $.post("<s:url action="buildingAttributesEditBlock" />",
                 {
                     attributeDate:$("#attributeDate").val(),
                     "building.id":<s:property value="building.id" />

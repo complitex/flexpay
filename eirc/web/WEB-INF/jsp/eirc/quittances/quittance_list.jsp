@@ -30,7 +30,7 @@
 				<td class="col"><s:date format="MM/yyyy" name="dateFrom" /></td>
 				<td class="col"><s:property value="orderNumber" /></td>
 				<td class="col">
-					<a href="<s:url action='quittancePay' includeParams="none"><s:param name="quittance.id" value="id"/></s:url>">
+					<a href="<s:url action='quittancePay'><s:param name="quittance.id" value="id"/></s:url>">
 						<s:text name="eirc.quittances.quittance_pay.title"/></a></td>
 			</tr>
 		</s:iterator>

@@ -8,10 +8,10 @@
        onclick="<s:if test="townSorterByType.activated">$('#townSorterByTypeOrder').val('<s:property value="townSorterByType.oppositeOrder" />');</s:if>FP.activateSorter('townSorterByTypeActive');" value="<s:text name="ab.town_type" />" />
 <s:if test="townSorterByType.activated">
 	<s:if test="townSorterByType.desc"><img
-			src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />"
+			src="<s:url value="/resources/common/img/i_arrow_up.gif" />"
 			alt="" title="<s:text name="common.sort.asc" />">
 	</s:if><s:else><img
-			src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none" />"
+			src="<s:url value="/resources/common/img/i_arrow_down.gif" />"
 			alt="" title="<s:text name="common.sort.desc" />">
 	</s:else>
 </s:if>

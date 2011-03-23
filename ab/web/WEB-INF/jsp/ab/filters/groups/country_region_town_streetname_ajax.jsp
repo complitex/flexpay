@@ -6,21 +6,21 @@
 
     $(function() {
         FF.createFilter("country", {
-            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" />",
             defaultValue: "<s:property value="countryFilter != null ? countryFilter : userPreferences.countryFilter" />"
         });
         FF.createFilter("region", {
-            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="regionFilterAjax" namespace="/dicts" />",
             parents: ["country"],
             defaultValue: "<s:property value="regionFilter != null ? regionFilter : userPreferences.regionFilter" />"
         });
         FF.createFilter("town", {
-            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="townFilterAjax" namespace="/dicts" />",
             parents: ["region"],
             defaultValue: "<s:property value="townFilter != null ? townFilter : userPreferences.townFilter" />"
         });
         FF.createFilter("street", {
-            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="streetFilterAjax" namespace="/dicts" />",
             parents: ["town"],
             defaultValue: "",
             defaultString: "<s:text name="ab.street.search" />",

@@ -32,7 +32,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="addressAttributeTypeEdit" includeParams="none"><s:param name="attributeType.id" value="attributeType.id" /></s:url>';"
+                   onclick="window.location='<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="attributeType.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

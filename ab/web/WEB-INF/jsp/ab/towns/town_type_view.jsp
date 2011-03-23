@@ -36,7 +36,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="townTypeEdit" includeParams="none"><s:param name="townType.id" value="townType.id" /></s:url>';"
+                   onclick="window.location='<s:url action="townTypeEdit"><s:param name="townType.id" value="townType.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

@@ -36,7 +36,7 @@
             </td>
             <td class="col">
                 <s:if test="service != null">
-                    <a href="<s:url action="serviceEdit" namespace="/eirc" includeParams="none"><s:param name="service.id" value="service.id" /></s:url>">
+                    <a href="<s:url action="serviceEdit" namespace="/eirc"><s:param name="service.id" value="service.id" /></s:url>">
                         <s:property value="serviceCode" />
                     </a>
                 </s:if><s:else>
@@ -48,7 +48,7 @@
                 <s:if test="streetType != null && streetName != null && (buildingNum != null || buildingBulkNum != null) && apartmentNum != null">
                     <s:set name="addressVal" value="%{streetType + ' ' + streetName + ', ' + (buildingNum != null ? buildingNum : '') + (buildingBulkNum != null ? ' ' + buildingBulkNum : '') + ', ' + apartmentNum}" />
                     <s:if test="apartment != null">
-                        <a href="<s:url action="apartmentRegistration" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
+                        <a href="<s:url action="apartmentRegistration" namespace="/dicts"><s:param name="apartment.id" value="apartment.id" /></s:url>">
                             <s:property value="#addressVal" />
                         </a>
                     </s:if><s:else>
@@ -60,7 +60,7 @@
                 <s:if test="firstName != null || middleName != null || lastName != null">
                     <s:set name="fioVal" value="%{(lastName != null ? lastName : '') + (firstName != null ? ' ' + firstName : '') + (middleName != null ? ' ' + middleName : '')}" />
                     <s:if test="person != null">
-                        <a href="<s:url action="personView" namespace="/dicts" includeParams="none"><s:param name="person.id" value="person.id" /></s:url>">
+                        <a href="<s:url action="personView" namespace="/dicts"><s:param name="person.id" value="person.id" /></s:url>">
                             <s:property value="#fioVal" />
                         </a>
                     </s:if><s:else>
@@ -99,7 +99,7 @@
 
     function createDialog(recordId) {
 
-        var src = $.param.querystring("<s:url action="selectCorrectionType" namespace="/payments" includeParams="none" />", {"record.id":recordId});
+        var src = $.param.querystring("<s:url action="selectCorrectionType" namespace="/payments" />", {"record.id":recordId});
         $.modal('<iframe src="' + src + '" height="550" width="800" style="border:0" />', {
             containerCss:{
                 backgroundColor:"#fff",
@@ -127,7 +127,7 @@
         if (ids.length == 0) {
             return;
         }
-        $.post("<s:url action="registryRecordsProcess" includeParams="none" />",
+        $.post("<s:url action="registryRecordsProcess" />",
                 {
                     objectIds:ids,
                     "registry.id":<s:property value="registry.id" />

@@ -42,10 +42,10 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceTypeEdit" includeParams="none"><s:param name="serviceType.id" value="serviceType.id" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceTypeEdit"><s:param name="serviceType.id" value="serviceType.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceTypeCorrectionsList" includeParams="none"><s:param name="serviceType.id" value="serviceType.id" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceTypeCorrectionsList"><s:param name="serviceType.id" value="serviceType.id" /></s:url>';"
                    value="<s:text name="payments.service_type.view_corrections" />" />
         </td>
     </tr>

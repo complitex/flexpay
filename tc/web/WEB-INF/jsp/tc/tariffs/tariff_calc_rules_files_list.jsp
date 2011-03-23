@@ -13,7 +13,7 @@
             <td colspan="8">
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
                 <input type="button" class="btn-exit"
-                       onclick="window.location='<s:url action="rulesFileEdit" includeParams="none"><s:param name="rulesFile.id" value="0" /></s:url>';"
+                       onclick="window.location='<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="0" /></s:url>';"
                        value="<s:text name="common.new" />" />
                 <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
                 <input type="button" class="btn-exit" value="<s:text name="tc.calculate" />" onclick="calculate();" />
@@ -45,13 +45,13 @@
                     </a>
                 </td>
                 <td class="col">
-                    <a href="<s:url value="/download/%{file.id}" includeParams="none" />"><s:property value="file.originalName" /></a>
+                    <a href="<s:url value="/download/%{file.id}" />"><s:property value="file.originalName" /></a>
                 </td>
                 <td class="col"><s:date name="creationDate" format="dd.MM.yyyy hh:mm:ss" /></td>
                 <td class="col"><s:property value="userName" /></td>
                 <td class="col"><s:property value="getTranslation(translations).description" /></td>
                 <td class="col">
-                    <a href="<s:url action="rulesFileEdit" includeParams="none"><s:param name="rulesFile.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
+                    <a href="<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
                 </td>
             </tr>
         </s:iterator>
@@ -59,7 +59,7 @@
             <td colspan="8">
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
                 <input type="button" class="btn-exit"
-                       onclick="window.location='<s:url action="rulesFileEdit" includeParams="none"><s:param name="rulesFile.id" value="0" /></s:url>';"
+                       onclick="window.location='<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="0" /></s:url>';"
                        value="<s:text name="common.new" />" />
                 <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
                 <input type="button" class="btn-exit" value="<s:text name="tc.calculate" />" onclick="calculate();" />
@@ -80,7 +80,7 @@
 
         $("#calendar").datepicker("dialog", "" , function(dateText) {
             $("input[name='calcDate']").get(0).value = dateText;
-            $("#fObjects").attr("action", "<s:url action="tariffCalculate" includeParams="none" />").submit();
+            $("#fObjects").attr("action", "<s:url action="tariffCalculate" />").submit();
         },
         {
             dateFormat: "yy/mm/dd",

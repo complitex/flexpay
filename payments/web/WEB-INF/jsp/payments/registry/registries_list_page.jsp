@@ -59,7 +59,7 @@
         }
 
         FP.pagerAjax(element, {
-            action:"<s:url action="registriesListAjax" namespace="/payments" includeParams="none" />", 
+            action:"<s:url action="registriesListAjax" namespace="/payments" />",
             params: params
         });
     }

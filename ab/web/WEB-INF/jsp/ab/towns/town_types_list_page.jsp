@@ -14,12 +14,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="townTypesListAjax" namespace="/dicts" includeParams="none" />"
+            action:"<s:url action="townTypesListAjax" namespace="/dicts" />"
         });
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="townTypeDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="townTypeDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

@@ -14,7 +14,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="addressAttributeTypesListAjax" namespace="/dicts" includeParams="none" />"
+            action:"<s:url action="addressAttributeTypesListAjax" namespace="/dicts" />"
         });
     }
 

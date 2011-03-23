@@ -55,7 +55,7 @@
             <tr>
                 <td colspan="2">
                     <input type="button" class="btn-exit"
-                           onclick="window.location='<s:url action="registryCommentaryEdit" includeParams="none"><s:param name="registry.id" value="registry.id" /></s:url>';"
+                           onclick="window.location='<s:url action="registryCommentaryEdit"><s:param name="registry.id" value="registry.id" /></s:url>';"
                            value="<s:text name="payments.registry.commentary.edit" />" />
                 </td>
             </tr>
@@ -63,7 +63,7 @@
             <tr>
                 <td colspan="2">
                     <input type="button" class="btn-exit"
-                           onclick="window.location='<s:url action="registryCommentaryEdit" includeParams="none"><s:param name="registry.id" value="registry.id" /></s:url>';"
+                           onclick="window.location='<s:url action="registryCommentaryEdit"><s:param name="registry.id" value="registry.id" /></s:url>';"
                            value="<s:text name="payments.registry.commentary.add" />" />
                 </td>
             </tr>
@@ -82,7 +82,7 @@
     function updateErrorsNumber() {
         $erNum.html("<img src=\"<s:url value="/resources/common/img/indicator2.gif" />\" />");
 
-        $.getJSON("<s:url action="checkRegistryErrorsNumber" includeParams="none" />", {"registry.id": <s:property value="registry.id" />},
+        $.getJSON("<s:url action="checkRegistryErrorsNumber" />", {"registry.id": <s:property value="registry.id" />},
             function(data) {
                 $("#errorsNumber").text(data.errorsNumber);
                 if (data.errorMessage != "") {

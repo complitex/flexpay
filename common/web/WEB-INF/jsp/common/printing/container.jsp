@@ -1,39 +1,30 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <html>
-    <head></head>
-<%
-	String browser = request.getHeader("User-Agent").toLowerCase();
-	if (browser.contains("msie")) {
-%>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <%@include file="/WEB-INF/jsp/common/layouts/scripts.jsp"%>
+    </head>
+<body onload="window.print();">
     <s:if test="file.extension == '.html' || file.extension == '.txt' || file.extension == '.csv'">
-        <frameset rows="25,*" cols="*" onload="mainFrame.print();">
-            <frame src="<s:url value="/resources/common/jsp/print.jsp" includeParams="none" />" id="topFrame" name="topFrame" scrolling="no" />
-            <frame src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" includeParams="none" />" id="mainFrame" name="mainFrame" />
-        </frameset>
+        <script type="text/javascript">
+            function printMainFrame() {
+                var iframe=$("#mainFrame");
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+            }
+        </script>
+        <div align="center">
+            <input type="button" onclick="printMainFrame();return false;" value="<s:text name="print" />" class="btn-exit" />
+            <input type="button" onclick="parent.close();" value="<s:text name="close_window" />" class="btn-exit" />
+        </div>
+        <iframe src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" />" id="mainFrame" name="mainFrame"></iframe>
     </s:if><s:elseif test="file.extension == '.pdf'">
-        <body>
-            <script type="text/javascript">
-                function printMainFrame() {
-                    document.getElementById("doc").print();
-                }
-            </script>
-            <div align="center">
-                <input type="button" onclick="printMainFrame();return false;" value="<s:text name="print" />" class="btn-exit" />
-                <input type="button" onclick="window.close();" value="<s:text name="close_window" />" class="btn-exit" />
-                <object data="<s:url value="/download/%{file.id}%{file.extension}?inline" includeParams="none" />"
-                        type="application/pdf" id="doc" width="100%" height="100%">
-                </object>
-            </div>
-        </body>
+        <div align="center">
+            <input type="button" onclick="window.close();" value="<s:text name="close_window" />" class="btn-exit" />
+            <object data="<s:url value="/download/%{file.id}%{file.extension}?inline" />"
+                    type="application/pdf" id="doc" width="100%" height="97%">
+            </object>
+        </div>
     </s:elseif>
-<%
-} else {
-%>
-    <frameset rows="25,*" cols="*"<s:if test="file.extension == '.html' || file.extension == '.txt'"> onload="mainFrame.print();"</s:if>>
-        <frame src="<s:url value="/resources/common/jsp/print.jsp" includeParams="none" />" id="topFrame" name="topFrame" scrolling="no" />
-        <frame src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" includeParams="none" />" id="mainFrame" name="mainFrame" />
-    </frameset>
-<%
-	}
-%>
+</body>
 </html>

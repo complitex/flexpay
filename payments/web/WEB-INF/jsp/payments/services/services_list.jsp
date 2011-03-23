@@ -6,7 +6,7 @@
         <td colspan="11">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceEdit"><s:param name="service.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -35,7 +35,7 @@
             </td>
             <td class="col" nowrap>
                 <s:if test="isSubService()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s:if>
-                <a href="<s:url action="serviceView" includeParams="none"><s:param name="service.id" value="id" /></s:url>">
+                <a href="<s:url action="serviceView"><s:param name="service.id" value="id" /></s:url>">
                     <s:property value="getTranslationName(serviceType.typeNames)" />
                 </a>
             </td>
@@ -47,7 +47,7 @@
             <td class="col"><s:date name="endDate" format="yyyy/MM/dd" /></td>
             <td class="col"><s:if test="canReturn"><s:text name="common.yes" /></s:if><s:else><s:text name="common.no" /></s:else></td>
             <td class="col">
-                <a href="<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="serviceEdit"><s:param name="service.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -55,7 +55,7 @@
         <td colspan="11">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceEdit"><s:param name="service.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

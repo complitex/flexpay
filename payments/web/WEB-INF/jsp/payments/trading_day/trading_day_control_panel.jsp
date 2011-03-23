@@ -37,7 +37,7 @@
 <script type="text/javascript">
 
     function tradingDay(button) {
-        $.post("<s:url action="processTradingDay" includeParams="none" />",
+        $.post("<s:url action="processTradingDay" />",
                 {
                     <s:if test="cashbox != null">
                         "cashbox.id":<s:property value="cashbox.id" />,

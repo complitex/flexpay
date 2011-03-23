@@ -14,7 +14,7 @@
 
     <s:if test="person.notNew">
         $("#registration").ready(function() {
-            $.post("<s:url action="personEditRegistrationForm" includeParams="none" />",
+            $.post("<s:url action="personEditRegistrationForm" />",
                     {
                         apartmentFilter:"<s:property value="person.currentRegistration.apartment.id" />",
                         beginDate:"<s:property value="format(person.currentRegistration.beginDate)" />",
@@ -36,7 +36,7 @@
         $("#editFio input[type='text'], #editFio input:checked").each(function() {
             params[this.name] = this.value;
         });
-        $.post("<s:url action="personSaveFIO" includeParams="none" />", params, function(data, status) {
+        $.post("<s:url action="personSaveFIO" />", params, function(data, status) {
             if (data == "" && status == "success") {
                 window.location.href = FP.base;
             }
@@ -44,14 +44,14 @@
             if ($("#errors").html() == "") {
                 personId.value = $("#responseForm input[name='person.id']").get(0).value;
                 if ($("#formRegistration").get(0) == null) {
-                    $.post("<s:url action="personEditRegistrationForm" includeParams="none" />", {}, function(data1, status1) {
+                    $.post("<s:url action="personEditRegistrationForm" />", {}, function(data1, status1) {
                         if (data1 == "" && status1 == "success") {
                             window.location.href = FP.base;
                         }
                                 $("#registration").html(data1);
                             });
                 }
-                $.post("<s:url action="personViewIdentities" includeParams="none" />",
+                $.post("<s:url action="personViewIdentities" />",
                         {"person.id":personId.value},
                         function(data1, status1) {
                             if (data1 == "" && status1 == "success") {
@@ -64,7 +64,7 @@
     }
 
     function submitRegistration() {
-        $.post("<s:url action="personSaveRegistration" includeParams="none" />",
+        $.post("<s:url action="personSaveRegistration" />",
                 {
                     apartmentFilter:$("#apartment_selected").val(),
                     "person.id":personId.value,

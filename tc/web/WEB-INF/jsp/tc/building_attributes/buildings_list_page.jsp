@@ -27,7 +27,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
+            action:"<s:url action="buildingsListAjax" namespace="/tc"/>",
             params:{streetFilter: FF.filters["street"].value.val()}
         });
     }

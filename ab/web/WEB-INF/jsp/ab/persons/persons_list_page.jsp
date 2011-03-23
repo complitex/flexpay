@@ -28,7 +28,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="personsListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="personsListAjax" namespace="/dicts" />",
             params:{
                 "personSearchFilter.searchString": $("input[name='personSearchFilter.searchString']").get(0).value
             }
@@ -36,7 +36,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="personDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="personDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

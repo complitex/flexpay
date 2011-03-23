@@ -8,10 +8,10 @@
        onclick="<s:if test="apartmentSorter.activated">$('#apartmentSorterOrder').val('<s:property value="apartmentSorter.oppositeOrder" />');</s:if>FP.activateSorter('apartmentSorterActive');" value="<s:text name="ab.apartment" />" />
 <s:if test="apartmentSorter.activated">
 	<s:if test="apartmentSorter.desc"><img
-			src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />"
+			src="<s:url value="/resources/common/img/i_arrow_up.gif" />"
 			alt="" title="<s:text name="common.sort.asc" />">
 	</s:if><s:else><img
-			src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none" />"
+			src="<s:url value="/resources/common/img/i_arrow_down.gif" />"
 			alt="" title="<s:text name="common.sort.desc" />">
 	</s:else>
 </s:if>

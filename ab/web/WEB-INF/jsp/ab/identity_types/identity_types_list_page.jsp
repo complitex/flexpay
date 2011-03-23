@@ -14,12 +14,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="identityTypesListAjax" namespace="/dicts" includeParams="none" />"
+            action:"<s:url action="identityTypesListAjax" namespace="/dicts" />"
         });
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="identityTypeDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="identityTypeDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

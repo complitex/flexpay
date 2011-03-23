@@ -39,7 +39,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="personsListCorrections" includeParams="none" />",
+            action:"<s:url action="personsListCorrections" />",
             params:{
                 "personSearchFilter.searchString": $("input[name='personSearchFilter.searchString']").get(0).value
             }
@@ -52,7 +52,7 @@
 
     function set() {
         var id = $("input[type='radio'][name='objectIds']:checked").val();
-        $.post("<s:url action="setCorrection" includeParams="none" />", {
+        $.post("<s:url action="setCorrection" />", {
                     <s:if test="group != null">
                         <s:if test="group.townName != null">"group.townName":"<s:property value="group.townName" />",</s:if>
                         <s:if test="group.streetType != null">"group.streetType":"<s:property value="group.streetType" />",</s:if>

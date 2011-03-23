@@ -7,7 +7,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
             <input type="button" value="<s:text name="common.delete_selected" />" class="btn-exit" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="quittancePacketEdit" includeParams="none"><s:param name="packet.id" value="0"/></s:url>';"
+                   onclick="window.location='<s:url action="quittancePacketEdit"><s:param name="packet.id" value="0"/></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -33,7 +33,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="quittancePacketView" includeParams="none"><s:param name="packet.id" value="id" /></s:url>">
+                <a href="<s:url action="quittancePacketView"><s:param name="packet.id" value="id" /></s:url>">
                     <s:property value="packetNumber" />
                 </a>
             </td>
@@ -43,7 +43,7 @@
             <td class="col"><s:property value="controlOverallSum" /></td>
             <td class="col"><s:property value="overallSum" /></td>
             <td class="col">
-                <a href="<s:url action="quittancePacketEdit" includeParams="none"><s:param name="packet.id" value="id" /></s:url>">
+                <a href="<s:url action="quittancePacketEdit"><s:param name="packet.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
             </td>
@@ -54,7 +54,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
             <input type="button" value="<s:text name="common.delete_selected" />" class="btn-exit" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="quittancePacketEdit" includeParams="none"><s:param name="packet.id" value="0"/></s:url>';"
+                   onclick="window.location='<s:url action="quittancePacketEdit"><s:param name="packet.id" value="0"/></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

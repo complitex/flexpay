@@ -9,8 +9,8 @@
        onclick="<s:if test="operationSorterById.activated">$('#operationSorterByIdOrder').val('<s:property value="operationSorterById.oppositeOrder" />');</s:if>FP.activateSorter('operationSorterByIdActive');" value="<s:text name="payments.operations.list.uno"/>"/>
 <s:if test="operationSorterById.activated">
 	<s:if test="operationSorterById.desc">
-		<img src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />" alt="" title="<s:text name="common.sort.asc" />">
+		<img src="<s:url value="/resources/common/img/i_arrow_up.gif" />" alt="" title="<s:text name="common.sort.asc" />">
 	</s:if><s:else>
-		<img src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none" />" alt="" title="<s:text name="common.sort.desc" />">
+		<img src="<s:url value="/resources/common/img/i_arrow_down.gif" />" alt="" title="<s:text name="common.sort.desc" />">
 	</s:else>
 </s:if>

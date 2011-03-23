@@ -6,7 +6,7 @@
 
     $(function() {
         FPFile.createFileUploadForm("inputForm", "uploadBtn", {
-            action : "<s:url action="szFileUpload" namespace="/sz" includeParams="none" />",
+            action : "<s:url action="szFileUpload" namespace="/sz" />",
             validate : function() {
                 var v = "";
                 $('input[type="file"]').each(function(i, el) {

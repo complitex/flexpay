@@ -4,7 +4,7 @@
     <s:hidden name="pageSizeChanged" value="false" />&nbsp;
     <s:hidden name="curPage" value="%{pager.pageNumber}" />&nbsp;
 <s:if test="pager.totalNumberOfElements > 0">
-    <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/paging.css" includeParams="none" />" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/paging.css" />" />
 
     <s:if test="pager.lastPageNumber > 1">
         &nbsp;<s:text name="common.go_to" />&nbsp;

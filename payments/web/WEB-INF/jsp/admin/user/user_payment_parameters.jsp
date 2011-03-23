@@ -36,7 +36,7 @@
             params["paymentPointFilter.selectedId"] = defaultPP;
         }
 
-        $.post("<s:url action="paymentPointFilterAjax" namespace="/payments" includeParams="none" />", params,
+        $.post("<s:url action="paymentPointFilterAjax" namespace="/payments" />", params,
                 function(data, status) {
                     if (status == "success") {
                         $(pp).val(-1);
@@ -87,7 +87,7 @@
             params["cashboxFilter.selectedId"] = defaultC;
         }
 
-        $.post("<s:url action="cashboxFilterAjax" namespace="/payments" includeParams="none" />", params,
+        $.post("<s:url action="cashboxFilterAjax" namespace="/payments" />", params,
                 function(data, status) {
                     if (status == "success") {
                         $(cFilterBody).html(data).ready(function() {

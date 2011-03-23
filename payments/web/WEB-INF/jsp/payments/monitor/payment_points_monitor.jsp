@@ -16,7 +16,7 @@
     <tr>
         <td><s:text name="payments.payment_points.list.last_update" />&nbsp;<s:property value="updated" /></td>
         <td align="left">
-            <input type="button" value="<s:text name="payments.payment_points.list.update" />" onclick="window.location='<s:url action="paymentPointsListMonitor" includeParams="none" />';" />
+            <input type="button" value="<s:text name="payments.payment_points.list.update" />" onclick="window.location='<s:url action="paymentPointsListMonitor" />';" />
         </td>
     </tr>
 </table>
@@ -31,7 +31,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="paymentPointsListMonitorAjax" includeParams="none" />"
+            action:"<s:url action="paymentPointsListMonitorAjax" />"
         });
     }
 

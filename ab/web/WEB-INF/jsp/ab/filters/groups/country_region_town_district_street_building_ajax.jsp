@@ -6,31 +6,31 @@
 
     $(function() {
         FF.createFilter("country", {
-            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" />",
             defaultValue: "<s:property value="countryFilter != null ? countryFilter : userPreferences.countryFilter" />"
         });
         FF.createFilter("region", {
-            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="regionFilterAjax" namespace="/dicts" />",
             parents: ["country"],
             defaultValue: "<s:property value="regionFilter != null ? regionFilter : userPreferences.regionFilter" />"
         });
         FF.createFilter("town", {
-            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="townFilterAjax" namespace="/dicts" />",
             parents: ["region"],
             defaultValue: "<s:property value="townFilter != null ? townFilter : userPreferences.townFilter" />"
         });
         FF.createFilter("district", {
-            action: "<s:url action="districtFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="districtFilterAjax" namespace="/dicts" />",
             parents: ["town"],
             defaultValue: "<s:property value="districtFilter != null ? districtFilter : userPreferences.districtFilter" />"
         });
         FF.createFilter("street", {
-            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="streetFilterAjax" namespace="/dicts" />",
             parents: ["town"],
             defaultValue: "<s:property value="streetFilter != null ? streetFilter : userPreferences.streetFilter" />"
         });
         FF.createFilter("building", {
-            action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="buildingFilterAjax" namespace="/dicts" />",
             parents: ["district", "street"],
             isArray: true,
             defaultValue: "<s:property value="buildingFilter != null ? buildingFilter : userPreferences.buildingFilter" />"

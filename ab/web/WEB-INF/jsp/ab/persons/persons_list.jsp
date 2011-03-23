@@ -10,7 +10,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="personEdit" includeParams="none"><s:param name="person.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -37,7 +37,7 @@
             <td class="col"><s:property value="#person.defaultIdentity.middleName" /></td>
             <td class="col"><s:property value="format(#person.defaultIdentity.birthDate)" /></td>
             <td class="col">
-                <a href="<s:url action="personView" includeParams="none"><s:param name="person.id" value="id" /></s:url>"><s:text name="common.view" /></a>
+                <a href="<s:url action="personView"><s:param name="person.id" value="id" /></s:url>"><s:text name="common.view" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -46,7 +46,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="personEdit" includeParams="none"><s:param name="person.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

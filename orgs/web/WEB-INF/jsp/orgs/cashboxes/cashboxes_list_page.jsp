@@ -22,7 +22,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="cashboxesListAjax" includeParams="none"/>"
+            action:"<s:url action="cashboxesListAjax"/>"
             <s:if test="paymentPointFilter != null && paymentPointFilter.selectedId != null && paymentPointFilter.selectedId > 0">
             , params: {
                 "paymentPointFilter.selectedId":<s:property value="paymentPointFilter.selectedId" />
@@ -32,7 +32,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="cashboxDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="cashboxDelete" />", "objectIds", pagerAjax);
     }
 
 </script>

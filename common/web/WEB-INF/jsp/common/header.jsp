@@ -6,7 +6,7 @@
     <tr class="verytop">
         <td>
             <a href="<s:url value="/" />">
-                <img src="<s:url value="/resources/common/img/logo.gif" includeParams="none" />"
+                <img src="<s:url value="/resources/common/img/logo.gif" />"
                      width="123" height="37" alt="FlexPay" border="0" hspace="25" vspace="6"/>
             </a>
         </td>
@@ -19,9 +19,9 @@
                             <a href="#"><s:text name="login.user" /></a>: <sec:authentication property="principal.fullName"/>
                         </span>
                     </td>
-                    <td><img src="<s:url value="/resources/common/img/p.gif" includeParams="none" />" width="10" height="25" alt="" /></td>
-                    <td><input type="button" value="<s:text name="logout.link.title" />" class="btn-exit" onclick="location.href='<s:url value="/logout" includeParams="none" />';" /></td>
-                    <td><img src="<s:url value="/resources/common/img/p.gif" includeParams="none" />" width="25" height="25" alt="" /></td>
+                    <td><img src="<s:url value="/resources/common/img/p.gif" />" width="10" height="25" alt="" /></td>
+                    <td><input type="button" value="<s:text name="logout.link.title" />" class="btn-exit" onclick="location.href='<s:url value="/logout" />';" /></td>
+                    <td><img src="<s:url value="/resources/common/img/p.gif" />" width="25" height="25" alt="" /></td>
                 </tr>
                 </table>
             </td>
