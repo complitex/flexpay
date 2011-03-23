@@ -82,10 +82,19 @@
     <bean id="logoutEventBroadcaster"
           class="org.flexpay.common.action.security.LogoutEventBroadcaster" />
 
+    <bean id="authenticationFailureHandler"
+          class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"
+          p:defaultFailureUrl="/resources/common/jsp/forbidden.jsp" />
+
+    <bean id="authenticationSuccessHandler"
+          class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"
+          p:defaultTargetUrl="/" />
+
     <bean id="authenticationProcessingFilter"
           class="org.flexpay.common.action.security.FPAuthenticationProcessingFilter"
           p:postOnly="false"
-          p:filterProcessesUrl="/"
+          p:authenticationFailureHandler-ref="authenticationFailureHandler"
+          p:authenticationSuccessHandler-ref="authenticationSuccessHandler"
           p:authenticationManager-ref="authenticationManager" />
 
 </beans>

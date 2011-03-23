@@ -43,7 +43,6 @@ public class SoapInHistoryEndpoint {
     private FPFileService fileService;
     private HistoryUnpackManager unpackManager;
 
-    @Autowired
     public SoapInHistoryEndpoint() throws JDOMException {
         Namespace namespace = Namespace.getNamespace("h", NS);
         groupIdExpression = XPath.newInstance("//h:groupId");

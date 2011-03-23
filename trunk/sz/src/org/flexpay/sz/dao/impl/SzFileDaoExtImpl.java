@@ -15,9 +15,9 @@ public class SzFileDaoExtImpl extends HibernateDaoSupport implements SzFileDaoEx
 	@Override
 	public void updateStatus(@NotNull final Collection<Long> fileIds, @NotNull final FPFileStatus status) {
 
-		getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback<Integer>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public Integer doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("update SzFile f set f.status.id = :statusId " +
 										   "where f.id in (:ids)")
 						.setLong("statusId", status.getId())
