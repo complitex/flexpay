@@ -92,15 +92,15 @@
     };
 
     function editf() {
-        FP.post("<s:url action="eircAccountEditConsumerAttributes" includeParams="none" />", params);
+        FP.post("<s:url action="eircAccountEditConsumerAttributes" />", params);
     }
 
     function backf() {
-        FP.post("<s:url action="eircAccountsList" includeParams="none" />", params);
+        FP.post("<s:url action="eircAccountsList" />", params);
     }
 
     function addf() {
-        FP.post("<s:url action="eircAccountAddConsumer" includeParams="none" />", params);
+        FP.post("<s:url action="eircAccountAddConsumer" />", params);
     }
 
 </script>

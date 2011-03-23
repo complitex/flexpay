@@ -15,7 +15,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="serviceProviderCorrectionsListAjax" includeParams="none"/>",
+            action:"<s:url action="serviceProviderCorrectionsListAjax"/>",
             params: {
                 "provider.id":<s:property value="provider.id" />
             }

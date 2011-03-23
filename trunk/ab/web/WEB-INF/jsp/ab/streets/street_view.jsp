@@ -87,17 +87,17 @@
 			<td class="col_1s" align="right"><s:property value="#status.index + 1" /></td>
 			<td class="col"><s:property value="getTranslationName(currentName.translations)" /></td>
 			<td class="col" colspan="3">
-				<a href="<s:url action="districtView" includeParams="none"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>
+				<a href="<s:url action="districtView"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>
             </td>
 		</tr>
 	</s:iterator>
 	<tr>
 		<td colspan="5">
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="object.id" /></s:url>';"
+				   onclick="window.location='<s:url action="streetEdit"><s:param name="street.id" value="object.id" /></s:url>';"
 				   value="<s:text name="common.edit" />" />
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="streetDistrictEdit" includeParams="none"><s:param name="street.id" value="object.id" /></s:url>';"
+				   onclick="window.location='<s:url action="streetDistrictEdit"><s:param name="street.id" value="object.id" /></s:url>';"
 				   value="<s:text name="ab.street.manage_districts" />" />
 		</td>
 	</tr>

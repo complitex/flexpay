@@ -19,7 +19,7 @@
     <tr>
         <td id="result">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="streetEdit"><s:param name="street.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -33,14 +33,14 @@
 
         FF.addListener("town", function(filter) {
             FP.pagerAjax(null, {
-                action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none" />",
+                action:"<s:url action="streetsListAjax" namespace="/dicts" />",
                 params:{townFilter: filter.value.val()}
             });
         });
 
         FF.addEraser("town", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
-                    + 'onclick="window.location = \'<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="0" /></s:url>\'" '
+                    + 'onclick="window.location = \'<s:url action="streetEdit"><s:param name="street.id" value="0" /></s:url>\'" '
                     + 'value="<s:text name="common.new" />" />');
         });
 
@@ -48,7 +48,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="streetsListAjax" namespace="/dicts" />",
             params:{
                 townFilter: FF.filters["town"].value.val(),
                 "streetFilter.searchString": $("input[name='streetFilter.searchString']").get(0).value,
@@ -65,7 +65,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="streetDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="streetDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

@@ -9,7 +9,7 @@
     <tr>
         <td id="result">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="regionEdit"><s:param name="region.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -23,21 +23,21 @@
 
         FF.addListener("country", function(filter) {
             FP.pagerAjax(null, {
-                action:"<s:url action="regionsListAjax" namespace="/dicts" includeParams="none" />",
+                action:"<s:url action="regionsListAjax" namespace="/dicts" />",
                 params:{countryFilter: filter.value.val()}
             });
         });
 
         FF.addEraser("country", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
-                    + 'onclick="window.location=\'<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="0" /></s:url>\';" '
+                    + 'onclick="window.location=\'<s:url action="regionEdit"><s:param name="region.id" value="0" /></s:url>\';" '
                     + 'value="<s:text name="common.new" />" />');
         });
     });
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="regionsListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="regionsListAjax" namespace="/dicts" />",
             params:{
                 countryFilter: FF.filters["country"].value.val(),
                 "regionSorter.active": $("#regionSorterActive").val(),
@@ -51,7 +51,7 @@
 	}
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="regionDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="regionDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

@@ -46,7 +46,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="operationsListAjax" includeParams="none"/>",
+            action:"<s:url action="operationsListAjax"/>",
             params: {
                 "cashbox.id":<s:property value="cashbox.id" />,
                 <sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
@@ -70,7 +70,7 @@
     }
 
     function setStatus(status) {
-        FP.serviceElements("<s:url action="operationSetStatus" includeParams="none" />", "operation.id", pagerAjax,
+        FP.serviceElements("<s:url action="operationSetStatus" />", "operation.id", pagerAjax,
                             {params:{status:status}});
     }
 
@@ -80,7 +80,7 @@
             operationId: opId,
             format:"pdf"
         };
-        window.open($.param.querystring("<s:url action="paymentOperationReportAction" includeParams="none" />", params), "_blank");
+        window.open($.param.querystring("<s:url action="paymentOperationReportAction" />", params), "_blank");
     }
 
 </script>

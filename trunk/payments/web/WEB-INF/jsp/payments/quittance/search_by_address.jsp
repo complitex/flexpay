@@ -33,22 +33,22 @@
 
         // creating filters
         FF.createFilter("town", {
-            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="townFilterAjax" namespace="/dicts" />",
             defaultValue: "<s:property value="userPreferences.townFilter" />"
         });
         FF.createFilter("street", {
-            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="streetFilterAjax" namespace="/dicts" />",
             parents: ["town"],
             preRequest:false
         });
         FF.createFilter("building", {
-            action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="buildingFilterAjax" namespace="/dicts" />",
             isArray: true,
             parents: ["street"],
             preRequest:false
         });
         FF.createFilter("apartment", {
-            action: "<s:url action="apartmentFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="apartmentFilterAjax" namespace="/dicts" />",
             isArray: true,
             parents: ["building"],
             preRequest:false
@@ -83,7 +83,7 @@
         var resultId = "searchResultsDiv";
         FP.showShadow(shadowId, resultId);
 
-        $("#searchResultsDiv").load("<s:url action="searchResults" includeParams="none" />",
+        $("#searchResultsDiv").load("<s:url action="searchResults" />",
         {
             searchType: "ADDRESS",
             searchCriteria: FF.filters["apartment"].value.val(),
@@ -93,7 +93,7 @@
 
             if (response.indexOf("j_security_check") > 0) {
                 $(this).empty();
-                location.href = "<s:url action="searchByAddress" includeParams="none" />";
+                location.href = "<s:url action="searchByAddress" />";
             }
 
             FP.endis("#searchBtn", true);

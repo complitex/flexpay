@@ -42,7 +42,7 @@
     function pagerAjax(element) {
 
         FP.pagerAjax(element, {
-            action: "<s:url action="registryRecordsListAjax" namespace="/payments" includeParams="none" />",
+            action: "<s:url action="registryRecordsListAjax" namespace="/payments" />",
             params: {
                 "registry.id":<s:property value="registry.id" />,
                 "importErrorTypeFilter.selectedType" : $("select[name='importErrorTypeFilter.selectedType']").val(),

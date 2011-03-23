@@ -7,7 +7,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="subdivisionEdit" includeParams="none"><s:param name="organization.id" value="%{organization.id}" /><s:param name="subdivision.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="subdivisionEdit"><s:param name="organization.id" value="%{organization.id}" /><s:param name="subdivision.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -53,7 +53,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="subdivisionEdit" includeParams="none"><s:param name="organization.id" value="%{organization.id}" /><s:param name="subdivision.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="subdivisionEdit"><s:param name="organization.id" value="%{organization.id}" /><s:param name="subdivision.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

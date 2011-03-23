@@ -14,12 +14,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="quittancePacketsListAjax" namespace="/eirc" includeParams="none" />"
+            action:"<s:url action="quittancePacketsListAjax" namespace="/eirc" />"
         });
     }
 
     function deleteAjax() {
-<%--        FP.serviceElements("<s:url action="rulesFileDelete" includeParams="none" />", "objectIds", pagerAjax); --%>
+<%--        FP.serviceElements("<s:url action="rulesFileDelete" />", "objectIds", pagerAjax); --%>
     }
 
 </script>

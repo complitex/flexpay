@@ -93,13 +93,13 @@
 					   '<td width="1%">' +
 					   (this.maxIndex > 1 ?
 						'<a href="javascript:FPINT.moveEnumValueUp(' + this.maxIndex + ');" id="enumMvUpBtn_' + this.maxIndex + '"><img ' +
-						'src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none"/>" alt="" /></a>' : '&nbsp;') +
+						'src="<s:url value="/resources/common/img/i_arrow_up.gif"/>" alt="" /></a>' : '&nbsp;') +
 					   '</td><td width="1%">' +
 					   '<a href="javascript:FPINT.moveEnumValueDown(' + this.maxIndex + ');" style="display:none;" id="enumMvDwnBtn_' + this.maxIndex + '"><img ' +
-					   'src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none"/>" alt="" /></a>' +
+					   'src="<s:url value="/resources/common/img/i_arrow_down.gif"/>" alt="" /></a>' +
 					   '</td><td width="1%">' +
 					   '<a href="javascript:FPINT.deleteEnumValue(' + this.maxIndex + ');" id="enumDeleteBtn_' + this.maxIndex + '"><img ' +
-					   'src="<s:url value="/resources/common/img/i_delete.gif" includeParams="none"/>" alt="" /></a></td>';
+					   'src="<s:url value="/resources/common/img/i_delete.gif"/>" alt="" /></a></td>';
 
 			var newTR = $("<tr id=\"enum_value_" + this.maxIndex + "\"></tr>");
 			newTR.insertBefore($("#newEnumValueRow"));

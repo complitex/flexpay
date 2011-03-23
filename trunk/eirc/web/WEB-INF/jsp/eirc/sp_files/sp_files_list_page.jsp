@@ -15,7 +15,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="spFilesListAjax" includeParams="none" />"
+            action:"<s:url action="spFilesListAjax" />"
         });
     }
 

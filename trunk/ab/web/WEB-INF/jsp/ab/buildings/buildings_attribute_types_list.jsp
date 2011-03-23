@@ -8,7 +8,7 @@
     <tr>
         <td colspan="3">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="addressAttributeTypeEdit" includeParams="none"><s:param name="attributeType.id" value="0" /></s:url>'"
+                   onclick="window.location='<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -21,12 +21,12 @@
         <tr valign="middle" class="cols_1">
             <td class="col_1s"><s:property value="#status.index + 1" /></td>
             <td class="col_1s">
-                <a href="<s:url action="addressAttributeTypeView" includeParams="none"><s:param name="attributeType.id" value="id" /></s:url>">
+                <a href="<s:url action="addressAttributeTypeView"><s:param name="attributeType.id" value="id" /></s:url>">
                     <s:property value="getTranslationName(translations)" />
                 </a>
             </td>
             <td class="col_1s">
-                <a href="<s:url action="addressAttributeTypeEdit" includeParams="none"><s:param name="attributeType.id" value="id" /></s:url>">
+                <a href="<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
             </td>
@@ -35,7 +35,7 @@
     <tr>
         <td colspan="3">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="addressAttributeTypeEdit" includeParams="none"><s:param name="attributeType.id" value="0" /></s:url>'"
+                   onclick="window.location='<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

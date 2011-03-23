@@ -28,7 +28,7 @@
                 <s:if test="primaryStatus">(<s:text name="ab.building_address.primary_status" />)</s:if>
             </td>
             <td class="col">
-                <a href="<s:url action="buildingAddressEdit" includeParams="none"><s:param name="building.id" value="building.id" /><s:param name="address.id" value="id" /></s:url>">
+                <a href="<s:url action="buildingAddressEdit"><s:param name="building.id" value="building.id" /><s:param name="address.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
                 <s:if test="!primaryStatus">

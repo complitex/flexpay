@@ -43,13 +43,13 @@
             </td>
             <td class="col"><s:property value="oszn.description" /></td>
             <td class="col">
-                <a href="<s:url value="/download/" includeParams="none"><s:param name="id" value="%{uploadedFile.id}" /></s:url>">
+                <a href="<s:url value="/download/"><s:param name="id" value="%{uploadedFile.id}" /></s:url>">
                     <s:property value="uploadedFile.originalName" />
                 </a>
             </td>
             <td class="col">
                 <s:if test="fileToDownload">
-                    <a href="<s:url value="/download/" includeParams="none"><s:param name="id" value="%{fileToDownload.id}" /></s:url>">
+                    <a href="<s:url value="/download/"><s:param name="id" value="%{fileToDownload.id}" /></s:url>">
                         <s:property value="fileToDownload.originalName" />
                     </a>
                 </s:if>
@@ -91,7 +91,7 @@
         if (objectIds.length == 0) {
             return;
         }
-        $.post("<s:url action="szFileOperation" includeParams="none" />",
+        $.post("<s:url action="szFileOperation" />",
                 {
                     action1:action,
                     objectIds:objectIds

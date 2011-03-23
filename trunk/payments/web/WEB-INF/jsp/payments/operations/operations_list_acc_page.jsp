@@ -61,7 +61,7 @@
             cValue = -1
         }
         FP.pagerAjax(element, {
-            action:"<s:url action="operationsListAccAjax" includeParams="none" />",
+            action:"<s:url action="operationsListAccAjax" />",
             params: {
                 "cashboxFilter.selectedId":cValue,
                 "paymentPointFilter.selectedId":$("select[name='paymentPointFilter.selectedId']").val(),
@@ -98,7 +98,7 @@
             "paymentPointFilter.selectedId":$pp.val()
         };
 
-        $.post("<s:url action="cashboxFilterAjax" namespace="/payments" includeParams="none" />", params,
+        $.post("<s:url action="cashboxFilterAjax" namespace="/payments" />", params,
                 function(data, status) {
                     if (status == "success") {
                         $(cFilterBody).html(data);
@@ -113,7 +113,7 @@
     }
 
     function setStatus(status) {
-        FP.serviceElements("<s:url action="operationSetStatus" includeParams="none" />", "operation.id", pagerAjax,
+        FP.serviceElements("<s:url action="operationSetStatus" />", "operation.id", pagerAjax,
                             {params:{status:status}});
     }
 
@@ -123,7 +123,7 @@
             operationId: opId,
             format:"pdf"
         };
-        window.open($.param.querystring("<s:url action="paymentOperationReportAction" includeParams="none" />", params), "_blank");
+        window.open($.param.querystring("<s:url action="paymentOperationReportAction" />", params), "_blank");
     }
 
 </script>

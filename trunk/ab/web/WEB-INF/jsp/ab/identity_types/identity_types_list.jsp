@@ -9,7 +9,7 @@
         <td colspan="4">
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="identityTypeEdit" includeParams="none"><s:param name="identityType.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="identityTypeEdit"><s:param name="identityType.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -28,12 +28,12 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="identityTypeView" includeParams="none"><s:param name="identityType.id" value="id" /></s:url>">
+                <a href="<s:url action="identityTypeView"><s:param name="identityType.id" value="id" /></s:url>">
                     <s:property value="getTranslationName(translations)" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url action="identityTypeEdit" includeParams="none"><s:param name="identityType.id" value="id" /></s:url>">
+                <a href="<s:url action="identityTypeEdit"><s:param name="identityType.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
             </td>
@@ -43,7 +43,7 @@
         <td colspan="4">
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="identityTypeEdit" includeParams="none"><s:param name="identityType.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="identityTypeEdit"><s:param name="identityType.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

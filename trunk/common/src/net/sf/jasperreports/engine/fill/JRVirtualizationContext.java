@@ -1,66 +1,59 @@
 /*
- * ============================================================================
- * GNU Lesser General Public License
- * ============================================================================
- *
- * JasperReports - Free Java report-generating library.
- * Copyright (C) 2001-2009 JasperSoft Corporation http://www.jaspersoft.com
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307, USA.
- * 
- * JasperSoft Corporation
- * 539 Bryant Street, Suite 100
- * San Francisco, CA 94107
+ * JasperReports - Free Java Reporting Library.
+ * Copyright (C) 2001 - 2009 Jaspersoft Corporation. All rights reserved.
  * http://www.jaspersoft.com
+ *
+ * Unless you have purchased a commercial license agreement from Jaspersoft,
+ * the following license terms apply:
+ *
+ * This program is part of JasperReports.
+ *
+ * JasperReports is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * JasperReports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JasperReports. If not, see <http://www.gnu.org/licenses/>.
  */
 package net.sf.jasperreports.engine.fill;
+
+import net.sf.jasperreports.engine.JRConstants;
+import net.sf.jasperreports.engine.JRPrintImage;
+import net.sf.jasperreports.engine.JRRenderable;
+import net.sf.jasperreports.engine.JasperPrint;
+import org.apache.commons.collections.map.ReferenceMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.map.ReferenceMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import net.sf.jasperreports.engine.*;
-
-
-// http://jasperforge.org/projects/jasperreports/bugtracking/view.php?id=2633
-
 /**
  * Context used to store data shared by virtualized objects resulted from a report fill process.
- *
+ * 
  * @author Lucian Chirita (lucianc@users.sourceforge.net)
- * @version $Id: JRVirtualizationContext.java 2794 2009-05-20 12:55:49Z teodord $
+ * @version $Id: JRVirtualizationContext.java 3659 2010-03-31 10:20:49Z shertage $
  */
-@SuppressWarnings ({"RawUseOfParameterizedType", "unchecked"})
 public class JRVirtualizationContext implements Serializable
 {
 	private static final long serialVersionUID = JRConstants.SERIAL_VERSION_UID;
-
+	
 	private static final Logger log = LoggerFactory.getLogger(JRVirtualizationContext.class);
-
-	@SuppressWarnings ({"deprecation"})
+	
 	private static final ReferenceMap contexts = new ReferenceMap(ReferenceMap.WEAK, ReferenceMap.WEAK);
-
+	
 	private Map cachedRenderers;
 	private Map cachedTemplates;
-
+	
 	private boolean readOnly;
-
+	
 	/**
 	 * Constructs a context.
 	 */
@@ -70,10 +63,10 @@ public class JRVirtualizationContext implements Serializable
 		cachedTemplates = new HashMap();
 	}
 
-
+	
 	/**
 	 * Caches an image renderer.
-	 *
+	 * 
 	 * @param image the image whose renderer should be cached
 	 */
 	public void cacheRenderer(JRPrintImage image)
@@ -85,10 +78,10 @@ public class JRVirtualizationContext implements Serializable
 		}
 	}
 
-
+	
 	/**
 	 * Retrieves a cached image renderer based on an ID.
-	 *
+	 * 
 	 * @param id the ID
 	 * @return the cached image renderer for the ID
 	 */
@@ -97,10 +90,10 @@ public class JRVirtualizationContext implements Serializable
 		return (JRRenderable) cachedRenderers.get(id);
 	}
 
-
+	
 	/**
 	 * Determines whether a cached image renderer for a specified ID exists.
-	 *
+	 * 
 	 * @param id the ID
 	 * @return <code>true</code> if and only if the context contains a cached renderer with the specified ID
 	 */
@@ -109,10 +102,10 @@ public class JRVirtualizationContext implements Serializable
 		return cachedRenderers.containsKey(id);
 	}
 
-
+	
 	/**
-	 * Determines whether a cached {@link net.sf.jasperreports.engine.fill.JRTemplateElement template} with a specified ID exists.
-	 *
+	 * Determines whether a cached {@link JRTemplateElement template} with a specified ID exists.
+	 * 
 	 * @param id the template ID
 	 * @return <code>true</code> if and only if the context contains a cached template with the specified ID
 	 */
@@ -120,32 +113,26 @@ public class JRVirtualizationContext implements Serializable
 	{
 		return cachedTemplates.containsKey(id);
 	}
-
-
+	
+	
 	/**
 	 * Caches an element template.
-	 *
+	 * 
 	 * @param template the template to cache
 	 */
 	public void cacheTemplate(JRTemplateElement template)
 	{
-		Object old;
-		// http://jasperforge.org/projects/jasperreports/bugtracking/view.php?id=2633
-        JROrigin origin = template.getOrigin();
-        if (origin == null || origin.getReportName() == null) {
-            old = cachedTemplates.put(template.getId(), template);
-            if (old == null && log.isDebugEnabled())
-            {
-				log.debug("Cached template " + template + " having id " + template.getId() +
-						  ", total templates: " + cachedTemplates.size());
-            }
-        }
+		Object old = cachedTemplates.put(template.getId(), template);
+		if (old == null)
+		{
+			log.debug("Cached template {} having id {}", template, template.getId());
+		}
 	}
-
-
+	
+	
 	/**
 	 * Retrieves a cached template.
-	 *
+	 * 
 	 * @param templateId the template ID
 	 * @return the cached template having the given ID
 	 */
@@ -157,7 +144,7 @@ public class JRVirtualizationContext implements Serializable
 
 	/**
 	 * Determines whether this context has been marked as read-only.
-	 *
+	 * 
 	 * @return whether this context has been marked as read-only
 	 * @see #setReadOnly(boolean)
 	 */
@@ -173,18 +160,18 @@ public class JRVirtualizationContext implements Serializable
 	 * When in read-only mode, all the virtualizable objects belonging to this context
 	 * are assumed final by the virtualizer and any change in a virtualizable object's data
 	 * would be discarded on virtualization.
-	 *
+	 * 
 	 * @param readOnly the read-only flag
 	 */
 	public void setReadOnly(boolean readOnly)
 	{
 		this.readOnly = readOnly;
 	}
-
-
+	
+	
 	/**
-	 * Registers a virtualization context for {@link net.sf.jasperreports.engine.JasperPrint JasperPrint} object.
-	 *
+	 * Registers a virtualization context for {@link JasperPrint JasperPrint} object.
+	 * 
 	 * @param context the virtualization context
 	 * @param print the print object
 	 */
@@ -196,14 +183,14 @@ public class JRVirtualizationContext implements Serializable
 		}
 	}
 
-
+	
 	/**
 	 * Returns the virtualization context registered for a print object.
 	 * <p>
-	 * When the engine fills a report using a virtualizer, it {@link #register(net.sf.jasperreports.engine.fill.JRVirtualizationContext, net.sf.jasperreports.engine.JasperPrint) registers}
-	 * the virtualization context with the generated {@link net.sf.jasperreports.engine.JasperPrint JasperPrint} object so that the caller
+	 * When the engine fills a report using a virtualizer, it {@link #register(JRVirtualizationContext, JasperPrint) registers}
+	 * the virtualization context with the generated {@link JasperPrint JasperPrint} object so that the caller
 	 * would be able to retrieve the context based on the returned print object.
-	 *
+	 * 
 	 * @param print a print object
 	 * @return the virtualization context registered for the print object, or <code>null</code> if no context
 	 * has been registered

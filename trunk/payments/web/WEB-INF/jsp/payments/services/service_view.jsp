@@ -91,7 +91,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="service.id" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceEdit"><s:param name="service.id" value="service.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

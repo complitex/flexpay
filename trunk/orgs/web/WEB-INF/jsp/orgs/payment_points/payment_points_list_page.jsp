@@ -20,7 +20,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="paymentPointsListAjax" includeParams="none"/>",
+            action:"<s:url action="paymentPointsListAjax"/>",
             params:{
                 paymentCollectorFilter:$("select[name='paymentCollectorFilter.selectedId']").get(0).value
             }
@@ -28,7 +28,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="paymentPointDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="paymentPointDelete" />", "objectIds", pagerAjax);
     }
 
 </script>

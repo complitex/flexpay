@@ -37,13 +37,13 @@
 
     $(function() {
         FP.pagerAjax(null, {
-            action:"<s:url action="processesListAjax" includeParams="none" />"
+            action:"<s:url action="processesListAjax" />"
         });
     });
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="processesListAjax" includeParams="none" />",
+            action:"<s:url action="processesListAjax" />",
             params:{
                 "beginDateFilter.stringDate": $("#beginDateFilter").val(),
                 "endDateFilter.stringDate": $("#endDateFilter").val(),
@@ -66,7 +66,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="processDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="processDelete" />", "objectIds", pagerAjax);
     }
 
 </script>

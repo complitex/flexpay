@@ -8,10 +8,10 @@
        onclick="<s:if test="regionSorter.activated">$('#regionSorterOrder').val('<s:property value="regionSorter.oppositeOrder" />');</s:if>FP.activateSorter('regionSorterActive');" value="<s:text name="ab.region" />" />
 <s:if test="regionSorter.activated">
 	<s:if test="regionSorter.desc"><img
-			src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />"
+			src="<s:url value="/resources/common/img/i_arrow_up.gif" />"
 			alt="" title="<s:text name="common.sort.asc" />">
 	</s:if><s:else><img
-			src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none" />"
+			src="<s:url value="/resources/common/img/i_arrow_down.gif" />"
 			alt="" title="<s:text name="common.sort.desc" />">
 	</s:else>
 </s:if>

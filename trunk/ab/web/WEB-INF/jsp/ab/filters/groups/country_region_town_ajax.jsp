@@ -10,18 +10,18 @@
 
     $(function() {
         FF.createFilter("country", {
-            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" />",
             <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:property value="countryFilter != null ? countryFilter : userPreferences.countryFilter" />"
         });
         FF.createFilter("region", {
-            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="regionFilterAjax" namespace="/dicts" />",
             parents: ["country"],
             <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:property value="regionFilter != null ? regionFilter : userPreferences.regionFilter" />"
         });
         FF.createFilter("town", {
-            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="townFilterAjax" namespace="/dicts" />",
             parents: ["region"],
             <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:property value="townFilter != null ? townFilter : userPreferences.townFilter" />"

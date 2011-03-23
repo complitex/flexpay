@@ -9,7 +9,7 @@
         <td colspan="5">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="eircAccountCreate" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="eircAccountCreate"><s:param name="region.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -30,7 +30,7 @@
                 <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col">
-                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountView" includeParams="none"><s:param name="eircAccount.id" value="%{id}" /></s:url>');">
+                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountView"><s:param name="eircAccount.id" value="%{id}" /></s:url>');">
                     <s:property value="accountNumber" />
                 </a>
             </td>
@@ -41,7 +41,7 @@
                 <s:property value="consumerInfo.FIO" />
             </td>
             <td class="col">
-                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountEditConsumerAttributes" includeParams="none"><s:param name="eircAccount.id" value="%{id}" /></s:url>');">
+                <a href="javascript:void(0);" onclick="f('<s:url action="eircAccountEditConsumerAttributes"><s:param name="eircAccount.id" value="%{id}" /></s:url>');">
                     <s:text name="common.edit" />
                 </a>
             </td>
@@ -51,7 +51,7 @@
         <td colspan="5">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="eircAccountCreate" includeParams="none"><s:param name="region.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="eircAccountCreate"><s:param name="region.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

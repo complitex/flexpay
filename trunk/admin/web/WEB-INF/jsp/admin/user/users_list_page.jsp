@@ -10,7 +10,7 @@
 
     $(function() {
         FP.pagerAjax(null, {
-            action:"<s:url action="usersListAjax" namespace="/admin" includeParams="none" />"
+            action:"<s:url action="usersListAjax" namespace="/admin" />"
         });
     });
 
@@ -20,12 +20,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="usersListAjax" namespace="/admin" includeParams="none" />"
+            action:"<s:url action="usersListAjax" namespace="/admin" />"
         });
     }
 
 		function deleteAjax() {
-        FP.serviceElements("<s:url action="deleteUser" namespace="/admin" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="deleteUser" namespace="/admin" />", "objectIds", pagerAjax);
     }
 
 </script>

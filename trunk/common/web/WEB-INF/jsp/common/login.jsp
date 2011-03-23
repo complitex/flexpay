@@ -2,9 +2,9 @@
 
 <script type="text/javascript">
 	function checkSession() {
-		$.getJSON("<s:url value="/resources/common/jsp/session_ping.jsp" includeParams="none" />", {}, function(json) {
+		$.getJSON("<s:url value="/resources/common/jsp/session_ping.jsp" />", {}, function(json) {
 			if (json.result != "OK") {
-				window.location = '<s:url value="/" includeParams="none"/>';
+				window.location = '<s:url value="/"/>';
 				return;
 			}
 			setTimeout(checkSession, 5 * 1000);

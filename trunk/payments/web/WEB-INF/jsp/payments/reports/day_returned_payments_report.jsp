@@ -67,7 +67,7 @@
             format:format,
             submitted:"true"
         };
-        window.open($.param.querystring("<s:url action="dayReturnedPaymentsReport" includeParams="none" />", params), "_blank");
+        window.open($.param.querystring("<s:url action="dayReturnedPaymentsReport" />", params), "_blank");
 	}
 
 </script>

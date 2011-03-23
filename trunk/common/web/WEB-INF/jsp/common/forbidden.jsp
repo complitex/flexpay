@@ -14,8 +14,8 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr class="verytop">
 		<td>
-            <a href="<s:url value="/" includeParams="none" />">
-                <img src="<s:url value="/resources/common/img/logo.gif" includeParams="none" />"
+            <a href="<s:url value="/" />">
+                <img src="<s:url value="/resources/common/img/logo.gif" />"
                      width="123" height="37" alt="FlexPay" border="0" hspace="25" vspace="6" />
             </a>
 		</td>
@@ -23,7 +23,7 @@
 			<td align="right">
     			<span class="text-small">
                     <s:text name="login.username" />: <sec:authentication property="principal.username" />
-				    <a href="<s:url value="/logout" includeParams="none" />"><s:text name="logout.link.title" /></a>
+				    <a href="<s:url value="/logout" />"><s:text name="logout.link.title" /></a>
                 </span>
 			</td>
 		</sec:authorize>

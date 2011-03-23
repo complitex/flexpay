@@ -44,7 +44,7 @@
     <tr>
         <td colspan="5">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="object.id" /></s:url>';"
+                   onclick="window.location='<s:url action="regionEdit"><s:param name="region.id" value="object.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

@@ -15,13 +15,13 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="subdivisionsListAjax" includeParams="none" />",
+            action:"<s:url action="subdivisionsListAjax" />",
             params:{"organization.id":"<s:property value="organization.id" />"}
         });
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="subdivisionDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="subdivisionDelete" />", "objectIds", pagerAjax);
     }
 
 </script>

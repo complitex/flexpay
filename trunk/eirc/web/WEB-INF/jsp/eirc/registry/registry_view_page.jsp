@@ -50,7 +50,7 @@
 
     $("#addressFilters").ready(function() {
 
-        var filterUrl = "<s:url action="filterAutocompleter" namespace="/payments" includeParams="none" />";
+        var filterUrl = "<s:url action="filterAutocompleter" namespace="/payments" />";
 
         FPR.createAutocompleter("input[name='townFilter']", filterUrl, false,
                                 {
@@ -95,7 +95,7 @@
     function pagerAjax(element, resultId) {
 
         var isResult = resultId != undefined && resultId != null;
-        var action = "<s:url action="eircRegistryRecordsListAjax" namespace="/eirc" includeParams="none" />";
+        var action = "<s:url action="eircRegistryRecordsListAjax" namespace="/eirc" />";
         var params = {
             "registry.id":FPR.registryId
         };
@@ -118,9 +118,9 @@
 
         if (FPR.$rStatus.val() == FPR.errorStatusCode && FPR.$gErrors.get(0).checked) {
             if (FPR.$eType.val() < 0 && !isResult) {
-                action ="<s:url action="eircRegistryRecordErrorsTypesListAjax" namespace="/eirc" includeParams="none" />";
+                action ="<s:url action="eircRegistryRecordErrorsTypesListAjax" namespace="/eirc" />";
             } else {
-                action ="<s:url action="eircRegistryRecordErrorsGroupsListAjax" namespace="/eirc" includeParams="none" />";
+                action ="<s:url action="eircRegistryRecordErrorsGroupsListAjax" namespace="/eirc" />";
                 params["recordErrorsGroupSorterByName.active"] = $("#recordErrorsGroupSorterByNameActive").val();
                 params["recordErrorsGroupSorterByName.order"] = $("#recordErrorsGroupSorterByNameOrder").val();
                 params["recordErrorsGroupSorterByNumberOfErrors.active"] = $("#recordErrorsGroupSorterByNumberOfErrorsActive").val();
@@ -177,7 +177,7 @@
         }
 
         FP.pagerAjax(element, {
-            action: "<s:url action="eircRegistryRecordsListSimpleAjax" namespace="/eirc" includeParams="none" />",
+            action: "<s:url action="eircRegistryRecordsListSimpleAjax" namespace="/eirc" />",
             resultId: "panelGroup" + i,
             target:"span.innerPaging",
             params: params
@@ -257,7 +257,7 @@
 
         FPR.addGroupParams(params, i);
 
-        var src = $.param.querystring("<s:url action="selectCorrectionType" namespace="/payments" includeParams="none" />", params);
+        var src = $.param.querystring("<s:url action="selectCorrectionType" namespace="/payments" />", params);
         $.modal('<iframe src="' + src + '" height="550" width="800" style="border:0" />', {
             containerCss: {
                 backgroundColor:"#fff",
@@ -322,7 +322,7 @@
 
         $.modal.close();
 
-        $.post("<s:url action="registryRecordErrorFixAjax" includeParams="none" />", params,
+        $.post("<s:url action="registryRecordErrorFixAjax" />", params,
             function(data, status) {
                 $("#messagesBlock").html(data);
                 updateErrorsNumber();

@@ -14,12 +14,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="rulesFilesListAjax" includeParams="none" />"
+            action:"<s:url action="rulesFilesListAjax" />"
         });
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="rulesFileDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="rulesFileDelete" />", "objectIds", pagerAjax);
     }
 
 </script>

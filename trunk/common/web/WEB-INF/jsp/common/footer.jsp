@@ -13,7 +13,7 @@
 	<sec:authorize ifAllGranted="ROLE_COMMON_DEVELOPER">
 		<tr>
 			<td align="center">
-				<a href="<s:url action="about" namespace="/common" includeParams="none" />"><s:text name="common.build.about" /></a>
+				<a href="<s:url action="about" namespace="/common" />"><s:text name="common.build.about" /></a>
 			</td>
 		</tr>
 	</sec:authorize>

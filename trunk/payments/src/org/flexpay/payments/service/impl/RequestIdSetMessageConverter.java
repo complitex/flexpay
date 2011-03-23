@@ -1,6 +1,8 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;
@@ -10,6 +12,8 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 public class RequestIdSetMessageConverter implements MessageConverter {
+
+    private Logger log = LoggerFactory.getLogger(getClass());
 
 	private MessageConverter delegate;
 
@@ -25,9 +29,11 @@ public class RequestIdSetMessageConverter implements MessageConverter {
 	 */
     @Override
 	public Message toMessage(Object object, Session session) throws JMSException, MessageConversionException {
-
+        log.debug("Object to message = {}", object);
 		Message msg = delegate.toMessage(object, session);
+        log.debug("Message = {}", msg);
 		setRequestIdProperty(object, msg);
+        log.debug("Final Message = {}", msg);
 		return msg;
 	}
 
@@ -35,6 +41,7 @@ public class RequestIdSetMessageConverter implements MessageConverter {
 		if (object instanceof SearchResponse) {
 			SearchResponse response = (SearchResponse) object;
 			msg.setStringProperty("requestId", response.getJmsRequestId());
+            log.debug("Set string property to message = {}", response.getJmsRequestId());
 		}
 	}
 

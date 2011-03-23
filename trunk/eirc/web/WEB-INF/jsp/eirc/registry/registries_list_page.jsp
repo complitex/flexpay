@@ -30,7 +30,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="registriesListAjax" namespace="/eirc" includeParams="none" />",
+            action:"<s:url action="registriesListAjax" namespace="/eirc" />",
             params: {
                 "senderOrganizationFilter.selectedId":$("select[name='senderOrganizationFilter.selectedId']").val(),
                 "recipientOrganizationFilter.selectedId":$("select[name='recipientOrganizationFilter.selectedId']").val(),

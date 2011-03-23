@@ -38,7 +38,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="servicesListAjax" includeParams="none" />",
+            action:"<s:url action="servicesListAjax" />",
             params:{
                 "beginDateFilter.stringDate": $("#beginDateFilter").val(),
                 "endDateFilter.stringDate": $("#endDateFilter").val(),

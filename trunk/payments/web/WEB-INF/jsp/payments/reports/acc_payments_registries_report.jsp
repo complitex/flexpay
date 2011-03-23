@@ -64,7 +64,7 @@
                 format:format,
                 submitted:"true"
             };
-            window.open($.param.querystring("<s:url action="accPaymentsRegistriesReport" includeParams="none" />", params), "_blank");
+            window.open($.param.querystring("<s:url action="accPaymentsRegistriesReport" />", params), "_blank");
         </s:else>
     }
 

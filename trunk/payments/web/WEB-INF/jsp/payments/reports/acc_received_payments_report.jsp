@@ -97,7 +97,7 @@
                 format:format,
                 submitted:"true"
             };
-            window.open($.param.querystring("<s:url action="accReceivedPaymentsReport" includeParams="none" />", params), "_blank");
+            window.open($.param.querystring("<s:url action="accReceivedPaymentsReport" />", params), "_blank");
         </s:else>
     }
 

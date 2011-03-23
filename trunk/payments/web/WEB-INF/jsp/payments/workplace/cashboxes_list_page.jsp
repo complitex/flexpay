@@ -14,7 +14,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="workplaceCashboxesListAjax" includeParams="none" />",
+            action:"<s:url action="workplaceCashboxesListAjax" />",
 			params: {
                 "paymentPointFilter.selectedId": <s:property value="userPreferences.paymentPointId" />
             }

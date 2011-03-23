@@ -38,7 +38,7 @@
         var resultId = "searchResultsDiv";
         FP.showShadow(shadowId, resultId);
 
-        $("#searchResultsDiv").load("<s:url action="searchResults" includeParams="none" />",
+        $("#searchResultsDiv").load("<s:url action="searchResults" />",
             {
                 searchType : "EIRC_ACCOUNT",
                 searchCriteria: accountNumber,
@@ -48,7 +48,7 @@
 
                 if (responseText.indexOf("j_security_check") > 0) {
                     $(this).html("");
-                    location.href = "<s:url action="searchByEircAccount" includeParams="none" />";
+                    location.href = "<s:url action="searchByEircAccount" />";
                 }
 
                 FP.endis("#searchBtn", true);

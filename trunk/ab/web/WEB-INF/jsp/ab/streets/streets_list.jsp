@@ -14,7 +14,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location = '<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="0" /></s:url>'"
+                   onclick="window.location = '<s:url action="streetEdit"><s:param name="street.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -39,14 +39,14 @@
                 <input type="checkbox" value="<s:property value="id" />" name="objectIds" />
             </td>
             <td class="col">
-                <a href="<s:url action="buildingsList" includeParams="none"><s:param name="streetFilter" value="id" /></s:url>"><s:property value="getTranslationName(getCurrentName().translations)" /></a>
+                <a href="<s:url action="buildingsList"><s:param name="streetFilter" value="id" /></s:url>"><s:property value="getTranslationName(getCurrentName().translations)" /></a>
             </td>
             <td class="col">
                 <s:property value="getTranslationName(getCurrentType().translations)" />
             </td>
             <td class="col">
-                <a href="<s:url action="streetView" includeParams="none"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>&nbsp;
-                <a href="<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="streetView"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>&nbsp;
+                <a href="<s:url action="streetEdit"><s:param name="street.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -55,7 +55,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location = '<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="0" /></s:url>'"
+                   onclick="window.location = '<s:url action="streetEdit"><s:param name="street.id" value="0" /></s:url>'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

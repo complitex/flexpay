@@ -9,7 +9,7 @@
     <tr>
         <td id="result">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="buildingCreate" includeParams="none" />'"
+                   onclick="window.location='<s:url action="buildingCreate" />'"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -23,21 +23,21 @@
 
         FF.addListener("street", function(filter) {
             FP.pagerAjax(null, {
-                action:"<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none" />",
+                action:"<s:url action="buildingsListAjax" namespace="/dicts" />",
                 params:{streetFilter: filter.value.val()}
             });
         });
 
         FF.addEraser("street", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
-                    + 'onclick="window.location=\'<s:url action="buildingCreate" includeParams="none" />\';" '
+                    + 'onclick="window.location=\'<s:url action="buildingCreate" />\';" '
                     + 'value="<s:text name="common.new" />" />');
         });
     });
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="buildingsListAjax" namespace="/dicts" />",
             params:{
                 streetFilter: FF.filters["street"].value.val(),
                 "buildingsSorter.active": $("#buildingsSorterActive").val(),
@@ -51,7 +51,7 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="buildingDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="buildingDelete" namespace="/dicts" />", "objectIds", pagerAjax);
     }
 
 </script>

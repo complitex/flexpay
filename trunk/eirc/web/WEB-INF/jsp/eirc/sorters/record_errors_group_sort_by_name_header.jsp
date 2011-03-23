@@ -9,8 +9,8 @@
        onclick="<s:if test="recordErrorsGroupSorterByName.activated">$('#recordErrorsGroupSorterByNameOrder').val('<s:property value="recordErrorsGroupSorterByName.oppositeOrder" />');</s:if>FP.activateSorter('recordErrorsGroupSorterByNameActive');" value="<s:text name="eirc.registry.record.error_group.name" />" />
 <s:if test="recordErrorsGroupSorterByName.activated">
 	<s:if test="recordErrorsGroupSorterByName.desc">
-		<img src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />" alt="" title="<s:text name="common.sort.asc" />">
+		<img src="<s:url value="/resources/common/img/i_arrow_up.gif" />" alt="" title="<s:text name="common.sort.asc" />">
 	</s:if><s:else>
-		<img src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none" />" alt="" title="<s:text name="common.sort.desc" />">
+		<img src="<s:url value="/resources/common/img/i_arrow_down.gif" />" alt="" title="<s:text name="common.sort.desc" />">
 	</s:else>
 </s:if>

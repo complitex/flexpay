@@ -98,7 +98,7 @@
 
         function backf() {
 
-            FP.post("<s:if test="returnTo == 1"><s:url action="eircAccountsList" includeParams="none" /></s:if><s:else><s:url action="eircAccountView" includeParams="none" /></s:else>", {
+            FP.post("<s:if test="returnTo == 1"><s:url action="eircAccountsList" /></s:if><s:else><s:url action="eircAccountView" /></s:else>", {
                 <s:if test="output != null">output: <s:property value="output" />,</s:if>
                 <s:if test="apartmentFilter != null">apartmentFilter: <s:property value="apartmentFilter" />,</s:if>
                 <s:if test="buildingFilter != null">buildingFilter: <s:property value="buildingFilter" />,</s:if>

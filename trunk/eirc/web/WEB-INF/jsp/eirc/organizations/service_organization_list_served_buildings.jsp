@@ -6,7 +6,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" value="<s:text name="eirc.remove_served_buildings" />" class="btn-exit" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage" includeParams="none"><s:param name="serviceOrganization.id" value="serviceOrganization.id" /></s:url>'"
+                   onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage"><s:param name="serviceOrganization.id" value="serviceOrganization.id" /></s:url>'"
                    value="<s:text name="eirc.add_served_buildings" />" />
         </td>
     </tr>
@@ -35,7 +35,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" value="<s:text name="eirc.remove_served_buildings" />" class="btn-exit" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage" includeParams="none"><s:param name="serviceOrganization.id" value="serviceOrganization.id" /></s:url>'"
+                   onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage"><s:param name="serviceOrganization.id" value="serviceOrganization.id" /></s:url>'"
                    value="<s:text name="eirc.add_served_buildings" />" />
         </td>
     </tr>

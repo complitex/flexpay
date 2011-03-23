@@ -3,7 +3,7 @@
 
 <s:if test="quittanceInfos != null && !quittanceInfos.isEmpty()">
 
-<form id="quittancePayForm" action="<s:url action="paymentOperationReportAction" includeParams="none" />">
+<form id="quittancePayForm" action="<s:url action="paymentOperationReportAction" />">
 
     <s:hidden name="actionName" />
     <s:hidden name="apartmentId" />

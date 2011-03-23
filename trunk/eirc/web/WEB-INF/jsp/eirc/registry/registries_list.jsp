@@ -48,17 +48,17 @@
             <td class="col"><s:property value="recordsNumber" /></td>
             <td class="col"><s:text name="%{registryStatus.i18nName}" /></td>
             <td class="col">
-                <a href="<s:url action="registryView" namespace="/eirc" includeParams="none"><s:param name="registry.id" value="id" /></s:url>">
+                <a href="<s:url action="registryView" namespace="/eirc"><s:param name="registry.id" value="id" /></s:url>">
                     <s:text name="common.view" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url value="/download/%{files.get(mbType).id}.registry" includeParams="none" />">
+                <a href="<s:url value="/download/%{files.get(mbType).id}.registry" />">
                     <s:property value="files.get(mbType).originalName" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url value="/download/%{files.get(fpType).id}.registry" includeParams="none" />">
+                <a href="<s:url value="/download/%{files.get(fpType).id}.registry" />">
                     <s:property value="files.get(fpType).originalName" />
                 </a>
             </td>
@@ -81,7 +81,7 @@
         if (ids.length == 0) {
             return;
         }
-        $.post("<s:url action="registriesProcess" includeParams="none" />",
+        $.post("<s:url action="registriesProcess" />",
                 {objectIds:ids},
                 function(data, status) {
                     if (data == "" && status == "success") {

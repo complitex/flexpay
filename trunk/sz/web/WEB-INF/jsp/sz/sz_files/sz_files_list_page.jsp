@@ -18,7 +18,7 @@
     function pagerAjax(element) {
         $("#startProcessResponse").html("");
         FP.pagerAjax(element, {
-            action:"<s:url action="szFilesListAjax" includeParams="none" />"
+            action:"<s:url action="szFilesListAjax" />"
         });
     }
 

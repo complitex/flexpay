@@ -35,7 +35,7 @@
             <td class="col"><s:date format="yyyy/MM" name="quittance.dateTill" /></td>
             <td class="col"><s:text name="%{paymentStatus.i18nName}" /></td>
             <td class="col">
-                <a href="<s:url action="quittancePacketEdit" includeParams="none"><s:param name="packet.id" value="id" /></s:url>">
+                <a href="<s:url action="quittancePacketEdit"><s:param name="packet.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
             </td>

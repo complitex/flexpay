@@ -21,7 +21,7 @@
             params[this.name] = this.value;
         });
 
-        $.post("<s:url action="buildingAttributesSave" includeParams="none" />", params,
+        $.post("<s:url action="buildingAttributesSave" />", params,
                 function(data, status) {
                     if (data == "" && status == "success") {
                         window.location.href = FP.base;
@@ -85,7 +85,7 @@
                                         </s:if><s:elseif test="isBuildingAttributeTypeEnum(#type)">
                                             <s:select id="attrs%{#type.id}" name="attrs[%{#type.id}]" value="%{attrs[#type.id]}" list="#type.sortedValues" listKey="value" listValue="value" emptyOption="true" cssStyle="width:140px;" />
                                         </s:elseif>
-                                        <s:if test="#type.isTemp()"><img src="<s:url value="/resources/common/img/i_clock.gif" includeParams="none" />" alt="<s:text name="tc.temp_attribute" />" style="vertical-align:middle;" /></s:if>
+                                        <s:if test="#type.isTemp()"><img src="<s:url value="/resources/common/img/i_clock.gif" />" alt="<s:text name="tc.temp_attribute" />" style="vertical-align:middle;" /></s:if>
                                     </nobr>
                                 </td>
                             </tr>

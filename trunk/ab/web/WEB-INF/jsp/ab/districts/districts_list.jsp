@@ -14,7 +14,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="districtEdit"><s:param name="district.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -40,8 +40,8 @@
                 <s:property value="getTranslationName(getCurrentName().translations)" />
             </td>
             <td class="col">
-                <a href="<s:url action="districtView" includeParams="none"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>&nbsp;
-                <a href="<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="districtView"><s:param name="object.id" value="id" /></s:url>"><s:text name="common.view" /></a>&nbsp;
+                <a href="<s:url action="districtEdit"><s:param name="district.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -50,7 +50,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="districtEdit"><s:param name="district.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

@@ -80,7 +80,7 @@
 	<tr>
 		<td colspan="5">
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="townEdit" includeParams="none"><s:param name="town.id" value="object.id" /></s:url>';"
+				   onclick="window.location='<s:url action="townEdit"><s:param name="town.id" value="object.id" /></s:url>';"
 				   value="<s:text name="common.edit" />" />
 		</td>
 	</tr>

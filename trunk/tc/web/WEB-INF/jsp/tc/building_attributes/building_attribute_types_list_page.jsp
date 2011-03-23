@@ -15,7 +15,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="buildingAttributeTypesListAjax" includeParams="none"/>"
+            action:"<s:url action="buildingAttributeTypesListAjax"/>"
         });
     }
 

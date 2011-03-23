@@ -2,11 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReceivedPayments" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="org/flexpay/payments/i18n/ReceivedPayments">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Bold" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["H:/projects/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["D:/Work/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
@@ -286,7 +289,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="39" isSplitAllowed="false">
+		<band height="39" splitType="Prevent">
 			<textField>
 				<reportElement x="0" y="0" width="24" height="20"/>
 				<box leftPadding="5">

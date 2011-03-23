@@ -26,7 +26,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="registryView" includeParams="none"><s:param name="registry.id" value="registryId" /></s:url>"><s:property value="registryId" /></a>
+                <a href="<s:url action="registryView"><s:param name="registry.id" value="registryId" /></s:url>"><s:property value="registryId" /></a>
             </td>
             <td class="col"><s:property value="dateFrom" /></td>
             <td class="col"><s:property value="dateTo" /></td>

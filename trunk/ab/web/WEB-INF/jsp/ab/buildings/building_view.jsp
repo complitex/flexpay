@@ -9,7 +9,7 @@
 		<td colspan="2">
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="buildingAddressEdit" includeParams="none"><s:param name="building.id" value="building.id" /><s:param name="address.id" value="0" /></s:url>';"
+				   onclick="window.location='<s:url action="buildingAddressEdit"><s:param name="building.id" value="building.id" /><s:param name="address.id" value="0" /></s:url>';"
 				   value="<s:text name="common.new" />" />
 		</td>
 	</tr>
@@ -23,7 +23,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="buildingAddressesListAjax" namespace="/dicts" includeParams="none" />",
+            action:"<s:url action="buildingAddressesListAjax" namespace="/dicts" />",
             params: {
                 "building.id":<s:property value="building.id" />
             }
@@ -31,12 +31,12 @@
     }
 
     function deleteAjax() {
-        FP.serviceElements("<s:url action="buildingAddressDelete" namespace="/dicts" includeParams="none" />",
+        FP.serviceElements("<s:url action="buildingAddressDelete" namespace="/dicts" />",
                 "objectIds", pagerAjax, {params:{"building.id":<s:property value="building.id" />}});
     }
 
     function setPrimaryStatus(id) {
-        $.post("<s:url action="buildingAddressSetPrimaryStatus" namespace="/dicts" includeParams="none" />",
+        $.post("<s:url action="buildingAddressSetPrimaryStatus" namespace="/dicts" />",
                 {
                     "address.id":id
                 },

@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<script type="text/javascript" src="<s:url value="/resources/payments/js/flexpay_operation.js" includeParams="none" />"></script>
+<script type="text/javascript" src="<s:url value="/resources/payments/js/flexpay_operation.js" />"></script>
 <script type="text/javascript">
 
     FPO.messages = {

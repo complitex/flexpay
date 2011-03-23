@@ -8,32 +8,32 @@
 
     $("#formRegistration").ready(function() {
         FF.createFilter("country", {
-            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" />",
             defaultValue: "<s:property value="countryFilter != null ? countryFilter : ''" />"
         });
         FF.createFilter("region", {
-            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="regionFilterAjax" namespace="/dicts" />",
             parents: ["country"],
             defaultValue: "<s:property value="regionFilter != null ? regionFilter : ''" />"
         });
         FF.createFilter("town", {
-            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="townFilterAjax" namespace="/dicts" />",
             parents: ["region"],
             defaultValue: "<s:property value="townFilter != null ? townFilter : ''" />"
         });
         FF.createFilter("street", {
-            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="streetFilterAjax" namespace="/dicts" />",
             parents: ["town"],
             defaultValue: "<s:property value="streetFilter != null ? streetFilter : ''" />"
         });
         FF.createFilter("building", {
-            action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="buildingFilterAjax" namespace="/dicts" />",
             isArray: true,
             parents: ["street"],
             defaultValue: "<s:property value="buildingFilter != null ? buildingFilter : ''" />"
         });
         FF.createFilter("apartment", {
-            action: "<s:url action="apartmentFilterAjax" namespace="/dicts" includeParams="none" />",
+            action: "<s:url action="apartmentFilterAjax" namespace="/dicts" />",
             isArray: true,
             parents: ["building"],
             defaultValue: "<s:property value="apartmentFilter != null ? apartmentFilter : ''" />"

@@ -6,7 +6,7 @@
         <td colspan="3">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceProviderCorrectionCreate" includeParams="none"><s:param name="provider.id" value="provider.id" /><s:param name="dataCorrection.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceProviderCorrectionCreate"><s:param name="provider.id" value="provider.id" /><s:param name="dataCorrection.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -28,7 +28,7 @@
         <td colspan="3">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceProviderCorrectionCreate" includeParams="none"><s:param name="provider.id" value="provider.id" /><s:param name="dataCorrection.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceProviderCorrectionCreate"><s:param name="provider.id" value="provider.id" /><s:param name="dataCorrection.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

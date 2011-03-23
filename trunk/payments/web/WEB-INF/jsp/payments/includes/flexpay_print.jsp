@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<script type="text/javascript" src="<s:url value="/resources/payments/js/flexpay_print.js" includeParams="none" />"></script>
+<script type="text/javascript" src="<s:url value="/resources/payments/js/flexpay_print.js" />"></script>
 <script type="text/javascript">
 
     FPP.messages = {
@@ -12,9 +12,9 @@
     };
 
     FPP.urls = {
-        printButUrl : "<s:url action="createBlankOperation" includeParams="none" />",
-        payFormUrl : "<s:url action="paymentOperationReportAction" includeParams="none" />",
-        payButUrl : "<s:url action="paymentsQuittancePay" includeParams="none" />"
+        printButUrl : "<s:url action="createBlankOperation" />",
+        payFormUrl : "<s:url action="paymentOperationReportAction" />",
+        payButUrl : "<s:url action="paymentsQuittancePay" />"
     };
 
 </script>
