@@ -32,7 +32,7 @@ public class TestTownService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test (expected = FlexPayExceptionContainer.class)
-	public void testCreateTownWithOutType() throws Exception {
+	public void testCreateTownWithoutType() throws Exception {
 
 		Town town = new Town();
 		TownName townName = new TownName();
@@ -42,7 +42,7 @@ public class TestTownService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test (expected = FlexPayExceptionContainer.class)
-	public void testCreateTownWithOutName() throws Exception {
+	public void testCreateTownWithoutName() throws Exception {
 
 		Town town = new Town();
 		town.addTypeTemporal(new TownTypeTemporal(DateUtil.now(), new TownType(1L)));

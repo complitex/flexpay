@@ -30,7 +30,7 @@ import static org.flexpay.common.service.Roles.*;
  */
 @ContextConfiguration (locations = {
 		"file:WEB-INF/applicationContext.xml"
-		, "applicationContext-security.xml"
+		, "file:WEB-INF/applicationContext-security-opensso.xml"
 		, "file:WEB-INF/common/configs/spring/history/beans-ws-server-test.xml"
 })
 @TransactionConfiguration (transactionManager = "transactionManager")
