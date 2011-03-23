@@ -5,15 +5,15 @@ import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
-
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.*;
+
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings ({"AsymmetricFieldRead"})
 public class TestDateIntervalUtil {

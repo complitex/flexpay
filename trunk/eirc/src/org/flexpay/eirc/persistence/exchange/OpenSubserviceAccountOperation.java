@@ -9,7 +9,6 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
@@ -31,6 +30,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 /**
  * Open subservice provider personal account.

@@ -1,21 +1,23 @@
 package org.flexpay.orgs.service.history;
 
-import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
-import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.EqualsHelper;
-import org.flexpay.orgs.persistence.*;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.PaymentPointName;
 import org.flexpay.orgs.service.PaymentCollectorService;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;

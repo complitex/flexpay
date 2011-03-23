@@ -9,7 +9,6 @@ import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Action for updating building attributes

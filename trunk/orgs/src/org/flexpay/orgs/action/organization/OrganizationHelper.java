@@ -1,6 +1,5 @@
 package org.flexpay.orgs.action.organization;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.service.OrganizationService;
@@ -10,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Locale;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class OrganizationHelper {
 

@@ -1,8 +1,6 @@
 package org.flexpay.sz.action.szfile;
 
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.service.OsznService;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +11,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class SzFileCreatePageAction extends FPActionSupport {
 

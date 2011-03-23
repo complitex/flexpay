@@ -2,11 +2,12 @@ package org.flexpay.ab.action.person;
 
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class PersonDeleteAction extends FPActionSupport {
 

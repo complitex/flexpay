@@ -4,7 +4,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;

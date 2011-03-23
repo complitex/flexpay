@@ -3,9 +3,10 @@ package org.flexpay.bti.service.importexport;
 import org.flexpay.bti.persistence.building.BuildingAttributeConfig;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.IntegerUtil;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestCNCSVAttributeNameMapper extends SpringBeanAwareTestCase {
 

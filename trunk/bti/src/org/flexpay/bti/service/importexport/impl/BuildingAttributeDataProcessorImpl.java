@@ -1,8 +1,8 @@
 package org.flexpay.bti.service.importexport.impl;
 
 import org.flexpay.bti.persistence.building.BtiBuilding;
-import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.persistence.building.BuildingAttribute;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.importexport.BuildingAttributeData;

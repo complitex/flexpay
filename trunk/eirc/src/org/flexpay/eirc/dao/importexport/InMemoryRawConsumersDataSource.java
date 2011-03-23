@@ -1,6 +1,5 @@
 package org.flexpay.eirc.dao.importexport;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.util.CollectionUtils;
@@ -8,6 +7,8 @@ import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Collection;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 

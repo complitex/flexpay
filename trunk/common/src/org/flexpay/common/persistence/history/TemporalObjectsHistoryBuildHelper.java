@@ -1,15 +1,16 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.DomainObject;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import static java.util.Collections.max;
-import static java.util.Collections.min;
 import java.util.Date;
 import java.util.Iterator;
+
+import static java.util.Collections.max;
+import static java.util.Collections.min;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 /**
  * Abstract implementation of algorithm building diff for to temporal objects timelines

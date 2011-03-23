@@ -1,7 +1,6 @@
 package org.flexpay.payments.util;
 
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;

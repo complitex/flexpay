@@ -11,7 +11,6 @@ import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
-import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTx;
 import org.flexpay.eirc.service.importexport.ProcessRecordsRangeService;
 import org.springframework.beans.factory.annotation.Required;
 

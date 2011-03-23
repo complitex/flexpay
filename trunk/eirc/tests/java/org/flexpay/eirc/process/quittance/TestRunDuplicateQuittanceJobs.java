@@ -6,10 +6,6 @@ import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +14,8 @@ import org.springframework.security.Authentication;
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 

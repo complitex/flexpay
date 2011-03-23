@@ -1,7 +1,6 @@
 package org.flexpay.common.service.impl;
 
 import org.flexpay.common.dao.SequenceDao;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Sequence;
 import org.flexpay.common.service.SequenceService;
 import org.slf4j.Logger;

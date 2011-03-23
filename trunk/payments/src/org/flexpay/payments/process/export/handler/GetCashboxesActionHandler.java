@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.process.export.ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT;
-import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_POINTS;
-import static org.flexpay.payments.process.export.ExportJobParameterNames.CASHBOXES;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
 public class GetCashboxesActionHandler extends FlexPayActionHandler {
 

@@ -4,16 +4,17 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwareTestCase {
 

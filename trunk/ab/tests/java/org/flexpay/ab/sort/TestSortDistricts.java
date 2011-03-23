@@ -5,11 +5,12 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import static org.junit.Assert.assertNotSame;
 import org.junit.Test;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.util.List;
+
+import static org.junit.Assert.assertNotSame;
 
 public class TestSortDistricts extends AbSpringBeanAwareTestCase {
 

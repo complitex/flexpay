@@ -2,7 +2,6 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -10,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 
 public class SimplePaymentOperation extends PaymentOperation {
 

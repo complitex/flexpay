@@ -1,9 +1,9 @@
 package org.flexpay.orgs.service.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.dao.ServiceProviderAttributeDao;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.ServiceProviderAttribute;
-import org.flexpay.orgs.dao.ServiceProviderAttributeDao;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

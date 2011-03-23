@@ -6,13 +6,14 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.jobs.ProcessesCleanupJob;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class ProcessesCleanupAction extends FPActionSupport implements InitializingBean {
 

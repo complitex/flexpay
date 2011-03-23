@@ -1,5 +1,6 @@
 package org.flexpay.orgs.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -9,7 +10,6 @@ import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.access.annotation.Secured;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.Collection;
 import java.util.List;

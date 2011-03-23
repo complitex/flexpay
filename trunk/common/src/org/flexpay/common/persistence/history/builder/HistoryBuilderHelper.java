@@ -1,5 +1,6 @@
 package org.flexpay.common.persistence.history.builder;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
@@ -14,7 +15,6 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.ObjectUtils;
 
 import java.util.List;
 

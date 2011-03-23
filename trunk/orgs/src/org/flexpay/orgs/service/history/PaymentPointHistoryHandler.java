@@ -1,9 +1,9 @@
 package org.flexpay.orgs.service.history;
 
-import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;

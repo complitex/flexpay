@@ -1,5 +1,9 @@
 package org.flexpay.bti.service.history;
 
+import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
+import org.flexpay.bti.persistence.building.BuildingAttributeGroupName;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
@@ -7,10 +11,6 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.builder.TranslationExtractor;
 import org.flexpay.common.persistence.history.builder.TranslationPatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
-import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.Language;
-import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
-import org.flexpay.bti.persistence.building.BuildingAttributeGroupName;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;

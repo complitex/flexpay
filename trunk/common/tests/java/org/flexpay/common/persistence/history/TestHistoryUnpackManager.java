@@ -1,15 +1,16 @@
 package org.flexpay.common.persistence.history;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.FPFileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestHistoryUnpackManager extends SpringBeanAwareTestCase {
 

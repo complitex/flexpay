@@ -1,9 +1,10 @@
 package org.flexpay.eirc.util;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestBigDecimal {
 

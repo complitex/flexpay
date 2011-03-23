@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
-import static org.apache.commons.lang.StringUtils.isBlank;
 import org.flexpay.ab.dao.PersonAttributeDao;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;
@@ -15,7 +14,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.AttributeCopier;
@@ -29,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class PersonServiceImpl implements PersonService {

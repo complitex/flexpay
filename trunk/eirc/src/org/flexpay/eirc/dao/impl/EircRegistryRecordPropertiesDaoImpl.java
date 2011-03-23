@@ -1,12 +1,12 @@
 package org.flexpay.eirc.dao.impl;
 
+import org.flexpay.bti.persistence.apartment.BtiApartment;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.EircRegistryRecordPropertiesDao;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.bti.persistence.apartment.BtiApartment;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.Collection;
 import java.util.List;

@@ -3,7 +3,6 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.persistence.DomainObject;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +12,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 

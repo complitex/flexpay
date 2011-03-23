@@ -3,13 +3,13 @@ package org.flexpay.bti.service;
 import org.flexpay.bti.dao.ApartmentAttributeTypeDaoExt;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeType;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeSimple;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TestApartmentAttributeTypeService extends SpringBeanAwareTestCase {
 

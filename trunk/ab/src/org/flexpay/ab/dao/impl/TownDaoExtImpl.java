@@ -21,7 +21,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import java.util.Collection;
 import java.util.List;
 
-import static org.flexpay.common.persistence.filter.StringValueFilter.*;
+import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_TOWN;
+import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_TOWN_TYPE;
 
 public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 

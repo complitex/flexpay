@@ -1,14 +1,14 @@
 package org.flexpay.eirc.util.config;
 
-import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
-
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.eirc.service.Security;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
 
 public class ApplicationConfig {
 

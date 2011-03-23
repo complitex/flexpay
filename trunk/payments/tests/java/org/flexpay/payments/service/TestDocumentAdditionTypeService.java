@@ -4,12 +4,13 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.DocumentAdditionType;
-import static org.flexpay.payments.persistence.DocumentAdditionType.CODE_ERC_ACCOUNT;
 import org.flexpay.payments.persistence.DocumentAdditionTypeTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.payments.persistence.DocumentAdditionType.CODE_ERC_ACCOUNT;
+import static org.junit.Assert.*;
 
 public class TestDocumentAdditionTypeService extends PaymentsSpringBeanAwareTestCase {
 

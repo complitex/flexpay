@@ -10,8 +10,6 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -19,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 
 @Transactional (readOnly = true)
 public class AddressServiceImpl implements AddressService {

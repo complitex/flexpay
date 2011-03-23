@@ -8,9 +8,7 @@ import java.util.List;
 import static org.flexpay.ab.service.Roles.*;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.orgs.service.Roles.CASHBOX_READ;
-import static org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ;
-import static org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ;
+import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 
 public abstract class Security extends org.flexpay.common.service.Security {

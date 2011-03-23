@@ -10,10 +10,11 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import static org.flexpay.common.util.config.ApplicationConfig.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.util.config.ApplicationConfig.*;
 
 public class PersonProcessor extends AbstractProcessor<Person> {
 

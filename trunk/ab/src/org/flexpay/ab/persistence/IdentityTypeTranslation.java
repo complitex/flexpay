@@ -2,6 +2,7 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
 /**

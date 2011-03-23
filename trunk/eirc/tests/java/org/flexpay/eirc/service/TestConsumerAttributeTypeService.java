@@ -7,12 +7,13 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnum;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnumValue;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TestConsumerAttributeTypeService extends EircSpringBeanAwareTestCase {
 

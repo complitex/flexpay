@@ -16,7 +16,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 @Transactional (readOnly = true)
 public class CountryServiceImpl implements CountryService, ParentService<CountryFilter> {

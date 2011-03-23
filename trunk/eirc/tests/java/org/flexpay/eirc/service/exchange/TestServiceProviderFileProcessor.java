@@ -13,12 +13,13 @@ import org.flexpay.eirc.action.TestSpFileAction;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.payments.service.SPService;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
 
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class TestServiceProviderFileProcessor extends TestSpFileAction {
 

@@ -13,7 +13,6 @@ import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
 import org.flexpay.sz.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;

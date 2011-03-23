@@ -7,10 +7,6 @@ import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.flexpay.common.process.handler.FlexPayActionHandler;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.eirc.persistence.exchange.ProcessingContext;
-import org.flexpay.eirc.process.registry.error.HandleError;
-import org.flexpay.eirc.service.exchange.RegistryProcessor;
-import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTx;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;

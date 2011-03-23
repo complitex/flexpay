@@ -9,12 +9,13 @@ import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.springframework.dao.support.DataAccessUtils.intResult;
 
 import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.springframework.dao.support.DataAccessUtils.intResult;
 
 public class TestBuildingService extends BtiSpringBeanAwareTestCase {
 

@@ -1,12 +1,13 @@
 package org.flexpay.common.action.processing;
 
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class ProcessDeleteAction extends FPActionSupport {
 

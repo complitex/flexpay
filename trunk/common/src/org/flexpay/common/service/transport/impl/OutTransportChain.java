@@ -1,7 +1,7 @@
 package org.flexpay.common.service.transport.impl;
 
-import org.flexpay.common.service.transport.OutTransport;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.service.transport.OutTransport;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.util.List;

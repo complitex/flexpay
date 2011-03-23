@@ -1,7 +1,7 @@
 package org.flexpay.common.service.importexport.impl;
 
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ProxyClassToTypeRegistry implements ClassToTypeRegistry {

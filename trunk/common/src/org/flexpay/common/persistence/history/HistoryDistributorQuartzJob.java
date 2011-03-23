@@ -1,9 +1,9 @@
 package org.flexpay.common.persistence.history;
 
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.beans.factory.annotation.Required;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 public class HistoryDistributorQuartzJob extends QuartzJobBean {
 

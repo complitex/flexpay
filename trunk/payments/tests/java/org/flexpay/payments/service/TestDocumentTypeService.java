@@ -1,16 +1,17 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.DocumentType;
 import org.flexpay.payments.persistence.DocumentTypeTranslation;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.util.TranslationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.flexpay.payments.persistence.DocumentType.*;
+import static org.junit.Assert.*;
 
 public class TestDocumentTypeService extends PaymentsSpringBeanAwareTestCase {
 

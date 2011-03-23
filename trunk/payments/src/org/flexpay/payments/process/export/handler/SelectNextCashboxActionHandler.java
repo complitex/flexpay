@@ -5,8 +5,8 @@ import org.flexpay.common.process.handler.FlexPayActionHandler;
 
 import java.util.Map;
 
-import static org.flexpay.payments.process.export.ExportJobParameterNames.CURRENT_INDEX_CASHBOX;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.CASHBOXES;
+import static org.flexpay.payments.process.export.ExportJobParameterNames.CURRENT_INDEX_CASHBOX;
 
 public class SelectNextCashboxActionHandler extends FlexPayActionHandler {
 

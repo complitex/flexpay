@@ -13,7 +13,6 @@ import org.flexpay.sz.persistence.CharacteristicRecord;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
 import org.flexpay.sz.persistence.SubsidyRecord;
 import org.flexpay.sz.persistence.SzFile;
-import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
 import org.slf4j.Logger;
@@ -23,6 +22,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 
 public class SzFileDeleteFromDbJob extends Job {
 

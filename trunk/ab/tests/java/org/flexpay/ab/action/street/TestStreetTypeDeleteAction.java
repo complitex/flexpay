@@ -3,12 +3,13 @@ package org.flexpay.ab.action.street;
 import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleStreetType;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleStreetType;
+import static org.flexpay.common.util.CollectionUtils.set;
+import static org.junit.Assert.*;
 
 public class TestStreetTypeDeleteAction extends AbSpringBeanAwareTestCase {
 

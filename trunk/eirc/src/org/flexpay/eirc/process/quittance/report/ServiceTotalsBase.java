@@ -4,12 +4,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.payments.persistence.ServiceType;
-import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNegative;
-import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNonNegative;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNegative;
+import static org.flexpay.eirc.process.quittance.report.util.SumUtil.addNonNegative;
 
 public abstract class ServiceTotalsBase implements Serializable {
 

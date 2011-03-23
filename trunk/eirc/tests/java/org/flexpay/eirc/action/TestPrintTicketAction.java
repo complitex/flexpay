@@ -1,12 +1,13 @@
 package org.flexpay.eirc.action;
 
 import org.apache.commons.io.IOUtils;
-import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import java.io.InputStream;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
+import static org.junit.Assert.assertNotNull;
 
 public class TestPrintTicketAction extends EircSpringBeanAwareTestCase {
 

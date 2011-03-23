@@ -12,7 +12,6 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper;
 import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -22,6 +21,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 

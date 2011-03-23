@@ -1,7 +1,6 @@
 package org.flexpay.bti.persistence.building;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;

@@ -2,14 +2,15 @@ package org.flexpay.eirc.sp;
 
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.eirc.action.TestSpFileCreateAction;
-import org.flexpay.eirc.sp.impl.LineParser;
-import org.flexpay.eirc.sp.impl.validation.FileValidator;
 import org.flexpay.eirc.sp.impl.FileValidationSchema;
+import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.ServiceValidationFactory;
-import static org.junit.Assert.assertTrue;
+import org.flexpay.eirc.sp.impl.validation.FileValidator;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestMbChargesFileValidator extends TestSpFileCreateAction {
 

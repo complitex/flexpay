@@ -1,7 +1,7 @@
 package org.flexpay.orgs.persistence;
 
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.jetbrains.annotations.NotNull;
 
 public class SubdivisionName extends Translation {

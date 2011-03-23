@@ -5,9 +5,10 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class PersonEditPageAction extends FPActionSupport {
 

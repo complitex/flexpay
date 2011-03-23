@@ -2,11 +2,12 @@ package org.flexpay.eirc.dao;
 
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestEircRegistryRecordPropertiesDao extends EircSpringBeanAwareTestCase {
 

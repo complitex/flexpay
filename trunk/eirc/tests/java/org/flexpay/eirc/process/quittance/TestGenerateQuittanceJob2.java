@@ -1,20 +1,20 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.flexpay.ab.persistence.TestData;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.service.ServiceOrganizationService;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestGenerateQuittanceJob2 extends EircSpringBeanAwareTestCase {
 

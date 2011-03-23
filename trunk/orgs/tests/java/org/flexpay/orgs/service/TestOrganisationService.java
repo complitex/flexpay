@@ -1,12 +1,12 @@
 package org.flexpay.orgs.service;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestOrganisationService extends OrgsSpringBeanAwareTestCase {
 

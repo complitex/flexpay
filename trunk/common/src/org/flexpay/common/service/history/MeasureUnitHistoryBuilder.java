@@ -2,8 +2,8 @@ package org.flexpay.common.service.history;
 
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.MeasureUnitName;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;

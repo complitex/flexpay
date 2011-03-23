@@ -1,10 +1,6 @@
 package org.flexpay.orgs.service;
 
 import org.flexpay.common.persistence.Language;
-
-import static junit.framework.Assert.assertNotNull;
-import static org.flexpay.common.persistence.Stub.stub;
-
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.*;
@@ -13,6 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static junit.framework.Assert.assertNotNull;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 

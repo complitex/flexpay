@@ -1,8 +1,6 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.service.DomainObjectService;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

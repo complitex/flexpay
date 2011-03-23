@@ -8,7 +8,6 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -21,6 +20,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @SuppressWarnings ({"unchecked"})
 public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoExt {

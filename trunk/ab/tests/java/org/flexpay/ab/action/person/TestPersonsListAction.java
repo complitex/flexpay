@@ -3,9 +3,10 @@ package org.flexpay.ab.action.person;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.action.FPActionSupport;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.*;
 
 public class TestPersonsListAction extends AbSpringBeanAwareTestCase {
 

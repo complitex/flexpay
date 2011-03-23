@@ -5,9 +5,10 @@ import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.TestData;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestServiceTypeHistoryBuilder extends PaymentsSpringBeanAwareTestCase {
 

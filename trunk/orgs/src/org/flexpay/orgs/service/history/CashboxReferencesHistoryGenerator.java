@@ -1,9 +1,8 @@
 package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
-import org.flexpay.orgs.persistence.*;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
 
 public class CashboxReferencesHistoryGenerator implements ReferencesHistoryGenerator<Cashbox> {
 

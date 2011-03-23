@@ -1,9 +1,5 @@
 package org.flexpay.payments.export;
 
-import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
-import static org.flexpay.common.util.CollectionUtils.list;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
@@ -66,6 +62,8 @@ import java.security.SignatureException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 import java.util.List;
+
+import static junit.framework.Assert.*;
 
 public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCase {
 

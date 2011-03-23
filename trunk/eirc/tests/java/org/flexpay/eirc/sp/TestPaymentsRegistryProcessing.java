@@ -1,19 +1,16 @@
 package org.flexpay.eirc.sp;
 
-import static junit.framework.Assert.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DateRange;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryStatus;
-import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
-import static org.flexpay.common.util.DateUtil.parseDate;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
@@ -24,13 +21,17 @@ import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.flexpay.payments.util.registries.RegistryFPFileFormat;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
 
 import java.util.List;
+
+import static junit.framework.Assert.*;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.DateUtil.parseDate;
+import static org.junit.Assert.assertFalse;
 
 public class TestPaymentsRegistryProcessing extends EircSpringBeanAwareTestCase {
 

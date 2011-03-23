@@ -10,11 +10,12 @@ import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker;
 import org.flexpay.common.service.HistoryConsumerService;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 
 public class TestUnpackTownHistory extends AbSpringBeanAwareTestCase {
 

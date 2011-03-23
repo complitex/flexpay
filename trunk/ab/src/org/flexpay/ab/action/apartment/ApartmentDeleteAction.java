@@ -2,11 +2,12 @@ package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class ApartmentDeleteAction extends FPActionSupport {
 

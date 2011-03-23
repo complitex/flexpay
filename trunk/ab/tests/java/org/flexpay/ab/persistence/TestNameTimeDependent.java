@@ -1,11 +1,12 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestNameTimeDependent extends AbSpringBeanAwareTestCase {
 

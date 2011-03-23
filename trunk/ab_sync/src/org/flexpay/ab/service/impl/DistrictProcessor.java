@@ -4,14 +4,11 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.DistrictNameTranslation;
 import org.flexpay.ab.persistence.HistoryRec;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +16,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class DistrictProcessor extends AbstractProcessor<District> {
 

@@ -11,7 +11,6 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.builder.ReferenceExtractor;
 import org.flexpay.common.persistence.history.builder.ReferencePatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
-import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.common.util.EqualsHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
 
 public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 

@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history;
 
-import org.flexpay.common.service.transport.OutTransport;
 import org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport;
+import org.flexpay.common.service.transport.OutTransport;
 
 /**
  * Web services out transport config

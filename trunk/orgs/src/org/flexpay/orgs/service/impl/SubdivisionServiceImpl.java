@@ -5,26 +5,27 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.ModificationListener;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.internal.SessionUtils;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.orgs.dao.SubdivisionDao;
-import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.Subdivision;
 import org.flexpay.orgs.persistence.SubdivisionDescription;
 import org.flexpay.orgs.persistence.SubdivisionName;
 import org.flexpay.orgs.persistence.filters.SubdivisionFilter;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 @Transactional (readOnly = true)
 public class SubdivisionServiceImpl implements SubdivisionService {

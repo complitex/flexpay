@@ -3,7 +3,6 @@ package org.flexpay.tc.action.tariff;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileType;
 import org.flexpay.common.service.FPFileService;
@@ -19,6 +18,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class TariffCalcRulesFileEditAction extends FPActionSupport {
 

@@ -1,12 +1,13 @@
 package org.flexpay.bti.service.importexport.impl;
 
-import static org.flexpay.bti.persistence.building.BuildingAttributeConfig.*;
 import org.flexpay.bti.service.importexport.AttributeNameMapper;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static org.flexpay.bti.persistence.building.BuildingAttributeConfig.*;
 
 public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 

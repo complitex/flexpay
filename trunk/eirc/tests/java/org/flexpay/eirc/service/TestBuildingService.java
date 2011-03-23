@@ -1,14 +1,15 @@
 package org.flexpay.eirc.service;
 
-import static org.flexpay.ab.persistence.TestData.IVANOVA_27;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.persistence.TestData.IVANOVA_27;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.dao.support.DataAccessUtils.intResult;
 
 public class TestBuildingService extends EircSpringBeanAwareTestCase {

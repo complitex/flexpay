@@ -8,8 +8,6 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
-
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.service.EircAccountService;
@@ -18,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class QuittanceSearchByAddressAction extends ApartmentFilterDependent2Action<EircAccount> {
 

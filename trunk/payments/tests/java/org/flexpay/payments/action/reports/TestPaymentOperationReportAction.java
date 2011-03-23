@@ -1,14 +1,15 @@
 package org.flexpay.payments.action.reports;
 
 import org.flexpay.common.action.FPActionSupport;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.flexpay.orgs.persistence.TestData.CASHBOX_1;
 import static org.flexpay.orgs.persistence.TestData.CASHBOX_2;
 import static org.flexpay.payments.persistence.TestData.OPERATION;
 import static org.flexpay.payments.persistence.TestData.OPERATION_2;
-import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestPaymentOperationReportAction extends PaymentsSpringBeanAwareTestCase {
 

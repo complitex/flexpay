@@ -1,9 +1,8 @@
 package org.flexpay.orgs.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Particular Juridical person instance, may be only one for single organisation

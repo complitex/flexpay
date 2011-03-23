@@ -8,11 +8,12 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 
 public class TestEircAccountService extends EircSpringBeanAwareTestCase {
 

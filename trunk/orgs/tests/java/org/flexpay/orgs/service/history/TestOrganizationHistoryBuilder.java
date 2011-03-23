@@ -1,19 +1,18 @@
 package org.flexpay.orgs.service.history;
 
-import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.orgs.persistence.OrganizationDescription;
 import org.flexpay.orgs.persistence.OrganizationName;
+import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.*;
 
 public class TestOrganizationHistoryBuilder extends OrgsSpringBeanAwareTestCase {
 

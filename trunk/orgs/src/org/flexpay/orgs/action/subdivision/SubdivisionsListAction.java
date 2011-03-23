@@ -2,7 +2,6 @@ package org.flexpay.orgs.action.subdivision;
 
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.Subdivision;
@@ -13,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class SubdivisionsListAction extends FPActionSupport {
 

@@ -5,8 +5,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
 /**
  * CountryTranslation is a translation of Country to particular language

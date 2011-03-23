@@ -1,13 +1,12 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.bti.persistence.building.BtiBuilding;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestBtiBuildingService extends SpringBeanAwareTestCase {
 

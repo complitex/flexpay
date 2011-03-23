@@ -3,7 +3,6 @@ package org.flexpay.eirc.process.registry;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.process.handler.FlexPayActionHandler;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;

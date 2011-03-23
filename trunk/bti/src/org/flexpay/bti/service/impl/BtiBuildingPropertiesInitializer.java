@@ -1,12 +1,11 @@
 package org.flexpay.bti.service.impl;
 
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.bti.persistence.building.BtiBuilding;
+import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.common.service.PropertiesInitializer;
 import org.flexpay.common.service.internal.SessionUtils;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.bti.service.BtiBuildingService;
-import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BtiBuildingPropertiesInitializer implements PropertiesInitializer<Building> {
 

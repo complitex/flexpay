@@ -13,13 +13,14 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 

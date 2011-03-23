@@ -1,8 +1,8 @@
 package org.flexpay.bti.test;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.common.persistence.Stub;
 
 public abstract class TestData {
 

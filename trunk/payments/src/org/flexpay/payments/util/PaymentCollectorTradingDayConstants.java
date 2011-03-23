@@ -9,6 +9,7 @@ import java.util.Map;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.PairUtil.pair;
 
+@SuppressWarnings({"unchecked"})
 public abstract class PaymentCollectorTradingDayConstants {
 
 	// process variable names

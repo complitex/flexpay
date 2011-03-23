@@ -8,14 +8,14 @@ import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.action.filter.FilterAjaxAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.util.CollectionUtils.set;
-
 import org.flexpay.common.persistence.filter.FilterObject;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Search districts by name

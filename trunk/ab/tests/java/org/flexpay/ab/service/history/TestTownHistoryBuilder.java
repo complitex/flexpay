@@ -11,11 +11,12 @@ import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.junit.After;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import static org.junit.Assert.*;
 
 public class TestTownHistoryBuilder extends AbSpringBeanAwareTestCase {
 

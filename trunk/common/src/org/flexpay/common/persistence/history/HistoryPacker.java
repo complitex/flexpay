@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history;
 
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

@@ -3,10 +3,11 @@ package org.flexpay.tc.service;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.tc.dao.TariffExportCodeDaoExt;
 import org.flexpay.tc.persistence.TariffExportCode;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestTariffExportCodeServiceExt extends SpringBeanAwareTestCase {
 

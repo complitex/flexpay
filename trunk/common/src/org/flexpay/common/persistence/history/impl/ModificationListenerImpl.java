@@ -4,9 +4,9 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ModificationListenerImpl<T extends DomainObject> implements ModificationListener<T> {
 

@@ -6,10 +6,11 @@ import org.flexpay.eirc.sp.impl.FileValidationSchema;
 import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.ServiceValidationFactory;
 import org.flexpay.eirc.sp.impl.validation.FileValidator;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestMbCorrectionsFileValidator extends TestSpFileCreateAction {
 

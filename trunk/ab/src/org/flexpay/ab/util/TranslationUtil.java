@@ -3,12 +3,13 @@ package org.flexpay.ab.util;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.util.TranslationUtil.getTranslation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Locale;
+
+import static org.flexpay.common.util.TranslationUtil.getTranslation;
 
 public class TranslationUtil {
 

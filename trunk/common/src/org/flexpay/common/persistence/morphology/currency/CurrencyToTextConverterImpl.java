@@ -2,8 +2,8 @@ package org.flexpay.common.persistence.morphology.currency;
 
 import org.flexpay.common.persistence.CurrencyInfo;
 import org.flexpay.common.persistence.CurrencyName;
-import org.flexpay.common.persistence.morphology.number.NumberConverterFactory;
 import org.flexpay.common.persistence.morphology.number.DefaultNumberConverterFactory;
+import org.flexpay.common.persistence.morphology.number.NumberConverterFactory;
 import org.flexpay.common.persistence.morphology.number.NumberToTextConverter;
 
 import java.math.BigDecimal;

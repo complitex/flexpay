@@ -10,8 +10,8 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.rent.reports.contract.ContractForServicesForm;
 import org.flexpay.rent.reports.contract.ContractForServicesAppendix1Form;
+import org.flexpay.rent.reports.contract.ContractForServicesForm;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 

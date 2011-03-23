@@ -3,13 +3,13 @@ package org.flexpay.bti.service;
 import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.bti.persistence.filters.BuildingAttributeGroupFilter;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 public interface BuildingAttributeGroupService {
 

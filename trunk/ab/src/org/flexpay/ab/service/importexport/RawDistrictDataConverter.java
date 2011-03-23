@@ -9,8 +9,9 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class RawDistrictDataConverter implements DataConverter<District, RawDistrictData> {
 

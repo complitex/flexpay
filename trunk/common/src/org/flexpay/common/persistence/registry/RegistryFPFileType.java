@@ -1,10 +1,10 @@
 package org.flexpay.common.persistence.registry;
 
-import org.flexpay.common.persistence.DomainObject;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.flexpay.common.persistence.DomainObject;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class RegistryFPFileType extends DomainObject {

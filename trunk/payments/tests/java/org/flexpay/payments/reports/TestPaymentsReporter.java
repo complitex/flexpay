@@ -6,13 +6,14 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 public class TestPaymentsReporter extends PaymentsSpringBeanAwareTestCase {
 

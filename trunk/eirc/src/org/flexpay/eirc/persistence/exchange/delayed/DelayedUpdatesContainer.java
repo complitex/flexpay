@@ -2,12 +2,10 @@ package org.flexpay.eirc.persistence.exchange.delayed;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.List;
 
 /**
  * Updates container holds a set of delayed updates

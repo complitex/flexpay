@@ -7,12 +7,13 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestApartmentService extends AbSpringBeanAwareTestCase {
 

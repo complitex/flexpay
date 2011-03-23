@@ -70,6 +70,7 @@ import java.util.List;
  * @author Teodor Danciu (teodord@users.sourceforge.net)
  * @version $Id: JRPdfExporter.java 4188 2011-02-17 07:29:34Z teodord $
  */
+@SuppressWarnings({"RawUseOfParameterizedType", "NonPrivateFieldAccessedInSynchronizedContext", "unchecked", "deprecation"})
 public class JRPdfExporter extends JRAbstractExporter
 {
 
@@ -344,6 +345,7 @@ public class JRPdfExporter extends JRAbstractExporter
 						}
 						catch(IOException e)
 						{
+                            //
 						}
 					}
 				}
@@ -1433,7 +1435,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	private float getXAlignFactor(JRPrintImage printImage)
 	{
-		float xalignFactor = 0f;
+		float xalignFactor;
 		switch (printImage.getHorizontalAlignmentValue())
 		{
 			case RIGHT :
@@ -1459,7 +1461,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	private float getYAlignFactor(JRPrintImage printImage)
 	{
-		float yalignFactor = 0f;
+		float yalignFactor;
 		switch (printImage.getVerticalAlignmentValue())
 		{
 			case BOTTOM :
@@ -2523,7 +2525,8 @@ public class JRPdfExporter extends JRAbstractExporter
 		}
 	}
 
-	static protected class BookmarkStack
+	@SuppressWarnings({"unchecked"})
+    static protected class BookmarkStack
 	{
 		LinkedList stack;
 

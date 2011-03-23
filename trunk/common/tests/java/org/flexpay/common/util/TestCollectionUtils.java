@@ -1,9 +1,10 @@
 package org.flexpay.common.util;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestCollectionUtils {
 

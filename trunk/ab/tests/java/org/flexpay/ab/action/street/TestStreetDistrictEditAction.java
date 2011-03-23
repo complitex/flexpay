@@ -7,14 +7,15 @@ import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetDistrictRelation;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
+import static org.flexpay.common.util.CollectionUtils.set;
+import static org.junit.Assert.*;
 
 public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 

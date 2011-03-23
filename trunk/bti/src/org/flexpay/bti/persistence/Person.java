@@ -2,8 +2,8 @@ package org.flexpay.bti.persistence;
 
 import org.flexpay.ab.persistence.PersonAttribute;
 import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
 import java.util.HashSet;

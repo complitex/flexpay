@@ -2,9 +2,10 @@ package org.flexpay.payments.service;
 
 import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertNull;
 
 public class TestEircRegistryService extends PaymentsSpringBeanAwareTestCase {
 

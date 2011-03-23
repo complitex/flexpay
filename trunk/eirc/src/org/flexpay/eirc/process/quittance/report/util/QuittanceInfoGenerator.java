@@ -1,12 +1,15 @@
 package org.flexpay.eirc.process.quittance.report.util;
 
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.process.quittance.report.*;
+import org.flexpay.eirc.process.quittance.report.ServiceGroup;
+import org.flexpay.eirc.process.quittance.report.ServiceTotals;
+import org.flexpay.eirc.process.quittance.report.ServiceTotalsBase;
+import org.flexpay.eirc.process.quittance.report.SubServiceTotals;
 import org.flexpay.eirc.reports.quittance.QuittancePrintInfo;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

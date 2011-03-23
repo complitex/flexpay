@@ -2,14 +2,15 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.PersonService;
-import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class PersonHistoryHandler extends HistoryHandlerBase<Person> {
 

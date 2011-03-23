@@ -8,7 +8,6 @@ import org.flexpay.ab.service.*;
 import org.flexpay.ab.service.importexport.impl.AllObjectsDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.*;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -19,6 +18,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class ImportServiceImpl implements ImportService {

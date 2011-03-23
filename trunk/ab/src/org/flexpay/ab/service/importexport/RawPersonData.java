@@ -2,10 +2,11 @@ package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.service.importexport.RawData;
-import static org.flexpay.common.util.CollectionUtils.set;
 
 import java.util.Collection;
 import java.util.Date;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class RawPersonData extends RawData<Person> {
 

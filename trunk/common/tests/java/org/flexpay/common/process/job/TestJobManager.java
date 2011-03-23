@@ -3,13 +3,14 @@ package org.flexpay.common.process.job;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.JobInstantiationException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestJobManager extends SpringBeanAwareTestCase {
 

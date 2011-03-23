@@ -7,7 +7,6 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
-import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.SzFileService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -16,6 +15,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 
 public class SzFileFullDeleteJob extends Job {
 

@@ -1,9 +1,9 @@
 package org.flexpay.common.persistence.sorter;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Base class for HQL sorters that support i18n

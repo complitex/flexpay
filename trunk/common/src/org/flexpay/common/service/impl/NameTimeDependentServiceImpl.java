@@ -7,7 +7,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.NameTimeDependentService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

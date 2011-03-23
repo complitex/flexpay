@@ -3,11 +3,12 @@ package org.flexpay.sz.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.sz.persistence.Oszn;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.ExpectedException;
+
+import static org.junit.Assert.fail;
 
 public class TestCorrectionsService extends SpringBeanAwareTestCase {
 

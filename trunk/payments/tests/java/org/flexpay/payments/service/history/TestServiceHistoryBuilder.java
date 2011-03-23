@@ -1,27 +1,28 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.persistence.TestData;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.service.history.MeasureUnitHistoryGenerator;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator;
-import org.flexpay.orgs.service.history.OrganizationHistoryGenerator;
-import org.flexpay.orgs.persistence.ServiceProviderDescription;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.ServiceProviderDescription;
+import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.history.OrganizationHistoryGenerator;
+import org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.TestData;
+import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import static org.junit.Assert.assertNotNull;
+
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class TestServiceHistoryBuilder extends PaymentsSpringBeanAwareTestCase {
 

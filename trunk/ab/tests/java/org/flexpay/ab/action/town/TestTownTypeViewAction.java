@@ -4,11 +4,12 @@ import org.flexpay.ab.dao.TownTypeDao;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleTownType;
 import org.flexpay.common.action.FPActionSupport;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleTownType;
+import static org.junit.Assert.*;
 
 public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 

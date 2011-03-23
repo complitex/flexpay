@@ -1,28 +1,29 @@
 package org.flexpay.eirc.action.quittance;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
 import org.flexpay.eirc.persistence.QuittancePayment;
-import org.flexpay.payments.persistence.Service;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittancePaymentStatusService;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class QuittancePayAction extends FPActionSupport {
 

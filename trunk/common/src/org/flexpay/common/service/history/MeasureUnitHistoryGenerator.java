@@ -1,7 +1,6 @@
 package org.flexpay.common.service.history;
 
 import org.flexpay.common.persistence.MeasureUnit;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -13,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class MeasureUnitHistoryGenerator implements HistoryGenerator<MeasureUnit> {
 

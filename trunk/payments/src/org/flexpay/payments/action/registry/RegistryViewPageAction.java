@@ -25,9 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.persistence.registry.RegistryContainer.COMMENTARY_CONTAINER_TYPE;
-import static org.flexpay.common.persistence.registry.RegistryContainer.CONTAINER_DATA_DELIMITER;
-import static org.flexpay.common.persistence.registry.RegistryContainer.ESCAPE_SYMBOL;
+import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
 

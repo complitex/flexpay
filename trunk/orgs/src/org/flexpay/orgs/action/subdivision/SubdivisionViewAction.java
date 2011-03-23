@@ -1,11 +1,12 @@
 package org.flexpay.orgs.action.subdivision;
 
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.orgs.persistence.Subdivision;
 import org.flexpay.orgs.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class SubdivisionViewAction extends FPActionSupport {
 

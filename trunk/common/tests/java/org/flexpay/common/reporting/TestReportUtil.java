@@ -6,15 +6,15 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.map;
-import org.jetbrains.annotations.NonNls;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 
 import java.io.InputStream;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class TestReportUtil extends SpringBeanAwareTestCase {
 

@@ -2,11 +2,12 @@ package org.flexpay.common.process;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.slf4j.Logger;
 
 import java.io.File;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TestProcessLogger extends SpringBeanAwareTestCase {
 

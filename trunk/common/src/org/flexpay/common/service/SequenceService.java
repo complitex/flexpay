@@ -1,8 +1,5 @@
 package org.flexpay.common.service;
 
-import org.flexpay.common.exception.FlexPayException;
-
-
 public interface SequenceService {
 	
 	/**

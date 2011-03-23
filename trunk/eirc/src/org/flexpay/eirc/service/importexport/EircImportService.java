@@ -6,16 +6,17 @@ import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class EircImportService {
 

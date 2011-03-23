@@ -1,4 +1,3 @@
-<%@page import="org.flexpay.payments.service.Roles"%>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/payments/includes/stylesheet.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>

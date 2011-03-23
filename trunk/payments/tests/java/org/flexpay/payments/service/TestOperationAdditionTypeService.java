@@ -1,8 +1,8 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestOperationAdditionTypeService extends PaymentsSpringBeanAwareTestCase {
 

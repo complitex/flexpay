@@ -4,9 +4,10 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class CountryViewAction extends FPActionSupport {
 

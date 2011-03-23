@@ -21,15 +21,14 @@
 
 package org.apache.struts2.dispatcher;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.util.ValueStack;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.opensymphony.xwork2.util.ValueStack;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * <!-- START SNIPPET: description -->

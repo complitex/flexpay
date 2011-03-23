@@ -1,16 +1,13 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.*;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegion;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.*;
-import static org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
-import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -18,6 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegion;
+import static org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 

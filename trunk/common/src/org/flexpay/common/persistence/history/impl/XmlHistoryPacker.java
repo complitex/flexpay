@@ -1,11 +1,11 @@
 package org.flexpay.common.persistence.history.impl;
 
 import com.thoughtworks.xstream.XStream;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.util.CollectionUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.List;

@@ -1,11 +1,11 @@
 package org.flexpay.common.persistence.history.handler;
 
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.HistoryOperationType;
-import org.flexpay.common.persistence.history.HistoryBuilder;
+import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DataCorrection;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryBuilder;
+import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.service.DomainObjectService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;

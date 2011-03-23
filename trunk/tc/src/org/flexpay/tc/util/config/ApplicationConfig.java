@@ -1,10 +1,11 @@
 package org.flexpay.tc.util.config;
 
-import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
 import org.flexpay.tc.service.Security;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
 
 public class ApplicationConfig {
 

@@ -4,7 +4,6 @@ import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.RegionName;
 import org.flexpay.ab.persistence.RegionNameTemporal;
 import org.flexpay.ab.persistence.RegionNameTranslation;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountry;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.history.Diff;
@@ -14,13 +13,15 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
-import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountry;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 public class RegionHistoryBuilder extends HistoryBuilderBase<Region> {
 

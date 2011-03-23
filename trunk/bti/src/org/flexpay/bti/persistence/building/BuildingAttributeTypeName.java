@@ -2,8 +2,9 @@ package org.flexpay.bti.persistence.building;
 
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
 public class BuildingAttributeTypeName extends Translation {
 

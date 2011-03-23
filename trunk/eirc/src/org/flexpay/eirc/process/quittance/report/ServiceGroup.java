@@ -2,9 +2,9 @@ package org.flexpay.eirc.process.quittance.report;
 
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -2,7 +2,6 @@ package org.flexpay.payments.service;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
 public interface TradingDay<T extends DomainObject> {

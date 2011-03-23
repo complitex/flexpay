@@ -2,7 +2,6 @@ package org.flexpay.common.persistence.filter;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.filter.ObjectFilter;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 

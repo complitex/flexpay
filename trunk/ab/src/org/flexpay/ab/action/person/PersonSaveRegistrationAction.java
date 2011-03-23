@@ -6,13 +6,14 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 public class PersonSaveRegistrationAction extends FPActionSupport {
 

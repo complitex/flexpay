@@ -1,15 +1,15 @@
 package org.flexpay.common.service.transport.impl;
 
-import org.junit.Test;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.io.WriterCallback;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 public class TestEmailOutTransport extends SpringBeanAwareTestCase {
 

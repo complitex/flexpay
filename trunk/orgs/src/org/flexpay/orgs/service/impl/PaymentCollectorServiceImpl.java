@@ -1,7 +1,7 @@
 package org.flexpay.orgs.service.impl;
 
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentCollectorDescription;
 import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;

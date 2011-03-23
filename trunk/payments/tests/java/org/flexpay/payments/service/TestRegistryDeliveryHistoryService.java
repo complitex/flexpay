@@ -3,9 +3,10 @@ package org.flexpay.payments.service;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.fail;
 
 public class TestRegistryDeliveryHistoryService extends PaymentsSpringBeanAwareTestCase {
 

@@ -1,12 +1,13 @@
 package org.flexpay.common.process.job;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.junit.Assert.*;
 
 public class TestJob extends SpringBeanAwareTestCase {
 

@@ -3,20 +3,20 @@ package org.flexpay.eirc.action.quittance;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.DateUtil.now;
-
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.CloseDateFilter;
 import org.flexpay.common.persistence.filter.CreateDateFilter;
+import org.flexpay.eirc.persistence.QuittancePacket;
+import org.flexpay.eirc.service.QuittancePacketService;
 import org.flexpay.orgs.action.paymentpoint.PaymentPointHelper;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.eirc.persistence.QuittancePacket;
-import org.flexpay.eirc.service.QuittancePacketService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.DateUtil.now;
 
 public class QuittancePacketEditAction extends FPActionSupport {
 

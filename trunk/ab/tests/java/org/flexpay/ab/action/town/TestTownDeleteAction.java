@@ -3,12 +3,13 @@ package org.flexpay.ab.action.town;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleTown;
 import org.flexpay.common.action.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleTown;
+import static org.flexpay.common.util.CollectionUtils.set;
+import static org.junit.Assert.*;
 
 public class TestTownDeleteAction extends AbSpringBeanAwareTestCase {
 

@@ -9,7 +9,6 @@ import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.persistence.file.FPFileType;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
 
 /**

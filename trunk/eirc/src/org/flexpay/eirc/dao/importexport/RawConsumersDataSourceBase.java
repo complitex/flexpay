@@ -1,8 +1,8 @@
 package org.flexpay.eirc.dao.importexport;
 
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

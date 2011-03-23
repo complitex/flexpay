@@ -8,10 +8,11 @@ import org.flexpay.bti.test.TestData;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class TestBuildingAttributeGroupHistoryBuilder extends BtiSpringBeanAwareTestCase {
 

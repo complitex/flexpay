@@ -1,7 +1,6 @@
 package org.flexpay.common.process.exception;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.jetbrains.annotations.NonNls;
 
 public class ProcessDefinitionException extends FlexPayException {
 

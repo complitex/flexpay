@@ -10,8 +10,6 @@ import org.flexpay.common.service.LanguageService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import static org.flexpay.orgs.persistence.TestData.SRV_PROVIDER_CN;
-import static org.flexpay.orgs.persistence.TestData.SRV_PROVIDER_TEST;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Service;
@@ -19,15 +17,18 @@ import org.flexpay.payments.persistence.ServiceDescription;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.TestData;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.orgs.persistence.TestData.SRV_PROVIDER_CN;
+import static org.flexpay.orgs.persistence.TestData.SRV_PROVIDER_TEST;
+import static org.junit.Assert.*;
+import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 public class TestSPService extends PaymentsSpringBeanAwareTestCase {
 
