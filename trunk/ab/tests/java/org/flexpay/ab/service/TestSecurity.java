@@ -18,22 +18,23 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
+import static org.flexpay.ab.service.Roles.*;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.SecurityUtil.auths;
 
 public class TestSecurity extends AbSpringBeanAwareTestCase {
 
 	private Authentication authentication;
 
-	private static final GrantedAuthority[] BASIC_AUTHORITIES = {new GrantedAuthorityImpl(Roles.BASIC)};
-	private static final GrantedAuthority[] COUNTRY_AUTHORITIES = {new GrantedAuthorityImpl(Roles.COUNTRY_READ)};
-	private static final GrantedAuthority[] REGION_AUTHORITIES = {new GrantedAuthorityImpl(Roles.REGION_READ)};
+	private static final List<GrantedAuthority> BASIC_AUTHORITIES = auths(BASIC);
+	private static final List<GrantedAuthority> COUNTRY_AUTHORITIES = auths(COUNTRY_READ);
+	private static final List<GrantedAuthority> REGION_AUTHORITIES = auths(REGION_READ);
 
 	@Autowired
 	private CountryService countryService;

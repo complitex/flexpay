@@ -9,7 +9,7 @@ import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.Authentication;
+import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
@@ -116,6 +116,7 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 			this.authentication = authentication;
 		}
 
+        @Override
 		public void run() {
 			try {
 

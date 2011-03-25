@@ -62,7 +62,7 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cnthql.toString());
@@ -120,7 +120,7 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 
         hql.append(filterHql);
 
-        List<Town> towns = (List<Town>) getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Town> towns = (List<Town>) getHibernateTemplate().executeFind(new HibernateCallback<List<Town>>() {
             @Override
             public List<Town> doInHibernate(Session session) throws HibernateException {
 

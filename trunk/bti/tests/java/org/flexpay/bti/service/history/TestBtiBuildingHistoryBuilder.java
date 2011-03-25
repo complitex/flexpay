@@ -55,7 +55,7 @@ public class TestBtiBuildingHistoryBuilder extends BtiSpringBeanAwareTestCase {
 
 		BuildingAttributeType typeBuildYear = attributeTypeService.findTypeByName(
 				BuildingAttributeConfig.ATTR_BUILD_YEAR);
-		assertNotNull("No build year attribute found");
+		assertNotNull("No build year attribute found", typeBuildYear);
 		BuildingAttribute attribute = new BuildingAttribute();
 		attribute.setAttributeType(typeBuildYear);
 		attribute.setIntValue(1953);

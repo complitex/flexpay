@@ -32,7 +32,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		tradingDayProcessInstanceId = processManager.createProcess("TradingDaySchedulingJob", parameters);
-		assertTrue(tradingDayProcessInstanceId > 0);
+		assertTrue("Error", tradingDayProcessInstanceId > 0);
 
 		//Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		//String  currentStatus = (String) process.getParameters().get(TradingDaySchedulingJob.PROCESS_STATUS);
@@ -204,6 +204,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		}
 
 		@Override
+        @Deprecated
 		public boolean isRequestedSessionIdFromUrl() {
 			return false;
 		}
@@ -343,6 +344,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 			return null;
 		}
 
+        @Deprecated
 		@Override
 		public String getRealPath(String s) {
 			return null;
@@ -436,11 +438,13 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 			return null;
 		}
 
+        @Deprecated
 		@Override
 		public String encodeUrl(String s) {
 			return null;
 		}
 
+        @Deprecated
 		@Override
 		public String encodeRedirectUrl(String s) {
 			return null;
@@ -482,6 +486,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 		public void setStatus(int i) {
 		}
 
+        @Deprecated
 		@Override
 		public void setStatus(int i, String s) {
 		}

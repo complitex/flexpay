@@ -52,7 +52,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
             }
         }
 
-        return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback() {
+        return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
             @Override
             public List<Operation> doInHibernate(Session session) throws HibernateException {
 
@@ -156,7 +156,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
             }
         }
 
-		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback() {
+		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
 			@Override
 			public List<Operation> doInHibernate(Session session) throws HibernateException {
 
@@ -247,7 +247,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
     @SuppressWarnings({"unchecked"})
     @Override
     public Operation getLastPaymentPointPaymentOperation(final Long paymentPointId, final Date beginDate, final Date endDate) {
-        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
             @Override
             public List<Operation> doInHibernate(Session session) throws HibernateException {
                 return session.getNamedQuery("Operation.listLastPaymentPointPaymentOperations").
@@ -264,7 +264,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
     @SuppressWarnings({"unchecked"})
     @Override
     public Operation getLastCashboxPaymentOperation(final Long cashboxId, final Date beginDate, final Date endDate) {
-        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
             @Override
             public List<Operation> doInHibernate(Session session) throws HibernateException {
                 return session.getNamedQuery("Operation.listLastCashboxPaymentOperations").
@@ -285,9 +285,9 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 
 	@Override
 	public void deleteAllBlankOperations() {
-		getHibernateTemplate().execute(new HibernateCallback<Object>() {
+		getHibernateTemplate().execute(new HibernateCallback<Void>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public Void doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Operation.deleteAllBlankOperations").setLong(0, 6).executeUpdate();
 				return null;
 			}

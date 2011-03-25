@@ -94,9 +94,9 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 		// retrieve elements
 		@SuppressWarnings ({"unchecked"})
-		List<Registry> result = getHibernateTemplate().executeFind(new HibernateCallback() {
+		List<Registry> result = getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.createQuery(hqlCount.toString());
 				Query query = session.createQuery(hql.toString());
 				for (int n = 0; n < params.size(); ++n) {
@@ -144,9 +144,9 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 		final Collection<Long> ids = DomainObject.collectionIds(registries);
 		@SuppressWarnings ({"unchecked"})
-		List<Registry> rFiles = getHibernateTemplate().executeFind(new HibernateCallback() {
+		List<Registry> rFiles = getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public List<?> doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery("Registry.getRegistriesFiles")
 						.setParameterList("ids", ids)
 						.list();

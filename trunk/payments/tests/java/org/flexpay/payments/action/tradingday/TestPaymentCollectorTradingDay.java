@@ -98,7 +98,7 @@ public class TestPaymentCollectorTradingDay extends SpringBeanAwareTestCase {
 		parameters.put(PAYMENT_COLLECTOR_ID, currentPaymentCollectorId);
 		long processId = processManager.createProcess("PaymentCollectorTradingDay", parameters);
 
-		assertTrue(processId > 0);
+		assertTrue("Error", processId > 0);
 
 		Thread.sleep(30000);
 

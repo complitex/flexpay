@@ -28,6 +28,7 @@ public class TestEmailOutTransport extends SpringBeanAwareTestCase {
 		fpFile.setModule(fileService.getModuleByName("common"));
 		FPFileUtil.createEmptyFile(fpFile);
 		fpFile.withWriter("cp1251", new WriterCallback() {
+            @Override
 			public void write(Writer w) throws IOException {
 				w.write("Hello from TestEmailOutTransport");
 			}

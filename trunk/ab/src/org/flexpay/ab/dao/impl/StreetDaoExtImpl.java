@@ -87,7 +87,7 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cnthql.toString());
@@ -243,7 +243,7 @@ WHERE street.status = 0
             }
         }
 
-        List<Street> streets = (List<Street>) getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Street> streets = (List<Street>) getHibernateTemplate().executeFind(new HibernateCallback<List<Street>>() {
             @Override
             public List<Street> doInHibernate(Session session) throws HibernateException {
 

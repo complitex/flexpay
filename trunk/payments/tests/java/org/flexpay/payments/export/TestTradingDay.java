@@ -28,7 +28,7 @@ public class TestTradingDay extends PaymentsSpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		long processId = testProcessManager.createProcess("TradingDaySchedulingJob", parameters);
-		assertTrue(processId > 0);
+		assertTrue("Error", processId > 0);
 
 		testProcessManager.join(processId);
 		Process process = testProcessManager.getProcessInstanceInfo(processId);

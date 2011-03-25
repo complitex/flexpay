@@ -96,7 +96,7 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 		parameters.put(CURRENT_INDEX_PAYMENT_POINT, 0);
 		long processId = processManager.createProcess("PaymentPointTradingDay", parameters);
 
-		assertTrue(processId > 0);
+		assertTrue("Error", processId > 0);
 
 		Thread.sleep(10000);
 

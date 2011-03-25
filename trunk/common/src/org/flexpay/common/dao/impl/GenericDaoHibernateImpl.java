@@ -79,7 +79,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
     @Override
 	public T readFull(@NotNull final PK id) {
 		final String queryName = type.getSimpleName() + ".readFull";
-		return (T) hibernateTemplate.execute(new HibernateCallback() {
+		return (T) hibernateTemplate.execute(new HibernateCallback<Object>() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery(queryName).
@@ -103,7 +103,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 			return emptyList();
 		}
 		final String queryName = type.getSimpleName() + ".readFullCollection";
-		List<T> result = (List<T>) hibernateTemplate.execute(new HibernateCallback() {
+		List<T> result = (List<T>) hibernateTemplate.execute(new HibernateCallback<Object>() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery(queryName).
@@ -160,7 +160,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
     @Override
 	public Integer executeUpdate(Method method, final Object[] values) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
-		return (Integer) hibernateTemplate.execute(new HibernateCallback() {
+		return hibernateTemplate.execute(new HibernateCallback<Integer>() {
             @Override
 			public Integer doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
@@ -173,7 +173,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	}
 
 	private List<?> findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
-		return hibernateTemplate.executeFind(new HibernateCallback() {
+		return hibernateTemplate.executeFind(new HibernateCallback<Object>() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);

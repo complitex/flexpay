@@ -6,8 +6,6 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -20,8 +18,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreateStreets extends AbSpringBeanAwareTestCase {
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String sqlGetStreets =
 			"select s.name, sc.cn_obj_id, tt.int_id " +
@@ -58,13 +54,14 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 	public void testInsertStreets() throws Exception {
 
 		jdbcTemplate.query(sqlGetStreets, new RowCallbackHandler() {
+            @Override
 			public void processRow(ResultSet rs) throws SQLException {
 				String name = rs.getString("name");
 				Long cnObjectId = rs.getLong("cn_obj_id");
 				Long internalTypeId = rs.getLong("int_id");
 
 				log.info("inserting street (name, cn_obj_id, int_id) values ({}, {}, {})",
-						new Object[]{name, cnObjectId, internalTypeId});
+						new Object[] {name, cnObjectId, internalTypeId});
 
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				jdbcTemplate.update(new StreetInsertCreator(), keyHolder);
@@ -98,7 +95,7 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 	}
 
 	private static final class StreetInsertCreator implements PreparedStatementCreator {
-
+        @Override
 		public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 			PreparedStatement ps = con.prepareStatement(sqlInsertStreet, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, townId);
@@ -114,6 +111,7 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 			this.streetId = streetId;
 		}
 
+        @Override
 		public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 			PreparedStatement ps = con.prepareStatement(sqlInsertStreetName, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, streetId);

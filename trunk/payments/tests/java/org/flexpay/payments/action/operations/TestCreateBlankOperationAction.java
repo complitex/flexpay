@@ -18,7 +18,7 @@ public class TestCreateBlankOperationAction extends PaymentsSpringBeanAwareTestC
 		// test logic
 		action.setCashboxId(1L);
 		action.execute();
-		assertEquals("Bad status", action.getStatus(), 0);
+		assertEquals("Bad status", 0, action.getStatus());
 		assertTrue("Bad operation id", action.getOperationId() > 0);
 	}
 }

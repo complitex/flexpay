@@ -95,8 +95,8 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 			}
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException {
+		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+			public List<?> doInHibernate(Session session) throws HibernateException {
 				Number count = (Number) setParameters(session.createQuery(hqlCount.toString()), params).uniqueResult();
 				pager.setTotalElements(count.intValue());
 

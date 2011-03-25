@@ -48,6 +48,7 @@ public class TestUnpackTownHistory extends AbSpringBeanAwareTestCase {
 
 		// set custom reference restorer that changes instance id of diff
 		historyUnPacker.setRefRestorer(new XmlHistoryUnPacker.RefRestorer() {
+            @Override
 			public void restoreReferences(Diff diff) {
 				diff.setId(null);
 				diff.setInstanceId(getClass().getName());

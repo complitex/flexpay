@@ -41,7 +41,7 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		Thread runner = new Thread(conflictingThread);
 		runner.start();
 
-		Logger log = LoggerFactory.getLogger(TestLockManager.class);
+		Logger log1 = LoggerFactory.getLogger(TestLockManager.class);
 
 		try {
 			runner.join();
@@ -50,7 +50,7 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 			fail("Interrupted!");
 		}
 
-		assertFalse(conflictingThread.locked);
+		assertFalse("Error", conflictingThread.locked);
 		lockManager.releaseLock(lockString);
 
 		runner = new Thread(conflictingThread);
@@ -59,18 +59,20 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		try {
 			runner.join();
 		} catch (InterruptedException e) {
-			log.debug("Interrupted!", e);
+			log1.debug("Interrupted!", e);
 			fail("Interrupted!");
 		}
 
-		assertTrue(conflictingThread.locked);
+		assertTrue("Error", conflictingThread.locked);
 		lockManager.releaseLock(lockString);
 	}
 
 
 	public class ConflictingThread implements Runnable {
+
 		public boolean locked = false;
 
+        @Override
 		public void run() {
 			locked = lockManager.lock(lockString);
 		}

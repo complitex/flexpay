@@ -24,7 +24,7 @@ public class TestJobManager extends SpringBeanAwareTestCase {
 	public void testAddJobAdded() throws Exception {
 		HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		jobManager.addJob(1, 1, "MockJob", parameters);
-		assertEquals(1, jobManager.getJobList().size());
+		assertEquals("Incorrect", 1, jobManager.getJobList().size());
 	}
 
 	@Test (expected = JobConfigurationNotFoundException.class)

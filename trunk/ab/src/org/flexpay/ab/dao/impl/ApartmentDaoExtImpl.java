@@ -80,7 +80,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return hibernateTemplate.executeFind(new HibernateCallback() {
+		return hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
 			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cntHql.toString());

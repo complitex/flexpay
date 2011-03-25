@@ -113,9 +113,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 									   new StringBuilder("select records_number from common_registries_tbl where id=?");
 		selectSql.append(fromWhereClause);
 
-		final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
+		final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
-			public List doInHibernate(Session session) throws HibernateException {
+			public List<?> doInHibernate(Session session) throws HibernateException {
 				log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
 
 				StopWatch watch = new StopWatch();
@@ -148,7 +148,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
+		List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery("RegistryRecord.listRecordsDetails")
@@ -182,9 +182,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                                        new StringBuilder("select records_number from common_registries_tbl where id=?");
         selectSql.append(fromWhere);
 
-        final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
+        final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
-            public List doInHibernate(Session session) throws HibernateException {
+            public List<?> doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, selectSql);
                 log.debug("Params: {}", params);
 
@@ -222,7 +222,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         StopWatch watch = new StopWatch();
         watch.start();
-        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
+        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
             @Override
             public Object doInHibernate(Session session) throws HibernateException {
                 return session.getNamedQuery("RegistryRecord.listRecordsDetails")
@@ -311,7 +311,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         log.debug("Pager = {}", pager);
         log.debug("params = {}", paramsSql);
 
-        final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
+        final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, sql);
@@ -360,7 +360,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         if (log.isDebugEnabled()) {
             watch.start();
         }
-        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
+        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
             @Override
             public Object doInHibernate(Session session) throws HibernateException {
                 return session.getNamedQuery("RegistryRecord.listRecordsDetails")
@@ -476,9 +476,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         selectSql.append(fromWhereClause);
 
-        final List ids = hibernateTemplate.executeFind(new HibernateCallback() {
+        final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
-            public List doInHibernate(Session session) throws HibernateException {
+            public List<?> doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter records hqls: {}", selectSql);
 
                 StopWatch watch = new StopWatch();
@@ -507,7 +507,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         if (log.isDebugEnabled()) {
             watch.start();
         }
-        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback() {
+        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
             @Override
             public Object doInHibernate(Session session) throws HibernateException {
                 return session.getNamedQuery("RegistryRecord.listRecordsDetails")
@@ -558,7 +558,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
-		return hibernateTemplate.executeFind(new HibernateCallback() {
+		return hibernateTemplate.executeFind(new HibernateCallback<Object>() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from RegistryRecord r " +
@@ -617,7 +617,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         sql.append(fromWhere).append(orderBy);
 
         @SuppressWarnings({"unchecked"})
-        final List<String> objects = hibernateTemplate.executeFind(new HibernateCallback() {
+        final List<String> objects = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter sqls: {}", sql);
@@ -680,7 +680,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         sql.append(fromWhere).append(groupOrderByClause);
 
         @SuppressWarnings({"unchecked"})
-        final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback() {
+        final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter sqls: {}", sql);
@@ -761,7 +761,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         }
 
         @SuppressWarnings({"unchecked"})
-        final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback() {
+        final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, sql);

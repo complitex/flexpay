@@ -31,7 +31,7 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 		hql.append("from QuittancePacket");
 		hqlCount.append("select count(*) from QuittancePacket");
 
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 

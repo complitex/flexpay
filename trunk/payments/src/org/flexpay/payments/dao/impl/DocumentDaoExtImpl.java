@@ -16,24 +16,23 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentDaoExt {
 
-	@SuppressWarnings ({"unchecked"})
-	@Override
+	@SuppressWarnings({"unchecked"})
+    @Override
 	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, @NotNull ArrayStack filters) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT doc FROM Document doc ");
 		hql.append(getFilterHql(operation, filters));
 
-		return (List<Document>) getHibernateTemplate().executeFind(new HibernateCallback() {
+		return (List<Document>) getHibernateTemplate().executeFind(new HibernateCallback<List<Document>>() {
 			@Override
-			public List<Document> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<Document> doInHibernate(Session session) throws HibernateException {
 
 				Query query = session.createQuery(hql.toString());
-				return (List<Document>) query.list();
+				return query.list();
 			}
 		});
 	}

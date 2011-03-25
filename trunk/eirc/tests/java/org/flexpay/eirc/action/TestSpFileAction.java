@@ -10,11 +10,10 @@ import org.flexpay.eirc.action.spfile.SpFileAction;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.NotTransactional;
+import org.springframework.test.context.transaction.BeforeTransaction;
 
 import static junit.framework.Assert.assertNull;
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.junit.Assert.*;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
@@ -31,7 +30,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	protected RegistryFileService registryFileService;
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testUploadFile() throws Throwable {
 		FPFile newFile = uploadFile("org/flexpay/eirc/action/sp/ree.txt");
 
@@ -41,13 +40,13 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testUploadFailedFile() throws Throwable {
 		uploadFileWithError("org/flexpay/eirc/action/sp/ree_failed.txt");
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testUploadZipFile() throws Throwable {
 		FPFile newFile = uploadFile("org/flexpay/eirc/action/sp/ree.zip");
 
@@ -57,7 +56,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testUploadGZipFile() throws Throwable {
 		FPFile newFile = uploadFile("org/flexpay/eirc/action/sp/ree.txt.gz");
 
@@ -89,7 +88,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 					 "left join common_registry_records_tbl rr on r.id=rr.registry_id " +
 					 "left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id " +
 					 "where r.id=?";
-		jdbcTemplate.update(sql, ar(registryId));
+		jdbcTemplate.update(sql, registryId);
 	}
 
 	protected FPFile uploadFile(String fileName) throws Throwable {

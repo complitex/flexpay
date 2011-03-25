@@ -49,7 +49,7 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 			return Collections.emptyList();
 		}
 
-		return (List<BtiBuilding>) getHibernateTemplate().executeFind(new HibernateCallback() {
+		return (List<BtiBuilding>) getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery("BtiBuilding.findBuildingWithAttributesCollection")

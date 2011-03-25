@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 public class PaymentsTestRegistryUtil extends CommonTestRegistryUtil {
+
     @Autowired
     private RegistryDeliveryHistoryService registryDeliveryHistoryService;
 

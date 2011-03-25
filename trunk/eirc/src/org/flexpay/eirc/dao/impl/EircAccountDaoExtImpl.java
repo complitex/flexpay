@@ -152,7 +152,7 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
             hql.append(" order by ").append(orderByClause);
         }
 
-        return getHibernateTemplate().executeFind(new HibernateCallback() {
+        return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
 
@@ -286,7 +286,7 @@ where count.c > 1
 
         log.debug("sql = {}", sql);
 
-        List<Number> ids = getHibernateTemplate().executeFind(new HibernateCallback() {
+        List<Number> ids = getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
             @Override
             public List<?> doInHibernate(Session session) throws HibernateException {
 

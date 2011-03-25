@@ -8,7 +8,8 @@ import java.util.Hashtable;
 
 public class MockInitialContextFactory implements InitialContextFactory {
 
-	public Context getInitialContext(Hashtable env) {
+    @Override
+	public Context getInitialContext(Hashtable<?, ?> env) {
         return new SimpleNamingContext();
     }
 

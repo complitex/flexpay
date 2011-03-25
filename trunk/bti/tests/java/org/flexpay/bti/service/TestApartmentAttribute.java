@@ -10,7 +10,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.NotTransactional;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
@@ -64,7 +63,6 @@ public class TestApartmentAttribute extends BtiSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
 	public void testSetApartmentAttribute() throws Exception {
 
 		BtiApartment apartment = apartmentService.readWithAttributes(new Stub<Apartment>(1L));

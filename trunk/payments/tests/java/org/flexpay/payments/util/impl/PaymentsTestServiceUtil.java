@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Date;
 
 public class PaymentsTestServiceUtil implements TestServiceUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

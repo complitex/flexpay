@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CommonTestRegistryUtil implements TestRegistryUtil {
+
     @Autowired
     private RegistryService registryService;
 

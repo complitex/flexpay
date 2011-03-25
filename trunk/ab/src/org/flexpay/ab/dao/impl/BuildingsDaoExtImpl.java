@@ -135,7 +135,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
 			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cntHql.toString());

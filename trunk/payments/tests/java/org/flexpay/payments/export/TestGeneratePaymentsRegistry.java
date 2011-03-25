@@ -236,7 +236,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		@SuppressWarnings ({"unchecked"})
 		List<Long> registries = (List<Long>) schedulerContext
 				.getMergedJobDataMap().get(ExportJobParameterNames.REGISTRIES);
-		assertNotNull(registries);
+		assertNotNull("Error", registries);
 		assertFalse("Parameters should contain at least 1 registry", registries.isEmpty());
 
 		RegistryFPFileType mbFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT);
@@ -260,8 +260,8 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		assertNotNull("No registry", registry);
 
 		// assert registry data
-		assertEquals(2, registry.getRecordsNumber().intValue());
-		assertEquals(303, registry.getAmount().intValue());
+		assertEquals("Error", 2, registry.getRecordsNumber().intValue());
+		assertEquals("Error", 303, registry.getAmount().intValue());
 		List<RegistryRecord> records = registryRecordService.listRecords(registry,
 				new ImportErrorTypeFilter(),
 				new RegistryRecordStatusFilter(),

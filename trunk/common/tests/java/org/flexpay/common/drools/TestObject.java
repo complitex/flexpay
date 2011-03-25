@@ -1,6 +1,7 @@
 package org.flexpay.common.drools;
 
 public class TestObject {
+
 	private int id;
 
 	public TestObject(int i){

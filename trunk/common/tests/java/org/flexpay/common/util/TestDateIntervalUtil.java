@@ -195,6 +195,7 @@ class Price extends TemporaryValue<Price> {
 	 *
 	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
 	 */
+    @Override
 	public boolean isEmpty() {
 		return false;
 	}
@@ -212,6 +213,7 @@ class Price extends TemporaryValue<Price> {
 	 *
 	 * @return Null representation of this value
 	 */
+    @Override
 	public Price getEmpty() {
 		return new Price(0);
 	}
@@ -267,6 +269,7 @@ class DI extends DateInterval<Price, DI> {
 	 *
 	 * @return Date interval copy
 	 */
+    @Override
 	public DI copy() {
 		return new DI(getBegin(), getEnd(), getValue());
 	}

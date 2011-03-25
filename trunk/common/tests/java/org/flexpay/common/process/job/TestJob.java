@@ -28,8 +28,8 @@ public class TestJob extends SpringBeanAwareTestCase {
 		jobThread.join(5 * 1000L);
 		assertFalse("Job thread is not complete", jobThread.isAlive());
 
-		assertEquals(1, parameters.size());
-		assertEquals(TEST_STRING, parameters.get(TEST_STRING));
+		assertEquals("Incorrect", 1, parameters.size());
+		assertEquals("Incorrect", TEST_STRING, parameters.get(TEST_STRING));
 	}
 
 	@Test
@@ -48,9 +48,9 @@ public class TestJob extends SpringBeanAwareTestCase {
 		assertFalse("Job thread is not complete", jobThread.isAlive());
 
 		parameters = testJob.getParameters();
-		assertEquals(2, parameters.size());
-		assertEquals(TEST_STRING, parameters.get(TEST_STRING));
-		assertEquals(Boolean.TRUE, testJob.getParameters().get(Job.STATUS_ERROR));
+		assertEquals("Incorrect", 2, parameters.size());
+		assertEquals("Incorrect", TEST_STRING, parameters.get(TEST_STRING));
+		assertEquals("Incorrect", Boolean.TRUE, testJob.getParameters().get(Job.STATUS_ERROR));
 	}
 
 
@@ -58,8 +58,9 @@ public class TestJob extends SpringBeanAwareTestCase {
 	 * Mock job for Normal job execution
 	 */
 	public static class MockJobNext extends Job {
-		public String execute(Map param) {
-			assertEquals(param.get(TEST_STRING), TEST_STRING);
+        @Override
+		public String execute(Map<Serializable, Serializable> param) {
+			assertEquals("Incorrect", TEST_STRING, param.get(TEST_STRING));
 			return Job.RESULT_NEXT;
 		}
 	}
@@ -68,7 +69,8 @@ public class TestJob extends SpringBeanAwareTestCase {
 	 * Mock job for Job execution with exception
 	 */
 	public static class MockJobException extends Job {
-		public String execute(Map param) {
+        @Override
+		public String execute(Map<Serializable, Serializable> param) {
 			throw new RuntimeException();
 		}
 	}

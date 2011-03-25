@@ -26,6 +26,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 public class TestMbChargesFileParser2 extends TestSpFileCreateAction {
+
 	@Autowired
 	private ProcessManager testProcessManager;
 	@Autowired
