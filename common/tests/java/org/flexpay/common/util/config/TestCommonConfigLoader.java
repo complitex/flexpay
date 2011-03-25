@@ -11,7 +11,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class TestCommonConfigLoader extends SpringBeanAwareTestCase {
 
-
 	@Test
 	public void testConfigLoader() throws Exception {
 

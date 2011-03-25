@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.List;
 
 public class PaymentsTestServiceProviderUtil implements TestServiceProviderUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

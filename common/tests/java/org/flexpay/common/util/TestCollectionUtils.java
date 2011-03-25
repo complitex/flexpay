@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestCollectionUtils {
 
@@ -15,8 +16,8 @@ public class TestCollectionUtils {
 		Map<Long, Integer> map = CollectionUtils.map(arr1, arr2);
 
 		assertEquals("Invalid map size", 3, map.size());
-		assertEquals(null, map.get(1L));
-		assertEquals(null, map.get(2L));
-		assertEquals(null, map.get(3L));
+		assertNull("Incorrect", map.get(1L));
+		assertNull("Incorrect", map.get(2L));
+		assertNull("Incorrect", map.get(3L));
 	}
 }

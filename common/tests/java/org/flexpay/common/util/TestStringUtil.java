@@ -6,14 +6,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TestStringUtil {
 
 	@Test
 	public void testEscapableRemoved() {
 		List<String> parts = StringUtil.splitEscapable("lkjhsalkdjfh/ sadfsa df", ' ', '/');
-		assertTrue("Escape symbol not removed", parts.get(0).indexOf('/') == -1);
+        assertEquals("Escape symbol not removed", parts.get(0).indexOf('/'), -1);
 	}
 
 	@Test

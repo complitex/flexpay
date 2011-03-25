@@ -36,7 +36,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
-	private String delimeter = ",";
+	private final String delimeter = ",";
 
 	private Long dataSourceDescriptionId = 1L;
 
@@ -100,7 +100,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			for (Long buildingId : buildingIds) {
 				@SuppressWarnings ({"unchecked"})
 				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(
-						hql, new Object[]{tariffBeginDate, buildingId});
+						hql, tariffBeginDate, buildingId);
 				log.info("Found {} log records for date: {} and building #{}",
 						new Object[]{records.size(), tariffBeginDate, buildingId});
 

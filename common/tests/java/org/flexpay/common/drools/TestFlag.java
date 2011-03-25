@@ -1,6 +1,7 @@
 package org.flexpay.common.drools;
 
 public class TestFlag {
+
 	private boolean flag = false;
 
 	public boolean isFlag() {

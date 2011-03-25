@@ -38,7 +38,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	public Stub<Person> findPersonStub(final Person person) {
 
 		final PersonIdentity identity = person.getDefaultIdentity();
-		List<?> identities = getHibernateTemplate().executeFind(new HibernateCallback() {
+		List<?> identities = getHibernateTemplate().executeFind(new HibernateCallback<Object>() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Criteria crit = session.createCriteria(PersonIdentity.class)
@@ -136,7 +136,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 
 	@Override
 	public void deletePerson(final Person person) {
-		getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Long personId = person.getId();

@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 public class PaymentsTestCashPaymentDocumentUtil implements TestDocumentUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

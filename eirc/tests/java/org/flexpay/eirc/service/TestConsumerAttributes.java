@@ -12,8 +12,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-import java.sql.SQLException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -47,9 +45,9 @@ public class TestConsumerAttributes extends EircSpringBeanAwareTestCase {
 	}
 
 	private void removeConsumerAttributes(final Long id) {
-		hibernateTemplate.execute(new HibernateCallback() {
+		hibernateTemplate.execute(new HibernateCallback<Integer>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Integer doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("delete from ConsumerAttribute where consumer.id=:ID")
 						.setLong("ID", id).executeUpdate();
 			}

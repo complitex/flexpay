@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

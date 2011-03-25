@@ -81,11 +81,11 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 		assertCountLine(file, 2);
 
 		String[] ceils = getLineCeils(file, 1, separator);
-		assertNotNull(ceils);
+		assertNotNull("Error", ceils);
 		assertArrayStringEquals(line1, ceils);
 
 		ceils = getLineCeils(file, 2, separator);
-		assertNotNull(ceils);
+		assertNotNull("Error", ceils);
 		assertArrayStringEquals(line2, ceils);
 	}
 
@@ -104,12 +104,12 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 		assertCountLine(file, 2);
 
 		String[] ceils = getLineCeils(file, 1, separator);
-		assertNotNull(ceils);
+		assertNotNull("Error", ceils);
 		line1 = new String[]{"\"ceil11\"", "\"ceil12\""};
 		assertArrayStringEquals(line1, ceils);
 
 		ceils = getLineCeils(file, 2, separator);
-		assertNotNull(ceils);
+		assertNotNull("Error", ceils);
 		line2 = new String[]{"\"ceil21\"", "\"ceil22\"", "\"ceil23\""};
 		assertArrayStringEquals(line2, ceils);
 	}
@@ -129,14 +129,14 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 		assertCountLine(file, 2);
 
 		String[] ceils = getLineCeils(file, 1, separator);
-		assertNotNull(ceils);
-		assertEquals(1, ceils.length);
-		assertEquals(line1, ceils[0]);
+		assertNotNull("Error", ceils);
+		assertEquals("Error", 1, ceils.length);
+		assertEquals("Error", line1, ceils[0]);
 
 		ceils = getLineCeils(file, 2, separator);
-		assertNotNull(ceils);
-		assertEquals(1, ceils.length);
-		assertEquals(line2, ceils[0]);
+		assertNotNull("Error", ceils);
+		assertEquals("Error", 1, ceils.length);
+		assertEquals("Error", line2, ceils[0]);
 	}
 
 	@Test
@@ -154,18 +154,19 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 		assertCountLine(file, 2);
 
 		String[] ceils = getLineCeils(file, 1, separator);
-		assertNotNull(ceils);
-		assertEquals(1, ceils.length);
-		assertEquals("__________", ceils[0]);
+		assertNotNull("Error", ceils);
+		assertEquals("Error", 1, ceils.length);
+		assertEquals("Error", "__________", ceils[0]);
 
 		ceils = getLineCeils(file, 2, separator);
-		assertNotNull(ceils);
-		assertEquals(1, ceils.length);
-		assertEquals("+++++", ceils[0]);
+		assertNotNull("Error", ceils);
+		assertEquals("Error", 1, ceils.length);
+		assertEquals("Error", "+++++", ceils[0]);
 	}
 
 	private static void assertCountLine(FPFile file, final int n) throws IOException {
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
+            @Override
 			public void read(Reader r) throws IOException {
 				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 				BufferedReader reader = new BufferedReader(r);
@@ -173,15 +174,15 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 				while (reader.readLine() != null) {
 					i++;
 				}
-				assertEquals(n, i);
+				assertEquals("Error", n, i);
 			}
 		});
 	}
 
 	static private void assertArrayStringEquals(String[] str1, String[] str2) {
-		assertEquals(str1.length, str2.length);
+		assertEquals("Error", str1.length, str2.length);
 		for (int i = 0; i < str1.length; i++) {
-			assertEquals(str1[i], str2[i]);
+			assertEquals("Error", str1[i], str2[i]);
 		}
 	}
 

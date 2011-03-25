@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import java.sql.SQLException;
 import java.util.Random;
 
 public class RandomObjects {
@@ -25,8 +24,9 @@ public class RandomObjects {
 	}
 
 	public Apartment getRandomApartment(final Town town) {
-		return (Apartment) hibernateTemplate.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+		return (Apartment) hibernateTemplate.execute(new HibernateCallback<Object>() {
+            @Override
+			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select count(*) " +
 							   "from Apartment a inner join a.building b left join b.buildingses bs inner join bs.street s " +
 							   "where s.parent.id=?";
@@ -50,7 +50,8 @@ public class RandomObjects {
 	}
 
 	public Person getRandomPerson() {
-		return (Person) hibernateTemplate.execute(new HibernateCallback() {
+		return (Person) hibernateTemplate.execute(new HibernateCallback<Object>() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select max(id) from Person where status=0";
 				Long maxId = (Long) session.createQuery(query).uniqueResult();
@@ -63,7 +64,8 @@ public class RandomObjects {
 	}
 
 	public ServiceProvider getRandomServiceProvider() {
-		return (ServiceProvider) hibernateTemplate.execute(new HibernateCallback() {
+		return (ServiceProvider) hibernateTemplate.execute(new HibernateCallback<Object>() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select max(id) from ServiceProvider";
 				Long maxId = (Long) session.createQuery(query).uniqueResult();
@@ -76,7 +78,8 @@ public class RandomObjects {
 	}
 
 	public Service getRandomService(final ServiceProvider provider) {
-		return (Service) hibernateTemplate.execute(new HibernateCallback() {
+		return (Service) hibernateTemplate.execute(new HibernateCallback<Object>() {
+            @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select count(id) from Service where serviceProvider.id=?";
 				Long count = (Long) session.createQuery(query)

@@ -33,7 +33,8 @@ public class TestSortDistricts extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback() {
+		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
+            @Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				return session.createQuery(hql)
 						.setLong(0, enId)
@@ -70,7 +71,8 @@ public class TestSortDistricts extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback() {
+		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
+            @Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				return session.createQuery(hql)
 						.setLong(0, enId)

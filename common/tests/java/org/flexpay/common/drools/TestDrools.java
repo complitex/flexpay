@@ -45,6 +45,6 @@ public class TestDrools extends SpringBeanAwareTestCase {
 		workingMemory.setGlobal("testFlag", tFlag);
 		workingMemory.insert(new TestObject(1));
 		workingMemory.fireAllRules();
-		assertTrue(tFlag.isFlag());
+		assertTrue("Error", tFlag.isFlag());
 	}
 }

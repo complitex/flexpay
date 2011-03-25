@@ -15,7 +15,7 @@ import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.payments.service.SPService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.NotTransactional;
+import org.springframework.test.context.transaction.BeforeTransaction;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	protected RegistryService registryService;
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
 		FPFile file = uploadFile("org/flexpay/eirc/action/sp/ree_open_2_small.txt");
 
@@ -55,7 +55,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testProcessNotKnownServiceCode() throws Throwable {
 		FPFile file = uploadFile("org/flexpay/eirc/action/sp/ree_open_small_unknown_service.txt");
 
@@ -84,7 +84,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testProcessQuittancesSmallRegistry() throws Throwable {
 		FPFile file = uploadFile("org/flexpay/eirc/action/sp/ree_quittances_small.txt");
 

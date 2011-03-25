@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.List;
 
 public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

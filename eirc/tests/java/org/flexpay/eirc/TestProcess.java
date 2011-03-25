@@ -6,7 +6,7 @@ import org.jbpm.graph.def.ProcessDefinition;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.NotTransactional;
+import org.springframework.test.context.transaction.BeforeTransaction;
 
 public class TestProcess extends EircSpringBeanAwareTestCase {
 
@@ -15,7 +15,7 @@ public class TestProcess extends EircSpringBeanAwareTestCase {
 	protected ProcessManager processManager;
 
 	@Test
-	@NotTransactional
+	@BeforeTransaction
 	public void testLoad() {
 
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
@@ -24,7 +24,7 @@ public class TestProcess extends EircSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testLoadProcessRegistryWorkflow() {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
 				"WEB-INF/eirc/process/ProcessRegistryWorkflow.xml");
@@ -32,7 +32,7 @@ public class TestProcess extends EircSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testLoadProcessRegistryRecordsWorkflow() {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
 				"WEB-INF/eirc/process/ProcessRegistryRecordsWorkflow.xml");
@@ -40,7 +40,7 @@ public class TestProcess extends EircSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testLoadGenerateQuittancesWorkflow() {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
 				"WEB-INF/eirc/process/GenerateQuittances.xml");
@@ -48,7 +48,7 @@ public class TestProcess extends EircSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
+    @BeforeTransaction
 	public void testLoadGenerateQuittancePDFWorkflow() {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
 				"WEB-INF/eirc/process/GenerateQuittancePDF.xml");

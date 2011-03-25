@@ -162,7 +162,7 @@ public class ProcessDaoImpl implements ProcessDao {
 														   final Date endBefore, final ProcessState state,
 														   final String name) {
 
-		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
+		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback<List<ProcessInstance>>() {
             @Override
 			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
 				Query query = session.createQuery(hql.toString());
@@ -178,7 +178,7 @@ public class ProcessDaoImpl implements ProcessDao {
 														  final Date endBefore, final ProcessState state,
 														  final String name) {
 
-		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
+		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback<List<ProcessInstance>>() {
             @Override
 			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
 

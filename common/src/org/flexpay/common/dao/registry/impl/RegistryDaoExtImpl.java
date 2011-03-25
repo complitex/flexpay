@@ -23,7 +23,7 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public Collection<Registry> findRegistries(@NotNull final Set<Long> objectIds) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		return getHibernateTemplate().executeFind(new HibernateCallback<Object>() {
             @Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from Registry r " +

@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -119,9 +118,9 @@ public class TestRegistryRecordDaoExt extends EircSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<?> ids = hibernateTemplate.executeFind(new HibernateCallback() {
+		List<?> ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<?> doInHibernate(Session session) throws HibernateException {
 				return session.createSQLQuery("select id from common_registry_records_tbl " +
 											  "	use index (I_registry_status, I_registry_errortype) " +
 											  "where registry_id=? and record_status_id=? " +
@@ -144,9 +143,9 @@ public class TestRegistryRecordDaoExt extends EircSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<?> ids = hibernateTemplate.executeFind(new HibernateCallback() {
+		List<?> ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<?> doInHibernate(Session session) throws HibernateException {
 				return session.createSQLQuery("select id from common_registry_records_tbl " +
 											  "	use index (I_registry_status, I_registry_errortype) " +
 											  "where registry_id=? and record_status_id=? and import_error_type=? " +

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.Resource;
 
 public class PaymentsTestPaymentCollectorUtil implements TestPaymentCollectorUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

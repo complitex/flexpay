@@ -12,8 +12,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-import java.sql.SQLException;
-
 import static org.junit.Assert.*;
 
 public class TestProcessesCleanupAction extends SpringBeanAwareTestCase {
@@ -25,9 +23,9 @@ public class TestProcessesCleanupAction extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testFindProcessesToDelete() {
-		Long count = (Long) hibernateTemplate.execute(new HibernateCallback() {
+		Long count = (Long) hibernateTemplate.execute(new HibernateCallback<Object>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 
 				String name = action.getProcessNameFilter().getSelectedName();
 

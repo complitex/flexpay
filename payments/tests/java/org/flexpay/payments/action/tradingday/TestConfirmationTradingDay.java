@@ -35,14 +35,14 @@ public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		parameters.put(ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT, 0);
         long processId = processManager.createProcess("CashboxTradingDay", parameters);
-        assertTrue(processId > 0);
+        assertTrue("Error", processId > 0);
 
         TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Пометить на закрытие", log);
 
         org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(processId);
         String  currentStatus = (String) process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS);
 
-        assertEquals("Ожидает подтверждения", currentStatus);
+        assertEquals("Incorrect status", "Ожидает подтверждения", currentStatus);
 
         ConfirmationTradingDayServlet confirmationTradingDay = new ConfirmationTradingDayServlet();
 

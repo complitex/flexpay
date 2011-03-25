@@ -105,9 +105,9 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
 		processManager.createProcess("testProcessDefinition2", new HashMap<Serializable, Serializable>());
 
-		assertEquals(2, counter);
+		assertEquals("Incorrect", 2, counter);
 		//@TODO why event class was not executed?
-		assertEquals(EVENT_EXECUTED, eventExecuted);
+		assertEquals("Incorrect", EVENT_EXECUTED, eventExecuted);
 	}
 
 	@Test
@@ -117,8 +117,8 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 		processManager.deployProcessDefinition(processDefinition, true);
 
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
-		List li = jbpmContext.getGraphSession().findAllProcessDefinitionVersions(processDefinition.getName());
-		assertEquals(1, li.size());
+		List<?> li = jbpmContext.getGraphSession().findAllProcessDefinitionVersions(processDefinition.getName());
+		assertEquals("Incorrect", 1, li.size());
 		jbpmContext.close();
 		undeployTestProcessDefinition(processDefinition);
 	}
@@ -129,7 +129,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlString(processDefinitionString);
 		processManager.deployProcessDefinition(processDefinition, true);
 		processManager.createProcess("testProcessDefinition", new HashMap<Serializable, Serializable>());
-		assertEquals(1, processManager.getProcesses().size());
+		assertEquals("Incorrect", 1, processManager.getProcesses().size());
 		undeployTestProcessDefinition(processDefinition);
 	}
 
@@ -142,6 +142,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
 	public static class MockJobFirst extends Job {
 
+        @Override
 		public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 			return Job.RESULT_NEXT;
 		}
@@ -149,6 +150,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
 	public static class MockJobLast extends Job {
 
+        @Override
 		public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 			return Job.RESULT_NEXT;
 		}
