@@ -1,12 +1,8 @@
 package org.flexpay.ab.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.dao.ApartmentDao;
-import org.flexpay.ab.dao.ApartmentDaoExt;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.dao.*;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
@@ -67,7 +63,10 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
     @Override
     public Apartment readFullWithHierarchy(@NotNull Stub<Apartment> apartmentStub) {
         List<Apartment> apartments = apartmentDao.findWithFullHierarchyAndNames(apartmentStub.getId());
-        return apartments.isEmpty() ? null : apartments.get(0);
+        if (apartments.isEmpty()) {
+            return null;
+        }
+        return apartments.get(0);
     }
 
     /**
@@ -426,7 +425,7 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		this.apartmentDao = apartmentDao;
 	}
 
-	@Required
+    @Required
 	public void setApartmentDaoExt(ApartmentDaoExt apartmentDaoExt) {
 		this.apartmentDaoExt = apartmentDaoExt;
 	}

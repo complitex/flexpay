@@ -2,11 +2,8 @@ package org.flexpay.payments.service.impl;
 
 import com.opensymphony.xwork2.util.LocalizedTextUtil;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.service.AddressService;
-import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.ab.service.PersonService;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
@@ -33,6 +30,8 @@ import org.flexpay.payments.action.outerrequest.request.response.*;
 import org.flexpay.payments.action.outerrequest.request.response.data.*;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
+import org.flexpay.payments.service.Roles;
+import org.flexpay.payments.service.Security;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +54,9 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private StreetService streetService;
+    private TownService townService;
+    private RegionService regionService;
     private QuittanceDetailsFinder quittanceDetailsFinder;
     private OperationService operationService;
     private CashboxService cashboxService;
@@ -298,14 +300,17 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             Stub<Apartment> stub = correctionsService.findCorrection(apartmentMasterIndex,
                     Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
             Apartment apartment = apartmentService.readFullWithHierarchy(stub);
+            Street street = streetService.readFull(stub(apartment.getDefaultStreet()));
+            Town town = townService.readFull(stub(street.getTown()));
+            Region region = regionService.readWithFullHierarhy(town.getRegionStub());
 
             document.setAddress(addressService.getAddress(stub, locale));
-            document.setCountry(getTranslation(apartment.getCountry().getTranslations(), locale).getName());
-            document.setRegion(getTranslation(apartment.getRegion().getCurrentName().getTranslations(), locale).getName());
-            document.setTownType(getTranslation(apartment.getTown().getCurrentType().getTranslations(), locale).getShortName());
-            document.setTownName(getTranslation(apartment.getTown().getCurrentName().getTranslations(), locale).getName());
-            document.setStreetType(getTranslation(apartment.getDefaultStreet().getCurrentType().getTranslations(), locale).getName());
-            document.setStreetName(getTranslation(apartment.getDefaultStreet().getCurrentName().getTranslations(), locale).getName());
+            document.setCountry(getTranslation(region.getCountry().getTranslations(), locale).getName());
+            document.setRegion(getTranslation(region.getCurrentName().getTranslations(), locale).getName());
+            document.setTownType(getTranslation(town.getCurrentType().getTranslations(), locale).getShortName());
+            document.setTownName(getTranslation(town.getCurrentName().getTranslations(), locale).getName());
+            document.setStreetType(getTranslation(street.getCurrentType().getTranslations(), locale).getName());
+            document.setStreetName(getTranslation(street.getCurrentName().getTranslations(), locale).getName());
             document.setBuildingBulk(apartment.getDefaultBuildings().getBulk());
             document.setBuildingNumber(apartment.getDefaultBuildings().getNumber());
             document.setApartmentNumber(apartment.getNumber());
@@ -635,5 +640,20 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Required
     public void setUserPreferencesService(UserPreferencesService userPreferencesService) {
         this.userPreferencesService = userPreferencesService;
+    }
+
+    @Required
+    public void setStreetService(StreetService streetService) {
+        this.streetService = streetService;
+    }
+
+    @Required
+    public void setTownService(TownService townService) {
+        this.townService = townService;
+    }
+
+    @Required
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
     }
 }

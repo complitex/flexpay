@@ -13,7 +13,7 @@ public class ExtendedFinderNamingStrategy implements FinderNamingStrategy {
 	// Always look for queries that start with findBy
 	// (even if method is iterateBy.. or scrollBy...)
     @Override
-	public String queryNameFromMethod(Class findTargetType, Method finderMethod) {
+	public String queryNameFromMethod(Class<?> findTargetType, Method finderMethod) {
 		String methodName = finderMethod.getName();
 		String methodPart = methodName;
 		if (methodName.startsWith("findBy")) {

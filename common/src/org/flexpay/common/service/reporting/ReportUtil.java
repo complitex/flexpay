@@ -301,8 +301,8 @@ public class ReportUtil {
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
 			if (exporter instanceof JRTextExporter) {
-				exporter.setParameter(JRTextExporterParameter.CHARACTER_HEIGHT, new Integer(10));
-				exporter.setParameter(JRTextExporterParameter.CHARACTER_WIDTH, new Integer(5));
+				exporter.setParameter(JRTextExporterParameter.CHARACTER_HEIGHT, new Float(10));
+				exporter.setParameter(JRTextExporterParameter.CHARACTER_WIDTH, new Float(5));
 			}
 			exporter.exportReport();
 			fileService.create(file);

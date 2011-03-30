@@ -270,6 +270,9 @@
           p:correctionsService-ref="correctionsService"
           p:cashboxTradingDayService-ref="cashboxTradingDayService"
           p:userPreferencesService-ref="userPreferencesService"
+          p:streetService-ref="streetService"
+          p:townService-ref="townService"
+          p:regionService-ref="regionService"
           p:registryService-ref="registryService" />
 
     <bean id="paymentsUserPreferencesFactory"

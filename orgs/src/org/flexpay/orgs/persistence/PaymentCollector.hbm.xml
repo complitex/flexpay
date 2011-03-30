@@ -26,7 +26,7 @@
 			</column>
 		</property>
 		<property name="tradingDayProcessInstanceId">
-            <column name="tradingDayProcessInstance_Id" not-null="false">
+            <column name="tradingDayProcessInstance_Id">
                 <comment>Trading date process instance id</comment>
             </column>
         </property>

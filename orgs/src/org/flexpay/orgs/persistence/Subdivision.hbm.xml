@@ -32,7 +32,7 @@
 		</property>
 		<many-to-one name="parentSubdivision" class="Subdivision"
 					 foreign-key="FK_eirc_subdivisions_tbl_parent_subdivision_id">
-			<column name="parent_subdivision_id" not-null="false">
+			<column name="parent_subdivision_id">
 				<comment>Parent subdivision reference if any</comment>
 			</column>
 		</many-to-one>
@@ -44,7 +44,7 @@
 		</many-to-one>
 		<many-to-one name="juridicalPerson" class="Organization"
 					 foreign-key="FK_eirc_subdivisions_tbl_juridical_person_id">
-			<column name="juridical_person_id" not-null="false">
+			<column name="juridical_person_id">
 				<comment>Juridical person (organization) reference if any</comment>
 			</column>
 		</many-to-one>

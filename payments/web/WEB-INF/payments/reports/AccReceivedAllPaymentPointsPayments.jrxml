@@ -6,7 +6,7 @@
 	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["H:/projects/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["D:/Work/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>

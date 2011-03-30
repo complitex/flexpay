@@ -29,7 +29,7 @@
 			</column>
 		</property>
 		<property name="firstName">
-			<column name="first_name" not-null="false">
+			<column name="first_name">
 				<comment>First user name</comment>
 			</column>
 		</property>
@@ -44,7 +44,7 @@
 			</column>
 		</property>
 		<property name="pageSize">
-			<column name="page_size" not-null="false">
+			<column name="page_size">
 				<comment>Preferred listing page size</comment>
 			</column>
 		</property>
@@ -59,17 +59,17 @@
 
 		<subclass name="org.flexpay.ab.util.config.AbUserPreferences" discriminator-value="common">
 			<property name="countryFilter">
-				<column name="ab_country_filter" not-null="false">
+				<column name="ab_country_filter">
 					<comment>Country filter</comment>
 				</column>
 			</property>
 			<property name="regionFilter">
-				<column name="ab_region_filter" not-null="false">
+				<column name="ab_region_filter">
 					<comment>Region filter</comment>
 				</column>
 			</property>
 			<property name="townFilter">
-				<column name="ab_town_filter" not-null="false">
+				<column name="ab_town_filter">
 					<comment>Town filter</comment>
 				</column>
 			</property>
@@ -77,4 +77,3 @@
 	</class>
 
 </hibernate-mapping>
-

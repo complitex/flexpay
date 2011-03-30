@@ -3,11 +3,11 @@ package org.flexpay.payments.util;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.hibernate.envers.tools.Pair;
 
 import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.PairUtil.pair;
 
 @SuppressWarnings({"unchecked"})
 public abstract class PaymentCollectorTradingDayConstants {
@@ -18,9 +18,9 @@ public abstract class PaymentCollectorTradingDayConstants {
 	public final static String AUTO_MODE = "AUTO_MODE";
 
     public static final Map<String, String> PROCESSES_DEFINITION_NAME =
-			map(pair(PaymentPoint.class.getName(), "PaymentPointTradingDay"),
-				 pair(Cashbox.class.getName(), "CashboxTradingDay"),
-				 pair(PaymentCollector.class.getName(), "PaymentCollectorTradingDay"));
+			map(Pair.make(PaymentPoint.class.getName(), "PaymentPointTradingDay"),
+				Pair.make(Cashbox.class.getName(), "CashboxTradingDay"),
+				Pair.make(PaymentCollector.class.getName(), "PaymentCollectorTradingDay"));
 
 	// trading day statuses
 	public static enum Status {

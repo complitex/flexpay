@@ -63,7 +63,14 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		return regionDao.readFullCollection(regionIds, preserveOrder);
 	}
 
-	/**
+    @Nullable
+    @Override
+    public Region readWithFullHierarhy(@NotNull Stub<Region> stub) {
+        List<Region> regions = regionDao.findWithFullHierarchyAndNames(stub.getId());
+        return regions.isEmpty() ? null : regions.get(0);
+    }
+
+    /**
 	 * Disable regions
 	 *
 	 * @param regionIds IDs of regions to disable

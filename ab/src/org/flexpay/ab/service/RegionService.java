@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
@@ -28,6 +29,10 @@ public interface RegionService extends NameTimeDependentService<RegionName, Regi
 	@Secured ({Roles.REGION_READ})
 	@NotNull
 	List<Region> readFull(@NotNull Collection<Long> regionIds, boolean preserveOrder);
+
+    @Secured ({Roles.REGION_READ})
+    @Nullable
+    Region readWithFullHierarhy(@NotNull Stub<Region> stub);
 
 	/**
 	 * Disable regions

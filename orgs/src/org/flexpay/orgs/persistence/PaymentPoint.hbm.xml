@@ -26,14 +26,14 @@
 			</column>
 		</property>
         <property name="tradingDayProcessInstanceId">
-            <column name="tradingDayProcessInstance_Id" not-null="false">
+            <column name="tradingDayProcessInstance_Id">
                 <comment>Trading date process instance id</comment>
             </column>
         </property>
 <!--
         <many-to-one name="tradingDayProcessInstance" foreign-key="FK_trading_day_process_instance_id"
                      class="org.jbpm.graph.exe.ProcessInstance">
-            <column name="tradingDayProcessInstance_Id" not-null="false">
+            <column name="tradingDayProcessInstance_Id">
 				<comment>Trading day process instance ID</comment>
 			</column>
         </many-to-one>

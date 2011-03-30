@@ -40,7 +40,7 @@
 			</column>
 		</property>
 		<property name="value">
-			<column name="value" not-null="false" length="255">
+			<column name="value">
 				<comment>Attribute value</comment>
 			</column>
 		</property>
@@ -150,7 +150,7 @@
 			</column>
 		</property>
 		<property name="value">
-			<column name="value" not-null="false" length="255">
+			<column name="value">
 				<comment>Attribute value</comment>
 			</column>
 		</property>

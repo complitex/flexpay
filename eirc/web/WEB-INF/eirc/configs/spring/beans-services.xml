@@ -196,6 +196,9 @@
           p:quittanceService-ref="quittanceService"
           p:quittancePaymentService-ref="quittancePaymentService"
           p:spService-ref="spService"
+          p:streetService-ref="streetService"
+          p:townService-ref="townService"
+          p:regionService-ref="regionService"
           p:attributeTypeService-ref="consumerAttributeTypeService" />
 
     <bean id="eircQuittanceDetailsFinder"

@@ -2,8 +2,8 @@ package org.flexpay.common.util;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.util.transform.Transformer;
+import org.hibernate.envers.tools.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
