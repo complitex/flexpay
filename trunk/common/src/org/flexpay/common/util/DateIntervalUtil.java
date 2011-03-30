@@ -1,10 +1,10 @@
 package org.flexpay.common.util;
 
 import org.flexpay.common.persistence.DateInterval;
-import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.hibernate.envers.tools.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -325,7 +325,7 @@ public class DateIntervalUtil {
 		if (!itOld.hasNext() || !itNew.hasNext()) {
 			disOld.addAll(oldTl.getIntervals());
 			disNew.addAll(newTl.getIntervals());
-			return PairUtil.pair(new TimeLine<T, DI>(disOld), new TimeLine<T, DI>(disNew));
+			return Pair.make(new TimeLine<T, DI>(disOld), new TimeLine<T, DI>(disNew));
 		}
 
 		// at the start of the cycle
@@ -366,7 +366,7 @@ public class DateIntervalUtil {
 			}
 		}
 
-		return PairUtil.pair(new TimeLine<T, DI>(disOld), new TimeLine<T, DI>(disNew));
+		return Pair.make(new TimeLine<T, DI>(disOld), new TimeLine<T, DI>(disNew));
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class DateIntervalUtil {
 			DI diOld = itOld.next();
 			DI diNew = itNew.next();
 			if (!diOld.dataEquals(diNew)) {
-				diffs.add(PairUtil.pair(diOld, diNew));
+				diffs.add(Pair.make(diOld, diNew));
 			}
 		}
 

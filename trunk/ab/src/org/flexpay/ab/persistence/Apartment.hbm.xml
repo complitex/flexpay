@@ -115,36 +115,27 @@
             left join fetch bs.buildingAttributes ba
             left join fetch ba.buildingAttributeType attrType
             left join fetch attrType.translations
+
             inner join fetch b.district d
             left join fetch d.nameTemporals dnt
             left join fetch dnt.value dnv
-            left join fetch dnv.translations
-            left join fetch bs.street s
-            left join fetch s.nameTemporals snt
-            left join fetch snt.value snv
-            left join fetch snv.translations
-            left join fetch s.typeTemporals tt
-            left join fetch tt.value tv
-            left join fetch tv.translations
-            left join fetch s.parent t
-            left join fetch t.nameTemporals tnt
-            left join fetch tnt.value tntv
-            left join fetch tntv.translations
-            left join fetch t.typeTemporals ttt
-            left join fetch ttt.value ttv
-            left join fetch ttv.translations
-            left join fetch t.parent r
-            left join fetch r.nameTemporals rnt
-            left join fetch rnt.value rnv
-            left join fetch rnv.translations
-            left join fetch r.parent c
-            left join fetch c.translations
+            inner join dnv.translations
+
         where a.id=?
             and dnt.invalidDate='2100-12-31'
-            and snt.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
-            and tnt.invalidDate='2100-12-31' and ttt.invalidDate='2100-12-31'
-            and rnt.invalidDate = '2100-12-31'
     </query>
+
+<!--
+    left join fetch t.parent r
+    left join fetch r.nameTemporals rnt
+    left join fetch rnt.value rnv
+    inner join rnv.translations
+    left join fetch r.parent c
+    left join fetch c.translations
+
+    and rnt.invalidDate = '2100-12-31'
+
+-->
 
 	<query name="Apartment.findSimpleByTown.stats">
 		select min(a.id), max(a.id), count(a.id)

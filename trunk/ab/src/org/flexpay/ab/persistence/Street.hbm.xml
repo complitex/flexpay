@@ -45,7 +45,7 @@
 			</column>
 		</many-to-one>
 		<many-to-one name="value" class="StreetType" foreign-key="FK_ab_street_types_temporal_tbl_street_type_id">
-			<column name="street_type_id" not-null="false">
+			<column name="street_type_id">
 				<comment>Street type reference</comment>
 			</column>
 		</many-to-one>
@@ -67,7 +67,7 @@
 		</many-to-one>
 		<many-to-one name="value" class="StreetName" cascade="all"
 					 foreign-key="FK_ab_street_names_temporal_tbl_street_name_id">
-			<column name="street_name_id" not-null="false">
+			<column name="street_name_id">
 				<comment>Street name reference</comment>
 			</column>
 		</many-to-one>

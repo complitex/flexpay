@@ -2,7 +2,6 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
@@ -11,6 +10,7 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
+import org.hibernate.envers.tools.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;

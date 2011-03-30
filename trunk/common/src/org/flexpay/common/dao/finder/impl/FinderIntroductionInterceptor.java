@@ -15,7 +15,7 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
     @Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
-		FinderExecutor executor = (FinderExecutor) methodInvocation.getThis();
+		FinderExecutor<?> executor = (FinderExecutor<?>) methodInvocation.getThis();
 		MethodExecutor methodExecutor = (MethodExecutor)methodInvocation.getThis();
 
 		String methodName = methodInvocation.getMethod().getName();
@@ -40,7 +40,7 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 	}
 
     @Override
-	public boolean implementsInterface(Class intf) {
+	public boolean implementsInterface(Class<?> intf) {
 		return intf.isInterface() && (FinderExecutor.class.isAssignableFrom(intf) || MethodExecutor.class.isAssignableFrom(intf));
 	}
 }

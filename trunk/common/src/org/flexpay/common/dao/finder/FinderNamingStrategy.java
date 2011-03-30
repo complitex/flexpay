@@ -7,6 +7,6 @@ import java.lang.reflect.Method;
  */
 public interface FinderNamingStrategy {
 
-	public String queryNameFromMethod(Class findTargetType, Method finderMethod);
+	public String queryNameFromMethod(Class<?> findTargetType, Method finderMethod);
 
 }

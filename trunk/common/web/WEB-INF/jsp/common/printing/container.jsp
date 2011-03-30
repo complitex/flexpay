@@ -17,7 +17,7 @@
             <input type="button" onclick="printMainFrame();return false;" value="<s:text name="print" />" class="btn-exit" />
             <input type="button" onclick="parent.close();" value="<s:text name="close_window" />" class="btn-exit" />
         </div>
-        <iframe src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" />" id="mainFrame" name="mainFrame"></iframe>
+        <iframe src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" />" id="mainFrame" name="mainFrame" width="100%" height="98%"></iframe>
     </s:if><s:elseif test="file.extension == '.pdf'">
         <div align="center">
             <input type="button" onclick="window.close();" value="<s:text name="close_window" />" class="btn-exit" />

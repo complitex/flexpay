@@ -1,10 +1,10 @@
 package org.flexpay.common.util;
 
 import org.flexpay.common.persistence.DateInterval;
-import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.hibernate.envers.tools.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -173,7 +173,7 @@ public class TestDateIntervalUtil {
 
 		assertEquals("Invalid number of diffs", 1, diffs.size());
 		assertEquals("Invalid diff",
-				PairUtil.pair(new DI(date_2005_01_01, date_2005_12_31, priceNull),
+				Pair.make(new DI(date_2005_01_01, date_2005_12_31, priceNull),
 						new DI(date_2005_01_01, date_2005_12_31, price15)),
 				diffs.get(0));
 	}

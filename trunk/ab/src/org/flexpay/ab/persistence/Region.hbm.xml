@@ -101,6 +101,18 @@
             and r.parent.id=? and upper(tr.name) like ?
     </query>
 
+    <query name="Region.findWithFullHierarchyAndNames">
+        select distinct r
+        from Region r
+            left join fetch r.nameTemporals t
+            left join fetch t.value v
+            left join fetch v.translations tr
+            left join fetch r.parent c
+            left join fetch c.translations
+        where r.id=?
+            and t.invalidDate = '2100-12-31'
+    </query>
+
     <query name="Region.findByCountryAndNameAndLanguage">
         select distinct r
         from Region r

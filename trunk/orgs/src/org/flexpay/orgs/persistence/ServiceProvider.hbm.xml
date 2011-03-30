@@ -20,7 +20,7 @@
 			</column>
 		</property>
         <property name="email">
-			<column name="email" not-null="false">
+			<column name="email">
 				<comment>E-mail</comment>
 			</column>
 		</property>
@@ -93,7 +93,7 @@
 			</many-to-one>
 		</properties>
 		<property name="value">
-			<column name="value" not-null="false" length="255">
+			<column name="value">
 				<comment>Attribute value</comment>
 			</column>
 		</property>

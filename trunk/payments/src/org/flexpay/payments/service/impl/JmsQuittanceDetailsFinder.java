@@ -33,9 +33,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	public SearchResponse findQuittance(final SearchRequest<?> request) {
 
         log.debug("FindQuittance started. Sending JMS message");
-        log.debug("JMS request ID = {}", ApplicationConfig.getInstanceId() + System.currentTimeMillis());
 		request.setJmsRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
-        log.debug("Request = {}", request);
 
 		jmsTemplate.send(requestQueue, new MessageCreator() {
 			@Override
@@ -43,15 +41,12 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 				ObjectMessage msg = session.createObjectMessage(request);
 				msg.setJMSReplyTo(responseQueue);
 				msg.setStringProperty("requestId", request.getJmsRequestId());
-                log.debug("Creating JMS message, msg = {}", msg);
 				return msg;
 			}
 		});
 
         SearchResponse response = (SearchResponse) jmsTemplate.receiveSelectedAndConvert(
                 responseQueue, String.format("requestId = '%s'", request.getJmsRequestId()));
-
-		log.debug("Response recieved: {}", response);
 
 		if (response == null) {
 			request.getResponse().setStatus(Status.RECIEVE_TIMEOUT);

@@ -109,14 +109,14 @@
 
 		<!--<many-to-one name="tariffExportCode" class="TariffExportCode"-->
 					 <!--foreign-key="FK_tc_tariff_calculation_result_tbl_tariff_export_code_id">-->
-			<!--<column name="tariff_export_code_id" not-null="false">-->
+			<!--<column name="tariff_export_code_id">-->
 				<!--<comment>Tariff export code</comment>-->
 			<!--</column>-->
 		<!--</many-to-one>-->
 
         <many-to-one name="lastTariffExportLogRecord" class="TariffExportLogRecord"
                     foreign-key="FK_tc_tariff_calculation_result_tbl_tariff_export_log_record_id">
-                <column name="last_tariff_export_log_record_id" not-null="false">
+                <column name="last_tariff_export_log_record_id">
                     <comment>Last tariff export log record</comment>
                 </column>
         </many-to-one>
@@ -151,7 +151,7 @@
         </many-to-one>        
         <many-to-one name="tariffExportCode" class="TariffExportCode"
                      foreign-key="FK_tc_tariff_export_log_record_tbl_tariff_export_code_id">
-            <column name="tariff_export_code_id" not-null="false">
+            <column name="tariff_export_code_id">
                 <comment>Tariff export code</comment>
             </column>
         </many-to-one>        
@@ -226,7 +226,7 @@
 			</column>
 		</property>
 		<property name="description">
-			<column name="description" not-null="false">
+			<column name="description">
 				<comment>Optional description translation</comment>
 			</column>
 		</property>

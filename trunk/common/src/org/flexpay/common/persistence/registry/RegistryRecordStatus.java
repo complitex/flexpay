@@ -3,11 +3,11 @@ package org.flexpay.common.persistence.registry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.hibernate.envers.tools.Pair;
 
 import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.PairUtil.pair;
 
 public class RegistryRecordStatus extends DomainObject {
 
@@ -18,10 +18,10 @@ public class RegistryRecordStatus extends DomainObject {
 
 	@SuppressWarnings ({"unchecked"})
 	private static final Map<Integer, String> typeToName = map(
-			pair(LOADED, "common.registry.record.status.LOADED"),
-			pair(PROCESSED_WITH_ERROR, "common.registry.record.status.PROCESSED_WITH_ERROR"),
-			pair(FIXED, "common.registry.record.status.FIXED"),
-			pair(PROCESSED, "common.registry.record.status.PROCESSED")
+			Pair.make(LOADED, "common.registry.record.status.LOADED"),
+			Pair.make(PROCESSED_WITH_ERROR, "common.registry.record.status.PROCESSED_WITH_ERROR"),
+			Pair.make(FIXED, "common.registry.record.status.FIXED"),
+			Pair.make(PROCESSED, "common.registry.record.status.PROCESSED")
 	);
 
 	private int code;

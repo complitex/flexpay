@@ -2,6 +2,9 @@ package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.RegionService;
+import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.MasterIndexService;
@@ -50,6 +53,9 @@ public class QuittanceInfoBuilder {
     private QuittancePaymentService quittancePaymentService;
     private ConsumerAttributeTypeService attributeTypeService;
     private SPService spService;
+    private StreetService streetService;
+    private TownService townService;
+    private RegionService regionService;
 
     @Nullable
     public QuittanceInfo buildInfo(Stub<Quittance> stub, GetQuittanceDebtInfoRequest request) throws Exception {
@@ -61,6 +67,7 @@ public class QuittanceInfoBuilder {
 
         Quittance q = quittanceService.readFull(stub);
         if (q == null) {
+            log.debug("Quittance with id = {} not found", stub.getId());
             return null;
         }
 
@@ -193,15 +200,15 @@ public class QuittanceInfoBuilder {
         serviceDetails.setBuildingBulk(buildingAddress.getBulk());
         serviceDetails.setBuildingNumber(buildingAddress.getNumber());
 
-        Street street = buildingAddress.getStreet();
+        Street street = streetService.readFull(stub(apartment.getDefaultStreet()));
         serviceDetails.setStreetType(getTranslation(street.getCurrentType().getTranslations(), locale).getShortName());
         serviceDetails.setStreetName(getTranslation(street.getCurrentName().getTranslations(), locale).getName());
 
-        Town town = street.getTown();
+        Town town = townService.readFull(stub(street.getTown()));
         serviceDetails.setTownType(getTranslation(town.getCurrentType().getTranslations(), locale).getShortName());
         serviceDetails.setTownName(getTranslation(town.getCurrentName().getTranslations(), locale).getName());
 
-        Region region = town.getRegion();
+        Region region = regionService.readWithFullHierarhy(town.getRegionStub());
         serviceDetails.setRegion(getTranslation(region.getCurrentName().getTranslations(), locale).getName());
 
         Country country = region.getCountry();
@@ -213,7 +220,7 @@ public class QuittanceInfoBuilder {
 
         Apartment apartment = apartmentService.readFullWithHierarchy(apartmentStub);
         if (apartment == null) {
-            log.error("Can't get apartment with id {} from DB", apartmentStub.getId());
+            log.debug("Can't get apartment with id {} from DB", apartmentStub.getId());
             throw new FlexPayException("Internal error. Can't get apartment from DB");
         }
 
@@ -223,15 +230,15 @@ public class QuittanceInfoBuilder {
         info.setBuildingBulk(buildingAddress.getBulk());
         info.setBuildingNumber(buildingAddress.getNumber());
 
-        Street street = buildingAddress.getStreet();
+        Street street = streetService.readFull(stub(apartment.getDefaultStreet()));
         info.setStreetType(getTranslation(street.getCurrentType().getTranslations(), locale).getShortName());
         info.setStreetName(getTranslation(street.getCurrentName().getTranslations(), locale).getName());
 
-        Town town = street.getTown();
+        Town town = townService.readFull(stub(street.getTown()));
         info.setTownType(getTranslation(town.getCurrentType().getTranslations(), locale).getShortName());
         info.setTownName(getTranslation(town.getCurrentName().getTranslations(), locale).getName());
 
-        Region region = town.getRegion();
+        Region region = regionService.readWithFullHierarhy(town.getRegionStub());
         info.setRegion(getTranslation(region.getCurrentName().getTranslations(), locale).getName());
 
         Country country = region.getCountry();
@@ -333,5 +340,20 @@ public class QuittanceInfoBuilder {
     @Required
     public void setSpService(SPService spService) {
         this.spService = spService;
+    }
+
+    @Required
+    public void setStreetService(StreetService streetService) {
+        this.streetService = streetService;
+    }
+
+    @Required
+    public void setTownService(TownService townService) {
+        this.townService = townService;
+    }
+
+    @Required
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
     }
 }
