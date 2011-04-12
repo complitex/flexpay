@@ -5,45 +5,79 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class AccPaymentsRegistriesReportData extends AccReportData {
 
-    private String serviceProvider;
-    private List<RegistryInfo> infos;
+    private List<ServiceProviderInfo> serviceProviderInfos = list();
 
     @Override
     public JRDataSource getDataSource() {
-        return new JRBeanCollectionDataSource(infos);
+        return new JRBeanCollectionDataSource(serviceProviderInfos);
     }
 
-    public String getServiceProvider() {
-        return serviceProvider;
+    public List<ServiceProviderInfo> getServiceProviderInfos() {
+        return serviceProviderInfos;
     }
 
-    public void setServiceProvider(String serviceProvider) {
-        this.serviceProvider = serviceProvider;
+    public void setServiceProviderInfos(List<ServiceProviderInfo> serviceProviderInfos) {
+        this.serviceProviderInfos = serviceProviderInfos;
     }
 
-    public List<RegistryInfo> getInfos() {
-        return infos;
+    public static class ServiceProviderInfo implements Serializable {
+
+        private String serviceProviderName = "";
+        private List<RegistryInfo> infos = list();
+        private List<ServiceProviderInfo> serviceProviderInfos = list();
+
+        public List<ServiceProviderInfo> getServiceProviderInfos() {
+            return serviceProviderInfos;
+        }
+
+        public void setServiceProviderInfos(List<ServiceProviderInfo> serviceProviderInfos) {
+            this.serviceProviderInfos = serviceProviderInfos;
+        }
+
+        public String getServiceProviderName() {
+            return serviceProviderName;
+        }
+
+        public void setServiceProviderName(String serviceProviderName) {
+            this.serviceProviderName = serviceProviderName;
+        }
+
+        public List<RegistryInfo> getInfos() {
+            return infos;
+        }
+
+        public void setInfos(List<RegistryInfo> infos) {
+            this.infos = infos;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this).
+                    append("serviceProviderName", serviceProviderName).
+                    append("infos", infos).
+                    toString();
+        }
     }
 
-    public void setInfos(List<RegistryInfo> infos) {
-        this.infos = infos;
-    }
-
-    public static class RegistryInfo {
+    public static class RegistryInfo implements Serializable {
 
         private Long id;
-        private Date creationDate;
-        private String sender;
-        private String recipient;
-        private String commentary;
-        private Long recordsNumber;
-        private BigDecimal sum;
+        private Long registryNumber = 0L;
+        private String creationDate = "";
+        private String sender = "";
+        private String recipient = "";
+        private Long recordsNumber = 0L;
+        private BigDecimal sum = new BigDecimal("0.00");
+        private String commentary = "";
 
         public Long getId() {
             return id;
@@ -53,11 +87,19 @@ public class AccPaymentsRegistriesReportData extends AccReportData {
             this.id = id;
         }
 
-        public Date getCreationDate() {
+        public Long getRegistryNumber() {
+            return registryNumber;
+        }
+
+        public void setRegistryNumber(Long registryNumber) {
+            this.registryNumber = registryNumber;
+        }
+
+        public String getCreationDate() {
             return creationDate;
         }
 
-        public void setCreationDate(Date creationDate) {
+        public void setCreationDate(String creationDate) {
             this.creationDate = creationDate;
         }
 
@@ -103,8 +145,9 @@ public class AccPaymentsRegistriesReportData extends AccReportData {
 
         @Override
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+            return new ToStringBuilder(this).
                     append("id", id).
+                    append("registryNumber", registryNumber).
                     append("creationDate", creationDate).
                     append("sender", sender).
                     append("recipient", recipient).
@@ -124,8 +167,7 @@ public class AccPaymentsRegistriesReportData extends AccReportData {
                 append("paymentCollectorOrgAddress", paymentCollectorOrgAddress).
                 append("accountantFio", accountantFio).
                 append("creationDate", creationDate).
-                append("serviceProvider", serviceProvider).
-                append("infos", infos).
+                append("serviceProviderInfos", serviceProviderInfos).
                 toString();
     }
 }

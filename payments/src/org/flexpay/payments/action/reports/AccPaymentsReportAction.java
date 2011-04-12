@@ -27,6 +27,8 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 	protected static final String PAYMENTS_SUFFIX = "_payments";
 	protected static final String CASHBOXES_SUFFIX = "_cashboxes";
+    protected static final String SERVICE_PROVIDERS_SUFFIX = "_serviceProviders";
+    protected static final String REGISTRIES_SUFFIX = "_registries";
 
     private static final String BEGIN_DATE = "beginDate";
     private static final String END_DATE = "endDate";
@@ -66,9 +68,14 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
         AccReportRequest request = buildReportRequest();
 
 		AccReportData data = paymentsReporter.getAccPaymentsReportData(request);
+        if (data == null) {
+            log.error("Report data is null!");
+            addActionError("payments.error.report_data_is_null");
+            return SUCCESS;
+        }
 		data.setAccountantFio(getUserPreferences().getFullName());
 
-		Map<?, ?> params = map(
+		Map params = map(
 				ar(BEGIN_DATE, END_DATE, CREATION_DATE, PAYMENT_COLLECTOR_ORG_ADDRESS, PAYMENT_COLLECTOR_ORG_NAME, ACCOUNTANT_FIO),
 				ar(data.getBeginDate(), data.getEndDate(), data.getCreationDate(), data.getPaymentCollectorOrgAddress(), data.getPaymentCollectorOrgName(), data.getAccountantFio()));
 		JRDataSource dataSource = data.getDataSource();

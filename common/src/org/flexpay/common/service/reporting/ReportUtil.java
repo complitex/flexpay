@@ -35,6 +35,7 @@ import java.util.Set;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
 
 public class ReportUtil {
@@ -57,18 +58,18 @@ public class ReportUtil {
 	/**
 	 * Name of fonts that are to
 	 */
-	private static Set<String> fontNames = CollectionUtils.set(
-			"LiberationMono-Italic",
-			"LiberationMono-Regular",
-			"LiberationSans-Bold",
-			"LiberationSans-BoldItalic",
-			"LiberationSans-Italic",
-			"LiberationSans-Regular",
-			"LiberationSerif-Bold",
-			"LiberationSerif-BoldItalic",
-			"LiberationSerif-Italic",
-			"LiberationSerif-Regular"
-	);
+	private static Set<String> fontNames = set(
+            "LiberationMono-Italic",
+            "LiberationMono-Regular",
+            "LiberationSans-Bold",
+            "LiberationSans-BoldItalic",
+            "LiberationSans-Italic",
+            "LiberationSans-Regular",
+            "LiberationSerif-Bold",
+            "LiberationSerif-BoldItalic",
+            "LiberationSerif-Italic",
+            "LiberationSerif-Regular"
+    );
 
 	private static final String EXTENSION_FONT_TTF = ".ttf";
 
@@ -430,11 +431,11 @@ public class ReportUtil {
 		}
 	}
 
-	private File getReportsDir() {
+	private static File getReportsDir() {
 		return new File(ApplicationConfig.getDataRoot(), "reports");
 	}
 
-	private File getReportTemplatesDir() {
+	public static File getReportTemplatesDir() {
 		return new File(getReportsDir(), "templates");
 	}
 

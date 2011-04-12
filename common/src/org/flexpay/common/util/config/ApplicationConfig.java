@@ -134,7 +134,7 @@ public class ApplicationConfig implements ResourceLoaderAware {
 
 	public static File getProcessLogDirectory() {
 		File dataRoot = getDataRootInternal();
-		return new File(dataRoot, "logs/"+getInstanceId());
+		return new File(dataRoot, "logs/" + getInstanceId());
 	}
 
 	private static File getDataRootInternal() {

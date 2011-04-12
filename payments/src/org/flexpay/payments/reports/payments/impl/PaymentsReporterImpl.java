@@ -1,12 +1,12 @@
 package org.flexpay.payments.reports.payments.impl;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.morphology.currency.CurrencyToTextConverter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -23,13 +23,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.TranslationUtil.getTranslationName;
 import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 
@@ -61,7 +64,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
     @Override
 	public List<PaymentReportData> getPaymentsData(Date begin, Date end) {
 
-		List<PaymentReportData> result = CollectionUtils.list();
+		List<PaymentReportData> result = list();
 		List<Document> documents = documentService.listRegisteredPaymentDocuments(begin, end);
 		int operationCount = 0;
 		Long previousOperationId = 0L;
@@ -140,7 +143,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		form.setInputSum(op.getOperationInputSum());
 		form.setChangeSum(op.getChange());
 
-		List<PaymentPrintForm.PaymentDetails> detailses = CollectionUtils.list();
+		List<PaymentPrintForm.PaymentDetails> detailses = list();
 		for (Document doc : op.getDocuments()) {
 			PaymentPrintForm.PaymentDetails details = new PaymentPrintForm.PaymentDetails();
 			details.setAccountNumber(doc.getCreditorId());
@@ -233,7 +236,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	}
 
 	private List<OperationPrintInfo> convert(List<Operation> operations) {
-		List<OperationPrintInfo> operationPrintInfos = CollectionUtils.list();
+		List<OperationPrintInfo> operationPrintInfos = list();
 		for (Operation operation : operations) {
 			operationPrintInfos.add(convert(operation));
 		}
@@ -268,7 +271,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		operationPrintInfo.setPayerFio(operation.getPayerFIO());
 
 		// setting service payments
-		Map<Integer, BigDecimal> servicePayments = CollectionUtils.map();
+		Map<Integer, BigDecimal> servicePayments = map();
 		for (Document document : operation.getDocuments()) {
 			ServiceType serviceType = serviceTypeService.read(document.getService().serviceTypeStub());
 			servicePayments.put(serviceType.getCode(), document.getSum());
@@ -277,6 +280,13 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 		return operationPrintInfo;
 	}
+
+    private AccPaymentsRegistriesReportData.ServiceProviderInfo createServiceProviderInfo(ServiceProvider serviceProvider, AccPaymentsRegistriesReportRequest request) {
+        AccPaymentsRegistriesReportData.ServiceProviderInfo serviceProviderInfo = new AccPaymentsRegistriesReportData.ServiceProviderInfo();
+        serviceProviderInfo.setServiceProviderName(serviceProvider.getName(request.getLocale()));
+        serviceProviderInfo.setInfos(getRegistriesInfos(serviceProvider.getOrganization().getId(), request));
+        return serviceProviderInfo;
+    }
 
 	@Override
 	public AccReportData getAccPaymentsReportData(AccReportRequest request) {
@@ -293,10 +303,35 @@ public class PaymentsReporterImpl implements PaymentsReporter {
         } else if (request instanceof AccPaymentsRegistriesReportRequest) {
             AccPaymentsRegistriesReportRequest paymentsRequest = (AccPaymentsRegistriesReportRequest) request;
             AccPaymentsRegistriesReportData pResult = new AccPaymentsRegistriesReportData();
-            ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(paymentsRequest.getServiceProviderId()));
-            pResult.setServiceProvider(serviceProvider.getName(request.getLocale()));
-            pResult.setInfos(getRegistriesInfos(paymentsRequest));
+            if (paymentsRequest.getServiceProviderId() != null && paymentsRequest.getServiceProviderId() > 0) {
+                ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(paymentsRequest.getServiceProviderId()));
+                List<AccPaymentsRegistriesReportData.ServiceProviderInfo> infos = list(createServiceProviderInfo(serviceProvider, paymentsRequest));
+                pResult.setServiceProviderInfos(infos);
+                pResult.getServiceProviderInfos().get(0).setServiceProviderInfos(infos);
+            } else {
+                List<ServiceProvider> serviceProviders = serviceProviderService.listInstances(new Page<ServiceProvider>(2000));
+                List<AccPaymentsRegistriesReportData.ServiceProviderInfo> infos = list();
+                for (ServiceProvider serviceProvider : serviceProviders) {
+                    AccPaymentsRegistriesReportData.ServiceProviderInfo info = createServiceProviderInfo(serviceProvider, paymentsRequest);
+                    info.setServiceProviderInfos(list(info));
+                    infos.add(info);
+                }
+                pResult.setServiceProviderInfos(infos);
+                pResult.getServiceProviderInfos().get(0).setServiceProviderInfos(infos);
+            }
             result = pResult;
+
+            for (AccPaymentsRegistriesReportData.ServiceProviderInfo info : pResult.getServiceProviderInfos()) {
+                log.debug("ServiceProviderName = {}", info.getServiceProviderName());
+                int i = 0;
+                for (AccPaymentsRegistriesReportData.RegistryInfo info1 : info.getInfos()) {
+                    i++;
+                    log.debug("RegistryInfo #{} = {}", i, info1);
+                }
+            }
+
+            log.debug("pResults = {}", pResult);
+
         } else {
             log.warn("For this report request have not implementation");
             return null;
@@ -311,21 +346,27 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return result;
 	}
 
-    private List<AccPaymentsRegistriesReportData.RegistryInfo> getRegistriesInfos(AccPaymentsRegistriesReportRequest request) {
+    private List<AccPaymentsRegistriesReportData.RegistryInfo> getRegistriesInfos(Long serviceProviderId, AccPaymentsRegistriesReportRequest request) {
 
         List<AccPaymentsRegistriesReportData.RegistryInfo> infos = list();
 
-        List<Registry> registries = registryService.findRegistriesInDateInterval(request.getBeginDate(), request.getEndDate());
+        log.debug("Request = {}", request);
+
+        List<Registry> registries = registryService.findRegistries(serviceProviderId, request.getBeginDate(), request.getEndDate());
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} registries", registries.size());
+        }
 
         for (Registry registry : registries) {
             AccPaymentsRegistriesReportData.RegistryInfo info = new AccPaymentsRegistriesReportData.RegistryInfo();
             info.setId(registry.getId());
+            info.setRegistryNumber(registry.getRegistryNumber());
             //TODO: Не ясно, какие имена нужно запихивать в отчёт
-            ServiceProvider serviceProvider = serviceProviderService.getProvider(new Stub<Organization>(registry.getRecipientCode()));
-            info.setRecipient(getTranslationName(serviceProvider.getOrganization().getNames()));
+            Organization recipient = organizationService.readFull(new Stub<Organization>(registry.getRecipientCode()));
+            info.setRecipient(getTranslationName(recipient.getNames()));
             Organization sender = organizationService.readFull(new Stub<Organization>(registry.getSenderCode()));
             info.setSender(getTranslationName(sender.getNames()));
-            info.setCreationDate(registry.getCreationDate());
+            info.setCreationDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(registry.getCreationDate()));
             info.setRecordsNumber(registry.getRecordsNumber());
             info.setSum(registry.getAmount());
 
@@ -334,11 +375,15 @@ public class PaymentsReporterImpl implements PaymentsReporter {
                         registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
                 if (containerData != null && !containerData.isEmpty() && COMMENTARY_CONTAINER_TYPE.equals(containerData.get(0))) {
                     if (containerData.size() > 3) {
-                        info.setCommentary(containerData.get(3));
+                        info.setCommentary(isEmpty(containerData.get(3)) ? "" : containerData.get(3));
                     }
                     break;
                 }
             }
+
+            infos.add(info);
+
+            log.debug("RegistryInfo = {}", info);
 
         }
 
@@ -439,13 +484,13 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 		AccPaymentsReportData.PaymentDetails paymentPointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPointId), status, beginDate, endDate, locale);
 		paymentPointSummary.setChildDetailses(cashboxDetailses);
-		return CollectionUtils.list(paymentPointSummary);
+		return list(paymentPointSummary);
 	}
 
 	private List<AccPaymentsReportData.PaymentDetails> getCashbox(Long cashboxId, int status, Date beginDate, Date endDate, Locale locale) {
 
 		AccPaymentsReportData.PaymentDetails details = getCashboxSummary(new Stub<Cashbox>(cashboxId), status, beginDate, endDate, locale);
-		return CollectionUtils.list(details);
+		return list(details);
 	}
 
 	private List<AccPaymentsReportData.PaymentDetails> getAllPaymentPointsPayments(int status, Date beginDate, Date endDate, Locale locale) {
@@ -487,7 +532,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 				operations = operationService.listReturnedPaymentsForCashbox(new Stub<Cashbox>(cashboxId), beginDate, endDate);
 				break;
 			default:
-				operations = CollectionUtils.list();
+				operations = list();
 				break;
 		}
 
@@ -499,7 +544,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		AccPaymentsReportData.PaymentDetails result = getCashboxSummary(new Stub<Cashbox>(cashboxId), status, beginDate, endDate, locale);
 		result.setChildDetailses(operationDetailses);
 
-		return CollectionUtils.list(result);
+		return list(result);
 	}
 
 	// converts operation info into payment details
@@ -619,4 +664,9 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
 		this.paymentCollectorService = paymentCollectorService;
 	}
+
+    @Required
+    public void setRegistryService(RegistryService registryService) {
+        this.registryService = registryService;
+    }
 }

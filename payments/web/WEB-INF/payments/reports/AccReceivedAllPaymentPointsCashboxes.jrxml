@@ -109,6 +109,13 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.title}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="146" y="15" width="256" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.title.since_till},      new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{beginDate}),      new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{endDate}))]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="146" y="30" width="256" height="14"/>
 				<textElement textAlignment="Center">
@@ -122,13 +129,6 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentCollectorOrgAddress}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="146" y="15" width="256" height="15"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{received.payments.report.title.since_till},      new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{beginDate}),      new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{endDate}))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="59" width="24" height="39"/>
