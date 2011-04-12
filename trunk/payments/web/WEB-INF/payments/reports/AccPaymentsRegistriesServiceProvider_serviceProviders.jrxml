@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaymentsRegistries" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="org/flexpay/payments/i18n/PaymentRegistries">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Bold" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:/Work/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
+	</parameter>
+	<field name="serviceProviderName" class="java.lang.String"/>
+	<field name="infos" class="java.util.List"/>
+	<background>
+		<band/>
+	</background>
+	<detail>
+		<band height="75" splitType="Prevent">
+			<textField>
+				<reportElement x="0" y="10" width="595" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{payment.registries.report.service_provider}, $F{serviceProviderName})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="30" width="24" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.num}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="30" width="50" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.registry_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="30" width="50" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.creation_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="30" width="110" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.sender}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="30" width="110" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.recipient}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="30" width="62" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.records_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="30" width="62" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.sum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="30" width="127" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.registries.report.commentary}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="55" width="595" height="20" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{infos})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "AccPaymentsRegistriesServiceProvider_registries.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

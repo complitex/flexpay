@@ -4,6 +4,7 @@ import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.reports.payments.AccPaymentsRegistriesReportRequest;
+import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
 import org.flexpay.payments.reports.payments.AccReportRequest;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.springframework.beans.factory.annotation.Required;
@@ -12,8 +13,8 @@ public class AccPaymentsRegistriesReportAction extends AccPaymentsReportAction {
 
     private static final String PREFIX = "AccPaymentsRegistries";
 
-    private static final String ACC_PAYMENTS_REGISTRIES_ALL_SERVICE_PROVIDERS = PREFIX + "AllSeviceProviders";
-    private static final String ACC_PAYMENTS_REGISTRIES_SERVICE_PROVIDER = PREFIX + "SeviceProvider";
+    private static final String ACC_PAYMENTS_REGISTRIES_ALL_SERVICE_PROVIDERS = PREFIX + "AllServiceProviders";
+    private static final String ACC_PAYMENTS_REGISTRIES_SERVICE_PROVIDER = PREFIX + "ServiceProvider";
 
     private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 
@@ -47,7 +48,9 @@ public class AccPaymentsRegistriesReportAction extends AccPaymentsReportAction {
 
     @Override
     protected void uploadAdditionalReportFiles(AccReportRequest request) throws Exception {
-
+        String reportName = getReportName(request);
+        uploadReport(reportName + SERVICE_PROVIDERS_SUFFIX);
+        uploadReport(reportName + REGISTRIES_SUFFIX);
     }
 
     @Override
@@ -58,7 +61,7 @@ public class AccPaymentsRegistriesReportAction extends AccPaymentsReportAction {
         if (serviceProvierId != null && serviceProvierId > 0) {
             return ACC_PAYMENTS_REGISTRIES_SERVICE_PROVIDER;
         } else {
-            return ACC_PAYMENTS_REGISTRIES_ALL_SERVICE_PROVIDERS;
+            return ACC_PAYMENTS_REGISTRIES_SERVICE_PROVIDER;
         }
 
     }

@@ -183,7 +183,12 @@ public class RegistryServiceImpl implements RegistryService {
         return registryDao.findRegistriesInDateInterval(from, till);
     }
 
-	/**
+    @Override
+    public List<Registry> findRegistries(Long recipientCode, Date from, Date till) {
+        return registryDao.findRegistriesByDateIntervalAndRecipient(recipientCode, from, till);
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
 	@Override

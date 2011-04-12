@@ -355,16 +355,6 @@
         </property>
     </bean>
 
-    <bean name="payments.reports.reports.acc.payments_registries" parent="payments.reports.reports"
-          p:name="payments.reports2.acc.payments_registries"
-          p:title="payments.menu4.payments_registries"
-          p:action="accPaymentsRegistriesReport"
-          p:parent-ref="payments.reports.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACC_PAYMENTS_REGISTRIES" />
-        </property>
-    </bean>
-
     <bean name="payments.reports.reports.acc.blank" parent="payments.reports.reports"
           p:name="payments.reports.reports.acc.blank"
           p:title="payments.report.blank.operation"
@@ -372,6 +362,16 @@
           p:parent-ref="payments.reports.reports">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACCOUNTANT" />
+        </property>
+    </bean>
+
+    <bean name="payments.reports.reports.acc.payments_registries" parent="payments.reports.reports"
+          p:name="payments.reports2.acc.payments_registries"
+          p:title="payments.menu4.payments_registries"
+          p:action="accPaymentsRegistriesReport"
+          p:parent-ref="payments.reports.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACC_PAYMENTS_REGISTRIES" />
         </property>
     </bean>
 

@@ -63,4 +63,6 @@ public interface RegistryDao extends GenericDao<Registry, Long> {
     @NotNull
     List<Registry> findRegistriesInDateInterval(Date from, Date till);
 
+    @NotNull
+    List<Registry> findRegistriesByDateIntervalAndRecipient(Long recipientCode, Date from, Date till);
 }

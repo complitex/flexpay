@@ -60,7 +60,7 @@
                 "beginTimeFilter.stringDate":$("#beginTimeFilter").val(),
                 "endDateFilter.stringDate":$("#endDateFilter").val(),
                 "endTimeFilter.stringDate":$("#endTimeFilter").val(),
-                "paymentCollectorFilter.selectedId":$("paymentCollectorFilter.selectedId").val(),
+                "serviceProviderFilter.selectedId":$("#serviceProviderFilter").val(),
                 format:format,
                 submitted:"true"
             };

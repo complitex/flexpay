@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaymentsRegistries" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="org/flexpay/payments/i18n/PaymentRegistries">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Bold" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="registryNumber" class="java.lang.Long"/>
+	<field name="creationDate" class="java.lang.String"/>
+	<field name="sender" class="java.lang.String"/>
+	<field name="recipient" class="java.lang.String"/>
+	<field name="recordsNumber" class="java.lang.Long"/>
+	<field name="sum" class="java.math.BigDecimal"/>
+	<field name="commentary" class="java.lang.String"/>
+	<variable name="counter" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{counter}.intValue() + 1)]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="sum" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{sum} == null ? new java.math.BigDecimal("0.00") : $F{sum}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="commentary" class="java.lang.String">
+		<variableExpression><![CDATA[$F{commentary} == null ? new java.lang.String("") : $F{commentary}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.String("")]]></initialValueExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<textField>
+				<reportElement x="0" y="0" width="24" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{counter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="0" width="50" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="0" width="50" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{creationDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="0" width="110" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sender}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="0" width="110" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{recipient}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="0" width="62" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{recordsNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="0" width="62" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="0" width="127" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{commentary}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

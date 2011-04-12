@@ -125,6 +125,7 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           p:paymentPointService-ref="paymentPointService"
           p:cashboxService-ref="cashboxService"
+          p:registryService-ref="registryService"
           p:documentService-ref="documentService"
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
