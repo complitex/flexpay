@@ -16,9 +16,9 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.organization.name" /></td>
-        <td class="th"><s:text name="eirc.orginstance.description" /></td>
-        <td class="th"><s:text name="eirc.organization.email" /></td>
+        <td class="th"><s:text name="orgs.organization.name" /></td>
+        <td class="th"><s:text name="orgs.orginstance.description" /></td>
+        <td class="th"><s:text name="orgs.organization.email" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="collectors" status="status">

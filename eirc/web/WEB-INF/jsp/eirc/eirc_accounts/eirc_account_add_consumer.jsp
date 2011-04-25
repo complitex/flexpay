@@ -23,7 +23,7 @@
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">
-            <td class="col"><s:text name="eirc.service" />:</td>
+            <td class="col"><s:text name="payments.service" />:</td>
             <td class="col"><%@include file="/WEB-INF/jsp/payments/filters/service_filter.jsp"%></td>
         </tr>
         <tr valign="top" class="cols_1">

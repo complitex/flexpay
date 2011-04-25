@@ -49,7 +49,7 @@ public class PaymentPointEditAction extends FPActionSupport {
 		}
 		point = point.isNew() ? point : paymentPointService.read(stub(point));
 		if (point == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
@@ -70,7 +70,7 @@ public class PaymentPointEditAction extends FPActionSupport {
 		}
 
 		if (!paymentCollectorFilter.needFilter()) {
-			addActionError(getText("eirc.error.payment_point.no_collector"));
+			addActionError(getText("orgs.error.payment_point.no_collector"));
 			return INPUT;
 		}
 

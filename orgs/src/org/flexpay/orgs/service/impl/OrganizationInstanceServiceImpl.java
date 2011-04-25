@@ -175,7 +175,7 @@ public abstract class OrganizationInstanceServiceImpl<
 		}
 		if (!defaultDescFound) {
 			ex.addException(new FlexPayException(
-					"No default desc", "eirc.error.orginstance.no_default_description"));
+					"No default desc", "orgs.error.orginstance.no_default_description"));
 		}
 
 		// check if there is only one instance of this type for organization

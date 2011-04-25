@@ -35,25 +35,25 @@ public class RegistryStatus extends DomainObject {
 	public static final int START_PROCESSING = 18;
 
 	static {
-		typeToName.put(LOADING, "eirc.registry.status.LOADING");
-		typeToName.put(LOADED, "eirc.registry.status.LOADED");
-		typeToName.put(LOADING_CANCELED, "eirc.registry.status.LOADING_CANCELED");
-		typeToName.put(LOADED_WITH_ERROR, "eirc.registry.status.LOADED_WITH_ERROR");
-		typeToName.put(START_PROCESSING, "eirc.registry.status.START_PROCESSING");
-		typeToName.put(PROCESSING, "eirc.registry.status.PROCESSING");
-		typeToName.put(PROCESSING_IMPORT_CONSUMER, "eirc.registry.status.PROCESSING_IMPORT_CONSUMER");
-		typeToName.put(PROCESSING_WITH_ERROR, "eirc.registry.status.PROCESSING_WITH_ERROR");
-		typeToName.put(PROCESSING_IMPORT_CONSUMER_WITH_ERROR, "eirc.registry.status.PROCESSING_IMPORT_CONSUMER_WITH_ERROR");
-		typeToName.put(PROCESSED, "eirc.registry.status.PROCESSED");
-		typeToName.put(PROCESSED_IMPORT_CONSUMER, "eirc.registry.status.PROCESSED_IMPORT_CONSUMER");
-		typeToName.put(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, "eirc.registry.status.PROCESSED_IMPORT_CONSUMER_WITH_ERROR");
-		typeToName.put(PROCESSED_WITH_ERROR, "eirc.registry.status.PROCESSED_WITH_ERROR");
-		typeToName.put(PROCESSING_CANCELED, "eirc.registry.status.PROCESSING_CANCELED");
-		typeToName.put(ROLLBACKING, "eirc.registry.status.ROLLBACKING");
-		typeToName.put(ROLLBACKED, "eirc.registry.status.ROLLBACKED");
-		typeToName.put(CREATING, "eirc.registry.status.CREATING");
-		typeToName.put(CREATED, "eirc.registry.status.CREATED");
-		typeToName.put(CREATING_CANCELED, "eirc.registry.status.CREATING_CANCELLED");
+		typeToName.put(LOADING, "common.registry.status.LOADING");
+		typeToName.put(LOADED, "common.registry.status.LOADED");
+		typeToName.put(LOADING_CANCELED, "common.registry.status.LOADING_CANCELED");
+		typeToName.put(LOADED_WITH_ERROR, "common.registry.status.LOADED_WITH_ERROR");
+		typeToName.put(START_PROCESSING, "common.registry.status.START_PROCESSING");
+		typeToName.put(PROCESSING, "common.registry.status.PROCESSING");
+		typeToName.put(PROCESSING_IMPORT_CONSUMER, "common.registry.status.PROCESSING_IMPORT_CONSUMER");
+		typeToName.put(PROCESSING_WITH_ERROR, "common.registry.status.PROCESSING_WITH_ERROR");
+		typeToName.put(PROCESSING_IMPORT_CONSUMER_WITH_ERROR, "common.registry.status.PROCESSING_IMPORT_CONSUMER_WITH_ERROR");
+		typeToName.put(PROCESSED, "common.registry.status.PROCESSED");
+		typeToName.put(PROCESSED_IMPORT_CONSUMER, "common.registry.status.PROCESSED_IMPORT_CONSUMER");
+		typeToName.put(PROCESSED_IMPORT_CONSUMER_WITH_ERROR, "common.registry.status.PROCESSED_IMPORT_CONSUMER_WITH_ERROR");
+		typeToName.put(PROCESSED_WITH_ERROR, "common.registry.status.PROCESSED_WITH_ERROR");
+		typeToName.put(PROCESSING_CANCELED, "common.registry.status.PROCESSING_CANCELED");
+		typeToName.put(ROLLBACKING, "common.registry.status.ROLLBACKING");
+		typeToName.put(ROLLBACKED, "common.registry.status.ROLLBACKED");
+		typeToName.put(CREATING, "common.registry.status.CREATING");
+		typeToName.put(CREATED, "common.registry.status.CREATED");
+		typeToName.put(CREATING_CANCELED, "common.registry.status.CREATING_CANCELLED");
 	}
 
 	private int code;

@@ -180,7 +180,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 
 		if (subdivision.hasNoHeadOrganization()) {
 			container.addException(new FlexPayException(
-					"No organization", "eirc.error.subdivision.no_organization"));
+					"No organization", "orgs.error.subdivision.no_organization"));
 		}
 		Organization organization = organizationService.readFull(stub(subdivision.getHeadOrganization()));
 		//noinspection ConstantConditions
@@ -191,7 +191,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 			Organization juridicalPerson = organizationService.readFull(stub(juridicalPersonStub));
 			if (juridicalPerson == null) {
 				container.addException(new FlexPayException(
-						"Invalid juridical person", "eirc.error.subdivision.invalid_juridical_person"));
+						"Invalid juridical person", "orgs.error.subdivision.invalid_juridical_person"));
 			} else {
 				subdivision.setJuridicalPerson(juridicalPerson);
 			}
@@ -199,7 +199,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 
 		if (StringUtils.isBlank(subdivision.getRealAddress())) {
 			container.addException(new FlexPayException(
-					"No real address", "eirc.error.subdivision.no_real_address"));
+					"No real address", "orgs.error.subdivision.no_real_address"));
 		}
 
 		boolean defaultNameFound = false;
@@ -210,7 +210,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		}
 		if (!defaultNameFound) {
 			container.addException(new FlexPayException(
-					"No default lang name", "eirc.error.subdivision.no_default_lang_name"));
+					"No default lang name", "orgs.error.subdivision.no_default_lang_name"));
 		}
 
 		boolean defaultDescFound = false;
@@ -221,7 +221,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		}
 		if (!defaultDescFound) {
 			container.addException(new FlexPayException(
-					"No default lang desc", "eirc.error.subdivision.no_default_lang_description"));
+					"No default lang desc", "orgs.error.subdivision.no_default_lang_description"));
 		}
 
 		validateParentSubdivision(subdivision, container);
@@ -242,20 +242,20 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		parent = subdivisionDao.read(stub(parent).getId());
 		if (parent == null) {
 			container.addException(new FlexPayException(
-					"Invalid parent id", "eirc.error.subdivision.invalid_parent_id"));
+					"Invalid parent id", "orgs.error.subdivision.invalid_parent_id"));
 			return;
 		}
 
 		// check same head organization
 		if (!parent.getHeadOrganization().equals(subdivision.getHeadOrganization())) {
 			container.addException(new FlexPayException(
-					"Invalid parent subdivision", "eirc.error.subdivision.parent_head_mismatch"));
+					"Invalid parent subdivision", "orgs.error.subdivision.parent_head_mismatch"));
 			return;
 		}
 
 		if (hasCircularDependence(subdivision)) {
 			container.addException(new FlexPayException(
-					"Circular dependence", "eirc.error.subdivision.circular_dependence"));
+					"Circular dependence", "orgs.error.subdivision.circular_dependence"));
 			return;
 		}
 

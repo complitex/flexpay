@@ -66,8 +66,8 @@
 		</properties>
 	</class>
 
-	<class name="org.flexpay.orgs.persistence.ServiceProviderAttribute" table="payments_service_provider_attribute_tbl" optimistic-lock="version">
-		<comment>ServiceProviderAttribute</comment>
+	<class name="org.flexpay.orgs.persistence.ServiceProviderAttribute" table="orgs_service_provider_attributes_tbl" optimistic-lock="version">
+		<comment>Service provider attribute</comment>
 		<id name="id">
 			<column name="id">
 				<comment>Primary key</comment>
@@ -86,7 +86,7 @@
 				</column>
 			</property>
 			<many-to-one name="serviceProvider" class="org.flexpay.orgs.persistence.ServiceProvider"
-						 foreign-key="FK_payments_service_provider_attribute_tbl_service_provider_id">
+						 foreign-key="FK_orgs_service_provider_attributes_tbl_service_provider_id">
 				<column name="service_provider_id" not-null="true">
 					<comment>Service provider reference</comment>
 				</column>

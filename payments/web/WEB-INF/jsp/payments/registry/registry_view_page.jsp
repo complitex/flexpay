@@ -12,7 +12,7 @@
                 <%@include file="/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp"%>
             </span>
 
-            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax();" />
+            <input type="button" value="<s:text name="payments.filter" />" class="btn-exit" onclick="pagerAjax();" />
             <%@include file="/WEB-INF/jsp/payments/registry/data/registry_info.jsp"%>
         </td>
     </tr>

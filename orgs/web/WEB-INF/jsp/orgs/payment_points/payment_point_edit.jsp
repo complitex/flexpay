@@ -7,7 +7,7 @@
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">
-            <td class="col"><s:text name="eirc.payment_point.name" />:</td>
+            <td class="col"><s:text name="orgs.payment_point.name" />:</td>
             <td class="col">
                 <s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />
@@ -16,7 +16,7 @@
             </td>
         </tr>
 		<tr valign="middle" class="cols_1">
-			<td class="col"><s:text name="eirc.payment_collector" />:</td>
+			<td class="col"><s:text name="orgs.payment_collector" />:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/orgs/filters/payment_collector_filter.jsp"%></td>
 		</tr>
 		<tr valign="middle" class="cols_1">

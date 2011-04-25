@@ -22,8 +22,8 @@
 		<sec:authorize ifAnyGranted="ROLE_BASIC">
 			<td align="right">
     			<span class="text-small">
-                    <s:text name="login.username" />: <sec:authentication property="principal.username" />
-				    <a href="<s:url value="/logout" />"><s:text name="logout.link.title" /></a>
+                    <s:text name="common.login.username" />: <sec:authentication property="principal.username" />
+				    <a href="<s:url value="/logout" />"><s:text name="common.logout.link.title" /></a>
                 </span>
 			</td>
 		</sec:authorize>
@@ -35,7 +35,7 @@
 <s:i18n name="/i18n/common-messages">
 
 	<div style="text-align:center;">
-		<h1><s:text name="forbidden_page_message" /></h1>
+		<h1><s:text name="common.forbidden_page_message" /></h1>
 <%--
         <h2>User: <%=request.getUserPrincipal().getName()%></h2>
         <h2>Role: <%=request.isUserInRole("ROLE_BASIC")%></h2>

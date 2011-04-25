@@ -88,17 +88,17 @@ public class CertificateServiceImpl implements CertificateService {
 		UserPreferences preferences = userPreferencesService.loadUserByUsername(alias);
 
 		if (preferences.getCertificate() == null) {
-			throw new CertificateNotFoundException(alias, "common.user.certificate.not_found", alias);
+			throw new CertificateNotFoundException(alias, "common.error.user.certificate.not_found", alias);
 		}
 
 		Certificate aboutCertificate = preferences.getCertificate();
 
 		if (aboutCertificate.isBlocked()) {
-			throw new CertificateBlockedException(alias, "common.user.certificate.blocked", alias);
+			throw new CertificateBlockedException(alias, "common.error.user.certificate.blocked", alias);
 		}
 
 		if (aboutCertificate.isExpired()) {
-			throw new CertificateExpiredException(alias, "common.user.certificate.expired", alias);
+			throw new CertificateExpiredException(alias, "common.error.user.certificate.expired", alias);
 		}
 
 		java.security.cert.Certificate certificate = userPreferencesService.getCertificate(preferences);
@@ -112,10 +112,10 @@ public class CertificateServiceImpl implements CertificateService {
 			}
 
 			if (!sign.verify(signature)) {
-				throw new InvalidVerifySignatureException(alias, "common.user.certificate.invalid_signature", alias);
+				throw new InvalidVerifySignatureException(alias, "common.error.user.certificate.invalid_signature", alias);
 			}
 		} catch (GeneralSecurityException e) {
-			throw new InvalidVerifySignatureException(alias, e, "common.user.certificate.invalid_signature", alias);
+			throw new InvalidVerifySignatureException(alias, e, "common.error.user.certificate.invalid_signature", alias);
 		}
 
 		SecurityUtil.authenticate(alias, userPreferencesService.getGrantedAuthorities(preferences));

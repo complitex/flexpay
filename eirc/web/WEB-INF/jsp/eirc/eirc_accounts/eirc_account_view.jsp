@@ -24,7 +24,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th" nowrap>
-            <s:text name="eirc.service" /><br />
+            <s:text name="payments.service" /><br />
             (<s:text name="eirc.eirc_account.consumer_fio" />)
         </td>
         <s:iterator value="attributeTypes">

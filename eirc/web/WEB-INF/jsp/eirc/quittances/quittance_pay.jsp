@@ -42,7 +42,7 @@
 		$.validator.addMethod("validPayValue", function(value, element) {
 			value = replaceCommaWithDot(value);
 			return isValidPayValue(value);
-		}, '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
+		}, '<s:text name="payments.error.quittances.quittance_pay.invalid_pay_value" />');
 
 
 	<s:iterator value="%{quittance.quittanceDetails}" id="qd">
@@ -67,7 +67,7 @@
 			messages: {
 				<s:iterator value="%{quittance.quittanceDetails}" id="qd" status="status">
 				'servicePayments[<s:property value="%{#qd.id}"/>]' : {
-					'validPayValue': '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>',
+					'validPayValue': '<s:text name="payments.error.quittances.quittance_pay.invalid_pay_value" />',
 					'payValue_<s:property value="%{#qd.consumer.service.id}"/>_is_not_too_big': '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>'
 				}<s:if test="!#status.last">, </s:if>
 				</s:iterator>
@@ -217,7 +217,7 @@
 		<td><s:property value="%{quittanceNumber}" /></td>
 	</tr>
 	<tr>
-		<td><s:text name="month" />:</td>
+		<td><s:text name="common.month" />:</td>
 		<td><s:date format="MM/yyyy" name="quittance.dateFrom" /></td>
 	</tr>
 	<tr>

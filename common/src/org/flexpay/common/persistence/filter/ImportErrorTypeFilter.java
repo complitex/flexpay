@@ -15,8 +15,8 @@ public class ImportErrorTypeFilter extends ObjectFilter {
 	protected Map<Integer, String> errorTypes = new TreeMap<Integer, String>();
 
 	public ImportErrorTypeFilter() {
-		errorTypes.put(TYPE_ALL, "import.error_type.all");
-		errorTypes.put(TYPE_NO_ERRORS, "import.error_type.no_error");
+		errorTypes.put(TYPE_ALL, "common.import.error_type.all");
+		errorTypes.put(TYPE_NO_ERRORS, "common.import.error_type.no_error");
 	}
 
 	public void init(ClassToTypeRegistry typeRegistry) {

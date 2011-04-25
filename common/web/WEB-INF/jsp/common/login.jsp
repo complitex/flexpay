@@ -18,7 +18,7 @@
         <table border="0" align="center">
             <tr>
                 <td colspan="2">
-                    <div align="center" class="text" style="font-weight:bold;"><s:text name="login.please_login" /></div>
+                    <div align="center" class="text" style="font-weight:bold;"><s:text name="common.login.please_login" /></div>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
             </tr>
             <tr>
                 <td width="50%">
-                    <div class="text" style="font-weight:bold;"><s:text name="login.username" />:</div>
+                    <div class="text" style="font-weight:bold;"><s:text name="common.login.username" />:</div>
                 </td>
                 <td width="50%">
                     <input type="text" name="j_username" class="form-input-txt" />
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td>
-                    <div class="text" style="font-weight:bold;"><s:text name="login.password" />:</div>
+                    <div class="text" style="font-weight:bold;"><s:text name="common.login.password" />:</div>
                 </td>
                 <td>
                     <input type="password" name="j_password" class="form-input-txt" />
@@ -46,7 +46,7 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" class="btn-search" value="<s:text name="login.submit" />" name="j_security_check" />
+                    <input type="submit" class="btn-search" value="<s:text name="common.login.submit" />" name="j_security_check" />
                 </td>
             </tr>
         </table>

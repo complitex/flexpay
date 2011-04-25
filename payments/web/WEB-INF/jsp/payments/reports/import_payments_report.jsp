@@ -8,7 +8,7 @@
 		var begin = Date.parse($("#beginDateFilter").val() + " " + $("#beginTimeFilter").val());
 		var end = Date.parse($("#endDateFilter").val() + " " + $("#endTimeFilter").val());
 		if (begin > end) {
-			alert("<s:text name="error.from_after_till_tm" />");
+			alert("<s:text name="payments.error.from_after_till_tm" />");
 			return false;
 		}
 		return true;

@@ -61,7 +61,7 @@
 		ab.db - Initialize database
 		ab.ddl - Generate DDL of module
 		ab.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
-			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.ab.service.TestStreetService
+			for example ant -f ab_build.xml ab.runtests -Dtest.class.name=org.flexpay.ab.service.TestStreetService
 		ab.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
 			same test.class.name option applies to this target
 		ab.war - Build production war

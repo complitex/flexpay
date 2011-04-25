@@ -38,7 +38,7 @@ public class ImportUtil {
 		List<Person> persons = personService.find(apartmentStub, new Page<Person>(10000));
 		if (persons.isEmpty()) {
 			log.debug("No registered persons found");
-			error.setErrorId("error.eirc.import.person_no_registrants");
+			error.setErrorId("eirc.error.import.person_no_registrants");
 			return null;
 		}
 
@@ -64,12 +64,12 @@ public class ImportUtil {
 
 		if (candidates.size() > 1) {
 			log.debug("Too many FIO matches");
-			error.setErrorId("error.eirc.import.person_several_fio_match");
+			error.setErrorId("eirc.error.import.person_several_fio_match");
 			return null;
 		}
 
 		log.debug("No FIO matches");
-		error.setErrorId("error.eirc.import.person_no_fio_match");
+		error.setErrorId("eirc.error.import.person_no_fio_match");
 		return null;
 	}
 

@@ -139,7 +139,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 			}
 		}
 		if (!defaultNameFound) {
-			ex.addException(new FlexPayException("No default translation", "error.no_default_translation"));
+			ex.addException(new FlexPayException("No default translation", "common.error.no_default_translation"));
 		}
 
 		if (type.getUniqueCode() != null) {

@@ -39,7 +39,7 @@ public class SubdivisionEditAction extends FPActionSupport {
 		Subdivision oldSubdivision = subdivision.isNew() ? new Subdivision(0L) :
 									 subdivisionService.read(stub(subdivision));
 		if (oldSubdivision == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 

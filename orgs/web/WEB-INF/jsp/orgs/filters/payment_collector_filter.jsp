@@ -6,7 +6,7 @@
 </s:if><s:else>
     <select name="paymentCollectorFilter.selectedId"<s:if test="paymentCollectorFilter.needAutoChange"> onchange="this.form.submit();"</s:if> class="form-select">
 	<s:if test="paymentCollectorFilter.allowEmpty">
-        <option value="-1"><s:text name="eirc.payment_collector" /></option>
+        <option value="-1"><s:text name="orgs.payment_collector" /></option>
     </s:if><s:iterator value="paymentCollectorFilter.instances">
     	<option value="<s:property value="id" />"<s:if test="id == paymentCollectorFilter.selectedId"> selected</s:if>><s:property value="getTranslationName(organization.names)" /></option></s:iterator>
     </select>

@@ -10,10 +10,10 @@
             <%@include file="/WEB-INF/jsp/payments/filters/registry_type_filter.jsp"%>
             &nbsp;&nbsp;<br />
             <span class="text">
-                <s:text name="eirc.generated" />&nbsp;
+                <s:text name="payments.generated" />&nbsp;
                 <%@include file="/WEB-INF/jsp/payments/filters/date_interval_filter.jsp"%>
             </span>
-            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax();" />
+            <input type="button" value="<s:text name="payments.filter" />" class="btn-exit" onclick="pagerAjax();" />
         </td>
     </tr>
     <tr>

@@ -29,7 +29,7 @@ public class ConsumerAttributeTypeEnum extends ConsumerAttributeTypeBase {
 	public void validate(ConsumerAttribute value) throws FlexPayException {
 
 		if (value == null) {
-			throw new FlexPayException("Blank value", "error.eirc.consumer.attribute.enum.blank_value");
+			throw new FlexPayException("Blank value", "eirc.error.consumer.attribute.enum.blank_value");
 		}
 
 		for (ConsumerAttributeTypeEnumValue enumValue : values) {
@@ -38,7 +38,7 @@ public class ConsumerAttributeTypeEnum extends ConsumerAttributeTypeBase {
 			}
 		}
 
-		throw new FlexPayException("No match", "error.eirc.consumer.attribute.enum.no_match");
+		throw new FlexPayException("No match", "eirc.error.consumer.attribute.enum.no_match");
 	}
 
 	/**

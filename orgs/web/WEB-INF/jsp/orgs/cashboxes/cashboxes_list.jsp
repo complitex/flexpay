@@ -16,7 +16,7 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.cashbox.name" /></td>
+        <td class="th"><s:text name="orgs.cashbox.name" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="cashboxes" status="status">

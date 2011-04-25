@@ -4,7 +4,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language" /></td>
-        <td class="th"><s:text name="eirc.organization.name" /></td>
+        <td class="th"><s:text name="orgs.organization.name" /></td>
     </tr>
     <s:iterator value="organization.names" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -28,7 +28,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language" /></td>
-        <td class="th"><s:text name="eirc.organization.comment" /></td>
+        <td class="th"><s:text name="orgs.organization.comment" /></td>
     </tr>
     <s:iterator value="organization.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -50,33 +50,33 @@
         <td colspan="3" height="3" bgcolor="#4a4f4f"/>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.kpp" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization.kpp" />:</td>
         <td class="col" colspan="2">
             <s:property value="organization.kpp"/>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.inn" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization.inn" />:</td>
         <td class="col" colspan="2">
             <s:property value="organization.individualTaxNumber"/>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.juridical_address" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization.juridical_address" />:</td>
         <td class="col" colspan="2">
             <s:property value="organization.juridicalAddress"/>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.postal_address" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization.postal_address" />:</td>
         <td class="col" colspan="2">
             <s:property value="organization.postalAddress"/>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.subdivisions" />:</td>
+        <td class="col_1s"><s:text name="orgs.subdivisions" />:</td>
         <td class="col" colspan="2">
-            <a href="<s:url action="subdivisionsList"><s:param name="organization.id" value="organization.id" /></s:url>"><s:text name="eirc.subdivisions" /></a>
+            <a href="<s:url action="subdivisionsList"><s:param name="organization.id" value="organization.id" /></s:url>"><s:text name="orgs.subdivisions" /></a>
         </td>
     </tr>
     <tr>

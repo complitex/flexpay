@@ -52,7 +52,7 @@ public class SpFileAction extends FPActionSupport {
 
 		spFile = fpFileService.read(stub(spFile));
 		if (spFile == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

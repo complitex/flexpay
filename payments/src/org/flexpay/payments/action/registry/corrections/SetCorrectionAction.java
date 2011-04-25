@@ -71,7 +71,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 
             if (registry == null || registry.isNew()) {
                 log.warn("Incorrect registry id");
-                addActionError(getText("error.eirc.invalid_registry_id"));
+                addActionError(getText("payments.error.registry.invalid_registry_id"));
                 return SUCCESS;
             }
 
@@ -98,7 +98,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
 
             if (record == null || record.isNew()) {
                 log.warn("Incorrect registry record id");
-                addActionError(getText("error.registry.record.not_specified"));
+                addActionError(getText("payments.error.registry.record.not_specified"));
                 return SUCCESS;
             }
 
@@ -106,7 +106,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
             record = registryRecordService.read(stub);
             if (record == null) {
                 log.warn("Can't get registry record with id {} from DB", stub.getId());
-                addActionError(getText("error.registry.record.invalid_specified"));
+                addActionError(getText("payments.error.registry.record.invalid_specified"));
                 return SUCCESS;
             }
 
@@ -167,7 +167,7 @@ public class SetCorrectionAction extends OperatorAWPActionSupport {
         Organization organization = organizationService.readFull(props.getSenderStub());
         if (organization == null) {
             log.warn("Can't get organization with id {} from DB", props.getSenderStub().getId());
-            addActionError(getText("error.eirc.data_source_not_found"));
+            addActionError(getText("payments.error.data_source_not_found"));
             return null;
         }
 

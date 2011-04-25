@@ -518,6 +518,16 @@
         primary key (id)
     ) comment='Service organizations';
 
+    create table orgs_service_provider_attributes_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        name varchar(50) not null comment 'Attribute name',
+        service_provider_id bigint not null comment 'Service provider reference',
+        value varchar(255) comment 'Attribute value',
+        primary key (id),
+        unique (name, service_provider_id)
+    ) comment='Service provider attribute';
+
     create table orgs_service_provider_descriptions_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
@@ -568,16 +578,6 @@
         juridical_person_id bigint comment 'Juridical person (organization) reference if any',
         primary key (id)
     ) comment='Organization subdivisions';
-
-    create table payments_service_provider_attribute_tbl (
-        id bigint not null auto_increment comment 'Primary key',
-        version integer not null comment 'Optimistic lock version',
-        name varchar(50) not null comment 'Attribute name',
-        service_provider_id bigint not null comment 'Service provider reference',
-        value varchar(255) comment 'Attribute value',
-        primary key (id),
-        unique (name, service_provider_id)
-    ) comment='ServiceProviderAttribute';
 
     alter table common_certificates_tbl 
         add index FK_common_certificates_tbl_user_preference_id (user_preference_id), 
@@ -951,6 +951,12 @@
         foreign key (organization_id) 
         references orgs_organizations_tbl (id);
 
+    alter table orgs_service_provider_attributes_tbl 
+        add index FK_orgs_service_provider_attributes_tbl_service_provider_id (service_provider_id), 
+        add constraint FK_orgs_service_provider_attributes_tbl_service_provider_id 
+        foreign key (service_provider_id) 
+        references orgs_service_providers_tbl (id);
+
     alter table orgs_service_provider_descriptions_tbl 
         add index FK_orgs_service_provider_description_service_provider (service_provider_id), 
         add constraint FK_orgs_service_provider_description_service_provider 
@@ -996,25 +1002,19 @@
     create index INDX_tree_path on orgs_subdivisions_tbl (tree_path);
 
     alter table orgs_subdivisions_tbl 
-        add index FK_eirc_subdivisions_tbl_parent_subdivision_id (parent_subdivision_id), 
-        add constraint FK_eirc_subdivisions_tbl_parent_subdivision_id 
+        add index FK_orgs_subdivisions_tbl_parent_subdivision_id (parent_subdivision_id), 
+        add constraint FK_orgs_subdivisions_tbl_parent_subdivision_id 
         foreign key (parent_subdivision_id) 
         references orgs_subdivisions_tbl (id);
 
     alter table orgs_subdivisions_tbl 
-        add index FK_eirc_subdivisions_tbl_head_organization_id (head_organization_id), 
-        add constraint FK_eirc_subdivisions_tbl_head_organization_id 
+        add index FK_orgs_subdivisions_tbl_head_organization_id (head_organization_id), 
+        add constraint FK_orgs_subdivisions_tbl_head_organization_id 
         foreign key (head_organization_id) 
         references orgs_organizations_tbl (id);
 
     alter table orgs_subdivisions_tbl 
-        add index FK_eirc_subdivisions_tbl_juridical_person_id (juridical_person_id), 
-        add constraint FK_eirc_subdivisions_tbl_juridical_person_id 
+        add index FK_orgs_subdivisions_tbl_juridical_person_id (juridical_person_id), 
+        add constraint FK_orgs_subdivisions_tbl_juridical_person_id 
         foreign key (juridical_person_id) 
         references orgs_organizations_tbl (id);
-
-    alter table payments_service_provider_attribute_tbl 
-        add index FK_payments_service_provider_attribute_tbl_service_provider_id (service_provider_id), 
-        add constraint FK_payments_service_provider_attribute_tbl_service_provider_id 
-        foreign key (service_provider_id) 
-        references orgs_service_providers_tbl (id);

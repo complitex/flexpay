@@ -10,11 +10,11 @@
     </tr>
     <tr>
         <td class="th">&nbsp;</td>
-        <td class="th"><s:text name="eirc.registry.record.service" /></td>
-        <td class="th"><s:text name="eirc.registry.record.address" /></td>
-        <td class="th"><s:text name="eirc.registry.record.fio" /></td>
-        <td class="th"><s:text name="eirc.date" /></td>
-        <td class="th"><s:text name="eirc.registry.record.containers" /></td>
+        <td class="th"><s:text name="payments.registry.record.service" /></td>
+        <td class="th"><s:text name="payments.registry.record.address" /></td>
+        <td class="th"><s:text name="payments.registry.record.fio" /></td>
+        <td class="th"><s:text name="payments.date" /></td>
+        <td class="th"><s:text name="payments.registry.record.containers" /></td>
     </tr>
     <s:iterator value="records" status="status">
         <tr valign="middle" class="cols_1">

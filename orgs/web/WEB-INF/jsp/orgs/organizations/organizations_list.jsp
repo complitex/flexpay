@@ -16,9 +16,9 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.organization.name" /></td>
-        <td class="th"><s:text name="eirc.organization.kpp" /></td>
-        <td class="th"><s:text name="eirc.organization.inn" /></td>
+        <td class="th"><s:text name="orgs.organization.name" /></td>
+        <td class="th"><s:text name="orgs.organization.kpp" /></td>
+        <td class="th"><s:text name="orgs.organization.inn" /></td>
         <td class="th">&nbsp;</td>
     </tr>
 

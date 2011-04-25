@@ -17,13 +17,13 @@
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
         <td class="th">
-            <s:text name="eirc.service_organization.description" />
+            <s:text name="orgs.service_organization.description" />
         </td>
         <td class="th">
-            <s:text name="eirc.organization.inn" />
+            <s:text name="orgs.organization.inn" />
         </td>
         <td class="th">
-            <s:text name="eirc.organization.kpp" />
+            <s:text name="orgs.organization.kpp" />
         </td>
         <td class="th">&nbsp;</td>
     </tr>
@@ -49,7 +49,7 @@
             <td class="col">
                 <a href="<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
                 &nbsp;&nbsp;
-                <a href="<s:url action="serviceOrganizationListServedBuildings"><s:param name="serviceOrganization.id" value="id" /></s:url>"><s:text name="eirc.list_served_buildings" /></a>
+                <a href="<s:url action="serviceOrganizationListServedBuildings"><s:param name="serviceOrganization.id" value="id" /></s:url>"><s:text name="orgs.list_served_buildings" /></a>
             </td>
         </tr>
     </s:iterator>

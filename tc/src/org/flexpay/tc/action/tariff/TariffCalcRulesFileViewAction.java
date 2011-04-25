@@ -26,8 +26,8 @@ public class TariffCalcRulesFileViewAction extends FPActionSupport {
 		rulesFile = tariffCalculationRulesFileService.read(stub(rulesFile));
 
 		if (rulesFile == null) {
-			log.error(getText("common.object_not_selected"));
-			addActionError(getText("common.object_not_selected"));
+			log.error(getText("common.error.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

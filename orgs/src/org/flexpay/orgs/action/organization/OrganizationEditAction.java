@@ -30,7 +30,7 @@ public class OrganizationEditAction extends FPActionSupport {
 		Organization org = organization.isNew() ?
 						   organization : organizationService.readFull(stub(organization));
 		if (org == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 

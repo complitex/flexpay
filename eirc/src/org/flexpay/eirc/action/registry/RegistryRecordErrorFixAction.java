@@ -82,7 +82,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
         RegistryRecordStatus status = registryRecordStatusService.findByCode(PROCESSED_WITH_ERROR);
         if (status == null) {
             log.warn("Can't get status by code from DB ({})", PROCESSED_WITH_ERROR);
-            addActionError(getText("error.eirc.registry.internal_error"));
+            addActionError(getText("eirc.error.registry.internal_error"));
             return SUCCESS;
         }
         recordStatusFilter.setSelectedId(status.getId());
@@ -115,7 +115,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
                 createStreet(data, stubDataSourceDescription);
             } catch (FlexPayException e) {
                 log.debug("Error with creating street", e);
-                addActionError(getText("error.eirc.registry.cant_create_street"));
+                addActionError(getText("eirc.error.registry.cant_create_street"));
                 return SUCCESS;
             }
         } else if (checkBuildingType(objectType)) {
@@ -123,7 +123,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
                 createBuilding(data, stubDataSourceDescription);
             } catch (FlexPayExceptionContainer e) {
                 log.debug("Error with creating building", e);
-                addActionError(getText("error.eirc.registry.cant_create_building"));
+                addActionError(getText("eirc.error.registry.cant_create_building"));
                 return SUCCESS;
             }
         } else if (checkApartmentType(objectType)) {
@@ -131,7 +131,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
                 createApartment(data, stubDataSourceDescription);
             } catch (FlexPayException e) {
                 log.debug("Error with creating apartment", e);
-                addActionError(getText("error.eirc.registry.cant_create_apartment"));
+                addActionError(getText("eirc.error.registry.cant_create_apartment"));
                 return SUCCESS;
             }
         } else if (checkStreetTypeType(objectType)) {
@@ -139,7 +139,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
                 createStreetType();
             } catch (FlexPayExceptionContainer e) {
                 log.debug("Error with creating street type", e);
-                addActionError(getText("error.eirc.registry.cant_create_street_type"));
+                addActionError(getText("eirc.error.registry.cant_create_street_type"));
                 return SUCCESS;
             }
         }
@@ -164,7 +164,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
         Organization organization = organizationService.readFull(props.getSenderStub());
         if (organization == null) {
             log.warn("Can't get organization with id {} from DB", props.getSenderStub().getId());
-            addActionError(getText("error.eirc.data_source_not_found"));
+            addActionError(getText("payments.error.data_source_not_found"));
             return null;
         }
 
@@ -212,7 +212,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
 
             if (stub == null) {
                 log.debug("Correction for street type not found too");
-                addActionError(getText("error.eirc.registry.street_type_not_found"));
+                addActionError(getText("eirc.error.registry.street_type_not_found"));
                 throw new FlexPayException("Street type not found");
             }
         }
@@ -235,7 +235,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
 
             if (stub == null) {
                 log.debug("Correction for street for building not found too");
-                addActionError(getText("error.eirc.registry.street_not_found"));
+                addActionError(getText("eirc.error.registry.street_not_found"));
                 throw new FlexPayExceptionContainer(new FlexPayException("Street not found"));
             }
 
@@ -260,7 +260,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
         Building building = objectsFactory.newBuilding();
         if (district == null || district.isNew()) {
             log.error("Incorrect district id");
-            addActionError(getText("error.eirc.registry.internal_error"));
+            addActionError(getText("eirc.error.registry.internal_error"));
             return;
         }
         building.setDistrict(district);
@@ -289,7 +289,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
 
             if (stub == null) {
                 log.debug("Correction for street for apartment not found too");
-                addActionError(getText("error.eirc.registry.street_not_found"));
+                addActionError(getText("eirc.error.registry.street_not_found"));
                 throw new FlexPayExceptionContainer(new FlexPayException("Street not found"));
             }
 
@@ -303,7 +303,7 @@ public class RegistryRecordErrorFixAction extends AccountantAWPActionSupport {
             Stub<BuildingAddress> addressStub = correctionsService.findCorrection(data.getBuildingId(), BuildingAddress.class, stubDataSourceDescription);
             if (addressStub == null) {
                 log.debug("Correction for building address not found too");
-                addActionError(getText("error.eirc.registry.building_not_found"));
+                addActionError(getText("eirc.error.registry.building_not_found"));
                 throw new FlexPayExceptionContainer(new FlexPayException("Building not found"));
             }
 

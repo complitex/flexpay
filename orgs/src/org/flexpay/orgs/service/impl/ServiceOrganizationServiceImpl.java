@@ -124,20 +124,20 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 		}
 		if (!defaultDescFound) {
 			container.addException(new FlexPayException(
-					"No default lang desc", "eirc.error.service_organization.no_default_lang_description"));
+					"No default lang desc", "orgs.error.service_organization.no_default_lang_description"));
 		}
 
 		List<ServiceOrganization> organizationServiceOrganizations = serviceOrganizationDao
 				.findOrganizationServiceOrganizations(organization.getOrganizationStub().getId());
 		if (organizationServiceOrganizations.size() > 1) {
 			container.addException(new FlexPayException("Several service organizations found",
-					"eirc.error.service_organization.several_service_organizations_in_organization"));
+					"orgs.error.service_organization.several_service_organizations_in_organization"));
 		}
 		if (!organizationServiceOrganizations.isEmpty()) {
 			ServiceOrganization existingServiceOrganization = organizationServiceOrganizations.get(0);
 			if (!existingServiceOrganization.equals(organization)) {
 				container.addException(new FlexPayException("Service organization already exists",
-						"eirc.error.service_organization.organasation_already_has_service_organization"));
+						"orgs.error.service_organization.organization_already_has_service_organization"));
 			}
 		}
 		sessionUtils.evict(organizationServiceOrganizations);

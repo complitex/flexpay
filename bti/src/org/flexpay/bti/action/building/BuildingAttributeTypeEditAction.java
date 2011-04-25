@@ -47,7 +47,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		attributeType = attributeType.isNew() ? attributeType : attributeTypeService.readFull(stub(attributeType));
 
 		if (attributeType == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 

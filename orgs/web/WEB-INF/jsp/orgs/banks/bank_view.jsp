@@ -4,7 +4,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language" /></td>
-        <td class="th"><s:text name="eirc.bank.description" /></td>
+        <td class="th"><s:text name="orgs.bank.description" /></td>
     </tr>
     <s:iterator value="bank.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -26,19 +26,19 @@
         <td colspan="4" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.bank.bank_identifier_code" />:</td>
+        <td class="col_1s"><s:text name="orgs.bank.bank_identifier_code" />:</td>
         <td class="col" colspan="2">
             <s:property value="bank.bankIdentifierCode" />
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.bank.corresponding_account" />:</td>
+        <td class="col_1s"><s:text name="orgs.bank.corresponding_account" />:</td>
         <td class="col" colspan="2">
             <s:property value="bank.correspondingAccount" />
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization" />:</td>
         <td class="col" colspan="2">
             <s:property value="getTranslationName(bank.organization.names)" />
         </td>

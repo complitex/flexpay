@@ -37,13 +37,13 @@ public class ServiceProviderEditAction extends FPActionSupport {
 
 		ServiceProvider serviceProvider = provider.isNew() ? provider : providerService.read(stub(provider));
 		if (serviceProvider == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
 		organizationFilter = providerService.initInstancelessFilter(organizationFilter, serviceProvider);
 		if (organizationFilter.getOrganizations().isEmpty()) {
-			addActionError(getText("eirc.error.service_provider.no_providerless_organization"));
+			addActionError(getText("orgs.error.service_provider.no_providerless_organization"));
 			return INPUT;
 		}
 
@@ -54,12 +54,12 @@ public class ServiceProviderEditAction extends FPActionSupport {
 		}
 
 		if (!organizationFilter.needFilter()) {
-			addActionError(getText("eirc.error.orginstance.no_organization_selected"));
+			addActionError(getText("orgs.error.orginstance.no_organization_selected"));
 			return INPUT;
 		}
 		Organization juridicalPerson = organizationService.readFull(organizationFilter.getSelectedStub());
 		if (juridicalPerson == null) {
-			addActionError(getText("eirc.error.orginstance.no_organization"));
+			addActionError(getText("orgs.error.orginstance.no_organization"));
 			return INPUT;
 		}
 
@@ -76,6 +76,8 @@ public class ServiceProviderEditAction extends FPActionSupport {
             serviceProvider.setEmail(provider.getEmail());
             providerService.update(serviceProvider);
         }
+
+        addActionMessage(getText("orgs.service_provider.saved"));
 
 		return REDIRECT_SUCCESS;
 	}

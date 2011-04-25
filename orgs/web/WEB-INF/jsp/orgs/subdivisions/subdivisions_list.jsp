@@ -16,12 +16,12 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.subdivision.name" /></td>
-        <td class="th"><s:text name="eirc.subdivision.description" /></td>
-        <td class="th"><s:text name="eirc.subdivision.real_address" /></td>
-        <td class="th"><s:text name="eirc.subdivision.head_organization" /></td>
-        <td class="th"><s:text name="eirc.subdivision.juridical_person" /></td>
-        <td class="th"><s:text name="eirc.subdivision.parent_subdivision" /></td>
+        <td class="th"><s:text name="orgs.subdivision.name" /></td>
+        <td class="th"><s:text name="orgs.subdivision.description" /></td>
+        <td class="th"><s:text name="orgs.subdivision.real_address" /></td>
+        <td class="th"><s:text name="orgs.subdivision.head_organization" /></td>
+        <td class="th"><s:text name="orgs.subdivision.juridical_person" /></td>
+        <td class="th"><s:text name="orgs.subdivision.parent_subdivision" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="subdivisions" status="status">

@@ -69,7 +69,7 @@
 		payments.db - Initialize database
 		payments.ddl - Generate DDL of module
 		payments.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
-			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.payments.service.TestBuildingService
+			for example ant -f payments_build.xml payments.runtests -Dtest.class.name=org.flexpay.payments.service.TestBuildingService
 		payments.war - Build war
 		</echo>
 	</target>

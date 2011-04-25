@@ -157,15 +157,15 @@ public class JobManager implements BeanFactoryAware {
 					} catch (ClassCastException e) {
 						log.error("Illegal exception when creating instance of " + jobName, e);
 						throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
-								"error.common.jm.job_create_failed", jobName);
+								"common.error.jm.job_create_failed", jobName);
 					} catch (BeansException e) {
 						log.error("Illegal exception when creating instance of " + jobName, e);
 						throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
-								"error.common.jm.job_create_failed", jobName);
+								"common.error.jm.job_create_failed", jobName);
 					}
 				} else {
 					throw new JobConfigurationNotFoundException("Job bean is not configured " + jobName,
-							"error.common.jm.job_not_found", jobName);
+							"common.error.jm.job_not_found", jobName);
 				}
 				return true;
 			}

@@ -16,7 +16,7 @@
         <td class="th"><s:text name="orgs.address" /></td>
         <td class="th"><s:text name="ab.person.fio" /></td>
         <td class="th"><s:text name="eirc.eirc_account" /></td>
-        <td class="th"><s:text name="month" /></td>
+        <td class="th"><s:text name="common.month" /></td>
         <td class="th"><s:text name="common.status" /></td>
         <td class="th">&nbsp;</td>
     </tr>

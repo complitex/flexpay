@@ -151,24 +151,24 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 			if (nameBlank || descBlank) {
 				container.addException(new FlexPayException(
 						"Need name and desc, was: '" + translation.getName() + "' and '" + translation.getDescription() + "'",
-						"eirc.error.service_type.need_both_name_and_description"));
+						"payments.error.service_type.need_both_name_and_description"));
 			}
 		}
 		if (!defaultNameFound) {
 			container.addException(new FlexPayException(
-					"No default lang name", "eirc.error.service_type.no_default_lang_name"));
+					"No default lang name", "payments.error.service_type.no_default_lang_name"));
 		}
 
 		if (type.getCode() == 0) {
 			container.addException(new FlexPayException(
-					"No code specified", "eirc.error.service_type.no_code"));
+					"No code specified", "payments.error.service_type.no_code"));
 		} else {
 			// check if code was not changed and is a unique one
 			try {
 				ServiceType typeByCode = getServiceType(type.getCode());
 				if (typeByCode != null && (type.isNew() || !typeByCode.equals(type))) {
 					container.addException(new FlexPayException("Not unique code: " + type.getCode(),
-							"eirc.error.service_type.not_unique_code"));
+							"payments.error.service_type.not_unique_code"));
 				}
 				sessionUtils.evict(typeByCode);
 			} catch (IllegalArgumentException e) {

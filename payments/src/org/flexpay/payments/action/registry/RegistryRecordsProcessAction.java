@@ -31,7 +31,7 @@ public class RegistryRecordsProcessAction extends AccountantAWPActionSupport {
 
 		processManager.createProcess("ProcessingDBRegistryProcess2", contextVariables);
 
-		addActionMessage(getText("eirc.registry.records.processing_started"));
+		addActionMessage(getText("payments.registry.records.processing_started"));
 
 		return SUCCESS;
 	}

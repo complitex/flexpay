@@ -109,7 +109,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 					if (service == null) {
 						log.warn("Unknown service code: {}", data.getServiceCode());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
-						error.setErrorId("error.eirc.import.service_not_found");
+						error.setErrorId("eirc.error.import.service_not_found");
 						setConsumerError(record, error);
 
 						addToStack(record);
@@ -136,7 +136,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				if (data.isPersonalInfoEmpty()) {
 					log.info("Cannot find consumer by short info: {}", data.getShortConsumerId());
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
-					error.setErrorId("error.eirc.import.consumer_not_found");
+					error.setErrorId("eirc.error.import.consumer_not_found");
 					setConsumerError(record, error);
 					addToStack(record);
 					continue;
@@ -289,7 +289,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		if (stub == null) {
 			log.warn("No street type was found: {}, for street {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
-			error.setErrorId("error.eirc.import.street_type_not_found");
+			error.setErrorId("eirc.error.import.street_type_not_found");
 			setConsumerError(record, error);
 			return null;
 		}
@@ -299,7 +299,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		if (streets == null) {
 			log.info("No candidates for street: {}", data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
-			error.setErrorId("error.eirc.import.street_not_found");
+			error.setErrorId("eirc.error.import.street_not_found");
 			setConsumerError(record, error);
 			return null;
 		}
@@ -310,7 +310,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		if (filteredStreets.isEmpty()) {
 			log.warn("Cannot find street by type: {}, {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
-			error.setErrorId("error.eirc.import.street_type_invalid");
+			error.setErrorId("eirc.error.import.street_type_invalid");
 			setConsumerError(record, error);
 			return null;
 		}
@@ -323,7 +323,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		log.warn("Cannot find street candidate, even by type: {}, {}",
 				data.getAddressStreetType(), data.getAddressStreet());
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
-		error.setErrorId("error.eirc.import.street_too_many_variants");
+		error.setErrorId("eirc.error.import.street_too_many_variants");
 		setConsumerError(record, error);
 		return null;
 	}
@@ -365,7 +365,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 			log.warn("Failed getting building for consumer, Street({}, {}), Building({}, {}) ",
 					new Object[]{street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});
 			ImportError error = addImportError(sd, data.getExternalSourceId(), BuildingAddress.class, dataSource);
-			error.setErrorId("error.eirc.import.building_not_found");
+			error.setErrorId("eirc.error.import.building_not_found");
 			setConsumerError(record, error);
 			return null;
 		}
@@ -386,7 +386,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		Stub<Apartment> stub = apartmentService.findApartmentStub(building, data.getAddressApartment());
 		if (stub == null) {
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-			error.setErrorId("error.eirc.import.apartment_not_found");
+			error.setErrorId("eirc.error.import.apartment_not_found");
 			setConsumerError(record, error);
 			return null;
 		}

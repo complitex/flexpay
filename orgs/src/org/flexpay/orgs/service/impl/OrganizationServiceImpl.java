@@ -190,7 +190,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		}
 		if (!defaultNameFound) {
 			container.addException(new FlexPayException(
-					"No default lang name", "eirc.error.organization.no_default_lang_name"));
+					"No default lang name", "orgs.error.organization.no_default_lang_name"));
 		}
 
 		boolean defaultDescFound = false;
@@ -201,26 +201,26 @@ public class OrganizationServiceImpl implements OrganizationService {
 		}
 		if (!defaultDescFound) {
 			container.addException(new FlexPayException(
-					"No default lang desc", "eirc.error.organization.no_default_lang_description"));
+					"No default lang desc", "orgs.error.organization.no_default_lang_description"));
 		}
 
 		if (StringUtils.isBlank(organization.getJuridicalAddress())) {
 			container.addException(new FlexPayException(
-					"No juridical address", "eirc.error.organization.no_juridical_address"));
+					"No juridical address", "orgs.error.organization.no_juridical_address"));
 		}
 
 		if (StringUtils.isBlank(organization.getPostalAddress())) {
 			container.addException(new FlexPayException(
-					"No postal address", "eirc.error.organization.no_postal_address"));
+					"No postal address", "orgs.error.organization.no_postal_address"));
 		}
 
 		if (StringUtils.isBlank(organization.getIndividualTaxNumber())) {
 			container.addException(new FlexPayException(
-					"No inn", "eirc.error.organization.no_individual_tax_number"));
+					"No inn", "orgs.error.organization.no_individual_tax_number"));
 		}
 
 		if (StringUtils.isBlank(organization.getKpp())) {
-			container.addException(new FlexPayException("No kpp", "eirc.error.organization.no_kpp"));
+			container.addException(new FlexPayException("No kpp", "orgs.error.organization.no_kpp"));
 		}
 
 		if (!container.isEmpty()) {

@@ -20,7 +20,7 @@ public class PaymentCollectorServiceImpl
 	 * @return error code
 	 */
 	protected String getSeveralInstancesErrorCode() {
-		return "eirc.error.payment_collector.several_instances";
+		return "orgs.error.payment_collector.several_instances";
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class PaymentCollectorServiceImpl
 	 * @return error code
 	 */
 	protected String getInstanceExistsErrorCode() {
-		return "eirc.error.payment_collector.instance_exists";
+		return "orgs.error.payment_collector.instance_exists";
 	}
 
 	protected void doValidate(@NotNull PaymentCollector instance, FlexPayExceptionContainer ex) {

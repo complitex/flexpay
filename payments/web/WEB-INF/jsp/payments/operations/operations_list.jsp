@@ -88,7 +88,7 @@
                 <td class="service_column" style="display:none;">&nbsp;</td>
                 <td class="service_provider_column" style="display:none;">&nbsp;</td>
                 <td>
-                    <a href="#" onclick="printQuittance(<s:property value="id" />);"><s:text name="print" /></a>
+                    <a href="#" onclick="printQuittance(<s:property value="id" />);"><s:text name="common.print" /></a>
                 </td>
             </tr>
             <%-- document rows (are not shown by default, appear in 'detailed' view) --%>

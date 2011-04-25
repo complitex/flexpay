@@ -113,7 +113,7 @@ public class QuittancePayAction extends FPActionSupport {
 			QuittanceDetails details = quittance.getServiceDetails(new Stub<Service>(serviceId));
 			if (details == null) {
 				ex.addException(new FlexPayException("No details ",
-						"eirc.error.quittances.pay.no_details_found", serviceId));
+						"eirc.error.quittance.pay.no_details_found", serviceId));
 				continue;
 			}
 			detailsPayment.setQuittanceDetails(details);
@@ -133,7 +133,7 @@ public class QuittancePayAction extends FPActionSupport {
 
 		if (!sum.equals(totalPayed)) {
 			ex.addException(new FlexPayException("invalid division",
-					"eirc.error.quittances.pay.invalid_sum_division", sum, totalPayed));
+					"eirc.error.quittance.pay.invalid_sum_division", sum, totalPayed));
 		}
 
 		payment.setPaymentStatus(hasPartialPayments ?

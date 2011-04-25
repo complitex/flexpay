@@ -45,7 +45,7 @@
 
 	<!-- common pages definition -->
 	<definition name="payments.error.cashbox_authentication_required" extends="payments.main">
-		<put-attribute name="title" value="payments.errors.cashbox_authentication_required"/>
+		<put-attribute name="title" value="payments.error.cashbox_authentication_required"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/cashbox_authentication_required.jsp"/>
 	</definition>
 
@@ -55,7 +55,7 @@
 	</definition>
 
 	<definition name="payments.error.trading_day_closed" extends="payments.main">
-		<put-attribute name="title" value="payments.errors.trading_day_closed"/>
+		<put-attribute name="title" value="payments.error.trading_day_closed"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/trading_day_closed.jsp"/>
 	</definition>
 
@@ -214,11 +214,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashboxes_list_page.jsp" />
 	</definition>
 	<definition name="payments.cashbox.edit" extends="payments.accountant">
-		<put-attribute name="title" value="payments.cashbox" />
+		<put-attribute name="title" value="payments.cashbox.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_edit.jsp" />
 	</definition>
     <definition name="payments.cashbox.view" extends="payments.accountant">
-        <put-attribute name="title" value="payments.cashbox" />
+        <put-attribute name="title" value="payments.cashbox.title" />
         <put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_view.jsp" />
     </definition>
 	<definition name="payments.cashbox.workplace.list" extends="payments.accountant">

@@ -42,7 +42,7 @@ public class ProcessesCleanupAction extends FPActionSupport implements Initializ
 		if (isSubmit()) {
 			log.debug("Form submit!");
 			if (!haveFilterSet()) {
-				addActionError("error.common.process.cleanup.need_filter");
+				addActionError("common.error.process.cleanup.need_filter");
 			} else {
 				Map<Serializable, Serializable> params = map();
 				params.put(ProcessesCleanupJob.PARAM_COMPLETE_BEGIN_TIME, beginDateFilter.getDate());

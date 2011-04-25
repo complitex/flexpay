@@ -9,7 +9,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td class="th"><s:text name="import.error_type.all" /></td>
+        <td class="th"><s:text name="common.import.error_type.all" /></td>
     </tr>
     <s:iterator value="errorsTypes" status="status">
         <tr class="cols_1">

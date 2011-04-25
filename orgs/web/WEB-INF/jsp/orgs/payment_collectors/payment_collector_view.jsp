@@ -4,7 +4,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language" /></td>
-        <td class="th"><s:text name="eirc.orginstance.description" /></td>
+        <td class="th"><s:text name="orgs.orginstance.description" /></td>
     </tr>
     <s:iterator value="collector.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -26,13 +26,13 @@
         <td colspan="4" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.payment_collector.email" />:</td>
+        <td class="col_1s"><s:text name="orgs.payment_collector.email" />:</td>
         <td class="col" colspan="2">
             <s:property value="collector.email" />
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization" />:</td>
         <td class="col" colspan="2">
             <s:property value="getTranslationName(collector.organization.names)" />
         </td>
