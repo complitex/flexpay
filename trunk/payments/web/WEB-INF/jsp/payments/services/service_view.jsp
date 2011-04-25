@@ -5,7 +5,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language" /></td>
-        <td class="th"><s:text name="eirc.service.name" /></td>
+        <td class="th"><s:text name="payments.service.name" /></td>
     </tr>
     <s:iterator value="service.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -30,19 +30,19 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service.external_code" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service.external_code" />:</td>
         <td class="col" colspan="2">
             <s:property value="service.externalCode" />
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service.begin_date" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service.begin_date" />:</td>
         <td class="col" colspan="2">
             <s:date name="service.beginDate" format="yyyy/MM/dd" />
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service.end_date" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service.end_date" />:</td>
         <td class="col" colspan="2">
             <s:date name="service.endDate" format="yyyy/MM/dd" />
         </td>
@@ -60,7 +60,7 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service_provider" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="orgs.service_provider" />:</td>
         <td class="col" colspan="2">
             <s:property value="getTranslationName(service.serviceProvider.organization.names)" />
         </td>
@@ -76,7 +76,7 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service.parent_service" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service.parent_service" />:</td>
         <td class="col" colspan="2">
             <s:if test="service.parentService != null">
                 <s:property value="getTranslationName(service.parentService.descriptions)" />

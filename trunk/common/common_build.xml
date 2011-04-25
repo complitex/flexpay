@@ -79,7 +79,7 @@
 		common.db - Initialize database
 		common.ddl - Generate DDL of module
 		common.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
-			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.common.test.TestStringUtil
+			for example ant -f common_build.xml common.runtests -Dtest.class.name=org.flexpay.common.test.TestStringUtil
 		common.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
 			same test.class.name option applies to this target
 		</echo>

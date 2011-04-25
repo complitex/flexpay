@@ -48,25 +48,25 @@ public class SetCashboxIdAction extends FPActionSupport implements ServletRespon
 		try {
 			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.parseLong(cashboxId)));
 			if (cashbox == null) {
-				addActionError(getText("payments.errors.cashbox_id_is_bad"));
+				addActionError(getText("payments.error.cashbox_id_is_bad"));
 				return false;
 			}
 
 			// validating payment point correspondance
 			Long userPaymentPointId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentPointId();
 			if (userPaymentPointId == null) {
-				addActionError(getText("payments.errors.user_payment_point_is_not_set"));
+				addActionError(getText("payments.error.user_payment_point_is_not_set"));
 				return false;
 			}
 
 			Long cashboxPaymentPointId = cashbox.getPaymentPoint().getId();
 			if (!cashboxPaymentPointId.equals(userPaymentPointId)) {
-				addActionError(getText("payments.errors.casbox_id_is_bad_payment_point"));
+				addActionError(getText("payments.error.casbox_id_is_bad_payment_point"));
 				return false;
 			}
 
 		} catch (NumberFormatException nfe) {
-			addActionError(getText("payments.errors.cashbox_id_must_be_a_number"));
+			addActionError(getText("payments.error.cashbox_id_must_be_a_number"));
 		}
 
 		return !hasActionErrors();

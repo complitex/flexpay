@@ -4,7 +4,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language"/></td>
-        <td class="th"><s:text name="eirc.subdivision.name"/></td>
+        <td class="th"><s:text name="orgs.subdivision.name"/></td>
     </tr>
     <s:iterator value="subdivision.names" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -28,7 +28,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language"/></td>
-        <td class="th"><s:text name="eirc.subdivision.description"/></td>
+        <td class="th"><s:text name="orgs.subdivision.description"/></td>
     </tr>
     <s:iterator value="subdivision.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -50,13 +50,13 @@
         <td colspan="3" height="3" bgcolor="#4a4f4f"/>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.subdivision.real_address" />:</td>
+        <td class="col_1s"><s:text name="orgs.subdivision.real_address" />:</td>
         <td class="col" colspan="2">
             <s:property value="subdivision.realAddress"/>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.subdivision.head_organization" />:</td>
+        <td class="col_1s"><s:text name="orgs.subdivision.head_organization" />:</td>
         <td class="col" colspan="2">
             <s:if test="subdivision.headOrganization != null">
                 <s:property value="getTranslationName(subdivision.headOrganization.names)"/>
@@ -66,7 +66,7 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.subdivision.juridical_person" />:</td>
+        <td class="col_1s"><s:text name="orgs.subdivision.juridical_person" />:</td>
         <td class="col" colspan="2">
             <s:if test="subdivision.juridicalPerson != null">
                 <s:property value="getTranslationName(subdivision.juridicalPerson.names)"/>
@@ -76,7 +76,7 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.subdivision.parent_subdivision" />:</td>
+        <td class="col_1s"><s:text name="orgs.subdivision.parent_subdivision" />:</td>
         <td class="col" colspan="2">
             <s:if test="subdivision.parentSubdivision != null">
                 <s:property value="getTranslationName(subdivision.parentSubdivision.names)"/>

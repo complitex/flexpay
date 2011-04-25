@@ -38,7 +38,7 @@ public class BankEditAction extends FPActionSupport {
 
 		Bank oldBank = bank.isNotNew() ? bankService.read(stub(bank)) : bank;
 		if (oldBank == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
@@ -54,12 +54,12 @@ public class BankEditAction extends FPActionSupport {
 		}
 
 		if (!organizationFilter.needFilter()) {
-			addActionError(getText("eirc.error.orginstance.no_organization_selected"));
+			addActionError(getText("orgs.error.orginstance.no_organization_selected"));
 			return INPUT;
 		}
 		Organization juridicalPerson = organizationService.readFull(organizationFilter.getSelectedStub());
 		if (juridicalPerson == null) {
-			addActionError(getText("eirc.error.orginstance.no_organization"));
+			addActionError(getText("orgs.error.orginstance.no_organization"));
 			return INPUT;
 		}
 

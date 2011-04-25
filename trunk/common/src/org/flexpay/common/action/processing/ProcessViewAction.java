@@ -35,7 +35,7 @@ public class ProcessViewAction extends FPActionSupport {
 		
         process = processManager.getProcessInstanceInfo(process.getId());
 		if (process == null) {
-			addActionError(getText("common.processing.process.process_not_found"));
+			addActionError(getText("common.error.processing.process.process_not_found"));
 			return SUCCESS;
 		}
         logText = LogPreviewUtil.getLogLastLines(process.getId());

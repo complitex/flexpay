@@ -15,13 +15,13 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="payments.service.name" /></td>
-        <td class="th"><s:text name="eirc.service.description" /></td>
-        <td class="th"><s:text name="eirc.service.service_provider" /></td>
+        <td class="th"><s:text name="payments.service.service_name" /></td>
+        <td class="th"><s:text name="payments.service.description" /></td>
+        <td class="th"><s:text name="payments.service.service_provider" /></td>
         <td class="th"><s:text name="payments.service_type.code" /></td>
-        <td class="th"><s:text name="eirc.service.external_code" /></td>
-        <td class="th"><s:text name="eirc.service.begin_date" /></td>
-        <td class="th"><s:text name="eirc.service.end_date" /></td>
+        <td class="th"><s:text name="payments.service.external_code" /></td>
+        <td class="th"><s:text name="payments.service.begin_date" /></td>
+        <td class="th"><s:text name="payments.service.end_date" /></td>
         <td class="th"><s:text name="payments.service.can_return" /></td>
         <td class="th">&nbsp;</td>
     </tr>

@@ -60,14 +60,14 @@
 		var accNum = $.trim($("#accountNumber").val());
 
 		if (accNum.length != 11) {
-			alert("<s:text name="error.invalid_account_number_length" />");
+			alert("<s:text name="payments.error.invalid_account_number_length" />");
 			return false;
 		}
 
 		var objRegExp = /(^-?\d\d*$)/;
 
 		if (!objRegExp.test(accNum)) {
-			alert("<s:text name="error.invalid_account_number_format" />");
+			alert("<s:text name="payments.error.invalid_account_number_format" />");
 			return false;
 		}
 

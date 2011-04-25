@@ -38,7 +38,7 @@ public class CashboxEditAction extends AccountantAWPActionSupport {
 
 		cashbox = cashbox.isNew() ? cashbox : cashboxService.read(stub(cashbox));
 		if (cashbox == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
@@ -53,7 +53,7 @@ public class CashboxEditAction extends AccountantAWPActionSupport {
 		}
 
 		if (!paymentPointFilter.needFilter()) {
-			addActionError(getText("eirc.error.cashbox.no_payment_point"));
+			addActionError(getText("orgs.error.cashbox.no_payment_point"));
 			return INPUT;
 		}
 

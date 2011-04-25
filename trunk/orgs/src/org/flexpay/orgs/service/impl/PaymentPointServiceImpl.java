@@ -223,11 +223,11 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 
 		PaymentCollector collector = point.getCollector();
 		if (collector == null || collector.isNew()) {
-			ex.addException(new FlexPayException("Invalid collector", "eirc.error.payment_point.no_collector"));
+			ex.addException(new FlexPayException("Invalid collector", "orgs.error.payment_point.no_collector"));
 		}
 
 		if (StringUtils.isBlank(point.getAddress())) {
-			ex.addException(new FlexPayException("No address", "eirc.error.payment_point.no_address"));
+			ex.addException(new FlexPayException("No address", "orgs.error.payment_point.no_address"));
 		}
 
 		boolean defaultNameFound = false;
@@ -240,7 +240,7 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		}
 		if (!defaultNameFound) {
 			ex.addException(new FlexPayException(
-					"No default lang desc", "payments.error.cashbox.no_default_lang_name"));
+					"No default lang desc", "orgs.error.cashbox.no_default_lang_name"));
 		}
 
 		if (ex.isNotEmpty()) {

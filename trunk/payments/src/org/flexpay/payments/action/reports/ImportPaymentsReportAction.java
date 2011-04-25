@@ -50,7 +50,7 @@ public class ImportPaymentsReportAction extends AccountantAWPActionSupport {
 		Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
 		Date end = endTimeFilter.setTime(endDateFilter.getDate());
 		if (begin.after(end)) {
-			addActionError(getText("error.from_after_till_tm"));
+			addActionError(getText("payments.error.from_after_till_tm"));
 			return INPUT;
 		}
 

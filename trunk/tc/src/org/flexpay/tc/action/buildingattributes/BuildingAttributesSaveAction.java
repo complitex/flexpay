@@ -94,43 +94,43 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_LIVE_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_living_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_living_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_SOFT_ROOF_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_soft_roof_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_soft_roof_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_HARD_SLATE_ROOF_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_hard_slate_roof_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_hard_slate_roof_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_HARD_METAL_ROOF_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_hard_metal_roof_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_hard_metal_roof_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_BASEMENT_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_basement_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_basement_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_TECHNICAL_FLOORS_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_technical_floor_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_technical_floor_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_ARRET_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_arret_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_arret_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_FIRST_FLOORS_TOTAL_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_first_floor_total_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_first_floor_total_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_lifted_apartments_total_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_lifted_apartments_total_square"));
 		}
 
 		if (!validator.checkArea(typesMap.get("ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE"))) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_ads_suited_apartments_total_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_ads_suited_apartments_total_square"));
 		}
 
 		String nearHouseNonCategorySquare = typesMap.get("ATTR_NEAR_HOUSE_NONCATEGORY_TERRITORY_TOTAL_SQUARE");
@@ -140,23 +140,23 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 		String nearHouseTotalSquare = typesMap.get("ATTR_NEAR_HOUSE_TERRITORY_TOTAL_SQUARE");
 
 		if (!validator.checkArea(nearHouseNonCategorySquare)) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_non_category_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_near_house_non_category_square"));
 		}
 
 		if (!validator.checkArea(nearHouse1stCategorySquare)) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_1st_category_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_near_house_1st_category_square"));
 		}
 
 		if (!validator.checkArea(nearHouse2ndCategorySquare)) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_2nd_category_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_near_house_2nd_category_square"));
 		}
 
 		if (!validator.checkArea(nearHouse3rdCategorySquare)) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_3rd_category_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_near_house_3rd_category_square"));
 		}
 
 		if (!validator.checkArea(nearHouseTotalSquare)) {
-			addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square"));
+			addActionError(getText("tc.error.building_attributes.validation.invalid_near_house_total_square"));
 		}
 
 		if (StringUtils.isNotEmpty(nearHouseNonCategorySquare)
@@ -175,7 +175,7 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 				realTotal = realTotal.add(nonCategory).add(firstCategory).add(secondCategory).add(thirdCategory);
 
 				if (realTotal.compareTo(userTotal) != 0) {
-					addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square_bad_sum"));
+					addActionError(getText("tc.error.building_attributes.validation.invalid_near_house_total_square_bad_sum"));
 				}
 			} catch (NumberFormatException nfe) {
 				log.debug("Not all near house squares are valid. Total sum check is skipped.");

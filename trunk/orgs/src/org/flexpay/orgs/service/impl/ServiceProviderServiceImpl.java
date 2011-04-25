@@ -167,7 +167,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
 		if (sp.getOrganization() == null || sp.getOrganization().isNew()) {
 			container.addException(new FlexPayException(
-					"No organization selected", "eirc.error.service_provider.no_organization_specified"));
+					"No organization selected", "orgs.error.service_provider.no_organization_specified"));
 		}
 		// todo validate organization id was not changed for existing provider
 
@@ -179,7 +179,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 		}
 		if (!defaultDescFound) {
 			container.addException(new FlexPayException(
-					"No default lang desc", "eirc.error.service_provider.no_default_lang_description"));
+					"No default lang desc", "orgs.error.service_provider.no_default_lang_description"));
 		}
 
 		if (!container.isEmpty()) {

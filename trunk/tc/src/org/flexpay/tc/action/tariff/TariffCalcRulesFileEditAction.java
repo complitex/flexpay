@@ -43,7 +43,7 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 		rulesFile = rulesFile.isNew() ? rulesFile : tariffCalculationRulesFileService.read(stub(rulesFile));
 
 		if (rulesFile == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 

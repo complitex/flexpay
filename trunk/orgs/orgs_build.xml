@@ -61,7 +61,7 @@
 		orgs.db - Initialize database
 		orgs.ddl - Generate DDL of module
 		orgs.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
-			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.orgs.service.TestBuildingService
+			for example ant -f orgs_build.xml orgs.runtests -Dtest.class.name=org.flexpay.orgs.service.TestBuildingService
 		orgs.war - Build production war
 		</echo>
 	</target>

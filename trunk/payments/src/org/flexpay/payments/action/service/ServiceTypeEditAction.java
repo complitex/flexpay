@@ -29,7 +29,7 @@ public class ServiceTypeEditAction extends FPActionSupport {
 
 		ServiceType type = serviceType.isNotNew() ? serviceTypeService.read(stub(serviceType)) : serviceType;
 		if (type == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 

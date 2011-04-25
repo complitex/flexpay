@@ -36,12 +36,12 @@ public class BuildingAttributesValidator {
 			Integer floorsNumber = Integer.parseInt(value);
 
 			if (floorsNumber > ApplicationConfig.getMaximumFloors()) {
-				errorMessageCode = "tc.errors.building_attributes.validation.number_of_floors_is_too_big";
+				errorMessageCode = "tc.error.building_attributes.validation.number_of_floors_is_too_big";
 				return false;
 			}
 
 		} catch (NumberFormatException nfe) {
-			errorMessageCode = "tc.errors.building_attributes.validation.number_of_floors_is_not_a_number";
+			errorMessageCode = "tc.error.building_attributes.validation.number_of_floors_is_not_a_number";
 			return false;
 		}
 
@@ -68,11 +68,11 @@ public class BuildingAttributesValidator {
 			Integer porchesNumber = Integer.parseInt(value);
 
 			if (porchesNumber > ApplicationConfig.getMaximumPporches()) {
-				errorMessageCode = "tc.errors.building_attributes.validation.number_of_porches_is_too_big";
+				errorMessageCode = "tc.error.building_attributes.validation.number_of_porches_is_too_big";
 				return false;
 			}
 		} catch (NumberFormatException nfe) {
-			errorMessageCode = "tc.errors.building_attributes.validation.number_of_porches_is_not_a_number";
+			errorMessageCode = "tc.error.building_attributes.validation.number_of_porches_is_not_a_number";
 			return false;
 		}
 
@@ -98,11 +98,11 @@ public class BuildingAttributesValidator {
 			Integer apartmentsNumber = Integer.parseInt(value);
 
 			if (apartmentsNumber > ApplicationConfig.getMaximumApartments()) {
-				errorMessageCode = "tc.errors.building_attributes.validation.number_of_apartments_is_too_big";
+				errorMessageCode = "tc.error.building_attributes.validation.number_of_apartments_is_too_big";
 				return false;
 			}
 		} catch (NumberFormatException nfe) {
-			errorMessageCode = "tc.errors.building_attributes.validation.number_of_apartments_is_not_a_number";
+			errorMessageCode = "tc.error.building_attributes.validation.number_of_apartments_is_not_a_number";
 			return false;
 		}
 
@@ -124,7 +124,7 @@ public class BuildingAttributesValidator {
 		}
 
 		if (value.length() != 4) {
-			errorMessageCode = "tc.errors.building_attributes.validation.invalid_construction_year";
+			errorMessageCode = "tc.error.building_attributes.validation.invalid_construction_year";
 			return false;
 		}
 
@@ -133,11 +133,11 @@ public class BuildingAttributesValidator {
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
 			if (constructionYear > currentYear) {
-				errorMessageCode = "tc.errors.building_attributes.validation.invalid_construction_year";
+				errorMessageCode = "tc.error.building_attributes.validation.invalid_construction_year";
 				return false;
 			}
 		} catch (NumberFormatException nfe) {
-			errorMessageCode = "tc.errors.building_attributes.validation.invalid_construction_year";
+			errorMessageCode = "tc.error.building_attributes.validation.invalid_construction_year";
 			return false;
 		}
 

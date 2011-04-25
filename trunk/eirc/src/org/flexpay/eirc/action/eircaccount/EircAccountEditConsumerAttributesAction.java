@@ -55,7 +55,7 @@ public class EircAccountEditConsumerAttributesAction extends EircAccountAction {
         Stub<EircAccount> stub = stub(eircAccount);
 		eircAccount = eircAccountService.readFull(stub);
 		if (eircAccount == null) {
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
             log.error("Can't get eirc account with id {} from DB", stub.getId());
 			return REDIRECT_ERROR;
 		}

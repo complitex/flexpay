@@ -61,7 +61,7 @@ public class ServiceEditAction extends FPActionSupport {
 
         Service oldService = service.isNew() ? service : spService.readFull(stub(service));
         if (oldService == null) {
-            addActionError(getText("common.object_not_selected"));
+            addActionError(getText("common.error.object_not_selected"));
             return REDIRECT_SUCCESS;
         }
 

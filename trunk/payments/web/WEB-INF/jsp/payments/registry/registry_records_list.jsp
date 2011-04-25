@@ -12,16 +12,16 @@
         <td class="th">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.registry.record.service" /></td>
-        <td class="th"><s:text name="eirc.registry.record.account" /></td>
-        <td class="th"><s:text name="eirc.registry.record.address" /></td>
-        <td class="th"><s:text name="eirc.registry.record.fio" /></td>
-        <td class="th"><s:text name="eirc.date" /></td>
-        <td class="th"><s:text name="eirc.registry.record.amount" /></td>
-        <td class="th"><s:text name="eirc.registry.record.containers" /></td>
-        <td class="th"><s:text name="eirc.registry.record.error" /></td>
-        <td class="th"><s:text name="eirc.status" /></td>
-        <%--<td class="th"><s:text name="eirc.correspondence" /></td>--%>
+        <td class="th"><s:text name="payments.registry.record.service" /></td>
+        <td class="th"><s:text name="payments.registry.record.account" /></td>
+        <td class="th"><s:text name="payments.registry.record.address" /></td>
+        <td class="th"><s:text name="payments.registry.record.fio" /></td>
+        <td class="th"><s:text name="payments.date" /></td>
+        <td class="th"><s:text name="payments.registry.record.amount" /></td>
+        <td class="th"><s:text name="payments.registry.record.containers" /></td>
+        <td class="th"><s:text name="payments.registry.record.error" /></td>
+        <td class="th"><s:text name="payments.status" /></td>
+        <%--<td class="th"><s:text name="payments.correspondence" /></td>--%>
     </tr>
     <s:iterator value="records" status="status">
         <tr valign="middle" class="cols_1">
@@ -32,13 +32,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <s:if test="service != null">
-                    <a href="<s:url action="serviceEdit" namespace="/eirc"><s:param name="service.id" value="service.id" /></s:url>">
-                        <s:property value="serviceCode" />
-                    </a>
-                </s:if><s:else>
-                    <s:property value="serviceCode" />
-                </s:else>
+                <s:property value="serviceCode" />
             </td>
             <td class="col"><s:property value="properties.eircAccount" /></td>
             <td class="col" nowrap>
@@ -91,7 +85,7 @@
         <td colspan="11">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
 <%--
-            <input type="button" value="<s:text name="eirc.process_selected" />" class="btn-exit" onclick="process();" />
+            <input type="button" value="<s:text name="payments.process_selected" />" class="btn-exit" onclick="process();" />
 --%>
         </td>
     </tr>

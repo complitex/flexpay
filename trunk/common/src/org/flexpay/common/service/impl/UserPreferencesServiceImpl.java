@@ -259,7 +259,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (preferences.getLocale() == null) {
-			container.addException(new FlexPayException("No locale", "error.common.user.no_locale"));
+			container.addException(new FlexPayException("No locale", "common.error.user.no_locale"));
 		}
 
 		if (container.isNotEmpty()) {

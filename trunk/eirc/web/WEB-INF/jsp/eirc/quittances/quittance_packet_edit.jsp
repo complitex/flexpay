@@ -23,7 +23,7 @@
 			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/close_date_filter.jsp"%></td>
 		</tr>
 		<tr valign="middle" class="col">
-			<td class="col"><s:text name="eirc.payment_point" />:</td>
+			<td class="col"><s:text name="orgs.payment_point" />:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/orgs/filters/payment_point_filter.jsp"%></td>
 		</tr>
 		<tr valign="middle" class="col">

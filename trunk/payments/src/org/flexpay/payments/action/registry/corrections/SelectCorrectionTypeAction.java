@@ -52,7 +52,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 
 		if (record == null || record.isNew()) {
 			log.warn("Incorrect registry record id");
-			addActionError(getText("error.registry.record.not_specified"));
+			addActionError(getText("payments.error.registry.record.not_specified"));
 			return INPUT;
 		}
 
@@ -60,7 +60,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 		record = registryRecordService.read(stub);
 		if (record == null) {
 			log.warn("Can't get registry record with id {} from DB", stub.getId());
-			addActionError(getText("error.registry.record.invalid_specified"));
+			addActionError(getText("payments.error.registry.record.invalid_specified"));
 			return INPUT;
 		}
 
@@ -79,7 +79,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 				return "correctPerson";
 			}
 
-			addActionError(getText("error.registry.record.unsupported_error_type"));
+			addActionError(getText("payments.error.registry.record.unsupported_error_type"));
 		} else if (CORRECT_TYPE_STREET.equals(type)) {
 			return "correctStreet";
         } else if (CORRECT_TYPE_STREET_TYPE.equals(type)) {

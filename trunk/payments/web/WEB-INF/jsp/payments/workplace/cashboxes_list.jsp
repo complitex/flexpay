@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="eirc.cashbox.name" /></td>
+        <td class="th"><s:text name="orgs.cashbox.name" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="cashboxes" status="status">

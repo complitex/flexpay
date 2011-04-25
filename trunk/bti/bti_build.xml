@@ -61,7 +61,7 @@
 		bti.db - Initialize database
 		bti.ddl - Generate DDL of module
 		bti.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
-			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.bti.service.TestBuildingService
+			for example ant -f bti_build.xml bti.runtests -Dtest.class.name=org.flexpay.bti.service.TestBuildingService
 		bti.war - Build production war
 		</echo>
 	</target>

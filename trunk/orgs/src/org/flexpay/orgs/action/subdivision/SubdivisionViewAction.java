@@ -26,8 +26,8 @@ public class SubdivisionViewAction extends FPActionSupport {
 		subdivision = subdivisionService.read(stub(subdivision));
 
 		if (subdivision == null) {
-			log.error(getText("common.object_not_selected"));
-			addActionError(getText("common.object_not_selected"));
+			log.error(getText("common.error.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

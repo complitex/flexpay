@@ -15,7 +15,7 @@
 			<td class="th" width="1%">
                 <input type="checkbox" disabled="1" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
-			<td class="th"><s:text name="month"/></td>
+			<td class="th"><s:text name="common.month"/></td>
 			<td class="th"><s:text name="eirc.quittance.number"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>

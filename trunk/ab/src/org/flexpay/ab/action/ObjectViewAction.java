@@ -33,11 +33,11 @@ public abstract class ObjectViewAction<
 
 		if (object == null) {
 			log.warn("Can't get object with id {} from DB", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_ERROR;
 		} else if (object.isNotActive()) {
 			log.warn("Object with id {} is disabled", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

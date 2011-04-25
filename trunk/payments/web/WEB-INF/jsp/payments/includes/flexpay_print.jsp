@@ -4,11 +4,11 @@
 <script type="text/javascript">
 
     FPP.messages = {
-        invalidPayValue : "<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value" />",
+        invalidPayValue : "<s:text name="payments.error.quittances.quittance_pay.invalid_pay_value" />",
         inputSumIsTooSmall : "<s:text name="payments.quittances.quittance_pay.input_sum_is_too_small" />",
         createOpServerError : "<s:text name="payments.error.creating_operation_server_error" />",
-        clipboardAccessDenided : "<s:text name="payments.errors.clipboard_access_denied" />",
-        clipboardCopyError : "<s:text name="payments.errors.clipboard_copy_error" />"
+        clipboardAccessDenided : "<s:text name="payments.error.clipboard_access_denied" />",
+        clipboardCopyError : "<s:text name="payments.error.clipboard_copy_error" />"
     };
 
     FPP.urls = {

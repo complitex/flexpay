@@ -26,19 +26,19 @@ public class RegistryType extends DomainObject {
 	public static final int TYPE_BANK_PAYMENTS = 12;
 
 	static {
-		typeToName.put(TYPE_UNKNOWN, "eirc.registry_type.unknown");
-		typeToName.put(TYPE_SALDO, "eirc.registry_type.saldo");
-		typeToName.put(TYPE_INCOME, "eirc.registry_type.income");
-		typeToName.put(TYPE_MESSAGE, "eirc.registry_type.message");
-		typeToName.put(TYPE_CLOSED_ACCOUNTS, "eirc.registry_type.closed_accounts");
-		typeToName.put(TYPE_INFO, "eirc.registry_type.info");
-		typeToName.put(TYPE_CORRECTIONS, "eirc.registry_type.corrections");
-		typeToName.put(TYPE_CASH_PAYMENTS, "eirc.registry_type.cash_payment");
-		typeToName.put(TYPE_CASHLESS_PAYMENTS, "eirc.registry_type.cashless_payment");
-		typeToName.put(TYPE_REPAYMENT, "eirc.registry_type.repayment");
-		typeToName.put(TYPE_ERRORS, "eirc.registry_type.errors");
-		typeToName.put(TYPE_QUITTANCE, "eirc.registry_type.quittance");
-		typeToName.put(TYPE_BANK_PAYMENTS, "eirc.registry_type.bank_payments");
+		typeToName.put(TYPE_UNKNOWN, "common.registry_type.unknown");
+		typeToName.put(TYPE_SALDO, "common.registry_type.saldo");
+		typeToName.put(TYPE_INCOME, "common.registry_type.income");
+		typeToName.put(TYPE_MESSAGE, "common.registry_type.message");
+		typeToName.put(TYPE_CLOSED_ACCOUNTS, "common.registry_type.closed_accounts");
+		typeToName.put(TYPE_INFO, "common.registry_type.info");
+		typeToName.put(TYPE_CORRECTIONS, "common.registry_type.corrections");
+		typeToName.put(TYPE_CASH_PAYMENTS, "common.registry_type.cash_payment");
+		typeToName.put(TYPE_CASHLESS_PAYMENTS, "common.registry_type.cashless_payment");
+		typeToName.put(TYPE_REPAYMENT, "common.registry_type.repayment");
+		typeToName.put(TYPE_ERRORS, "common.registry_type.errors");
+		typeToName.put(TYPE_QUITTANCE, "common.registry_type.quittance");
+		typeToName.put(TYPE_BANK_PAYMENTS, "common.registry_type.bank_payments");
 	}
 
 	private int code;

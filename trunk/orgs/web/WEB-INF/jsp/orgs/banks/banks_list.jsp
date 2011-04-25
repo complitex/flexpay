@@ -16,11 +16,11 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="eirc.bank.description" /></td>
-        <td class="th"><s:text name="eirc.organization.inn" /></td>
-        <td class="th"><s:text name="eirc.organization.kpp" /></td>
-        <td class="th"><s:text name="eirc.bank.bank_identifier_code" /></td>
-        <td class="th"><s:text name="eirc.bank.corresponding_account" /></td>
+        <td class="th"><s:text name="orgs.bank.description" /></td>
+        <td class="th"><s:text name="orgs.organization.inn" /></td>
+        <td class="th"><s:text name="orgs.organization.kpp" /></td>
+        <td class="th"><s:text name="orgs.bank.bank_identifier_code" /></td>
+        <td class="th"><s:text name="orgs.bank.corresponding_account" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="banks" status="status">

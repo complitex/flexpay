@@ -2,7 +2,7 @@
 <td class="topmenu_form" nowrap="1">
     <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-            <td><span class="text-small"><s:text name="header.language" />:&nbsp;</span></td>
+            <td><span class="text-small"><s:text name="common.header.language" />:&nbsp;</span></td>
             <td>
                 <s:form method="get">
                     <select class="form-select" name="request_locale" onchange="this.form.submit();">

@@ -68,14 +68,14 @@
         var quittanceNumber = $.trim($("#quittanceNumber").val());
 
         if (quittanceNumber.length != 23) {
-            alert("<s:text name="error.invalid_quittance_number_length" />");
+            alert("<s:text name="payments.error.invalid_quittance_number_length" />");
             return false;
         }
 
         var objRegExp = /^\d{11}-\d{2}\/\d{4}-\d{3}/;
 
         if (!objRegExp.test(quittanceNumber)) {
-            alert("<s:text name="error.invalid_quittance_number_format" />");
+            alert("<s:text name="payments.error.invalid_quittance_number_format" />");
             return false;
         }
 

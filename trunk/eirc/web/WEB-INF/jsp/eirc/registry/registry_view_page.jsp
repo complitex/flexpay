@@ -31,7 +31,7 @@
             <input type="hidden" name="errorType" value="-1" />
             <input type="hidden" name="recordStatus" value="-1" />
             <input type="hidden" name="fio" value="" />
-            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="submit();" />
+            <input type="button" value="<s:text name="payments.filter" />" class="btn-exit" onclick="submit();" />
             <%@include file="/WEB-INF/jsp/payments/registry/data/registry_info.jsp"%>
         </td>
     </tr>

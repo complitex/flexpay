@@ -46,7 +46,7 @@ public class InstanceIdOperation extends ContainerOperation {
 		if (getInstanceId().equals(instanceId)
 			&& context.getRegistry().getRegistryType().isPayments()) {
 			throw new FlexPayException("Same instance: " + instanceId,
-					"error.registry.processing.payments.same_instance");
+					"eirc.error.registry.processing.payments.same_instance");
 		}
 
 		return DelayedUpdateNope.INSTANCE;

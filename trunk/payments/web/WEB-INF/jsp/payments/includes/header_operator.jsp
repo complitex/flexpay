@@ -16,12 +16,12 @@
                         <tr>
                             <td width="100%" align="right">
                                 <span class="text-small">
-                                    <a href="#"><s:text name="login.user" /></a>: <sec:authentication property="principal.fullName" />
+                                    <a href="#"><s:text name="common.login.user" /></a>: <sec:authentication property="principal.fullName" />
                                 </span>
                             </td>
                             <td><img src="<s:url value="/resources/common/img/p.gif" />" width="10" height="25" alt="" /></td>
                             <td>
-                                <input type="button" value="<s:text name="logout.link.title" />" class="btn-exit" onclick="location.href='<s:url value="/logout" />';" />
+                                <input type="button" value="<s:text name="common.logout.link.title" />" class="btn-exit" onclick="location.href='<s:url value="/logout" />';" />
                             </td>
                             <td><img src="<s:url value="/resources/common/img/p.gif" />" width="25" height="25" alt="" /></td>
                         </tr>

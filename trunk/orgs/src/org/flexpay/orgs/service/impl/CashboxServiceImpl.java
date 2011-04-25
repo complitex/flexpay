@@ -86,7 +86,7 @@ public class CashboxServiceImpl implements CashboxService {
 		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
 
 		if (cashbox.getPaymentPoint() == null) {
-			ex.addException(new FlexPayException("No payment point", "payments.error.cashbox.no_pp"));
+			ex.addException(new FlexPayException("No payment point", "orgs.error.cashbox.no_pp"));
 		}
 
 		boolean defaultNameFound = false;
@@ -99,7 +99,7 @@ public class CashboxServiceImpl implements CashboxService {
 		}
 		if (!defaultNameFound) {
 			ex.addException(new FlexPayException(
-					"No default lang desc", "payments.error.cashbox.no_default_lang_name"));
+					"No default lang desc", "orgs.error.cashbox.no_default_lang_name"));
 		}
 
 		if (ex.isNotEmpty()) {

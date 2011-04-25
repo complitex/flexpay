@@ -80,16 +80,16 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 			for (ConsumerAttributeTypeEnumValue value : typeEnum.getValues()) {
 				if (value.getOrder() != order) {
 					ex.addException(new FlexPayException("Invalid order",
-							"error.eirc.consumer.attribute.enum.invalid_order", value.getOrder(), order));
+							"eirc.error.consumer.attribute.enum.invalid_order", value.getOrder(), order));
 				}
 				if (value.empty()) {
 					ex.addException(new FlexPayException("Empty value",
-							"error.eirc.consumer.attribute.enum.blank_value"));
+							"eirc.error.consumer.attribute.enum.blank_value"));
 				}
 				Object val = value.value();
 				if (!values.add(val)) {
 					ex.addException(new FlexPayException("Empty value",
-							"error.eirc.consumer.attribute.enum.duplicate_value", val));
+							"eirc.error.consumer.attribute.enum.duplicate_value", val));
 				}
 				++order;
 			}

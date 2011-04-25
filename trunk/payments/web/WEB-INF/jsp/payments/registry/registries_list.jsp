@@ -19,17 +19,17 @@
         <td class="<s:property value="registrySorterByCreationDate.activated ? 'th_s' : 'th'" />" nowrap>
             <%@include file="/WEB-INF/jsp/payments/sorters/registry_sort_by_creation_date_header.jsp"%>
         </td>
-        <td class="th"><s:text name="eirc.registry.number" /></td>
-        <td class="th"><s:text name="eirc.sender" /></td>
-        <td class="th"><s:text name="eirc.recipient" /></td>
-        <td class="th"><s:text name="eirc.registry_type" /></td>
-        <td class="th"><s:text name="eirc.load_date" /></td>
-        <td class="th"><s:text name="eirc.records_number" /></td>
-        <td class="th"><s:text name="eirc.status" /></td>
+        <td class="th"><s:text name="payments.registry.number" /></td>
+        <td class="th"><s:text name="orgs.sender" /></td>
+        <td class="th"><s:text name="orgs.recipient" /></td>
+        <td class="th"><s:text name="payments.registry_type" /></td>
+        <td class="th"><s:text name="payments.load_date" /></td>
+        <td class="th"><s:text name="payments.records_number" /></td>
+        <td class="th"><s:text name="payments.status" /></td>
         <td class="th"><s:text name="payments.registry.commentary.edit" /></td>
         <td class="th">&nbsp;</td>
-        <td class="th"><s:text name="eirc.registry.mb.file_download" /></td>
-        <td class="th"><s:text name="eirc.registry.fp.file_download" /></td>
+        <td class="th"><s:text name="payments.registry.mb.file_download" /></td>
+        <td class="th"><s:text name="payments.registry.fp.file_download" /></td>
     </tr>
     <s:set name="fromDate" value="fromDate" />
     <s:set name="tillDate" value="tillDate" />
@@ -84,7 +84,6 @@
     <tr>
         <td colspan="14">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
-            <%--<input type="button" value="<s:text name="eirc.process" />" class="btn-exit" onclick="process();" />--%>
         </td>
     </tr>
 </table>

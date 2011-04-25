@@ -26,8 +26,8 @@ public class ServiceViewAction extends FPActionSupport {
 		service = spService.readFull(stub(service));
 
 		if (service == null) {
-			log.error(getText("common.object_not_selected"));
-			addActionError(getText("common.object_not_selected"));
+			log.error(getText("common.error.object_not_selected"));
+			addActionError(getText("common.error.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

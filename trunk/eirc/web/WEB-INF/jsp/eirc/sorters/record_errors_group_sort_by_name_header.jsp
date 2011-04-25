@@ -6,7 +6,7 @@
 <s:hidden name="recordErrorsGroupSorterByName.order" id="recordErrorsGroupSorterByNameOrder" />
 
 <input type="button" class="btn-link" id="recordErrorsGroupSorterByNameButton"
-       onclick="<s:if test="recordErrorsGroupSorterByName.activated">$('#recordErrorsGroupSorterByNameOrder').val('<s:property value="recordErrorsGroupSorterByName.oppositeOrder" />');</s:if>FP.activateSorter('recordErrorsGroupSorterByNameActive');" value="<s:text name="eirc.registry.record.error_group.name" />" />
+       onclick="<s:if test="recordErrorsGroupSorterByName.activated">$('#recordErrorsGroupSorterByNameOrder').val('<s:property value="recordErrorsGroupSorterByName.oppositeOrder" />');</s:if>FP.activateSorter('recordErrorsGroupSorterByNameActive');" value="<s:text name="payments.registry.record.error_group.name" />" />
 <s:if test="recordErrorsGroupSorterByName.activated">
 	<s:if test="recordErrorsGroupSorterByName.desc">
 		<img src="<s:url value="/resources/common/img/i_arrow_up.gif" />" alt="" title="<s:text name="common.sort.asc" />">

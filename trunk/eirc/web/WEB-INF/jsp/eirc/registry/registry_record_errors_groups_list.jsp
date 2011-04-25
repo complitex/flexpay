@@ -51,7 +51,7 @@
         <td class="<s:property value="recordErrorsGroupSorterByNumberOfErrors.activated ? 'th_s' : 'th'" />" nowrap>
             <%@include file="/WEB-INF/jsp/eirc/sorters/record_errors_group_sort_by_number_of_errors_header.jsp"%>
         </td>
-        <td class="th"><s:text name="eirc.correspondence" /></td>
+        <td class="th"><s:text name="payments.correspondence" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="errorGroups" status="status">

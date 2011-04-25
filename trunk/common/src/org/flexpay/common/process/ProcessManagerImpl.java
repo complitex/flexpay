@@ -158,7 +158,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 			log.warn("No definition found: {}", name);
 			throw new ProcessDefinitionException("Process definition for name " + name + " file not found!",
-					"error.common.pm.pd_file_not_found", name);
+					"common.error.pm.pd_file_not_found", name);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
@@ -181,10 +181,10 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		} catch (Exception e) {
 			log.error("Process definition deployment failed", e);
 			if (processDefinition == null) {
-				throw new ProcessDefinitionException("Not process definition", e, "error.common.pm.not_pd");
+				throw new ProcessDefinitionException("Not process definition", e, "common.error.pm.not_pd");
 			} else {
 				throw new ProcessDefinitionException("Can't deploy definition for " + processDefinition.getName(), e,
-						"error.common.pm.pd_deployment_failed", processDefinition.getName());
+						"common.error.pm.pd_deployment_failed", processDefinition.getName());
 			}
 		}
 	}
@@ -315,7 +315,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			jbpmContext.close();
 			log.error("findLatestProcessDefinition", e);
 			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + definitionName, e,
-					"error.common.pm.cant_access_pd", definitionName);
+					"common.error.pm.cant_access_pd", definitionName);
 		}
 		// try to search in predefined set of places
 		if (processDefinition == null) {
@@ -328,7 +328,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		if (processDefinition == null) {
 			log.error("Can't find process definition for name: {}", definitionName);
 			throw new ProcessDefinitionException("Can't find process definition for name: " + definitionName,
-					"error.common.pm.cant_access_pd", definitionName);
+					"common.error.pm.cant_access_pd", definitionName);
 		}
 
 		log.info("Initializing  process. Process Definition id = {}, name = {}, version = {}",
@@ -340,7 +340,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		} catch (RuntimeException e) {
 			log.error("ProcessInstanceCreation", e);
 			throw new ProcessInstanceException("Can't create ProcessInstance for " + definitionName, e,
-					"error.common.pm.cant_create_pi", definitionName);
+					"common.error.pm.cant_create_pi", definitionName);
 		} finally {
 			jbpmContext.close();
 		}

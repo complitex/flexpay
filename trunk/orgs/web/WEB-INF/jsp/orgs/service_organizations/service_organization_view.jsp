@@ -4,7 +4,7 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language"/></td>
-        <td class="th"><s:text name="eirc.service_organization.description"/></td>
+        <td class="th"><s:text name="orgs.service_organization.description"/></td>
     </tr>
     <s:iterator value="serviceOrganization.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -26,7 +26,7 @@
         <td colspan="3" height="3" bgcolor="#4a4f4f"/>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization" />:</td>
+        <td class="col_1s"><s:text name="orgs.organization" />:</td>
         <td class="col" colspan="2">
             <s:property value="getTranslationName(serviceOrganization.organization.names)"/>
         </td>

@@ -154,29 +154,29 @@ public class SPServiceImpl implements SPService {
 
 		if (service.getServiceProvider() == null || service.getServiceProvider().isNew()) {
 			container.addException(new FlexPayException("Connot set empty service provider",
-					"eirc.error.service.need_setup_service_provider"));
+					"payments.error.service.need_setup_service_provider"));
 		}
 
 		if (service.getServiceType() == null || service.getServiceType().isNew()) {
 			container.addException(new FlexPayException("Connot set empty service type",
-					"eirc.error.service.need_setup_service_type"));
+					"payments.error.service.need_setup_service_type"));
 		}
 
 		Service parentService = service.getParentService();
 		if (parentService != null && parentService.isNew()) {
 			container.addException(new FlexPayException("Connot set new parent service",
-					"eirc.error.service.invalid_parent_service"));
+					"payments.error.service.invalid_parent_service"));
 		}
 
 		if (parentService != null && parentService.equals(service)) {
 			container.addException(new FlexPayException("SubService of itself",
-					"eirc.error.service.self_subservice"));
+					"payments.error.service.self_subservice"));
 
 		}
 
 		if (!service.getChildServices().isEmpty() && service.isSubService()) {
 			container.addException(new FlexPayException("Connot set subservices of subservice",
-					"eirc.error.service.subservice_cannot_have_subservices"));
+					"payments.error.service.subservice_cannot_have_subservices"));
 		}
 
 		if (service.isSubService() && service.getServiceProvider().isNotNew() && service.getParentService().isNotNew()) {
@@ -186,7 +186,7 @@ public class SPServiceImpl implements SPService {
 			Long parentProviderId = parent.providerStub().getId();
 			if (!parentProviderId.equals(service.getServiceProvider().getId())) {
 				container.addException(new FlexPayException("Subservice wrong provider",
-						"eirc.error.service.invalid_parent_service_provider"));
+						"payments.error.service.invalid_parent_service_provider"));
 			}
 		}
 
@@ -198,7 +198,7 @@ public class SPServiceImpl implements SPService {
 		}
 		if (!defaultDescFound) {
 			container.addException(new FlexPayException(
-					"No default lang desc", "eirc.error.service.no_default_lang_description"));
+					"No default lang desc", "payments.error.service.no_default_lang_description"));
 		}
 
 		if (StringUtils.isNotBlank(service.getExternalCode())) {
@@ -208,7 +208,7 @@ public class SPServiceImpl implements SPService {
 			hasDuplicateCode = hasDuplicateCode || services.size() >= 2;
 			if (hasDuplicateCode) {
 				container.addException(new FlexPayException(
-						"Duplicate code", "eirc.error.service.duplicate_code"));
+						"Duplicate code", "payments.error.service.duplicate_code"));
 			}
 			sessionUtils.evict(services);
 		}
@@ -220,7 +220,7 @@ public class SPServiceImpl implements SPService {
 		intersects = intersects || sameTypeSrvcs.size() >= 2;
 		if (intersects) {
 			container.addException(new FlexPayException(
-					"Duplicate service type", "eirc.error.service.duplicate_service_type"));
+					"Duplicate service type", "payments.error.service.duplicate_service_type"));
 		}
 		sessionUtils.evict(sameTypeSrvcs);
 
