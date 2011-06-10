@@ -26,7 +26,7 @@
 
     <bean id="szFileDaoExt"
           class="org.flexpay.sz.dao.impl.SzFileDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="characteristicRecordDao"
           parent="abstractDao"

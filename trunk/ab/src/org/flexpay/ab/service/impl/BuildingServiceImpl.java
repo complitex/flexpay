@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -65,6 +66,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public Building readFull(@NotNull Stub<Building> buildingStub) {
 		Building building = buildingDao.readFull(buildingStub.getId());
@@ -86,6 +88,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return Found buildings
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<Building> readFull(@NotNull Collection<Long> buildingIds, boolean preserveOrder) {
 
@@ -249,6 +252,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return Building instance if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public Building findBuilding(@NotNull Stub<BuildingAddress> addressStub) {
 		Building building = buildingsDaoExt.findBuilding(addressStub.getId());
@@ -263,6 +267,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public BuildingAddress readFullAddress(@NotNull Stub<BuildingAddress> addressStub) {
 		return buildingsDao.readFull(addressStub.getId());
@@ -276,6 +281,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public BuildingAddress readWithHierarchy(@NotNull Stub<BuildingAddress> addressStub) {
 		List<BuildingAddress> addresses = buildingsDao.findWithFullHierarchy(addressStub.getId());
@@ -290,6 +296,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return Found building addresses
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<BuildingAddress> readFullAddresses(@NotNull Collection<Long> addressIds, boolean preserveOrder) {
 		return buildingsDao.readFullCollection(addressIds, preserveOrder);
@@ -348,6 +355,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return List of Objects
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<BuildingAddress> findAddresses(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<BuildingAddress> pager) {
 		return buildingsDaoExt.findBuildingAddresses(filters, sorters, pager);
@@ -361,6 +369,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return List of Objects
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<BuildingAddress> findAddresses(@NotNull ArrayStack filters, Page<BuildingAddress> pager) {
 		PrimaryKeyFilter<?> streetFilter = (PrimaryKeyFilter<?>) filters.peek();
@@ -383,6 +392,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @return List of found building addresses
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<BuildingAddress> findAddressesByParent(@NotNull Stub<Street> streetStub) {
 		return buildingsDao.findBuildings(streetStub.getId());
@@ -396,6 +406,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<BuildingAddress> findAddresesByBuilding(@NotNull Stub<Building> buildingStub) throws FlexPayException {
 		return buildingsDao.findBuildingBuildings(buildingStub.getId());
@@ -410,6 +421,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public BuildingAddress findAddresses(@NotNull Stub<Street> streetStub, @NotNull Set<AddressAttribute> attributes) throws FlexPayException {
 		return findAddresses(streetStub, null, attributes);
@@ -425,6 +437,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public BuildingAddress findAddresses(@NotNull Stub<Street> streetStub, @Nullable Stub<District> districtStub,
 										 @NotNull Set<AddressAttribute> attributes) throws FlexPayException {
@@ -476,6 +489,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @throws FlexPayException if building does not have any addresses
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public BuildingAddress findFirstAddress(@NotNull Stub<Building> buildingStub) throws FlexPayException {
 
@@ -514,6 +528,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	}
 
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<Building> findSimpleByTown(Stub<Town> townStub, FetchRange range) {
 		return buildingDao.findSimpleByTown(townStub.getId(), range);

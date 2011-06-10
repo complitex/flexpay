@@ -1,8 +1,10 @@
 package org.flexpay.payments.action.tradingday;
 
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -11,27 +13,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.*;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 
 	@Autowired
     private ProcessManager processManager;
 
+	@Autowired
+	private ProcessDefinitionManager processDefinitionManager;
+
 	private Long tradingDayProcessInstanceId;
 
 	@Before
 	public void createTradingDayProcess() throws ProcessInstanceException, ProcessDefinitionException {
 
-		processManager.deployProcessDefinition("TradingDaySchedulingJob", true);
+		processDefinitionManager.deployProcessDefinition("TradingDaySchedulingJob", true);
 
-		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-		tradingDayProcessInstanceId = processManager.createProcess("TradingDaySchedulingJob", parameters);
+		Map<String, Object> parameters = map();
+		ProcessInstance processInstance = processManager.startProcess("TradingDaySchedulingJob", parameters);
+		assertNotNull("Process did not start: Object is null", processInstance);
+		assertNotNull("Process did not start: Process instance id is null", processInstance.getId());
+		assertTrue("Process state is not running", processInstance.getState() == ProcessInstance.STATE.RUNNING);
+
+		tradingDayProcessInstanceId = processInstance.getId();
 		assertTrue("Error", tradingDayProcessInstanceId > 0);
 
 		//Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
@@ -41,7 +54,7 @@ public class TestConfirmationTradingDayServlet extends SpringBeanAwareTestCase {
 	@After
 	public void deleteTradingDayProcessInstance() {
 
-		org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
+		ProcessInstance process = processManager.getProcessInstance(tradingDayProcessInstanceId);
 		if (process != null) {
 			processManager.deleteProcessInstance(process);
 		}

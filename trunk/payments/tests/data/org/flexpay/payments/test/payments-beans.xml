@@ -25,7 +25,8 @@
           class="org.flexpay.payments.util.impl.PaymentsTestPaymentCollectorUtil"/>
 
     <bean id="paymentsTestRegistryUtil"
-          class="org.flexpay.payments.util.impl.PaymentsTestRegistryUtil"/>
+          class="org.flexpay.payments.util.impl.PaymentsTestRegistryUtil"
+		  autowire-candidate="false" />
 
     <bean id="paymentsTestCashboxUtil"
           class="org.flexpay.payments.util.impl.PaymentsTestCashboxUtil"/>

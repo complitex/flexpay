@@ -2,11 +2,11 @@ package org.flexpay.orgs.dao.impl;
 
 import org.flexpay.orgs.dao.ServiceProviderDaoExt;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import java.util.List;
 
-public class ServiceProviderDaoExtImpl extends HibernateDaoSupport implements ServiceProviderDaoExt {
+public class ServiceProviderDaoExtImpl extends JpaDaoSupport implements ServiceProviderDaoExt {
 
 	/**
 	 * Find Service Provider by Organization id
@@ -16,14 +16,9 @@ public class ServiceProviderDaoExtImpl extends HibernateDaoSupport implements Se
 	 */
 	@Override
 	public ServiceProvider findByNumber(Long id) {
-		try {
-			getHibernateTemplate().setMaxResults(1);
-			List<?> objects = getHibernateTemplate()
-					.findByNamedQuery("ServiceProvider.findByOrganizationId", id);
-			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
-		} finally {
-			getHibernateTemplate().setMaxResults(0);
-		}
+		List<?> objects = getJpaTemplate()
+				.findByNamedQuery("ServiceProvider.findByOrganizationId", id);
+		return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
 	}
 
 }

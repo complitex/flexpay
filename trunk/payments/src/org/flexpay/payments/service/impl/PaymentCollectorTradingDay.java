@@ -3,6 +3,7 @@ package org.flexpay.payments.service.impl;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -12,7 +13,6 @@ import org.flexpay.payments.service.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 
 		deployChildProcessDefinitions();
 
-		Map<Serializable, Serializable> parameters = map();
+		Map<String, Object> parameters = map();
 
 		Long paymentCollectorId = paymentCollector.getId();
 		parameters.put(ExportJobParameterNames.PAYMENT_COLLECTOR_ID, paymentCollectorId);
@@ -54,14 +54,14 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 
 		try {
 			String tradingDayProcessDefinitionName = PROCESSES_DEFINITION_NAME.get(PaymentCollector.class.getName());
-			long processInstanceId = processManager.createProcess(tradingDayProcessDefinitionName, parameters);
-			log.info("'{}' process created. Process instance id = {}, for payment collector with id {}",
-					new Object[]{tradingDayProcessDefinitionName, processInstanceId, paymentCollectorId});
+			ProcessInstance processInstance = processManager.startProcess(tradingDayProcessDefinitionName, parameters);
+			log.info("'{}' process created. ProcessInstance instance id = {}, for payment collector with id {}",
+					new Object[]{tradingDayProcessDefinitionName, processInstance, paymentCollectorId});
 		} catch (ProcessInstanceException e) {
 			log.error("Failed run process trading day", e);
 			throw new FlexPayException(e);
 		} catch (ProcessDefinitionException e) {
-			log.error("Process trading day not started", e);
+			log.error("ProcessInstance trading day not started", e);
 			throw new FlexPayException(e);
 		}
 	}
@@ -87,6 +87,7 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 
 	@SuppressWarnings ({"unchecked"})
 	private void deployChildProcessDefinition(Class clazz) throws FlexPayException {
+		/*
 		if (!PROCESSES_DEFINITION_NAME.containsKey(clazz.getName())) {
 			throw new FlexPayException("Can not find process definition name for class " + clazz.getName());
 		}
@@ -95,6 +96,7 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 		} catch (ProcessDefinitionException e) {
 			throw new FlexPayException(e);
 		}
+		*/
 	}
 
 	@Required

@@ -33,8 +33,8 @@ public class TestBuildingService extends BtiSpringBeanAwareTestCase {
 
 	@Test
 	public void testAllBuildingsAreValid() throws Throwable {
-		int nBuildings = intResult(hibernateTemplate.find("select count(*) from Building"));
-		int nBtiBuildings = intResult(hibernateTemplate.find("select count(*) from BtiBuilding"));
+		int nBuildings = intResult(jpaTemplate.find("select count(*) from Building"));
+		int nBtiBuildings = intResult(jpaTemplate.find("select count(*) from BtiBuilding"));
 		assertEquals("All building should be of the same type", nBuildings, nBtiBuildings);
 	}
 

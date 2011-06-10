@@ -10,6 +10,7 @@
     <import resource="beans-cache.xml" />
     <import resource="beans-struts.xml" />
     <import resource="beans-schedule.xml" />
+    <import resource="beans-jbpm.xml" />
     <import resource="beans-job.xml" />
     <import resource="data-export.xml" />
 

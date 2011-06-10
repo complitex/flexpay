@@ -40,7 +40,7 @@ public class TestSortBuildings extends AbSpringBeanAwareTestCase {
 		Long[] params = {typeNumberId, typebulkId, streetId};
 
 		watch.start();
-		List<?> result = hibernateTemplate.find(hql, params);
+		List<?> result = jpaTemplate.find(hql, params);
 		int size = result.size();
 		watch.stop();
 
@@ -81,7 +81,7 @@ public class TestSortBuildings extends AbSpringBeanAwareTestCase {
 
 		watch.start();
 		@SuppressWarnings ({"unchecked"})
-		List<Building> result = (List<Building>) hibernateTemplate.find(hql.toString(), params);
+		List<Building> result = (List<Building>) jpaTemplate.find(hql.toString(), params);
 		int size = result.size();
 		watch.stop();
 

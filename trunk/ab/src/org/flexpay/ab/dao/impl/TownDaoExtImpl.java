@@ -9,22 +9,21 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.common.persistence.filter.StringValueFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.List;
 
 import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_TOWN;
 import static org.flexpay.common.persistence.filter.StringValueFilter.TYPE_TOWN_TYPE;
 
-public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
+public class TownDaoExtImpl extends JpaDaoSupport implements TownDaoExt {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -62,17 +61,17 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		return getJpaTemplate().executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cnthql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query cntQuery = entityManager.createQuery(cnthql.toString());
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 
 			}
 		});
@@ -120,14 +119,14 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 
         hql.append(filterHql);
 
-        List<Town> towns = (List<Town>) getHibernateTemplate().executeFind(new HibernateCallback<List<Town>>() {
-            @Override
-            public List<Town> doInHibernate(Session session) throws HibernateException {
+        List<Town> towns = (List<Town>) getJpaTemplate().executeFind(new JpaCallback() {
+			@Override
+			public List<Town> doInJpa(EntityManager entityManager) throws PersistenceException {
 
-                Query query = session.createQuery(hql.toString());
+                javax.persistence.Query query = entityManager.createQuery(hql.toString());
                 setQueryParameters(query, filters);
                 log.debug("Towns search query: {}", query);
-                return (List<Town>) query.list();
+                return (List<Town>) query.getResultList();
             }
         });
 
@@ -139,7 +138,7 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 
     }
 
-    private void setQueryParameters(Query query, @NotNull ArrayStack filters) {
+    private void setQueryParameters(javax.persistence.Query query, @NotNull ArrayStack filters) {
 
         for (Object f : filters) {
 
@@ -148,9 +147,9 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
             if (filter.needFilter()) {
 
                 if (TYPE_TOWN_TYPE.equals(filter.getType())) {
-                    query.setString("townTypeName", filter.getValue().toLowerCase());
+                    query.setParameter("townTypeName", filter.getValue().toLowerCase());
                 } else if (TYPE_TOWN.equals(filter.getType())) {
-                    query.setString("townName", filter.getValue().toLowerCase());
+                    query.setParameter("townName", filter.getValue().toLowerCase());
                 }
 
             }

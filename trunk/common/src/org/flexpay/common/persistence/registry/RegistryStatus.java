@@ -1,5 +1,7 @@
 package org.flexpay.common.persistence.registry;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.CollectionUtils;
 
@@ -74,5 +76,12 @@ public class RegistryStatus extends DomainObject {
 
 	public String getI18nName() {
 		return typeToName.get(code);
+	}
+
+	@Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("code", code).
+				toString();
 	}
 }

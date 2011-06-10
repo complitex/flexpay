@@ -8,6 +8,7 @@ import org.flexpay.bti.service.BtiApartmentService;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional (readOnly = true)
@@ -45,7 +46,7 @@ public class BtiApartmentServiceImpl implements BtiApartmentService {
 	 * @param apartment Apartment to update
 	 * @return apartment back
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public BtiApartment mergeAttributes(@NotNull BtiApartment apartment) {
 		apartmentDao.merge(apartment);
 

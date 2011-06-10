@@ -172,7 +172,7 @@
     <bean id="paymentPointsListMonitorAction"
           parent="accountantAWPWithPagerAction"
           class="org.flexpay.payments.action.monitor.PaymentPointsListMonitorAction"
-          p:processManager-ref="processManagerPayments"
+          p:processManager-ref="processManager"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
           p:operationService-ref="operationService"
           scope="prototype" />
@@ -424,7 +424,7 @@
     <bean id="registryDeliveryHistorySendAction"
           parent="accountantAWPAction"
           class="org.flexpay.payments.action.registry.RegistryDeliveryHistorySendAction"
-          p:processManager-ref="processManagerPayments"
+          p:processManager-ref="processManager"
           p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
           scope="prototype" />
 

@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -75,7 +76,7 @@ public class OperationServiceImpl implements OperationService {
 	 *
 	 * @param operation Operation Object
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
     @Override
 	public void create(@NotNull Operation operation) {
 		operation.setId(null);

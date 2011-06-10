@@ -10,7 +10,7 @@ import java.util.List;
 public interface ObjectsSyncer {
 
 	/**
-	 * Process history
+	 * ProcessInstance history
 	 *
 	 * @param diffs History records to process
 	 */

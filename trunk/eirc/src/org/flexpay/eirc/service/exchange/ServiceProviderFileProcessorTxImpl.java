@@ -47,7 +47,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	}
 
 	/**
-	 * Process header
+	 * ProcessInstance header
 	 *
 	 * @param context Processing context
 	 * @throws Exception if failure occurs
@@ -127,18 +127,23 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	public void doUpdate(@NotNull ProcessingContext context) throws Exception {
 
 		try {
+			log.debug("start context.beforeUpdate()");
 			context.beforeUpdate();
+			log.debug("end context.beforeUpdate()");
 
+			log.debug("start context.doUpdate()");
 			context.doUpdate();
+			log.debug("end context.doUpdate()");
 
+			log.debug("start postUpdated(context)");
 			postUpdated(context);
+			log.debug("end postUpdated(context)");
 		} catch (Exception ex) {
 			log.error("doUpdate failed", ex);
 			throw ex;
 		}
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	protected void postUpdated(ProcessingContext context) throws FlexPayException {
 
 		for (RegistryRecord record : context.getOperationRecords()) {

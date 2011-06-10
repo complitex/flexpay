@@ -5,6 +5,7 @@ import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.impl.RegistryFileServiceFactory;
 import org.flexpay.common.util.CollectionUtils;
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -63,20 +63,21 @@ public class SpFileAction extends FPActionSupport {
                 return REDIRECT_ERROR;
             }
 
-			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+			Map<String, Object> contextVariables = CollectionUtils.map();
+			String processName;
 			if (FileParser.REGISTRY_FILE_TYPE.equals(fileType)) {
-				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
-				processId = processManager.createProcess("ParseFPRegistryProcess2", contextVariables);
+				processName = "ParseFPRegistry";
 			} else if (FileParser.MB_CORRECTIONS_FILE_TYPE.equals(fileType)) {
-				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
-				processId = processManager.createProcess("ParseMBCorrectionsProcess", contextVariables);
+				processName = "ParseMBCorrections";
 			} else if (FileParser.MB_REGISTRY_FILE_TYPE.equals(fileType)) {
-				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
-				processId = processManager.createProcess("ParseMBChargesProcess", contextVariables);
+				processName = "ParseMBCharges";
 			} else {
 				log.error("Incorrect fileType variable - " + fileType);
 				return REDIRECT_ERROR;
 			}
+			contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
+			ProcessInstance processInstance = processManager.startProcess(processName, contextVariables);
+			processId = processInstance != null? processInstance.getId(): null;
 			log.debug("Load to db process id {}", processId);
 			if (processId == null) {
 				throw new Exception("Failed creating process, unknown reason");

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:drools="http://drools.org/schema/drools-spring"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://drools.org/schema/drools-spring http://drools.org/schema/drools-spring.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="processDefinitionManagerPayments" parent="processDefinitionManager" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/payments/process</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="generatePaymentRegistryFileNameHandler"
+		  name="GeneratePaymentRegistryFileNameTask"
+		  class="org.flexpay.payments.process.export.handler2.GeneratePaymentRegistryFileNameHandler"
+		  parent="taskHandler"
+		  p:registryService-ref="registryService" />
+
+	<bean id="createFPFileHandle"
+		  name="CreateFPFileTask"
+		  class="org.flexpay.payments.process.export.handler2.CreateFPFileHandler"
+		  parent="taskHandler"
+		  p:fpFileService-ref="fpFileService"
+          p:moduleName="${flexpay.module.name.payments}"
+          p:userName="${payments.scheduler.user.name}"
+          p:fileName="${payments.scheduler.file.name}" />
+
+	<bean id="deleteFPFileHandle"
+		  name="DeleteFPFileTask"
+		  class="org.flexpay.payments.process.export.handler2.DeleteFPFileHandler"
+		  parent="taskHandler"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryService-ref="registryService" />
+
+	<bean id="sendRegistryHandle"
+		  name="SendRegistryTask"
+		  class="org.flexpay.payments.process.export.handler2.SendFileHandler"
+		  parent="taskHandler"
+		  p:fpFileService-ref="fpFileService"
+		  p:emailFrom="${flexpay.email.from}"
+          p:emailUserName="${flexpay.email.user_name}"
+          p:emailPassword="${flexpay.email.user_pass}"
+          p:smtpHost="${flexpay.email.host}" />
+
+	<bean id="sendPaymentsRegistryHandle"
+		  name="SendPaymentsRegistryTask"
+		  class="org.flexpay.payments.process.export.handler2.SendPaymentsRegistryHandler"
+		  parent="sendRegistryHandle"
+          p:providerService-ref="serviceProviderService"
+          p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
+          p:registryService-ref="registryService" />
+
+	<bean id="generatePaymentsDBRegistryHandler"
+		  name="GeneratePaymentsDBRegistryTask"
+		  class="org.flexpay.payments.process.export.handler2.GeneratePaymentsDBRegistryHandler"
+		  parent="taskHandler"
+		  p:paymentsRegistryDBGenerator-ref="paymentsRegistryDBGenerator"
+          p:organizationService-ref="organizationService"
+          p:serviceProviderService-ref="serviceProviderService" />
+
+	<bean id="generatePaymentsMBRegistryHandler"
+		  name="GeneratePaymentsMBRegistryTask"
+		  class="org.flexpay.payments.process.export.handler2.GeneratePaymentsMBRegistryHandler"
+		  parent="taskHandler"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryPaymentsMBGenerator-ref="paymentsRegistryMBGenerator"
+          p:registryService-ref="registryService"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService"
+          p:organizationService-ref="organizationService"
+		  p:signatureService-ref="rsaSignatureService" />
+
+	<bean id="generatePaymentsFPRegistryHandler"
+		  name="GeneratePaymentsFPRegistryTask"
+		  class="org.flexpay.payments.process.export.handler2.GeneratePaymentsFPRegistryHandler"
+		  parent="taskHandler"
+		  p:registryService-ref="registryService"
+          p:exportPaymentsRegistry-ref="exportCashPaymentsRegistry" />
+
+	<bean id="addProcessIdToPaymentCollectorHandler"
+		  name="AddProcessIdToPaymentCollectorTask"
+		  class="org.flexpay.payments.process.export.handler2.AddProcessIdToPaymentCollectorHandler"
+		  parent="taskHandler"
+		  p:paymentCollectorService-ref="paymentCollectorService" />
+
+	<bean id="addProcessIdToPaymentPointHandler"
+		  name="AddProcessIdToPaymentPointTask"
+		  class="org.flexpay.payments.process.export.handler2.AddProcessIdToPaymentPointHandler"
+		  parent="taskHandler"
+		  p:paymentPointService-ref="paymentPointService" />
+
+	<bean id="getPaymentPointsHandler"
+		  name="GetPaymentPointsTask"
+		  class="org.flexpay.payments.process.export.handler2.GetPaymentPointsHandler"
+		  parent="taskHandler"
+		  p:paymentCollectorService-ref="paymentCollectorService" />
+
+	<bean id="getCashboxesHandler"
+		  name="GetCashboxesTask"
+		  class="org.flexpay.payments.process.export.handler2.GetCashboxesHandler"
+		  parent="taskHandler"
+		  p:cashboxService-ref="cashboxService" />
+
+	<bean id="generateEndOperationDayRegistryHandler"
+		  name="GenerateEndOperationDayRegistryTask"
+		  class="org.flexpay.payments.process.export.handler2.GenerateEndOperationDayRegistryHandler"
+		  parent="taskHandler"
+		  p:exportBankPaymentsRegistry-ref="exportBankPaymentsRegistry"
+          p:organizationService-ref="organizationService"
+          p:registryGenerator-ref="endOperationDayRegistryGenerator"
+          p:paymentCollectorService-ref="paymentCollectorService" />
+
+</beans>

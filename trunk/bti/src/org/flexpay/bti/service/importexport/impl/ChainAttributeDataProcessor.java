@@ -17,7 +17,7 @@ public class ChainAttributeDataProcessor implements BuildingAttributeDataProcess
 	private Set<BuildingAttributeDataProcessor> processors = CollectionUtils.set();
 
 	/**
-	 * Process attribute data for specified time interval
+	 * ProcessInstance attribute data for specified time interval
 	 *
 	 * @param begin Interval begin date
 	 * @param end   Interval end date

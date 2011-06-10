@@ -1,6 +1,8 @@
 package org.flexpay.eirc.persistence.exchange.delayed;
 
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Delayed update that does nothing
@@ -17,6 +19,7 @@ public class DelayedUpdateNope implements DelayedUpdate {
 	/**
 	 * Perform storage update
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void doUpdate() {
 		// do nothing

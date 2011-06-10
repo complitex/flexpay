@@ -18,7 +18,7 @@
 				<comment>ISO 4217 code of a currency</comment>
 			</column>
 		</property>
-		<property name="gender" type="Gender">
+		<property name="gender">
 			<column name="gender" not-null="true">
 				<comment>Gender (0-masculine, 1-feminine, 2-neuter)</comment>
 			</column>

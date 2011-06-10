@@ -219,6 +219,7 @@
 		</concat>
 		<antcall target="sz.sql.init-db" />
 		<antcall target="template.set_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="sz.sql.all-test">
@@ -228,6 +229,7 @@
 		</concat>
 		<antcall target="sz.sql.init-db-test" />
 		<antcall target="template.set_test_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="sz.db-test" description="create sz test db">

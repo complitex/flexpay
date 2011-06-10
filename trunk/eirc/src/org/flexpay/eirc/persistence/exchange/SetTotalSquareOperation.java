@@ -20,7 +20,7 @@ public class SetTotalSquareOperation extends AbstractChangePersonalAccountOperat
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context
 	 * @throws org.flexpay.common.exception.FlexPayException

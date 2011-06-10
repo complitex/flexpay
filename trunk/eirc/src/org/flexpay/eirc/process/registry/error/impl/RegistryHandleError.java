@@ -5,8 +5,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.exchange.ProcessingContext;
@@ -17,6 +19,8 @@ import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class RegistryHandleError implements HandleError {
 
@@ -27,8 +31,10 @@ public class RegistryHandleError implements HandleError {
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private OrganizationService organizationService;
+	private RegistryService registryService;
 
 	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
 	public ImportError handleError(Throwable t, ProcessingContext context) throws Exception {
 		String code = "eirc.error_code.unknown_error";
@@ -42,6 +48,7 @@ public class RegistryHandleError implements HandleError {
 		}
 
 		log.warn("Failed processing registry", t);
+		context.setRegistry(registryService.readWithContainers(Stub.stub(context.getRegistry())));
 
 		ImportError error = new ImportError();
 		error.setErrorId(code);
@@ -87,5 +94,10 @@ public class RegistryHandleError implements HandleError {
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
+	}
+
+	@Required
+	public void setRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
 	}
 }

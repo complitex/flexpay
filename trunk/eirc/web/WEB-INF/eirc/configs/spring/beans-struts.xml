@@ -286,11 +286,13 @@
           class="org.flexpay.common.action.processing.ProcessesListPageAction"
           p:crumbNameKey="eirc.crumbs.processes.list"
           p:processManager-ref="processManager"
+		  p:processDefinitionManager-ref="processDefinitionManager"
           scope="prototype" />
 
     <bean id="processesListAction"
           class="org.flexpay.common.action.processing.ProcessesListAction"
           p:processManager-ref="processManager"
+		  p:processDefinitionManager-ref="processDefinitionManager"
           scope="prototype" />
 
     <bean id="processDeleteAction"
@@ -308,7 +310,7 @@
           class="org.flexpay.common.action.processing.ProcessDefinitionDeployAction"
           p:crumbNameKey="eirc.crumbs.process.definition_deploy"
           p:fpFileService-ref="fpFileService"
-          p:processManager-ref="processManager"
+          p:processDefinitionManager-ref="processDefinitionManager"
           p:moduleName="${flexpay.module.name.eirc}"
           scope="prototype" />
 

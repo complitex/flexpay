@@ -268,12 +268,15 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	public void endRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed {
+		log.debug("End registry processing: {}", context.getRegistry());
 		if (!context.isProcessingStarted() || context.isProcessingEnded()) {
 			return;
 		}
 		Registry registry = registryService.read(stub(context.getRegistry()));
+		log.debug("Registry from database: {}");
 		registryWorkflowManager.setNextSuccessStatus(registry);
 		registryWorkflowManager.endProcessing(registry);
+		log.debug("Ended registry processing: {}", registry);
 		context.endProcessing();
 	}
 

@@ -14,21 +14,20 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.List;
 
-public class BuildingsDaoExtImpl extends HibernateDaoSupport implements BuildingsDaoExt {
+public class BuildingsDaoExtImpl extends JpaDaoSupport implements BuildingsDaoExt {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -48,7 +47,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	public List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number) {
 		Object[] params = {districtId, streetId,
 						   ApplicationConfig.getBuildingAttributeTypeNumber().getId(), number};
-		return getHibernateTemplate().findByNamedQuery("BuildingAddress.findByNumberWithDistrict", params);
+		return getJpaTemplate().findByNamedQuery("BuildingAddress.findByNumberWithDistrict", params);
 	}
 
 	/**
@@ -64,7 +63,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	public List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull String number) {
 		Object[] params = {streetId,
 						   ApplicationConfig.getBuildingAttributeTypeNumber().getId(), number};
-		return getHibernateTemplate().findByNamedQuery("BuildingAddress.findByNumber", params);
+		return getJpaTemplate().findByNamedQuery("BuildingAddress.findByNumber", params);
 	}
 
 	/**
@@ -77,7 +76,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	@Nullable
 	@Override
 	public Building findBuilding(@NotNull Long buildingsId) {
-		List<Building> buildings = getHibernateTemplate().findByNamedQuery("BuildingAddress.findBuilding", buildingsId);
+		List<Building> buildings = getJpaTemplate().findByNamedQuery("BuildingAddress.findBuilding", buildingsId);
 		if (buildings.isEmpty()) {
 			return null;
 		}
@@ -135,17 +134,17 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		return getJpaTemplate().executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cntHql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query cntQuery = entityManager.createQuery(cntHql.toString());
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 
 			}
 		});

@@ -1,22 +1,7 @@
 package org.flexpay.common.process;
 
-import org.apache.commons.lang.StringUtils;
-import org.jbpm.JbpmContext;
-import org.jbpm.graph.def.Transition;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.taskmgmt.exe.TaskInstance;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import static org.flexpay.common.util.CollectionUtils.set;
-
 public abstract class TaskHelper {
-
+	/*
     @Nullable
     public static TaskInstance getTaskInstance(@NotNull final ProcessManager processManager, final long processInstanceId, @NotNull final Logger log) {
         return processManager.execute(new ContextCallback<TaskInstance>() {
@@ -24,7 +9,7 @@ public abstract class TaskHelper {
             public TaskInstance doInContext(@NotNull JbpmContext context) {
                 ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
 				if (processInstance == null){
-					log.debug("Process instance with id = {} deleted", processInstanceId);
+					log.debug("ProcessInstance instance with id = {} deleted", processInstanceId);
 					return null;
 				}
                 Collection<?> tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
@@ -50,7 +35,7 @@ public abstract class TaskHelper {
             public TaskInstance doInContext(@NotNull JbpmContext context) {
                 ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
 				if (processInstance == null){
-					log.debug("Process instance with id = {} deleted", processInstanceId);
+					log.debug("ProcessInstance instance with id = {} deleted", processInstanceId);
 					return null;
 				}
                 Collection<?> tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
@@ -89,11 +74,11 @@ public abstract class TaskHelper {
 				public Set<?> doInContext(@NotNull JbpmContext context) {
 					ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
 					if (processInstance == null) {
-						log.debug("Process instance with id = {} deleted", processInstanceId);
+						log.debug("ProcessInstance instance with id = {} deleted", processInstanceId);
 						return Collections.emptySet();
 					}
 					if (processInstance.hasEnded()) {
-						log.debug("Process ended with id = {}", processInstanceId);
+						log.debug("ProcessInstance ended with id = {}", processInstanceId);
 						status.add(ENDED);
 						return Collections.emptySet();
 					}
@@ -180,4 +165,5 @@ public abstract class TaskHelper {
 
 		return result;
     }
+    */
 }

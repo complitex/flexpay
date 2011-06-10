@@ -45,37 +45,37 @@
 		<transition to="end-state" name="error" />
 	</decision>
 
-    <task-node name="MarkPaymentPointForClosing">
-        <description>
-            ожидаем от кассира пометки окончания опердня
-        </description>
-        <event type="node-enter">
-            <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
-                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
-                <variable name="START_TIME" mapped-name="startTime" access="write" />
-                <expression>
-                    processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.OPEN;
-                    canUpdateOrCreateOperation = "true";
-                    startTime = org.flexpay.common.util.DateUtil.now();
-                </expression>
-            </script>
-        </event>
-        <task name="CloseTradingDayByAccounter" swimlane="Accounter" />
-		<task name="ClostTradingDayByAutomation" swimlane="Automation" >
-			<timer duedate="#{START_TIME} + 1 business day" transition=".auto"/>
-		</task>
-        <task name="CloseTradingDayByPaymentCollector" swimlane="PaymentCollector" />
-        <transition to="sendSignalToCashboxParentCloseTradingDayJob" name="Пометить на закрытие" />
-        <transition to="sendSignalToCashboxParentCloseTradingDayJob" name=".auto">
-			<script>
-				<variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
-				<expression>
-					autoMode = "true";
-				</expression>
-			</script>
-		</transition>
-    </task-node>
+		<task-node name="MarkPaymentPointForClosing">
+			<description>
+				ожидаем от кассира пометки окончания опердня
+			</description>
+			<event type="node-enter">
+				<script>
+					<variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+					<variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
+					<variable name="START_TIME" mapped-name="startTime" access="write" />
+					<expression>
+						processStatus = org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status.OPEN;
+						canUpdateOrCreateOperation = "true";
+						startTime = org.flexpay.common.util.DateUtil.now();
+					</expression>
+				</script>
+			</event>
+			<task name="CloseTradingDayByAccounter" swimlane="Accounter" />
+			<task name="ClostTradingDayByAutomation" swimlane="Automation" >
+				<timer duedate="#{START_TIME} + 1 business day" transition=".auto"/>
+			</task>
+			<task name="CloseTradingDayByPaymentCollector" swimlane="PaymentCollector" />
+			<transition to="sendSignalToCashboxParentCloseTradingDayJob" name="Пометить на закрытие" />
+			<transition to="sendSignalToCashboxParentCloseTradingDayJob" name=".auto">
+				<script>
+					<variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
+					<expression>
+						autoMode = "true";
+					</expression>
+				</script>
+			</transition>
+		</task-node>
 
 	<task-node name="sendSignalToCashboxParentCloseTradingDayJob">
 		<task swimlane="JobManager" blocking="no" />

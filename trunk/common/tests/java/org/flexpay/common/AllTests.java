@@ -12,7 +12,6 @@ import org.junit.runners.Suite;
 		org.flexpay.common.locking.AllTests.class,
 		org.flexpay.common.action.AllTests.class,
 		org.flexpay.common.reporting.AllTests.class,
-		org.flexpay.common.process.AllTests.class,
 		org.flexpay.common.persistence.AllTests.class
 		})
 public class AllTests {

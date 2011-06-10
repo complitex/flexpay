@@ -8,23 +8,23 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 @SuppressWarnings ({"unchecked"})
-public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoExt {
+public class PersonDaoExtImpl extends JpaDaoSupport implements PersonDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -38,46 +38,49 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	public Stub<Person> findPersonStub(final Person person) {
 
 		final PersonIdentity identity = person.getDefaultIdentity();
-		List<?> identities = getHibernateTemplate().executeFind(new HibernateCallback<Object>() {
-			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				Criteria crit = session.createCriteria(PersonIdentity.class)
-						.setMaxResults(2)
-						.add(Restrictions.eq("firstName", identity.getFirstName()))
-						.add(Restrictions.eq("lastName", identity.getLastName()));
 
-				if (StringUtils.isNotEmpty(identity.getMiddleName())) {
-					crit.add(Restrictions.eq("middleName", identity.getMiddleName()));
-				} else {
-					crit.add(Restrictions.isNull("middleName"));
-				}
+		StringBuilder queryBuilder = new StringBuilder("FROM PersonIdentity pi");
 
-				if (identity.getIdentityType().getTypeId() != IdentityType.TYPE_UNKNOWN) {
-					crit.add(Restrictions.eq("identityType.id", identity.getIdentityType().getId()));
-				}
+		Map<String, Object> parameters = map();
 
-				if (StringUtils.isNotEmpty(identity.getOrganization())) {
-					crit.add(Restrictions.eq("organization", identity.getOrganization()));
-				}
-				if (StringUtils.isNotEmpty(identity.getSerialNumber())) {
-					crit.add(Restrictions.eq("serialNumber", identity.getSerialNumber()));
-				}
-				if (StringUtils.isNotEmpty(identity.getDocumentNumber())) {
-					crit.add(Restrictions.eq("documentNumber", identity.getDocumentNumber()));
-				}
-				Apartment registrationApartment = person.getRegistrationApartment();
-				if (registrationApartment != null) {
-					crit
-							.createAlias("person", "p")
-							.createAlias("p.personRegistrations", "r")
-							.createAlias("r.apartment", "a")
-							.add(Restrictions.eq("a.id", registrationApartment.getId()));
-				}
+		Apartment registrationApartment = person.getRegistrationApartment();
+		if (registrationApartment != null) {
+			queryBuilder.append(" INNER JOIN pi.person.personRegistrations pr WHERE pr.apartment.id=:apartment and ");
+			parameters.put("apartment", registrationApartment.getId());
+		} else {
+			queryBuilder.append(" WHERE ");
+		}
 
-				return crit.list();
-			}
-		});
+		queryBuilder.append("pi.firstName=:firstName and pi.lastName=:lastName");
+		parameters.put("firstName", identity.getFirstName());
+		parameters.put("lastName", identity.getLastName());
 
+		if (StringUtils.isNotEmpty(identity.getMiddleName())) {
+			queryBuilder.append(" and pi.middleName=:middleName");
+			parameters.put("middleName", identity.getMiddleName());
+		} else {
+			queryBuilder.append(" and pi.middleName IS NULL");
+		}
+
+		if (identity.getIdentityType().getTypeId() != IdentityType.TYPE_UNKNOWN) {
+			queryBuilder.append(" and pi.identityType.id=:identityTypeId");
+			parameters.put("identityTypeId", identity.getIdentityType().getId());
+		}
+
+		if (StringUtils.isNotEmpty(identity.getOrganization())) {
+			queryBuilder.append(" and pi.organization=:organization");
+			parameters.put("organization", identity.getOrganization());
+		}
+		if (StringUtils.isNotEmpty(identity.getSerialNumber())) {
+			queryBuilder.append(" and pi.serialNumber=:serialNumber");
+			parameters.put("serialNumber", identity.getSerialNumber());
+		}
+		if (StringUtils.isNotEmpty(identity.getDocumentNumber())) {
+			queryBuilder.append(" and pi.documentNumber=:documentNumber");
+			parameters.put("documentNumber", identity.getDocumentNumber());
+		}
+
+		List<?> identities = getJpaTemplate().findByNamedParams(queryBuilder.toString(), parameters);
 		if (identities.isEmpty()) {
 			return null;
 		}
@@ -91,7 +94,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 
 		if (!range.wasInitialized()) {
 			Object[] stats = (Object[]) DataAccessUtils.uniqueResult(
-					getHibernateTemplate().findByNamedQuery("Person.listPersonsWithIdentities.stats"));
+					getJpaTemplate().findByNamedQuery("Person.listPersonsWithIdentities.stats"));
 			range.setMinId((Long) stats[0]);
 			range.setMaxId((Long) stats[1]);
 			range.setCount(((Long) stats[2]).intValue());
@@ -107,7 +110,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		}
 
 		Object[] params = {range.getLowerBound(), range.getUpperBound()};
-		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithIdentities", params);
+		return getJpaTemplate().findByNamedQuery("Person.listPersonsWithIdentities", params);
 	}
 
 	@Override
@@ -115,7 +118,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 
 		if (!range.wasInitialized()) {
 			Object[] stats = (Object[]) DataAccessUtils.uniqueResult(
-					getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations.stats"));
+					getJpaTemplate().findByNamedQuery("Person.listPersonsWithRegistrations.stats"));
 			range.setMinId((Long) stats[0]);
 			range.setMaxId((Long) stats[1]);
 			range.setCount(((Long) stats[2]).intValue());
@@ -131,24 +134,24 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		}
 
 		Object[] params = {range.getLowerBound(), range.getUpperBound()};
-		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations", params);
+		return getJpaTemplate().findByNamedQuery("Person.listPersonsWithRegistrations", params);
 	}
 
 	@Override
 	public void deletePerson(final Person person) {
-		getHibernateTemplate().execute(new HibernateCallback<Object>() {
+		getJpaTemplate().execute(new JpaCallback() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public Object doInJpa(EntityManager entityManager) throws HibernateException {
 				Long personId = person.getId();
 				if (personId == null || personId <= 0) {
 					return null;
 				}
-				session.getNamedQuery("Person.deleteRegistration")
-						.setLong(0, personId).executeUpdate();
-				session.getNamedQuery("Person.deleteIdentity")
-						.setLong(0, personId).executeUpdate();
-				session.getNamedQuery("Person.deletePerson")
-						.setLong(0, personId).executeUpdate();
+				entityManager.createNamedQuery("Person.deleteRegistration")
+						.setParameter(1, personId).executeUpdate();
+				entityManager.createNamedQuery("Person.deleteIdentity")
+						.setParameter(1, personId).executeUpdate();
+				entityManager.createNamedQuery("Person.deletePerson")
+						.setParameter(1, personId).executeUpdate();
 				return null;
 			}
 		});

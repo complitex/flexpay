@@ -5,27 +5,27 @@ import org.flexpay.bti.dao.BtiBuildingDaoExt;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
-public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBuildingDaoExt {
+public class BtiBuildingDaoExtImpl extends JpaDaoSupport implements BtiBuildingDaoExt {
 
     @Override
 	public BtiBuilding readBuildingWithAttributes(Long buildingId) {
-		return (BtiBuilding) uniqueResult((List<?>) getHibernateTemplate()
+		return (BtiBuilding) uniqueResult((List<?>) getJpaTemplate()
                 .findByNamedQuery("BtiBuilding.findBuildingWithAttributes", buildingId));
 	}
 
     @Override
 	public BtiBuilding readBuildingWithAttributesByAddress(Long addressId) {
-		return (BtiBuilding) uniqueResult((List<?>) getHibernateTemplate()
+		return (BtiBuilding) uniqueResult((List<?>) getJpaTemplate()
                 .findByNamedQuery("BtiBuilding.findBuildingWithAttributesByAddress", addressId));
 	}
 
@@ -38,7 +38,7 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public List<BtiBuilding> findByTown(Stub<Town> town) {
-		return (List<BtiBuilding>) getHibernateTemplate().findByNamedQuery("BtiBuilding.findByTown", town.getId());
+		return (List<BtiBuilding>) getJpaTemplate().findByNamedQuery("BtiBuilding.findByTown", town.getId());
 	}
 
 	@SuppressWarnings ({"unchecked"})
@@ -49,11 +49,11 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 			return Collections.emptyList();
 		}
 
-		return (List<BtiBuilding>) getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		return getJpaTemplate().executeFind(new JpaCallback<List<BtiBuilding>>() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.getNamedQuery("BtiBuilding.findBuildingWithAttributesCollection")
-						.setParameterList("ids", ids).list();
+			public List<BtiBuilding> doInJpa(EntityManager entityManager) throws HibernateException {
+				return entityManager.createNamedQuery("BtiBuilding.findBuildingWithAttributesCollection")
+						.setParameter("ids", ids).getResultList();
 			}
 		});
 	}

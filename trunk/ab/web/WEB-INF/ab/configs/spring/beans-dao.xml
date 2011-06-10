@@ -164,37 +164,37 @@
 
     <bean id="buildingsDaoExt"
           class="org.flexpay.ab.dao.impl.BuildingsDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate"
+          p:jpaTemplate-ref="jpaTemplate"
           p:addressAttributeTypeService-ref="addressAttributeTypeService" />
 
     <bean id="apartmentDaoExt"
           class="org.flexpay.ab.dao.impl.ApartmentDaoExtImpl"
           p:dataSource-ref="dataSource"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="streetDaoExt"
           class="org.flexpay.ab.dao.impl.StreetDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="districtDaoExt"
           class="org.flexpay.ab.dao.impl.DistrictDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="townDaoExt"
           class="org.flexpay.ab.dao.impl.TownDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="regionDaoExt"
           class="org.flexpay.ab.dao.impl.RegionDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="countryDaoExt"
           class="org.flexpay.ab.dao.impl.CountryDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="personDaoExt"
           class="org.flexpay.ab.dao.impl.PersonDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <!-- Apartments -->
     <bean id="apartmentDao"

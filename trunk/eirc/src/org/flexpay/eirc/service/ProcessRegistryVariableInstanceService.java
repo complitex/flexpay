@@ -39,7 +39,7 @@ public interface ProcessRegistryVariableInstanceService {
 	/**
 	 * Find variable by  process Id
 	 *
-	 * @param processId Process Id
+	 * @param processId ProcessInstance Id
 	 * @return Variable instance object back
 	 */
 	@Nullable

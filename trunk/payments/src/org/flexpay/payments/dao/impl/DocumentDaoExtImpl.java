@@ -10,29 +10,28 @@ import org.flexpay.payments.persistence.filters.MaximalSumFilter;
 import org.flexpay.payments.persistence.filters.MinimalSumFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentDaoExt {
+public class DocumentDaoExtImpl extends JpaDaoSupport implements DocumentDaoExt {
 
-	@SuppressWarnings({"unchecked"})
-    @Override
+	@SuppressWarnings ({"unchecked"})
+	@Override
 	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, @NotNull ArrayStack filters) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT doc FROM Document doc ");
 		hql.append(getFilterHql(operation, filters));
 
-		return (List<Document>) getHibernateTemplate().executeFind(new HibernateCallback<List<Document>>() {
+		return (List<Document>) getJpaTemplate().executeFind(new JpaCallback<List<Document>>() {
 			@Override
-			public List<Document> doInHibernate(Session session) throws HibernateException {
+			public List<Document> doInJpa(EntityManager entityManager) throws HibernateException {
 
-				Query query = session.createQuery(hql.toString());
-				return query.list();
+				javax.persistence.Query query = entityManager.createQuery(hql.toString());
+				return (List<Document>) query.getResultList();
 			}
 		});
 	}

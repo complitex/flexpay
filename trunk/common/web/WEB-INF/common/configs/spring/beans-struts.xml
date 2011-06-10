@@ -28,6 +28,7 @@
     <bean id="processesCleanupAction"
           class="org.flexpay.common.action.jbpm.ProcessesCleanupAction"
           p:processManager-ref="processManager"
+		  p:processDefinitionManager-ref="processDefinitionManager"
           scope="prototype" />
 
 </beans>

@@ -11,7 +11,6 @@ import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -56,14 +55,14 @@ public class QuittanceGenerateAction extends FPActionSupport {
 
 			if (validated) {
 
-				Map<Serializable, Serializable> contextVariables = map();
+				Map<String, Object> contextVariables = map();
 
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, beginDateFilter.getDate());
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, endDateFilter.getDate());
 				contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, serviceOrganizationFilter.getSelectedId());
 				contextVariables.put(GenerateQuittanceJob.PARAM_TOWN_ID, townFilter.getSelectedId());
 
-				processManager.createProcess("GenerateQuittances", contextVariables);
+				processManager.startProcess("GenerateQuittances", contextVariables);
 
 				addActionMessage(getText("eirc.quittance.generation_started"));
 			}

@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryService;
@@ -22,7 +23,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -88,17 +92,19 @@ public class RunSpFileProcessing implements StandaloneTask {
 		log.debug("Starting registry processing");
 		long time = System.currentTimeMillis();
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<String, Object> contextVariables = CollectionUtils.map();
 		contextVariables.put("registryId", registryId);
 
-		long processId = processManager.createProcess("ProcessingDBRegistryProcess", contextVariables);
-
-		org.flexpay.common.process.Process process;
-		do {
-			process = processManager.getProcessInstanceInfo(processId);
-		} while(process != null && !process.getProcessState().isCompleted());
+		ProcessInstance process = processManager.startProcess("ProcessingDBRegistry", contextVariables);
 		if (process == null) {
-			log.error("Process {} did not find", processId);
+			log.error("ProcessInstance did not start");
+		}
+
+		while (process != null && !process.hasEnded()) {
+			process = processManager.getProcessInstance(process.getId());
+		}
+		if (process == null) {
+			log.error("ProcessInstance deleted");
 		}
 
 		if (log.isDebugEnabled()) {

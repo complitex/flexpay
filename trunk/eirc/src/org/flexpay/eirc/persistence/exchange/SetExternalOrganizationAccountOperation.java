@@ -76,7 +76,7 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @throws FlexPayException if failure occurs

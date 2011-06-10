@@ -7,17 +7,16 @@ import org.flexpay.ab.persistence.sorter.CountrySorter;
 import org.flexpay.ab.persistence.sorter.CountrySorterStub;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.List;
 
-public class CountryDaoExtImpl extends HibernateDaoSupport implements CountryDaoExt {
+public class CountryDaoExtImpl extends JpaDaoSupport implements CountryDaoExt {
 
 	/**
 	 * Find and sort regions
@@ -52,17 +51,17 @@ public class CountryDaoExtImpl extends HibernateDaoSupport implements CountryDao
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		return getJpaTemplate().executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cnthql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query cntQuery = entityManager.createQuery(cnthql.toString());
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 
 			}
 		});

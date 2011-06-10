@@ -1,6 +1,5 @@
 package org.flexpay.common.persistence;
 
-import org.flexpay.common.persistence.morphology.Gender;
 import org.flexpay.common.util.TranslationUtil;
 
 import java.util.Collections;
@@ -14,7 +13,7 @@ import java.util.Set;
 public class CurrencyInfo extends DomainObject {
 
 	private String currencyIsoCode;
-	private Gender gender;
+	private Integer gender;
 	private Set<CurrencyName> names = Collections.emptySet();
 
 	public Currency getCurrency() {
@@ -29,11 +28,11 @@ public class CurrencyInfo extends DomainObject {
 		this.currencyIsoCode = currencyIsoCode;
 	}
 
-	public Gender getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 

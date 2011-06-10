@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,8 +39,8 @@ public abstract class TransactionalSpringBeanAwareTestCase extends AbstractTrans
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	@Qualifier ("hibernateTemplate")
-	protected HibernateTemplate hibernateTemplate;
+	@Qualifier ("jpaTemplate")
+	protected JpaTemplate jpaTemplate;
 	@Qualifier ("jdbcTemplate")
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;

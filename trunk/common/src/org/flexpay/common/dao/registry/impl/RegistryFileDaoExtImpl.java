@@ -1,14 +1,14 @@
 package org.flexpay.common.dao.registry.impl;
 
 import org.flexpay.common.dao.registry.RegistryFileDaoExt;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
-public class RegistryFileDaoExtImpl extends HibernateDaoSupport implements RegistryFileDaoExt {
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+
+public class RegistryFileDaoExtImpl extends JpaDaoSupport implements RegistryFileDaoExt {
 
 	/**
 	 * Check if registry file is loaded to database
@@ -18,12 +18,12 @@ public class RegistryFileDaoExtImpl extends HibernateDaoSupport implements Regis
 	 */
 	@Override
 	public boolean isLoaded(@NotNull final Long fileId) {
-		return getHibernateTemplate().execute(new HibernateCallback<Boolean>() {
+		return getJpaTemplate().execute(new JpaCallback<Boolean>() {
 			@Override
-			public Boolean doInHibernate(Session session) throws HibernateException {
-				Query qCount = session.getNamedQuery("Registry.listRegistries.count");
-				qCount.setLong(0, fileId);
-				Number count = (Number) qCount.uniqueResult();
+			public Boolean doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query qCount = entityManager.createNamedQuery("Registry.listRegistries.count");
+				qCount.setParameter(1, fileId);
+				Number count = (Number) qCount.getSingleResult();
 				return count.longValue() > 0;
 			}
 		});

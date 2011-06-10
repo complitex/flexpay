@@ -3,6 +3,7 @@ package org.flexpay.eirc.service.impl;
 import org.flexpay.eirc.dao.ConsumerInfoDao;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.service.ConsumerInfoService;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
@@ -15,7 +16,7 @@ public class ConsumerInfoServiceImpl implements ConsumerInfoService {
 	 *
 	 * @param info ConsumerInfo instance to save
 	 */
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void save(ConsumerInfo info) {
 		if (info.isNew()) {
 			info.setId(null);

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.jboss.org/drools"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_xItem"/>
+
+	<process processType="Public" isExecutable="true" id="TestEventBasedSplit" name="Test"
+			tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="x" itemSubjectRef="_xItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="Start"/>
+
+		<eventBasedGateway id="_2" name="Split" gatewayDirection="Diverging"/>
+
+		<intermediateCatchEvent id="_3" name="event">
+			<dataOutput id="_3_Output" name="event"/>
+			<dataOutputAssociation>
+				<sourceRef>_3_Output</sourceRef>
+				<targetRef>x</targetRef>
+			</dataOutputAssociation>
+			<outputSet>
+				<dataOutputRefs>_3_Output</dataOutputRefs>
+			</outputSet>
+			<signalEventDefinition signalRef="signal"/>
+		</intermediateCatchEvent>
+
+		<intermediateCatchEvent id="_4" name="event">
+			<dataOutput id="_4_Output" name="event"/>
+			<dataOutputAssociation>
+				<sourceRef>_4_Output</sourceRef>
+				<targetRef>x</targetRef>
+			</dataOutputAssociation>
+			<outputSet>
+				<dataOutputRefs>_4_Output</dataOutputRefs>
+			</outputSet>
+			<signalEventDefinition signalRef="No"/>
+		</intermediateCatchEvent>
+
+		<exclusiveGateway id="_5" name="Join" gatewayDirection="Converging"/>
+
+		<scriptTask id="_6" name="Script">
+			<script>System.out.println("x=" + x);</script>
+		</scriptTask>
+
+		<endEvent id="_8" name="End">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<scriptTask id="_9" name="Script">
+			<script>System.out.println("Executing Yes");</script>
+		</scriptTask>
+
+		<scriptTask id="_10" name="Script">
+			<script>System.out.println("Executing No");</script>
+		</scriptTask>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_2-_4" sourceRef="_2" targetRef="_4"/>
+		<sequenceFlow id="_9-_5" sourceRef="_9" targetRef="_5"/>
+		<sequenceFlow id="_10-_5" sourceRef="_10" targetRef="_5"/>
+		<sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6"/>
+		<sequenceFlow id="_6-_8" sourceRef="_6" targetRef="_8"/>
+		<sequenceFlow id="_3-_9" sourceRef="_3" targetRef="_9"/>
+		<sequenceFlow id="_4-_10" sourceRef="_4" targetRef="_10"/>
+
+	</process>
+
+</definitions>

@@ -7,11 +7,11 @@ import org.flexpay.bti.persistence.apartment.ApartmentAttributeType;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnum;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnumValue;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import java.util.List;
 
-public class ApartmentAttributeTypeDaoExtImpl extends HibernateDaoSupport implements ApartmentAttributeTypeDaoExt {
+public class ApartmentAttributeTypeDaoExtImpl extends JpaDaoSupport implements ApartmentAttributeTypeDaoExt {
 
 	private ApartmentAttributeTypeDao attributeTypeDao;
 	private ApartmentAttributeTypeEnumDao attributeTypeEnumDao;
@@ -38,7 +38,7 @@ public class ApartmentAttributeTypeDaoExtImpl extends HibernateDaoSupport implem
 	 */
 	public boolean isUniqueTypeName(String name, Long typeId) {
 		Object[] params = {name, name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
-		List<?> result = getHibernateTemplate().findByNamedQuery("ApartmentAttributeType.checkUniqueName", params);
+		List<?> result = getJpaTemplate().findByNamedQuery("ApartmentAttributeType.checkUniqueName", params);
 		return result.isEmpty();
 	}
 

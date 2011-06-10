@@ -55,14 +55,15 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 		}
 
 		String privateKey = getPrivateKey(parameters);
+		Signature signature = null;
 		if (privateKey != null && ApplicationConfig.isResourceAvailable(privateKey)) {
-			addSignature(privateKey);
+			signature = getSignature(privateKey);
 		} else {
-			log.error("Private key resource {} not found", privateKey);
+			log.warn("Private key resource {} not found", privateKey);
 		}
 
         try {
-		    paymentsRegistryMBGenerator.exportToMegaBank(registry, file, organization);
+		    paymentsRegistryMBGenerator.exportToMegaBank(registry, file, organization, signature);
         } catch (FlexPayException ex) {
             log.error("Registry generation failed", ex);
             return RESULT_ERROR;
@@ -76,14 +77,13 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	private void addSignature(String privateKey) {
+	private Signature getSignature(String privateKey) {
 		try {
-			Signature instance = signatureService.readPrivateSignature(privateKey);
-
-			paymentsRegistryMBGenerator.setSignature(instance);
+			return signatureService.readPrivateSignature(privateKey);
 		} catch (Exception e) {
 			log.error("Error creating signature '{}': {}", privateKey, e);
 		}
+		return null;
 	}
 
 	private FPFile getFile(Map<Serializable, Serializable> parameters) {

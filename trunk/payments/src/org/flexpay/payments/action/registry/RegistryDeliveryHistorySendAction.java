@@ -2,6 +2,7 @@ package org.flexpay.payments.action.registry;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.payments.action.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.process.export.ExportJobParameterNames;
@@ -9,7 +10,6 @@ import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,14 +40,15 @@ public class RegistryDeliveryHistorySendAction extends AccountantAWPActionSuppor
 				continue;
 			}
 
-			Map<Serializable, Serializable> parameters = map();
+			Map<String, Object> parameters = map();
 			parameters.put(ExportJobParameterNames.FILE_ID, history.getSpFile().getId());
 			parameters.put(ExportJobParameterNames.REGISTRY_ID, history.getRegistry().getId());
 			try {
-				Long processId = processManager.createProcess("SendRegistry", parameters);
+				ProcessInstance processInstance = processManager.startProcess("SendRegistry", parameters);
+				Long processId = processInstance != null? processInstance.getId(): null;
 				if (processId == null || processId <= 0) {
-					log.error("Incorrect Process id ({})", processId);
-					log.error("Process \"SendRegistry\" didn't start for registry delivery history with id {}", historyId);
+					log.error("Incorrect ProcessInstance id ({})", processId);
+					log.error("ProcessInstance \"SendRegistry\" didn't start for registry delivery history with id {}", historyId);
 					addActionError(getText("payments.error.registry.delivery_history.mail_not_sent_inner_error"));
 					continue;
 				}

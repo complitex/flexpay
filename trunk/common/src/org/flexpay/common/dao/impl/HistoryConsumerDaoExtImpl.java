@@ -8,12 +8,12 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import java.util.Collections;
 import java.util.List;
 
-public class HistoryConsumerDaoExtImpl extends HibernateDaoSupport implements HistoryConsumerDaoExt {
+public class HistoryConsumerDaoExtImpl extends JpaDaoSupport implements HistoryConsumerDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -25,7 +25,7 @@ public class HistoryConsumerDaoExtImpl extends HibernateDaoSupport implements Hi
 		if (!range.wasInitialized()) {
 			Object[] params = {consumerId, ApplicationConfig.getInstanceId()};
 			Object[] stats = (Object[]) DataAccessUtils.uniqueResult(
-					getHibernateTemplate().findByNamedQuery("HistoryConsumer.findNewRecords.stats", params));
+					getJpaTemplate().findByNamedQuery("HistoryConsumer.findNewRecords.stats", params));
 			range.setMinId((Long) stats[0]);
 			range.setMaxId((Long) stats[1]);
 			range.setCount(((Long) stats[2]).intValue());
@@ -41,6 +41,6 @@ public class HistoryConsumerDaoExtImpl extends HibernateDaoSupport implements Hi
 		}
 
 		Object[] params = {range.getLowerBound(), range.getUpperBound(), ApplicationConfig.getInstanceId()};
-		return getHibernateTemplate().findByNamedQuery("HistoryConsumer.findNewRecords", params);
+		return getJpaTemplate().findByNamedQuery("HistoryConsumer.findNewRecords", params);
 	}
 }

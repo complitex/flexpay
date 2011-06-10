@@ -11,22 +11,21 @@ import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.StringValueFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.List;
 
 import static org.flexpay.common.persistence.filter.StringValueFilter.*;
 
-public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoExt {
+public class StreetDaoExtImpl extends JpaDaoSupport implements StreetDaoExt {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -87,17 +86,17 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		return getJpaTemplate().executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cnthql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query cntQuery = entityManager.createQuery(cnthql.toString());
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 
 			}
 		});
@@ -117,15 +116,15 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 
 	@Override
 	public void deleteStreetDistricts(final Street street) {
-		getHibernateTemplate().execute(new HibernateCallback<Object>() {
+		getJpaTemplate().execute(new JpaCallback<Void>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public Void doInJpa(EntityManager entityManager) throws PersistenceException {
 				Long streetId = street.getId();
 				if (streetId == null || streetId <= 0) {
 					return null;
 				}
-				session.getNamedQuery("Street.deleteStreetDistricts")
-						.setLong(0, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteStreetDistricts")
+						.setParameter(1, streetId).executeUpdate();
 				return null;
 			}
 		});
@@ -134,25 +133,25 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 
 	@Override
 	public void deleteStreet(final Street street) {
-		getHibernateTemplate().execute(new HibernateCallback<Object>() {
+		getJpaTemplate().execute(new JpaCallback<Void>() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
+			public Void doInJpa(EntityManager entityManager) throws PersistenceException {
 				Long streetId = street.getId();
 				if (streetId == null || streetId <= 0) {
 					return null;
 				}
-				session.getNamedQuery("Street.deleteNameTranslations")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteNameTemporals")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteNames")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteTypeTemporals")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteStreetDistricts")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteStreet")
-						.setLong(0, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteNameTranslations")
+						.setParameter(1, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteNameTemporals")
+						.setParameter(1, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteNames")
+						.setParameter(1, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteTypeTemporals")
+						.setParameter(1, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteStreetDistricts")
+						.setParameter(1, streetId).executeUpdate();
+				entityManager.createNamedQuery("Street.deleteStreet")
+						.setParameter(1, streetId).executeUpdate();
 				return null;
 			}
 		});
@@ -243,14 +242,14 @@ WHERE street.status = 0
             }
         }
 
-        List<Street> streets = (List<Street>) getHibernateTemplate().executeFind(new HibernateCallback<List<Street>>() {
-            @Override
-            public List<Street> doInHibernate(Session session) throws HibernateException {
+        List<Street> streets = (List<Street>) getJpaTemplate().executeFind(new JpaCallback() {
+			@Override
+			public List<Street> doInJpa(EntityManager entityManager) throws PersistenceException {
 
-                Query query = session.createQuery(hql.toString());
+                javax.persistence.Query query = entityManager.createQuery(hql.toString());
                 setQueryParameters(query, filters);
                 log.debug("Streets search query: {}", query);
-                return (List<Street>) query.list();
+                return (List<Street>) query.getResultList();
             }
         });
 
@@ -261,7 +260,7 @@ WHERE street.status = 0
         return streets.isEmpty() ? null : streets.get(0);
     }
 
-    private void setQueryParameters(Query query, @NotNull ArrayStack filters) {
+    private void setQueryParameters(javax.persistence.Query query, @NotNull ArrayStack filters) {
 
         for (Object f : filters) {
 
@@ -270,17 +269,17 @@ WHERE street.status = 0
             if (filter.needFilter()) {
 
                 if (filter instanceof TownFilter) {
-                    query.setLong("townId", ((TownFilter) filter).getSelectedId());
+                    query.setParameter("townId", ((TownFilter) filter).getSelectedId());
                 } else if (filter instanceof StringValueFilter) {
 
                     StringValueFilter svFilter = (StringValueFilter) filter;
 
                     if (TYPE_TOWN.equals(svFilter.getType())) {
-                        query.setString("townName", svFilter.getValue().toLowerCase());
+                        query.setParameter("townName", svFilter.getValue().toLowerCase());
                     } else if (TYPE_STREET_TYPE.equals(svFilter.getType())) {
-                        query.setString("streetTypeName", svFilter.getValue().toLowerCase());
+                        query.setParameter("streetTypeName", svFilter.getValue().toLowerCase());
                     } else if (TYPE_STREET.equals(svFilter.getType())) {
-                        query.setString("streetName", svFilter.getValue().toLowerCase());
+                        query.setParameter("streetName", svFilter.getValue().toLowerCase());
                     }
                 }
 

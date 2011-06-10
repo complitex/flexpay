@@ -20,7 +20,7 @@ public class SetNumberOfHabitantsOperation extends AbstractChangePersonalAccount
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context
 	 * @throws org.flexpay.common.exception.FlexPayException

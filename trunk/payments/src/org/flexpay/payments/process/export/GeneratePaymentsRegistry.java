@@ -2,10 +2,10 @@ package org.flexpay.payments.process.export;
 
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
@@ -17,14 +17,16 @@ import org.flexpay.orgs.persistence.ServiceProviderAttribute;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +43,10 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String USER_PAYMENTS_REGISTRY_GENERATOR = "payments-registry-generator";
-    private static final String GENERATE_PAYMENTS_REGISRY_PROCESS = "GeneratePaymentsRegisryProcess";
+    private static final String GENERATE_PAYMENTS_REGISTRY_PROCESS = "GeneratePaymentsRegistry";
     
 	// time out 10 sec
-	private static final long TIME_OUT = 10000;
+	private static final long TIME_OUT = 2000;
 
 	private String privateKey;
 
@@ -59,6 +61,9 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	protected static final List<String> USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES = list(
 			Roles.BASIC,
 			Roles.PROCESS_READ,
+			Roles.PROCESS_START,
+			Roles.PROCESS_DEFINITION_READ,
+			Roles.PROCESS_DEFINITION_UPLOAD_NEW,
 			org.flexpay.payments.service.Roles.OPERATION_READ,
 			org.flexpay.payments.service.Roles.DOCUMENT_READ,
 			org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
@@ -97,7 +102,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
                     FetchRange serviceProviderRange = new FetchRange();
 					do {
-                        for (ServiceProvider serviceProvider : serviceProviderService.listInstances(serviceProviderRange)) {
+                        for (ServiceProvider serviceProvider : getServiceProviders(serviceProviderRange)) {
                             long processId = createGeneratePaymentRegistryProcess(paymentCollectorOrganization, serviceProvider);
 							processInstanceIds.add(processId);
 						}
@@ -113,17 +118,18 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 			log.error("Failed run process generate payments registry", e);
 			throw new JobExecutionException(e);
 		} catch (ProcessDefinitionException e) {
-			log.error("Process generate payments registry not started", e);
+			log.error("ProcessInstance generate payments registry not started", e);
 			throw new JobExecutionException(e);
 		}
 	}
 
-    private List<Long> waitCompletionProcesses(List<Long> processInstanceIds) throws JobExecutionException {
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+    public List<Long> waitCompletionProcesses(List<Long> processInstanceIds) throws JobExecutionException {
         List<Long> registryIds = list();
 
         do {
-            log.debug("Waiting number {} processes: {}", GENERATE_PAYMENTS_REGISRY_PROCESS, processInstanceIds.size());
-            try {
+            log.debug("Waiting number {} processes: {}", GENERATE_PAYMENTS_REGISTRY_PROCESS, processInstanceIds.size());
+			try {
                 Thread.sleep(TIME_OUT);
             } catch (InterruptedException e) {
                 log.warn("Interrupted", e);
@@ -133,12 +139,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             List<Long> tmpListProcessInstanesId = list(processInstanceIds);
 
             for (Long processId : processInstanceIds) {
-                Process process;
+                ProcessInstance process;
 
-                process = processManager.getProcessInstanceInfo(processId);
+				process = getWaitingProcess(processId);
+				//process = new ProcessInstance();
 
-                if (process != null && process.getProcessState().isCompleted()) {
-                    log.debug("Process {} completed: {} ", processId, process.getParameters());
+                if (process != null && process.hasEnded()) {
+                    log.debug("ProcessInstance {} completed: {} ", processId, process.getParameters());
 
                     Long registryId = afterCompletedProcess(process);
 
@@ -147,10 +154,10 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     }
                     tmpListProcessInstanesId.remove(processId);
                 } else if (process == null) {
-                    log.debug("Process {} did not find", processId);
+                    log.debug("ProcessInstance {} did not find", processId);
                     tmpListProcessInstanesId.remove(processId);
                 } else {
-                    log.debug("Process {} has status {}: {}", new Object[]{processId, process.getProcessState(), process.getParameters()});
+                    log.debug("ProcessInstance {} has status {}: {}", new Object[]{processId, process.getState(), process.getParameters()});
                 }
             }
             processInstanceIds = tmpListProcessInstanesId;
@@ -159,18 +166,19 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         return registryIds;
     }
 
-    private Long afterCompletedProcess(Process process) {
-        Map<Serializable, Serializable> parameters = process.getParameters();
+	private Long afterCompletedProcess(ProcessInstance process) {
+        Map<String, Object> parameters = process.getParameters();
+		log.debug("After completed process '{}' parameters: {}", process.getId(), parameters);
 
         String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);
-        Long serviceProviderId = (Long) parameters.get(SERVICE_PROVIDER_ID);
+        Long serviceProviderId = getLongParameter(parameters, SERVICE_PROVIDER_ID, process.getId());
+
         ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
 
         if (lastProcessedDate != null && serviceProvider != null) {
-            ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
-                    .getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
+			ServiceProviderAttribute lastProcessedDateAttribute = getServiceProviderLastProcessedDate(serviceProvider);
 
-            if (lastProcessedDateAttribute == null) {
+			if (lastProcessedDateAttribute == null) {
                 lastProcessedDateAttribute = new ServiceProviderAttribute();
                 lastProcessedDateAttribute.setServiceProvider(serviceProvider);
                 lastProcessedDateAttribute.setName(LAST_PROCESSED_DATE);
@@ -191,17 +199,18 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             }
         }
 
-        return parameters.containsKey(ExportJobParameterNames.REGISTRY_ID)? (Long) parameters.get(ExportJobParameterNames.REGISTRY_ID) : null;
+        return parameters.containsKey(ExportJobParameterNames.REGISTRY_ID)?
+				getLongParameter(parameters, ExportJobParameterNames.REGISTRY_ID, process.getId()) : null;
     }
 
-    private long createGeneratePaymentRegistryProcess(Organization paymentCollectorOrganization, ServiceProvider serviceProvider) throws ProcessInstanceException, ProcessDefinitionException {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public long createGeneratePaymentRegistryProcess(Organization paymentCollectorOrganization, ServiceProvider serviceProvider) throws ProcessInstanceException, ProcessDefinitionException {
         Organization serviceProviderOrganization = serviceProvider.getOrganization();
 
-        Map<Serializable, Serializable> parameters = CollectionUtils.map();
-        ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
-                .getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
+        Map<String, Object> parameters = CollectionUtils.map();
+		ServiceProviderAttribute lastProcessedDateAttribute = getServiceProviderLastProcessedDate(serviceProvider);
 
-        if (lastProcessedDateAttribute != null) {
+		if (lastProcessedDateAttribute != null) {
             parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
         }
 
@@ -214,8 +223,43 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         parameters.put(PRIVATE_KEY, privateKey);
 
         log.debug("start process {}", parameters);
-        return processManager.createProcess(GENERATE_PAYMENTS_REGISRY_PROCESS, parameters);
+
+		ProcessInstance processInstance = processManager.startProcess(GENERATE_PAYMENTS_REGISTRY_PROCESS, parameters);
+
+		log.debug("process started: {}", processInstance);
+
+		return processInstance != null? processInstance.getId(): 0;
     }
+
+	protected ProcessInstance getWaitingProcess(Long processId) {
+		ProcessInstance process;
+		process = processManager.getProcessInstance(processId);
+		return process;
+	}
+
+	protected List<ServiceProvider> getServiceProviders(FetchRange serviceProviderRange) {
+		return serviceProviderService.listInstances(serviceProviderRange);
+	}
+
+	protected ServiceProviderAttribute getServiceProviderLastProcessedDate(ServiceProvider serviceProvider) {
+		return serviceProviderAttributeService
+					.getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
+	}
+
+	private Long getLongParameter(@NotNull Map<String, Object> parameters, String parameterName, Long processInstanceId) {
+		Object serviceProviderId = parameters.get(parameterName);
+		if (serviceProviderId == null) {
+			log.warn("{} do not content in process instance '{}' parameters", parameterName, processInstanceId);
+		} else if (serviceProviderId instanceof Long) {
+			return (Long)serviceProviderId;
+		} else if (serviceProviderId instanceof String) {
+			return Long.parseLong((String) serviceProviderId);
+		} else {
+			log.warn("Can not get {} from process instance variable: {}. Class is {}, but need String or Long.",
+					new Object[]{parameterName, serviceProviderId, serviceProviderId.getClass()});
+		}
+		return null;
+	}
 
     /**
 	 * Do payments registry user authentication

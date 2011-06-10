@@ -4,6 +4,8 @@ import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.bti.service.BtiApartmentService;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DelayedUpdateApartmentAttributes implements DelayedUpdate {
 
@@ -18,6 +20,7 @@ public class DelayedUpdateApartmentAttributes implements DelayedUpdate {
 	/**
 	 * Perform storage update
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void doUpdate() throws FlexPayExceptionContainer {
 		service.mergeAttributes(apartment);

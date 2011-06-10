@@ -1,10 +1,10 @@
 package org.flexpay.common.process.filter;
 
-import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Process state wrapper for using in {@link org.flexpay.common.process.filter.ProcessStateFilter}
+ * ProcessInstance state wrapper for using in {@link org.flexpay.common.process.filter.ProcessStateFilter}
  * Provides predefined objects for all possible states
  */
 public class ProcessStateObject {
@@ -27,16 +27,14 @@ public class ProcessStateObject {
 	 * @param state process state value
 	 * @return corresponding process state object
 	 */
-	public static ProcessStateObject getByProcessState(ProcessState state) {
+	public static ProcessStateObject getByProcessState(ProcessInstance.STATE state) {
 
 		switch (state) {
-			case COMPLETED:
+			case ENDED:
 				return completedState;
-			case COMPLETED_WITH_ERRORS:
-				return completedWithErrorsState;
-			case RUNING:
+			case RUNNING:
 				return runningState;
-			case WAITING:
+			case SUSPENDED:
 				return waitingState;
 			default:
 				return null;
@@ -48,7 +46,7 @@ public class ProcessStateObject {
 	 * @param processObjectId process object identifier
 	 * @return state which corresponds given state object
 	 */
-	public static ProcessState getProcessState(Long processObjectId) {
+	public static ProcessInstance.STATE getProcessState(Long processObjectId) {
 
 		if (processObjectId == null) {
 			return null;
@@ -56,13 +54,11 @@ public class ProcessStateObject {
 
 		switch (processObjectId.intValue()) {
 			case 1:
-				return ProcessState.COMPLETED;
-			case 2:
-				return ProcessState.COMPLETED_WITH_ERRORS;
+				return ProcessInstance.STATE.ENDED;
 			case 3:
-				return ProcessState.WAITING;
+				return ProcessInstance.STATE.SUSPENDED;
 			case 4:
-				return ProcessState.RUNING;
+				return ProcessInstance.STATE.RUNNING;
 			default:
 				return null;
 		}

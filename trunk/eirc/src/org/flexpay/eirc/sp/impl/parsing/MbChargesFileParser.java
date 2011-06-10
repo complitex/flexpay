@@ -102,7 +102,7 @@ public class MbChargesFileParser extends MbFileParser {
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.REQUIRED, readOnly = true)
     @Override
 	public int iterateParseFile(@NotNull BufferedReader reader, @NotNull Map<String, Object> properties) throws FlexPayException {
 		List<Registry> registries = (List<Registry>)properties.get(ParserParameterConstants.PARAM_REGISTRIES);

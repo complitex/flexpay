@@ -66,7 +66,6 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param pager Page object
 	 * @return List of SpRegistry objects for pager
 	 */
-	@Transactional (readOnly = false)
     @Override
 	public List<Registry> findObjects(Page<Registry> pager, Long spFileId) {
 		return registryDao.findObjects(pager, spFileId);
@@ -199,7 +198,6 @@ public class RegistryServiceImpl implements RegistryService {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Transactional (readOnly = false)
 	@Override
 	public int checkRegistryErrorsNumber(@NotNull Registry registry) {
 		int errorsNumber = registryRecordService.getErrorsNumber(registry);

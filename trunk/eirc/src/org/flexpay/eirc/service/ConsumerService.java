@@ -16,14 +16,6 @@ import java.util.Set;
 
 public interface ConsumerService {
 
-	/**
-	 * Try to find persistent consumer by example
-	 *
-	 * @param example Consumer
-	 * @return Persistent consumer if found, or <code>null</code> otherwise
-	 */
-	Consumer findConsumer(Consumer example);
-
     /**
      * Try to find persistent consumer by EIRC account stub
      *

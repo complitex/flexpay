@@ -31,12 +31,12 @@ public class ProcessLogger {
 	public static final String defaultPattern = "%d{dd.MM.yyyy HH:mm:ss}: [%c] %-5p - %m%n";
 
 	/**
-	 * Process log file name prefix
+	 * ProcessInstance log file name prefix
 	 */
 	public static final String logFileNamePrefix = "Process_";
 
 	/**
-	 * Process log file name prefix sufix
+	 * ProcessInstance log file name prefix sufix
 	 */
 	public static final String logFileNameSufix = ".log";
 
@@ -63,7 +63,7 @@ public class ProcessLogger {
 
 			return appender;
 		} catch (IOException e) {
-			LOG.error("Error creating Process Logger Appender for ProcessId=" + processId, e);
+			LOG.error("Error creating ProcessInstance Logger Appender for ProcessId=" + processId, e);
 			return new org.apache.log4j.varia.NullAppender();
 		}
 	}
@@ -158,7 +158,7 @@ public class ProcessLogger {
 	 * <p/>
 	 * Later invoke of {@link #getLogger(String)} will use appropriate process id
 	 *
-	 * @param processId Process ID
+	 * @param processId ProcessInstance ID
 	 */
 	public static void setThreadProcessId(Long processId) {
 		ProcessLogger.processId.set(processId);
@@ -174,7 +174,7 @@ public class ProcessLogger {
 
 		if (processId.get() == null) {
 			processId.set(0L);
-			LOG.warn("Inproper API usage, Process ID was not associated with a thread, using 0");
+			LOG.warn("Inproper API usage, ProcessInstance ID was not associated with a thread, using 0");
 		}
 		return getLogger(name, processId.get());
 	}

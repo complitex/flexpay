@@ -1,42 +1,12 @@
 package org.flexpay.eirc.dao.impl;
 
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.persistence.Consumer;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
-public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements ConsumerDaoExt {
-
-	private HibernateTemplate hibernateTemplate;
-
-	/**
-	 * Find consumer by example data
-	 *
-	 * @param pager		 Page
-	 * @param personId	  Responsible person id
-	 * @param serviceId	 Consumer service id
-	 * @param accountNumber Consumer external account number
-	 * @param apartmentId   Apartment id
-	 * @return list of consumers
-	 */
-    @Override
-	public List<Consumer> findConsumers(Page<?> pager, Long personId, Long serviceId, String accountNumber, Long apartmentId) {
-		return getSimpleJdbcTemplate().query(
-				"select id from eirc_consumers_tbl " +
-				"where person_id=? and service_id=? and external_account_number=? and apartment_id=?",
-				new RowMapper<Consumer>() {
-                    @Override
-					public Consumer mapRow(ResultSet rs, int i) throws SQLException {
-						return new Consumer(rs.getLong("id"));
-					}
-				}, personId, serviceId, accountNumber, apartmentId);
-	}
+public class ConsumersDaoExtJdbcImpl extends JpaDaoSupport implements ConsumerDaoExt {
 
 	/**
 	 * Find Consumer by account number and service id
@@ -48,7 +18,7 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
 	@Override
 	public Consumer findConsumerByService(String accountNumber, Long code) {
 		Object[] params = {accountNumber, code};
-		List<?> results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByService", params);
+		List<?> results = getJpaTemplate().findByNamedQuery("Consumer.findConsumersByService", params);
 		return results.isEmpty() ? null : (Consumer) results.get(0);
 	}
 
@@ -63,11 +33,7 @@ public class ConsumersDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Con
     @Override
 	public Consumer findConsumerByProviderServiceCode(Long providerId, String accountNumber, String code) {
 		Object[] params = {providerId, accountNumber, code};
-		List<?> results = hibernateTemplate.findByNamedQuery("Consumer.findConsumersByProviderServiceCode", params);
+		List<?> results = getJpaTemplate().findByNamedQuery("Consumer.findConsumersByProviderServiceCode", params);
 		return results.isEmpty() ? null : (Consumer) results.get(0);
-	}
-
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
 	}
 }

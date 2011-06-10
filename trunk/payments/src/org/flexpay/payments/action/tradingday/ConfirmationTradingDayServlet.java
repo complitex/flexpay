@@ -1,14 +1,12 @@
 package org.flexpay.payments.action.tradingday;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +27,8 @@ import static org.flexpay.common.service.Roles.PROCESS_DELETE;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.orgs.service.Roles.PAYMENT_COLLECTOR_READ;
-import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.*;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.PROCESS_STATUS;
+import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status;
 
 public class ConfirmationTradingDayServlet extends HttpServlet {
 
@@ -89,32 +87,32 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
 
             Long processId = paymentPoint.getTradingDayProcessInstanceId();
             if (processId == null) {
-                log.error("Process does not set for payment point with id={}", paymentPointId);
+                log.error("ProcessInstance does not set for payment point with id={}", paymentPointId);
                 httpServletResponse.sendError(530, "Trading day is not opened");
                 return;
             }
 
             ProcessManager processManager = (ProcessManager) context.getBean("processManager");
 
-            Process process = processManager.getProcessInstanceInfo(processId);
+            ProcessInstance process = processManager.getProcessInstance(processId);
             if (process == null) {
-                log.error("Process instance with id={} not found", processId);
+                log.error("ProcessInstance instance with id={} not found", processId);
                 httpServletResponse.sendError(500, "Internal Server Error");
                 return;
             }
-            log.debug("Process instance with id={} found for payment point with id={}", processId, paymentPointId);
-            if (process.getProcessStartDate().before(startDate)) {
+            log.debug("ProcessInstance instance with id={} found for payment point with id={}", processId, paymentPointId);
+            if (process.getStartDate().before(startDate)) {
                 log.error("Trading day started, but day {} in the future", dateFormat.format(startDate));
                 httpServletResponse.sendError(530, "Trading day is not opened");
                 return;
             }
 
-			Serializable processStatus = process.getParameters().get(PROCESS_STATUS);
-			if (process.getProcessStartDate().before(finishDate) && !Status.CLOSED.equals(processStatus)) {
+			Object processStatus = process.getParameters().get(PROCESS_STATUS);
+			if (process.getStartDate().before(finishDate) && !Status.CLOSED.equals(processStatus)) {
                 if (Status.WAIT_APPROVE.equals(processStatus)) {
                     log.debug("Try close trading day");
-                    TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, Transition.CONFIRM_CLOSING_DAY.getTransitionName(), log);
-                    process = processManager.getProcessInstanceInfo(processId);
+                   // TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, Transition.CONFIRM_CLOSING_DAY.getTransitionName(), log);
+                    process = processManager.getProcessInstance(processId);
                     Status newProcessStatus = (Status) process.getParameters().get(PROCESS_STATUS);
                     if (!Status.CLOSED.equals(newProcessStatus)) {
                         log.error("Day is not closed. Current status '{}'", newProcessStatus);

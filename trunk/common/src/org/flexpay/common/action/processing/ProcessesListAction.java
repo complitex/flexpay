@@ -3,12 +3,12 @@ package org.flexpay.common.action.processing;
 import org.flexpay.common.action.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
-import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.filter.ProcessStateFilter;
 import org.flexpay.common.process.filter.ProcessStateObject;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.process.sorter.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,9 +19,9 @@ import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 
-public class ProcessesListAction extends FPActionWithPagerSupport<Process> implements InitializingBean {
+public class ProcessesListAction extends FPActionWithPagerSupport<ProcessInstance> implements InitializingBean {
 
-	private List<Process> processes = list();
+	private List<ProcessInstance> processes = list();
 
 	private ProcessSorterByName processSorterByName = new ProcessSorterByName();
 	private ProcessSorterByStartDate processSorterByStartDate = new ProcessSorterByStartDate();
@@ -34,6 +34,7 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 	private ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
 	private ProcessManager processManager;
+	private ProcessDefinitionManager processDefinitionManager;
 
 	@NotNull
 	@Override
@@ -54,10 +55,10 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        processNameFilter.setProcessManager(processManager);
+        processNameFilter.setProcessDefinitionManager(processDefinitionManager);
     }
 
-	private List<Process> processes() {
+	private List<ProcessInstance> processes() {
 
         log.debug("processStateFilter = {}\nprocessNameFilter = {}", processStateFilter, processNameFilter);
 
@@ -82,11 +83,11 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		return null;
 	}
 
-	public String getTranslation(ProcessState state) {
+	public String getTranslation(ProcessInstance.STATE state) {
 		return getText(ProcessStateObject.getByProcessState(state).getName());
 	}
 
-	public List<Process> getProcesses() {
+	public List<ProcessInstance> getProcesses() {
 		return processes;
 	}
 
@@ -143,4 +144,8 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		this.processManager = processManager;
 	}
 
+	@Required
+	public void setProcessDefinitionManager(ProcessDefinitionManager processDefinitionManager) {
+		this.processDefinitionManager = processDefinitionManager;
+	}
 }

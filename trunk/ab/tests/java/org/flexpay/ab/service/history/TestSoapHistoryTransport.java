@@ -7,8 +7,8 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +62,8 @@ public class TestSoapHistoryTransport extends AbSpringBeanAwareTestCase {
 		}
 
 		// wait while process manager ends
-		List<Process> processes = processManager.getProcesses();
-		for (Process process : processes) {
+		List<ProcessInstance> processes = processManager.getProcesses();
+		for (ProcessInstance process : processes) {
 			processManager.join(process.getId());
 		}
 	}

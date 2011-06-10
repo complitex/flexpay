@@ -1,8 +1,8 @@
 package org.flexpay.common.action.processing;
 
 import org.flexpay.common.action.FPActionSupport;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.util.LogPreviewUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class ProcessViewAction extends FPActionSupport {
 
     private String logText;
-    private Process process;
+    private ProcessInstance process;
 	private Boolean delete;
 
     private ProcessManager processManager;
@@ -28,12 +28,12 @@ public class ProcessViewAction extends FPActionSupport {
     protected String doExecute() throws Exception {
 
 		if (Boolean.TRUE.equals(delete)) {
-			log.debug("Try delete process instance {}", process.getProcessInstaceId());
+			log.debug("Try delete process instance {}", process.getId());
 			processManager.deleteProcessInstance(process);
 			log.debug("Deleted process instance");
 		}
-		
-        process = processManager.getProcessInstanceInfo(process.getId());
+
+        process = processManager.getProcessInstance(process.getId());
 		if (process == null) {
 			addActionError(getText("common.error.processing.process.process_not_found"));
 			return SUCCESS;
@@ -56,11 +56,11 @@ public class ProcessViewAction extends FPActionSupport {
         return SUCCESS;
     }
 
-    public Process getProcess() {
+    public ProcessInstance getProcess() {
         return process;
     }
 
-    public void setProcess(Process process) {
+    public void setProcess(ProcessInstance process) {
         this.process = process;
     }
 

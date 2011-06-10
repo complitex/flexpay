@@ -2,16 +2,15 @@ package org.flexpay.common.action.processing;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.action.FPFileActionSupport;
-import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class ProcessDefinitionDeployAction extends FPFileActionSupport {
 
-	private ProcessManager processManager;
+	private ProcessDefinitionManager processDefinitionManager;
 
 	/**
 	 * Perform action execution.
@@ -33,8 +32,7 @@ public class ProcessDefinitionDeployAction extends FPFileActionSupport {
 		InputStream is = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			is = new FileInputStream(getUpload());
-			processManager.deployProcessDefinition(is, true);
+			processDefinitionManager.deployProcessDefinition(getUpload());
 			addActionMessage(getText("common.processing.deployment_success"));
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -58,8 +56,8 @@ public class ProcessDefinitionDeployAction extends FPFileActionSupport {
 	}
 
 	@Required
-	public void setProcessManager(ProcessManager processManager) {
-		this.processManager = processManager;
+	public void setProcessDefinitionManager(ProcessDefinitionManager processDefinitionManager) {
+		this.processDefinitionManager = processDefinitionManager;
 	}
 
 }

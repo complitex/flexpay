@@ -70,7 +70,7 @@ public class ObjectIdentifierSyncOperation extends ContainerOperation {
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @return DelayedUpdate object

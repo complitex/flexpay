@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" threshold="debug">
 
 	<appender name="flexpay" class="org.apache.log4j.QpidCompositeRollingAppender">
 		<!-- Ensure that logs always have the dateFormat set-->
@@ -152,6 +152,17 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+	<category name="org.flexpay.common.dao.impl.ldap" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+
+	<category name="org.flexpay.common.dao.impl.LdapUserPreferencesDaoImpl" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
 	<category name="org.flexpay.eirc.service.importexport" additivity="false">
 		<priority value="debug" />
 		<appender-ref ref="flexpay" />
@@ -168,7 +179,7 @@
 	</category>
 
 	<category name="org.flexpay.payments.process.export.TradingDaySchedulingJob" additivity="false">
-		<priority value="info" />
+		<priority value="debug" />
 		<appender-ref ref="flexpay" />
 	</category>
 
@@ -240,7 +251,7 @@
 	</category>
 
 	<category name="org.flexpay.payments.process.export.job" additivity="false">
-	    <priority value="info"/>
+	    <priority value="debug"/>
 	    <appender-ref ref="flexpay"/>
 	</category>
 
@@ -252,6 +263,26 @@
 	<category name="org.flexpay.common.action.security" additivity="false">
 		<priority value="debug" />
 		<appender-ref ref="security" />
+	</category>
+
+	<category name="org.drools" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.flexpay.common.process.handler" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.flexpay.payments.process.export.handler2" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.flexpay.eirc.process.registry.helper" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
 	</category>
 
 	<root>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <process-definition name="testProcessDefinition2"
-					xmlns="http://jbpm.org/3/jpdl"
-					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
+					xmlns="urn:jbpm.org:jpdl-3.2"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
 	<swimlane name="worker">
 		<assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />

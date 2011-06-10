@@ -1,0 +1,36 @@
+# COMMON_PROCESS_START, groups, opensso.java.net
+dn: cn=COMMON_PROCESS_START,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: COMMON_PROCESS_START
+
+# COMMON_PROCESS_END, groups, opensso.java.net
+dn: cn=COMMON_PROCESS_END,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: COMMON_PROCESS_END
+
+# COMMON_PROCESS_DEFINITION_READ, groups, opensso.java.net
+dn: cn=COMMON_PROCESS_DEFINITION_READ,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: COMMON_PROCESS_DEFINITION_READ
+
+# COMMON_COMPLETE_HUMAN_TASK, groups, opensso.java.net
+dn: cn=COMMON_COMPLETE_HUMAN_TASK,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+cn: COMMON_COMPLETE_HUMAN_TASK
+
+dn: dc=opensso,dc=java,dc=net
+changetype: modify
+replace: flexpayVersion
+flexpayVersion: 2011_05_05_0

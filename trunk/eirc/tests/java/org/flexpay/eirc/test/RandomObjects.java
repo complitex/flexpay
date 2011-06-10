@@ -20,7 +20,7 @@ public class RandomObjects {
 
 	public RandomObjects(Random rand, ApplicationContext context) {
 		this.rand = rand;
-		hibernateTemplate = (HibernateTemplate) context.getBean("hibernateTemplate");
+		hibernateTemplate = (HibernateTemplate) context.getBean("jpaTemplate");
 	}
 
 	public Apartment getRandomApartment(final Town town) {

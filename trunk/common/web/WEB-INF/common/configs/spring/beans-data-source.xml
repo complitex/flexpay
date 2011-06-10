@@ -26,6 +26,7 @@
 		  p:preferredTestQuery="${hibernate.c3p0.preferredTestQuery}" />
 
 	<!-- Hibernate Session Factory -->
+	<!--
 	<bean id="flexpaySessionFactory"
 		  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
 		  p:dataSource-ref="dataSource"
@@ -48,5 +49,6 @@
 			</props>
 		</property>
 	</bean>
+	-->
 
 </beans>

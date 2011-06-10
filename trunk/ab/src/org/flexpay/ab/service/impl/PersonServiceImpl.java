@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -255,6 +256,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @return List of persons
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<Person> find(@NotNull Stub<Apartment> apartmentStub, Page<Person> pager) {
 		return personDao.findPersonsInApartment(apartmentStub.getId(), DomainObjectWithStatus.STATUS_ACTIVE, pager);
@@ -268,6 +270,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @return List of persons
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<Person> findByFIO(@NotNull String searchString, Page<Person> pager) {
 		return personDao.findByFIO(searchString, pager);

@@ -28,7 +28,7 @@
     
     <bean id="tariffDaoExt"
           class="org.flexpay.tc.dao.impl.TariffDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="tariffCalculationResultDao"
           parent="abstractDao"
@@ -52,6 +52,6 @@
 
     <bean id="tariffExportCodeDaoExt"
           class="org.flexpay.tc.dao.impl.TariffExportCodeDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
 </beans>

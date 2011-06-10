@@ -11,13 +11,12 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.payments.dao.EircRegistryDaoExt;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 
-public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircRegistryDaoExt {
+public class EircRegistryDaoExtImpl extends JpaDaoSupport implements EircRegistryDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -94,21 +93,21 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 		// retrieve elements
 		@SuppressWarnings ({"unchecked"})
-		List<Registry> result = getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		List<Registry> result = getJpaTemplate().executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query qCount = session.createQuery(hqlCount.toString());
-				Query query = session.createQuery(hql.toString());
+			public Object doInJpa(EntityManager entityManager) throws HibernateException {
+				javax.persistence.Query qCount = entityManager.createQuery(hqlCount.toString());
+				javax.persistence.Query query = entityManager.createQuery(hql.toString());
 				for (int n = 0; n < params.size(); ++n) {
-					qCount.setParameter(n, params.get(n));
-					query.setParameter(n, params.get(n));
+					qCount.setParameter(n + 1, params.get(n));
+					query.setParameter(n + 1, params.get(n));
 				}
 
-				Number objectsCount = (Number) qCount.uniqueResult();
+				Number objectsCount = (Number) qCount.getSingleResult();
 				pager.setTotalElements(objectsCount.intValue());
 
 				return query.setFirstResult(pager.getThisPageFirstElementNumber())
-						.setMaxResults(pager.getPageSize()).list();
+						.setMaxResults(pager.getPageSize()).getResultList();
 			}
 		});
 
@@ -144,12 +143,12 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 		final Collection<Long> ids = DomainObject.collectionIds(registries);
 		@SuppressWarnings ({"unchecked"})
-		List<Registry> rFiles = getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		List<Registry> rFiles = getJpaTemplate().executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.getNamedQuery("Registry.getRegistriesFiles")
-						.setParameterList("ids", ids)
-						.list();
+			public Object doInJpa(EntityManager entityManager) throws HibernateException {
+				return entityManager.createNamedQuery("Registry.getRegistriesFiles")
+						.setParameter("ids", ids)
+						.getResultList();
 			}
 		});
 
@@ -167,10 +166,11 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 	@Override
 	public void deleteQuittances(final Long registryId) {
-		getHibernateTemplate().execute(new HibernateCallback<Void>() {
+		getJpaTemplate().execute(new JpaCallback<Void>() {
 			@Override
-			public Void doInHibernate(Session session) throws HibernateException {
-				session.getNamedQuery("Registry.deleteQuittances").setLong(1, registryId).executeUpdate();
+			public Void doInJpa(EntityManager entityManager) throws HibernateException {
+				entityManager.createNamedQuery("Registry.deleteQuittances")
+						.setParameter(1, registryId).executeUpdate();
 				return null;
 			}
 		});

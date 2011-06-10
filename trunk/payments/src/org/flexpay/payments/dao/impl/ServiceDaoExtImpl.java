@@ -10,25 +10,24 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.filters.ParentServiceFilterMarker;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 
-public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDaoExt {
+public class ServiceDaoExtImpl extends JpaDaoSupport implements ServiceDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@SuppressWarnings ({"unchecked"})
 	public List<ServiceType> getServiceTypes() {
-		return getHibernateTemplate().find("select distinct t from ServiceType t " +
+		return getJpaTemplate().find("select distinct t from ServiceType t " +
 										   "left join fetch t.typeNames n left join fetch n.lang where t.status=0");
 	}
 
@@ -39,13 +38,8 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	 * @return ServiceType instance
 	 */
 	public ServiceType findByCode(int code) {
-		try {
-			getHibernateTemplate().setMaxResults(1);
-			List<?> objects = getHibernateTemplate().find("from ServiceType where code=? and status=0", code);
-			return objects.isEmpty() ? null : (ServiceType) objects.get(0);
-		} finally {
-			getHibernateTemplate().setMaxResults(0);
-		}
+		List<?> objects = getJpaTemplate().find("from ServiceType where code=? and status=0", code);
+		return objects.isEmpty() ? null : (ServiceType) objects.get(0);
 	}
 
 	/**
@@ -95,22 +89,23 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 			}
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Number count = (Number) setParameters(session.createQuery(hqlCount.toString()), params).uniqueResult();
+		return getJpaTemplate().executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws HibernateException {
+				Number count = (Number) setParameters(entityManager.createQuery(hqlCount.toString()), params).getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return setParameters(session.createQuery(hql.toString()), params)
+				return setParameters(entityManager.createQuery(hql.toString()), params)
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 			}
 		});
 	}
 
-	private Query setParameters(Query query, List<Object> params) {
+	private javax.persistence.Query setParameters(javax.persistence.Query query, List<Object> params) {
 		for (int i = 0; i < params.size(); i++) {
-			query.setParameter(i, params.get(i));
+			query.setParameter(i + 1, params.get(i));
 		}
 		return query;
 	}
@@ -127,6 +122,6 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	@SuppressWarnings ({"unchecked"})
 	public List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate) {
 		Object[] params = {providerId, typeId, beginDate, endDate, beginDate, endDate};
-		return getHibernateTemplate().findByNamedQuery("Service.findIntersectingServices", params);
+		return getJpaTemplate().findByNamedQuery("Service.findIntersectingServices", params);
 	}
 }

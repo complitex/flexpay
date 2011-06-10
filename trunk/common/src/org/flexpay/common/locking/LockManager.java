@@ -1,16 +1,13 @@
 package org.flexpay.common.locking;
 
 import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
-import org.hibernate.type.StandardBasicTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 
-import java.util.Collection;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +17,8 @@ public class LockManager {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private HibernateTemplate hibernateTemplate;
-	private Map<String, StatelessSession> lockedSessions = map();
+	private JpaTemplate jpaTemplate;
+	private Map<String, EntityManager> lockedSessions = map();
 
 	/**
 	 * Private constructor
@@ -36,58 +33,62 @@ public class LockManager {
 	 * @return true if semaphore lock obtained, false if semaphore already locked
 	 */
 	public synchronized boolean lock(String semaphoreID) {
-
-		StatelessSession session = lockedSessions.get(semaphoreID);
-		if (session != null) {
+		/*
+		EntityManager entityManager = lockedSessions.get(semaphoreID);
+		if (entityManager != null) {
 			log.debug("Already locked");
 			return false;
 		}
 
 		log.debug("Creating new stateless session");
-		session = hibernateTemplate.getSessionFactory().openStatelessSession();
 
-		Transaction transaction = session.getTransaction();
+		entityManager = jpaTemplate.getEntityManager();
+
+
+		EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
-		List<?> list = acquireLock(session, semaphoreID);
+		List<?> list = acquireLock(entityManager, semaphoreID);
 		if (list == null) {
 			log.debug("Semaphore already locked: {}", semaphoreID);
-			session.getTransaction().commit();
-			session.close();
+			entityManager.getTransaction().commit();
+			entityManager.close();
 			return false;
 		}
 
 		if (list.isEmpty()) {
 			// create semaphore
-			SQLQuery semQuery = session.createSQLQuery("insert into common_semaphores_tbl (semaphoreID) values (:semaphoreID)");
-			semQuery.setString("semaphoreID", semaphoreID);
+			Query semQuery = entityManager.createNativeQuery("insert into common_semaphores_tbl (semaphoreID) values (:semaphoreID)");
+			semQuery.setParameter("semaphoreID", semaphoreID);
 			semQuery.executeUpdate();
 			transaction.commit();
 
 			// create new transaction
-			transaction = session.getTransaction();
+			entityManager.getTransaction();
 			transaction.begin();
-			list = acquireLock(session, semaphoreID);
+			list = acquireLock(entityManager, semaphoreID);
 		}
 
 		boolean isLocked = list.size() == 1;
 		if (isLocked) {
-			lockedSessions.put(semaphoreID, session);
+			lockedSessions.put(semaphoreID, entityManager);
 		} else {
-			session.getTransaction().commit();
-			session.close();
+			entityManager.getTransaction().commit();
+			entityManager.close();
 		}
 
 		return isLocked;
+		*/
+		return true;
 	}
 
-	private List acquireLock(StatelessSession session, String semaphoreID) {
+	private List acquireLock(EntityManager entityManager, String semaphoreID) {
 
-		SQLQuery sqlQuery = session.createSQLQuery(
-				"select semaphoreID from common_semaphores_tbl where semaphoreID=:semaphoreID for update");
-		sqlQuery.addScalar("semaphoreID", StandardBasicTypes.STRING).setString("semaphoreID", semaphoreID);
+		Query sqlQuery = entityManager.createNativeQuery(
+				"select semaphoreID from common_semaphores_tbl where semaphoreID=:semaphoreID");
+		sqlQuery.setParameter("semaphoreID", semaphoreID);
 		List<?> list;
 		try {
-			list = sqlQuery.list();
+			list = sqlQuery.getResultList();
 		} catch (HibernateException e) {
 			log.error("AcquireLock failed!");
 			return null;
@@ -102,13 +103,15 @@ public class LockManager {
 	 */
 	public synchronized void releaseLock(String semaphoreID) {
 
+		/*
 		log.debug("Releasing lock: {}", semaphoreID);
 
-		StatelessSession session = lockedSessions.remove(semaphoreID);
-		if (session != null) {
-			session.getTransaction().commit();
-			session.close();
+		EntityManager entityManager = lockedSessions.remove(semaphoreID);
+		if (entityManager != null) {
+			entityManager.getTransaction().commit();
+			entityManager.close();
 		}
+		*/
 	}
 
 	/**
@@ -116,20 +119,22 @@ public class LockManager {
 	 */
 	public synchronized void releaseAll() {
 
+		/*
 		log.debug("Releasing all locks");
 
-		Collection<StatelessSession> sessions = lockedSessions.values();
-		for (StatelessSession session : sessions) {
-			session.getTransaction().commit();
-			session.close();
+		Collection<EntityManager> entityManagers = lockedSessions.values();
+		for (EntityManager entityManager : entityManagers) {
+			entityManager.getTransaction().commit();
+			entityManager.close();
 		}
 
 		lockedSessions.clear();
+		*/
 	}
 
     @Required
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public void setJpaTemplate(JpaTemplate jpaTemplate) {
+		this.jpaTemplate = jpaTemplate;
 	}
 
 }

@@ -4,16 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.ProcessDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DateRange;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManagerImpl;
 import org.flexpay.common.process.ProcessState;
-import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +20,11 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import static org.flexpay.common.util.CollectionUtils.*;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Hibernate-based implementation of {@link org.flexpay.common.dao.ProcessDao}
@@ -39,7 +36,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	private HibernateTemplate hibernateTemplate;
 
     @Override
-	public List<Process> findProcesses(ProcessSorter sorter, final Page<Process> pager, Date startFrom, Date endBefore,
+	public List<ProcessInstance> findProcesses(ProcessSorter sorter, final Page<ProcessInstance> pager, Date startFrom, Date endBefore,
 									   ProcessState state, String name) {
 
 		final StringBuilder hql = new StringBuilder("select distinct pi " +
@@ -56,7 +53,7 @@ public class ProcessDaoImpl implements ProcessDao {
 		return convert(getProcessInstances(pager, hql, cntHql, startFrom, endBefore, state, name));
 	}
 
-	private List<ProcessInstance> getProcessInstances(Page<Process> pager, StringBuilder hql, StringBuilder cntHql,
+	private List<ProcessInstance> getProcessInstances(Page<ProcessInstance> pager, StringBuilder hql, StringBuilder cntHql,
 													  Date startFrom, Date endBefore, ProcessState state, String name) {
 
 		List<ProcessInstance> instances;
@@ -173,7 +170,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	private List<ProcessInstance> getProcessInstancesPage(final Page<Process> pager, final StringBuilder hql,
+	private List<ProcessInstance> getProcessInstancesPage(final Page<ProcessInstance> pager, final StringBuilder hql,
 														  final StringBuilder cntHql, final Date startFrom,
 														  final Date endBefore, final ProcessState state,
 														  final String name) {
@@ -198,8 +195,8 @@ public class ProcessDaoImpl implements ProcessDao {
 		});
 	}
 
-	private List<Process> convert(List<ProcessInstance> instances) {
-		List<Process> processes = list();
+	private List<ProcessInstance> convert(List<ProcessInstance> instances) {
+		List<ProcessInstance> processes = list();
 		for (ProcessInstance processInstance : instances) {
 			processes.add(getProcessInfo(processInstance.getId()));
 		}
@@ -208,10 +205,11 @@ public class ProcessDaoImpl implements ProcessDao {
 	}
 
     @Override
-	public Process getProcessInfoWithVariables(ProcessInstance processInstance) {
+	public ProcessInstance getProcessInfoWithVariables(ProcessInstance processInstance) {
 
-		Process process = getProcessInfo(processInstance);
+		ProcessInstance process = getProcessInfo(processInstance);
 
+		/*
 		@SuppressWarnings ({"unchecked"})
 		Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
 		if (parameters == null) {
@@ -222,12 +220,12 @@ public class ProcessDaoImpl implements ProcessDao {
 		if (parameters.containsKey(Job.RESULT_ERROR)) {
 			process.setProcessState((ProcessState) parameters.get(Job.RESULT_ERROR));
 		}
-
+              */
 		return process;
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	private Process getProcessInfo(@NotNull Long processId) {
+	private ProcessInstance getProcessInfo(@NotNull Long processId) {
 
 		List<ProcessInstance> processInstances = (List<ProcessInstance>) hibernateTemplate.findByNamedQuery("Process.readFull", processId);
 		if (processInstances.isEmpty()) {
@@ -237,18 +235,18 @@ public class ProcessDaoImpl implements ProcessDao {
 		return getProcessInfo(processInstances.get(0));
 	}
 
-	private Process getProcessInfo(ProcessInstance processInstance) {
+	private ProcessInstance getProcessInfo(ProcessInstance processInstance) {
 
-		Process process = new Process();
+		ProcessInstance process = new ProcessInstance();
 		if (processInstance == null) {
 			return process;
 		}
 
 		process.setId(processInstance.getId());
-		process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
-		process.setProcessEndDate(processInstance.getEnd());
-		process.setProcessStartDate(processInstance.getStart());
-		process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
+		process.setProcessDefinitionId(processInstance.getProcessDefinitionId());
+		process.setEndDate(processInstance.getEndDate());
+		process.setStartDate(processInstance.getStartDate());
+		process.setProcessDefenitionVersion(processInstance.getProcessDefenitionVersion());
 
 		File logFile = ProcessLogger.getLogFile(processInstance.getId());
 		if (logFile.exists()) {

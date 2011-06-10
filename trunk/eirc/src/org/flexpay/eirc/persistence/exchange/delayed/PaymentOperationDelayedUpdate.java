@@ -17,6 +17,8 @@ import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -81,6 +83,7 @@ public class PaymentOperationDelayedUpdate implements
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
 

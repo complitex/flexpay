@@ -74,7 +74,7 @@
 		</fileset>
 	</path>
 
-	<path id="jbpm_jpdl.lib">
+	<path id="jbpm.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="jbpm/*.jar" />
 		</fileset>
@@ -173,13 +173,29 @@
 		</fileset>
 	</path>
 
+	<path id="htmlunit.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="htmlunit/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="httpclient.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="httpclient/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="jpa.config">
+		<fileset dir="${common.dir}/web" />
+	</path>
+
 	<property name="ldap.file.search.result" value="${build.dir}/search_result.ldif"/>
     <path id="ldap.file.result.ref">
         <fileset dir="${build.dir}">
             <include name="result.ldif" />
         </fileset>
     </path>
-    <property name="ldap.file.result" refid="ldap.file.result.ref"/>
+    <property name="ldap.file.result" value="${build.dir}/result.ldif"/>
 
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
@@ -296,6 +312,7 @@
 			<lib dir="${common.dir}/lib/jdbc" />
 			<lib dir="${common.dir}/lib/opensso" />
 			<lib dir="${common.dir}/lib/ldap" />
+			<lib dir="${common.dir}/lib/httpclient" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
@@ -318,6 +335,7 @@
 				<path refid="classpath" />
 			</classpath>
 			<sysproperty key="log4j.configuration" value="org/flexpay/common/log4j.xml" />
+			<sysproperty key="drools.session.conf" value="../../common/tests/data/org/flexpay/common/drools.session.conf" />
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />
 			<sysproperty key="java.awt.headless" value="true" />

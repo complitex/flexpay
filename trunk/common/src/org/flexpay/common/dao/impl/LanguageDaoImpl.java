@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.List;
 
@@ -13,23 +13,23 @@ import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
 public class LanguageDaoImpl implements LanguageDao {
 
-	protected HibernateTemplate hibernateTemplate;
+	protected JpaTemplate jpaTemplate;
 
     @NotNull
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public List<Language> listLanguages() {
-		return hibernateTemplate.findByNamedQuery("Language.listLanguages");
+		return jpaTemplate.findByNamedQuery("Language.listLanguages");
 	}
 
     @Nullable
     @Override
     public Language getLanguageByIsoCode(@NotNull String langIsoCode) {
-        return (Language) uniqueResult((List<?>) hibernateTemplate.findByNamedQuery("Language.getLanguageByIsoCode", langIsoCode));
+        return (Language) uniqueResult((List<?>) jpaTemplate.findByNamedQuery("Language.getLanguageByIsoCode", langIsoCode));
     }
 
     @Required
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public void setJpaTemplate(JpaTemplate jpaTemplate) {
+		this.jpaTemplate = jpaTemplate;
 	}
 }

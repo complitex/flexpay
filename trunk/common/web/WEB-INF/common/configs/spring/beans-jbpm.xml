@@ -1,16 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:drools="http://drools.org/schema/drools-spring"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://drools.org/schema/drools-spring http://drools.org/schema/drools-spring.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<bean id="sendEmailToAdministrator"
-		  scope="prototype"
-		  class="org.flexpay.common.process.job.SendEmailToAdministrator" />
+	<context:annotation-config/>
 
-	<bean id="checkArrayEndingActionHandler"
-		  scope="prototype"
-		  class="org.flexpay.common.process.handler.CheckArrayEndingActionHandler" />
+	<bean id="processBuilderFactoryService" class="org.jbpm.process.builder.ProcessBuilderFactoryServiceImpl"/>
+
+	<bean id="processMarshallerFactoryService" class="org.flexpay.common.process.marshaller.ProcessMarshallerFactoryServiceImpl"/>
+
+	<bean id="processRuntimeFactoryService" class="org.jbpm.process.instance.ProcessRuntimeFactoryServiceImpl"/>
+
+	<bean id="bpmn2ProcessProvider" class="org.jbpm.bpmn2.BPMN2ProcessProviderImpl"/>
+
+	<bean name="initProcessBuilderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+        <property name="staticMethod" value="org.drools.compiler.ProcessBuilderFactory.setProcessBuilderFactoryService"/>
+        <property name="arguments">
+            <list>
+                <ref bean="processBuilderFactoryService"/>
+            </list>
+       </property>
+    </bean>
+
+	<bean name="initProcessMarshallerFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+        <property name="staticMethod" value="org.drools.marshalling.impl.ProcessMarshallerFactory.setProcessMarshallerFactoryService"/>
+        <property name="arguments">
+            <list>
+                <ref bean="processMarshallerFactoryService"/>
+            </list>
+       </property>
+    </bean>
+
+	<bean name="initProcessRuntimeFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+        <property name="staticMethod" value="org.drools.runtime.process.ProcessRuntimeFactory.setProcessRuntimeFactoryService"/>
+        <property name="arguments">
+            <list>
+                <ref bean="processRuntimeFactoryService"/>
+            </list>
+       </property>
+    </bean>
+
+	<bean name="initBPMN2ProcessFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+        <property name="staticMethod" value="org.drools.compiler.BPMN2ProcessFactory.setBPMN2ProcessProvider"/>
+        <property name="arguments">
+            <list>
+                <ref bean="bpmn2ProcessProvider"/>
+            </list>
+       </property>
+    </bean>
+
+	<drools:kstore id="knowledgeStore" />
+
+	<!--
+	<drools:resource-change-scanner id="scanner" interval="2" />
+
+	<drools:kagent id="knowledgeAgent" kbase="knowledgeBase" new-instance="false">
+		<drools:resources>
+			<drools:resource type="CHANGE_SET" source="classpath:definitions/ChangeSet.xml" />
+		</drools:resources>
+	</drools:kagent>
+       -->
+	<drools:kbase id="knowledgeBase">
+		<drools:resources>
+			<!--
+			<drools:resource type="BPMN2"
+				             source="classpath:definitions/BPMN2-UserTask.bpmn2" />
+
+			<drools:resource type="BPMN2"
+				             source="classpath:definitions/BPMN2-UserTask2.bpmn2" />
+				             -->
+		</drools:resources>
+		<drools:configuration>
+		</drools:configuration>
+	</drools:kbase>
+
+	<drools:ksession id="jpaSingleSessionCommandService" type="stateful" kbase="knowledgeBase">
+        <drools:configuration>
+            <drools:jpa-persistence load="1">
+                <drools:transaction-manager ref="transactionManager" />
+                <drools:entity-manager-factory ref="entityManagerFactory" />
+            </drools:jpa-persistence>
+        </drools:configuration>
+    </drools:ksession>
+	<!--
+	<drools:ksession id="session2" type="stateless" kbase="knowledgeBase" />
+	  -->
+
+	<bean id="statefulKnowledgeSessionFactory"
+		  class="org.flexpay.common.process.StatefulKnowledgeSessionContainerFactory"
+		  p:session-ref="jpaSingleSessionCommandService" />
+
+	<!--
+	<bean id="statefulKnowledgeSessionFactory"
+		  class="org.flexpay.common.process.StatefulKnowledgeSessionSingletonFactory"
+		  p:processDirectory="/home/pavel/Java/projects/flexpay/common/web/WEB-INF/common/process"
+		  p:transactionManager-ref="transactionManager" />
+	  -->
+	<bean id="statefulKnowledgeSession"
+		  factory-bean="statefulKnowledgeSessionFactory"
+		  factory-method="getSession" />
+
+	<bean id="workingMemoryDbLoggerTarget" class="org.flexpay.common.process.audit.JPAWorkingMemoryDbLogger" autowire-candidate="false">
+		<constructor-arg name="session" ref="statefulKnowledgeSession" />
+		<property name="processInstanceLogDao" ref="processInstanceLogDao" />
+		<property name="nodeInstanceLogDao" ref="nodeInstanceLogDao" />
+		<property name="variableInstanceLogDao" ref="variableInstanceLogDao" />
+	</bean>
+
+	<bean id="processInstanceDbLogTarget" class="org.flexpay.common.process.audit.ProcessInstanceDbLogImpl"
+		  autowire-candidate="false"
+		  p:processInstanceLogDao-ref="processInstanceLogDao"
+		  p:nodeInstanceLogDao-ref="nodeInstanceLogDao"
+		  p:variableInstanceLogDao-ref="variableInstanceLogDao"/>
+
+	<bean id="processInstanceLogDao"
+		  class="org.flexpay.common.process.audit.dao.ProcessInstanceLogDaoJpa"
+		  p:jpaTemplate-ref="jpaTemplate" />
+
+	<bean id="nodeInstanceLogDao"
+		  class="org.flexpay.common.process.audit.dao.NodeInstanceLogDaoJpa"
+		  p:jpaTemplate-ref="jpaTemplate" />
+
+	<bean id="variableInstanceLogDao"
+		  class="org.flexpay.common.process.audit.dao.VariableInstanceLogDaoJpa"
+		  p:jpaTemplate-ref="jpaTemplate" />
+
+	<bean id="processJbpmDao"
+		  class="org.flexpay.common.process.dao.ProcessJbpmDaoImpl"
+		  p:session-ref="statefulKnowledgeSession"
+		  p:processInstanceDbLog-ref="processInstanceDbLog"
+		  init-method="registerEventListeners"
+		  />
+
+	<bean id="workItemInfoDao"
+		  class="org.flexpay.common.process.dao.WorkItemDaoImpl"
+		  p:session-ref="statefulKnowledgeSession"
+		  p:emf-ref="entityManagerFactory" />
+
+	<bean id="workItemHandlerDao"
+		  class="org.flexpay.common.process.dao.WorkItemHandlerDaoImpl"
+		  p:session-ref="statefulKnowledgeSession" />
+
+	<bean name="processManager"
+		  class="org.flexpay.common.process.ProcessManagerImpl"
+		  factory-method="getInstance"
+		  init-method="start"
+		  p:delegate-ref="processJbpmDao"
+		  p:workItemDao-ref="workItemInfoDao"
+		  p:workItemHandlerDao-ref="workItemHandlerDao"
+		  p:processDefinitionManager-ref="processDefinitionManager" />
+
+	<bean name="processDefinitionManager"
+		  class="org.flexpay.common.process.ProcessDefinitionManagerImpl"
+		  factory-method="getInstance"
+		  init-method="deployProcessDefinitions"
+		  p:delegate-ref="processJbpmDao"
+	 	  p:guvnorUrl="${process_manager.guvnor_url}"
+		  p:guvnorPackageName="${process_manager.processes_package}"
+		  p:guvnorUserName="${process_manager.guvnor_user_name}"
+		  p:guvnorUserPassword="${process_manager.guvnor_user_password}">
+
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/common/process</value>
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="taskHandler"
+		  class="org.flexpay.common.process.handler.TaskHandler"
+		  abstract="true"
+		  p:workItemDao-ref="workItemInfoDao" />
+
+	<bean id="sendEmailToAdministratorHandler"
+		  name="SendEmailToAdministratorTask"
+		  class="org.flexpay.common.process.handler2.SendEmailToAdministratorHandler"
+		  parent="taskHandler" />
+
+	<bean id="processesCleanupHandler"
+		  name="ProcessCleanupTask"
+		  class="org.flexpay.common.process.handler2.ProcessesCleanupHandler"
+		  parent="taskHandler"
+		  p:processManager-ref="processManager"
+		  p:processDefinitionManager-ref="processDefinitionManager" />
+
+	<bean id="humanTaskHandler"
+		  class="org.flexpay.common.process.handler.HumanTaskHandler" />
+
+	<bean id="startDemonProcessInstanceHandler"
+		  name="StartDemonProcessInstanceTask"
+		  class="org.flexpay.common.process.handler2.DemonProcessInstanceHandler"
+		  parent="taskHandler"
+		  p:processManager-ref="processManager" />
+
+	<bean id="sendSignal2ProcessInstanceHandler"
+		  name="SendSignal2ProcessInstanceTask"
+		  class="org.flexpay.common.process.handler2.SendSignal2ProcessInstanceHandler"
+		  parent="taskHandler"
+		  p:processManager-ref="processManager" />
+
+
+	<alias name="humanTaskHandler" alias="Human Task" />
 
 	<bean id="emptyJob"
 		  scope="prototype"
@@ -27,10 +231,5 @@
 	<bean id="failureJob"
 		  scope="prototype"
 		  class="org.flexpay.common.process.job.impl.FailureJob" />
-
-	<bean id="processesCleanupJob"
-		  scope="prototype"
-		  class="org.flexpay.common.process.jobs.ProcessesCleanupJob"
-		  p:processManager-ref="processManager" />
 
 </beans>

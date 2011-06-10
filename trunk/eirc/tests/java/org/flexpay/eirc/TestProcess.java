@@ -1,57 +1,44 @@
 package org.flexpay.eirc;
 
-import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessDefinitionManager;
+import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import org.jbpm.graph.def.ProcessDefinition;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.transaction.BeforeTransaction;
 
 public class TestProcess extends EircSpringBeanAwareTestCase {
 
 	@Autowired
-	@Qualifier ("processManager")
-	protected ProcessManager processManager;
+	protected ProcessDefinitionManager processDefinitionManager;
 
 	@Test
 	@BeforeTransaction
-	public void testLoad() {
-
-		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
-				"WEB-INF/eirc/process/ParseRegistryProcess.xml");
-		processManager.deployProcessDefinition(processDefinition, true);
+	public void testLoad() throws ProcessDefinitionException {
+		processDefinitionManager.deployProcessDefinition("ParseRegistry", true);
 	}
 
 	@Test
     @BeforeTransaction
-	public void testLoadProcessRegistryWorkflow() {
-		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
-				"WEB-INF/eirc/process/ProcessRegistryWorkflow.xml");
-		processManager.deployProcessDefinition(processDefinition, true);
+	public void testLoadProcessRegistryWorkflow() throws ProcessDefinitionException {
+		processDefinitionManager.deployProcessDefinition("ProcessRegistryWorkflow", true);
 	}
 
 	@Test
     @BeforeTransaction
-	public void testLoadProcessRegistryRecordsWorkflow() {
-		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
-				"WEB-INF/eirc/process/ProcessRegistryRecordsWorkflow.xml");
-		processManager.deployProcessDefinition(processDefinition, true);
+	public void testLoadProcessRegistryRecordsWorkflow() throws ProcessDefinitionException {
+		processDefinitionManager.deployProcessDefinition("ProcessRegistryRecordsWorkflow", true);
 	}
 
 	@Test
     @BeforeTransaction
-	public void testLoadGenerateQuittancesWorkflow() {
-		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
-				"WEB-INF/eirc/process/GenerateQuittances.xml");
-		processManager.deployProcessDefinition(processDefinition, true);
+	public void testLoadGenerateQuittancesWorkflow() throws ProcessDefinitionException {
+		processDefinitionManager.deployProcessDefinition("GenerateQuittances", true);
 	}
 
 	@Test
     @BeforeTransaction
-	public void testLoadGenerateQuittancePDFWorkflow() {
-		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
-				"WEB-INF/eirc/process/GenerateQuittancePDF.xml");
-		processManager.deployProcessDefinition(processDefinition, true);
+	public void testLoadGenerateQuittancePDFWorkflow() throws ProcessDefinitionException {
+		processDefinitionManager.deployProcessDefinition("GenerateQuittancePDF", true);
 	}
 }

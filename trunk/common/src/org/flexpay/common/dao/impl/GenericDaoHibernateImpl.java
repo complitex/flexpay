@@ -11,18 +11,18 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Range;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.JpaTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -50,7 +50,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	private static final Object[] NULL_ARRAY = {null};
 	private static final List<?> NULL_LIST = Arrays.asList(NULL_ARRAY);
 
-	protected HibernateTemplate hibernateTemplate;
+	protected JpaTemplate jpaTemplate;
 
 	// Default. Can override in config
 	private FinderNamingStrategy namingStrategy = new SimpleFinderNamingStrategy();
@@ -66,27 +66,23 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	@NotNull
     @Override
 	public PK create(@NotNull T o) {
-		return (PK) hibernateTemplate.save(o);
+		jpaTemplate.persist(o);
+		return (PK) o;
 	}
 
 	@Nullable
     @Override
 	public T read(@NotNull PK id) {
-		return (T) hibernateTemplate.get(type, id);
+		return jpaTemplate.find(type, id);
 	}
 
 	@Nullable
     @Override
 	public T readFull(@NotNull final PK id) {
 		final String queryName = type.getSimpleName() + ".readFull";
-		return (T) hibernateTemplate.execute(new HibernateCallback<Object>() {
-            @Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				return session.getNamedQuery(queryName).
-                        setParameter(0, id).
-                        uniqueResult();
-			}
-		});
+		List<T> result = jpaTemplate.findByNamedQuery(queryName, id);
+		log.debug("Read {}", result);
+		return result.isEmpty()? null: result.get(0);
 	}
 
 	/**
@@ -103,12 +99,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 			return emptyList();
 		}
 		final String queryName = type.getSimpleName() + ".readFullCollection";
-		List<T> result = (List<T>) hibernateTemplate.execute(new HibernateCallback<Object>() {
-            @Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				return session.getNamedQuery(queryName).
-                        setParameterList("ids", ids).
-                        list();
+		List<T> result = (List<T>) jpaTemplate.execute(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query queryObject = entityManager.createNamedQuery(queryName);
+				queryObject.setParameter("ids", ids);
+				return queryObject.getResultList();
 			}
 		});
 
@@ -133,24 +129,35 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
     @Override
 	public void update(@NotNull T o) {
-		hibernateTemplate.update(o);
+		jpaTemplate.merge(o);
 	}
 
 	@Override
 	public T merge(@NotNull T object) {
-		return (T) hibernateTemplate.merge(object);
+		return jpaTemplate.merge(object);
 	}
 
     @Override
-	public void delete(@NotNull T o) {
-		hibernateTemplate.delete(o);
+	public void delete(@NotNull final T o) {
+		jpaTemplate.execute(new JpaCallback<T>() {
+			@Override
+			public T doInJpa(EntityManager entityManager) throws PersistenceException {
+				T m = entityManager.merge(o);
+				entityManager.remove(m);
+				return null;
+			}
+		});
+//		jpaTemplate.remove(o);
 	}
 
     @Override
 	public void deleteAll(@NotNull Collection<T> os) {
-		hibernateTemplate.deleteAll(os);
+		for (T o : os) {
+			delete(o);
+		}
 	}
 
+	@Transactional (readOnly = true)
     @Override
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
@@ -160,12 +167,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
     @Override
 	public Integer executeUpdate(Method method, final Object[] values) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
-		return hibernateTemplate.execute(new HibernateCallback<Integer>() {
-            @Override
-			public Integer doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.getNamedQuery(queryName);
+		return (Integer) jpaTemplate.execute(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query queryObject = entityManager.createNamedQuery(queryName);
 				for (int i = 0; i < values.length; i++) {
-					queryObject.setParameter(i, values[i]);
+					queryObject.setParameter(i + 1, values[i]);
 				}
 				return queryObject.executeUpdate();
 			}
@@ -173,12 +180,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	}
 
 	private List<?> findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
-		return hibernateTemplate.executeFind(new HibernateCallback<Object>() {
-            @Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.getNamedQuery(queryName);
-				Query queryCount = getCountQuery(session, queryName);
-				Query queryStats = getStatsQuery(session, queryName);
+		return jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query queryObject = entityManager.createNamedQuery(queryName);
+				javax.persistence.Query queryCount = getCountQuery(entityManager, queryName);
+				javax.persistence.Query queryStats = getStatsQuery(entityManager, queryName);
 				Page<?> pageParam = null;
 				FetchRange range = null;
 				int fetchRangeParamPosition = 0;
@@ -208,17 +215,17 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						int nParam = i - fix;
 						if (values[i] instanceof Range) {
 							Range<?> rangeParam = (Range<?>) values[i];
-							queryObject.setParameter(nParam, rangeParam.getStart());
-							queryObject.setParameter(nParam + 1, rangeParam.getEnd());
+							queryObject.setParameter(nParam + 1, rangeParam.getStart());
+							queryObject.setParameter(nParam + 2, rangeParam.getEnd());
 							if (queryCount != null) {
-								queryCount.setParameter(nParam, rangeParam.getStart());
-								queryCount.setParameter(nParam + 1, rangeParam.getEnd());
+								queryCount.setParameter(nParam + 1, rangeParam.getStart());
+								queryCount.setParameter(nParam + 2, rangeParam.getEnd());
 							}
 							if (queryStats != null) {
 								// stats query should not contain additional "between ? and ?"
 								nParam = fetchRangeParamPosition != 0 ? nParam - 2 : nParam;
-								queryStats.setParameter(nParam, rangeParam.getStart());
-								queryStats.setParameter(nParam + 1, rangeParam.getEnd());
+								queryStats.setParameter(nParam + 1, rangeParam.getStart());
+								queryStats.setParameter(nParam + 2, rangeParam.getEnd());
 							}
 							// skip 2 range parameters and add thrown away 1 argument
 							fix += -2 + 1;
@@ -231,12 +238,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 								log.warn("Empty collection parameter {} in query {}", PARAM_LIST_PREFIX + nNamedParam, queryName);
 								value = NULL_LIST;
 							}
-							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+							queryObject.setParameter(PARAM_LIST_PREFIX + nNamedParam, value);
 							if (queryCount != null) {
-								queryCount.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+								queryCount.setParameter(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							if (queryStats != null) {
-								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+								queryStats.setParameter(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							++fix;
 							++nNamedParam;
@@ -249,12 +256,12 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 								log.warn("Empty collection parameter {} in query {}", PARAM_LIST_PREFIX + nNamedParam, queryName);
 								value = NULL_ARRAY;
 							}
-							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+							queryObject.setParameter(PARAM_LIST_PREFIX + nNamedParam, value);
 							if (queryCount != null) {
-								queryCount.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+								queryCount.setParameter(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							if (queryStats != null) {
-								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
+								queryStats.setParameter(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							++fix;
 							++nNamedParam;
@@ -262,20 +269,20 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						}
 
 						// usual parameter, just set it
-						queryObject.setParameter(nParam, values[i]);
+						queryObject.setParameter(nParam + 1, values[i]);
 						if (queryCount != null) {
-							queryCount.setParameter(nParam, values[i]);
+							queryCount.setParameter(nParam + 1, values[i]);
 						}
 						if (queryStats != null) {
 							// stats query should not contain additional "between ? and ?"
 							nParam = fetchRangeParamPosition != 0 ? nParam - 2 : nParam;
-							queryStats.setParameter(nParam, values[i]);
+							queryStats.setParameter(nParam + 1, values[i]);
 						}
 					}
 				}
 
 				if (pageParam != null && queryCount != null) {
-					Long count = (Long) queryCount.uniqueResult();
+					Long count = (Long) queryCount.getSingleResult();
 					pageParam.setTotalElements(count.intValue());
 					log.debug("Setting page for query: {} {} - {}", new Object[]{
 							queryName, pageParam.getThisPageFirstElementNumber(), pageParam.getPageSize()});
@@ -286,7 +293,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 				}
 				if (range != null && queryStats != null) {
 					if (!range.wasInitialized()) {
-						Object[] stats = (Object[]) queryStats.uniqueResult();
+						Object[] stats = (Object[]) queryStats.getSingleResult();
 						range.setMinId((Long) stats[0]);
 						range.setMaxId((Long) stats[1]);
 						range.setCount(((Long) stats[2]).intValue());
@@ -312,14 +319,14 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						return Collections.emptyList();
 					}
 
-					queryObject.setLong(fetchRangeParamPosition, range.getLowerBound());
-					queryObject.setLong(fetchRangeParamPosition + 1, range.getUpperBound());
+					queryObject.setParameter(fetchRangeParamPosition + 1, range.getLowerBound());
+					queryObject.setParameter(fetchRangeParamPosition + 2, range.getUpperBound());
 				} else if (range != null) {
 					throw new IllegalStateException("Found FetchRange parameter, but no stats query found: "
 													+ getStatsQueryName(queryName));
 				}
 				@SuppressWarnings ({"RawUseOfParameterizedType"})
-				List results = queryObject.list();
+				List results = queryObject.getResultList();
 				if (pageParam != null) {
 					pageParam.setElements(results);
 				}
@@ -328,18 +335,18 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		});
 	}
 
-	private Query getCountQuery(Session session, String queryName) {
+	private javax.persistence.Query getCountQuery(EntityManager entityManager, String queryName) {
 		try {
-			return session.getNamedQuery(getCountQueryName(queryName));
-		} catch (HibernateException e) {
+			return entityManager.createNamedQuery(getCountQueryName(queryName));
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	private Query getStatsQuery(Session session, String queryName) {
+	private javax.persistence.Query getStatsQuery(EntityManager entityManager, String queryName) {
 		try {
-			return session.getNamedQuery(getStatsQueryName(queryName));
-		} catch (HibernateException e) {
+			return entityManager.createNamedQuery(getStatsQueryName(queryName));
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -370,8 +377,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
     }
 
     @Required
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        this.jpaTemplate = jpaTemplate;
     }
 
 }

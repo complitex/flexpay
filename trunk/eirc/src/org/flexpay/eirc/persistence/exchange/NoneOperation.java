@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class NoneOperation extends Operation {
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext 
 	 * @throws org.flexpay.common.exception.FlexPayException

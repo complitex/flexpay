@@ -2,11 +2,11 @@ package org.flexpay.payments.process.export.job;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.job.Job;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,14 +23,16 @@ public abstract class SendSignalToProcessJob extends Job {
 		Long processId = getProcessId(parameters);
 
 		if (processId == null) {
+			log.warn("ProcessInstance id not found in process parameters");
 			return RESULT_NEXT;
 		}
 
-		Set<?> signaledTransitions = TaskHelper.getTransitions(processManager, actorName, processId, message, log, true);
+		Set<?> signaledTransitions = Collections.emptySet(); //TaskHelper.getTransitions(processManager, actorName, processId, message, log, true);
 		if (signaledTransitions.isEmpty()) {
 			log.warn("Repeat signal from {} to {}", getProcessId(), processId);
 			return RESULT_REPEAT;
 		}
+		log.debug("Signaled to transition: {}", signaledTransitions	);
 		return RESULT_NEXT;
 	}
 

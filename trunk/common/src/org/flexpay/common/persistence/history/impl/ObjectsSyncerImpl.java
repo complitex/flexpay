@@ -22,7 +22,7 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 	private List<HistoryHandler> handlers = Collections.emptyList();
 
 	/**
-	 * Process history
+	 * ProcessInstance history
 	 *
 	 * @param diffs History records to process
 	 */

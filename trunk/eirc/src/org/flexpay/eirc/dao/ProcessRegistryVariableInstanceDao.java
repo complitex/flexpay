@@ -10,7 +10,7 @@ public interface ProcessRegistryVariableInstanceDao extends GenericDao<ProcessRe
 	/**
 	 * Find  process variables by process Id
 	 *
-	 * @param processId Process Id
+	 * @param processId ProcessInstance Id
 	 * @return Process variables
 	 */
 	List<ProcessRegistryVariableInstance> findByProcessId(Long processId);

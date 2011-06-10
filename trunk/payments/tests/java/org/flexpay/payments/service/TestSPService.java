@@ -189,7 +189,7 @@ public class TestSPService extends PaymentsSpringBeanAwareTestCase {
 
 		List<Service> result;
 
-		Long maxProviderId = (Long) uniqueResult(hibernateTemplate.find("select max(id) from ServiceProvider"));
+		Long maxProviderId = (Long) uniqueResult(jpaTemplate.find("select max(id) from ServiceProvider"));
 		assertNotNull("No max provider found", maxProviderId);
 
 		// bad provider
@@ -198,7 +198,7 @@ public class TestSPService extends PaymentsSpringBeanAwareTestCase {
 		assertTrue("Result must be empty on test data", result.isEmpty());
 
 		// bad service type
-		Long maxServiceTypeId = (Long) uniqueResult(hibernateTemplate.find("select max(id) from ServiceType"));
+		Long maxServiceTypeId = (Long) uniqueResult(jpaTemplate.find("select max(id) from ServiceType"));
 		result = spService.findServices(SRV_PROVIDER_CN, new Stub<ServiceType>(maxServiceTypeId + 1), new Date());
 		assertNotNull("Result must not be null", result);
 		assertTrue("Result must be empty on test data", result.isEmpty());

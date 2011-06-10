@@ -2,10 +2,10 @@ package org.flexpay.payments.process.export.handler;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.handler.FlexPayActionHandler;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +27,7 @@ public abstract class SendSignalToProcessActionHandler extends FlexPayActionHand
 			return RESULT_NEXT;
 		}
 
-		Set<?> signaledTransitions = TaskHelper.getTransitions(processManager, actorName, processId, message, log, false);
+		Set<?> signaledTransitions = Collections.emptySet(); //TaskHelper.getTransitions(processManager, actorName, processId, message, log, false);
 		if (signaledTransitions.isEmpty()) {
 			log.warn("Repeat signal from {} to {}", getProcessId(), processId);
 			return RESULT_REPEAT;

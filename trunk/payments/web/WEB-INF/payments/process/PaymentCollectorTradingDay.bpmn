@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+
+	<itemDefinition id="_processStatusItem"
+					structureRef="org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status"/>
+	<itemDefinition id="_canUpdateOrCreateOperationItem" structureRef="java.lang.Boolean"/>
+	<itemDefinition id="_paymentCollectorIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_paymentPointsItem" structureRef="java.util.List"/>
+	<itemDefinition id="_closedCountPaymentPointsItem" structureRef="java.lang.Integer"/>
+	<itemDefinition id="_approvedClosingCountPaymentPointsItem" structureRef="java.lang.Integer"/>
+	<itemDefinition id="_processIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_transitionsItem" structureRef="java.util.List"/>
+	<itemDefinition id="_processDefinitionIdItem" structureRef="java.lang.String"/>
+
+	<process processType="Public" isExecutable="true" id="PaymentCollectorTradingDay"
+			 name="Payment collector trading day">
+
+		<extensionElements>
+			<tns:import name="java.util.List" />
+			<tns:import name="java.util.ArrayList" />
+			<tns:import name="java.lang.Integer" />
+			<tns:import name="java.lang.Boolean" />
+			<tns:import name="org.drools.runtime.process.WorkflowProcessInstance" />
+			<tns:import name="org.flexpay.payments.util.PaymentCollectorTradingDayConstants" />
+			<tns:import name="org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status" />
+			<tns:import name="org.flexpay.common.util.CollectionUtils" />
+		</extensionElements>
+
+		<!-- process variables -->
+		<property id="addProcessIdToPaymentCollectorResult" itemSubjectRef="_resultItem"/>
+		<property id="generateEndOperationDayRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="getPaymentPointsResult" itemSubjectRef="_resultItem"/>
+		<property id="signalFromPaymentPoint" itemSubjectRef="_resultItem"/>
+
+		<property id="processStatus" itemSubjectRef="_processStatusItem"/>
+		<property id="canUpdateOrCreateOperation" itemSubjectRef="_canUpdateOrCreateOperationItem"/>
+		<property id="paymentCollectorId" itemSubjectRef="_paymentCollectorIdItem"/>
+		<property id="paymentPoints" itemSubjectRef="_paymentPointsItem"/>
+		<property id="closedCountPaymentPoints" itemSubjectRef="_closedCountPaymentPointsItem"/>
+		<property id="approvedClosingCountPaymentPoints" itemSubjectRef="_approvedClosingCountPaymentPointsItem"/>
+		<property id="processId" itemSubjectRef="_processIdItem"/>
+		<property id="transitions" itemSubjectRef="_transitionsItem"/>
+		<property id="processDefinitionId" itemSubjectRef="_processDefinitionIdItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<scriptTask id="_17" name="Init parameters">
+			<script>
+				kcontext.setVariable("processStatus", Status.OPEN);
+				kcontext.setVariable("canUpdateOrCreateOperation", Boolean.TRUE);
+				kcontext.setVariable("closedCountPaymentPoints", 0);
+				kcontext.setVariable("approvedClosingCountPaymentPoints", 0);
+				process = kcontext.getProcessInstance();
+				kcontext.setVariable("processId", process.getId());
+				kcontext.setVariable("processDefinitionId", "PaymentPointTradingDay");
+			</script>
+		</scriptTask>
+
+		<task id="_2" name="AddProcessIdToPaymentCollectorTask" tns:taskName="AddProcessIdToPaymentCollectorTask">
+			<ioSpecification>
+				<dataInput id="_2_paymentCollectorId" name="paymentCollectorId"/>
+				<dataOutput id="_2_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_2_paymentCollectorId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>paymentCollectorId</sourceRef>
+				<targetRef>_2_paymentCollectorId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>addProcessIdToPaymentCollectorResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<task id="_3" name="GetPaymentPointsTask" tns:taskName="GetPaymentPointsTask">
+			<ioSpecification>
+				<dataInput id="_3_paymentCollectorId" name="paymentCollectorId"/>
+				<dataOutput id="_3_paymentPoints" name="paymentPoints"/>
+				<dataOutput id="_3_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_3_paymentCollectorId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_3_paymentPoints</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_3_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>paymentCollectorId</sourceRef>
+				<targetRef>_3_paymentCollectorId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_3_paymentPoints</sourceRef>
+				<targetRef>paymentPoints</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_3_result</sourceRef>
+				<targetRef>getPaymentPointsResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<parallelGateway id="_4" name="Execute parallel task" gatewayDirection="Diverging"/>
+		<!--
+		<scriptTask id="_5" name="Parallel task" >
+			<script>
+				System.out.println("Execute parallel task " + processId);
+			</script>
+		</scriptTask>
+		-->
+		<subProcess id="_5" name="Call to child process">
+			<ioSpecification>
+				<dataInput id="_5_paymentPoints" name="MultiInstanceInput"/>
+				<inputSet/>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>paymentPoints</sourceRef>
+				<targetRef>_5_paymentPoints</targetRef>
+			</dataInputAssociation>
+			<multiInstanceLoopCharacteristics>
+				<loopDataInputRef>_5_paymentPoints</loopDataInputRef>
+				<inputDataItem id="item" itemSubjectRef="_multiInstanceItemType"/>
+			</multiInstanceLoopCharacteristics>
+			<!-- nodes -->
+			<startEvent id="_5-1" name="StartSubProcess"/>
+			<task id="_5-2" name="StartDemonProcessInstanceTask" tns:taskName="StartDemonProcessInstanceTask">
+				<ioSpecification>
+					<dataInput id="_5-2_input" name="MultiInstanceInput"/>
+					<dataInput id="_5-2_item" name="paymentPointId"/>
+					<dataInput id="_5-2_processIdInput" name="parentProcessId"/>
+					<dataInput id="_5-2_processDefinitionId" name="processDefinitionId"/>
+					<inputSet>
+						<dataInputRefs>_5-2_item</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_5-2_processIdInput</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_5-2_processDefinitionId</dataInputRefs>
+					</inputSet>
+					<outputSet/>
+				</ioSpecification>
+				<dataInputAssociation>
+					<sourceRef>item</sourceRef>
+					<targetRef>_5-2_item</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>processId</sourceRef>
+					<targetRef>_5-2_processIdInput</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>processDefinitionId</sourceRef>
+					<targetRef>_5-2_processDefinitionId</targetRef>
+				</dataInputAssociation>
+			</task>
+			<endEvent id="_5-3" name="EndSubProcess"/>
+			<!-- connections -->>
+			<sequenceFlow id="_5-1-_5-2" sourceRef="_5-1" targetRef="_5-2"/>
+			<sequenceFlow id="_5-2-_5-3" sourceRef="_5-2" targetRef="_5-3"/>
+		</subProcess>
+
+		<exclusiveGateway id="_6" name="Join 2" gatewayDirection="Converging"/>
+
+		<scriptTask id="_18" name="Entry event script">
+			<script>
+				System.out.println("Entry to event");
+				transitions = CollectionUtils.list();
+				transitions.add("Close");
+				transitions.add("Approve");
+				transitions.add("Cancel");
+				kcontext.setVariable("transitions", transitions);
+			</script>
+		</scriptTask>
+
+		<intermediateCatchEvent id="_7" name="event">
+			<dataOutput id="_7_Output" name="event"/>
+			<dataOutputAssociation>
+				<sourceRef>_7_Output</sourceRef>
+				<targetRef>signalFromPaymentPoint</targetRef>
+			</dataOutputAssociation>
+			<outputSet>
+				<dataOutputRefs>_7_Output</dataOutputRefs>
+			</outputSet>
+			<signalEventDefinition signalRef="signal"/>
+		</intermediateCatchEvent>
+
+		<scriptTask id="_19" name="Exit event script">
+			<script>
+				System.out.println("Exit from event");
+				transitions = CollectionUtils.list();
+				kcontext.setVariable("transitions", transitions);
+			</script>
+		</scriptTask>
+
+		<exclusiveGateway id="_8" name="Split 1" gatewayDirection="Diverging"/>
+
+		<scriptTask id="_9" name="Close">
+			<script>
+				kcontext.setVariable("closedCountPaymentPoints", ((Integer)kcontext.getVariable("closedCountPaymentPoints")) + 1);
+				kcontext.setVariable("processStatus", Status.WAIT_APPROVE);
+				System.out.println("Got signal Close to " + processId + ", process status: " + processStatus + ", closedCountPaymentPoints: " + kcontext.getVariable("closedCountPaymentPoints"));
+			</script>
+		</scriptTask>
+
+		<scriptTask id="_10" name="Approve">
+			<script>
+				kcontext.setVariable("closedCountPaymentPoints", ((Integer)kcontext.getVariable("closedCountPaymentPoints")) - 1);
+				kcontext.setVariable("approvedClosingCountPaymentPoints", ((Integer)kcontext.getVariable("approvedClosingCountPaymentPoints")) + 1);
+				System.out.println("Got signal Approve to " + processId + ", process status: " + processStatus);
+			</script>
+		</scriptTask>
+
+		<scriptTask id="_11" name="Cancel">
+			<script>
+				kcontext.setVariable("closedCountPaymentPoints", ((Integer)kcontext.getVariable("closedCountPaymentPoints")) - 1);
+				if (((Integer)kcontext.getVariable("closedCountPaymentPoints")) == 0) {
+					kcontext.setVariable("processStatus", Status.OPEN);
+				}
+				System.out.println("Got signal Cancel to " + processId + ", process status: " + processStatus);
+			</script>
+		</scriptTask>
+
+		<exclusiveGateway id="_12" name="Join 1" gatewayDirection="Converging"/>
+
+		<exclusiveGateway id="_13" name="Split 2" gatewayDirection="Diverging"/>
+
+		<parallelGateway id="_14" name="Converge" gatewayDirection="Converging"/>
+
+		<scriptTask id="_15" name="Set Processed status">
+			<script>
+				kcontext.setVariable("processStatus", Status.PROCESSED);
+				kcontext.setVariable("canUpdateOrCreateOperation", Boolean.FALSE);
+				System.out.println("GenerateEndOperationDayRegistryTask, processStatus: " + processStatus);
+			</script>
+		</scriptTask>
+
+		<task id="_16" name="GenerateEndOperationDayRegistryTask" tns:taskName="GenerateEndOperationDayRegistryTask">
+			<ioSpecification>
+				<dataInput id="_16_paymentCollectorId" name="paymentCollectorId"/>
+				<dataOutput id="_16_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_16_paymentCollectorId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_16_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>paymentCollectorId</sourceRef>
+				<targetRef>_16_paymentCollectorId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_result</sourceRef>
+				<targetRef>generateEndOperationDayRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<exclusiveGateway id="_20" name="Split 3" default="_20-_22" gatewayDirection="Diverging"/>
+
+		<scriptTask id="_21" name="Set Closed status">
+			<script>
+				kcontext.setVariable("processStatus", Status.CLOSED);
+				System.out.println("processStatus: " + processStatus);
+			</script>
+		</scriptTask>
+
+		<scriptTask id="_22" name="Set Error status">
+			<script>
+				kcontext.setVariable("processStatus", Status.ERROR);
+				System.out.println("processStatus: " + processStatus);
+			</script>
+		</scriptTask>
+
+		<task id="_23" name="SendEmailToAdministratorTask" tns:taskName="SendEmailToAdministratorTask"/>
+
+		<exclusiveGateway id="_24" name="Join 3" gatewayDirection="Converging"/>
+
+		<endEvent id="_30" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_17" sourceRef="_1" targetRef="_17"/>
+		<sequenceFlow id="_17-_2" sourceRef="_17" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4"/>
+		<sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5"/>
+		<sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6"/>
+		<sequenceFlow id="_6-_18" sourceRef="_6" targetRef="_18"/>
+		<sequenceFlow id="_18-_7" sourceRef="_18" targetRef="_7"/>
+		<sequenceFlow id="_7-_19" sourceRef="_7" targetRef="_19"/>
+		<sequenceFlow id="_19-_8" sourceRef="_19" targetRef="_8"/>
+
+		<sequenceFlow id="_8-_9" sourceRef="_8" targetRef="_9">
+			<conditionExpression xs:type="tFormalExpression">return signalFromPaymentPoint == "Close";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10">
+			<conditionExpression xs:type="tFormalExpression">return signalFromPaymentPoint == "Approve";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_8-_11" sourceRef="_8" targetRef="_11">
+			<conditionExpression xs:type="tFormalExpression">return signalFromPaymentPoint == "Cancel";
+			</conditionExpression>
+		</sequenceFlow>
+
+		<sequenceFlow id="_9-_12" sourceRef="_9" targetRef="_12"/>
+		<sequenceFlow id="_10-_12" sourceRef="_10" targetRef="_12"/>
+		<sequenceFlow id="_11-_12" sourceRef="_11" targetRef="_12"/>
+
+		<sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13"/>
+
+		<sequenceFlow id="_13-_14" sourceRef="_13" targetRef="_14">
+			<conditionExpression xs:type="tFormalExpression">
+				return paymentPoints.size() == approvedClosingCountPaymentPoints;
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_13-_6" sourceRef="_13" targetRef="_6">
+			<conditionExpression xs:type="tFormalExpression">
+				return paymentPoints.size() != approvedClosingCountPaymentPoints;
+			</conditionExpression>
+		</sequenceFlow>
+
+		<sequenceFlow id="_5-_14" sourceRef="_5" targetRef="_14"/>
+
+		<sequenceFlow id="_14-_15" sourceRef="_14" targetRef="_15"/>
+		<sequenceFlow id="_15-_16" sourceRef="_15" targetRef="_16"/>
+		<sequenceFlow id="_16-_20" sourceRef="_16" targetRef="_20"/>
+
+		<sequenceFlow id="_20-_21" sourceRef="_20" targetRef="_21">
+			<conditionExpression xs:type="tFormalExpression">return generateEndOperationDayRegistryResult == "next";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_20-_22" sourceRef="_20" targetRef="_22">
+			<conditionExpression xs:type="tFormalExpression">return generateEndOperationDayRegistryResult == "error";
+			</conditionExpression>
+		</sequenceFlow>
+
+		<sequenceFlow id="_21-_24" sourceRef="_21" targetRef="_24"/>
+		<sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23"/>
+		<sequenceFlow id="_23-_24" sourceRef="_23" targetRef="_24"/>
+		<sequenceFlow id="_24-_30" sourceRef="_24" targetRef="_30"/>
+
+	</process>
+
+</definitions>

@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.morphology.currency;
 
 import org.flexpay.common.persistence.CurrencyInfo;
 import org.flexpay.common.persistence.CurrencyName;
+import org.flexpay.common.persistence.morphology.Gender;
 import org.flexpay.common.persistence.morphology.number.DefaultNumberConverterFactory;
 import org.flexpay.common.persistence.morphology.number.NumberConverterFactory;
 import org.flexpay.common.persistence.morphology.number.NumberToTextConverter;
@@ -40,8 +41,8 @@ public class CurrencyToTextConverterImpl implements CurrencyToTextConverter {
 
 		CurrencyName currencyName = currency.getName(locale);
 		NumberToTextConverter converter = converterFactory.getInstance(locale);
-		return converter.toText(integral, currency.getGender()) + " " + currencyName.getShortName() + " " +
-			   converter.toText(fraction, currency.getGender()) + " " + currencyName.getShortFractionName();
+		return converter.toText(integral, Gender.fromOrdinal(currency.getGender())) + " " + currencyName.getShortName() + " " +
+			   converter.toText(fraction, Gender.fromOrdinal(currency.getGender())) + " " + currencyName.getShortFractionName();
 	}
 
 	/**

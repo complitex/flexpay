@@ -7,7 +7,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.config.MbServiceTypeMapping;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ServiceTypesMapper {
 
-	private HibernateTemplate hibernateTemplate;
+	private JpaTemplate jpaTemplate;
 	private BidiMap mapping = new DualHashBidiMap();
 
 	/**
@@ -49,7 +49,7 @@ public class ServiceTypesMapper {
 		}
 
 		@SuppressWarnings ({"unchecked"})
-		List<MbServiceTypeMapping> mappings = hibernateTemplate.findByNamedQuery("MbServiceTypeMapping.listAll");
+		List<MbServiceTypeMapping> mappings = jpaTemplate.findByNamedQuery("MbServiceTypeMapping.listAll");
 		if (mappings.isEmpty() && !ApplicationConfig.disableSelfValidation()) {
 			throw new IllegalStateException("No MegaBank service mappings found, did you set it?");
 		}
@@ -60,7 +60,7 @@ public class ServiceTypesMapper {
 	}
 
 	@Required
-	public void setHibernateTemplate(HibernateTemplate template) {
-		this.hibernateTemplate = template;
+	public void setJpaTemplate(JpaTemplate template) {
+		this.jpaTemplate = template;
 	}
 }

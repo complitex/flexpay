@@ -1,7 +1,7 @@
 package org.flexpay.payments.action.monitor;
 
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.action.AccountantAWPWithPagerActionSupport;
@@ -61,17 +61,17 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
             Date startDate = new Date();
             Date finishDate = new Date();
-            Process tradingDayProcess = null;
+            ProcessInstance tradingDayProcess = null;
 
             if (paymentPoint.getTradingDayProcessInstanceId() != null) {
-				tradingDayProcess = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+				tradingDayProcess = processManager.getProcessInstance(paymentPoint.getTradingDayProcessInstanceId());
                 log.debug("Found process for paymentPoint with id {} : {}", paymentPoint.getId(), tradingDayProcess);
 			}
 
             if (tradingDayProcess != null) {
-                startDate = tradingDayProcess.getProcessStartDate();
-                if (tradingDayProcess.getProcessEndDate() != null) {
-                    finishDate = tradingDayProcess.getProcessEndDate();
+                startDate = tradingDayProcess.getStartDate();
+                if (tradingDayProcess.getEndDate() != null) {
+                    finishDate = tradingDayProcess.getEndDate();
                 }
             }
 
@@ -107,11 +107,11 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
         if (paymentCollector.getTradingDayProcessInstanceId() != null) {
 
-            Process tradingDayProcess = processManager.getProcessInstanceInfo(paymentCollector.getTradingDayProcessInstanceId());
+            ProcessInstance tradingDayProcess = processManager.getProcessInstance(paymentCollector.getTradingDayProcessInstanceId());
             if (tradingDayProcess != null) {
-                startDate = tradingDayProcess.getProcessStartDate();
-                if (tradingDayProcess.getProcessEndDate() != null) {
-                    finishDate = tradingDayProcess.getProcessEndDate();
+                startDate = tradingDayProcess.getStartDate();
+                if (tradingDayProcess.getEndDate() != null) {
+                    finishDate = tradingDayProcess.getEndDate();
                 }
                 processStatus = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }

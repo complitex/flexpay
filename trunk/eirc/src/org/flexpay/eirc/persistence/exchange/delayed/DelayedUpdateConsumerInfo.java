@@ -5,6 +5,8 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 import org.flexpay.eirc.service.ConsumerInfoService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DelayedUpdateConsumerInfo implements DelayedUpdate {
 
@@ -24,6 +26,7 @@ public class DelayedUpdateConsumerInfo implements DelayedUpdate {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
 		service.save(info);

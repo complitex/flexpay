@@ -4,7 +4,6 @@
 		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 
-	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
@@ -31,6 +30,7 @@
 		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Certificate.hbm.xml" />
+		<mapping resource="org/flexpay/common/process/audit/persistence/Audit.hbm.xml" />
 
 	</session-factory>
 

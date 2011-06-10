@@ -110,7 +110,6 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private Stub<DataSourceDescription> megabankSD;
-	private Signature signature = null;
 
 	/**
 	 * Export DB registry to MB registry file.
@@ -120,7 +119,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	 * @param organization Service provider organization
 	 * @throws FlexPayException
 	 */
-	public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization)
+	public Registry exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization, Signature signature)
 			throws FlexPayException {
 
 		RegistryWriter rg = null;
@@ -189,6 +188,8 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				}
 				range.nextPage();
 			} while (range.hasMore());
+
+			registry = registryService.readWithContainers(Stub.stub(registry));
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSED));
 			registryService.update(registry);
 
@@ -237,6 +238,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				fpFileService.update(file);
 			}
 		}
+		return registryService.readWithContainers(Stub.stub(registry));
 	}
 
 	private String getExternalServiceProviderId(Registry registry) throws FlexPayException {
@@ -394,11 +396,6 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			rg.writeLine("");
 			rg.writeLine("");
 		}
-	}
-
-	@Override
-	public void setSignature(Signature signature) {
-		this.signature = signature;
 	}
 
 	@NotNull

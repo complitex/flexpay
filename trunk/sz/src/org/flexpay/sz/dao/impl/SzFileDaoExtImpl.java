@@ -3,25 +3,25 @@ package org.flexpay.sz.dao.impl;
 import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.sz.dao.SzFileDaoExt;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.Collection;
 
-public class SzFileDaoExtImpl extends HibernateDaoSupport implements SzFileDaoExt {
+public class SzFileDaoExtImpl extends JpaDaoSupport implements SzFileDaoExt {
 
 	@Override
 	public void updateStatus(@NotNull final Collection<Long> fileIds, @NotNull final FPFileStatus status) {
 
-		getHibernateTemplate().execute(new HibernateCallback<Integer>() {
+		getJpaTemplate().execute(new JpaCallback<Integer>() {
 			@Override
-			public Integer doInHibernate(Session session) throws HibernateException {
-				return session.createQuery("update SzFile f set f.status.id = :statusId " +
+			public Integer doInJpa(EntityManager entityManager) throws HibernateException {
+				return entityManager.createQuery("update SzFile f set f.status.id = :statusId " +
 										   "where f.id in (:ids)")
-						.setLong("statusId", status.getId())
-						.setParameterList("ids", fileIds)
+						.setParameter("statusId", status.getId())
+						.setParameter("ids", fileIds)
 						.executeUpdate();
 			}
 		});

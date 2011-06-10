@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.history.DiffProcessor;
 public class BuildingAttributeTypeDiffProcessor implements DiffProcessor<BuildingAttributeType> {
 
 	/**
-	 * Process creation diff
+	 * ProcessInstance creation diff
 	 *
 	 * @param obj  Created object
 	 * @param diff Diff
@@ -18,7 +18,7 @@ public class BuildingAttributeTypeDiffProcessor implements DiffProcessor<Buildin
 	}
 
 	/**
-	 * Process update diff
+	 * ProcessInstance update diff
 	 *
 	 * @param obj1 Old object version
 	 * @param obj2 new object version
@@ -29,7 +29,7 @@ public class BuildingAttributeTypeDiffProcessor implements DiffProcessor<Buildin
 	}
 
 	/**
-	 * Process deletion diff
+	 * ProcessInstance deletion diff
 	 *
 	 * @param obj  Deleted object
 	 * @param diff Diff

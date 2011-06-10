@@ -6,7 +6,7 @@
 
     <bean id="eircRegistryDaoExt" 
           class="org.flexpay.payments.dao.impl.EircRegistryDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <!-- Module payments DAO layer instances -->    
 
@@ -22,7 +22,7 @@
 
     <bean id="documentDaoExt"
           class="org.flexpay.payments.dao.impl.DocumentDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="documentTypeDao"
           parent="abstractDao"
@@ -66,7 +66,7 @@
 
     <bean id="operationDaoExt"
           class="org.flexpay.payments.dao.impl.OperationDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="operationTypeDao"
           parent="abstractDao"
@@ -120,11 +120,11 @@
 
     <bean id="serviceDaoExt"
           class="org.flexpay.payments.dao.impl.ServiceDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="paymentStatisticsDaoExt"
           class="org.flexpay.payments.dao.impl.PaymentStatisticsDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="serviceDao"
           parent="abstractDao"

@@ -195,6 +195,7 @@
 		</concat>
 		<antcall target="${module_name}.sql.init-db" />
 		<antcall target="template.set_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="${module_name}.sql.all-test">
@@ -204,6 +205,7 @@
 		</concat>
 		<antcall target="${module_name}.sql.init-db-test" />
 		<antcall target="template.set_test_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="${module_name}.db-test" description="create ${module_name} db">

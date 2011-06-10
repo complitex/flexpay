@@ -10,7 +10,7 @@
 
     <bean id="allObjectsDao"
           class="org.flexpay.ab.service.importexport.impl.AllObjectsDao"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <!-- Data sources -->
     <bean id="districtJdbcDataSource"

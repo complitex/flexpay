@@ -62,7 +62,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 		parameters.put(EMAIL, paymentCollector.getEmail());
 
-		log.info("Process end operation day registry and save it to file finished...");
+		log.info("ProcessInstance end operation day registry and save it to file finished...");
 
 		return RESULT_NEXT;
 	}

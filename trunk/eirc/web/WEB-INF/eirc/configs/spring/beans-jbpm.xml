@@ -4,6 +4,15 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+	<bean id="processDefinitionManagerEirc" parent="processDefinitionManager" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/eirc/process</value>
+				<value>WEB-INF/payments/process</value>
+			</list>
+		</property>
+	</bean>
+
     <bean name="fileParserJob"
           class="org.flexpay.eirc.process.registry.FileParserJob"
           p:registryFileParser-ref="registryFileParser"
@@ -24,17 +33,19 @@
           p:registryService-ref="registryService"
           scope="prototype" />
 
-    <bean name="generateQuittancesPDFJob"
-          class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
+    <bean id="generateQuittancesPDFHandler"
+		  name="GenerateQuittancesPDFTask"
+          class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperHandler"
+		  parent="taskHandler"
           p:jrDataSource-ref="jrQuittanceDataSource"
           p:quittanceReporter-ref="quittanceReporter"
-          p:reportUtil-ref="reportUtil"
-          scope="prototype" />
+          p:reportUtil-ref="reportUtil" />
 
-    <bean name="generateQuittancesJob"
-          class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob"
-          p:quittanceService-ref="quittanceService"
-          scope="prototype" />
+    <bean id="generateQuittancesHandler"
+		  name="GenerateQuittancesTask"
+          class="org.flexpay.eirc.process.quittance.GenerateQuittanceHandler"
+		  parent="taskHandler"
+          p:quittanceService-ref="quittanceService" />
 
     <bean name="getRegistryMessageActionHandler"
           class="org.flexpay.eirc.process.registry.GetRegistryMessageActionHandler"
@@ -78,9 +89,10 @@
           class="org.flexpay.eirc.process.registry.ProcessFooterActionHandler"
           scope="prototype" />
 
-    <bean name="removeRegistryActionHandler"
-          class="org.flexpay.eirc.process.registry.RemoveRegistryActionHandler"
-          scope="prototype" />
+    <bean id="removeRegistryHandler"
+          name="RemoveRegistryTask"
+		  parent="taskHandler"
+          class="org.flexpay.eirc.process.registry.RemoveRegistryHandler" />
 
     <bean name="hasMoreRecordActionHandler"
           class="org.flexpay.eirc.process.registry.HasMoreRecordActionHandler"
@@ -149,54 +161,45 @@
           p:registryFPFileTypeService-ref="registryFPFileTypeService"
           scope="prototype" />
 
-    <bean id="iterateMBRegistryActionHandler"
-          class="org.flexpay.eirc.process.registry.IterateMBRegistryActionHandler"
+    <bean id="iterateMBCorrectionsHandler"
+    	  name="IterateMBCorrectionsTask"
+		  parent="taskHandler"
+          class="org.flexpay.eirc.process.registry.IterateRegistryHandler"
+          p:facade-ref="parseMbCorrectionsFacade" />
+
+    <bean id="iterateMBChargesHandler"
+    	  name="IterateMBChargesTask"
+		  parent="taskHandler"
+          class="org.flexpay.eirc.process.registry.IterateRegistryHandler"
+          p:facade-ref="parseMbChargersFacade" />
+
+    <bean id="iterateFPRegistryHandler"
+    	  name="IterateFPRegistryTask"
+		  parent="taskHandler"
+          class="org.flexpay.eirc.process.registry.IterateRegistryHandler"
+          p:facade-ref="parseFPRegistryFacade" />
+
+    <bean id="validateMBRegistryHandler"
+          class="org.flexpay.eirc.process.registry.FileValidationHandler"
           abstract="true"
-          p:fpFileService-ref="fpFileService"
-          p:registryService-ref="registryService"
-          p:moduleName="${flexpay.module.name.eirc}"
-          p:registryArchiveStatusService-ref="registryArchiveStatusService"
-          p:registryTypeService-ref="registryTypeService"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService"
-          p:registryStatusService-ref="registryStatusService"
-          scope="prototype" />
-
-    <bean id="iterateMBCorrectionsActionHandler"
-          parent="iterateMBRegistryActionHandler"
-          p:mbFileParser-ref="mbCorrectionsFileParser"
-          scope="prototype" />
-
-    <bean id="iterateMBChargesActionHandler"
-          parent="iterateMBRegistryActionHandler"
-          p:mbFileParser-ref="mbChargesFileParser"
-          scope="prototype" />
-
-    <bean id="validateMBRegistryActionHandler"
-          class="org.flexpay.eirc.process.registry.ValidationActionHandler"
-          abstract="true"
+		  parent="taskHandler"
           p:fpFileService-ref="fpFileService"
           p:serviceValidationFactory-ref="serviceValidationFactory"
-          p:lineParser-ref="mbLineParser"
-          scope="prototype" />
+          p:lineParser-ref="mbLineParser" />
 
-    <bean id="validateMBChargesActionHandler"
-          parent="validateMBRegistryActionHandler"
-          p:fileValidationSchema-ref="mbChargesFileValidationSchema"
-          scope="prototype" />
+    <bean id="validateMBChargesHandler"
+		  name="ValidateMBChargesTask"
+          parent="validateMBRegistryHandler"
+          p:fileValidationSchema-ref="mbChargesFileValidationSchema" />
 
-    <bean id="validateMBCorrectionsActionHandler"
-          parent="validateMBRegistryActionHandler"
-          p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
-          scope="prototype" />
+    <bean id="validateMBCorrectionsHandler"
+		  name="ValidateMBCorrectionsTask"
+          parent="validateMBRegistryHandler"
+          p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema" />
 
-    <bean id="processRegistryJob"
-          class="org.flexpay.eirc.process.registry.ProcessRegistryJob"
-          p:registryService-ref="registryService"
-          p:registryFileService-ref="registryFileService"
-          p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService"
-          p:processRegistryService-ref="processRegistryService"
-          p:handleError-ref="registryHandleError"
-          p:executor-ref="taskExecutor"
-          scope="prototype" />
-
+    <bean id="processingDBRegistryHandler"
+		  name="ProcessingDBRegistryTask"
+          class="org.flexpay.eirc.process.registry.ProcessingRegistryHandler"
+		  parent="taskHandler"
+          p:facade-ref="processingDBRegistryFacade" />
 </beans>

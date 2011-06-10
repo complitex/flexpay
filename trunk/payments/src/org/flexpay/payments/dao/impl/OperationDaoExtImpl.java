@@ -15,19 +15,19 @@ import org.flexpay.payments.persistence.filters.MinimalSumFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
 
-public class OperationDaoExtImpl extends HibernateDaoSupport implements OperationDaoExt {
+public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -52,21 +52,21 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
             }
         }
 
-        return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
-            @Override
-            public List<Operation> doInHibernate(Session session) throws HibernateException {
+        return (List<Operation>) getJpaTemplate().executeFind(new JpaCallback<List<Operation>>() {
+			@Override
+			public List<Operation> doInJpa(EntityManager entityManager) throws HibernateException {
 
-                Query cntQuery = session.createQuery(cntHql.toString());
+                javax.persistence.Query cntQuery = entityManager.createQuery(cntHql.toString());
                 setCashboxDocumentSearchQueryParameters(cntQuery, filters);
-                Long count = (Long) cntQuery.uniqueResult();
+                Long count = (Long) cntQuery.getSingleResult();
                 pager.setTotalElements(count.intValue());
 
-                Query query = session.createQuery(hql.toString());
+                javax.persistence.Query query = entityManager.createQuery(hql.toString());
                 setCashboxDocumentSearchQueryParameters(query, filters);
                 query.setFirstResult(pager.getThisPageFirstElementNumber());
                 query.setMaxResults(pager.getPageSize());
 
-                return (List<Operation>) query.list();
+                return (List<Operation>) query.getResultList();
             }
         });
     }
@@ -109,7 +109,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		return filterHql;
 	}
 
-	private void setCashboxDocumentSearchQueryParameters(Query query, @NotNull ArrayStack filters) {
+	private void setCashboxDocumentSearchQueryParameters(javax.persistence.Query query, @NotNull ArrayStack filters) {
 
         for (Object f : filters) {
 
@@ -117,19 +117,19 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
             if (filter.needFilter()) {
 
                 if (filter instanceof PaymentPointFilter) {
-                    query.setLong("paymentPointId", ((PaymentPointFilter) filter).getSelectedId());
+                    query.setParameter("paymentPointId", ((PaymentPointFilter) filter).getSelectedId());
                 } else if (filter instanceof CashboxFilter) {
-                    query.setLong("cashboxId", ((CashboxFilter) filter).getSelectedId());
+                    query.setParameter("cashboxId", ((CashboxFilter) filter).getSelectedId());
                 } else if (filter instanceof ServiceTypeFilter) {
-                    query.setLong("serviceTypeId", ((ServiceTypeFilter) filter).getSelectedId());
+                    query.setParameter("serviceTypeId", ((ServiceTypeFilter) filter).getSelectedId());
                 } else if (filter instanceof BeginDateFilter) {
-                    query.setTimestamp("begin", ((BeginDateFilter) filter).getDate());
+                    query.setParameter("begin", ((BeginDateFilter) filter).getDate(), TemporalType.TIMESTAMP);
                 } else if (filter instanceof EndDateFilter) {
-                    query.setTimestamp("end", ((EndDateFilter) filter).getDate());
+                    query.setParameter("end", ((EndDateFilter) filter).getDate(), TemporalType.TIMESTAMP);
                 } else if (filter instanceof MinimalSumFilter) {
-                    query.setBigDecimal("minimalSum", ((MinimalSumFilter) filter).getBdValue());
+                    query.setParameter("minimalSum", ((MinimalSumFilter) filter).getBdValue());
                 } else if (filter instanceof MaximalSumFilter) {
-                    query.setBigDecimal("maximalSum", ((MaximalSumFilter) filter).getBdValue());
+                    query.setParameter("maximalSum", ((MaximalSumFilter) filter).getBdValue());
                 }
 
             }
@@ -156,21 +156,21 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
             }
         }
 
-		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
+		return (List<Operation>) getJpaTemplate().executeFind(new JpaCallback<List<Operation>>() {
 			@Override
-			public List<Operation> doInHibernate(Session session) throws HibernateException {
+			public List<Operation> doInJpa(EntityManager entityManager) throws HibernateException {
 
-				Query cntQuery = session.createQuery(cntHql.toString());
+				javax.persistence.Query cntQuery = entityManager.createQuery(cntHql.toString());
 				setCashboxOperationSearchQueryParameters(cntQuery, filters);
-				Long count = (Long) cntQuery.uniqueResult();
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				Query query = session.createQuery(hql.toString());
+				javax.persistence.Query query = entityManager.createQuery(hql.toString());
 				setCashboxOperationSearchQueryParameters(query, filters);
                 log.debug("Operations search query: {}", query);
 				return (List<Operation>) query.setFirstResult(pager.getThisPageFirstElementNumber()).
                         setMaxResults(pager.getPageSize()).
-                        list();
+                        getResultList();
 			}
 		});
     }
@@ -216,7 +216,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		return joinHql.append(filterHql);
 	}
 
-    private void setCashboxOperationSearchQueryParameters(Query query, @NotNull ArrayStack filters) {
+    private void setCashboxOperationSearchQueryParameters(javax.persistence.Query query, @NotNull ArrayStack filters) {
 
         for (Object f : filters) {
 
@@ -224,19 +224,19 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
             if (filter.needFilter()) {
 
                 if (filter instanceof PaymentPointFilter) {
-                    query.setLong("paymentPointId", ((PaymentPointFilter) filter).getSelectedId());
+                    query.setParameter("paymentPointId", ((PaymentPointFilter) filter).getSelectedId());
                 } else if (filter instanceof CashboxFilter) {
-                    query.setLong("cashboxId", ((CashboxFilter) filter).getSelectedId());
+                    query.setParameter("cashboxId", ((CashboxFilter) filter).getSelectedId());
                 } else if (filter instanceof BeginDateFilter) {
-                    query.setTimestamp("begin", ((BeginDateFilter) filter).getDate());
+                    query.setParameter("begin", ((BeginDateFilter) filter).getDate(), TemporalType.TIMESTAMP);
                 } else if (filter instanceof EndDateFilter) {
-                    query.setTimestamp("end", ((EndDateFilter) filter).getDate());
+                    query.setParameter("end", ((EndDateFilter) filter).getDate(), TemporalType.TIMESTAMP);
                 } else if (filter instanceof MinimalSumFilter) {
-                    query.setBigDecimal("minimalSum", ((MinimalSumFilter) filter).getBdValue());
+                    query.setParameter("minimalSum", ((MinimalSumFilter) filter).getBdValue());
                 } else if (filter instanceof MaximalSumFilter) {
-                    query.setBigDecimal("maximalSum", ((MaximalSumFilter) filter).getBdValue());
+                    query.setParameter("maximalSum", ((MaximalSumFilter) filter).getBdValue());
                 } else if (filter instanceof CashboxTradingDayFilter) {
-                    query.setLong("tradingDayProcessId", ((CashboxTradingDayFilter) filter).getSelectedId());
+                    query.setParameter("tradingDayProcessId", ((CashboxTradingDayFilter) filter).getSelectedId());
                 }
 
             }
@@ -247,48 +247,49 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
     @SuppressWarnings({"unchecked"})
     @Override
     public Operation getLastPaymentPointPaymentOperation(final Long paymentPointId, final Date beginDate, final Date endDate) {
-        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
-            @Override
-            public List<Operation> doInHibernate(Session session) throws HibernateException {
-                return session.getNamedQuery("Operation.listLastPaymentPointPaymentOperations").
-                        setLong(0, paymentPointId).
-                        setTimestamp(1, beginDate).
-                        setTimestamp(2, endDate).
-                        setMaxResults(1).list();
-            }
-        });
+        List<Operation> result = getJpaTemplate().executeFind(new JpaCallback<List<Operation>>() {
+			@Override
+			public List<Operation> doInJpa(EntityManager entityManager) throws HibernateException {
+				return entityManager.createNamedQuery("Operation.listLastPaymentPointPaymentOperations").
+						setParameter(1, paymentPointId).
+						setParameter(2, beginDate, TemporalType.TIMESTAMP).
+						setParameter(3, endDate, TemporalType.TIMESTAMP).
+						setMaxResults(1).getResultList();
+			}
+		});
 
         return result.isEmpty() ? null : result.get(0);
     }
 
-    @SuppressWarnings({"unchecked"})
+	@SuppressWarnings({"unchecked"})
     @Override
     public Operation getLastCashboxPaymentOperation(final Long cashboxId, final Date beginDate, final Date endDate) {
-        List<Operation> result = getHibernateTemplate().executeFind(new HibernateCallback<List<Operation>>() {
-            @Override
-            public List<Operation> doInHibernate(Session session) throws HibernateException {
-                return session.getNamedQuery("Operation.listLastCashboxPaymentOperations").
-                        setLong(0, cashboxId).
-                        setTimestamp(1, beginDate).
-                        setTimestamp(2, endDate).
-                        setMaxResults(1).list();
-            }
-        });
+        List<Operation> result = getJpaTemplate().executeFind(new JpaCallback<List<Operation>>() {
+			@Override
+			public List<Operation> doInJpa(EntityManager entityManager) throws HibernateException {
+				return entityManager.createNamedQuery("Operation.listLastCashboxPaymentOperations").
+						setParameter(1, cashboxId).
+						setParameter(2, beginDate, TemporalType.TIMESTAMP).
+						setParameter(3, endDate, TemporalType.TIMESTAMP).
+						setMaxResults(1).getResultList();
+			}
+		});
 
         return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
 	public Long getBlankOperationsCount() {
-		return DataAccessUtils.longResult(getHibernateTemplate().find("SELECT COUNT(o) FROM Operation o WHERE o.operationStatus.code = 6"));
+		return DataAccessUtils.longResult(getJpaTemplate().find("SELECT COUNT(o) FROM Operation o WHERE o.operationStatus.code = 6"));
 	}
 
 	@Override
 	public void deleteAllBlankOperations() {
-		getHibernateTemplate().execute(new HibernateCallback<Void>() {
+		getJpaTemplate().execute(new JpaCallback<Void>() {
 			@Override
-			public Void doInHibernate(Session session) throws HibernateException {
-				session.getNamedQuery("Operation.deleteAllBlankOperations").setLong(0, 6).executeUpdate();
+			public Void doInJpa(EntityManager entityManager) throws HibernateException {
+				entityManager.createNamedQuery("Operation.deleteAllBlankOperations").
+						setParameter(1, 6).executeUpdate();
 				return null;
 			}
 		});

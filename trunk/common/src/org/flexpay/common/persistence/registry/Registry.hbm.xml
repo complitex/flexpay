@@ -275,6 +275,8 @@
 			left join fetch r.registryType
 			left join fetch r.registryStatus
 			left join fetch r.properties
+			left join fetch r.files
+			left join fetch r.importError
 			left join fetch r.containers
 		where r.id=?
         order by r.creationDate desc
@@ -367,6 +369,7 @@
             left join fetch r.registryStatus
             left join fetch r.properties
             left join fetch r.files
+			left join fetch r.importError
 		where r.id=?
 	</query>
 

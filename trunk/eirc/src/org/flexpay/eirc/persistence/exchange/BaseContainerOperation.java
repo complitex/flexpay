@@ -105,7 +105,7 @@ public class BaseContainerOperation extends ContainerOperation {
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context processing context
 	 * @throws FlexPayException if failure occurs

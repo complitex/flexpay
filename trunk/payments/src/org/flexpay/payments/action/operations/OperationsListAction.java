@@ -5,8 +5,8 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -163,11 +163,11 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
             } else {
                 Long tradingDayProcessId = cashbox.getTradingDayProcessInstanceId();
-                Process tradingDayProcess = processManager.getProcessInstanceInfo(tradingDayProcessId);
-                Date pStart = tradingDayProcess.getProcessStartDate();
+                ProcessInstance tradingDayProcess = processManager.getProcessInstance(tradingDayProcessId);
+                Date pStart = tradingDayProcess != null? tradingDayProcess.getStartDate(): null;
                 Date fStart = beginTimeFilter.setTime(now());
                 Date end = endTimeFilter.setTime(now());
-                Date begin = pStart.compareTo(fStart) > 0 ? pStart : fStart;
+                Date begin = fStart.compareTo(pStart) > 0 ? fStart : pStart;
                 if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
                     begin = beginTimeFilter.setTime(beginDateFilter.getDate());
                     end = endTimeFilter.setTime(endDateFilter.getDate());
@@ -183,7 +183,7 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
             }
         } else if (cashbox.getTradingDayProcessInstanceId() != null) {
 
-			Process tradingDayProcess = processManager.getProcessInstanceInfo(cashbox.getTradingDayProcessInstanceId());
+			ProcessInstance tradingDayProcess = processManager.getProcessInstance(cashbox.getTradingDayProcessInstanceId());
 			log.debug("Closed trading day process: {}", tradingDayProcess);
 
 			if (tradingDayProcess != null) {
@@ -191,8 +191,8 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
                 Date pStart;
                 Date pEnd;
                 try {
-                    pStart = tradingDayProcess.getProcessStartDate() == null ? DateUtil.parseDate("2000-01-01") : tradingDayProcess.getProcessStartDate();
-                    pEnd = tradingDayProcess.getProcessEndDate() == null ? DateUtil.parseDate("2100-12-31") : tradingDayProcess.getProcessEndDate();
+                    pStart = tradingDayProcess.getStartDate() == null ? DateUtil.parseDate("2000-01-01") : tradingDayProcess.getStartDate();
+                    pEnd = tradingDayProcess.getEndDate() == null ? DateUtil.parseDate("2100-12-31") : tradingDayProcess.getEndDate();
                 } catch (ParseException e) {
                     log.error("Can't parse date", e);
                     return;

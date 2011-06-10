@@ -3,6 +3,7 @@ package org.flexpay.common.action.processing;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.filter.ProcessStateFilter;
@@ -18,6 +19,7 @@ public class ProcessesListPageAction extends FPActionSupport implements Initiali
     private EndDateFilter endDateFilter = new EndDateFilter();
 
 	private ProcessManager processManager;
+	private ProcessDefinitionManager processDefinitionManager;
 
 	@NotNull
 	@Override
@@ -36,7 +38,7 @@ public class ProcessesListPageAction extends FPActionSupport implements Initiali
 
     @Override
 	public void afterPropertiesSet() throws Exception {
-		processNameFilter.setProcessManager(processManager);
+		processNameFilter.setProcessDefinitionManager(processDefinitionManager);
 	}
 
 	public ProcessStateFilter getProcessStateFilter() {
@@ -60,4 +62,8 @@ public class ProcessesListPageAction extends FPActionSupport implements Initiali
 		this.processManager = processManager;
 	}
 
+	@Required
+	public void setProcessDefinitionManager(ProcessDefinitionManager processDefinitionManager) {
+		this.processDefinitionManager = processDefinitionManager;
+	}
 }

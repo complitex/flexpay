@@ -20,7 +20,7 @@ public class SetLiveSquareOperation extends AbstractChangePersonalAccountOperati
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context
 	 * @throws org.flexpay.common.exception.FlexPayException

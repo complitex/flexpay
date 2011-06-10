@@ -4,7 +4,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.job.listeners.JobCompletePercentListener;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +49,6 @@ public abstract class Job implements Runnable {
     @Override
 	public void run() {
 
-		JobManager jobMgr = JobManager.getInstance();
 		setStart(new Date());
 
 		// prepare process logger
@@ -67,7 +65,6 @@ public abstract class Job implements Runnable {
 
 			// setup execution context
 			JobExecutionContext jobExecutionContext = new JobExecutionContext(taskId != null ? taskId : 0L);
-			jobExecutionContext.addListener(new JobCompletePercentListener());
 			JobExecutionContextHolder.setContext(jobExecutionContext);
 
 			// execute
@@ -79,7 +76,6 @@ public abstract class Job implements Runnable {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
 			}
 
-			jobMgr.jobFinished(id, transition, parameters);
 		} catch (Throwable e) {
 			if (e instanceof FlexPayException) {
 				FlexPayException ex = (FlexPayException) e;
@@ -91,7 +87,6 @@ public abstract class Job implements Runnable {
 				plog.error("Job with id = " + getId() + " completed with exception", e);
 			}
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
-			jobMgr.jobFinished(id, RESULT_ERROR, parameters);
 		} finally {
 			SecurityContextHolder.clearContext();
 			JobExecutionContextHolder.complete();

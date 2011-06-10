@@ -37,7 +37,7 @@ public abstract class Operation {
 	public static final char FIO_DELIMITER = ',';
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @return DelayedUpdate object
@@ -50,7 +50,7 @@ public abstract class Operation {
 			throws FlexPayException, FlexPayExceptionContainer;
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @param watchContext OperationWatchContext

@@ -1,8 +1,8 @@
 package org.flexpay.payments.action.monitor;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
@@ -68,11 +68,11 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 
         if (paymentPoint.getTradingDayProcessInstanceId() != null) {
 
-            Process tradingDayProcess = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+            ProcessInstance tradingDayProcess = processManager.getProcessInstance(paymentPoint.getTradingDayProcessInstanceId());
             if (tradingDayProcess != null) {
-                startDate = tradingDayProcess.getProcessStartDate();
-                if (tradingDayProcess.getProcessEndDate() != null) {
-                    finishDate = tradingDayProcess.getProcessEndDate();
+                startDate = tradingDayProcess.getStartDate();
+                if (tradingDayProcess.getEndDate() != null) {
+                    finishDate = tradingDayProcess.getEndDate();
                 }
                 processStatus = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
             }
@@ -104,7 +104,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
                 container.setLastPayment(formatTime.format(operation.getCreationDate()));
             }
 			if (cashbox.getTradingDayProcessInstanceId() != null) {
-				Process process = processManager.getProcessInstanceInfo(cashbox.getTradingDayProcessInstanceId());
+				ProcessInstance process = processManager.getProcessInstance(cashbox.getTradingDayProcessInstanceId());
 				if (process != null) {
 					container.setStatus((Status)process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS));
 				}

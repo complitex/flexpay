@@ -1,16 +1,14 @@
 package org.flexpay.payments.process.export.handler;
 
-import org.jbpm.graph.exe.ExecutionContext;
-import org.jbpm.graph.node.DecisionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SendSignalToParentProcessHandler implements DecisionHandler {
+public class SendSignalToParentProcessHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(SendSignalToParentProcessHandler.class);
 
-	@Override
-	public String decide(ExecutionContext executionContext) throws Exception {
+	public String decide() throws Exception {
+		/*
 
 		Integer closedCountCashboxes = (Integer) executionContext.getContextInstance().getVariable("closedCountCashboxes");
 
@@ -24,5 +22,7 @@ public class SendSignalToParentProcessHandler implements DecisionHandler {
 
 		log.debug("cancel");
 		return "cancel";
+		*/
+		return "";
 	}
 }

@@ -6,6 +6,8 @@ import org.flexpay.eirc.persistence.registry.ProcessRegistryVariableInstance;
 import org.flexpay.eirc.service.ProcessRegistryVariableInstanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ProcessRegistryVariableInstanceServiceImpl implements ProcessRegist
 	 * {@inheritDoc}
 	 */
 	@NotNull
+	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public ProcessRegistryVariableInstance update(@NotNull ProcessRegistryVariableInstance variable) {
 		processRegistryVariableInstanceDao.update(variable);
@@ -47,6 +50,7 @@ public class ProcessRegistryVariableInstanceServiceImpl implements ProcessRegist
 	/**
 	 * {@inheritDoc}
 	 */
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public ProcessRegistryVariableInstance findVariable(@NotNull Long processId) {
 		List<ProcessRegistryVariableInstance> variables = processRegistryVariableInstanceDao.findByProcessId(processId);
@@ -59,6 +63,7 @@ public class ProcessRegistryVariableInstanceServiceImpl implements ProcessRegist
 	/**
 	 * {@inheritDoc}
 	 */
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public ProcessRegistryVariableInstance readFull(@NotNull Stub<ProcessRegistryVariableInstance> stub) {
 		return processRegistryVariableInstanceDao.readFull(stub.getId());

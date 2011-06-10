@@ -49,7 +49,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	@Override
-	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
+	public List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 		Logger plog = ProcessLogger.getLogger(getClass());
 
 		BufferedReader reader;
@@ -97,8 +97,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	}
 
 	@SuppressWarnings ({"unchecked"})
+	@Transactional (propagation = Propagation.MANDATORY, readOnly = false)
 	@Override
-	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	public int iterateParseFile(@NotNull BufferedReader reader, @NotNull Map<String, Object> properties) throws FlexPayException {
 		List<Registry> registries = (List<Registry>)properties.get(ParserParameterConstants.PARAM_REGISTRIES);
 		Long totalLineNum = (Long)properties.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM);
@@ -108,6 +108,13 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		Registry infoRegistry = registries.get(0);
 
 		int countChar = 0;
+
+		if (statusLoaded == null) {
+			statusLoaded = registryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
+			if (statusLoaded == null) {
+				throw new FlexPayException("Can't get registry record status \"loaded\" from database");
+			}
+		}
 
 		try {
 			if (totalLineNum == 0) {
@@ -188,11 +195,13 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			throw new FlexPayException("Incorrect header line (can't find service provider with id " + fields[1] + ")");
 		}
 
-		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
-		registry.setProperties(registryProperties);
-		registryProperties.setServiceProvider(serviceProvider);
+		registry.setProperties(propertiesFactory.newRegistryProperties());
+		registry.getProperties().setRegistry(registry);
+		((EircRegistryProperties)registry.getProperties()).setServiceProvider(serviceProvider);
 		registry.setSenderCode(serviceProvider.getOrganizationStub().getId());
+		//((EircRegistryProperties)registry.getProperties()).setSender(serviceProvider.getOrganization());
 		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
+//		((EircRegistryProperties)registry.getProperties()).setRecipient(ApplicationConfig.getSelfOrganization());
 
 		try {
 			Date period = new SimpleDateFormat(MbParsingConstants.FILE_CREATION_DATE_FORMAT).parse(fields[2]);
@@ -389,12 +398,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		record.setStreetName(fields[7]);
 		setBuildingAddress(record, fields[8]);
 		record.setApartmentNum(fields[9]);
-		if (statusLoaded == null) {
-			statusLoaded = registryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
-			if (statusLoaded == null) {
-				throw new FlexPayException("Can't get registry record status \"loaded\" from database");
-			}
-		}
 		record.setRecordStatus(statusLoaded);
 
 		return record;

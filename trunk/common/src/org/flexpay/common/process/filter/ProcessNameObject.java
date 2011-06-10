@@ -3,7 +3,7 @@ package org.flexpay.common.process.filter;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Process name wrapper for using in {@link org.flexpay.common.process.filter.ProcessNameFilter}
+ * ProcessInstance name wrapper for using in {@link org.flexpay.common.process.filter.ProcessNameFilter}
  */
 public class ProcessNameObject {
 

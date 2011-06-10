@@ -11,7 +11,7 @@
 
     <bean id="mbServiceTypeMapper"
           class="org.flexpay.payments.util.ServiceTypesMapper"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="paymentsPropertiesFactory" 
           depends-on="propertiesFactory" 
@@ -259,7 +259,6 @@
           p:operationTypeService-ref="operationTypeService"
           p:cashboxService-ref="cashboxService"
           p:paymentPointService-ref="paymentPointService"
-          p:processManager-ref="processManagerPayments"
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
           p:masterIndexService-ref="masterIndexService"

@@ -1,11 +1,11 @@
 package org.flexpay.payments.action.tradingday;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
@@ -15,7 +15,6 @@ import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
-import org.jbpm.graph.def.Transition;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +24,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
-import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static junit.framework.Assert.*;
 import static org.flexpay.common.service.Roles.*;
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_POINTS;
@@ -43,6 +40,9 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 
 	@Autowired
     private ProcessManager processManager;
+
+	@Autowired
+	private ProcessDefinitionManager processDefinitionManager;
 
 	@Autowired
 	private PaymentPointService paymentPointService;
@@ -86,31 +86,33 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 
 	@Test
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
-		processManager.deployProcessDefinition("PaymentPointTradingDay", true);
-		processManager.deployProcessDefinition("CashboxTradingDay", true);
+		processDefinitionManager.deployProcessDefinition("PaymentPointTradingDay", true);
+		processDefinitionManager.deployProcessDefinition("CashboxTradingDay", true);
 
 		final Long currentPaymentPointId = 1L;
 
-        Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+        Map<String, Object> parameters = map();
 		parameters.put(PAYMENT_POINTS, new Long[]{currentPaymentPointId, 2L});
 		parameters.put(CURRENT_INDEX_PAYMENT_POINT, 0);
-		long processId = processManager.createProcess("PaymentPointTradingDay", parameters);
+		ProcessInstance processInstance = processManager.startProcess("PaymentPointTradingDay", parameters);
 
-		assertTrue("Error", processId > 0);
+		assertNotNull("Process did not start: Object is null", processInstance);
+		assertNotNull("Process did not start: Process instance id is null", processInstance.getId());
+		assertTrue("Process state is not running", processInstance.getState() == ProcessInstance.STATE.RUNNING);
 
 		Thread.sleep(10000);
 
-		assertFalse("Process completed", isProcessCompleted(processId));
+		assertFalse("ProcessInstance completed", isProcessCompleted(processInstance.getId()));
 
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(currentPaymentPointId));
 
 		assertNotNull("Payment point did not find", paymentPoint);
 
-		assertEquals("Trading day for payment point did not start", processId, paymentPoint.getTradingDayProcessInstanceId().longValue());
+		assertEquals("Trading day for payment point did not start", processInstance.getId(), paymentPoint.getTradingDayProcessInstanceId().longValue());
 
 		List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(currentPaymentPointId);
 
-		Process process = processManager.getProcessInstanceInfo(processId);
+		ProcessInstance process = processManager.getProcessInstance(processInstance.getId());
 //		Long variable = (Long)process.getParameters().get("variable");
 //		log.debug("variable={}", variable);
 //		ProcessInstance processInstance = processManager.getProcessInstance(process.getProcessInstaceId());
@@ -127,9 +129,9 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 
 		do {
 //			Thread.sleep(5000);
-			log.debug("Wait process " + processId);
+			log.debug("Wait process " + processInstance.getId());
 			getState(cashboxes);
-		} while (!isProcessCompleted(processId));
+		} while (!isProcessCompleted(processInstance.getId()));
 	}
 
 	private void getState(List<Cashbox> cashboxes) {
@@ -140,6 +142,7 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 	}
 
 	private void getCashboxState(Cashbox cashbox, String user) {
+		/*
 		Set<?> transitions = TaskHelper.getTransitions(processManager, user, cashbox.getTradingDayProcessInstanceId(), null, log);
 
 		StringBuilder transitionNames = new StringBuilder();
@@ -148,17 +151,20 @@ public class TestPaymentPointTradingDay extends SpringBeanAwareTestCase {
 			transitionNames.append(((Transition) transition).getName()).append(",");
 		}
 		log.debug(transitionNames.toString());
+		*/
 	}
 
 	private void sendSignal(List<Cashbox> cashboxes, String user, String action) throws InterruptedException {
+		/*
 		for (Cashbox cashbox : cashboxes) {
 			TaskHelper.getTransitions(processManager, user, cashbox.getTradingDayProcessInstanceId(), action, log);
 			Thread.sleep(5000);
 		}
+		*/
 	}
 
 	private boolean isProcessCompleted(long processId) {
-		Process process = processManager.getProcessInstanceInfo(processId);
-		return process.getProcessState().isCompleted();
+		ProcessInstance process = processManager.getProcessInstance(processId);
+		return process.hasEnded();
 	}
 }

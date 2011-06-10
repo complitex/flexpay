@@ -18,12 +18,12 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.jpa.JpaCallback;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -118,16 +118,16 @@ public class TestRegistryRecordDaoExt extends EircSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<?> ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
+		List<?> ids = jpaTemplate.executeFind(new JpaCallback<Object>() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createSQLQuery("select id from common_registry_records_tbl " +
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createNativeQuery("select id from common_registry_records_tbl " +
 											  "	use index (I_registry_status, I_registry_errortype) " +
 											  "where registry_id=? and record_status_id=? " +
 											  "limit 40, 20")
-						.setLong(0, registry.getId())
-						.setLong(1, statusId)
-						.list();
+						.setParameter(1, registry.getId())
+						.setParameter(2, statusId)
+						.getResultList();
 			}
 		});
 		watch.stop();
@@ -143,17 +143,17 @@ public class TestRegistryRecordDaoExt extends EircSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<?> ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
+		List<?> ids = jpaTemplate.executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createSQLQuery("select id from common_registry_records_tbl " +
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createNativeQuery("select id from common_registry_records_tbl " +
 											  "	use index (I_registry_status, I_registry_errortype) " +
 											  "where registry_id=? and record_status_id=? and import_error_type=? " +
 											  "limit 40, 20")
-						.setLong(0, registry.getId())
-						.setLong(1, statusId)
-						.setInteger(2, typeApartment)
-						.list();
+						.setParameter(1, registry.getId())
+						.setParameter(2, statusId)
+						.setParameter(3, typeApartment)
+						.getResultList();
 			}
 		});
 		watch.stop();

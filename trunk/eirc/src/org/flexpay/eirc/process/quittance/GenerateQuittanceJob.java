@@ -21,8 +21,6 @@ import java.util.Set;
 
 public class GenerateQuittanceJob extends Job {
 
-	public static final String JOB_NAME = "generateQuittancesJob";
-
 	public static final String PARAM_DATE_FROM = "dateFrom";
 	public static final String PARAM_DATE_TILL = "dateTill";
 	public static final String PARAM_SERVICE_ORGANIZATION_ID = "serviceOrganizationId";

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_inputParamItem" structureRef="java.lang.String"/>
+
+	<process processType="Public" isExecutable="true" id="TestWorkHandler2" name="Test work item handler"
+			 tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="result" itemSubjectRef="_resultItem"/>
+		<property id="result2" itemSubjectRef="_resultItem"/>
+
+		<property id="inputParam" itemSubjectRef="_inputParamItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<task id="_2" name="Task" tns:taskName="MyTask">
+			<ioSpecification>
+				<dataInput id="_2_inputParam" name="inputParam" />
+				<dataOutput id="_2_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_2_inputParam</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>inputParam</sourceRef>
+				<targetRef>_2_inputParam</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>result</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<task id="_8" name="Task" tns:taskName="MyTask">
+			<ioSpecification>
+				<dataOutput id="_8_result" name="Result"/>
+				<inputSet />
+				<outputSet>
+					<dataOutputRefs>_8_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataOutputAssociation>
+				<sourceRef>_8_result</sourceRef>
+				<targetRef>result2</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<inclusiveGateway id="_3" name="Split" default="_3-_5" gatewayDirection="Diverging" />
+
+		<scriptTask id="_4" name="System.out">
+			<script>System.out.println("_4: result = " + result);</script>
+		</scriptTask>
+
+		<scriptTask id="_5" name="System.out">
+			<script>
+				System.out.println("_5: result = " + result);
+			</script>
+		</scriptTask>
+
+		<exclusiveGateway id="_6" name="Join" gatewayDirection="Converging" />
+
+		<endEvent id="_7" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_8-_6" sourceRef="_8" targetRef="_6"/>
+		<sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4">
+			<conditionExpression xs:type="tFormalExpression" >return result == "NEXT";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_3-_5" sourceRef="_3" targetRef="_5">
+			<conditionExpression xs:type="tFormalExpression" >return result == "ERROR";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_4-_8" sourceRef="_4" targetRef="_8"/>
+		<sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6"/>
+		<sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7"/>
+
+	</process>
+</definitions>

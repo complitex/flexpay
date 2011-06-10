@@ -22,7 +22,7 @@ public class BuildingAttributeDataProcessorImpl implements BuildingAttributeData
 	private BuildingAttributeTypeService attributeTypeService;
 
 	/**
-	 * Process attribute data for specified time interval
+	 * ProcessInstance attribute data for specified time interval
 	 *
 	 * @param begin Interval begin date
 	 * @param end   Interval end date
