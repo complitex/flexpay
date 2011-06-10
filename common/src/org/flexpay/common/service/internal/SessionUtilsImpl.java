@@ -3,7 +3,7 @@ package org.flexpay.common.service.internal;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +17,14 @@ public class SessionUtilsImpl implements SessionUtils {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private HibernateTemplate hibernateTemplate;
+	private JpaTemplate jpaTemplate;
 
 	@Transactional (propagation = Propagation.REQUIRED)
 	public void flush() {
 
 		log.debug("Flushing");
 
-		hibernateTemplate.flush();
+		jpaTemplate.flush();
 	}
 
 	@Transactional (propagation = Propagation.REQUIRED)
@@ -32,7 +32,7 @@ public class SessionUtilsImpl implements SessionUtils {
 
 		log.debug("Clearing");
 
-		hibernateTemplate.clear();
+		jpaTemplate.getEntityManager().clear();
 	}
 
 	/**
@@ -40,12 +40,10 @@ public class SessionUtilsImpl implements SessionUtils {
 	 *
 	 * @param o Object to be evicted
 	 */
-	@Transactional (propagation = Propagation.REQUIRED)
 	public void evict(Object o) {
 
 		if (o != null) {
-			log.debug("Evicting {}", o.getClass());
-			hibernateTemplate.evict(o);
+			log.debug("Evicting does not support {}", o.getClass());
 		}
 	}
 
@@ -54,14 +52,9 @@ public class SessionUtilsImpl implements SessionUtils {
 	 *
 	 * @param c Collection that elements should be evicted
 	 */
-	@Transactional (propagation = Propagation.REQUIRED)
 	public void evict(Collection<?> c) {
 
-		log.debug("Evicting collection");
-
-		for (Object o : c) {
-			hibernateTemplate.evict(o);
-		}
+		log.debug("Evicting collection does not support");
 	}
 
 	/**
@@ -82,7 +75,7 @@ public class SessionUtilsImpl implements SessionUtils {
 		return obj;
 	}
 
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public void setJpaTemplate(JpaTemplate jpaTemplate) {
+		this.jpaTemplate = jpaTemplate;
 	}
 }

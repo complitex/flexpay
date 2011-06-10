@@ -3,14 +3,14 @@ package org.flexpay.common.persistence.history;
 import org.flexpay.common.persistence.DomainObject;
 
 /**
- * Process new diff object
+ * ProcessInstance new diff object
  *
  * @param <T> Objects type diff was created for
  */
 public interface DiffProcessor<T extends DomainObject> {
 
 	/**
-	 * Process creation diff
+	 * ProcessInstance creation diff
 	 *
 	 * @param obj Created object
 	 * @param diff Diff
@@ -18,7 +18,7 @@ public interface DiffProcessor<T extends DomainObject> {
 	void onCreate(T obj, Diff diff);
 
 	/**
-	 * Process update diff
+	 * ProcessInstance update diff
 	 *
 	 * @param obj1 Old object version
 	 * @param obj2 new object version
@@ -27,7 +27,7 @@ public interface DiffProcessor<T extends DomainObject> {
 	void onUpdate(T obj1, T obj2, Diff diff);
 
 	/**
-	 * Process deletion diff
+	 * ProcessInstance deletion diff
 	 *
 	 * @param obj Deleted object
 	 * @param diff Diff

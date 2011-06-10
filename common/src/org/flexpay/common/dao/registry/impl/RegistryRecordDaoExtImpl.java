@@ -17,17 +17,16 @@ import org.flexpay.common.persistence.registry.filter.FilterData;
 import org.flexpay.common.persistence.registry.sorter.RecordErrorsGroupSorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.transform.Number2LongTransformer;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.JpaTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +42,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-    private HibernateTemplate hibernateTemplate;
+    private JpaTemplate jpaTemplate;
 
 	/**
 	 * List registry records for import operation
@@ -60,7 +59,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 		StopWatch watch = new StopWatch();
 
 		watch.start();
-		List<RegistryRecord> records = hibernateTemplate
+		List<RegistryRecord> records = jpaTemplate
 				.findByNamedQuery("RegistryRecord.listRecordsForImport", params);
 		watch.stop();
 
@@ -113,14 +112,14 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 									   new StringBuilder("select records_number from common_registries_tbl where id=?");
 		selectSql.append(fromWhereClause);
 
-		final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
+		final List ids = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
 				log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
 
 				StopWatch watch = new StopWatch();
 				watch.start();
-				Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
+				Number count = (Number) setParameters(entityManager.createNativeQuery(sqlCount.toString()), params).getSingleResult();
 				if (count == null) {
 					count = 0;
 				}
@@ -131,10 +130,10 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 				pager.setTotalElements(count.intValue());
 
 				watch.start();
-				List result = setParameters(session.createSQLQuery(selectSql.toString()), params)
+				List result = setParameters(entityManager.createNativeQuery(selectSql.toString()), params)
 						.setMaxResults(pager.getPageSize())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
-						.list();
+						.getResultList();
 				watch.stop();
 				log.debug("Time spent for listing: {}", watch);
 
@@ -148,12 +147,12 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
+		List<RegistryRecord> result = jpaTemplate.executeFind(new JpaCallback() {
 			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				return session.getNamedQuery("RegistryRecord.listRecordsDetails")
-						.setParameterList("ids", transform(ids, new Number2LongTransformer()))
-						.list();
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createNamedQuery("RegistryRecord.listRecordsDetails")
+						.setParameter("ids", transform(ids, new Number2LongTransformer()))
+						.getResultList();
 			}
 		});
 
@@ -182,15 +181,15 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                                        new StringBuilder("select records_number from common_registries_tbl where id=?");
         selectSql.append(fromWhere);
 
-        final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+        final List ids = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, selectSql);
                 log.debug("Params: {}", params);
 
                 StopWatch watch = new StopWatch();
                 watch.start();
-                Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
+                Number count = (Number) setParameters(entityManager.createNativeQuery(sqlCount.toString()), params).getSingleResult();
                 if (count == null) {
                     count = 0;
                 }
@@ -201,10 +200,10 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                 pager.setTotalElements(count.intValue());
 
                 watch.start();
-                List result = setParameters(session.createSQLQuery(selectSql.toString()), params)
+                List result = setParameters(entityManager.createNativeQuery(selectSql.toString()), params)
                         .setMaxResults(pager.getPageSize())
                         .setFirstResult(pager.getThisPageFirstElementNumber())
-                        .list();
+                        .getResultList();
                 watch.stop();
                 log.debug("Time spent for listing: {}", watch);
 
@@ -222,12 +221,12 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         StopWatch watch = new StopWatch();
         watch.start();
-        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                return session.getNamedQuery("RegistryRecord.listRecordsDetails")
-                        .setParameterList("ids", transform(ids, new Number2LongTransformer()))
-                        .list();
+        List<RegistryRecord> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+                return entityManager.createNamedQuery("RegistryRecord.listRecordsDetails")
+                        .setParameter("ids", transform(ids, new Number2LongTransformer()))
+                        .getResultList();
             }
         });
 
@@ -311,16 +310,16 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         log.debug("Pager = {}", pager);
         log.debug("params = {}", paramsSql);
 
-        final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+        final List ids = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, sql);
 
                 StopWatch watch = new StopWatch();
                 if (log.isDebugEnabled()) {
                     watch.start();
                 }
-                Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), paramsSql).uniqueResult();
+                Number count = (Number) setParameters(entityManager.createNativeQuery(sqlCount.toString()), paramsSql).getSingleResult();
                 log.debug("count = {}", count);
                 if (count == null) {
                     count = 0;
@@ -336,10 +335,10 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                 if (log.isDebugEnabled()) {
                     watch.start();
                 }
-                List<?> result = setParameters(session.createSQLQuery(sql.toString()), paramsSql)
+                List<?> result = setParameters(entityManager.createNativeQuery(sql.toString()), paramsSql)
                         .setMaxResults(pager.getPageSize())
                         .setFirstResult(pager.getThisPageFirstElementNumber())
-                        .list();
+                        .getResultList();
 
                 log.debug("Result = {}", result);
 
@@ -360,12 +359,12 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         if (log.isDebugEnabled()) {
             watch.start();
         }
-        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                return session.getNamedQuery("RegistryRecord.listRecordsDetails")
-                        .setParameterList("ids", transform(ids, new Number2LongTransformer()))
-                        .list();
+        List<RegistryRecord> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+                return entityManager.createNamedQuery("RegistryRecord.listRecordsDetails")
+                        .setParameter("ids", transform(ids, new Number2LongTransformer()))
+                        .getResultList();
             }
         });
 
@@ -476,9 +475,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 
         selectSql.append(fromWhereClause);
 
-        final List ids = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+        final List ids = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
                 log.debug("Filter records hqls: {}", selectSql);
 
                 StopWatch watch = new StopWatch();
@@ -486,9 +485,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                     watch.start();
                 }
 
-                List result = setParameters(session.createSQLQuery(selectSql.toString()), params)
+                List result = setParameters(entityManager.createNativeQuery(selectSql.toString()), params)
                         .setMaxResults(pager.getPageSize())
-                        .list();
+                        .getResultList();
 
                 if (log.isDebugEnabled()) {
                     watch.stop();
@@ -507,12 +506,12 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         if (log.isDebugEnabled()) {
             watch.start();
         }
-        List<RegistryRecord> result = hibernateTemplate.executeFind(new HibernateCallback<Object>() {
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                return session.getNamedQuery("RegistryRecord.listRecordsDetails")
-                        .setParameterList("ids", transform(ids, new Number2LongTransformer()))
-                        .list();
+        List<RegistryRecord> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+                return entityManager.createNamedQuery("RegistryRecord.listRecordsDetails")
+                        .setParameter("ids", transform(ids, new Number2LongTransformer()))
+                        .getResultList();
             }
         });
 
@@ -524,9 +523,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         return result;
     }
 
-	private Query setParameters(Query query, List<Object> params) {
+	private javax.persistence.Query setParameters(javax.persistence.Query query, List<Object> params) {
 		for (int n = 0; n < params.size(); ++n) {
-			query.setParameter(n, params.get(n));
+			query.setParameter(n + 1, params.get(n));
 		}
 		return query;
 	}
@@ -539,11 +538,12 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	 */
     @Override
 	public int getErrorsNumber(final Long registryId) {
-		Number count = (Number) hibernateTemplate.execute(new HibernateCallback<Object>() {
-            @Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				return session.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0 and rr.importError.status=0")
-						.setLong(0, registryId).uniqueResult();
+		Number count = (Number) jpaTemplate.execute(new JpaCallback<Object>() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager
+						.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0 and rr.importError.status=0")
+						.setParameter(1, registryId).getSingleResult();
 			}
 		});
 		return count.intValue();
@@ -558,10 +558,10 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	@SuppressWarnings ({"unchecked"})
     @Override
 	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
-		return hibernateTemplate.executeFind(new HibernateCallback<Object>() {
-            @Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				return session.createQuery("select distinct r from RegistryRecord r " +
+		return jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery("select distinct r from RegistryRecord r " +
 										   "inner join fetch r.properties " +
 										   "inner join fetch r.registry rr " +
 										   "inner join fetch rr.registryStatus " +
@@ -570,9 +570,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 										   "left join fetch r.importError " +
 										   "left join fetch r.containers " +
 										   "where rr.id=:rId and r.id in (:ids)")
-						.setParameterList("ids", objectIds)
-						.setLong("rId", registryId)
-						.list();
+						.setParameter("ids", objectIds)
+						.setParameter("rId", registryId)
+						.getResultList();
 			}
 		});
 	}
@@ -617,9 +617,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         sql.append(fromWhere).append(orderBy);
 
         @SuppressWarnings({"unchecked"})
-        final List<String> objects = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+        final List<String> objects = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
                 log.debug("Filter sqls: {}", sql);
                 log.debug("Params: {}", params);
 
@@ -629,9 +629,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                     watch.start();
                 }
 
-                List<?> result = setParameters(session.createSQLQuery(sql.toString()), params).
+                List<?> result = setParameters(entityManager.createNativeQuery(sql.toString()), params).
                         setMaxResults(pager.getPageSize()).
-                        list();
+                        getResultList();
 
                 if (log.isDebugEnabled()) {
                     watch.stop();
@@ -680,9 +680,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         sql.append(fromWhere).append(groupOrderByClause);
 
         @SuppressWarnings({"unchecked"})
-        final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+        final List<Object[]> objects = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
                 log.debug("Filter sqls: {}", sql);
                 log.debug("Params: {}", params);
 
@@ -692,7 +692,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                     watch.start();
                 }
 
-                List<?> result = setParameters(session.createSQLQuery(sql.toString()), params).list();
+                List<?> result = setParameters(entityManager.createNativeQuery(sql.toString()), params).getResultList();
 
                 if (log.isDebugEnabled()) {
                     watch.stop();
@@ -761,9 +761,9 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         }
 
         @SuppressWarnings({"unchecked"})
-        final List<Object[]> objects = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+        final List<Object[]> objects = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
                 log.debug("Filter records sqls: {}\n{}", sqlCount, sql);
                 log.debug("Params: {}", params);
 
@@ -772,7 +772,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                 if (log.isDebugEnabled()) {
                     watch.start();
                 }
-                Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
+                Number count = (Number) setParameters(entityManager.createNativeQuery(sqlCount.toString()), params).getSingleResult();
                 if (count == null) {
                     count = 0;
                 }
@@ -789,10 +789,10 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
                 if (log.isDebugEnabled()) {
                     watch.start();
                 }
-                List<?> result = setParameters(session.createSQLQuery(sql.toString()), params)
+                List<?> result = setParameters(entityManager.createNativeQuery(sql.toString()), params)
                         .setMaxResults(pager.getPageSize())
                         .setFirstResult(pager.getThisPageFirstElementNumber())
-                        .list();
+                        .getResultList();
                 if (log.isDebugEnabled()) {
                     watch.stop();
                     log.debug("Time spent for listing: {}", watch);
@@ -884,7 +884,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	@NotNull
     @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
-		List<?> result = hibernateTemplate
+		List<?> result = jpaTemplate
 				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
@@ -906,7 +906,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	@NotNull
     @Override
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId, @NotNull Long restrictionMinId) {
-		List<?> result = hibernateTemplate
+		List<?> result = jpaTemplate
 				.findByNamedQuery("RegistryRecord.listRecordsForProcessing.stats.restriction", registryId, restrictionMinId);
 		Object[] objs = (Object[]) result.get(0);
 
@@ -927,7 +927,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	@NotNull
     @Override
 	public Long[] getMinMaxIdsForImporting(@NotNull Long registryId) {
-		List<?> result = hibernateTemplate
+		List<?> result = jpaTemplate
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForImporting", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
@@ -940,7 +940,7 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 	}
 
     @Required
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        this.jpaTemplate = jpaTemplate;
     }
 }

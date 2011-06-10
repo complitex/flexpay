@@ -1,11 +1,12 @@
 package org.flexpay.common.persistence.registry.workflow;
 
 import org.flexpay.common.dao.ImportErrorDao;
-import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.dao.registry.RegistryDaoExt;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryStatus;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 
 	private RegistryStatusService statusService;
 	private ImportErrorDao errorDao;
-	private RegistryDao registryDao;
+	private RegistryService registryService;
 	private RegistryDaoExt registryDaoExt;
 
 	// allowed transitions from source status code to target codes
@@ -87,6 +88,11 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @return <code>true</code> if registry processing allowed, or <code>false</code> otherwise
 	 */
 	public boolean canTransit(Registry registry, RegistryStatus nextStatus) {
+		StringBuilder stack = new StringBuilder();
+		for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+			stack.append("\t").append(element.toString()).append("\n");
+		}
+		log.debug("Stack thread: {}", stack.toString());
 		log.debug("Current status is {}. Next status is {}. Allowed transition is {}",
 				new Object[] {code(registry), nextStatus.getCode(), transitions.get(code(registry))});
 		return transitions.get(code(registry)).contains(nextStatus.getCode());
@@ -106,7 +112,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		return transitionsToProcessing.contains(code(registry));
 	}
 
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public void startProcessing(Registry registry) throws TransitionNotAllowed {
 		if (!canProcess(registry)) {
 			throw new TransitionNotAllowed("Cannot start registry processing, invalid status: " +
@@ -115,14 +121,15 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 
 		ImportError error = registry.getImportError();
 		registry.setImportError(null);
+
+		setNextSuccessStatus(registry);
+
 		if (error != null) {
 			errorDao.delete(error);
 		}
-
-		setNextSuccessStatus(registry);
 	}
 
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public void endProcessing(Registry registry) throws TransitionNotAllowed {
 		// all records processed
 		if (code(registry) == PROCESSED) {
@@ -158,7 +165,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param registry Registry to update
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public void setNextErrorStatus(Registry registry) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 2) {
@@ -175,7 +182,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param error	ImportError
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public void setNextErrorStatus(Registry registry, ImportError error) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 2) {
@@ -194,7 +201,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param registry Registry to update
 	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public void setNextSuccessStatus(Registry registry) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 1) {
@@ -212,7 +219,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @return SpRegistry back
 	 * @throws TransitionNotAllowed if registry already has a status
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public Registry setInitialStatus(Registry registry) throws TransitionNotAllowed {
 		if (registry.getRegistryStatus() != null) {
 			if (code(registry) != LOADING) {
@@ -245,14 +252,19 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param status   Next status to set
 	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (propagation = Propagation.REQUIRED, readOnly = false)
 	public void setNextStatus(Registry registry, RegistryStatus status) throws TransitionNotAllowed {
 		if (!canTransit(registry, status)) {
 			throw new TransitionNotAllowed("Invalid transition request, was " + registry.getRegistryStatus() + ", requested " + status);
 		}
 
 		registry.setRegistryStatus(status);
-		registryDao.update(registry);
+		try {
+			registryService.update(registry);
+		} catch (FlexPayException e) {
+			log.debug("Transition not allowed because {}", e);
+			throw new TransitionNotAllowed("Invalid update registry: " + registry.toString());
+		}
 	}
 
 	/**
@@ -262,7 +274,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @throws TransitionNotAllowed if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING}
 	 *                              or {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 */
-	@Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public void markProcessingHasError(Registry registry) throws TransitionNotAllowed {
 		Integer code = code(registry);
 		if (!processingStates.contains(code)) {
@@ -284,14 +296,13 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		this.statusService = statusService;
 	}
 
-	@Required
-	public void setRegistryDao(RegistryDao registryDao) {
-		this.registryDao = registryDao;
+	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
+		this.registryDaoExt = registryDaoExt;
 	}
 
 	@Required
-	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
-		this.registryDaoExt = registryDaoExt;
+	public void setRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
 	}
 
 	@Required

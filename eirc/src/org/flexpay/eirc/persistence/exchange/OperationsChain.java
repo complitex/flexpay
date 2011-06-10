@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +20,13 @@ public class OperationsChain extends Operation {
 	}
 
 	/**
-	 * Process all containers in a chain
+	 * ProcessInstance all containers in a chain
 	 * 
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 * @param context processing context
 	 */
+	@Transactional (readOnly = true)
+	@Override
 	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
 
 		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
@@ -35,6 +38,7 @@ public class OperationsChain extends Operation {
 		return container;
 	}
 
+	@Transactional (readOnly = true)
 	@Override
 	public DelayedUpdate process(@NotNull ProcessingContext context, @NotNull OperationWatchContext watchContext) throws FlexPayException, FlexPayExceptionContainer {
 		DelayedUpdatesContainer container = new DelayedUpdatesContainer();

@@ -92,8 +92,8 @@
 
     <bean id="taskExecutor" 
           class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
-          p:corePoolSize="5"
-          p:maxPoolSize="10"
+          p:corePoolSize="10"
+          p:maxPoolSize="100"
           p:queueCapacity="25" />
 
 </beans>

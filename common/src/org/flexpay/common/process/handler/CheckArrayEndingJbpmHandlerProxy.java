@@ -1,14 +1,12 @@
 package org.flexpay.common.process.handler;
 
-import org.springmodules.workflow.jbpm31.JbpmHandlerProxy;
-
-public class CheckArrayEndingJbpmHandlerProxy extends JbpmHandlerProxy {
+public class CheckArrayEndingJbpmHandlerProxy {
 
 	private String arrayName;
 	private String arraySizeName;
 
-	@Override
 	protected Object lookupBean(Class type) {
+		/*
 		Object bean = super.lookupBean(type);
 		if (bean instanceof CheckArrayEndingActionHandler) {
 			CheckArrayEndingActionHandler handler = (CheckArrayEndingActionHandler)bean;
@@ -18,6 +16,8 @@ public class CheckArrayEndingJbpmHandlerProxy extends JbpmHandlerProxy {
 		}
 
 		return bean;
+		*/
+		return null;
 	}
 
 	public void setArrayName(String arrayName) {

@@ -12,7 +12,6 @@ import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -36,13 +35,13 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 			if (!serviceOrganizationFilter.needFilter()) {
 				addActionError(getText("eirc.error.quittance.no_service_organization"));
 			} else {
-				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+				Map<String, Object> contextVariables = CollectionUtils.map();
 
 				contextVariables.put("serviceOrganizationId", serviceOrganizationFilter.getSelectedId());
 				contextVariables.put("dateFrom", beginDateFilter.getDate());
 				contextVariables.put("dateTill", endDateFilter.getDate());
 
-				processManager.createProcess("GenerateQuittancePDF", contextVariables);
+				processManager.startProcess("GenerateQuittancePDF", contextVariables);
 
 				addActionMessage(getText("eirc.quittance.printing_started"));
 			}

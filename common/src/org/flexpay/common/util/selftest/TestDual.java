@@ -2,14 +2,14 @@ package org.flexpay.common.util.selftest;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class TestDual {
 
-	private HibernateTemplate hibernateTemplate;
+	private JpaTemplate jpaTemplate;
 
 	public void doSelfTesting() throws Exception {
-		int count = DataAccessUtils.intResult(hibernateTemplate.findByNamedQuery("Dual.count"));
+		int count = DataAccessUtils.intResult(jpaTemplate.findByNamedQuery("Dual.count"));
 
 		if (count != 1) {
 			throw new Exception("Dual table should contain only one record, found: " + count);
@@ -17,7 +17,7 @@ public class TestDual {
 	}
 
     @Required
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public void setJpaTemplate(JpaTemplate jpaTemplate) {
+		this.jpaTemplate = jpaTemplate;
 	}
 }

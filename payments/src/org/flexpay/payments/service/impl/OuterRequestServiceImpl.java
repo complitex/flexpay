@@ -9,7 +9,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryType;
-import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.service.importexport.CorrectionsService;
@@ -60,7 +59,6 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     private QuittanceDetailsFinder quittanceDetailsFinder;
     private OperationService operationService;
     private CashboxService cashboxService;
-    private ProcessManager processManager;
     private PaymentPointService paymentPointService;
     private DocumentTypeService documentTypeService;
     private DocumentStatusService documentStatusService;
@@ -530,11 +528,6 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         }
 
         return response;
-    }
-
-    @Required
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
     }
 
     @Required

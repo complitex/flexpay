@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements CorrectionDaoExt {
 
-	private HibernateTemplate hibernateTemplate;
+	private JpaTemplate jpaTemplate;
 
 	/**
 	 * Create or update data correction
@@ -27,7 +27,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	 */
     @Override
 	public void save(DataCorrection correction) {
-		hibernateTemplate.merge(correction);
+		jpaTemplate.merge(correction);
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	 */
     @Override
 	public void delete(DataCorrection correction) {
-		hibernateTemplate.delete(correction);
+		jpaTemplate.remove(correction);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	}
 
     @Required
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public void setJpaTemplate(JpaTemplate jpaTemplate) {
+		this.jpaTemplate = jpaTemplate;
 	}
 }

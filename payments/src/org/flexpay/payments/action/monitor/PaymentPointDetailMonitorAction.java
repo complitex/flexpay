@@ -1,8 +1,8 @@
 package org.flexpay.payments.action.monitor;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.action.AccountantAWPActionSupport;
@@ -57,11 +57,11 @@ public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport 
 
         if (paymentPoint.getTradingDayProcessInstanceId() != null) {
 
-            Process tradingDayProcess = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+            ProcessInstance tradingDayProcess = processManager.getProcessInstance(paymentPoint.getTradingDayProcessInstanceId());
             if (tradingDayProcess != null) {
-                startDate = tradingDayProcess.getProcessStartDate();
-                if (tradingDayProcess.getProcessEndDate() != null) {
-                    finishDate = tradingDayProcess.getProcessEndDate();
+                startDate = tradingDayProcess.getStartDate();
+                if (tradingDayProcess.getEndDate() != null) {
+                    finishDate = tradingDayProcess.getEndDate();
                 }
             }
 

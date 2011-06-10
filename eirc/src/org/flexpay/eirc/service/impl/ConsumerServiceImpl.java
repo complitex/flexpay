@@ -1,7 +1,6 @@
 package org.flexpay.eirc.service.impl;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.ConsumerDao;
@@ -18,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,24 +34,6 @@ public class ConsumerServiceImpl implements ConsumerService {
 	private ConsumerDaoExt consumerDaoExt;
 	private SPService spService;
 
-	/**
-	 * Try to find persistent consumer by example
-	 *
-	 * @param example Consumer
-	 * @return Persistent consumer if found, or <code>null</code> otherwise
-	 */
-    @Override
-	public Consumer findConsumer(Consumer example) {
-		List<Consumer> consumers = consumerDaoExt.findConsumers(
-				new Page(1, 1), // request the only record
-				example.getResponsiblePerson().getId(),
-				example.getService().getId(),
-				example.getExternalAccountNumber(),
-				example.getApartment().getId()
-		);
-		return consumers.isEmpty() ? null : consumers.get(0);
-	}
-
     @Override
     public List<Consumer> findConsumers(Stub<EircAccount> eircAccountStub) {
         return consumerDao.findConsumersByEIRCAccount(eircAccountStub.getId());
@@ -65,6 +47,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param serviceCode     Service code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     @Override
 	public Consumer findConsumer(Stub<ServiceProvider> serviceProviderStub, String accountNumber, String serviceCode) {
 		if (serviceCode.startsWith("#")) {
@@ -93,6 +76,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @return Consumer instance
 	 */
 	@Nullable
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     @Override
 	public Consumer read(@NotNull Stub<Consumer> stub) {
 		return consumerDao.readFull(stub.getId());
@@ -105,7 +89,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation failure occurs
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
     @Override
 	public void save(Consumer consumer) throws FlexPayExceptionContainer {
 		if (consumer.isNew()) {

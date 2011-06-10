@@ -5,18 +5,18 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.QuittancePacketDaoExt;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
-public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements QuittancePacketDaoExt {
+public class QuittancePacketDaoExtImpl extends JpaDaoSupport implements QuittancePacketDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -31,17 +31,17 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 		hql.append("from QuittancePacket");
 		hqlCount.append("select count(*) from QuittancePacket");
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+		return getJpaTemplate().executeFind(new JpaCallback<List<?>>() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
+			public List<?> doInJpa(EntityManager entityManager) throws HibernateException {
 
-				Long count = (Long) session.createQuery(hqlCount.toString()).uniqueResult();
+				Long count = (Long) entityManager.createQuery(hqlCount.toString()).getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 			}
 		});
 	}
@@ -49,7 +49,7 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 	@NotNull
 	@Override
 	public Long nextPacketNumber() {
-		Object[] result = (Object[]) uniqueResult((List<?>) getHibernateTemplate().
+		Object[] result = (Object[]) uniqueResult((List<?>) getJpaTemplate().
                 findByNamedQuery("QuittancePacket.nextPacketNumber"));
 
 		log.debug("Next packet result: {}, {}", result);

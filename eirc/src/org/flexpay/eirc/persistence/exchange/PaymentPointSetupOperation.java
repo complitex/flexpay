@@ -30,7 +30,7 @@ public class PaymentPointSetupOperation extends ContainerOperation {
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @return DelayedUpdate object

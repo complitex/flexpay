@@ -20,15 +20,16 @@ import org.flexpay.eirc.service.ProcessRegistryVariableInstanceService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.eirc.service.importexport.ProcessRecordsRangeService;
 import org.flexpay.eirc.service.importexport.ProcessRegistryService;
-import org.hibernate.FlushMode;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -43,7 +44,7 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 	private ProcessRecordsRangeService processRecordsRangeService;
 	private ProcessRegistryVariableInstanceService processRegistryVariableInstanceService;
 
-	private HibernateTransactionManager transactionManager;
+	private JpaTransactionManager transactionManager;
 
 	private StopWatch updateWatch = new StopWatch();
 	private StopWatch getRecordsWatch = new StopWatch();
@@ -66,20 +67,23 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public boolean processRegistryRecordRange(@NotNull FetchRange range, @NotNull ProcessRegistryVariableInstance variable, @NotNull ProcessingContext context) {
 
+		context.setRegistry(registryService.read(Stub.stub(context.getRegistry())));
+		log.debug("Processing registry: {}", context.getRegistry());
 		List<RegistryRecord> records = processRegistryRecordRange(range, context);
 		return records != null && updateProcessState(variable, records);
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	private List<RegistryRecord> processRegistryRecordRange(@NotNull FetchRange range, @NotNull ProcessingContext context) {
 
-		log.debug("Current session flush mode: {}", transactionManager.getSessionFactory().getCurrentSession().getFlushMode().toString());
-		transactionManager.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.COMMIT);
-		log.debug("New session flush mode: {}", transactionManager.getSessionFactory().getCurrentSession().getFlushMode().toString());
+/*		EntityManager entityManager = transactionManager.getEntityManagerFactory().createEntityManager();
 
+		log.debug("Current session flush mode: {}", entityManager.getFlushMode().toString());
+		entityManager.setFlushMode(FlushModeType.COMMIT);
+		log.debug("New session flush mode: {}", entityManager.getFlushMode().toString());
+*/
 		List<RegistryRecord> records;
 //		getRecordsWatch.resume();
 		records = registryFileService.getRecordsForProcessing(Stub.stub(context.getRegistry()), range);
@@ -89,18 +93,23 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 //		getRecordsWatch.suspend();
 
 //		processRecordsWatch.resume();
+		log.debug("start processRecordsRangeService.processRecords()");
 		try {
 			if (!processRecordsRangeService.processRecords(records, context)) {
+				log.debug("failed processRecordsRangeService.processRecords()");
 				return null;
 			}
 		} finally {
 //			processRecordsWatch.suspend();
 		}
+		log.debug("end processRecordsRangeService.processRecords() and start doUpdate()");
 
 //		updateWatch.resume();
 		if (!doUpdate(context)) {
+			log.debug("failed doUpdate()");
 			return null;
 		}
+		log.debug("end doUpdate()");
 //		updateWatch.suspend();
 		return records;
 	}
@@ -109,9 +118,11 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 	public boolean processRegistryRecordEnumeration(@NotNull List<Long> recordIds, @NotNull ProcessRegistryVariableInstance variable,
 												 @NotNull ProcessingContext context) {
 
-		log.debug("Current session flush mode: {}", transactionManager.getSessionFactory().getCurrentSession().getFlushMode().toString());
-		transactionManager.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.COMMIT);
-		log.debug("New session flush mode: {}", transactionManager.getSessionFactory().getCurrentSession().getFlushMode().toString());
+		EntityManager entityManager = transactionManager.getEntityManagerFactory().createEntityManager();
+
+		log.debug("Current session flush mode: {}", entityManager.getFlushMode().toString());
+		entityManager.setFlushMode(FlushModeType.COMMIT);
+		log.debug("New session flush mode: {}", entityManager.getFlushMode().toString());
 
 		List<RegistryRecord> records;
 		getRecordsWatch.resume();
@@ -138,7 +149,7 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 		return true;
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public ProcessRegistryVariableInstance prepare(@NotNull ProcessingContext context, @NotNull ProcessRegistryVariableInstance variable)
 			throws Exception {
@@ -149,17 +160,14 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 		return processRegistryVariableInstanceService.create(variable);
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	private boolean doUpdate(final ProcessRegistryVariableInstance variable, ProcessingContext context, List<RegistryRecord> records) {
-		return !doUpdate(context) && updateProcessState(variable, records);
+		return doUpdate(context) && updateProcessState(variable, records);
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	private boolean doUpdate(ProcessingContext context) {
-		return !processRecordsRangeService.doUpdate(context);
+		return processRecordsRangeService.doUpdate(context);
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	private boolean updateProcessState(ProcessRegistryVariableInstance variable, List<RegistryRecord> records) {
 		if (records.size() > 0) {
 			synchronized (variable) {
@@ -238,7 +246,7 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 	}
 
 	@Required
-	public void setTransactionManager(HibernateTransactionManager transactionManager) {
+	public void setTransactionManager(JpaTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
 }

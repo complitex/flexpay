@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+<!--
+	<bean id="eircApplicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.eirc.util.config.ApplicationConfig"
+		  p:eircDataRoot="${app.config.eirc.dataRoot}"
+		  p:eircId="${app.config.eirc.eircId}"
+		  p:eircMainServiceCode="${app.config.eirc.mainServiceTypeCode}"
+		  p:selfOrganizationId="${app.config.eirc.organizationId}" />
+
+	<bean id="registryFileParser"
+		  class="org.flexpay.eirc.sp.impl.RegistryFileParser"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:fileService-ref="fpFileService"
+		  p:registryService-ref="registryService"
+		  p:consumerService-ref="consumerService"
+		  p:eircRegistryService-ref="eircRegistryService"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:registryTypeService-ref="registryTypeService"
+		  p:organizationService-ref="organizationService"
+		  p:providerService-ref="serviceProviderService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:propertiesFactory-ref="propertiesFactory"
+		  p:typeRegistry-ref="classToTypeRegistry"
+		  p:correctionsService-ref="correctionsService"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+
+
+	<bean id="mbFileParser"
+		  abstract="true"
+		  class="org.flexpay.eirc.sp.impl.MbFileParser"
+		  p:registryTypeService-ref="registryTypeService"
+		  p:serviceProviderService-ref="serviceProviderService"
+		  p:registryService-ref="registryService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:spRegistryStatusService-ref="registryStatusService"
+		  p:spRegistryRecordStatusService-ref="registryRecordStatusService"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
+		  p:propertiesFactory-ref="eircPropertiesFactory"
+		  p:correctionsService-ref="correctionsService"
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
+		  p:spService-ref="spService"
+		  p:consumerService-ref="consumerService"
+		  p:megabankSD-ref="megabankDataSourceDescription"
+		  p:serviceValidationFactory-ref="serviceValidationFactory"
+		  p:lineParser-ref="mbLineParser" />
+
+	<bean id="mbChargesFileParser"
+		  parent="mbFileParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.MbChargesFileParser"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:fileService-ref="fpFileService"
+		  p:fileValidationSchema-ref="mbChargesFileValidationSchema"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+
+	<bean id="mbCorrectionsFileParser"
+		  parent="mbFileParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:fileService-ref="fpFileService"
+		  p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+
+	<bean id="eircAccountService"
+		  class="org.flexpay.eirc.service.impl.EircAccountServiceImpl"
+		  p:personService-ref="personService"
+		  p:sequenceService-ref="sequenceService"
+		  p:eircAccountDao-ref="eircAccountDao"
+		  p:eircAccountDaoExt-ref="eircAccountDaoExt" />
+
+	<bean id="serviceOperationsFactory"
+		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory"
+		  p:conditionsFactory-ref="conditionsFactory"
+		  p:importErrorService-ref="importErrorService"
+		  p:correctionsService-ref="correctionsService"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:spService-ref="spService"
+		  p:spFileService-ref="registryFileService"
+		  p:quittanceService-ref="quittanceService"
+		  p:operationService-ref="operationService"
+		  p:operationLevelService-ref="operationLevelService"
+		  p:operationTypeService-ref="operationTypeService"
+		  p:operationStatusService-ref="operationStatusService"
+		  p:documentStatusService-ref="documentStatusService"
+		  p:documentTypeService-ref="documentTypeService"
+		  p:paymentPointService-ref="eircPaymentPointService"
+		  p:organizationService-ref="organizationService"
+		  p:serviceProviderService-ref="serviceProviderService"
+		  p:reportPeriodService-ref="reportPeriodService"
+		  p:consumerService-ref="consumerService"
+		  p:consumerInfoService-ref="consumerInfoService"
+		  p:consumerAttributeTypeService-ref="consumerAttributeTypeService"
+		  p:importUtil-ref="eircImportUtil"
+		  p:accountService-ref="eircAccountService"
+		  p:btiApartmentService-ref="btiApartmentService"
+		  p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService" />
+
+	<bean id="eircObjectsFactory" autowire-candidate="false"
+		  class="org.flexpay.eirc.service.impl.EircObjectsFactory" />
+
+	<bean id="eircOrgsObjectsFactory" autowire-candidate="false"
+		  class="org.flexpay.eirc.service.impl.EircOrgsObjectsFactory" />
+
+	<bean id="eircObjectsFactoryHolder"
+		  parent="btiObjectsFactoryHolder"
+		  p:factory-ref="eircObjectsFactory" />
+
+	<bean id="eircOrgsObjectsFactoryHolder"
+		  parent="orgsObjectsFactoryHolder"
+		  p:factory-ref="eircOrgsObjectsFactory" />
+
+	<bean id="consumerServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.impl.ConsumerServiceImpl"
+		  p:spService-ref="spService"
+		  p:consumerDao-ref="consumerDao"
+		  p:consumerDaoExt-ref="consumerDaoExt" />
+
+	<bean id="consumerInfoService"
+		  class="org.flexpay.eirc.service.impl.ConsumerInfoServiceImpl"
+		  p:consumerInfoDao-ref="consumerInfoDao" />
+
+	<bean id="consumerAttributeTypeServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.impl.ConsumerAttributeTypeServiceImpl"
+		  p:attributeTypeDao-ref="consumerAttributeTypeDao"
+		  p:attributeTypeDaoExt-ref="consumerAttributeTypeDaoExt"
+		  p:sessionUtils-ref="sessionUtils" />
+
+	<bean id="quittancePaymentStatusServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.impl.QuittancePaymentStatusServiceImpl"
+		  p:statusDao-ref="quittancePaymentStatusDao" />
+
+	<bean id="quittanceService"
+		  class="org.flexpay.eirc.service.impl.QuittanceServiceImpl"
+		  p:quittanceNumberService-ref="quittanceNumberService"
+          p:consumerDao-ref="consumerDao"
+		  p:quittanceDetailsDao-ref="quittanceDetailsDao"
+		  p:quittanceDaoExt-ref="quittanceDaoExt"
+		  p:quittanceDao-ref="quittanceDao" />
+
+    <bean id="quittancePacketServiceTarget"
+          autowire-candidate="false"
+          class="org.flexpay.eirc.service.impl.QuittancePacketServiceImpl"
+          p:quittancePacketDaoExt-ref="quittancePacketDaoExt"
+          p:quittancePacketDao-ref="quittancePacketDao"
+          p:quittancePaymentDao-ref="quittancePaymentDao" />
+
+	<bean id="quittancePaymentService"
+		  class="org.flexpay.eirc.service.impl.QuittancePaymentServiceImpl"
+		  p:organizationService-ref="organizationService"
+		  p:quittancePaymentDao-ref="quittancePaymentDao"
+		  p:documentTypeService-ref="documentTypeService"
+		  p:documentStatusService-ref="documentStatusService"
+		  p:operationService-ref="operationService"
+		  p:operationLevelService-ref="operationLevelService"
+		  p:operationStatusService-ref="operationStatusService"
+		  p:operationTypeService-ref="operationTypeService"
+		  p:spService-ref="spService" />
+
+	<bean id="eircPaymentPointServiceTarget"
+		  parent="paymentPointServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.impl.PaymentPointServiceImpl"
+		  p:paymentPointDao-ref="paymentPointDao" />
+
+	<bean id="eircServiceOrganizationServiceTarget" parent="serviceOrganizationServiceTarget"
+		  class="org.flexpay.eirc.service.impl.ServiceOrganizationServiceImpl"
+		  p:servedBuildingDao-ref="servedBuildingDao"
+		  p:buildingService-ref="buildingService"
+          autowire-candidate="false"  />
+
+	<bean id="quittanceNumberService"
+		  class="org.flexpay.eirc.service.impl.QuittanceNumberServiceImpl" />
+
+	<bean id="reportPeriodService"
+		  class="org.flexpay.eirc.service.impl.ReportPeriodServiceImpl" />
+
+	<bean id="quittanceInfoBuilder"
+		  class="org.flexpay.eirc.service.exchange.QuittanceInfoBuilder"
+		  p:apartmentService-ref="apartmentService"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:quittanceNumberService-ref="quittanceNumberService"
+		  p:quittanceService-ref="quittanceService"
+		  p:quittancePaymentService-ref="quittancePaymentService"
+		  p:spService-ref="spService"
+		  p:attributeTypeService-ref="consumerAttributeTypeService" />
+
+	<bean id="eircQuittanceDetailsFinder"
+		  class="org.flexpay.eirc.service.exchange.QuittanceDetailsFinderImpl"
+		  p:correctionsService-ref="correctionsService"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:quittanceService-ref="quittanceService"
+		  p:accountService-ref="eircAccountService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:consumerService-ref="consumerService"
+		  p:quittanceInfoBuilder-ref="quittanceInfoBuilder" />
+
+
+	<bean id="serviceProviderFileProcessorTx"
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTxImpl"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+		  p:importConsumerDataService-ref="importConsumerDataTx"
+		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
+		  p:errorDao-ref="importErrorDao" />
+	
+	<bean id="serviceProviderFileProcessorRecordsTx"
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorRecordsTxImpl"
+		  parent="serviceProviderFileProcessorTx"
+		  p:registryRecordService-ref="registryRecordService" />
+
+	<bean id="registryProcessor"
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor"
+		  p:processorTx-ref="serviceProviderFileProcessorRecordsTx"
+		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
+		  p:registryFileService-ref="registryFileService"
+		  p:registryService-ref="registryService"
+		  p:importService-ref="importServiceEirc"
+		  p:rawConsumersDataSource-ref="consumersDataSource"
+		  p:errorsSupport-ref="importErrorSupport"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:organizationService-ref="organizationService" />
+
+	<bean id="processDefinitionManagerEirc" parent="processDefinitionManagerPayments" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/eirc/process</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="eircPropertiesFactory" depends-on="propertiesFactory" autowire-candidate="false"
+		  factory-bean="propertiesFactoryHolder" factory-method="getFactory">
+		<property name="factory">
+			<bean class="org.flexpay.eirc.persistence.EircPropertiesFactory" autowire-candidate="false" />
+		</property>
+	</bean>
+
+	<bean id="apartmentAttributeReadHintsHandlerFactory"
+		  class="org.flexpay.eirc.service.impl.fetch.ApartmentAttributeReadHintsHandlerFactory"
+		  p:recordPropertiesDao-ref="eircRegistryRecordPropertiesDao" />
+
+	<bean id="consumerReadHintsHandlerFactory"
+		  class="org.flexpay.eirc.service.impl.fetch.ConsumerReadHintsHandlerFactory"
+		  p:recordPropertiesDao-ref="eircRegistryRecordPropertiesDao" />
+
+	<bean autowire-candidate="false"
+		  parent="registryFileService"
+		  factory-bean="registryFileServiceFactory"
+		  factory-method="getRegistryFileService"
+		  p:readHintsHandlerFactory-ref="apartmentAttributeReadHintsHandlerFactory" />
+
+	<bean autowire-candidate="false"
+		  parent="registryFileService"
+		  factory-bean="registryFileServiceFactory"
+		  factory-method="getRegistryFileService"
+		  p:readHintsHandlerFactory-ref="consumerReadHintsHandlerFactory" />
+
+	<bean id="servedBuildingHistoryBuilder"
+		  parent="btiBuildingHistoryBuilder"
+		  class="org.flexpay.eirc.service.history.ServedBuildingHistoryBuilder"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
+
+	<bean depends-on="btiBuildingHistoryBuilderHolder"
+		  class="org.flexpay.ab.service.history.BuildingHistoryBuilderHolder"
+		  p:builder-ref="servedBuildingHistoryBuilder" />
+
+	<bean id="servedBuildingReferencesHistoryGenerator"
+		  parent="btiBuildingReferencesHistoryGenerator"
+		  class="org.flexpay.eirc.service.history.ServedBuildingReferencesHistoryGenerator"
+		  p:serviceOrganizationHistoryGenerator-ref="serviceOrganizationHistoryGenerator" />
+
+	<bean depends-on="btiBuildingReferencesHistoryGeneratorHolder"
+		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGeneratorHolder"
+		  p:referencesHistoryGenerator-ref="servedBuildingReferencesHistoryGenerator" />
+
+	<bean id="mbCorrectionsFileValidationSchema"
+		  class="org.flexpay.eirc.sp.impl.FileValidationSchema"
+		  p:headerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsHeaderValidator"
+		  p:footerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsFooterValidator"
+		  p:recordValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsRecordValidator" />
+
+	<bean id="mbChargesFileValidationSchema"
+		  class="org.flexpay.eirc.sp.impl.FileValidationSchema"
+		  p:headerValidator="org.flexpay.eirc.sp.impl.validation.ChargesHeaderValidator"
+		  p:footerValidator="org.flexpay.eirc.sp.impl.validation.ChargesFooterValidator"
+		  p:recordValidator="org.flexpay.eirc.sp.impl.validation.ChargesRecordValidator" />
+
+	<bean id="serviceValidationFactory"
+		  class="org.flexpay.eirc.sp.impl.ServiceValidationFactory"
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
+		  p:spService-ref="spService"
+		  p:correctionsService-ref="correctionsService"
+		  p:megabankSD-ref="megabankDataSourceDescription" />
+
+	<bean id="mbLineParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.SplitLineRemoveBlank"
+		  p:delimiter="=" />
+
+	<bean id="registryHandleError"
+		  class="org.flexpay.eirc.process.registry.error.impl.RegistryHandleError"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:organizationService-ref="organizationService" />
+
+	<bean id="processRegistryVariableInstanceService"
+		  class="org.flexpay.eirc.service.impl.ProcessRegistryVariableInstanceServiceImpl"
+		  p:processRegistryVariableInstanceDao-ref="processRegistryVariableInstanceDao" />
+-->
+</beans>

@@ -10,8 +10,6 @@ import java.security.Signature;
 
 public interface PaymentsRegistryMBGenerator {
 
-	void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization)
+	Registry exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization, Signature signature)
 								throws FlexPayException;
-
-	void setSignature(Signature signature);
 }

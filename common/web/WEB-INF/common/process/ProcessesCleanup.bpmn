@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_completeBeginTimeItem" structureRef="java.util.Date"/>
+	<itemDefinition id="_completeEndTimeItem" structureRef="java.util.Date"/>
+	<itemDefinition id="_definitionNameItem" structureRef="java.lang.String"/>
+
+	<process processType="Public" isExecutable="true" id="TestWorkHandler2" name="Test work item handler"
+			 tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="result" itemSubjectRef="_resultItem"/>
+
+		<property id="completeBeginTime" itemSubjectRef="_completeBeginTimeItem"/>
+		<property id="completeEndTime" itemSubjectRef="_completeEndTimeItem"/>
+		<property id="definitionName" itemSubjectRef="_definitionNameItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<task id="_2" name="ProcessCleanupTask" tns:taskName="ProcessCleanupTask">
+			<ioSpecification>
+				<dataInput id="_2_completeBeginTime" name="completeBeginTime"/>
+				<dataInput id="_2_completeEndTime" name="completeEndTime"/>
+				<dataInput id="_2_definitionName" name="definitionName"/>
+				<dataOutput id="_2_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_2_completeBeginTime</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_2_completeEndTime</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_2_definitionName</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>completeBeginTime</sourceRef>
+				<targetRef>_2_completeBeginTime</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>completeEndTime</sourceRef>
+				<targetRef>_2_completeEndTime</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>definitionName</sourceRef>
+				<targetRef>_2_definitionName</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>result</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<endEvent id="_3" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+
+	</process>
+</definitions>

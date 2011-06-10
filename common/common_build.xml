@@ -16,7 +16,7 @@
 		<path refid="log4j.lib" />
 		<path refid="j2ee.lib" />
 		<path refid="javadbf.lib" />
-		<path refid="jbpm_jpdl.lib" />
+		<path refid="jbpm.lib" />
 		<path refid="ajax.lib" />
 		<path refid="itext.lib" />
 		<path refid="jasperreports.lib" />
@@ -26,8 +26,9 @@
 		<path refid="xstream.lib" />
 		<path refid="spring-ws.lib" />
 		<path refid="openmq.lib" />
-        <path refid="opensso.lib"/>
-        <path refid="ldap.lib"/>
+        <path refid="opensso.lib" />
+		<path refid="httpclient.lib" />
+		<path refid="ldap.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -47,6 +48,7 @@
 		<path refid="common.production.classpath" />
 		<path refid="jdbc.lib" />
 		<path refid="junit.lib" />
+		<path refid="htmlunit.lib"/>
 	</path>
 
 	<path id="common.runtests.classpath">
@@ -185,6 +187,8 @@
 		</antcall>
         <copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
             <fileset file="${common.dir}/etc/AMConfig.properties" />
+			<fileset file="${common.dir}/web/META-INF/persistence.xml" />
+			<fileset file="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 		</copy>
 	</target>
 
@@ -203,7 +207,7 @@
 	<target name="common.sql.create-db">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="false" encoding="UTF-8">
 			<fileset file="${common.dir}/etc/sql/create_db.sql" />
-			<fileset file="${common.dir}/etc/sql/jbpm.jpdl.mysql.create.sql" />
+			<fileset file="${common.dir}/etc/sql/jbpm.mysql.create.sql" />
 		</concat>
 	</target>
 
@@ -224,6 +228,20 @@
 		<property name="common.sql.init-db-test.run" value="set" />
 	</target>
 
+	<target name="common.sql.init-db-jbpm" unless="common.sql.init-db.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" binary="true">
+			<fileset file="${common.dir}/etc/sql/init_db_jbpm.sql" />
+		</concat>
+		<property name="common.sql.init-db.run" value="true" />
+	</target>
+
+	<target name="common.sql.init-db-jbpm-test" unless="common.sql.init-db-test.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" binary="true">
+			<fileset file="${common.dir}/etc/sql/init_db_jbpm.sql" />
+		</concat>
+		<property name="common.sql.init-db.run" value="true" />
+	</target>
+
 	<target name="common.sql.all">
 		<antcall target="common.sql.create-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
@@ -231,6 +249,7 @@
 		</concat>
 		<antcall target="common.sql.init-db" />
 		<antcall target="template.set_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="common.sql.all-test">
@@ -240,6 +259,7 @@
 		</concat>
 		<antcall target="common.sql.init-db-test" />
 		<antcall target="template.set_test_db_name" />
+		<antcall target="common.sql.init-db-jbpm-test" />
 	</target>
 
 	<target name="common.db-test" description="create common test db">

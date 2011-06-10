@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+
+	<itemDefinition id="_paymentCollectorIdItem" structureRef="java.lang.Long" />
+	
+	<process processType="Public" isExecutable="true" id="GenerateEndOperationDayRegistry"
+			 name="Generate end operation day registry process" tns:packageName="defaultPackage">
+		
+		<!-- process variables -->
+		<property id="generateEndOperationDayRegistryResult" itemSubjectRef="_resultItem"/>
+
+		<property id="paymentCollectorId" itemSubjectRef="_paymentCollectorIdItem" />
+		
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<task id="_2" name="GenerateEndOperationDayRegistryTask" tns:taskName="GenerateEndOperationDayRegistryTask">
+			<ioSpecification>
+				<dataInput id="_2_paymentCollectorId" name="paymentCollectorId"/>
+				<dataOutput id="_2_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_2_paymentCollectorId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>paymentCollectorId</sourceRef>
+				<targetRef>_2_paymentCollectorId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>generateEndOperationDayRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+		
+		<endEvent id="_3" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+		
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		
+	</process>
+	
+</definitions>

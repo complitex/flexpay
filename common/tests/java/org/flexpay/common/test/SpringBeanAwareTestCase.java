@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,8 +38,8 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	@Qualifier ("hibernateTemplate")
-	protected HibernateTemplate hibernateTemplate;
+	@Qualifier ("jpaTemplate")
+	protected JpaTemplate jpaTemplate;
 	@Autowired
 	@Qualifier ("jdbcTemplate")
 	protected JdbcTemplate jdbcTemplate;
@@ -66,9 +66,12 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	public void authenticateTestUser() {
 		List<GrantedAuthority> authorities = SecurityUtil.auths(
 				BASIC,
+				PROCESS_DEFINITION_READ,
 				PROCESS_DEFINITION_UPLOAD_NEW,
 				PROCESS_READ,
-				PROCESS_DELETE
+				PROCESS_DELETE,
+				PROCESS_START,
+				PROCESS_COMPLETE_HUMAN_TASK
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();

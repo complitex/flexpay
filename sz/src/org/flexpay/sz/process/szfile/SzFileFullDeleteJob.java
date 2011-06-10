@@ -31,7 +31,7 @@ public class SzFileFullDeleteJob extends Job {
 
 		Set<Long> fileIds = (Set<Long>) parameters.get(FILE_IDS);
 
-		log.debug("Process szFile full delete for fileIds = {} started", fileIds);
+		log.debug("ProcessInstance szFile full delete for fileIds = {} started", fileIds);
 
 		List<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
 

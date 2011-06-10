@@ -269,253 +269,197 @@
             />
 
     <!-- JBPM Caches -->
-    <cache name="org.jbpm.module.def.ModuleDefinition"
+    <cache name="org.jbpm.task.Attachment"
             maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Node"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Content"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.instantiation.Delegation"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.BooleanExpression"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ProcessDefinition"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Comment"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Transition"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Deadline"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.taskmgmt.def.Task"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Delegation"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Event"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Escalation"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.context.def.VariableAccess"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Group"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.taskmgmt.def.TaskController"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.I18NText"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ExceptionHandler"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Notification"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.taskmgmt.def.Task.exceptionHandlers"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.EmailNotification"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Transition.exceptionHandlers"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.EmailNotificationHeader"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ProcessDefinition.nodes"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.PeopleAssignments"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ProcessDefinition.actions"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Reassignment"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Node.arrivingTransitions"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Status"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Node.exceptionHandlers"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.Task"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.taskmgmt.def.TaskMgmtDefinition.tasks"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.TaskData"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ProcessDefinition.exceptionHandlers"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.SubTasksStrategy"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.action.Script.variableAccesses"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.OnParentAbortAllSubTasksEndStrategy"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Node.events"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.OnAllSubTasksEndParentEndStrategy"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ProcessDefinition.definitions"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.task.User"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.file.def.FileDefinition.processFiles"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.process.audit.ProcessInstanceLog"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.Node.leavingTransitions"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.process.audit.NodeInstanceLog"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.node.ProcessState.variableAccesses"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.process.audit.VariableInstanceLog"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.def.ProcessDefinition.events"
-            maxElementsInMemory="500"
+	<cache name="org.drools.persistence.info.SessionInfo"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.taskmgmt.def.TaskMgmtDefinition.swimlanes"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.persistence.processinstance.ProcessInstanceInfo"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.taskmgmt.def.Task.events"
-            maxElementsInMemory="500"
+	<cache name="org.jbpm.persistence.processinstance.ProcessInstanceEventInfo"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"
             />
 
-    <cache name="org.jbpm.graph.node.TaskNode.tasks"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.graph.node.Decision.decisionConditions"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.graph.def.Transition.events"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.taskmgmt.def.Swimlane.tasks"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.graph.def.ExceptionHandler.actions"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.taskmgmt.def.TaskController.variableAccesses"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.graph.def.Event.actions"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.graph.def.SuperState.nodes"
-            maxElementsInMemory="500"
-            eternal="true"
-            overflowToDisk="true"
-            memoryStoreEvictionPolicy="LRU"
-            />
-
-    <cache name="org.jbpm.graph.def.Action"
-            maxElementsInMemory="500"
+	<cache name="org.drools.persistence.info.WorkItemInfo"
+            maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"
             memoryStoreEvictionPolicy="LRU"

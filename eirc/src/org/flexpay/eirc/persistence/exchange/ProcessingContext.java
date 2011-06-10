@@ -10,6 +10,8 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -126,6 +128,7 @@ public class ProcessingContext {
 		this.nameStreetMap = nameStreetMap;
 	}
 
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	public void doUpdate() throws FlexPayExceptionContainer, FlexPayException {
 		for (DelayedUpdate update : operationUpdates) {
 			update.doUpdate();

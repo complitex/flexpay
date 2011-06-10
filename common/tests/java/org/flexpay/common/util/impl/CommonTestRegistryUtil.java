@@ -17,6 +17,7 @@ public class CommonTestRegistryUtil implements TestRegistryUtil {
     @Autowired
     private RegistryDao registryDao;
 
+	@Transactional(readOnly = false)
     @Override
     public void delete(@NotNull Registry registry) {
         deleteRecordDependences(Stub.stub(registry));
@@ -25,14 +26,11 @@ public class CommonTestRegistryUtil implements TestRegistryUtil {
         registryService.delete(registry);
     }
 
-
-    @Transactional(readOnly = false)
     protected void deleteRecordDependences(@NotNull Stub<Registry> stub) {
         registryDao.deleteRecordContainers(stub.getId());
         registryDao.deleteRecordProperties(stub.getId());
 	}
 
-    @Transactional(readOnly = false)
     protected void deleteRegistryDependences(@NotNull Stub<Registry> stub) {
 
     }

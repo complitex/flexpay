@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -46,7 +47,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation failure occurs
 	 */
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
     @Override
 	public void save(QuittanceDetails details) throws FlexPayExceptionContainer {
 		if (details.isNew()) {

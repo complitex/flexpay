@@ -2,10 +2,9 @@ package org.flexpay.common.dao;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DateRange;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.process.sorter.ProcessSorter;
-import org.jbpm.graph.exe.ProcessInstance;
 
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,7 @@ public interface ProcessDao {
 	 * @param name allowed name (if null will not be used)
 	 * @return list of all processes in database
 	 */
-	List<Process> findProcesses(ProcessSorter sorter, Page<Process> pager, Date startFrom, Date endBefore,
+	List<ProcessInstance> findProcesses(ProcessSorter sorter, Page<ProcessInstance> pager, Date startFrom, Date endBefore,
 								ProcessState state, String name);
 
 	/**
@@ -36,11 +35,11 @@ public interface ProcessDao {
 	List<String> findAllProcessNames();
 
 	/**
-	 * Converts JBPM process instance object into {@link org.flexpay.common.process.Process}
+	 * Converts JBPM process instance object into {@link org.flexpay.common.process.persistence.ProcessInstance}
 	 * @param processInstance instance to be converted
 	 * @return process information
 	 */
-	Process getProcessInfoWithVariables(ProcessInstance processInstance);
+	ProcessInstance getProcessInfoWithVariables(ProcessInstance processInstance);
 
 	void deleteProcessInstances(DateRange range, String name);
 }

@@ -197,6 +197,7 @@ public class Registry extends DomainObject {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", id).
                 append("registryNumber", registryNumber).
                 append("recordsNumber", recordsNumber).
                 append("creationDate", creationDate).
@@ -206,6 +207,7 @@ public class Registry extends DomainObject {
                 append("recipientCode", recipientCode).
                 append("amount", amount).
                 append("errorsNumber", errorsNumber).
+				append("status", registryStatus).
                 toString();
     }
 }

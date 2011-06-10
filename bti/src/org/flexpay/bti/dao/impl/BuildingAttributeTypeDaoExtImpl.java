@@ -7,11 +7,11 @@ import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum;
 import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnumValue;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import java.util.List;
 
-public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport implements BuildingAttributeTypeDaoExt {
+public class BuildingAttributeTypeDaoExtImpl extends JpaDaoSupport implements BuildingAttributeTypeDaoExt {
 
 	private BuildingAttributeTypeDao attributeTypeDao;
 	private BuildingAttributeTypeEnumDao attributeTypeEnumDao;
@@ -59,7 +59,7 @@ public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 	@Override
 	public boolean isUniqueTypeName(String name, Long typeId) {
 		Object[] params = {name, name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
-		List<?> result = getHibernateTemplate().findByNamedQuery("BuildingAttributeType.checkUniqueName", params);
+		List<?> result = getJpaTemplate().findByNamedQuery("BuildingAttributeType.checkUniqueName", params);
 		return result.isEmpty();
 	}
 

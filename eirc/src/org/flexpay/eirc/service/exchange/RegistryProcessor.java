@@ -31,7 +31,7 @@ public interface RegistryProcessor {
 	void registriesProcess(@NotNull Collection<Registry> registries) throws Exception;
 
 	/**
-	 * Process a limited number of registry records.
+	 * ProcessInstance a limited number of registry records.
 	 * <p/>
 	 * Handles {@link #startRegistryProcessing(org.flexpay.eirc.persistence.exchange.ProcessingContext)} and {@link
 	 * #endRegistryProcessing(ProcessingContext)} internally.
@@ -67,7 +67,7 @@ public interface RegistryProcessor {
 	void importConsumers(ProcessingContext context) throws Exception;
 
 	/**
-	 * Process single registry, import operation should have bein completed before
+	 * ProcessInstance single registry, import operation should have bein completed before
 	 *
 	 * @param registry Registry to process
 	 * @throws Exception if failure occurs

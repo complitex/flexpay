@@ -151,6 +151,9 @@
             <param name="src.i18n.dir" value="${payments.dir}/${src.dir}" />
             <reference refid="payments.classes.resources" torefid="resources" />
         </antcall>
+		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+            <fileset file="${payments.dir}/web/WEB-INF/hibernate.cfg.xml" />
+		</copy>
     </target>
 
     <!-- Build production web-archive -->
@@ -223,6 +226,7 @@
 		</concat>
 		<antcall target="payments.sql.init-db" />
 		<antcall target="template.set_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="payments.sql.all-test">
@@ -232,6 +236,7 @@
 		</concat>
 		<antcall target="payments.sql.init-db-test" />
 		<antcall target="template.set_test_db_name" />
+		<antcall target="common.sql.init-db-jbpm-test" />
 	</target>
 
 	<target name="payments.db-test" description="create payments db">

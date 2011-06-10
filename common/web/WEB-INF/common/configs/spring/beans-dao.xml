@@ -7,19 +7,15 @@
     <!--  Dao Layer instances -->
     <bean id="languageDao" 
           class="org.flexpay.common.dao.impl.LanguageDaoImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
-
-    <bean id="processDao" 
-          class="org.flexpay.common.dao.impl.ProcessDaoImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="userPreferencesDao"
           class="org.flexpay.common.dao.impl.UserPreferencesDaoImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="correctionDaoExt"
           class="org.flexpay.common.dao.impl.CorrectionDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate"
+          p:jpaTemplate-ref="jpaTemplate"
           p:dataSource-ref="dataSource" />
 
     <bean id="correctionDao"
@@ -94,7 +90,7 @@
 
     <bean id="diffDaoExt"
           class="org.flexpay.common.dao.impl.DiffDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="externalHistoryPackDao"
           parent="abstractDao"
@@ -178,7 +174,7 @@
 
     <bean id="historyConsumerDaoExt"
           class="org.flexpay.common.dao.impl.HistoryConsumerDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="historyConsumptionDao"
           parent="abstractDao"
@@ -202,7 +198,7 @@
 
     <bean id="registryFileDaoExt"
           class="org.flexpay.common.dao.registry.impl.RegistryFileDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="spRegistryDao"
           parent="abstractDao"
@@ -247,7 +243,7 @@
     <bean id="spRegistryRecordDaoExt"
           class="org.flexpay.common.dao.registry.impl.RegistryRecordDaoExtImpl"
           p:dataSource-ref="dataSource"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="spRegistryTypeDao"
           parent="abstractDao"
@@ -301,7 +297,7 @@
 
     <bean id="registryDaoExt"
           class="org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="userRoleDao"
           parent="abstractDao"

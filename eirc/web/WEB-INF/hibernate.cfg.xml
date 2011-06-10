@@ -35,6 +35,7 @@
 		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Certificate.hbm.xml" />
+		<mapping resource="org/flexpay/common/process/audit/persistence/Audit.hbm.xml" />
 
 		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
 

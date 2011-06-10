@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_registryIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_fileIdItem" structureRef="java.lang.Long"/>
+
+	<process processType="Public" isExecutable="true" id="SendRegistry"
+			 name="Send registry process" tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="sendPaymentsRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="registryId" itemSubjectRef="_registryIdItem"/>
+		<property id="fileId" itemSubjectRef="_fileIdItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<task id="_2" name="SendPaymentsRegistryTask" tns:taskName="SendPaymentsRegistryTask">
+			<ioSpecification>
+				<dataInput id="_2_registryId" name="registryId"/>
+				<inputSet>
+					<dataInputRefs>_2_registryId</dataInputRefs>
+				</inputSet>
+				<dataInput id="_2_fileId" name="fileId"/>
+				<inputSet>
+					<dataInputRefs>_2_fileId</dataInputRefs>
+				</inputSet>
+				<dataOutput id="_2_result" name="Result"/>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_2_registryId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_2_fileId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>sendPaymentsRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<endEvent id="_3" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+
+	</process>
+
+</definitions>

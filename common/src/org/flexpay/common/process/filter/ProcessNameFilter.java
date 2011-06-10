@@ -3,7 +3,8 @@ package org.flexpay.common.process.filter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessDefinitionManager;
+import org.flexpay.common.process.persistence.ProcessDefinition;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.util.List;
@@ -17,18 +18,18 @@ public class ProcessNameFilter extends ObjectFilter {
 	private boolean allowEmpty = true;
 	private List<ProcessNameObject> processNames = CollectionUtils.list();
 
-	private ProcessManager processManager;
+	private ProcessDefinitionManager processDefinitionManager;
 
 	/**
 	 * Loads all unique names of processes in the system as filter content
 	 */
 	public void loadProcessNames() {
 
-		List<String> names = processManager.getAllProcessNames();
+		List<ProcessDefinition> definitions = processDefinitionManager.getProcessDefinitions();
 
 		long id = 0L;
-		for (String name : names) {
-			processNames.add(new ProcessNameObject(id++, name));
+		for (ProcessDefinition definition : definitions) {
+			processNames.add(new ProcessNameObject(id++, definition.getName()));
 		}
 	}
 
@@ -63,8 +64,8 @@ public class ProcessNameFilter extends ObjectFilter {
 		this.selectedId = selectedId;
 	}
 
-	public void setProcessManager(ProcessManager processManager) {
-		this.processManager = processManager;
+	public void setProcessDefinitionManager(ProcessDefinitionManager processManager) {
+		this.processDefinitionManager = processManager;
 	}
 
 	public boolean isAllowEmpty() {

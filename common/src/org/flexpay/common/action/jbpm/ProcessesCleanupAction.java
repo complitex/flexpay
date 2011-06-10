@@ -3,14 +3,15 @@ package org.flexpay.common.action.jbpm;
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.jobs.ProcessesCleanupJob;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -24,6 +25,7 @@ public class ProcessesCleanupAction extends FPActionSupport implements Initializ
 	private Long processId;
 
 	private ProcessManager processManager;
+	private ProcessDefinitionManager processDefinitionManager;
 
 	/**
 	 * Perform action execution.
@@ -44,11 +46,13 @@ public class ProcessesCleanupAction extends FPActionSupport implements Initializ
 			if (!haveFilterSet()) {
 				addActionError("common.error.process.cleanup.need_filter");
 			} else {
-				Map<Serializable, Serializable> params = map();
+				Map<String, Object> params = map();
 				params.put(ProcessesCleanupJob.PARAM_COMPLETE_BEGIN_TIME, beginDateFilter.getDate());
 				params.put(ProcessesCleanupJob.PARAM_COMPLETE_END_TIME, endDateFilter.getDate());
 				params.put(ProcessesCleanupJob.PARAM_DEFINITION_NAME, processNameFilter.getSelectedName());
-				processId = processManager.createProcess("ProcessesCleanupProcess", params);
+				ProcessInstance processInstance = processManager.startProcess("ProcessesCleanupProcess", params);
+
+				processId = processInstance != null? processInstance.getId(): null;
 
 				log.debug("Processes cleanup launched");
 				addActionMessage(getText("common.process.cleanup.started"));
@@ -105,11 +109,16 @@ public class ProcessesCleanupAction extends FPActionSupport implements Initializ
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		processNameFilter.setProcessManager(processManager);
+		processNameFilter.setProcessDefinitionManager(processDefinitionManager);
 	}
 
 	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
+	}
+
+	@Required
+	public void setProcessDefinitionManager(ProcessDefinitionManager processDefinitionManager) {
+		this.processDefinitionManager = processDefinitionManager;
 	}
 }

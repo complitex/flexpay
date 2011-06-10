@@ -1,706 +1,151 @@
 package org.flexpay.common.process;
 
-import org.apache.commons.io.IOUtils;
-import org.flexpay.common.dao.ProcessDao;
+import org.apache.commons.lang.ArrayUtils;
+import org.drools.runtime.process.WorkItem;
+import org.drools.runtime.process.WorkItemHandler;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.process.dao.ProcessJbpmDao;
+import org.flexpay.common.process.dao.WorkItemDao;
+import org.flexpay.common.process.dao.WorkItemHandlerDao;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.filter.ProcessNameFilter;
-import org.flexpay.common.process.job.Job;
-import org.flexpay.common.process.job.JobManager;
+import org.flexpay.common.process.handler.HumanTaskHandler;
+import org.flexpay.common.process.persistence.ProcessDefinition;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.jbpm.JbpmConfiguration;
-import org.jbpm.JbpmContext;
-import org.jbpm.context.exe.ContextInstance;
-import org.jbpm.db.GraphSession;
-import org.jbpm.db.TaskMgmtSession;
-import org.jbpm.graph.def.ProcessDefinition;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.flexpay.common.util.SecurityUtil;
+import org.jbpm.process.audit.ProcessInstanceLog;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.DateUtil.now;
 
 /**
- * Process manager allows to create and maintain processes life cycle
+ * ProcessInstance manager allows to create and maintain processes life cycle
  */
-public class ProcessManagerImpl implements ProcessManager, Runnable {
+public class ProcessManagerImpl implements ProcessManager, ApplicationContextAware {
 
 	private static final Logger log = LoggerFactory.getLogger(ProcessManagerImpl.class);
 
-	/**
+	private static final String HUMAN_TASK_NAME = "Human Task";
+	private static final String PROCESS_DEFINITION_VERSION_ID = "_PROCESS_DEFINITION_VERSION_ID";
+
+		/**
 	 * singleton instance
 	 */
 	private static final ProcessManagerImpl instance = new ProcessManagerImpl();
 
-	private static final Thread thread = new Thread(instance, "ProcessManager Thread");
 	private volatile boolean started = false;
-	private volatile boolean stopped = false;
-	private static final Object sleepSemaphore = new Object();
 
-	/**
-	 * Set of task instance ids currently in progress
-	 */
-	private final Set<Long> runningTaskIds = CollectionUtils.set();
+	private ApplicationContext applicationContext;
 
-	private int rescanFrequency = 10000;
+	private ProcessJbpmDao delegate;
 
-	/**
-	 * Limit number of task restarts
-	 */
-	private int taskRepeatLimit = 10;
+	private WorkItemDao workItemDao;
 
-	/**
-	 * Process data access object
-	 */
-	private ProcessDao processDao;
+	private WorkItemHandlerDao workItemHandlerDao;
 
-	private JbpmConfiguration jbpmConfiguration = null;
-
-	/**
-	 * Predefined set of paths where to look definitions if not already deployed
-	 */
-	private final List<String> definitionPaths = CollectionUtils.list();
-
-	/**
-	 * LyfecycleVoters
-	 */
-	private List<LyfecycleVoter> lyfecycleVoters = CollectionUtils.list();
+	private ProcessDefinitionManager processDefinitionManager;
 
 	/**
 	 * protected constructor
 	 */
 	private ProcessManagerImpl() {
-		log.debug("ProcessManager constructor called ");
+		log.debug("ProcessManager constructor called");
 	}
 
 	public static ProcessManagerImpl getInstance() {
 		return instance;
 	}
 
-	/**
-	 * Start ProcessManager Thread
-	 */
+
 	public void start() {
 
-		if (instance.isStarted()) {
-			return;
-		}
-
-		log.debug("Starting ProcessManager thread");
 		synchronized (instance) {
+
 			if (instance.isStarted()) {
 				return;
 			}
-			thread.start();
+
+			log.debug("Starting ProcessManager");
+			registerWorkItemHandlers();
 			instance.setStarted(true);
 		}
-		log.debug("ProcessManager thread started");
+		log.debug("ProcessManager started");
 	}
 
 	/**
-	 * Unload process manager and stop process manager thread
-	 */
-	public void stop() {
-		log.debug("Stopping ProcessManager thread");
-		synchronized (instance) {
-			if (instance.isStopped()) {
-				return;
-			}
-			instance.stopProcessManager();
-		}
-
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			log.error("Failed joining thread", e);
-			throw new RuntimeException("Failed joining thread", e);
-		}
-		log.debug("ProcessManager thread stopped");
-	}
-
-	/**
-	 * Deploys process definition to jbpm by process definition name
-	 *
-	 * @param name	name of process definition
-	 * @param replace if true old process definition should be removed with new one
-	 * @return ID of process definition
-	 * @throws ProcessDefinitionException when can't deplot process definition to jbpm
+	 * {@inheritDoc}
 	 */
 	@Override
-	public long deployProcessDefinition(String name, boolean replace) throws ProcessDefinitionException {
-
-		log.debug("Requested definition deployment: {}", name);
-		InputStream is = null;
-		try {
-			for (String path : definitionPaths) {
-				String resource = path + "/" + name + ".xml";
-				log.debug("Looking up {}", resource);
-				is = ApplicationConfig.getResourceAsStream(resource);
-				if (is != null) {
-					log.debug("Found!");
-					return deployProcessDefinition(is, replace);
-				}
-			}
-
-			log.warn("No definition found: {}", name);
-			throw new ProcessDefinitionException("Process definition for name " + name + " file not found!",
-					"common.error.pm.pd_file_not_found", name);
-		} finally {
-			IOUtils.closeQuietly(is);
-		}
+	public ProcessInstance startProcess(@NotNull String definitionId, @Nullable Map<String, Object> parameters)
+			throws ProcessInstanceException, ProcessDefinitionException {
+		return startProcess(definitionId, parameters, null);
 	}
 
-	/**
-	 * Deploys process definition to jbpm from inputStream
-	 *
-	 * @param in	  input stream with process definition
-	 * @param replace replace if true old process definition should be removed with new one
-	 * @return ID of process definition
-	 * @throws ProcessDefinitionException when can't deploy process definition to jbpm
-	 */
 	@Override
-	public long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException {
-		ProcessDefinition processDefinition = null;
-		try {
-			processDefinition = ProcessDefinition.parseXmlInputStream(in);
-			return deployProcessDefinition(processDefinition, replace);
-		} catch (Exception e) {
-			log.error("Process definition deployment failed", e);
-			if (processDefinition == null) {
-				throw new ProcessDefinitionException("Not process definition", e, "common.error.pm.not_pd");
-			} else {
-				throw new ProcessDefinitionException("Can't deploy definition for " + processDefinition.getName(), e,
-						"common.error.pm.pd_deployment_failed", processDefinition.getName());
-			}
-		}
-	}
-
-	/**
-	 * Deploys parsed process definition to jbpm
-	 *
-	 * @param processDefinition parsed process definition
-	 * @param replace		   replace replace if true old process definition should be removed with new one
-	 * @return ID of process definition
-	 */
-	@Override
-	public long deployProcessDefinition(final ProcessDefinition processDefinition, final boolean replace) {
-
-		return execute(new ContextCallback<Long>() {
-			@Override
-			public Long doInContext(@NotNull JbpmContext context) {
-
-				GraphSession graphSession = context.getGraphSession();
-				ProcessDefinition latestProcessDefinition =
-						graphSession.findLatestProcessDefinition(processDefinition.getName());
-
-				int newVersion;
-
-				if (replace || (latestProcessDefinition == null)) {
-					if (latestProcessDefinition == null) {
-						log.info("Process definition not found. Deploying {}", processDefinition.getName());
-						newVersion = 1;
-						processDefinition.setVersion(newVersion);
-					} else {
-						int oldVersion = latestProcessDefinition.getVersion();
-						log.info("Deploying new version of process definition {}", processDefinition.getName());
-						newVersion = oldVersion + 1;
-						processDefinition.setVersion(newVersion);
-						log.info("Old version = {}, New version = {}", oldVersion, newVersion);
-					}
-					graphSession.saveProcessDefinition(processDefinition);
-					log.info("Deployed");
-				}
-
-				return processDefinition.getId();
-			}
-		});
-	}
-
-	/**
-	 * main loop
-	 */
-	@SuppressWarnings ({"ConstantConditions"})
-	@Override
-	public void run() {
-		log.debug("Starting process manager...");
-		while (!isStopped()) {
-			try {
-				//write tick-tack message
-				log.trace("Collecting task instances to run.");
-
-				//find not runningTasks task instances and run
-				execute(new ContextCallback<Void>() {
-					@Override
-					public Void doInContext(@NotNull JbpmContext context) {
-						for (Object o : context.getTaskMgmtSession().findTaskInstances(JobManagerAssignmentHandler.JOB_MANAGER_ACTOR_NAME)) {
-							// are there any not runningTasks taskInstances?
-							TaskInstance taskInstance = (TaskInstance) o;
-							taskInstance = context.getTaskMgmtSession().loadTaskInstance(taskInstance.getId());
-							if (!isTaskExecuting(taskInstance)) {
-								startTask(taskInstance);
-							}
-						}
-						return null;
-					}
-				});
-
-				//all task instances started, going to sleep
-				synchronized (sleepSemaphore) {
-					try {
-						sleepSemaphore.wait(rescanFrequency);
-					} catch (InterruptedException e) {
-						log.debug("Somebody interrupts me.", e);
-						Thread.interrupted(); // clear "interrupted" state of thread
-					}
-				}
-			} catch (Throwable e) {
-				log.debug("ProcessManager mainLoop : ", e);
-			}
-		}
-		log.debug("process manager stopped...");
-	}
-
-	/**
-	 * Stops ProcessManager execution
-	 */
-	public void stopProcessManager() {
-		stopped = true;
-	}
-
-	/**
-	 * @return true if ProcessManager is not running
-	 */
-	public boolean isStopped() {
-		return stopped;
-	}
-
-	public boolean isStarted() {
-		return started;
-	}
-
-	public void setStarted(boolean started) {
-		this.started = started;
-	}
-
-	/**
-	 * Init process by process definition name
-	 *
-	 * @param definitionName name of process definition
-	 * @return ID of process instance
-	 * @throws ProcessDefinitionException when process definition has an error
-	 * @throws ProcessInstanceException   when jbpm can't instanciate process from process definition
-	 */
-	private Long initProcess(String definitionName) throws ProcessDefinitionException, ProcessInstanceException {
-
-		ProcessDefinition processDefinition;
-		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
-		GraphSession graphSession = jbpmContext.getGraphSession();
-		try {
-			processDefinition = graphSession.findLatestProcessDefinition(definitionName);
-		} catch (RuntimeException e) {
-			jbpmContext.close();
-			log.error("findLatestProcessDefinition", e);
-			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + definitionName, e,
-					"common.error.pm.cant_access_pd", definitionName);
-		}
-		// try to search in predefined set of places
-		if (processDefinition == null) {
-			deployProcessDefinition(definitionName, true);
-			jbpmContext.close();
-			jbpmContext = jbpmConfiguration.createJbpmContext();
-			graphSession = jbpmContext.getGraphSession();
-			processDefinition = graphSession.findLatestProcessDefinition(definitionName);
-		}
-		if (processDefinition == null) {
-			log.error("Can't find process definition for name: {}", definitionName);
-			throw new ProcessDefinitionException("Can't find process definition for name: " + definitionName,
-					"common.error.pm.cant_access_pd", definitionName);
-		}
-
-		log.info("Initializing  process. Process Definition id = {}, name = {}, version = {}",
-				new Object[] {processDefinition.getId(), processDefinition.getName(), processDefinition.getVersion()});
-
-		try {
-			ProcessInstance processInstance = new ProcessInstance(processDefinition);
-			return processInstance.getId();
-		} catch (RuntimeException e) {
-			log.error("ProcessInstanceCreation", e);
-			throw new ProcessInstanceException("Can't create ProcessInstance for " + definitionName, e,
-					"common.error.pm.cant_create_pi", definitionName);
-		} finally {
-			jbpmContext.close();
-		}
-	}
-
-	/**
-	 * Create process for process definition name
-	 *
-	 * @param definitionName process definition name
-	 * @param parameters	 initial context variables
-	 * @return process instance identifier
-	 * @throws ProcessInstanceException   when can't instantiate process instance
-	 * @throws ProcessDefinitionException when process definition not found
-	 */
-	@Override
-	public long createProcess(@NotNull String definitionName, @Nullable Map<Serializable, Serializable> parameters)
+	public ProcessInstance startProcess(@NotNull String definitionId, @Nullable Map<String, Object> parameters, @Nullable Long processDefinitionVersion)
 			throws ProcessInstanceException, ProcessDefinitionException {
 
-		final long processId = initProcess(definitionName);
-		final Map<Serializable, Serializable> params;
-		if (parameters != null) {
-			params = parameters;
+		log.debug("Start process (definitionId={}, parameters={}, version={})", new Object[]{definitionId, parameters, processDefinitionVersion});
+
+		if (processDefinitionVersion != null) {
+			processDefinitionManager.deployProcessDefinition(definitionId, processDefinitionVersion);
 		} else {
-			params = map();
+			processDefinitionManager.deployProcessDefinition(definitionId);
 		}
 
-		params.put(PARAM_SECURITY_CONTEXT, SecurityContextHolder.getContext().getAuthentication());
-
-		return execute(new ContextCallback<Long>() {
-			@Override
-			public Long doInContext(@NotNull JbpmContext context) {
-
-				//starting process
-				GraphSession graphSession = context.getGraphSession();
-				ProcessInstance processInstance = graphSession.loadProcessInstance(processId);
-
-				ContextInstance ci = processInstance.getContextInstance();
-				params.put(Process.PROCESS_INSTANCE_ID, String.valueOf(processId));
-				ci.addVariables(params);
-				processInstance.getRootToken().signal();
-
-				log.info("Process Instance id = {} started.", processId);
-
-				return processId;
-			}
-		});
-	}
-
-    @Override
-    public void endProcess(Process process) {
-
-        final Long processId = process.getId();
-        final Map<Serializable, Serializable> params = process.getParameters();
-
-        execute(new ContextCallback<Long>() {
-            @Override
-            public Long doInContext(@NotNull JbpmContext context) {
-
-                //starting process
-                GraphSession graphSession = context.getGraphSession();
-                ProcessInstance processInstance = graphSession.loadProcessInstance(processId);
-
-                ContextInstance ci = processInstance.getContextInstance();
-
-                params.put(Process.PROCESS_INSTANCE_ID, String.valueOf(processId));
-                ci.addVariables(params);
-                processInstance.getRootToken().end();
-
-                log.info("Process Instance id = {} ended.", processId);
-
-                return processId;
-            }
-        });
-
-    }
-
-	/**
-	 * Start task instance
-	 *
-	 * @param task taskInstance to start
-	 * @return true if task started
-	 */
-	@SuppressWarnings ({"unchecked"})
-	protected boolean startTask(TaskInstance task) {
-		// get ProcessInstance dictionary to pass it to Job
-		ProcessInstance processInstance = task.getProcessInstance();
-		ContextInstance contextInstance = processInstance.getContextInstance();
-
-		Integer runCounter = getRunCount(task);
-
-		if (runCounter > taskRepeatLimit) {
-			log.info("Exceded limit ({}) for task '{}' ({}, pid - {}). Process ended.",
-					new Object[]{taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
-			completeTask(task);
-			return false;
+		ProcessDefinition definition = processDefinitionManager.getProcessDefinition(definitionId);
+		if (definition == null) {
+			throw new ProcessDefinitionException("Process definition for name '" + definitionId + "' not found!", "error.common.pm.pd_not_found", definitionId);
 		}
-
-		LyfecycleVote vote = voteStart(task);
-		switch (vote) {
-			case CANCEL:
-				log.info("Task '{}' ({}, pid - {}). Cancelled by voters.",
-						new Object[]{task.getName(), task.getId(), processInstance.getId()});
-				completeTask(task);
-				return false;
-			case POSTPONE:
-				log.info("Task {} is beign postponed.", task.getName());
-				return false;
-			case START:
-				break;
+		if (parameters == null) {
+			parameters = CollectionUtils.map();
 		}
-
-		log.info("Starting task '{}' ({}, pid - {})",
-				new Object[]{task.getName(), task.getId(), processInstance.getId()});
-
-		if (task.getStart() == null) {
-			task.start();
-		} else {
-			log.info("Task '{}' ({}, pid={}) restarted. Recovering from failure.",
-					new Object[]{task.getName(), task.getId(), processInstance.getId()});
-		}
-
-		try {
-			Map<Serializable, Serializable> params = contextInstance.getVariables();
-			JobManager.getInstance().addJob(processInstance.getId(), task.getId(), task.getName(), params);
-		} catch (FlexPayException e) {
-			log.error("Can't start task with name " + task.getName(), e);
-			return false;
-		}
-
-		runningTaskIds.add(task.getId());
-		return true;
-	}
-
-	private void completeTask(TaskInstance task) {
-
-		ProcessInstance processInstance = task.getProcessInstance();
-		ContextInstance contextInstance = processInstance.getContextInstance();
-		processInstance.end();
-		task.end(Job.RESULT_ERROR);
-		//set status to failed
-		contextInstance.setVariable(Job.RESULT_ERROR, ProcessState.COMPLETED_WITH_ERRORS);
-		//remove from runningTasks tasks
-		runningTaskIds.remove(task.getId());
-	}
-
-	private Integer getRunCount(TaskInstance task) {
-
-		ProcessInstance processInstance = task.getProcessInstance();
-		ContextInstance contextInstance = processInstance.getContextInstance();
-		Integer runCounter = (Integer) contextInstance.getVariable("StartTaskCounter", task.getToken());
-		runCounter = runCounter == null ? 1 : runCounter + 1;
-
-		contextInstance.setVariable("StartTaskCounter", runCounter, task.getToken());
-		return runCounter;
+		parameters.put(PROCESS_DEFINITION_VERSION_ID, definition.getVersion());
+		parameters.put(PARAM_SECURITY_CONTEXT, SecurityUtil.getAuthentication());
+		org.drools.runtime.process.ProcessInstance processInstance = delegate.startProcess(definitionId, parameters);
+		return processInstance(processInstance, definition.getVersion());
 	}
 
 	/**
-	 * Vote for task start
-	 *
-	 * @param instance TaskInstance to vote for
-	 * @return LyfecycleVote
-	 */
-	private LyfecycleVote voteStart(TaskInstance instance) {
-
-		// defualt one is to start task
-		LyfecycleVote vote = LyfecycleVote.START;
-		for (LyfecycleVoter voter : lyfecycleVoters) {
-			LyfecycleVote v = voter.onStart(instance);
-			if (v.ordinal() > vote.ordinal()) {
-				vote = v;
-			}
-		}
-
-		return vote;
-	}
-
-	/**
-	 * Called when process job was finished
-	 *
-	 * @param taskId	 Task ID
-	 * @param parameters Task context parameters
-	 * @param transition transition name
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void taskCompleted(final Long taskId, final Map<Serializable, Serializable> parameters, final String transition) {
-		// this method called by Job to report finish
-		log.debug("finished task #: {}", taskId);
-
-		boolean proceed = false;
-
-		while (!proceed) {
-			try {
-				TaskInstance task = execute(new ContextCallback<TaskInstance>() {
-					@Override
-					public TaskInstance doInContext(@NotNull JbpmContext context) {
-
-						if (taskId == null) {
-							log.error("Task id is null!");
-							return null;
-						}
-
-						TaskMgmtSession taskMgmtSession = context.getTaskMgmtSession();
-						TaskInstance task = taskMgmtSession.getTaskInstance(taskId);
-
-						if (task == null) {
-							log.debug("Can't find Task Instance, id: {}", taskId);
-						} else {
-							log.debug("Finishing Task Instance, id: {}", taskId);
-							ContextInstance ci = task.getProcessInstance().getContextInstance();
-							// save the variables in ProcessInstance dictionary
-							log.trace(parameters.toString());
-							ci.addVariables(parameters);
-							ci.setVariable("StartTaskCounter", 0, task.getToken());
-							// mark task as ended with job result code as decision transition value
-							if (task.getEnd() == null) {
-								task.end(transition);
-							}
-						}
-						return task;
-					}
-				});
-
-				proceed = true;
-				boolean removed;
-				synchronized (sleepSemaphore) {
-					removed = runningTaskIds.remove(taskId);
-					sleepSemaphore.notifyAll();
-				}
-
-				if (task != null) {
-					checkProcessCompleted(task.getProcessInstance().getId());
-				}
-
-				log.debug("Task removed from list of running tasks: {}", removed);
-				log.debug("Number of running tasks: {}", runningTaskIds.size());
-			} catch (RuntimeException e) {
-				log.error("Failed finishing task: " + taskId, e);
-				log.error("Sleeping for 30 sec and try again to finish task: {}", taskId);
-				try {
-					Thread.sleep(30000);
-				} catch (InterruptedException ie) {
-					log.error("System failure when finishing task: " + taskId, e);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Check if process was completed and close its log
-	 *
-	 * @param processId Process ID
-	 */
-	private void checkProcessCompleted(long processId) {
-		Process process = getProcessInstanceInfo(processId);
-		if (process != null && process.getProcessState().isCompleted()) {
-			ProcessLogger.closeLog(processId);
-			log.info("Closing process log: {}", processId);
-		}
-	}
-
-	@SuppressWarnings ({"unchecked"})
-    @Override
-	public List<TaskInstance> getRunningTasks() {
-
-		return execute(new ContextCallback<List<TaskInstance>>() {
-			@Override
-			public List<TaskInstance> doInContext(@NotNull JbpmContext context) {
-				List<Long> taskIds = CollectionUtils.list(runningTaskIds);
-				if (taskIds.isEmpty()) {
-					return Collections.emptyList();
-				}
-
-				// Init lazy fields
-				List<?> instances = context.getTaskMgmtSession().findTaskInstancesByIds(taskIds);
-				for (Object obj : instances) {
-					TaskInstance instance = (TaskInstance) obj;
-					instance.getProcessInstance().getContextInstance().getVariables();
-				}
-
-				return (List<TaskInstance>) instances;
-			}
-		}, true);
+	public void endProcess(@NotNull ProcessInstance process) {
+		delegate.abortProcessInstance(process.getId());
 	}
 
 	@Override
-	public List<Process> getProcesses() {
+	public List<ProcessInstance> getProcesses() {
 		return getProcesses(null);
 	}
 
 	@Override
-	public List<Process> getProcesses(Page<Process> pager) {
+	public List<ProcessInstance> getProcesses(Page<ProcessInstance> pager) {
 		return getProcesses(null, pager, null, null, null, null);
 	}
 
 	@Override
-	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore,
-									  ProcessState state, String name) {
-
+	public List<ProcessInstance> getProcesses(ProcessSorter processSorter, Page<ProcessInstance> pager, Date startFrom, Date endBefore,
+											  ProcessInstance.STATE state, String name) {
+		return Collections.emptyList();
+		/*
 		return processDao.findProcesses(processSorter, pager, startFrom, endBefore, state, name);
-	}
-
-	@Override
-	public List<String> getAllProcessNames() {
-		return processDao.findAllProcessNames();
-	}
-
-	/**
-	 * Retrive process info
-	 *
-	 * @param processId ProcessInstance id
-	 * @return Process info
-	 */
-	@Nullable
-	@Override
-	public Process getProcessInstanceInfo(@NotNull final Long processId) {
-
-		return execute(new ContextCallback<Process>() {
-			@Override
-			public Process doInContext(@NotNull JbpmContext context) {
-				ProcessInstance processInstance = context.getProcessInstance(processId);
-				if (processInstance == null) {
-					log.debug("Process with id = {} not found", processId);
-					return null;
-				}
-				return processDao.getProcessInfoWithVariables(processInstance);
-			}
-		});
-	}
-
-	/**
-	 * Check if task is currently executing
-	 *
-	 * @param task Task instance
-	 * @return <code>true</code> if task is being executing, or <code>false</code> otherwise
-	 */
-	private boolean isTaskExecuting(final TaskInstance task) {
-
-		if (task.hasEnded()) {
-			log.debug("Task already finished, ignoring task # {}", task.getId());
-			return true;
-		} else {
-			if (runningTaskIds.contains(task.getId())) {
-				log.debug("Task {} is already started, checking runner", task.getId());
-				return true;
-			} else {
-				log.debug("Task {} is not started", task.getId());
-				return false;
-			}
-		}
-	}
-
-	/**
-	 * Quietly close jBPM context
-	 *
-	 * @param context context to close
-	 */
-	private void closeQuietly(@Nullable JbpmContext context) {
-		if (context != null) {
-			context.close();
-		}
+		*/
 	}
 
 	/**
@@ -713,12 +158,13 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	public void join(long processId) throws InterruptedException {
 		while (true) {
 
-			Process info = getProcessInstanceInfo(processId);
+			ProcessInstance info = getProcessInstance(processId);
 			if (info == null || info.getId() != processId) {
 				return;
 			}
 
-			// wait until there is any 
+			// wait until there is any
+			/*
 			synchronized (sleepSemaphore) {
 
 				ProcessState state = info.getProcessState();
@@ -728,24 +174,18 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 				sleepSemaphore.wait(5000);
 			}
+			*/
 		}
 	}
 
 	/**
 	 * Delete process instance
 	 *
-	 * @param process Process to delete
+	 * @param process ProcessInstance to delete
 	 */
 	@Override
-	public void deleteProcessInstance(final Process process) {
+	public void deleteProcessInstance(@NotNull ProcessInstance process) {
 
-		execute(new ContextCallback<Void>() {
-			@Override
-			public Void doInContext(@NotNull JbpmContext context) {
-				context.getGraphSession().deleteProcessInstance(process.getId());
-				return null;
-			}
-		});
 	}
 
 	/**
@@ -754,145 +194,281 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param processes Processes to delete
 	 */
 	@Override
-	public void deleteProcessInstances(List<Process> processes) {
-		Set<Long> processIds = CollectionUtils.set();
-		for (Process process : processes) {
-			processIds.add(process.getId());
-		}
+	public void deleteProcessInstances(List<ProcessInstance> processes) {
 
-		deleteProcessInstances(processIds);
 	}
 
 	/**
 	 * Delete several process instances
 	 *
-	 * @param processIds Process instances identifiers to delete
+	 * @param processIds ProcessInstance instances identifiers to delete
 	 */
 	@Override
 	public void deleteProcessInstances(final Set<Long> processIds) {
 
-		execute(new ContextCallback<Void>() {
-			@Override
-			public Void doInContext(@NotNull JbpmContext context) {
-				for (Long processId : processIds) {
-					context.getGraphSession().deleteProcessInstance(processId);
-				}
-
-				return null;
-			}
-		});
 	}
 
-    @Override
+	@Override
 	public void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter) {
+		/*
 		processDao.deleteProcessInstances(range, nameFilter.getSelectedName());
+		*/
 	}
 
-	/**
-	 * Retrieve ProcessInstance
-	 *
-	 * @param processInstanceId ProcessInstance id
-	 * @return Process info
-	 */
 	@Override
-	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId) {
-		return execute(new ContextCallback<ProcessInstance>() {
-			@Override
-			public ProcessInstance doInContext(@NotNull JbpmContext context) {
-				return context.getProcessInstance(processInstanceId);
-			}
-		});
+	public ProcessInstance getProcessInstance(@NotNull Long instanceId) {
+
+		return refactorProcessInstance(delegate.getProcessInstanceLog(instanceId));
 	}
 
-	/**
-	 * Execute Context callback
-	 *
-	 * @param callback ContextCallback to execute
-	 * @param <T>      Return value type
-	 * @return instance of T
-	 */
+	@NotNull
 	@Override
-	public <T> T execute(@NotNull ContextCallback<T> callback) {
-		return execute(callback, false);
+	public List<ProcessInstance> getProcessInstances() {
+
+		List<ProcessInstance> result = list();
+		for (ProcessInstanceLog processInstanceLog : delegate.getProcessInstanceLogs()) {
+			result.add(refactorProcessInstance(processInstanceLog));
+		}
+		return result;
 	}
 
-	/**
-	 * Execute Context callback
-	 *
-	 * @param callback		   ContextCallback to execute
-	 * @param useExistingContext Whether to use existing context or not
-	 * @param <T>                Return value type
-	 * @return instance of T
-	 */
-	@Override
-	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
+	private ProcessInstance refactorProcessInstance(ProcessInstanceLog processInstanceLog) {
+		if (processInstanceLog == null) {
+			return null;
+		}
+		Map<String, Object> variables = delegate.getProcessInstanceVariables(processInstanceLog.getProcessInstanceId());
 
-		while (!isStarted()) {
-			try {
-				Thread.sleep(5L);
-			} catch (InterruptedException e) {
-				throw new RuntimeException("Failed waiting for start up.", e);
+		Long processDefinitionVersionId = getProcessDefinitionVersion(variables);
+		ProcessInstance processInstance = processInstance(processInstanceLog, processDefinitionVersionId);
+		processInstance.setParameters(getInstanceData(processInstance.getId()));
+		return processInstance;
+	}
+
+	@Override
+	public List<ProcessInstance> getProcessInstances(@NotNull String definitionId) {
+		// TODO: query for active process instances only
+		List<ProcessInstanceLog> processInstances = delegate.getProcessInstanceLogsByProcessId(definitionId);
+		List<ProcessInstance> result = new ArrayList<ProcessInstance>();
+		for (ProcessInstanceLog processInstance : processInstances) {
+			if (processInstance.getEnd() == null) {
+				Map<String, Object> variables = delegate.getProcessInstanceVariables(processInstance.getProcessInstanceId());
+				Long processDefinitionVersionId = getProcessDefinitionVersion(variables);
+				result.add(processInstance(processInstance, processDefinitionVersionId));
 			}
 		}
+		return result;
+	}
 
-		synchronized (instance) {
-			JbpmContext context = null;
-			boolean needClose = true;
-			try {
-				context = useExistingContext ? jbpmConfiguration.getCurrentJbpmContext() : jbpmConfiguration.createJbpmContext();
-				if (useExistingContext) {
-					needClose = false;
-					if (context == null) {
-						log.warn("Required existing context, but not exists");
-						context = jbpmConfiguration.createJbpmContext();
-						needClose = true;
-					}
-				}
-				return callback.doInContext(context);
-			} finally {
-				if (needClose) {
-					closeQuietly(context);
-				}
-			}
+	public void setProcessState(long instanceId, ProcessInstance.STATE nextState) {
+		if (nextState == ProcessInstance.STATE.ENDED) {
+			delegate.abortProcessInstance(instanceId);
+		} else {
+			throw new UnsupportedOperationException();
 		}
 	}
 
-	/**
-	 * Sets JbpmConfiguration
-	 *
-	 * @param jbpmConfiguration - current jbpmConfiguration
-	 */
-	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
-		this.jbpmConfiguration = jbpmConfiguration;
+	public Map<String, Object> getInstanceData(long instanceId) {
+		return delegate.getProcessInstanceVariables(instanceId);
+	}
+
+	public void setStarted(boolean started) {
+		this.started = started;
+	}
+
+	public boolean isStarted() {
+		return started;
+	}
+
+	private void setInstanceData(long instanceId, Map<String, Object> data) {
+		delegate.setProcessInstanceVariables(instanceId, data);
 	}
 
 	@Override
-	public void setDefinitionPaths(List<String> definitionPaths) {
-		this.definitionPaths.clear();
-		this.definitionPaths.addAll(definitionPaths);
-	}
-
-	public void setRescanFrequency(int rescanFrequency) {
-		this.rescanFrequency = rescanFrequency;
-	}
-
-	public void setTaskRepeatLimit(int taskRepeatLimit) {
-		this.taskRepeatLimit = taskRepeatLimit;
+	public void signalExecution(@NotNull ProcessInstance execution, String signal) {
+		delegate.signalExecution(execution.getId(), signal);
 	}
 
 	/**
-	 * Add voters
+	 * Check human task execute in process
 	 *
-	 * @param lyfecycleVoters Voters to set
+	 * @param processInstance Process instance
+	 * @return <code>true</code> if current task is human task  or <code>false</code> otherwise
 	 */
 	@Override
-	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters) {
-		this.lyfecycleVoters.addAll(lyfecycleVoters);
+	public boolean isHumanTaskExecute(@NotNull ProcessInstance processInstance) {
+		HumanTaskHandler handler = getHumanWorkItemHandler();
+		if (handler != null) {
+			for (Long processInstanceId : handler.getWorkItems().keySet()) {
+				log.debug("Human handler process instance id: {}", processInstanceId);
+			}
+		}
+		log.debug("Check process instance id={}", processInstance.getId());
+		return handler != null && handler.getWorkItems().containsKey(processInstance.getId());
+	}
+
+	/**
+	 * Complete human task from actor
+	 *
+	 *
+	 * @param processInstance Process instance
+	 * @param actorId		 Actor id
+	 * @param result
+	 * @return <code>true</code> if actor assigned to human task and execute human task, otherwise <code>false</code>
+	 */
+	@Override
+	synchronized public boolean completeHumanTask(@NotNull ProcessInstance processInstance, @NotNull String actorId, @Nullable String result) {
+		HumanTaskHandler handler = getHumanWorkItemHandler();
+		if (handler != null && handler.getWorkItems().containsKey(processInstance.getId())) {
+			WorkItem workItem = handler.getWorkItems().get(processInstance.getId());
+
+			String processActorsString = (String) workItem.getParameter("ActorId");
+			log.debug("Actors: {}", processActorsString);
+			log.debug("Parameters: {}", workItem.getParameters());
+
+			String[] processActors = processActorsString.split(",");
+
+			Map<String, Object> results = null;
+			if (result != null) {
+				results = map("Result", (Object)result);
+			}
+
+			if (ArrayUtils.contains(processActors, actorId)) {
+				log.debug("Complete work item: {}", workItem.getId());
+				handler.getWorkItems().remove(processInstance.getId());
+				workItemDao.completeWorkItem(workItem.getId(), results);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void registerWorkItemHandlers() {
+
+		log.debug("Register work item handlers");
+
+		Map<String, WorkItemHandler> workItemHandlers = applicationContext.getBeansOfType(WorkItemHandler.class);
+
+		for (Map.Entry<String, WorkItemHandler> workItemHandlerEntry : workItemHandlers.entrySet()) {
+
+			List<String> workItemHandlerNames = list();
+			String[] aliases = applicationContext.getAliases(workItemHandlerEntry.getKey());
+
+			if (aliases != null && aliases.length > 0) {
+				org.apache.commons.collections.CollectionUtils.addAll(workItemHandlerNames, aliases);
+			} else {
+				workItemHandlerNames.add(workItemHandlerEntry.getKey());
+			}
+
+			workItemHandlerDao.registerWorkItemHandler(workItemHandlerEntry.getValue(), workItemHandlerNames);
+		}
+	}
+
+	@Nullable
+	private HumanTaskHandler getHumanWorkItemHandler() {
+		Map<String, org.drools.runtime.process.WorkItemHandler> workItemHandlers = workItemHandlerDao.getWorkItemHandlers();
+		log.debug("Work item handlers: {}", workItemHandlers.keySet());
+		if (workItemHandlers.containsKey(HUMAN_TASK_NAME)) {
+			org.drools.runtime.process.WorkItemHandler workItemHandler = workItemHandlers.get(HUMAN_TASK_NAME);
+			if (workItemHandler instanceof HumanTaskHandler) {
+				return (HumanTaskHandler) workItemHandler;
+			}
+			log.warn("Human item handler ('{}') do not instance of {}", HUMAN_TASK_NAME, HumanTaskHandler.class);
+		} else {
+			log.warn("Human item handler ('{}') did not registry", HUMAN_TASK_NAME);
+		}
+		return null;
+	}
+
+	private static ProcessInstance processInstance(ProcessInstanceLog processInstance, Long version) {
+		log.debug("Process instance log: {}, start date {}, end date {}", new Object[]{processInstance, processInstance.getStart(), processInstance.getEnd()});
+		ProcessInstance result = new ProcessInstance(
+				processInstance.getProcessInstanceId(),
+				processInstance.getProcessId(),
+				processInstance.getStart(),
+				processInstance.getEnd(),
+				false);
+		result.setProcessDefenitionVersion(version == null? -1: version);
+		/*
+		TokenReference token = new TokenReference(
+				processInstance.getProcessInstanceId() + "", null, "");
+		result.setRootToken(token);
+		*/
+		return result;
+	}
+
+	private static ProcessInstance processInstance(org.drools.runtime.process.ProcessInstance processInstance, Long version) {
+		ProcessInstance result = new ProcessInstance(
+				processInstance.getId(),
+				processInstance.getProcessId(),
+				now(),
+				null,
+				false);
+		result.setProcessDefenitionVersion(version == null ? -1 : version);
+		/*
+		switch (processInstance.getState()) {
+			case 0:
+				result.setState(ProcessInstance.STATE.PENDING);
+				break;
+			case 1:
+				result.setState(ProcessInstance.STATE.RUNNING);
+				break;
+			case 2:
+				result.setState(ProcessInstance.STATE.ENDED);
+				break;
+			case 3:
+				result.setState(ProcessInstance.STATE.ABORTED);
+				break;
+			case 4:
+				result.setState(ProcessInstance.STATE.SUSPENDED);
+				break;
+			default:
+				break;
+		}
+		*/
+		/*
+		TokenReference token = new TokenReference(
+				processInstance.getProcessInstanceId() + "", null, "");
+		result.setRootToken(token);
+		*/
+		return result;
+	}
+
+	private Long getProcessDefinitionVersion(Map<String, Object> variables) {
+		Long processDefinitionVersionId = null;
+		Object pdv = variables.get(PROCESS_DEFINITION_VERSION_ID);
+		if (pdv instanceof String) {
+			processDefinitionVersionId = Long.getLong((String)pdv);
+		} else if (pdv instanceof Long) {
+			processDefinitionVersionId = (Long)pdv;
+		} else {
+			log.warn("Can not get process definition version from process instance variable: {}. Class is {}, but need String or Long.", pdv, pdv.getClass());
+		}
+		return processDefinitionVersionId;
 	}
 
 	@Required
-	public void setProcessDao(ProcessDao processDao) {
-		this.processDao = processDao;
+	public void setDelegate(ProcessJbpmDao delegate) {
+		this.delegate = delegate;
 	}
 
+	@Required
+	public void setWorkItemDao(WorkItemDao workItemDao) {
+		this.workItemDao = workItemDao;
+	}
+
+	@Required
+	public void setWorkItemHandlerDao(WorkItemHandlerDao workItemHandlerDao) {
+		this.workItemHandlerDao = workItemHandlerDao;
+	}
+
+	@Required
+	public void setProcessDefinitionManager(ProcessDefinitionManager processDefinitionManager) {
+		this.processDefinitionManager = processDefinitionManager;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

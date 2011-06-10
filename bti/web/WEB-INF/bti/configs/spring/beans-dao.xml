@@ -29,7 +29,7 @@
 
     <bean id="apartmentAttributeTypeDaoExt"
           class="org.flexpay.bti.dao.impl.ApartmentAttributeTypeDaoExtImpl"
-          p:sessionFactory-ref="flexpaySessionFactory"
+          p:jpaTemplate-ref="jpaTemplate"
           p:attributeTypeDao-ref="apartmentAttributeTypeDao"
           p:attributeTypeEnumDao-ref="apartmentAttributeTypeEnumDao" />
 
@@ -55,7 +55,7 @@
 
     <bean id="btiApartmentDaoExt"
           class="org.flexpay.bti.dao.impl.BtiApartmentDaoExtImpl"
-          p:sessionFactory-ref="flexpaySessionFactory" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <!-- Buildings -->
     <bean id="buildingAttributeTypeDao"
@@ -80,7 +80,7 @@
 
     <bean id="buildingAttributeTypeDaoExt"
           class="org.flexpay.bti.dao.impl.BuildingAttributeTypeDaoExtImpl"
-          p:sessionFactory-ref="flexpaySessionFactory"
+          p:jpaTemplate-ref="jpaTemplate"
           p:attributeTypeDao-ref="buildingAttributeTypeDao"
           p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
 
@@ -106,6 +106,6 @@
 
     <bean id="btiBuildingDaoExt"
           class="org.flexpay.bti.dao.impl.BtiBuildingDaoExtImpl"
-          p:sessionFactory-ref="flexpaySessionFactory" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
 </beans>

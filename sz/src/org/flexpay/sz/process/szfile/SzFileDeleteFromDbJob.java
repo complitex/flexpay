@@ -41,7 +41,7 @@ public class SzFileDeleteFromDbJob extends Job {
 
 		Set<Long> fileIds = (Set<Long>) parameters.get(FILE_IDS);
 
-		log.debug("Process szFile delete from DB for fileIds = {} started", fileIds);
+		log.debug("ProcessInstance szFile delete from DB for fileIds = {} started", fileIds);
 
 		List<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
 
@@ -99,7 +99,7 @@ public class SzFileDeleteFromDbJob extends Job {
 			pLogger.info("Deleting from DB szFile with id = {} finished", szFile.getId());
 		}
 
-		log.debug("Process szFile delete from DB for fileIds = {} finished", fileIds);
+		log.debug("ProcessInstance szFile delete from DB for fileIds = {} finished", fileIds);
 
 		return RESULT_NEXT;
 	}

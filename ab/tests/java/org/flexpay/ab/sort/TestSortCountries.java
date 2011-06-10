@@ -2,11 +2,11 @@ package org.flexpay.ab.sort;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.junit.Test;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.jpa.JpaCallback;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.junit.Assert.assertNotSame;
@@ -27,15 +27,15 @@ public class TestSortCountries extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
 						.setFirstResult(1)
 						.setMaxResults(30)
-						.list();
+						.getResultList();
 			}
 		});
 		int size = result.size();
@@ -59,13 +59,13 @@ public class TestSortCountries extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
-						.list();
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
+						.getResultList();
 			}
 		});
 		int size = result.size();

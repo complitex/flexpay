@@ -1,15 +1,9 @@
 package org.flexpay.payments.action.tradingday;
 
-import org.flexpay.common.process.ContextCallback;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.payments.service.TradingDay;
 import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
-import org.jbpm.JbpmContext;
-import org.jbpm.graph.def.Transition;
-import org.jbpm.taskmgmt.exe.TaskInstance;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -18,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.PROCESS_STATUS;
 import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status;
 
@@ -74,7 +67,7 @@ public class TradingDayControlPanel {
 			controlPanelLog.warn("Trading day process not found. Command processing canceled.");
 			return;
 		}
-
+		/*
 		TaskInstance taskInstance = getTaskInstance();
 		if (taskInstance == null) {
 			controlPanelLog.warn("Trading day process task instance not found. Command processing canceled.");
@@ -99,10 +92,11 @@ public class TradingDayControlPanel {
         userLog.debug("processManager.execute completed");
 
 		command = ""; // reset command
+		*/
 	}
 
 	private void loadAvailableCommands() {
-
+		/*
 		if (tradingDayProcessInstanceId == null) {
 			controlPanelLog.warn("Trading day process not found. Loading available commands canceled.");
 			return;
@@ -135,6 +129,7 @@ public class TradingDayControlPanel {
 		});
 
         Collections.sort(availableCommands);
+        */
 	}
 
 	private void loadProcessStatus() {
@@ -145,7 +140,7 @@ public class TradingDayControlPanel {
 			return;
 		}
 
-		Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
+		ProcessInstance process = processManager.getProcessInstance(tradingDayProcessInstanceId);
 		processStatus = process != null ? (Status) process.getParameters().get(PROCESS_STATUS) :
 				PaymentCollectorTradingDayConstants.Status.CLOSED;
 	}
@@ -153,10 +148,11 @@ public class TradingDayControlPanel {
 	public boolean isTradingDayOpened() {
 		return tradingDayProcessInstanceId != null && tradingDayService.isOpened(tradingDayProcessInstanceId);
 	}
-
+	/*
 	private TaskInstance getTaskInstance() {
 		return TaskHelper.getTaskInstance(processManager, tradingDayProcessInstanceId, actor, userLog);
 	}
+       */
 
 	public void setCommand(String command) {
 		this.command = command;

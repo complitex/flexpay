@@ -83,7 +83,7 @@ public class RegistryFileParser implements FileParser {
     private RegistryFPFileTypeService registryFPFileTypeService;
 
     @SuppressWarnings ({"ConstantConditions"})
-	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (propagation = Propagation.REQUIRES_NEW)
 	@Override
     public List<Registry> parse(FPFile spFile, Logger processLog) throws Exception {
 
@@ -110,14 +110,11 @@ public class RegistryFileParser implements FileParser {
 				}
 			}
 			finalizeRegistry(registry, recordCounter);
-			sessionUtils.flush();
-			sessionUtils.clear();
-
 		} catch (Throwable t) {
+			processLog.error("Failed parsing registry file", t);
 			if (registry != null) {
 				registryWorkflowManager.setNextErrorStatus(registry);
 			}
-			processLog.error("Failed parsing registry file", t);
 			throw new Exception("Failed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -132,7 +129,7 @@ public class RegistryFileParser implements FileParser {
     }
 
 	@SuppressWarnings ({"ConstantConditions"})
-	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public List<Registry> parse(FPFile spFile) throws Exception {
 		return parse(spFile, log);
@@ -154,7 +151,6 @@ public class RegistryFileParser implements FileParser {
 		return spFile.toFileSource();
 	}
 
-	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	private Registry processMessage(Message message, FPFile spFile, Registry registry, Long[] recordCounter) throws Exception {
 
 		String messageValue = message.getBody();
@@ -183,7 +179,6 @@ public class RegistryFileParser implements FileParser {
 		return registry;
 	}
 
-	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	private Registry processHeader(FPFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 10) {
 			throw new RegistryFormatException(
@@ -226,6 +221,7 @@ public class RegistryFileParser implements FileParser {
 			log.info("Creating new registry: {}", newRegistry);
 
 			EircRegistryProperties props = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
+			props.setRegistry(newRegistry);
 			newRegistry.setProperties(props);
 
 			Organization recipient = setRecipient(newRegistry, props);
@@ -344,7 +340,6 @@ public class RegistryFileParser implements FileParser {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if registry header validation fails
 	 */
-	@Transactional (readOnly = true)
 	private void validateRegistry(Registry registry) throws FlexPayException {
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		Registry persistent = eircRegistryService.getRegistryByNumber(registry.getRegistryNumber(), props.getSenderStub());
@@ -353,7 +348,6 @@ public class RegistryFileParser implements FileParser {
 		}
 	}
 
-	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
 	private void processRecord(List<String> messageFieldList, Registry registry, Long[] recordCounter) throws Exception {
 		if (registry == null) {
 			throw new RegistryFormatException("Error - registry header should go before record");

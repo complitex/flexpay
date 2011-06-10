@@ -3,7 +3,9 @@ package org.flexpay.payments.export;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.drools.utils.WorkItemCompleteLocker;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
@@ -14,7 +16,9 @@ import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.service.RegistryRecordService;
@@ -28,6 +32,8 @@ import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.ServiceProviderAttribute;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Document;
@@ -100,8 +106,13 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	private RegistryService registryService;
     @Autowired
     private ProcessManager processManager;
+	@Autowired
+	private ProcessDefinitionManager processDefinitionManager;
     @Autowired
     private ServiceProviderService tProviderService;
+	@Autowired
+	@Qualifier ("organizationService")
+	private OrganizationService organizationService;
     @Autowired
     private ServiceProviderAttributeService tProviderAttributeService;
     @Autowired
@@ -216,7 +227,44 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
     @Test
 	public void testStartTradingDay() throws Exception {
 
-		GeneratePaymentsRegistry jobScheduler = new GeneratePaymentsRegistry();
+		Long organizationId = 20482L;
+		Organization org = organizationService.readFull(new Stub<Organization>(organizationId));
+		log.debug("Organization id: {}, persistence: {}", organizationId, org);
+
+		processDefinitionManager.deployProcessDefinition("GeneratePaymentsRegistry", true);
+
+		GeneratePaymentsRegistry jobScheduler = new GeneratePaymentsRegistry() {
+
+			@Override
+			protected List<ServiceProvider> getServiceProviders(FetchRange serviceProviderRange) {
+				WorkItemCompleteLocker.lock();
+				try {
+					return super.getServiceProviders(serviceProviderRange);
+				} finally {
+					WorkItemCompleteLocker.unlock();
+				}
+			}
+
+			@Override
+			protected ProcessInstance getWaitingProcess(Long processId) {
+				WorkItemCompleteLocker.lock();
+				try {
+					return super.getWaitingProcess(processId);
+				} finally {
+					WorkItemCompleteLocker.unlock();
+				}
+			}
+
+			@Override
+			protected ServiceProviderAttribute getServiceProviderLastProcessedDate(ServiceProvider serviceProvider) {
+				WorkItemCompleteLocker.lock();
+				try {
+					return super.getServiceProviderLastProcessedDate(serviceProvider);
+				} finally {
+					WorkItemCompleteLocker.unlock();
+				}
+			}
+		};
 		jobScheduler.setProcessManager(processManager);
 		jobScheduler.setProviderService(tProviderService);
 		jobScheduler.setServiceProviderAttributeService(tProviderAttributeService);
@@ -260,6 +308,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		assertNotNull("No registry", registry);
 
 		// assert registry data
+		log.debug("Test registry: {}", registry.getId());
 		assertEquals("Error", 2, registry.getRecordsNumber().intValue());
 		assertEquals("Error", 303, registry.getAmount().intValue());
 		List<RegistryRecord> records = registryRecordService.listRecords(registry,

@@ -7,7 +7,6 @@ import org.flexpay.payments.action.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,11 +24,11 @@ public class RegistryRecordsProcessAction extends AccountantAWPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		Map<Serializable, Serializable> contextVariables = map();
-		contextVariables.put("recordIds", (Serializable) CollectionUtils.list(objectIds));
+		Map<String, Object> contextVariables = map();
+		contextVariables.put("recordIds", CollectionUtils.list(objectIds));
 		contextVariables.put("registryId", registry.getId());
 
-		processManager.createProcess("ProcessingDBRegistryProcess2", contextVariables);
+		processManager.startProcess("ProcessingDBRegistry", contextVariables);
 
 		addActionMessage(getText("payments.registry.records.processing_started"));
 

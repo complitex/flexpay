@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+
+	<itemDefinition id="_flushNumberRegistryRecordsItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_fileIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_registryIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_numberProcessedLinesItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_numberProcessedRegistryRecordsItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_currentCharPointItem" structureRef="java.lang.Long"/>
+
+	<process processType="Public" isExecutable="true" id="ParseMBCharges" name="Parse MB charges process"
+			 tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="validateMBChargesResult" itemSubjectRef="_resultItem"/>
+		<property id="iterateMBChargesResult" itemSubjectRef="_resultItem"/>
+		<property id="removeRegistryResult" itemSubjectRef="_resultItem"/>
+
+		<property id="flushNumberRegistryRecords" itemSubjectRef="_flushNumberRegistryRecordsItem"/>
+		<property id="fileId" itemSubjectRef="_fileIdItem"/>
+		<property id="registryId" itemSubjectRef="_registryIdItem"/>
+		<property id="numberProcessedLines" itemSubjectRef="_numberProcessedLinesItem"/>
+		<property id="numberProcessedRegistryRecords" itemSubjectRef="_numberProcessedRegistryRecordsItem"/>
+		<property id="currentCharPoint" itemSubjectRef="_currentCharPointItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<scriptTask id="_2" name="SetConstantVariable" >
+			<script>
+				kcontext.setVariable("flushNumberRegistryRecords", 1000L);
+			</script>
+		</scriptTask>
+
+		<task id="_3" name="ValidateMBChargesTask" tns:taskName="ValidateMBChargesTask">
+			<ioSpecification>
+				<dataInput id="_3_fileId" name="fileId"/>
+				<dataOutput id="_3_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_3_fileId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_3_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_3_fileId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_3_result</sourceRef>
+				<targetRef>validateMBChargesResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<exclusiveGateway id="_4" name="Split" default="_4-_20" gatewayDirection="Diverging" />
+
+		<exclusiveGateway id="_5" name="Join" gatewayDirection="Converging" />
+
+		<task id="_6" name="IterateMBChargesTask" tns:taskName="IterateMBChargesTask">
+			<ioSpecification>
+				<dataInput id="_6_fileId" name="fileId"/>
+				<dataInput id="_6_input_registryId" name="registryId"/>
+				<dataInput id="_6_flushNumberRegistryRecords" name="flushNumberRegistryRecords"/>
+				<dataInput id="_6_input_numberProcessedLines" name="numberProcessedLines"/>
+				<dataInput id="_6_input_numberProcessedRegistryRecords" name="numberProcessedRegistryRecords"/>
+				<dataInput id="_6_input_currentCharPoint" name="currentCharPoint"/>
+				<dataOutput id="_6_output_registryId" name="registryId"/>
+				<dataOutput id="_6_output_numberProcessedLines" name="numberProcessedLines"/>
+				<dataOutput id="_6_output_numberProcessedRegistryRecords" name="numberProcessedRegistryRecords"/>
+				<dataOutput id="_6_output_currentCharPoint" name="currentCharPoint"/>
+				<dataOutput id="_6_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_6_fileId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_input_registryId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_flushNumberRegistryRecords</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_input_numberProcessedLines</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_input_numberProcessedRegistryRecords</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_input_currentCharPoint</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_6_output_registryId</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_6_output_numberProcessedLines</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_6_output_numberProcessedRegistryRecords</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_6_output_currentCharPoint</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_6_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_6_fileId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_6_input_registryId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>flushNumberRegistryRecords</sourceRef>
+				<targetRef>_6_flushNumberRegistryRecords</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>numberProcessedLines</sourceRef>
+				<targetRef>_6_input_numberProcessedLines</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>numberProcessedRegistryRecords</sourceRef>
+				<targetRef>_6_input_numberProcessedRegistryRecords</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>currentCharPoint</sourceRef>
+				<targetRef>_6_input_currentCharPoint</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_output_registryId</sourceRef>
+				<targetRef>registryId</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_output_numberProcessedLines</sourceRef>
+				<targetRef>numberProcessedLines</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_output_numberProcessedRegistryRecords</sourceRef>
+				<targetRef>numberProcessedRegistryRecords</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_output_currentCharPoint</sourceRef>
+				<targetRef>currentCharPoint</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_result</sourceRef>
+				<targetRef>iterateMBChargesResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<exclusiveGateway id="_7" name="Split" default="_7-_8" gatewayDirection="Diverging" />
+
+		<task id="_8" name="RemoveRegistryTask" tns:taskName="RemoveRegistryTask">
+			<ioSpecification>
+				<dataInput id="_8_fileId" name="fileId"/>
+				<dataInput id="_8_registryId" name="registryId"/>
+				<dataOutput id="_8_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_8_fileId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_8_registryId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_8_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_8_fileId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_8_registryId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_8_result</sourceRef>
+				<targetRef>removeRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<exclusiveGateway id="_20" name="Join" gatewayDirection="Converging" />
+
+		<endEvent id="_21" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4"/>
+		<sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5">
+			<conditionExpression xs:type="tFormalExpression" >return validateMBChargesResult == "next";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_4-_20" sourceRef="_4" targetRef="_20">
+			<conditionExpression xs:type="tFormalExpression" >return validateMBChargesResult == "error";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6"/>
+		<sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7"/>
+		<sequenceFlow id="_7-_5" sourceRef="_7" targetRef="_5">
+			<conditionExpression xs:type="tFormalExpression" >return iterateMBChargesResult == "next";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_7-_8" sourceRef="_7" targetRef="_8">
+			<conditionExpression xs:type="tFormalExpression" >return iterateMBChargesResult == "error";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_7-_20" sourceRef="_7" targetRef="_20">
+			<conditionExpression xs:type="tFormalExpression" >return iterateMBChargesResult == "end";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_8-_20" sourceRef="_8" targetRef="_20"/>
+		<sequenceFlow id="_20-_21" sourceRef="_20" targetRef="_21"/>
+	</process>
+
+</definitions>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+
+	<itemDefinition id="_rangeItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_registryIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_recordIdsItem" structureRef="java.util.List"/>
+
+	<process processType="Public" isExecutable="true" id="ProcessingDBRegistry" name="Processing db registry"
+			 tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="processingDBRegistryResult" itemSubjectRef="_resultItem"/>
+
+		<property id="range" itemSubjectRef="_rangeItem"/>
+		<property id="registryId" itemSubjectRef="_registryIdItem"/>
+		<property id="recordIds" itemSubjectRef="_recordIdsItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<scriptTask id="_2" name="SetConstantVariable" >
+			<script>kcontext.setVariable("range", new org.flexpay.common.dao.paging.FetchRange(200));</script>
+		</scriptTask>
+
+		<task id="_3" name="ProcessingDBRegistryTask" tns:taskName="ProcessingDBRegistryTask">
+			<ioSpecification>
+				<dataInput id="_3_range" name="range"/>
+				<dataInput id="_3_registryId" name="registryId"/>
+				<dataInput id="_3_recordIds" name="recordIds"/>
+				<dataOutput id="_3_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_3_range</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_3_registryId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_3_recordIds</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_3_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>range</sourceRef>
+				<targetRef>_3_range</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_3_registryId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>recordIds</sourceRef>
+				<targetRef>_3_recordIds</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_3_result</sourceRef>
+				<targetRef>processingDBRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<endEvent id="_21" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_3-_21" sourceRef="_3" targetRef="_21"/>
+
+	</process>
+
+</definitions>

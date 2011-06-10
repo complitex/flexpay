@@ -44,7 +44,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @throws FlexPayException if failure occurs

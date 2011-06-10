@@ -1,34 +1,38 @@
 package org.flexpay.eirc.sp;
 
 import junit.framework.Assert;
+import org.flexpay.common.drools.utils.WorkItemCompleteLocker;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.action.TestSpFileCreateAction;
-import org.flexpay.eirc.process.registry.IterateMBRegistryActionHandler;
+import org.flexpay.eirc.process.registry.helper.ParseRegistryConstants;
+import org.flexpay.eirc.process.registry.helper.ProcessingRegistryConstants;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.payments.service.EircRegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.assertTrue;
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.junit.Assert.assertNotNull;
 
 public class TestMbChargesFileParser2 extends TestSpFileCreateAction {
 
 	@Autowired
-	private ProcessManager testProcessManager;
+	private ProcessManager processManager;
+	@Autowired
+	protected ProcessDefinitionManager processDefinitionManager;
 	@Autowired
 	private EircRegistryService eircRegistryService;
 	@Autowired
@@ -47,6 +51,13 @@ public class TestMbChargesFileParser2 extends TestSpFileCreateAction {
 		List<Registry> registries = parseRegistryFile(newFile);
 
 		registryProcessor.registriesProcess(registries);
+
+		Registry registry = registries.get(0);
+		log.debug("Uploaded registry: {}", registry);
+
+		registry = processingRegistry(registry);
+		log.debug("Processed registry: {}", registry);
+
 	}
 
 	@Test
@@ -57,32 +68,65 @@ public class TestMbChargesFileParser2 extends TestSpFileCreateAction {
 		List<Registry> registries = parseRegistryFile(newFile);
 
 		registryProcessor.registriesProcess(registries);
+
+		Registry registry = registries.get(0);
+		log.debug("Uploaded registry: {}", registry);
+
+		registry = processingRegistry(registry);
+		log.debug("Processed registry: {}", registry);
+	}
+
+	private Registry processingRegistry(Registry registry) throws ProcessDefinitionException, ProcessInstanceException, InterruptedException {
+		processDefinitionManager.deployProcessDefinition("ProcessingDBRegistry", true);
+		Map<String, Object> parameters = map();
+		parameters.put(ProcessingRegistryConstants.REGISTRY_ID, registry.getId());
+		ProcessInstance process = processManager.startProcess("ProcessingDBRegistry", parameters);
+		Assert.assertNotNull("ProcessInstance can not created", process);
+		waitWhileProcessInstanceWillComplete(process);
+
+		registry = registryService.read(Stub.stub(registry));
+		return registry;
 	}
 
 	private List<Registry> parseRegistryFile(FPFile newFile) throws ProcessDefinitionException, ProcessInstanceException, InterruptedException {
-		testProcessManager.deployProcessDefinition("ParseMBChargesProcess", true);
-		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-		parameters.put(IterateMBRegistryActionHandler.PARAM_FILE_ID, newFile.getId());
+		processDefinitionManager.deployProcessDefinition("ParseMBCharges", true);
+		Map<String, Object> parameters = map();
+		parameters.put(ParseRegistryConstants.PARAM_FILE_ID, newFile.getId());
 
-		long processId = testProcessManager.createProcess("ParseMBChargesProcess", parameters);
-		assertTrue("Process can not created", processId > 0);
-		org.flexpay.common.process.Process process = testProcessManager.getProcessInstanceInfo(processId);
-		Assert.assertNotNull("Process did not find", process);
-
-		// wait completed process
-		while(!process.getProcessState().isCompleted()) {
-			Thread.sleep(100);
-			process = testProcessManager.getProcessInstanceInfo(processId);
-			Assert.assertNotNull("Process did not loaded", process);
-		}
+		ProcessInstance process = processManager.startProcess("ParseMBCharges", parameters);
+		assertNotNull("ProcessInstance can not created", process);
+		process = waitWhileProcessInstanceWillComplete(process);
 
 		parameters = process.getParameters();
-		Long registryId = (Long)parameters.get(IterateMBRegistryActionHandler.PARAM_REGISTRY_ID);
+		String registryId = (String)parameters.get(ParseRegistryConstants.PARAM_REGISTRY_ID);
 		assertNotNull("registryId did not find in process parameters", registryId);
 
-		Registry registry = registryService.readWithContainers(new Stub<Registry>(registryId));
+		Registry registry = registryService.readWithContainers(new Stub<Registry>(Long.parseLong(registryId)));
 		assertNotNull("Registry did not find in db", registry);
 
 		return  CollectionUtils.list(registry);
+	}
+
+	private ProcessInstance waitWhileProcessInstanceWillComplete(ProcessInstance processInstance) throws InterruptedException {
+		ProcessInstance pi = null;
+		while(true) {
+			WorkItemCompleteLocker.lock();
+			log.debug("Get process instance: {}", processInstance.getId());
+			try {
+				pi = processManager.getProcessInstance(processInstance.getId());
+			} catch (RuntimeException e) {
+				log.error("RuntimeException", e);
+				throw e;
+			} finally {
+				WorkItemCompleteLocker.unlock();
+			}
+			log.debug("Got process instance: {}", pi);
+			if (pi.hasEnded()) {
+				log.debug("End process instance");
+				break;
+			}
+			Thread.sleep(500);
+		}
+		return pi;
 	}
 }

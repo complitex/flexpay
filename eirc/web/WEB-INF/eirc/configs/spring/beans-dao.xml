@@ -16,12 +16,11 @@
 
     <bean id="consumerDaoExt"
           class="org.flexpay.eirc.dao.impl.ConsumersDaoExtJdbcImpl"
-          p:dataSource-ref="dataSource"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="consumerAttributeTypeDaoExt"
           class="org.flexpay.eirc.dao.impl.ConsumerAttributeTypeDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="consumerAttributeTypeDao"
           parent="abstractDao"
@@ -36,11 +35,11 @@
     <bean id="eircAccountDaoExt"
           class="org.flexpay.eirc.dao.impl.EircAccountDaoExtImpl"
           p:eircAccountDao-ref="eircAccountDao"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="eircRegistryRecordPropertiesDao"
           class="org.flexpay.eirc.dao.impl.EircRegistryRecordPropertiesDaoImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="quittanceDaoExt"
           class="org.flexpay.eirc.dao.impl.QuittanceDaoExtImpl"
@@ -112,7 +111,7 @@
 
     <bean id="quittancePacketDaoExt"
           class="org.flexpay.eirc.dao.impl.QuittancePacketDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="quittancePaymentDao"
           parent="abstractDao"

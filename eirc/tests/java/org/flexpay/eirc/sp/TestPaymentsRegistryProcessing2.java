@@ -1,9 +1,9 @@
 package org.flexpay.eirc.sp;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.drools.utils.WorkItemCompleteLocker;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
@@ -11,10 +11,12 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryStatus;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.eirc.process.registry.StartRegistryProcessingActionHandler;
+import org.flexpay.eirc.process.registry.helper.ProcessingRegistryConstants;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.Organization;
@@ -28,17 +30,17 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
-import java.util.HashMap;
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.*;
-import static org.flexpay.common.persistence.Stub.stub;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.DateUtil.parseDate;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 public class TestPaymentsRegistryProcessing2 extends EircSpringBeanAwareTestCase {
 
@@ -59,13 +61,17 @@ public class TestPaymentsRegistryProcessing2 extends EircSpringBeanAwareTestCase
 	@Autowired
 	private RegistryProcessor registryProcessor;
 	@Autowired
+	@Qualifier ("registryService")
 	private RegistryService registryService;
-	 @Autowired
-	private ProcessManager testProcessManager;
+	@Autowired
+	private ProcessManager processManager;
+	@Autowired
+	protected ProcessDefinitionManager processDefinitionManager;
 
 	@Test
+	//@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED, isolation = Isolation.READ_UNCOMMITTED)
 	public void testGeneratePaymentsRegistryAndProcess() throws Exception {
-		testProcessManager.deployProcessDefinition("ProcessingDBRegistryProcess", true);
+		processDefinitionManager.deployProcessDefinition("ProcessingDBRegistry", true);
 
 		Organization registerOrganization = organizationService.readFull(TestData.ORG_TSZH);
 		ServiceProvider serviceProvider = serviceProviderService.read(TestData.SRV_PROVIDER_CN);
@@ -95,56 +101,77 @@ public class TestPaymentsRegistryProcessing2 extends EircSpringBeanAwareTestCase
 		assertFalse("File parsing failed", registries.isEmpty());
 
 		String hql = "select count(*) from Operation";
-		Long operationsCount = (Long) DataAccessUtils.uniqueResult(hibernateTemplate.find(hql));
+		Long operationsCount = (Long) DataAccessUtils.uniqueResult(jpaTemplate.find(hql));
 
 		Registry newRegistry = registries.get(0);
-		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-		parameters.put(StartRegistryProcessingActionHandler.REGISTRY_ID, newRegistry.getId());
-		long processId = testProcessManager.createProcess("ProcessingDBRegistryProcess", parameters);
-		assertTrue("Process can not created", processId > 0);
-		org.flexpay.common.process.Process process = testProcessManager.getProcessInstanceInfo(processId);
-		assertNotNull("Process did not find", process);
-		do {
-			log.debug("Wait completed process {}", processId);
-			Thread.sleep(100);
-			process = testProcessManager.getProcessInstanceInfo(processId);
-		} while(!process.getProcessState().isCompleted());
-		newRegistry = registryService.read(Stub.stub(newRegistry));
-		assertNotNull("Processing should fail, same instance expected", newRegistry.getImportError());
-		assertEquals("Registry status is 'Processed with error'", RegistryStatus.PROCESSED_WITH_ERROR, newRegistry.getRegistryStatus().getCode());
+		log.debug("Uploaded registry: {}", newRegistry);
+		Map<String, Object> parameters = map();
+		parameters.put(ProcessingRegistryConstants.REGISTRY_ID, newRegistry.getId());
+		ProcessInstance process = processManager.startProcess("ProcessingDBRegistry", parameters);
+		assertNotNull("ProcessInstance can not created", process);
+		waitWhileProcessInstanceWillComplete(process);
 
-		newRegistry = registryService.readWithContainers(stub(newRegistry));
-		assertNotNull("Registry not found", newRegistry);
-		removeInstanceIdFromContainer(newRegistry);
-		parameters.put(StartRegistryProcessingActionHandler.REGISTRY_ID, newRegistry.getId());
-		processId = testProcessManager.createProcess("ProcessingDBRegistryProcess", parameters);
-		assertTrue("Process can not created", processId > 0);
-		process = testProcessManager.getProcessInstanceInfo(processId);
-		assertNotNull("Process did not find", process);
-		do {
-			log.debug("Wait completed process {}", processId);
-			Thread.sleep(100);
-			process = testProcessManager.getProcessInstanceInfo(processId);
-		} while(!process.getProcessState().isCompleted());
+		EntityManager entityManager = jpaTemplate.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
+		Registry processedRegistry = entityManager.find(Registry.class, newRegistry.getId());
+		log.debug("Processed registry: {}", processedRegistry);
 
-		newRegistry = registryService.readWithContainers(stub(newRegistry));
-		assertNotNull("Registry not found", newRegistry);
-		assertNull("Processing should not fail", newRegistry.getImportError());
+		log.debug("Processed registry ImportError: {}", processedRegistry.getImportError());
+		assertNotNull("Processing should fail, same instance expected", processedRegistry.getImportError());
+		assertEquals("Registry status is 'Processed with error'", RegistryStatus.PROCESSED_WITH_ERROR, processedRegistry.getRegistryStatus().getCode());
+
+		assertNotNull("Registry not found", processedRegistry);
+		removeInstanceIdFromContainer(processedRegistry);
+		entityManager.merge(processedRegistry);
+		entityManager.getTransaction().commit();
+		parameters = map();
+		parameters.put(ProcessingRegistryConstants.REGISTRY_ID, newRegistry.getId());
+		process = processManager.startProcess("ProcessingDBRegistry", parameters);
+		assertNotNull("ProcessInstance can not created", process);
+		waitWhileProcessInstanceWillComplete(process);
+
+		entityManager = jpaTemplate.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
+		processedRegistry = entityManager.find(Registry.class, newRegistry.getId());
+		assertNotNull("Registry not found", processedRegistry);
+		assertNull("Processing should not fail", processedRegistry.getImportError());
 		assertEquals("Registry should have success status",
-				RegistryStatus.PROCESSED_WITH_ERROR, newRegistry.getRegistryStatus().getCode());
+				RegistryStatus.PROCESSED_WITH_ERROR, processedRegistry.getRegistryStatus().getCode());
+		entityManager.close();
 
-		Long afterProcessOperationsCount = (Long) DataAccessUtils.uniqueResult(hibernateTemplate.find(hql));
+		Long afterProcessOperationsCount = (Long)DataAccessUtils.uniqueResult(jpaTemplate.find(hql));
 
 		assertEquals("Processing should add new operations", operationsCount, afterProcessOperationsCount);
 	}
 
-	@Transactional(readOnly = false)
 	private void removeInstanceIdFromContainer(Registry registry) throws FlexPayException {
 		for (RegistryContainer container : registry.getContainers()) {
 			if (container.getData().startsWith("503:")) {
-				container.setData("");
+				container.setData("503:001");
 			}
 		}
-		registryService.update(registry);
+	}
+
+	private ProcessInstance waitWhileProcessInstanceWillComplete(ProcessInstance processInstance) throws InterruptedException {
+		ProcessInstance pi = null;
+		while(true) {
+			WorkItemCompleteLocker.lock();
+			log.debug("Get process instance: {}", processInstance.getId());
+			try {
+				pi = processManager.getProcessInstance(processInstance.getId());
+			} catch (RuntimeException e) {
+				log.error("RuntimeException", e);
+				throw e;
+			} finally {
+				WorkItemCompleteLocker.unlock();
+			}
+			log.debug("Got process instance: {}", pi);
+			if (pi.hasEnded()) {
+				log.debug("End process instance");
+				break;
+			}
+			Thread.sleep(500);
+		}
+		return pi;
 	}
 }

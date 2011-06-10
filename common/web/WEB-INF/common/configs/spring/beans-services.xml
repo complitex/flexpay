@@ -135,9 +135,9 @@
     <bean id="registryWorkflowManager"
           class="org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManagerImpl"
           p:errorDao-ref="importErrorDao"
-          p:registryDao-ref="spRegistryDao"
           p:registryDaoExt-ref="registryDaoExt"
-          p:statusService-ref="registryStatusService" />
+		  p:registryService-ref="registryService"
+		  p:statusService-ref="registryStatusService" />
 
     <bean id="registryRecordWorkflowManagerRO"
           class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManagerRO"
@@ -167,20 +167,15 @@
 
     <bean id="sessionUtils"
           class="org.flexpay.common.service.internal.SessionUtilsImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="reportUtil"
           class="org.flexpay.common.service.reporting.ReportUtil"
-          p:sessionFactory-ref="flexpaySessionFactory"
           p:dataSource-ref="dataSource"
           p:fileService-ref="fpFileService" />
 
-    <bean id="processHelper"
-          class="org.flexpay.common.process.ProcessHelper"
-          p:processManager-ref="processManager" />
-
-    <bean id="correctionsServiceFactory"
-          class="org.flexpay.common.service.importexport.impl.CorrectionsServiceFactory" />
+	<bean id="correctionsServiceFactory"
+		  class="org.flexpay.common.service.importexport.impl.CorrectionsServiceFactory" />
 
     <bean id="classToTypeRegistryCommon"
           autowire-candidate="false"

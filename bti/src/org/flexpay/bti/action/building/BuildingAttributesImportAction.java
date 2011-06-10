@@ -8,7 +8,6 @@ import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -44,11 +43,11 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 			return SUCCESS;
 		}
 
-		Map<Serializable, Serializable> params = map();
+		Map<String, Object> params = map();
 		params.put(BuildingAttributesImportJob.PARAM_FILE_ID, fpFile.getId());
 		params.put(BuildingAttributesImportJob.PARAM_IMPORT_DATE, beginDateFilter.getDate());
 
-		processManager.createProcess("BuildingAttributesImport", params);
+		processManager.startProcess("BuildingAttributesImport", params);
 		addActionMessage(getText("bti.building.attribute.import.started"));
 		return SUCCESS;
 	}

@@ -9,23 +9,22 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.DateUtil;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.JpaTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.List;
 
 public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements ApartmentDaoExt {
 
-	private HibernateTemplate hibernateTemplate;
+	private JpaTemplate jpaTemplate;
 
 	/**
 	 * Find apartment by number
@@ -80,18 +79,17 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
+		return jpaTemplate.executeFind(new JpaCallback() {
 			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cntHql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query cntQuery = entityManager.createQuery(cntHql.toString());
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
-
+						.getResultList();
 			}
 		});
 	}
@@ -109,8 +107,8 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	}
 
 	@Required
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	public void setJpaTemplate(JpaTemplate jpaTemplate) {
+		this.jpaTemplate = jpaTemplate;
 	}
 
 }

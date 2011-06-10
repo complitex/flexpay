@@ -1,6 +1,6 @@
 package org.flexpay.common.process;
 
-import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jboss.seam.bpm.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 
 /**

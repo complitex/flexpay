@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_listItem" structureRef="java.util.List"/>
+	<itemDefinition id="_resultItem"/>
+	<itemDefinition id="inputParamItem"/>
+	<itemDefinition id="_countSignalsItem" structureRef="java.lang.Integer" />
+	<itemDefinition id="_processIdItem" structureRef="java.lang.Long" />
+	<itemDefinition id="_processDefinitionVersionIdItem" structureRef="java.lang.Long" />
+
+	<itemDefinition id="_2_multiInstanceItemType"/>
+
+	<process processType="Public" isExecutable="true" id="TestParentProcess" name="Test child process"
+			 tns:packageName="defaultPackage">
+
+		<extensionElements>
+			<tns:import name="java.util.List" />
+			<tns:import name="java.util.ArrayList" />
+			<tns:import name="java.lang.Integer" />
+		</extensionElements>
+
+		<!-- process variables -->
+		<property id="list" itemSubjectRef="_listItem"/>
+		<property id="result" itemSubjectRef="_resultItem"/>
+		<property id="inputParam" itemSubjectRef="_inputParamItem"/>
+		<property id="countSignals" itemSubjectRef="_countSignals"/>
+		<property id="signalFromChild" itemSubjectRef="_resultItem"/>
+		<property id="processId" itemSubjectRef="_processIdItem" />
+		<property id="PROCESS_DEFINITION_VERSION_ID" itemSubjectRef="_processDefinitionVersionIdItem" />
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<scriptTask id="_10" name="Init variables">
+			<script>
+				kcontext.setVariable("countSignals", 0);
+				process = kcontext.getProcessInstance();
+				kcontext.setVariable("processId", process.getId());
+			</script>
+		</scriptTask>
+
+		<parallelGateway id="_2" gatewayDirection="Diverging" />
+
+		<subProcess id="_3" name="Call to child process">
+			<ioSpecification>
+				<dataInput id="_3_input" name="MultiInstanceInput"/>
+				<inputSet/>
+				<outputSet/>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>list</sourceRef>
+				<targetRef>_3_input</targetRef>
+			</dataInputAssociation>
+			<multiInstanceLoopCharacteristics>
+				<loopDataInputRef>_3_input</loopDataInputRef>
+				<inputDataItem id="item" itemSubjectRef="_3_multiInstanceItemType"/>
+			</multiInstanceLoopCharacteristics>
+			<!-- nodes -->
+			<startEvent id="_3-1" name="StartSubProcess"/>
+			<callActivity id="_3-2" name="CallActivity" calledElement="TestSubProcess">
+				<ioSpecification>
+					<dataInput id="_3-2_subItemInput" name="subItem"/>
+					<dataInput id="_3-2_processIdInput" name="parentProcessId"/>
+					<dataInput id="_3-2_PROCESS_DEFINITION_VERSION_ID" name="PROCESS_DEFINITION_VERSION_ID"/>
+					<inputSet>
+						<dataInputRefs>_3-2_subItemInput</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_3-2_processIdInput</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_3-2_PROCESS_DEFINITION_VERSION_ID</dataInputRefs>
+					</inputSet>
+				</ioSpecification>
+				<dataInputAssociation>
+					<sourceRef>item</sourceRef>
+					<targetRef>_3-2_subItemInput</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>processId</sourceRef>
+					<targetRef>_3-2_processIdInput</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>PROCESS_DEFINITION_VERSION_ID</sourceRef>
+					<targetRef>_3-2_PROCESS_DEFINITION_VERSION_ID</targetRef>
+				</dataInputAssociation>
+			</callActivity>
+			<scriptTask id="_3-3" name="Show list">
+				<script>System.out.println("list: " + list);</script>
+			</scriptTask>
+			<endEvent id="_3-4" name="EndSubProcess"/>
+			<!-- connections -->
+			<sequenceFlow id="_3-1-_3-2" sourceRef="_3-1" targetRef="_3-2"/>
+			<sequenceFlow id="_3-2-_3-3" sourceRef="_3-2" targetRef="_3-3"/>
+			<sequenceFlow id="_3-3-_3-4" sourceRef="_3-3" targetRef="_3-4"/>
+		</subProcess>
+
+		<exclusiveGateway id="_7" name="Join 1" gatewayDirection="Converging"/>
+
+		<intermediateCatchEvent id="_4" name="event">
+			<dataOutput id="_4_Output" name="event"/>
+			<dataOutputAssociation>
+				<sourceRef>_4_Output</sourceRef>
+				<targetRef>signalFromChild</targetRef>
+			</dataOutputAssociation>
+			<outputSet>
+				<dataOutputRefs>_4_Output</dataOutputRefs>
+			</outputSet>
+			<signalEventDefinition signalRef="signal"/>
+		</intermediateCatchEvent>
+
+		<scriptTask id="_11" name="Add">
+			<script>
+				kcontext.setVariable("countSignals", kcontext.getVariable("countSignals") + 1);
+			</script>
+		</scriptTask>
+
+		<exclusiveGateway id="_9" name="Split 1" gatewayDirection="Diverging"/>
+		
+		<parallelGateway id="_5" gatewayDirection="Converging" />
+
+		<endEvent id="_6" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_10" sourceRef="_1" targetRef="_10"/>
+		<sequenceFlow id="_10-_2" sourceRef="_10" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_3-_5" sourceRef="_3" targetRef="_5"/>
+		<sequenceFlow id="_2-_7" sourceRef="_2" targetRef="_7"/>
+		<sequenceFlow id="_7-_4" sourceRef="_7" targetRef="_4"/>
+		<sequenceFlow id="_4-_11" sourceRef="_4" targetRef="_11"/>
+		<sequenceFlow id="_11-_9" sourceRef="_11" targetRef="_9"/>
+		<sequenceFlow id="_9-_5" sourceRef="_9" targetRef="_5">
+			<conditionExpression xs:type="tFormalExpression">
+				return list.size() == countSignals;
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_9-_7" sourceRef="_9" targetRef="_7">
+			<conditionExpression xs:type="tFormalExpression">
+				return list.size() != countSignals;
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6"/>
+
+	</process>
+
+</definitions>

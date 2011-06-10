@@ -38,13 +38,14 @@
           p:tariffExportLogRecordDao-ref="tariffExportLogRecordDao"
           autowire-candidate="false" />
 
-    <bean id="processManagerTc" parent="processManager" autowire-candidate="false">
-        <property name="definitionPaths">
-            <list merge="true">
-                <value>WEB-INF/tc/process</value>
-                <value>WEB-INF/bti/process</value>
-            </list>
-        </property>
-    </bean>
+	<bean id="processDefinitionManagerTc" parent="processDefinitionManager" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/tc/process</value>
+				<value>WEB-INF/bti/process</value>
+			</list>
+		</property>
+
+	</bean>
 
 </beans>

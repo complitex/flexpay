@@ -17,7 +17,7 @@
 
     <bean id="serviceProviderDaoExt"
           class="org.flexpay.orgs.dao.impl.ServiceProviderDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
+          p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="organizationDao"
           parent="abstractDao"

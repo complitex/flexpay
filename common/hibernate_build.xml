@@ -10,6 +10,7 @@
 	<target name="template.schemaexport"
 			description="Exports a generated schema to file">
 		<mkdir dir="${build.dir}/src/sql" />
+
 		<hibernatetool destdir="${build.dir}/src/sql"
 					   classpath="${build.dir}/classes:${src.dir}">
 
@@ -18,6 +19,27 @@
 
 			<hbm2ddl drop="false" create="true" export="false"
 					 outputfilename="${file_name}" format="true" />
+		</hibernatetool>
+	</target>
+
+	<target name="jbpm.ddl"
+			description="Exports a generated schema to file">
+		<mkdir dir="${build.dir}/src/sql" />
+
+		<hibernatetool destdir="${build.dir}/src/sql"
+					   classpath="${build.dir}/classes:${src.dir}">
+
+			<jpaconfiguration persistenceunit="org.jbpm.persistence.jpa" />
+
+			<classpath>
+				<path refid="jbpm.lib" />
+				<path refid="drools.lib" />
+				<path location="${common.dir}/web" />
+				<path location="${build.dir}/classes" />
+			</classpath>
+
+			<hbm2ddl drop="true" export="false"
+					 outputfilename="jbpm.ddl" format="true" />
 		</hibernatetool>
 	</target>
 

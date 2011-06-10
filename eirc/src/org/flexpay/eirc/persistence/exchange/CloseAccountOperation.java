@@ -36,7 +36,7 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @throws org.flexpay.common.exception.FlexPayException

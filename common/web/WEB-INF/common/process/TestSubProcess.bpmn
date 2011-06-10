@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_item"/>
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+
+	<itemDefinition id="_processIdItem" structureRef="java.lang.Long" />
+	<itemDefinition id="_processDefinitionVersionIdItem" structureRef="java.lang.Long" />
+
+	<process processType="Public" isExecutable="true" id="TestSubProcess" name="Test child process">
+
+		<!-- process variables -->
+		<property id="subItem" itemSubjectRef="_item"/>
+		<property id="result" itemSubjectRef="_resultItem"/>
+		<property id="signalFromSystem" itemSubjectRef="_resultItem"/>
+
+		<property id="parentProcessId" itemSubjectRef="_processIdItem" />
+		<property id="PROCESS_DEFINITION_VERSION_ID" itemSubjectRef="_processDefinitionVersionIdItem" />
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartSubProcess"/>
+
+		<task id="_2" name="Task" tns:taskName="MyTask">
+			<ioSpecification>
+				<dataInput id="_2_inputParam" name="inputParam" />
+				<dataOutput id="_2_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_2_inputParam</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>subItem</sourceRef>
+				<targetRef>_2_inputParam</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>result</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<intermediateCatchEvent id="_3" name="event">
+			<dataOutput id="_3_Output" name="event"/>
+			<dataOutputAssociation>
+				<sourceRef>_3_Output</sourceRef>
+				<targetRef>signalFromSystem</targetRef>
+			</dataOutputAssociation>
+			<outputSet>
+				<dataOutputRefs>_3_Output</dataOutputRefs>
+			</outputSet>
+			<signalEventDefinition signalRef="signal"/>
+		</intermediateCatchEvent>
+
+		<scriptTask id="_4" name="Signal to parent process">
+			<script>
+				System.out.println("1. Send signal 'Signal'" + subItem);
+				kcontext.getKnowledgeRuntime().signalEvent("signal", "Signal", parentProcessId);
+				System.out.println("2. Sent signal 'Signal'" + subItem);
+			</script>
+		</scriptTask>
+
+		<endEvent id="_5" name="EndSubProcess"/>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4"/>
+		<sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5"/>
+
+	</process>
+
+</definitions>

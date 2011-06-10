@@ -58,7 +58,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @throws org.flexpay.common.exception.FlexPayException

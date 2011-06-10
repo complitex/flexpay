@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -59,6 +60,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param apartmentStub Apartment reference
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public EircAccount findAccount(@NotNull Stub<Apartment> apartmentStub) {
 		return eircAccountDaoExt.findAccount(apartmentStub.getId());
@@ -71,7 +73,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 */
 	@NotNull
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public EircAccount create(@NotNull EircAccount account) throws FlexPayExceptionContainer {
 		validate(account);
 		account.setId(null);
@@ -88,7 +90,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 */
 	@NotNull
 	@Override
-	@Transactional (readOnly = false)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	public EircAccount update(@NotNull EircAccount account) throws FlexPayExceptionContainer {
 
 		validate(account);

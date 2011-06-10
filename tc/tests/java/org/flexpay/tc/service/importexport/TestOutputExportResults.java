@@ -99,7 +99,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 			for (Long buildingId : buildingIds) {
 				@SuppressWarnings ({"unchecked"})
-				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(
+				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) jpaTemplate.find(
 						hql, tariffBeginDate, buildingId);
 				log.info("Found {} log records for date: {} and building #{}",
 						new Object[]{records.size(), tariffBeginDate, buildingId});
@@ -118,7 +118,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 					}
 
 					@SuppressWarnings ({"unchecked"})
-					List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(
+					List<TariffCalculationResult> results = (List<TariffCalculationResult>) jpaTemplate.find(
 							hqlGetResult, new Object[]{record.getId()});
 					if (results.size() > 1) {
 						log.error("Unexpected number of results for log record: {}", results.size());

@@ -6,12 +6,15 @@ import org.flexpay.eirc.dao.EircRegistryRecordPropertiesDao;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class EircRegistryRecordPropertiesDaoImpl extends HibernateDaoSupport implements EircRegistryRecordPropertiesDao {
+import static org.flexpay.common.util.CollectionUtils.map;
+
+public class EircRegistryRecordPropertiesDaoImpl extends JpaDaoSupport implements EircRegistryRecordPropertiesDao {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
@@ -27,7 +30,7 @@ public class EircRegistryRecordPropertiesDaoImpl extends HibernateDaoSupport imp
 	@Override
 	public List<EircRegistryRecordProperties> findWithConsumers(Long registryId, Long lowerBound, Long upperBound) {
 		Object[] params = {registryId, lowerBound, upperBound};
-		return (List<EircRegistryRecordProperties>) getHibernateTemplate()
+		return (List<EircRegistryRecordProperties>) getJpaTemplate()
 				.findByNamedQuery("EircRegistryRecordProperties.findWithConsumers", params);
 	}
 
@@ -37,8 +40,9 @@ public class EircRegistryRecordPropertiesDaoImpl extends HibernateDaoSupport imp
 	@SuppressWarnings ({"unchecked"})
 	@Override
 	public List<EircRegistryRecordProperties> findWithConsumers(Collection<Long> recordIds) {
-		return (List<EircRegistryRecordProperties>) getHibernateTemplate()
-				.findByNamedQueryAndNamedParam("EircRegistryRecordProperties.findWithConsumersAndEircAccount", "ids", recordIds);
+		Map<String, Collection<Long>> params = map("ids", recordIds);
+		return (List<EircRegistryRecordProperties>) getJpaTemplate()
+				.findByNamedQueryAndNamedParams("EircRegistryRecordProperties.findWithConsumersAndEircAccount", params);
 	}
 
 	/**
@@ -53,7 +57,7 @@ public class EircRegistryRecordPropertiesDaoImpl extends HibernateDaoSupport imp
 	@Override
 	public List<EircRegistryRecordProperties> findWithApartmentAttributes(Long registryId, Long lowerBound, Long upperBound) {
 		Object[] params = {registryId, lowerBound, upperBound};
-		List<Object[]> objects = (List<Object[]>) getHibernateTemplate()
+		List<Object[]> objects = (List<Object[]>) getJpaTemplate()
 				.findByNamedQuery("EircRegistryRecordProperties.findWithApartmentAttributes", params);
 		List<EircRegistryRecordProperties> result = CollectionUtils.list();
 		for (Object[] pair : objects) {

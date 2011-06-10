@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_resultItem" structureRef="java.lang.String"/>
+
+	<itemDefinition id="_organizationIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_generatedFileNameItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_fileIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_dateItem" structureRef="java.util.Date"/>
+	<itemDefinition id="_registryIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_privateKeyItem" structureRef="java.lang.String"/>
+
+	<process processType="Public" isExecutable="true" id="GeneratePaymentsRegistry"
+			 name="Generate payments registry process" tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="generatePaymentRegistryFileNameResult" itemSubjectRef="_resultItem"/>
+		<property id="createFPFileResult" itemSubjectRef="_resultItem"/>
+		<property id="generatePaymentsDBRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="generatePaymentsMBRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="sendPaymentsRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="generatePaymentsFPRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="deleteFPFileResult" itemSubjectRef="_resultItem"/>
+
+		<property id="organizationId" itemSubjectRef="_organizationIdItem"/>
+		<property id="generatedFileName" itemSubjectRef="_generatedFileNameItem"/>
+		<property id="fileId" itemSubjectRef="_fileIdItem"/>
+		<property id="registeredOrganizationId" itemSubjectRef="_organizationIdItem"/>
+		<property id="serviceProviderId" itemSubjectRef="_organizationIdItem"/>
+		<property id="finishDate" itemSubjectRef="_dateItem"/>
+		<property id="lastProcessedDate" itemSubjectRef="_dateItem"/>
+		<property id="registryId" itemSubjectRef="_registryIdItem"/>
+		<property id="privateKey" itemSubjectRef="_privateKeyItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess"/>
+
+		<task id="_2" name="GeneratePaymentRegistryFileNameTask" tns:taskName="GeneratePaymentRegistryFileNameTask">
+			<ioSpecification>
+				<dataInput id="_2_organizationId" name="organizationId"/>
+				<dataOutput id="_2_result" name="Result"/>
+				<dataOutput id="_2_generatedFileName" name="GeneratedFileName"/>
+				<inputSet>
+					<dataInputRefs>_2_organizationId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_2_result</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_2_generatedFileName</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>organizationId</sourceRef>
+				<targetRef>_2_organizationId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_result</sourceRef>
+				<targetRef>generatePaymentRegistryFileNameResult</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_2_generatedFileName</sourceRef>
+				<targetRef>generatedFileName</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<inclusiveGateway id="_3" name="Split" default="_3-_20" gatewayDirection="Diverging"/>
+
+		<task id="_4" name="CreateFPFileTask" tns:taskName="CreateFPFileTask">
+			<ioSpecification>
+				<dataInput id="_4_generatedFileName" name="GeneratedFileName"/>
+				<dataOutput id="_4_fileId" name="fileId"/>
+				<dataOutput id="_4_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_4_generatedFileName</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_4_fileId</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_4_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>generatedFileName</sourceRef>
+				<targetRef>_4_generatedFileName</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_4_fileId</sourceRef>
+				<targetRef>fileId</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_4_result</sourceRef>
+				<targetRef>createFPFileResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<inclusiveGateway id="_5" name="Split" default="_5-_20" gatewayDirection="Diverging"/>
+
+		<task id="_6" name="GeneratePaymentsDBRegistryTask" tns:taskName="GeneratePaymentsDBRegistryTask">
+			<ioSpecification>
+				<dataInput id="_6_registeredOrganizationId" name="registeredOrganizationId"/>
+				<dataInput id="_6_serviceProviderId" name="serviceProviderId"/>
+				<dataInput id="_6_finishDate" name="finishDate"/>
+				<dataInput id="_6_lastProcessedDateInput" name="lastProcessedDate"/>
+				<dataOutput id="_6_lastProcessedDateOutput" name="lastProcessedDate"/>
+				<dataOutput id="_6_registryId" name="registryId"/>
+				<dataOutput id="_6_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_6_registeredOrganizationId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_serviceProviderId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_finishDate</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_6_lastProcessedDateInput</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_6_lastProcessedDateOutput</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_6_registryId</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_6_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>registeredOrganizationId</sourceRef>
+				<targetRef>_6_registeredOrganizationId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>serviceProviderId</sourceRef>
+				<targetRef>_6_serviceProviderId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>finishDate</sourceRef>
+				<targetRef>_6_finishDate</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>lastProcessedDate</sourceRef>
+				<targetRef>_6_lastProcessedDateInput</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_lastProcessedDateOutput</sourceRef>
+				<targetRef>lastProcessedDate</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_registryId</sourceRef>
+				<targetRef>registryId</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_6_result</sourceRef>
+				<targetRef>generatePaymentsDBRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<inclusiveGateway id="_7" name="Split" default="_7-_10" gatewayDirection="Diverging"/>
+
+		<task id="_8" name="GeneratePaymentsMBRegistryTask" tns:taskName="GeneratePaymentsMBRegistryTask">
+			<ioSpecification>
+				<dataInput id="_8_fileId" name="fileId"/>
+				<dataInput id="_8_organizationId" name="organizationId"/>
+				<dataInput id="_8_registryId" name="registryId"/>
+				<dataInput id="_8_privateKey" name="privateKey"/>
+				<dataOutput id="_8_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_8_fileId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_8_organizationId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_8_registryId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_8_privateKey</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_8_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_8_fileId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>organizationId</sourceRef>
+				<targetRef>_8_organizationId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_8_registryId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>privateKey</sourceRef>
+				<targetRef>_8_privateKey</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_8_result</sourceRef>
+				<targetRef>generatePaymentsMBRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<inclusiveGateway id="_9" name="Split" default="_9-_10" gatewayDirection="Diverging"/>
+
+		<task id="_12" name="SendPaymentsRegistryTask" tns:taskName="SendPaymentsRegistryTask">
+			<ioSpecification>
+				<dataInput id="_12_registryId" name="registryId"/>
+				<dataInput id="_12_fileId" name="fileId"/>
+				<dataOutput id="_12_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_12_registryId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_12_fileId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_12_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_12_registryId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_12_fileId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_12_result</sourceRef>
+				<targetRef>sendPaymentsRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<task id="_13" name="GeneratePaymentsFPRegistryTask" tns:taskName="GeneratePaymentsFPRegistryTask">
+			<ioSpecification>
+				<dataInput id="_13_registryId" name="registryId"/>
+				<dataInput id="_13_privateKey" name="privateKey"/>
+				<dataOutput id="_13_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_13_registryId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_13_privateKey</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_13_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>registryId</sourceRef>
+				<targetRef>_13_registryId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>privateKey</sourceRef>
+				<targetRef>_13_privateKey</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_13_result</sourceRef>
+				<targetRef>generatePaymentsFPRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<exclusiveGateway id="_10" name="Join" gatewayDirection="Converging"/>
+
+		<task id="_14" name="DeleteFPFileTask" tns:taskName="DeleteFPFileTask">
+			<ioSpecification>
+				<dataInput id="_14_fileId" name="fileId"/>
+				<dataOutput id="_14_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_14_fileId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_14_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_14_fileId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_14_result</sourceRef>
+				<targetRef>deleteFPFileResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<endEvent id="_15" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<exclusiveGateway id="_20" name="Join" gatewayDirection="Converging"/>
+
+		<endEvent id="_21" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4">
+			<conditionExpression xs:type="tFormalExpression">return generatePaymentRegistryFileNameResult == "next";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_3-_20" sourceRef="_3" targetRef="_20">
+			<conditionExpression xs:type="tFormalExpression">return generatePaymentRegistryFileNameResult == "error";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5"/>
+		<sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6">
+			<conditionExpression xs:type="tFormalExpression">return createFPFileResult == "next";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_5-_20" sourceRef="_5" targetRef="_20">
+			<conditionExpression xs:type="tFormalExpression">return createFPFileResult == "error";</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7"/>
+		<sequenceFlow id="_7-_8" sourceRef="_7" targetRef="_8">
+			<conditionExpression xs:type="tFormalExpression">return generatePaymentsDBRegistryResult == "next";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_7-_10" sourceRef="_7" targetRef="_10">
+			<conditionExpression xs:type="tFormalExpression">return generatePaymentsDBRegistryResult == "error";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_8-_9" sourceRef="_8" targetRef="_9"/>
+		<sequenceFlow id="_9-_12" sourceRef="_9" targetRef="_12">
+			<conditionExpression xs:type="tFormalExpression">return generatePaymentsMBRegistryResult == "next";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10">
+			<conditionExpression xs:type="tFormalExpression">return generatePaymentsMBRegistryResult == "error";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13"/>
+		<sequenceFlow id="_13-_20" sourceRef="_13" targetRef="_20"/>
+		<sequenceFlow id="_10-_14" sourceRef="_10" targetRef="_14"/>
+		<sequenceFlow id="_14-_15" sourceRef="_14" targetRef="_15"/>
+		<sequenceFlow id="_20-_21" sourceRef="_20" targetRef="_21"/>
+
+	</process>
+
+</definitions>

@@ -37,12 +37,19 @@
           p:districtCorrectionDao-ref="districtCorrectionDao"
           p:streetCorrectionDao-ref="streetCorrectionDao" />
 
-    <bean id="processManagerSz" parent="processManagerEirc" autowire-candidate="false">
-        <property name="definitionPaths">
-            <list merge="true">
-                <value>WEB-INF/sz/process</value>
-            </list>
-        </property>
-    </bean>
+	<bean id="szCorrectionsService"
+		  class="org.flexpay.sz.service.impl.CorrectionsServiceImpl"
+		  p:apartmentCorrectionDao-ref="apartmentCorrectionDao"
+		  p:buildingCorrectionDao-ref="buildingCorrectionDao"
+		  p:districtCorrectionDao-ref="districtCorrectionDao"
+		  p:streetCorrectionDao-ref="streetCorrectionDao" />
+
+	<bean id="processDefinitionManagerSz" parent="processDefinitionManagerEirc" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/sz/process</value>
+			</list>
+		</property>
+	</bean>
 
 </beans>

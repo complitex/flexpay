@@ -3,7 +3,7 @@ package org.flexpay.common.process.filter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ProcessStateFilter extends ObjectFilter {
 		//processStates.add(ProcessStateObject.getCompletedWithErrorsState());
 	}
 
-	public ProcessState getProcessState() {
+	public ProcessInstance.STATE getProcessState() {
 
 		return ProcessStateObject.getProcessState(selectedId);
 	}

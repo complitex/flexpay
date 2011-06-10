@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -329,6 +330,7 @@ public class SPServiceImpl implements SPService {
 	 * @param serviceCode		 Service code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
 		List<Service> services;

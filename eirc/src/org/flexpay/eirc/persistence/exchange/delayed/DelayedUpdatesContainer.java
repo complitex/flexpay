@@ -3,6 +3,8 @@ package org.flexpay.eirc.persistence.exchange.delayed;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -21,6 +23,7 @@ public class DelayedUpdatesContainer implements DelayedUpdate {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
 

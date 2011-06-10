@@ -65,7 +65,7 @@ public class TestImportService extends AbSpringBeanAwareTestCase {
 	public void beforeClass() throws Exception {
 		// find data source description for CN
 		// see init_db for 'magic' description
-		sourceDescription = (DataSourceDescription) DataAccessUtils.uniqueResult(hibernateTemplate.find(
+		sourceDescription = (DataSourceDescription) DataAccessUtils.uniqueResult(jpaTemplate.find(
 				"from DataSourceDescription where description='Источник - Тестовые данные ПУ из ЦН'"));
 
 		if (sourceDescription == null) {

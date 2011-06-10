@@ -66,7 +66,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @throws FlexPayException if failure occurs

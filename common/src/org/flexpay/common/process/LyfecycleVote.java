@@ -1,7 +1,7 @@
 package org.flexpay.common.process;
 
 /**
- * Process or its task commands that ProcessManager should be aware of while executing process
+ * ProcessInstance or its task commands that ProcessManager should be aware of while executing process
  */
 public enum LyfecycleVote {
 

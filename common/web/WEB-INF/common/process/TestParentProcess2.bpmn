@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="Definition"
+			 targetNamespace="http://www.example.org/MinimalExample"
+			 typeLanguage="http://www.java.com/javaTypes"
+			 expressionLanguage="http://www.mvel.org/2.0"
+			 xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+			 xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			 xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+			 xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+			 xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+			 xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+			 xmlns:tns="http://www.jboss.org/drools">
+
+	<itemDefinition id="_listItem"/>
+	<itemDefinition id="_resultItem"/>
+	<itemDefinition id="_result2Item"/>
+	<itemDefinition id="inputParamItem"/>
+
+	<itemDefinition id="_multiInstanceItemType"/>
+
+	<process processType="Public" isExecutable="true" id="TestParentProcess2" name="Test child process"
+			 tns:packageName="defaultPackage">
+
+		<!-- process variables -->
+		<property id="list" itemSubjectRef="_listItem"/>
+		<property id="result" itemSubjectRef="_resultItem"/>
+		<property id="result2" itemSubjectRef="_result2Item"/>
+		<property id="result3" itemSubjectRef="_resultItem"/>
+		<property id="inputParam" itemSubjectRef="_inputParamItem"/>
+
+		<!-- nodes -->
+		<startEvent id="_1" name="StartProcess">
+		</startEvent>
+
+		<parallelGateway id="_2" gatewayDirection="Diverging"/>
+
+		<subProcess id="_3" name="Call to child process">
+			<ioSpecification>
+				<dataInput id="_3_input" name="MultiInstanceInput"/>
+				<dataOutput id="_3_output" name="result_3"/>
+				<inputSet/>
+				<outputSet>
+					<dataOutputRefs>_3_output</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>list</sourceRef>
+				<targetRef>_3_input</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<targetRef>result3</targetRef>
+				<sourceRef>_3_output</sourceRef>
+			</dataOutputAssociation>
+			<multiInstanceLoopCharacteristics>
+				<loopDataInputRef>_3_input</loopDataInputRef>
+				<inputDataItem id="item" itemSubjectRef="_multiInstanceItemType"/>
+			</multiInstanceLoopCharacteristics>
+			<!-- nodes -->
+			<startEvent id="_3-1" name="StartSubProcess"/>
+			<scriptTask id="_3-2" name="Increment result">
+				<script>result_3 = item;System.out.println(result_3);</script>
+			</scriptTask>
+			<task id="_3-3" name="Task" tns:taskName="MyTask">
+				<ioSpecification>
+					<dataInput id="_3-3_inputParam" name="inputParam"/>
+					<dataOutput id="_3-3_result" name="Result"/>
+					<inputSet>
+						<dataInputRefs>_3-3_inputParam</dataInputRefs>
+					</inputSet>
+					<outputSet>
+						<dataOutputRefs>_3-3_result</dataOutputRefs>
+					</outputSet>
+				</ioSpecification>
+				<dataInputAssociation>
+					<sourceRef>item</sourceRef>
+					<targetRef>_3-3_inputParam</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation>
+					<sourceRef>_3-3_result</sourceRef>
+					<targetRef>result2</targetRef>
+				</dataOutputAssociation>
+			</task>
+			<subProcess id="_3-4" name="Call to child process">
+				<ioSpecification>
+					<dataInput id="_3-4_input" name="MultiInstanceInput"/>
+					<inputSet/>
+					<outputSet/>
+				</ioSpecification>
+				<dataInputAssociation>
+					<sourceRef>list</sourceRef>
+					<targetRef>_3-4_input</targetRef>
+				</dataInputAssociation>
+				<multiInstanceLoopCharacteristics>
+					<loopDataInputRef>_3-4_input</loopDataInputRef>
+					<inputDataItem id="item2" itemSubjectRef="_multiInstanceItemType"/>
+				</multiInstanceLoopCharacteristics>
+				<startEvent id="_3-4-1" name="StartSubProcess"/>
+				<scriptTask id="_3-4-2" name="Increment result">
+					<script>System.out.println("result2=" + result2 + ", item=" + item + ", item2=" + item2);</script>
+				</scriptTask>
+				<endEvent id="_3-4-3" name="EndSubProcess"/>
+				<sequenceFlow id="_3-4-1-_3-4-2" sourceRef="_3-4-1" targetRef="_3-4-2"/>
+				<sequenceFlow id="_3-4-2-_3-4-3" sourceRef="_3-4-2" targetRef="_3-4-3"/>
+			</subProcess>
+			<endEvent id="_3-5" name="EndSubProcess"/>
+			<!-- connections -->>
+			<sequenceFlow id="_3-1-_3-2" sourceRef="_3-1" targetRef="_3-2"/>
+			<sequenceFlow id="_3-2-_3-3" sourceRef="_3-2" targetRef="_3-3"/>
+			<sequenceFlow id="_3-3-_3-4" sourceRef="_3-3" targetRef="_3-4"/>
+			<sequenceFlow id="_3-4-_3-5" sourceRef="_3-4" targetRef="_3-5"/>
+		</subProcess>
+
+		<task id="_4" name="Task" tns:taskName="MyTask">
+			<ioSpecification>
+				<dataInput id="_4_inputParam" name="inputParam"/>
+				<dataOutput id="_4_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_4_inputParam</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_4_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>inputParam</sourceRef>
+				<targetRef>_4_inputParam</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_4_result</sourceRef>
+				<targetRef>result</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+		<parallelGateway id="_5" gatewayDirection="Converging"/>
+
+		<endEvent id="_6" name="EndProcess">
+			<terminateEventDefinition/>
+		</endEvent>
+
+		<!-- connections -->
+		<sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2"/>
+		<sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3"/>
+		<sequenceFlow id="_2-_4" sourceRef="_2" targetRef="_4"/>
+		<sequenceFlow id="_3-_5" sourceRef="_3" targetRef="_5"/>
+		<sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5"/>
+		<sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6"/>
+
+	</process>
+
+</definitions>

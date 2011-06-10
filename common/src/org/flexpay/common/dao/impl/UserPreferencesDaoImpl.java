@@ -8,7 +8,7 @@ import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -21,7 +21,7 @@ import java.util.List;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.springframework.dao.support.DataAccessUtils.uniqueResult;
 
-public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserPreferencesDao {
+public class UserPreferencesDaoImpl extends JpaDaoSupport implements UserPreferencesDao {
 
 	private static final Logger log = LoggerFactory.getLogger(UserPreferencesDaoImpl.class);
 
@@ -37,9 +37,9 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 
 		if (preferences.isNew()) {
 			preferences.setId(null);
-			getHibernateTemplate().save(preferences);
+			getJpaTemplate().persist(preferences);
 		} else {
-			getHibernateTemplate().update(preferences);
+			getJpaTemplate().merge(preferences);
 		}
 	}
 
@@ -70,13 +70,13 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 
 	@Override
 	public boolean delete(String uid) {
-		getHibernateTemplate().findByNamedQuery("UserPreferences.deleteByName", uid);
+		getJpaTemplate().findByNamedQuery("UserPreferences.deleteByName", uid);
 		return true;
 	}
 
 	@Override
 	public UserPreferences findByUserName(String uid) {
-		return (UserPreferences) uniqueResult((List<?>) getHibernateTemplate().
+		return (UserPreferences) uniqueResult((List<?>) getJpaTemplate().
                 findByNamedQuery("UserPreferences.findByName", uid));
 	}
 
@@ -91,7 +91,7 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public List<UserPreferences> listAllUser() {
-		return getHibernateTemplate().loadAll(UserPreferences.class);
+		return getJpaTemplate().find("from UserPreferences");
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 					userCertificate.setEndDate(certificate.getNotAfter());
 					userCertificate.setUserPreferences(preferences);
 
-					getHibernateTemplate().update(preferences);
+					getJpaTemplate().persist(preferences);
 				}
 			}
 		} catch (FlexPayException e) {
@@ -132,7 +132,7 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	public void deleteCertificate(UserPreferences preferences) {
 		if (isCertificateExist(preferences)) {
 			preferences.setCertificate(null);
-			getHibernateTemplate().delete(preferences);
+			getJpaTemplate().remove(preferences);
 		}
 		try {
 			deleteOldCertificateInKeyStore(preferences.getUsername(), KeyStoreUtil.loadKeyStore());

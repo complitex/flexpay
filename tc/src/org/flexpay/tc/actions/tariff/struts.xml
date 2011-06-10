@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="tc-tariffs" namespace="/tc" extends="common">
+
+		<action name="rulesFilesList" class="tariffCalcRulesFilesListPageAction">
+			<result type="tiles">tc.rules_files.list</result>
+		</action>
+
+        <action name="rulesFilesListAjax" class="tariffCalcRulesFilesListAction">
+            <result>/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_files_list.jsp</result>
+        </action>
+
+        <action name="rulesFileDelete" class="tariffCalcRulesFileDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
+		<action name="rulesFileEdit" class="tariffCalcRulesFileEditAction">
+			<result name="input" type="tiles">tc.rules_file.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">rulesFileView</param>
+                <param name="parse">true</param>
+                <param name="rulesFile.id">${rulesFile.id}</param>
+            </result>
+		</action>
+
+        <action name="rulesFileView" class="tariffCalcRulesFileViewAction">
+            <result type="tiles">tc.rules_file.view</result>
+            <result name="redirectError" type="redirect-action">rulesFilesList</result>
+        </action>
+
+        <action name="tariffCalculate" class="tariffCalculateAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">rulesFilesList</param>
+                <param name="parse">true</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+            </result>
+        </action>
+
+		<action name="calcResultExport" class="tariffCalcResultExportAction">
+			<result name="input" type="tiles">tc.calc_results.export</result>
+			<result name="redirectSuccess" type="redirect-action">calcResultExport</result>
+		</action>
+
+	</package>
+
+</struts>

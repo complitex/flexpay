@@ -6,17 +6,16 @@ import org.flexpay.ab.persistence.sorter.RegionSorter;
 import org.flexpay.ab.persistence.sorter.RegionSorterStub;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Collection;
 import java.util.List;
 
-public class RegionDaoExtImpl extends HibernateDaoSupport implements RegionDaoExt {
+public class RegionDaoExtImpl extends JpaDaoSupport implements RegionDaoExt {
 
 	/**
 	 * Find and sort regions
@@ -52,17 +51,17 @@ public class RegionDaoExtImpl extends HibernateDaoSupport implements RegionDaoEx
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cnthql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
+		return getJpaTemplate().executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				javax.persistence.Query cntQuery = entityManager.createQuery(cnthql.toString());
+				Long count = (Long) cntQuery.getSingleResult();
 				pager.setTotalElements(count.intValue());
 
-				return session.createQuery(hql.toString())
+				return entityManager.createQuery(hql.toString())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
-						.list();
+						.getResultList();
 
 			}
 		});

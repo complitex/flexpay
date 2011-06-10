@@ -207,6 +207,7 @@
 		</concat>
 		<antcall target="ab.sql.init-db" />
 		<antcall target="template.set_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
 	</target>
 
 	<target name="ab_sync.sql.all-test">
@@ -222,6 +223,7 @@
 			<fileset file="${ab_sync.dir}/etc/sql/sync_test.sql" />
 		</concat>
 		<antcall target="template.set_test_db_name" />
+		<antcall target="common.sql.init-db-jbpm-test" />
 	</target>
 
 	<target name="ab_sync.db-test" description="create ab_sync test db">

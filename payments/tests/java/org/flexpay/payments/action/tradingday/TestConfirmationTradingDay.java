@@ -1,27 +1,28 @@
 package org.flexpay.payments.action.tradingday;
 
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.payments.process.export.ExportJobParameterNames;
-import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
 
     @Autowired
     private ProcessManager processManager;
+
+	@Autowired
+	private ProcessDefinitionManager processDefinitionManager;
 /*
 	@Autowired
 	private JbpmConfiguration jbpmConfiguration;
@@ -30,19 +31,21 @@ public class TestConfirmationTradingDay extends SpringBeanAwareTestCase {
     @Test
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
 
-		processManager.deployProcessDefinition("CashboxTradingDay", true);
+		processDefinitionManager.deployProcessDefinition("CashboxTradingDay", true);
 
-        Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+        Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put(ExportJobParameterNames.CURRENT_INDEX_PAYMENT_POINT, 0);
-        long processId = processManager.createProcess("CashboxTradingDay", parameters);
-        assertTrue("Error", processId > 0);
+        ProcessInstance processInstance = processManager.startProcess("CashboxTradingDay", parameters);
+        assertNotNull("Process did not start: Object is null", processInstance);
+		assertNotNull("Process did not start: Process instance id is null", processInstance.getId());
+		assertTrue("Process state is not running", processInstance.getState() == ProcessInstance.STATE.RUNNING);
 
-        TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Пометить на закрытие", log);
+        // TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstance.getId(), "Пометить на закрытие", log);
 
-        org.flexpay.common.process.Process process = processManager.getProcessInstanceInfo(processId);
+        ProcessInstance process = processManager.getProcessInstance(processInstance.getId());
         String  currentStatus = (String) process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS);
 
-        assertEquals("Incorrect status", "Ожидает подтверждения", currentStatus);
+        assertEquals("Ожидает подтверждения", currentStatus);
 
         ConfirmationTradingDayServlet confirmationTradingDay = new ConfirmationTradingDayServlet();
 

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusServ
 
 	private RegistryRecordStatusDao registryRecordStatusDao;
 
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     @Override
 	public RegistryRecordStatus findByCode(int code) {
 
@@ -38,6 +40,7 @@ public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusServ
 	 * @return list of statuses
 	 */
 	@NotNull
+	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public List<RegistryRecordStatus> listAllStatuses() {
 		log.debug("Finding all statuses");

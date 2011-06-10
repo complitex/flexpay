@@ -6,11 +6,12 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.jpa.JpaCallback;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -45,11 +46,12 @@ public class TestConsumerAttributes extends EircSpringBeanAwareTestCase {
 	}
 
 	private void removeConsumerAttributes(final Long id) {
-		hibernateTemplate.execute(new HibernateCallback<Integer>() {
+		jpaTemplate.execute(new JpaCallback<Void>() {
 			@Override
-			public Integer doInHibernate(Session session) throws HibernateException {
-				return session.createQuery("delete from ConsumerAttribute where consumer.id=:ID")
-						.setLong("ID", id).executeUpdate();
+			public Void doInJpa(EntityManager entityManager) throws PersistenceException {
+				entityManager.createQuery("delete from ConsumerAttribute where consumer.id=:ID")
+						.setParameter("ID", id).executeUpdate();
+				return null;
 			}
 		});
 	}

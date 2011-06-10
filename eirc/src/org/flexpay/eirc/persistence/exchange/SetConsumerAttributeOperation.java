@@ -59,7 +59,7 @@ public abstract class SetConsumerAttributeOperation extends ContainerOperation {
 	}
 
 	/**
-	 * Process operation
+	 * ProcessInstance operation
 	 *
 	 * @param context ProcessingContext
 	 * @throws FlexPayException if failure occurs

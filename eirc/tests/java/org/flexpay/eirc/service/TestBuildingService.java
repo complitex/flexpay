@@ -28,8 +28,8 @@ public class TestBuildingService extends EircSpringBeanAwareTestCase {
 
 	@Test
 	public void testAllBuildingsAreValid() throws Throwable {
-		Number nBuildings = intResult(hibernateTemplate.find("select count(*) from Building"));
-		Number nEircBuildings = intResult(hibernateTemplate.find("select count(*) from ServedBuilding"));
+		Number nBuildings = intResult(jpaTemplate.find("select count(*) from Building"));
+		Number nEircBuildings = intResult(jpaTemplate.find("select count(*) from ServedBuilding"));
 
 		assertEquals("All buildings should be the ServedBuilding's", nBuildings.longValue(), nEircBuildings.longValue());
 	}

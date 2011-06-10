@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ServiceProviderFileProcessorTx {
 
 	/**
-	 * Process header
+	 * ProcessInstance header
 	 *
 	 * @param context Processing context
 	 * @throws Exception if failure occurs

@@ -14,21 +14,21 @@ import org.flexpay.eirc.persistence.sorter.EircAccountSorter;
 import org.flexpay.eirc.persistence.sorter.EircAccountSorterStub;
 import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.Collection;
 import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 
-public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAccountDaoExt {
+public class EircAccountDaoExtImpl extends JpaDaoSupport implements EircAccountDaoExt {
 
     protected Logger log = LoggerFactory.getLogger(getClass());
 
@@ -45,7 +45,7 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
     @Override
 	public EircAccount findAccount(@NotNull Long personId, @NotNull Long apartmentId) {
 		Object[] params = {personId, apartmentId};
-		List<?> accounts = getHibernateTemplate().findByNamedQuery("EircAccount.findByPersonAndApartment", params);
+		List<?> accounts = getJpaTemplate().findByNamedQuery("EircAccount.findByPersonAndApartment", params);
 		if (accounts.isEmpty()) {
 			return null;
 		}
@@ -61,7 +61,7 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
 	 */
     @Override
 	public EircAccount findAccount(@NotNull Long apartmentId) {
-		List<?> accounts = getHibernateTemplate().findByNamedQuery("EircAccount.findByApartmentWithConsumerInfo", apartmentId);
+		List<?> accounts = getJpaTemplate().findByNamedQuery("EircAccount.findByApartmentWithConsumerInfo", apartmentId);
 		if (accounts.isEmpty()) {
 			return null;
 		}
@@ -71,7 +71,7 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
 
     @Override
     public EircAccount readAccountNotFull(@NotNull Long accountId) {
-        List<?> accounts = getHibernateTemplate().findByNamedQuery("EircAccount.read", accountId);
+        List<?> accounts = getJpaTemplate().findByNamedQuery("EircAccount.read", accountId);
         if (accounts.isEmpty()) {
             return null;
         }
@@ -152,23 +152,23 @@ public class EircAccountDaoExtImpl extends HibernateDaoSupport implements EircAc
             hql.append(" order by ").append(orderByClause);
         }
 
-        return getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+        return getJpaTemplate().executeFind(new JpaCallback<List<?>>() {
             @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+            public List<?> doInJpa(EntityManager entityManager) throws HibernateException {
 
-                Query qCount = session.createQuery(hqlCount.toString());
-                Query query = session.createQuery(hql.toString());
+                Query qCount = entityManager.createQuery(hqlCount.toString());
+                Query query = entityManager.createQuery(hql.toString());
                 for (int n = 0; n < params.size(); ++n) {
                     qCount.setParameter(n, params.get(n));
                     query.setParameter(n, params.get(n));
                 }
 
-                Number objectsCount = (Number) qCount.uniqueResult();
+                Number objectsCount = (Number) qCount.getSingleResult();
                 pager.setTotalElements(objectsCount.intValue());
 
                 return query.setFirstResult(pager.getThisPageFirstElementNumber())
                         .setMaxResults(pager.getPageSize())
-                        .list();
+                        .getResultList();
 
             }
         });
@@ -226,7 +226,7 @@ where count.c > 1
                                                                 "ci.street_name street_name, ci.building_number building_number, ci.building_bulk building_bulk, " +
                                                                 "ci.apartment_number apartment_number " +
                                                         "from eirc_eirc_accounts_tbl a " +
-                                                        "    inner join eirc_consumer_infos_tbl ci on ci.id=a.consumer_info_id and (ci.status=0)" + 
+                                                        "    inner join eirc_consumer_infos_tbl ci on ci.id=a.consumer_info_id and (ci.status=0)" +
                                                         "    left outer join eirc_consumers_tbl c on a.id=c.eirc_account_id " +
                                                         "    left outer join eirc_consumer_attributes_tbl ca on ca.consumer_id=c.id " +
                                                         "    left outer join eirc_consumer_attribute_types_tbl t on ca.type_id=t.id " +
@@ -286,27 +286,27 @@ where count.c > 1
 
         log.debug("sql = {}", sql);
 
-        List<Number> ids = getHibernateTemplate().executeFind(new HibernateCallback<List<?>>() {
+        List<Number> ids = getJpaTemplate().executeFind(new JpaCallback<List<?>>() {
             @Override
-            public List<?> doInHibernate(Session session) throws HibernateException {
+            public List<?> doInJpa(EntityManager entityManager) throws HibernateException {
 
-                Query qCount = session.createSQLQuery(sqlCount.toString());
-                Query query = session.createSQLQuery(sql.toString());
+                Query qCount = entityManager.createNativeQuery(sqlCount.toString());
+                Query query = entityManager.createNativeQuery(sql.toString());
 
                 for (int n = 0; n < params.size(); ++n) {
                     qCount.setParameter(n, params.get(n));
                     query.setParameter(n, params.get(n));
                 }
 
-                query.setParameterList("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
-                qCount.setParameterList("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
+                query.setParameter("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
+                qCount.setParameter("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
 
-                Number objectsCount = (Number) qCount.uniqueResult();
+                Number objectsCount = (Number) qCount.getSingleResult();
                 pager.setTotalElements(objectsCount.intValue());
 
                 return query.setFirstResult(pager.getThisPageFirstElementNumber()).
                         setMaxResults(pager.getPageSize()).
-                        list();
+                        getResultList();
             }
         });
 

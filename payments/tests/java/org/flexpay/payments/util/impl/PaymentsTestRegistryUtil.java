@@ -6,14 +6,12 @@ import org.flexpay.common.util.impl.CommonTestRegistryUtil;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 public class PaymentsTestRegistryUtil extends CommonTestRegistryUtil {
 
     @Autowired
     private RegistryDeliveryHistoryService registryDeliveryHistoryService;
 
-    @Transactional(readOnly = false)
     @Override
     protected void deleteRegistryDependences(@NotNull Stub<Registry> stub) {
         registryDeliveryHistoryService.delete(stub);

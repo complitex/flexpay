@@ -4,11 +4,11 @@ import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.junit.Test;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.jpa.JpaCallback;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.junit.Assert.assertNotSame;
@@ -36,16 +36,16 @@ public class TestSortStreets extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
-						.setLong(2, TOWN.getId())
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
+						.setParameter(2, TOWN.getId())
 						.setFirstResult(1)
 						.setMaxResults(30)
-						.list();
+						.getResultList();
 			}
 		});
 		int size = result.size();
@@ -73,14 +73,14 @@ public class TestSortStreets extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
-						.setLong(2, TOWN.getId())
-						.list();
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
+						.setParameter(2, TOWN.getId())
+						.getResultList();
 			}
 		});
 		int size = result.size();
@@ -108,16 +108,16 @@ public class TestSortStreets extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
-						.setLong(2, TOWN.getId())
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
+						.setParameter(2, TOWN.getId())
 						.setFirstResult(1)
 						.setMaxResults(30)
-						.list();
+						.getResultList();
 			}
 		});
 		int size = result.size();
@@ -145,14 +145,14 @@ public class TestSortStreets extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
-						.setLong(2, TOWN.getId())
-						.list();
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
+						.setParameter(2, TOWN.getId())
+						.getResultList();
 			}
 		});
 		int size = result.size();
@@ -176,13 +176,13 @@ public class TestSortStreets extends AbSpringBeanAwareTestCase {
 		final Long enId = 2L;
 
 		watch.start();
-		List<?> result = hibernateTemplate.executeFind(new HibernateCallback<List<?>>() {
-            @Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				return session.createQuery(hql)
-						.setLong(0, enId)
-						.setLong(1, ruId)
-						.list();
+		List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+			@Override
+			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+				return entityManager.createQuery(hql)
+						.setParameter(0, enId)
+						.setParameter(1, ruId)
+						.getResultList();
 			}
 		});
 		int size = result.size();

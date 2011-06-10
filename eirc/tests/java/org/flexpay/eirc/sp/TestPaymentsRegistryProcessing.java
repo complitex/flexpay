@@ -85,7 +85,7 @@ public class TestPaymentsRegistryProcessing extends EircSpringBeanAwareTestCase 
 		assertFalse("File parsing failed", registries.isEmpty());
 
 		String hql = "select count(*) from Operation";
-		Long operationsCount = (Long) DataAccessUtils.uniqueResult(hibernateTemplate.find(hql));
+		Long operationsCount = (Long) DataAccessUtils.uniqueResult(jpaTemplate.find(hql));
 
 		Registry newRegistry = registries.get(0);
 		ProcessingContext context = new ProcessingContext();
@@ -106,7 +106,7 @@ public class TestPaymentsRegistryProcessing extends EircSpringBeanAwareTestCase 
 		assertEquals("Registry should have success status",
 				RegistryStatus.PROCESSED, newRegistry.getRegistryStatus().getCode());
 
-		Long afterProcessOperationsCount = (Long) DataAccessUtils.uniqueResult(hibernateTemplate.find(hql));
+		Long afterProcessOperationsCount = (Long) DataAccessUtils.uniqueResult(jpaTemplate.find(hql));
 
 		assertTrue("Processing should add new operations", operationsCount < afterProcessOperationsCount);
 	}

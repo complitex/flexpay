@@ -2,6 +2,7 @@ package org.flexpay.common.process.jobs;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.filter.ProcessNameObject;
@@ -19,6 +20,7 @@ public class ProcessesCleanupJob extends Job {
 	public static final String PARAM_DEFINITION_NAME = "definitionName";
 
 	private ProcessManager processManager;
+	private ProcessDefinitionManager processDefinitionManager;
 
 	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
@@ -30,7 +32,7 @@ public class ProcessesCleanupJob extends Job {
 		ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
 		if (definitionName != null) {
-			processNameFilter.setProcessManager(processManager);
+			processNameFilter.setProcessDefinitionManager(processDefinitionManager);
 			processNameFilter.loadProcessNames();
 			for (ProcessNameObject name : processNameFilter.getProcessNames()) {
 				if (name.getName().equals(definitionName)) {
@@ -47,5 +49,10 @@ public class ProcessesCleanupJob extends Job {
 	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
+	}
+
+	@Required
+	public void setProcessDefinitionManager(ProcessDefinitionManager processDefinitionManager) {
+		this.processDefinitionManager = processDefinitionManager;
 	}
 }

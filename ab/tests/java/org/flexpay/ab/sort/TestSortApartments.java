@@ -38,7 +38,7 @@ public class TestSortApartments extends AbSpringBeanAwareTestCase {
 		Object[] params = {buildingId};
 
 		watch.start();
-		List<?> result = hibernateTemplate.find(hql, params);
+		List<?> result = jpaTemplate.find(hql, params);
 		int size = result.size();
 		watch.stop();
 

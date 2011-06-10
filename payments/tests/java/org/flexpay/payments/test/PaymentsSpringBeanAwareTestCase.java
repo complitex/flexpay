@@ -17,8 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static org.flexpay.ab.service.Roles.*;
-import static org.flexpay.common.service.Roles.PROCESS_DELETE;
-import static org.flexpay.common.service.Roles.PROCESS_READ;
+import static org.flexpay.common.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 
@@ -89,8 +88,12 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				DOCUMENT_ADD,
                 DOCUMENT_CHANGE,
                 TRADING_DAY_ADMIN_ACTION,
+				PROCESS_DEFINITION_READ,
+				PROCESS_DEFINITION_UPLOAD_NEW,
                 PROCESS_DELETE,
-                PROCESS_READ
+                PROCESS_READ,
+				PROCESS_START,
+				PROCESS_COMPLETE_HUMAN_TASK
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = userPreferencesFactory.newInstance();

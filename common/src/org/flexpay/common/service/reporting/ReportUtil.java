@@ -12,7 +12,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -33,9 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.common.util.CollectionUtils.*;
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
 
 public class ReportUtil {
@@ -582,7 +579,6 @@ public class ReportUtil {
 		return n;
 	}
 
-	@Required
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}

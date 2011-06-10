@@ -68,6 +68,54 @@
           p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
           p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
+	<bean id="parseMbRegistryFacade"
+		  class="org.flexpay.eirc.process.registry.helper.ParseMbRegistryFacade"
+		  abstract="true"
+          p:fpFileService-ref="fpFileService"
+          p:registryService-ref="registryService"
+          p:moduleName="${flexpay.module.name.eirc}"
+          p:registryArchiveStatusService-ref="registryArchiveStatusService"
+          p:registryTypeService-ref="registryTypeService"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService"
+          p:registryStatusService-ref="registryStatusService" />
+
+	<bean id="parseMbCorrectionsFacade"
+		  parent="parseMbRegistryFacade"
+		  p:mbFileParser-ref="mbCorrectionsFileParser" />
+
+	<bean id="parseMbChargersFacade"
+		  parent="parseMbRegistryFacade"
+		  p:mbFileParser-ref="mbChargesFileParser" />
+
+	<bean id="parseFPRegistryFacade"
+		  class="org.flexpay.eirc.process.registry.helper.ParseFPRegistryFacade"
+		  p:fpFileService-ref="fpFileService"
+          p:registryService-ref="registryService"
+          p:registryRecordService-ref="registryRecordService"
+          p:moduleName="${flexpay.module.name.eirc}"
+          p:eircRegistryService-ref="eircRegistryService"
+          p:registryArchiveStatusService-ref="registryArchiveStatusService"
+          p:registryTypeService-ref="registryTypeService"
+          p:organizationService-ref="organizationService"
+          p:providerService-ref="serviceProviderService"
+          p:consumerService-ref="consumerService"
+          p:propertiesFactory-ref="propertiesFactory"
+          p:typeRegistry-ref="classToTypeRegistry"
+          p:correctionsService-ref="correctionsService"
+          p:masterIndexService-ref="masterIndexService"
+          p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
+          p:registryWorkflowManager-ref="registryWorkflowManager"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+
+	<bean id="processingDBRegistryFacade"
+		  class="org.flexpay.eirc.process.registry.helper.ProcessingDBRegistryFacade"
+		  p:registryService-ref="registryService"
+          p:registryFileService-ref="registryFileService"
+          p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService"
+          p:processRegistryService-ref="processRegistryService"
+          p:handleError-ref="registryHandleError"
+          p:executor-ref="taskExecutor" />
+
     <bean id="eircAccountService"
           class="org.flexpay.eirc.service.impl.EircAccountServiceImpl"
           p:personService-ref="personService"
@@ -238,7 +286,7 @@
           p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
           p:registryWorkflowManager-ref="registryWorkflowManager"
           p:organizationService-ref="organizationService" />
-
+<!--
     <bean id="processManagerEirc"
           parent="processManager"
           autowire-candidate="false">
@@ -255,7 +303,7 @@
             </list>
         </property>
     </bean>
-
+ -->
     <bean id="eircPropertiesFactory"
           depends-on="propertiesFactory"
           autowire-candidate="false"
@@ -330,9 +378,10 @@
     <bean id="registryHandleError"
           class="org.flexpay.eirc.process.registry.error.impl.RegistryHandleError"
           p:classToTypeRegistry-ref="classToTypeRegistry"
-          p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
+          p:recordWorkflowManager-ref="registryRecordWorkflowManagerRW"
           p:registryWorkflowManager-ref="registryWorkflowManager"
-          p:organizationService-ref="organizationService" />
+          p:organizationService-ref="organizationService"
+		  p:registryService-ref="registryService" />
 
     <bean id="processRegistryVariableInstanceService"
           class="org.flexpay.eirc.service.impl.ProcessRegistryVariableInstanceServiceImpl"

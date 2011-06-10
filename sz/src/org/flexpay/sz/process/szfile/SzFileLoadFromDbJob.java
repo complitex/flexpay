@@ -48,7 +48,7 @@ public class SzFileLoadFromDbJob extends Job {
 
 		Set<Long> fileIds = (Set<Long>) parameters.get(FILE_IDS);
 
-		log.debug("Process szFile load from DB for fileIds = {} started", fileIds);
+		log.debug("ProcessInstance szFile load from DB for fileIds = {} started", fileIds);
 
 		List<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
 
@@ -129,7 +129,7 @@ public class SzFileLoadFromDbJob extends Job {
 			pLogger.info("Loading from DB szFile with id = {} finished", szFile.getId());
 		}
 
-		log.debug("Process szFile load from DB for fileIds = {} finihed", fileIds);
+		log.debug("ProcessInstance szFile load from DB for fileIds = {} finihed", fileIds);
 
 		return RESULT_NEXT;
 	}
