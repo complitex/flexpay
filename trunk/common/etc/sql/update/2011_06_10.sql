@@ -842,3 +842,5 @@ add index FK61F475A52FF04688 (addedBy_id),
 add constraint FK61F475A52FF04688
 foreign key (addedBy_id)
 references OrganizationalEntity (id);
+
+update common_version_tbl set last_modified_date='2011-06-10', date_version=0;
