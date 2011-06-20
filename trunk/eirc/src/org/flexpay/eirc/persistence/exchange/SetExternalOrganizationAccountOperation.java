@@ -109,13 +109,17 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 	private DelayedUpdate setMbAccountNumber(RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
 
 //		getConsumerWatch.resume();
+		log.debug("start getConsumer");
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
+		log.debug("end getConsumer");
 //		getConsumerWatch.suspend();
 
 //		getConsumerAttributeTypeWatch.resume();
+		log.debug("start readByCode");
 		ConsumerAttributeTypeBase type = factory.getConsumerAttributeTypeService()
 				.readByCode(org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes.ATTR_ERC_ACCOUNT);
-//		getConsumerAttributeTypeWatch.suspend();
+		log.debug("end readByCode");
+		//		getConsumerAttributeTypeWatch.suspend();
 		if (type == null) {
 			throw new FlexPayException("Cannot find attribute " + ConsumerAttributes.ATTR_ERC_ACCOUNT);
 		}
@@ -124,6 +128,7 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 		ConsumerAttribute oldAttr = consumer.getAttributeForDate(type, changeApplyingDate);
 //		consumerGetAttributeForDate.suspend();
 
+		log.debug("check attribute");
 		if (oldAttr == null || !StringUtils.equals(oldAttr.getStringValue(), newValue)) {
 			ConsumerAttribute attribute = new ConsumerAttribute();
 			attribute.setType(type);
@@ -131,13 +136,17 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 //			consumerSetTmpAttributeForDate.resume();
 			consumer.setTmpAttributeForDate(attribute, changeApplyingDate);
 //			consumerSetTmpAttributeForDate.suspend();
+			log.debug("create DelayedUpdateConsumer");
 			return new DelayedUpdateConsumer(consumer, factory.getConsumerService());
 		}
+		log.debug("nothing do: create DelayedUpdateNope");
 
 		return DelayedUpdateNope.INSTANCE;
 	}
 
 	private DelayedUpdate visitUpdates(ProcessingContext context) throws FlexPayException {
+
+		log.debug("start visitUpdates");
 
 		context.visitCurrentRecordUpdates(new DelayedUpdateVisitor() {
 			@Override
@@ -147,6 +156,8 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 				}
 			}
 		});
+
+		log.debug("end visitUpdates");
 
 		return DelayedUpdateNope.INSTANCE;
 	}
