@@ -149,6 +149,10 @@
 			<param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
 			<reference refid="ab.classes.resources" torefid="resources" />
 		</antcall>
+
+		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+            <fileset file="${ab.dir}/web/WEB-INF/hibernate.cfg.xml" />
+		</copy>
 	</target>
 
 	<!-- Build production web-archive -->
