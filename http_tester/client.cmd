@@ -1,1 +1,1 @@
-java -cp .\build\classes;.\libs\* org.flexpay.httptester.Client
+java -cp .\build\classes;.\libs\* org.flexpay.httptester.outerrequest.OuterRequestClient

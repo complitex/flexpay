@@ -50,6 +50,7 @@ public class SyncServiceImpl implements SyncService {
 	/**
 	 * Synchronize Address Bureau
 	 */
+    @Override
 	public void syncAB() {
 
 		if (!lockManager.lock("sync_ab_lock")) {

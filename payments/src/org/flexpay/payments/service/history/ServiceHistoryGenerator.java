@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+    @Override
 	public void generateFor(@NotNull Service obj) {
 
 		Service service = spService.readFull(stub(obj));
@@ -60,6 +62,10 @@ public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 			generateForSingle(service);
 		}
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
 
 	@Required
 	public void setDiffService(DiffService diffService) {

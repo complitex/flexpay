@@ -7,7 +7,6 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/sun-web.xml" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
@@ -16,16 +15,15 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../../ab/src" />
         </sourceRoots>
-        <context-artifact name="ab:Web exploded" />
       </configuration>
       <facet type="Struts2" name="Struts 2">
         <configuration>
           <fileset id="s2fileset1" name="My Fileset" removed="false">
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts-config.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/street/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/apartment/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/person/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts-config.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/building/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/measureunit/struts.xml</file>
@@ -38,9 +36,10 @@
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/filter/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/i18n/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/actions/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/action/struts.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/i18n/struts.xml</file>
           </fileset>
+          <propertiesKeys disabled="false" />
         </configuration>
       </facet>
     </facet>
@@ -62,7 +61,7 @@
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-services.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-struts.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data-export.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/stand-alone-tasks.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-cache.xml</file>
@@ -71,9 +70,9 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jmx.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-mail.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-services.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans_self_testing.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-self-testing.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data-export.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
           <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
@@ -86,9 +85,7 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jms.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-ldap.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security-opensso.xml</file>
           <file>file://$MODULE_DIR$/../../ab/tests/data/org/flexpay/ab/test/ab-beans.xml</file>
@@ -108,7 +105,7 @@
     <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="hibernate3" level="project" />
-    <orderEntry type="library" name="spring2" level="project" />
+    <orderEntry type="library" name="spring3" level="project" />
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="module" module-name="common" />
@@ -131,6 +128,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Mule" level="project" />
   </component>
 </module>
 

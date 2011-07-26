@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class StreetReferencesHistoryGenerator implements ReferencesHistoryGenerator<Street> {
 
@@ -30,6 +31,13 @@ public class StreetReferencesHistoryGenerator implements ReferencesHistoryGenera
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        streetTypeHistoryGenerator.setJpaTemplate(jpaTemplate);
+        townHistoryGenerator.setJpaTemplate(jpaTemplate);
+        diffService.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setStreetTypeHistoryGenerator(StreetTypeHistoryGenerator streetTypeHistoryGenerator) {
 		this.streetTypeHistoryGenerator = streetTypeHistoryGenerator;
@@ -44,4 +52,5 @@ public class StreetReferencesHistoryGenerator implements ReferencesHistoryGenera
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
 	}
+
 }

@@ -7,7 +7,6 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../admin/web/WEB-INF/sun-web.xml" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../admin/web/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
@@ -20,19 +19,25 @@
       <facet type="Struts2" name="Struts 2">
         <configuration>
           <fileset id="s2fileset1" name="My Fileset" removed="false">
-            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/struts-config.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/actions/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/action/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/i18n/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/action/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/i18n/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts-config.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/action/user/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/action/certificate/struts.xml</file>
           </fileset>
+          <propertiesKeys disabled="false" />
         </configuration>
       </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
-          <unit-entry name="flexpaySessionFactory" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
+          <unit-entry name="flexpay" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
+          <unit-entry name="flexpaySessionFactory" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../admin/web/WEB-INF/hibernate.cfg.xml" />
       </configuration>
@@ -41,38 +46,11 @@
       <configuration>
         <fileset id="web: application context" name="MVC application context" removed="false">
           <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/applicationContext.xml</file>
-          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-dao.xml</file>
-          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-services.xml</file>
           <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-struts.xml</file>
           <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/stand-alone-tasks.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-cache.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-dao.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-data-source.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jmx.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-mail.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-services.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans_self_testing.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
-          <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
-          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/menu.cfg.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jms.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -85,21 +63,10 @@
       <sourceFolder url="file://$MODULE_DIR$/../../admin/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../admin/tests/java" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="file://$MODULE_DIR$/../Java/_libs/j2ee/docs/api" />
-        </JAVADOC>
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="hibernate3" level="project" />
-    <orderEntry type="library" name="spring2" level="project" />
+    <orderEntry type="library" name="spring3" level="project" />
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="module" module-name="common" />
@@ -112,6 +79,7 @@
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
+    <orderEntry type="library" name="ldap" level="project" />
   </component>
 </module>
 

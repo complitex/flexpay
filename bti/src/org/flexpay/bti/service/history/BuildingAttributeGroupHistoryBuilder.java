@@ -28,6 +28,7 @@ public class BuildingAttributeGroupHistoryBuilder extends HistoryBuilderBase<Bui
 	 * @param g2   Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable BuildingAttributeGroup g1, @NotNull BuildingAttributeGroup g2, @NotNull Diff diff) {
 
 		log.debug("creating new building attribute type groups diff");
@@ -43,11 +44,12 @@ public class BuildingAttributeGroupHistoryBuilder extends HistoryBuilderBase<Bui
 	private void buildNameDiff(BuildingAttributeGroup g1, BuildingAttributeGroup g2, Diff diff) {
 
 		builderHelper.buildTranslationDiff(g1, g2, diff, new TranslationExtractor<Translation, BuildingAttributeGroup>() {
-
+            @Override
 			public Translation getTranslation(BuildingAttributeGroup obj, @NotNull Language language) {
 				return obj.getTranslation(language);
 			}
 
+            @Override
 			public int getTranslationField() {
 				return FIELD_NAME;
 			}
@@ -61,6 +63,7 @@ public class BuildingAttributeGroupHistoryBuilder extends HistoryBuilderBase<Bui
 	 * @param group	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull BuildingAttributeGroup group, @NotNull Diff diff) {
 		for (HistoryRecord record : diff.getHistoryRecords()) {
 
@@ -78,11 +81,13 @@ public class BuildingAttributeGroupHistoryBuilder extends HistoryBuilderBase<Bui
 	private void patchName(BuildingAttributeGroup group, HistoryRecord record) {
 
 		builderHelper.patchTranslation(group, record, new TranslationPatcher<BuildingAttributeGroupName, BuildingAttributeGroup>() {
+            @Override
 			public BuildingAttributeGroupName getNotNullTranslation(BuildingAttributeGroup obj, @NotNull Language language) {
 				BuildingAttributeGroupName tr = obj.getTranslation(language);
 				return tr == null ? new BuildingAttributeGroupName() : tr;
 			}
 
+            @Override
 			public void setTranslation(BuildingAttributeGroup obj, BuildingAttributeGroupName tr, String name) {
 				tr.setName(name);
 				obj.setTranslation(tr);

@@ -2,6 +2,7 @@ package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.dao.JpaSetDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-public interface ApartmentDaoExt {
+public interface ApartmentDaoExt extends JpaSetDao {
 
 	/**
 	 * Find apartment by number

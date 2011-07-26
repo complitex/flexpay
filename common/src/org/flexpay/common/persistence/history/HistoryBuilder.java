@@ -1,10 +1,11 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface HistoryBuilder<T extends DomainObject> {
+public interface HistoryBuilder<T extends DomainObject> extends JpaSetService {
 
 	/**
 	 * Create diff from t1 to t2

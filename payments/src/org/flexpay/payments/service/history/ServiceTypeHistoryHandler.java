@@ -20,6 +20,7 @@ public class ServiceTypeHistoryHandler extends HistoryHandlerBase<ServiceType> {
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+    @Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(ServiceType.class) == diff.getObjectType();
 	}
@@ -30,6 +31,7 @@ public class ServiceTypeHistoryHandler extends HistoryHandlerBase<ServiceType> {
 	 * @param diff Diff
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public void process(@NotNull Diff diff) throws Exception {
 
 		String masterIndex = diff.getMasterIndex();

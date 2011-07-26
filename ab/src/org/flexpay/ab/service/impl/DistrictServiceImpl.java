@@ -24,6 +24,7 @@ import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -350,6 +351,16 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		return districtNameDao;
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        districtDao.setJpaTemplate(jpaTemplate);
+        districtDaoExt.setJpaTemplate(jpaTemplate);
+        districtNameDao.setJpaTemplate(jpaTemplate);
+        parentService.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setDistrictDao(DistrictDao districtDao) {
 		this.districtDao = districtDao;
@@ -379,5 +390,4 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	public void setDistrictDaoExt(DistrictDaoExt districtDaoExt) {
 		this.districtDaoExt = districtDaoExt;
 	}
-
 }

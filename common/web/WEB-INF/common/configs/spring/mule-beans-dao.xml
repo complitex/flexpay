@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!--  Dao Layer instances -->
+    <bean id="languageDao"
+          class="org.flexpay.common.dao.impl.LanguageDaoImpl"
+          p:jpaTemplate-ref="jpaTemplate" />
+
+    <bean id="userPreferencesDao"
+          class="org.flexpay.common.dao.impl.UserPreferencesDaoImpl"
+          p:jpaTemplate-ref="jpaTemplate" />
+
+    <bean id="correctionDaoExt"
+          class="org.flexpay.common.dao.impl.CorrectionDaoExtImpl"
+          p:jpaTemplate-ref="jpaTemplate"
+          p:dataSource-ref="dataSource" />
+
+    <bean id="correctionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.CorrectionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.DataCorrection" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="fpFileDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.FPFileDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.file.FPFile" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="fpFileStatusDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.FPFileStatusDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.file.FPFileStatus" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="fpFileTypeDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.FPFileTypeDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.file.FPFileType" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="fpModuleDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.FPModuleDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.FPModule" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="sequenceDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.SequenceDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.Sequence" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="reportPrintHistoryRecordDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.report.ReportPrintHistoryRecordDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.report.ReportPrintHistoryRecord" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="currencyInfoDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.CurrencyInfoDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.CurrencyInfo" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="dataSourceDescriptionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.DataSourceDescriptionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.DataSourceDescription" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="diffDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.DiffDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.Diff" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="diffDaoExt"
+          class="org.flexpay.common.dao.impl.DiffDaoExtImpl"
+          p:jpaTemplate-ref="jpaTemplate" />
+
+    <bean id="externalHistoryPackDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.ExternalHistoryPackDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.ExternalHistoryPack" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="historyUnPackDataDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.HistoryUnPackDataDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryUnPackData" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="historyConsumperDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.HistoryConsumerDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryConsumer" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="historyConsumerDaoExt"
+          class="org.flexpay.common.dao.impl.HistoryConsumerDaoExtImpl"
+          p:jpaTemplate-ref="jpaTemplate" />
+
+    <bean id="historyConsumptionDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.HistoryConsumptionDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryConsumption" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="historyConsumptionGroupDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.HistoryConsumptionGroupDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryConsumptionGroup" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="userRoleDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.common.dao.UserRoleDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.UserRole" />
+            </bean>
+        </property>
+    </bean>
+
+</beans>

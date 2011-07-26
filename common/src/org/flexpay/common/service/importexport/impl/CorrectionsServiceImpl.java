@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -158,6 +159,12 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 		return correctionDaoExt.getExternalId(obj.getId(), typeRegistry.getType(obj.getClass()), sd.getId());
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        correctionDao.setJpaTemplate(jpaTemplate);
+        correctionDaoExt.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
@@ -172,4 +179,5 @@ public class CorrectionsServiceImpl implements CorrectionsService {
     public void setCorrectionDao(CorrectionDao correctionDao) {
         this.correctionDao = correctionDao;
     }
+
 }

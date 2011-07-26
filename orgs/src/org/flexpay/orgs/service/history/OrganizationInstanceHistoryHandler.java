@@ -27,6 +27,7 @@ public abstract class OrganizationInstanceHistoryHandler<
 	 * @param diff Diff
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
 		T object;

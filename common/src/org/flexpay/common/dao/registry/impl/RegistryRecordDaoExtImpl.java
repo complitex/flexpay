@@ -863,7 +863,6 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
         if (log.isDebugEnabled()) {
             watch.start();
         }
-
         int updated = getSimpleJdbcTemplate().update(
                 "update common_registry_records_tbl r set r.import_error_id=null, r.import_error_type=null, record_status_id=" + newStatus.getId() + " where r.id in (" + idsList + ")");
 

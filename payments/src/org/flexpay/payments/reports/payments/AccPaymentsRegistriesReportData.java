@@ -8,7 +8,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 

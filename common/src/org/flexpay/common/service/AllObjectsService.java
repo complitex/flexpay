@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.DomainObject;
 
 import java.util.List;
 
-public interface AllObjectsService<T extends DomainObject> {
+public interface AllObjectsService<T extends DomainObject> extends JpaSetService {
 
 	/**
 	 * Get all objects

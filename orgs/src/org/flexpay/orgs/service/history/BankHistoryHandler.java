@@ -8,10 +8,12 @@ import org.jetbrains.annotations.NotNull;
 public class BankHistoryHandler
 		extends OrganizationInstanceHistoryHandler<BankDescription, Bank> {
 
+    @Override
 	protected Bank newInstance() {
 		return new Bank();
 	}
 
+    @Override
 	protected Class<Bank> getType() {
 		return Bank.class;
 	}
@@ -22,6 +24,7 @@ public class BankHistoryHandler
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+    @Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(Bank.class) == diff.getObjectType();
 	}

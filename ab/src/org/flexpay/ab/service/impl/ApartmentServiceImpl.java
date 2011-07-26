@@ -1,8 +1,12 @@
 package org.flexpay.ab.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.dao.*;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.dao.ApartmentDao;
+import org.flexpay.ab.dao.ApartmentDaoExt;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
@@ -23,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -419,6 +424,16 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 
 		return filters;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        apartmentDao.setJpaTemplate(jpaTemplate);
+        apartmentDaoExt.setJpaTemplate(jpaTemplate);
+//        buildingService.setJpaTemplate(jpaTemplate);
+//        parentService.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setApartmentDao(ApartmentDao apartmentDao) {

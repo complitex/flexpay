@@ -106,6 +106,7 @@ public class HistoryRec {
 	 * 
 	 * @return a string representation of the object.
 	 */
+    @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", id)
@@ -121,6 +122,7 @@ public class HistoryRec {
 				.toString();
 	}
 
+    @Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;

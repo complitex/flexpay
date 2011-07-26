@@ -1,6 +1,7 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -8,7 +9,7 @@ import java.util.Collection;
 /**
  * History generator creates history for the objects type of its parameter
  */
-public interface HistoryGenerator<T extends DomainObject> {
+public interface HistoryGenerator<T extends DomainObject> extends JpaSetService {
 
 	/**
 	 * Do generation

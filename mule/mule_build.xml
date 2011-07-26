@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_mule" basedir=".." default="mule.help">
+
+	<import file="../ab/ab_build.xml" />
+
+	<property file="mule/mule_build.properties" />
+	<property file="ab/ab_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="mule.dir" value="${basedir}/mule" />
+
+	<path id="mule.lib">
+		<fileset dir="${mule.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="mule.libraries" dir="${mule.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="mule.jar" location="${build.dir}/lib/${mule.jar.name}" />
+	<path id="mule.test.jar" location="${build.dir}/lib/${mule.tests.jar.name}" />
+
+	<path id="mule.production.classpath">
+		<path refid="ab.production.classpath" />
+		<path refid="mule.lib" />
+	</path>
+
+	<path id="mule.test.classpath">
+		<path refid="ab.test.classpath" />
+		<path refid="mule.production.classpath" />
+	</path>
+
+    <path id="mule.runtests.classpath">
+        <path refid="ab.runtests.classpath" />
+        <path refid="mule.test.classpath" />
+        <path location="mule/tests/data" />
+    </path>
+
+	<path id="mule.ldap.files.ldif">
+		<path refid="ab.ldap.files.ldif" />
+		<fileset dir="${mule.dir}/etc/ldap/update">
+			<include name="*.ldif"/>
+		</fileset>
+	</path>
+
+	<path id="mule.ldap.init.ldif">
+		<fileset dir="${mule.dir}/etc/ldap">
+			<include name="init.ldif"/>
+		</fileset>
+	</path>
+
+	<target name="mule.help" description="Print mule module build script options">
+		<echo>
+	Mule module build script
+	Usage:
+	ant -f mule_build.xml [target_name [target_options]]
+
+	Available targets are:
+		mule.db - Initialize database
+		mule.ddl - Generate DDL of module
+		mule.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f mule_build.xml mule.runtests -Dtest.class.name=org.flexpay.mule.service.TestBuildingService
+		mule.war - Build production war
+		</echo>
+	</target>
+
+    <target name="mule.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="mule.src.production" value="${mule.dir}/${src.dir};${ab.src.production}" />
+	<target name="mule.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${mule.src.production}" />
+			<reference refid="mule.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="mule.src.test" value="${mule.src.production};${mule.dir}/${tests.src.dir};${ab.src.test}" />
+	<target name="mule.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${mule.src.test}" />
+			<reference refid="mule.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="mule.jar.production" depends="mule.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${mule.jar.name}" /> 
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="mule.docs" depends="mule.compile.production">
+		<fileset id="mule.docs.resources" dir="${mule.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${mule.src.production}" />
+			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="docs.file" value="${mule.docs.name}" />
+			<reference refid="mule.docs.resources" torefid="resources" />
+			<reference refid="mule.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="mule.war">
+		<antcall target="clean.all" />
+		<antcall target="template.mule.war.production" />
+	</target>
+
+    <target name="mule.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="mule" />
+		</antcall>
+		<antcall target="mule.prepare.war.internal" />
+		<antcall target="war.security" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="mule" />
+		</antcall>
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="mule.prepare.test.war">
+		<antcall target="mule.prepare.war.internal" />
+		<antcall target="war.security" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="mule.prepare.war.internal" depends="ab.prepare.war.internal">
+        <fileset id="mule.web.resources" dir="${mule.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="mule.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${mule.dir}/${src.dir}" id="mule.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${mule.dir}/${src.dir}" />
+            <reference refid="mule.classes.resources" torefid="resources" />
+        </antcall>
+
+        <copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+			<fileset file="${mule.dir}/web/META-INF/*persistence.xml" />
+            <fileset file="${mule.dir}/web/WEB-INF/hibernate.cfg.xml" />
+        </copy>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.mule.war.production"
+			depends="clean.all,mule.compile.production,mule.prepare.war,init.distr">
+
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
+		<antcall target="template.update_version" />
+
+		<war destfile="${distr.dir}/${mule.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="mule.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${mule.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="mule.ddl" depends="clean.build,mule.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_mule.ddl.sql" />
+			<param name="src.dir" value="${mule.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${mule.dir}/web/WEB-INF/hibernate.cfg.xml" />
+		</antcall>
+	</target>
+
+	<target name="mule.runtests" depends="mule.compile.test,mule.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.mule.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="mule.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="mule.sql.init-db"
+			depends="ab.sql.init-db"
+			unless="mule.sql.init-db.run">
+		<antcall target="ab.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${mule.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<property name="mule.sql.init-db.run" value="true" />
+	</target>
+
+	<target name="mule.sql.init-db-test"
+			depends="ab.sql.init-db-test"
+			unless="mule.sql.init-db.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${mule.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${mule.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<property name="mule.sql.init-db-run.run" value="true" />
+	</target>
+
+	<target name="mule.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${mule.dir}/etc/sql/flexpay_mule.ddl.sql" />
+		</concat>
+		<antcall target="mule.sql.init-db" />
+		<antcall target="template.set_db_name" />
+		<antcall target="common.sql.init-db-jbpm" />
+	</target>
+
+	<target name="mule.sql.all-test">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${mule.dir}/etc/sql/flexpay_mule.ddl.sql" />
+		</concat>
+		<antcall target="mule.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
+		<antcall target="common.sql.init-db-jbpm-test" />
+	</target>
+
+	<target name="mule.db-test" description="create mule db">
+		<antcall target="mule.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+	<target name="mule.ldap.update">
+		<path id="ldap.files.ldif" refid="mule.ldap.files.ldif" />
+		<antcall target="template.ldap.update"/>
+	</target>
+
+	<target name="mule.ldap.init" depends="ab.ldap.init">
+		<property name="mule.ldap.file.ldif" refid="mule.ldap.init.ldif" />
+		<var name="ldap.file.ldif" value="${mule.ldap.file.ldif}" />
+		<antcall target="template.run.ldapmodify"/>
+	</target>
+
+	<target name="mule.ldap.set.flexpay.user" depends="ab.ldap.set.flexpay.user">
+		<if>
+			<isset property="mule.ldap.person.class" />
+			<then>
+				<var name="ldap.person.class" value="${mule.ldap.person.class}" />
+				<antcall target="template.ldap.set.flexpay.user" />
+			</then>
+		</if>
+	</target>
+
+</project>

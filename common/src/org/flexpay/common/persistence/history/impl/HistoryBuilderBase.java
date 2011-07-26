@@ -15,6 +15,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Date;
 
@@ -33,6 +34,7 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 	 * @return Diff object
 	 */
 	@NotNull
+    @Override
 	public final Diff diff(@Nullable T t1, @NotNull T t2) {
 
 		Diff diff = new Diff();
@@ -76,6 +78,7 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 	 * @return Diff object
 	 */
 	@NotNull
+    @Override
 	public Diff deleteDiff(@NotNull T obj) {
 
 		Diff diff = new Diff();
@@ -103,6 +106,13 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 	 * @param diff Diff object
 	 */
 	protected abstract void doDiff(@Nullable T t1, @NotNull T t2, @NotNull Diff diff);
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        masterIndexService.setJpaTemplate(jpaTemplate);
+        correctionsService.setJpaTemplate(jpaTemplate);
+        builderHelper.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {

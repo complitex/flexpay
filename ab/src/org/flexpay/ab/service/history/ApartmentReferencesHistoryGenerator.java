@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class ApartmentReferencesHistoryGenerator implements ReferencesHistoryGenerator<Apartment> {
 
@@ -19,6 +20,12 @@ public class ApartmentReferencesHistoryGenerator implements ReferencesHistoryGen
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        buildingHistoryGenerator.setJpaTemplate(jpaTemplate);
+        diffService.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setBuildingHistoryGenerator(BuildingHistoryGenerator buildingHistoryGenerator) {
 		this.buildingHistoryGenerator = buildingHistoryGenerator;
@@ -28,4 +35,5 @@ public class ApartmentReferencesHistoryGenerator implements ReferencesHistoryGen
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
 	}
+
 }

@@ -1,9 +1,10 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 
-public interface ModificationListener<T extends DomainObject> {
+public interface ModificationListener<T extends DomainObject> extends JpaSetService {
 
 	/**
 	 * Notify of new object created

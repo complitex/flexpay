@@ -1,0 +1,198 @@
+<ehcache>
+
+    <!--
+        DiskStore configuration
+
+        Sets the path to the directory where cache files are created.
+
+        If the path is a Java System Property it is replaced by its value in the
+        running VM.
+
+        The following properties are translated:
+        * user.home - User's home directory
+        * user.dir - User's current working directory
+        * java.io.tmpdir - Default temp file path
+
+        Subdirectories can be specified below the property e.g. java.io.tmpdir/one
+        -->
+    <diskStore path="java.io.tmpdir/flexpay_cache/spring" />
+
+    <!--
+        Mandatory Default Cache configuration. These settings will be applied to caches
+        created programmtically using CacheManager.add(String cacheName)
+        -->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="true"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU" />
+
+    <!-- Spring services cache -->
+    <cache name="flexpayCache"
+           maxElementsInMemory="5000"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="flexpayReadOnlyCache"
+           maxElementsInMemory="5000"
+           eternal="true"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="commonFlexpayCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="commonMeasureUnitFlexpayCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="commonRegistryRecordStatusCache"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="commonUserRoleFlexpayCache"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="commonProcessInstanceLogFlexpayCache"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="commonMasterIndexCache"
+           maxElementsInMemory="1"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abCountryFlexpayCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abRegionFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abTownFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abDistrictFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abStreetFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abBuildingFlexpayCache"
+           maxElementsInMemory="5000"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abAddressAttributeTypeFlexpayCache"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abStreetTypeFlexpayCache"
+           maxElementsInMemory="30"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abIdentityTypeFlexpayCache"
+           maxElementsInMemory="30"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abTownTypeFlexpayCache"
+           maxElementsInMemory="30"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="fpFileFlexpayCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="btiFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="orgsFlexpayCache"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="paymentsServiceCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="flexpayPaymentsROCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="paymentsServiceTypeCache"
+           maxElementsInMemory="50"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="eircConsumerAttributeTypesCache"
+           maxElementsInMemory="50"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="eircQuittancePacketsCache"
+           maxElementsInMemory="50"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="tcFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+</ehcache>

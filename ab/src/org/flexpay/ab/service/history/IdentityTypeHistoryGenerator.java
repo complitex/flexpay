@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -51,6 +52,13 @@ public class IdentityTypeHistoryGenerator implements HistoryGenerator<IdentityTy
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffService.setJpaTemplate(jpaTemplate);
+        historyBuilder.setJpaTemplate(jpaTemplate);
+        identityTypeService.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
@@ -65,4 +73,5 @@ public class IdentityTypeHistoryGenerator implements HistoryGenerator<IdentityTy
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}
+
 }

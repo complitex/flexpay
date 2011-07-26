@@ -32,6 +32,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	protected Person doCreateObject() throws Exception {
 
 		Person person = new Person();
@@ -71,6 +72,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @return DomainObject instance
 	 */
 	@Nullable
+    @Override
 	protected Person readObject(@NotNull Stub<Person> stub) {
 		return personService.readFull(stub);
 	}
@@ -84,6 +86,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
 							Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
@@ -224,6 +227,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
+    @Override
 	protected Stub<Person> findPersistentObject(Person object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		// there is not enough info to identify each person, will create new each time
 		return null;
@@ -235,6 +239,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
+    @Override
 	protected void doSaveObject(Person object, String externalId) throws Exception {
 		PersonIdentity identity = object.getDefaultIdentity();
 		if (identity != null) {

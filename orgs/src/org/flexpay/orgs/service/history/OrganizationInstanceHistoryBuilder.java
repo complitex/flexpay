@@ -43,6 +43,7 @@ public abstract class OrganizationInstanceHistoryBuilder<
 	 * @param org2 Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable T org1, @NotNull T org2, @NotNull Diff diff) {
 
 		log.debug("creating new service providers diff");
@@ -123,6 +124,7 @@ public abstract class OrganizationInstanceHistoryBuilder<
 	 * @param org  Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull T org, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

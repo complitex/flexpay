@@ -5,6 +5,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.Subdivision;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class SubdivisionReferencesHistoryGenerator implements ReferencesHistoryGenerator<Subdivision> {
 
@@ -24,6 +25,10 @@ public class SubdivisionReferencesHistoryGenerator implements ReferencesHistoryG
 			subdivisionHistoryGenerator.generateFor(parentSubdivision);
 		}
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
 
 	@Required
 	public void setOrganizationHistoryGenerator(OrganizationHistoryGenerator organizationHistoryGenerator) {

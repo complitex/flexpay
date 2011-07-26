@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -54,6 +55,13 @@ public class AddressAttributeTypeHistoryGenerator implements HistoryGenerator<Ad
 			generateFor(type);
 		}
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffService.setJpaTemplate(jpaTemplate);
+        typeService.setJpaTemplate(jpaTemplate);
+        historyBuilder.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setDiffService(DiffService diffService) {

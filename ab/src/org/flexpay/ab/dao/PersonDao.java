@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
 
-public interface PersonDao extends GenericDao<Person, Long>{
+public interface PersonDao extends GenericDao<Person, Long> {
 
 	/**
 	 * Get page of children for parent

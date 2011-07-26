@@ -7,6 +7,7 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.access.annotation.Secured;
@@ -14,7 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 import java.util.Collection;
 import java.util.List;
 
-public interface PersonService {
+public interface PersonService extends JpaSetService {
 
 	/**
 	 * Read person

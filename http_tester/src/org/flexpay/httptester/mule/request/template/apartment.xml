@@ -1,0 +1,12 @@
+<org.flexpay.mule.Request>
+    <action>@apartment.action@</action>
+    <apartment>
+		<id>@apartment.id@</id>
+        <ids>
+            <long>@apartment.id1@</long>
+            <long>@apartment.id2@</long>
+        </ids>
+        <buildingId>@apartment.buildingId@</buildingId>
+		<number>@apartment.number@</number>
+    </apartment>
+</org.flexpay.mule.Request>

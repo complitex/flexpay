@@ -31,6 +31,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * Create new DomainObject from HistoryRecord
 	 */
 	@NotNull
+    @Override
 	protected Street doCreateObject() throws Exception {
 
 		Street street = new Street();
@@ -45,6 +46,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
+    @Override
 	protected Street readObject(@NotNull Stub<Street> stub) {
 		return streetService.readFull(stub);
 	}
@@ -82,6 +84,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param sd	 DataSourceDescription
 	 * @param cs	 CorrectionsService
 	 */
+    @Override
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
@@ -114,6 +117,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
+    @Override
 	protected Stub<Street> findPersistentObject(Street object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		StreetName name = object.getCurrentName();
 		StreetType type = object.getCurrentType();
@@ -148,6 +152,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
+    @Override
 	protected void doSaveObject(Street object, String externalId) throws FlexPayExceptionContainer {
 		if (object.getId() == null) {
 			streetService.create(object);

@@ -15,8 +15,8 @@ public class NopHistoryRecordsFilter implements HistoryRecordsFilter {
 	 * @param record HistoryRecord  to check
 	 * @return <code>true</code> if record could be shared, or <code>false</code> otherwise
 	 */
+    @Override
 	public boolean accept(@NotNull HistoryRecord record) {
-
 		return true;
 	}
 }

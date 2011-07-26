@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 public class MeasureUnitHistoryGenerator implements HistoryGenerator<MeasureUnit> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
+
 	private DiffService diffService;
 	private MeasureUnitHistoryBuilder historyBuilder;
 	private MeasureUnitService unitService;
@@ -53,6 +55,10 @@ public class MeasureUnitHistoryGenerator implements HistoryGenerator<MeasureUnit
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
+
 	@Required
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
@@ -67,4 +73,5 @@ public class MeasureUnitHistoryGenerator implements HistoryGenerator<MeasureUnit
 	public void setUnitService(MeasureUnitService unitService) {
 		this.unitService = unitService;
 	}
+
 }

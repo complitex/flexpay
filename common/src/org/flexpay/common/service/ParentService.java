@@ -9,7 +9,7 @@ import java.util.Locale;
 /**
  * Service for parents of objects with time-dependent names
  */
-public interface ParentService<PKF extends PrimaryKeyFilter<?>> {
+public interface ParentService<PKF extends PrimaryKeyFilter<?>> extends JpaSetService {
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter

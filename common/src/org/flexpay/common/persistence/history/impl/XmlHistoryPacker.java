@@ -116,6 +116,7 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 	 *
 	 * @return File extension
 	 */
+    @Override
 	protected String getFileExtension() {
 		return ".xml";
 	}

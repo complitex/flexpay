@@ -6,7 +6,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 
 public abstract class AccReportData implements Serializable {
 

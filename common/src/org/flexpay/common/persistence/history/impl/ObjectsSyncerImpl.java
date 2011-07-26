@@ -26,6 +26,7 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 	 *
 	 * @param diffs History records to process
 	 */
+    @Override
 	public boolean processHistory(@NotNull List<Diff> diffs) {
 
 		log.debug("About to process {} diffs", diffs.size());

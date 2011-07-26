@@ -1,12 +1,13 @@
 package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.common.dao.JpaSetDao;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
 
 import java.util.List;
 
-public interface PersonDaoExt {
+public interface PersonDaoExt extends JpaSetDao {
 
 	/**
 	 * Find persistent person by identity

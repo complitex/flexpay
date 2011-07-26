@@ -9,6 +9,7 @@ import org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class ServiceReferencesHistoryGenerator implements ReferencesHistoryGenerator<Service> {
 
@@ -23,6 +24,10 @@ public class ServiceReferencesHistoryGenerator implements ReferencesHistoryGener
 		}
 		providerHistoryGenerator.generateFor(obj.getServiceProvider());
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
 
 	@Required
 	public void setMeasureUnitHistoryGenerator(MeasureUnitHistoryGenerator measureUnitHistoryGenerator) {

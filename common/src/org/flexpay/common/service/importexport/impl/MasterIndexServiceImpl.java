@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 * @return next index value
 	 */
 	@Nullable
+    @Override
 	public <T extends DomainObject> String getNewMasterIndex(@NotNull T obj) {
 
 		assertNotNew(obj);
@@ -58,6 +60,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 * @return master index value if available, or <code>null</code> otherwise
 	 */
 	@Nullable
+    @Override
 	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
 
 		assertNotNew(obj);
@@ -71,6 +74,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 * @return DataSourceDescription
 	 */
 	@NotNull
+    @Override
 	public Stub<DataSourceDescription> getMasterSourceDescriptionStub() {
 		if (cachedDescriptionStub != null) {
 			return cachedDescriptionStub;
@@ -87,6 +91,12 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 		return cachedDescriptionStub;
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        sourceDescriptionDao.setJpaTemplate(jpaTemplate);
+        correctionsService.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setSourceDescriptionDao(DataSourceDescriptionDao sourceDescriptionDao) {
 		this.sourceDescriptionDao = sourceDescriptionDao;
@@ -96,4 +106,5 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
+
 }

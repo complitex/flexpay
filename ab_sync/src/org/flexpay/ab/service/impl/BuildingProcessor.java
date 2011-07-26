@@ -33,6 +33,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * Create new DomainObject from HistoryRecord
 	 */
 	@NotNull
+    @Override
 	protected BuildingAddress doCreateObject() throws Exception {
 
 		Building building = factory.newBuilding();
@@ -49,6 +50,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @return DomainObject instance
 	 */
 	@Nullable
+    @Override
 	protected BuildingAddress readObject(@NotNull Stub<BuildingAddress> stub) {
 
 		BuildingAddress buildingAddress = buildingService.readFullAddress(stub);
@@ -68,6 +70,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
+    @Override
 	protected void doSaveObject(BuildingAddress object, String externalId) throws FlexPayExceptionContainer {
 		Building building = object.getBuilding();
 		if (object.getId() == null) {
@@ -87,6 +90,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
 							Stub<DataSourceDescription> sd, CorrectionsService cs) throws Exception {
 		BuildingAddress buildingAddress = (BuildingAddress) object;
@@ -186,6 +190,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
+    @Override
 	protected Stub<BuildingAddress> findPersistentObject(BuildingAddress object,
 														 Stub<DataSourceDescription> sd, CorrectionsService cs) throws FlexPayException {
 		String number = object.getNumber();

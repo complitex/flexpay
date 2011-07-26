@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -57,6 +58,13 @@ public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        regionService.setJpaTemplate(jpaTemplate);
+        diffService.setJpaTemplate(jpaTemplate);
+        historyBuilder.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setRegionService(RegionService regionService) {
 		this.regionService = regionService;
@@ -71,4 +79,5 @@ public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 	public void setHistoryBuilder(RegionHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
+
 }

@@ -36,6 +36,7 @@ def requiredProperties = [
 		orgs: [:],
 		payments: [:],
 		rent: [:],
+		mule: [:],
 		sz: [:],
 		eirc: [
 				'app.config.eirc.organizationId': 'Identifier of EIRC organization in database',
@@ -242,7 +243,7 @@ class PropertiesUpdater {
 	}
 
 	public static boolean validRoot(File file) {
-		return isDir(file, "common") && isDir(file, "ab") && isDir(file, "bti")  \
+		return isDir(file, "common") && isDir(file, "ab") && isDir(file, "bti") && isDir(file, "mule")  \
 			 && isDir(file, "orgs") && isDir(file, "payments") && isDir(file, "eirc")  \
 			 && isDir(file, "rent");
 	}

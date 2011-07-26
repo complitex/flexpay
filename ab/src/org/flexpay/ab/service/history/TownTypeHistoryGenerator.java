@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -51,6 +52,13 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        townTypeService.setJpaTemplate(jpaTemplate);
+        diffService.setJpaTemplate(jpaTemplate);
+        historyBuilder.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
@@ -65,4 +73,5 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 	public void setHistoryBuilder(TownTypeHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
+
 }

@@ -43,6 +43,7 @@ public class BuildingAttributeTypeHistoryBuilder extends HistoryBuilderBase<Buil
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable BuildingAttributeType t1, @NotNull BuildingAttributeType t2, @NotNull Diff diff) {
 
 		log.debug("creating new building attribute types diff");
@@ -121,11 +122,12 @@ public class BuildingAttributeTypeHistoryBuilder extends HistoryBuilderBase<Buil
 	private void buildNameDiff(BuildingAttributeType t1, BuildingAttributeType t2, Diff diff) {
 
 		builderHelper.buildTranslationDiff(t1, t2, diff, new TranslationExtractor<Translation, BuildingAttributeType>() {
-
+            @Override
 			public Translation getTranslation(BuildingAttributeType obj, @NotNull Language language) {
 				return obj.getTranslation(language);
 			}
 
+            @Override
 			public int getTranslationField() {
 				return FIELD_NAME;
 			}
@@ -135,11 +137,12 @@ public class BuildingAttributeTypeHistoryBuilder extends HistoryBuilderBase<Buil
 	private void buildGroupRefDiff(BuildingAttributeType t1, BuildingAttributeType t2, Diff diff) {
 
 		builderHelper.buildReferenceDiff(t1, t2, diff, new ReferenceExtractor<BuildingAttributeGroup, BuildingAttributeType>() {
-
+            @Override
 			public BuildingAttributeGroup getReference(BuildingAttributeType obj) {
 				return obj.getGroup();
 			}
 
+            @Override
 			public int getReferenceField() {
 				return FIELD_GROUP_ID;
 			}
@@ -152,6 +155,7 @@ public class BuildingAttributeTypeHistoryBuilder extends HistoryBuilderBase<Buil
 	 * @param t	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull BuildingAttributeType t, @NotNull Diff diff) {
 
 		PatchContext context = new PatchContext();
@@ -205,11 +209,13 @@ public class BuildingAttributeTypeHistoryBuilder extends HistoryBuilderBase<Buil
 	private void patchName(BuildingAttributeType type, HistoryRecord record) {
 
 		builderHelper.patchTranslation(type, record, new TranslationPatcher<BuildingAttributeTypeName, BuildingAttributeType>() {
+            @Override
 			public BuildingAttributeTypeName getNotNullTranslation(BuildingAttributeType obj, @NotNull Language language) {
 				BuildingAttributeTypeName tr = obj.getTranslation(language);
 				return tr == null ? new BuildingAttributeTypeName() : tr;
 			}
 
+            @Override
 			public void setTranslation(BuildingAttributeType obj, BuildingAttributeTypeName tr, String name) {
 				tr.setName(name);
 				obj.setTranslation(tr);
@@ -221,10 +227,12 @@ public class BuildingAttributeTypeHistoryBuilder extends HistoryBuilderBase<Buil
 		log.debug("Patching attribute group reference {}", record);
 
 		builderHelper.patchReference(type, record, new ReferencePatcher<BuildingAttributeGroup, BuildingAttributeType>() {
+            @Override
 			public Class<BuildingAttributeGroup> getType() {
 				return BuildingAttributeGroup.class;
 			}
 
+            @Override
 			public void setReference(BuildingAttributeType obj, Stub<BuildingAttributeGroup> ref) {
 				if (ref != null) {
 					BuildingAttributeGroup group = attributeGroupService.readFull(ref);

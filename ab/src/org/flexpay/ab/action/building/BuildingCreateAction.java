@@ -73,7 +73,7 @@ public class BuildingCreateAction extends FPActionSupport {
         buildingService.create(building);
     }
 
-    private BuildingAddress createAddress(String buildingNumber, String bulkNumber, String partNumber) throws FlexPayExceptionContainer {
+    private BuildingAddress createAddress(String buildingNumber, String bulkNumber, String partNumber) {
 
         if (isEmpty(buildingNumber) && isEmpty(bulkNumber) && isEmpty(partNumber)) {
             log.debug("All attributes are empty. Building address not created.");

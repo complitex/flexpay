@@ -31,6 +31,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -336,12 +337,13 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 
 		List<District> districts = districtService.readFull(districtIds, false);
 		Set<StreetDistrictRelation> streetDistricts = set();
-		for (District district : districts) {
-			streetDistricts.add(new StreetDistrictRelation(street, district));
-		}
+        for (District district : districts) {
+            streetDistricts.add(new StreetDistrictRelation(street, district));
+        }
+        streetDaoExt.deleteStreetDistricts(street);
+        street = readFull(Stub.stub(street));
+        street.getStreetDistricts().addAll(streetDistricts);
 
-		streetDaoExt.deleteStreetDistricts(street);
-		street.setStreetDistricts(streetDistricts);
 		update(street);
 
 		return street;
@@ -491,6 +493,18 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	protected StreetNameDao getNameValueDao() {
 		return streetNameDao;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        streetDao.setJpaTemplate(jpaTemplate);
+        streetDaoExt.setJpaTemplate(jpaTemplate);
+        streetNameDao.setJpaTemplate(jpaTemplate);
+        townDao.setJpaTemplate(jpaTemplate);
+        parentService.setJpaTemplate(jpaTemplate);
+        districtService.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setStreetDao(StreetDao streetDao) {

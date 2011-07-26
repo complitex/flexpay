@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.TownTypeTemporal;
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class TownReferencesHistoryGenerator implements ReferencesHistoryGenerator<Town> {
 
@@ -22,6 +23,12 @@ public class TownReferencesHistoryGenerator implements ReferencesHistoryGenerato
 		regionHistoryGenerator.generateFor(obj.getRegion());
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        townTypeHistoryGenerator.setJpaTemplate(jpaTemplate);
+        regionHistoryGenerator.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setTownTypeHistoryGenerator(TownTypeHistoryGenerator townTypeHistoryGenerator) {
 		this.townTypeHistoryGenerator = townTypeHistoryGenerator;
@@ -31,4 +38,5 @@ public class TownReferencesHistoryGenerator implements ReferencesHistoryGenerato
 	public void setRegionHistoryGenerator(RegionHistoryGenerator regionHistoryGenerator) {
 		this.regionHistoryGenerator = regionHistoryGenerator;
 	}
+
 }

@@ -141,31 +141,4 @@
         </property>
     </bean>
 
-	<bean id="workingMemoryDbLogger"
-          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
-          p:cacheProviderFacade-ref="cacheProviderFacade"
-          p:target-ref="workingMemoryDbLoggerTarget">
-        <property name="cachingModels">
-            <props>
-                <prop key="readFull">cacheName=commonProcessInstanceLogFlexpayCache</prop>
-            </props>
-        </property>
-        <property name="flushingModels">
-            <props>
-                <prop key="logEventCreated">cacheNames=commonProcessInstanceLogFlexpayCache;flushBeforeMethodExecution=true</prop>
-            </props>
-        </property>
-    </bean>
-
-	<bean id="processInstanceDbLog"
-          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
-          p:cacheProviderFacade-ref="cacheProviderFacade"
-          p:target-ref="processInstanceDbLogTarget">
-        <property name="cachingModels">
-            <props>
-                <prop key="find">cacheName=commonProcessInstanceLogFlexpayCache</prop>
-            </props>
-        </property>
-    </bean>
-
 </beans>

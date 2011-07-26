@@ -4,7 +4,6 @@ import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.reports.payments.AccPaymentsRegistriesReportRequest;
-import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
 import org.flexpay.payments.reports.payments.AccReportRequest;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.springframework.beans.factory.annotation.Required;

@@ -58,14 +58,17 @@ public class BtiBuildingHistoryBuilder extends BuildingHistoryBuilder {
 		SortedSet<BuildingAttribute> attrs1 = b1.attributesOfType(type);
 		SortedSet<BuildingAttribute> attrs2 = b2.attributesOfType(type);
 		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<BuildingAttribute>() {
+            @Override
 			public Date getBeginDate(BuildingAttribute obj) {
 				return obj.getBegin();
 			}
 
+            @Override
 			public Date getEndDate(BuildingAttribute obj) {
 				return obj.getEnd();
 			}
 
+            @Override
 			public void buildDiff(Date begin, Date end, BuildingAttribute t1, BuildingAttribute t2, Diff df) {
 				addAttributeDiff(begin, end, t1, t2, df);
 			}

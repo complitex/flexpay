@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+				http://java.sun.com/xml/ns/persistence			http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="org.jbpm.persistence.jpa" transaction-type="RESOURCE_LOCAL">
+		<class>org.jbpm.task.Attachment</class>
+		<class>org.jbpm.task.Content</class>
+		<class>org.jbpm.task.BooleanExpression</class>
+		<class>org.jbpm.task.Comment</class>
+		<class>org.jbpm.task.Deadline</class>
+		<class>org.jbpm.task.Delegation</class>
+		<class>org.jbpm.task.Escalation</class>
+		<class>org.jbpm.task.Group</class>
+		<class>org.jbpm.task.I18NText</class>
+		<class>org.jbpm.task.Notification</class>
+		<class>org.jbpm.task.EmailNotification</class>
+		<class>org.jbpm.task.EmailNotificationHeader</class>
+		<class>org.jbpm.task.PeopleAssignments</class>
+		<class>org.jbpm.task.Reassignment</class>
+		<class>org.jbpm.task.Status</class>
+		<class>org.jbpm.task.Task</class>
+		<class>org.jbpm.task.TaskData</class>
+		<class>org.jbpm.task.SubTasksStrategy</class>
+		<class>org.jbpm.task.OnParentAbortAllSubTasksEndStrategy</class>
+		<class>org.jbpm.task.OnAllSubTasksEndParentEndStrategy</class>
+		<class>org.jbpm.task.User</class>
+		<class>org.jbpm.process.audit.ProcessInstanceLog</class>
+		<class>org.jbpm.process.audit.NodeInstanceLog</class>
+		<class>org.jbpm.process.audit.VariableInstanceLog</class>
+		<class>org.drools.persistence.info.SessionInfo</class>
+		<class>org.jbpm.persistence.processinstance.ProcessInstanceInfo</class>
+		<class>org.jbpm.persistence.processinstance.ProcessInstanceEventInfo</class>
+		<class>org.drools.persistence.info.WorkItemInfo</class>
+
+		<!-- my persistent variables -->
+		<!--
+		<class>org.drools.container.spring.beans.persistence.MyEntity</class>
+		<class>org.drools.container.spring.beans.persistence.MyEntityMethods</class>
+		<class>org.drools.container.spring.beans.persistence.MyEntityOnlyFields</class>
+		-->
+		<properties>
+			<property name="hibernate.dialect" value="${hibernate.dialect1}"/>
+
+			<property name="hibernate.connection.url" value="${jdbc.url1}"/>
+			<property name="hibernate.connection.driver_class" value="${jdbc.driverClassName1}"/>
+			<property name="hibernate.connection.username" value="${jdbc.username1}"/>
+			<property name="hibernate.connection.password" value="${jdbc.password1}"/>
+
+			<!--property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider"/!-->
+
+			<property name="hibernate.c3p0.min_size" value="${hibernate.c3p0.min_size1}"/>
+			<property name="hibernate.c3p0.max_size" value="${hibernate.c3p0.max_size1}"/>
+			<property name="hibernate.c3p0.idle_test_period" value="${hibernate.c3p0.idle_test_period1}"/>
+			<property name="hibernate.c3p0.acquire_increment" value="${hibernate.c3p0.acquire_increment1}" />
+			<property name="hibernate.c3p0.max_statements" value="0"/>
+			<property name="hibernate.c3p0.preferredTestQuery" value="${hibernate.c3p0.preferredTestQuery1}"/>
+
+			<property name="hibernate.show_sql" value="${hibernate.show_sql1}" />
+
+			<property name="hibernate.cache.provider_class" value="${hibernate.cache.provider_class1}"/>
+			<property name="hibernate.cache.use_query_cache" value="true"/>
+			<property name="hibernate.cache.use_second_level_cache" value="true"/>
+			<property name="hibernate.cache.provider_configuration_file_resource_path" value="${hibernate.cache.provider_configuration_file_resource_path1}"/>
+			<property name="hibernate.jdbc.batch_size" value="${hibernate.jdbc.batch_size1}"/>
+
+			<property name="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto1}" />
+
+			<!--
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+
+			<property name="hibernate.connection.url" value="jdbc:log4jdbc:mysql://localhost:3306/flexpay_test_db"/>
+			<property name="hibernate.connection.driver_class" value="net.sf.log4jdbc.DriverSpy"/>
+			<property name="hibernate.connection.username" value="flexpay_user"/>
+			<property name="hibernate.connection.password" value="flexpay"/>
+			<property name="hibernate.connection.pool_size" value="3"/>
+
+
+			<property name="hibernate.max_fetch_depth" value="3" />
+			<property name="hibernate.show_sql" value="false" />
+
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.EhCacheProvider"/>
+			<property name="hibernate.cache.use_query_cache" value="true"/>
+			<property name="hibernate.cache.use_second_level_cache" value="true"/>
+			<property name="hibernate.cache.provider_configuration_file_resource_path" value="WEB-INF/common/configs/spring/ehcache.xml"/>
+			<property name="hibernate.jdbc.batch_size" value="20"/>
+
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			         -->
+
+
+			<property name="hibernate.ejb.resource_scanner" value="org.flexpay.common.util.ejb.NativeScanner" />
+			<property name="hibernate.ejb.metamodel.generation" value="disabled" />
+			<property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml" />
+
+			<!--
+			<property name="hibernate.connection.autocommit" value="false" />
+			<property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.BTMTransactionManagerLookup" />
+			-->
+		</properties>
+	</persistence-unit>
+</persistence>

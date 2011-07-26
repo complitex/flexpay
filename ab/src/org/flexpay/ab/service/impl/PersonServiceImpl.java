@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -317,6 +318,18 @@ public class PersonServiceImpl implements PersonService {
 	public List<Person> findSimple(FetchRange range) {
 		return personDao.findSimple(range);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+        personDao.setJpaTemplate(jpaTemplate);
+        personDaoExt.setJpaTemplate(jpaTemplate);
+        personAttributeDao.setJpaTemplate(jpaTemplate);
+        personRegistrationDao.setJpaTemplate(jpaTemplate);
+        identityTypeService.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {

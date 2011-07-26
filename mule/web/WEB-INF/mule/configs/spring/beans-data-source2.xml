@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="muleComponent2"
+          class="org.flexpay.mule.component.MuleComponent"
+          p:muleService-ref="muleService"
+          p:jpaTemplate-ref="muleJpaTemplate2"
+          p:transactionManager-ref="muleTransactionManager2" />
+
+    <bean id="muleDataSource2"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close"
+          p:driverClass="${jdbc.driverClassName2}"
+          p:jdbcUrl="${jdbc.url2}"
+          p:user="${jdbc.username2}"
+          p:password="${jdbc.password2}"
+          p:initialPoolSize="3"
+          p:minPoolSize="${hibernate.c3p0.min_size2}"
+          p:maxPoolSize="${hibernate.c3p0.max_size2}"
+          p:idleConnectionTestPeriod="${hibernate.c3p0.idle_test_period2}"
+          p:acquireIncrement="${hibernate.c3p0.acquire_increment2}"
+          p:maxStatements="0"
+          p:numHelperThreads="3"
+          p:preferredTestQuery="${hibernate.c3p0.preferredTestQuery2}" />
+
+    <bean id="muleEntityManagerFactory2"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:dataSource-ref="muleDataSource2"
+          p:persistenceXmlLocation="classpath*:mule2-persistence.xml">
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                  p:showSql="${hibernate.show_sql2}" />
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect2}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto2}</prop>
+                <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class2}</prop>
+                <prop key="hibernate.cache.provider_configuration_file_resource_path">${hibernate.cache.provider_configuration_file_resource_path2}</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size2}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="muleJpaTemplate2"
+          class="org.springframework.orm.jpa.JpaTemplate"
+          p:entityManagerFactory-ref="muleEntityManagerFactory2" />
+
+    <bean id="muleTransactionManager2"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
+          p:entityManagerFactory-ref="muleEntityManagerFactory2" />
+
+</beans>

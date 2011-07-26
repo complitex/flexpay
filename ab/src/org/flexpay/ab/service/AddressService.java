@@ -5,12 +5,13 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
-public interface AddressService {
+public interface AddressService extends JpaSetService {
 
 	/**
 	 * Get Apartment address

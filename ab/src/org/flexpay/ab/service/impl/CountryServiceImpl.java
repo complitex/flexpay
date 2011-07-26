@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -100,10 +101,13 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	@Override
 	public Country create(@NotNull Country country) throws FlexPayExceptionContainer {
 
+        log.debug("Creating country");
+
 		validate(country);
 		country.setId(null);
+        log.debug("Creating country in DB");
 		countryDao.create(country);
-
+        log.debug("Country created {}", country);
 		return country;
 
 	}
@@ -116,6 +120,8 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull Country country) throws FlexPayExceptionContainer {
+
+        log.debug("Validating country");
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -166,6 +172,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 			throw container;
 		}
 
+        log.debug("Validating complete");
 	}
 
 	/**
@@ -284,6 +291,12 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 
 		return translations;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        countryDao.setJpaTemplate(jpaTemplate);
+        countryDaoExt.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setCountryDao(CountryDao countryDao) {

@@ -508,7 +508,7 @@ INSERT INTO ab_region_names_tbl (region_id)
 	VALUES (@region_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
-	VALUES ('астраханская область', @region_name_id, @ru_id);
+	VALUES ('Астраханская область', @region_name_id, @ru_id);
 INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 

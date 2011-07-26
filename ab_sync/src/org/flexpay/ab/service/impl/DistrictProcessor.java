@@ -32,6 +32,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * Create new DomainObject
 	 */
 	@NotNull
+    @Override
 	protected District doCreateObject() throws Exception {
 
 		District district = new District();
@@ -46,6 +47,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
+    @Override
 	protected District readObject(@NotNull Stub<District> stub) {
 		return districtService.readFull(stub);
 	}
@@ -66,6 +68,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param sd	 DataSourceDescription
 	 * @param cs	 CorrectionsService
 	 */
+    @Override
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
@@ -95,6 +98,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
+    @Override
 	protected Stub<District> findPersistentObject(District object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		DistrictName name = object.getCurrentName();
 		if (name == null || name.getTranslations().isEmpty()) {
@@ -126,6 +130,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
+    @Override
 	protected void doSaveObject(District object, String externalId) throws FlexPayExceptionContainer {
 		if (log.isDebugEnabled()) {
 			for (DistrictName name : object.getNamesTimeLine().getValues()) {

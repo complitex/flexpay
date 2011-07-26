@@ -89,11 +89,11 @@ public class QuittancePayAction extends PaymentOperationAction {
 		BigDecimal inputSum = operation.getOperationInputSum();
 		BigDecimal changeSum = operation.getChange();
 
-		BigDecimal sum = totalSum.add(changeSum);
+        if (inputSum == null || totalSum == null || changeSum == null) {
+            return false;
+        }
 
-		if (inputSum == null || totalSum == null || changeSum == null) {
-			return false;
-		}
+		BigDecimal sum = totalSum.add(changeSum);
 
 		return inputSum.compareTo(sum) == 0;
 

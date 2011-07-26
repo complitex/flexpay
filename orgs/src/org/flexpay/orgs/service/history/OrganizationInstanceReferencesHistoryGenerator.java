@@ -4,6 +4,8 @@ import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class OrganizationInstanceReferencesHistoryGenerator<
 		D extends OrganizationInstanceDescription,
@@ -16,6 +18,11 @@ public class OrganizationInstanceReferencesHistoryGenerator<
 		organizationHistoryGenerator.generateFor(obj.getOrganization());
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
+
+    @Required
 	public void setOrganizationHistoryGenerator(OrganizationHistoryGenerator organizationHistoryGenerator) {
 		this.organizationHistoryGenerator = organizationHistoryGenerator;
 	}

@@ -39,7 +39,7 @@ public class AllObjectsDao {
 
 	public void flushAndClear() {
 		jpaTemplate.execute(new JpaCallback<Object>() {
-
+            @Override
 			public Object doInJpa(EntityManager em) throws PersistenceException {
 				em.flush();
 				em.clear();

@@ -187,7 +187,7 @@
 		</antcall>
         <copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
             <fileset file="${common.dir}/etc/AMConfig.properties" />
-			<fileset file="${common.dir}/web/META-INF/persistence.xml" />
+			<fileset file="${common.dir}/web/META-INF/*persistence.xml" />
 			<fileset file="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 		</copy>
 	</target>

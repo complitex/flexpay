@@ -40,6 +40,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	 * @param p2   Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable PaymentPoint p1, @NotNull PaymentPoint p2, @NotNull Diff diff) {
 
 		log.debug("creating new payment points diff");
@@ -135,6 +136,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	 * @param paymentPoint Payment point object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull PaymentPoint paymentPoint, @NotNull Diff diff) {
 		for (HistoryRecord record : diff.getHistoryRecords()) {
 

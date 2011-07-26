@@ -25,6 +25,7 @@ import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -334,6 +335,17 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	protected RegionNameDao getNameValueDao() {
 		return regionNameDao;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        regionDao.setJpaTemplate(jpaTemplate);
+        regionDaoExt.setJpaTemplate(jpaTemplate);
+        regionNameDao.setJpaTemplate(jpaTemplate);
+        parentService.setJpaTemplate(jpaTemplate);
+        townTypeService.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setParentService(ParentService<CountryFilter> parentService) {

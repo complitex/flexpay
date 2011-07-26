@@ -13,6 +13,7 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -116,6 +117,13 @@ public class AddressServiceImpl implements AddressService {
 
 		return getBuildingsAddress(stub(address), locale);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        apartmentService.setJpaTemplate(jpaTemplate);
+        buildingService.setJpaTemplate(jpaTemplate);
+        streetService.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setApartmentService(ApartmentService apartmentService) {

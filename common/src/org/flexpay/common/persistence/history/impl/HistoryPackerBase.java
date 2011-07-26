@@ -47,6 +47,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	public List<FPFile> packHistory(@NotNull Stub<HistoryConsumer> stub) throws Exception {
 
 		boolean locked = lockManager.lock(LOCK_NAME);
@@ -245,6 +246,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		this.lockManager = lockManager;
 	}
 
+    @Override
 	public void setPagingSize(int pagingSize) {
 		this.pagingSize = pagingSize;
 	}
@@ -254,6 +256,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	 *
 	 * @param groupSize Max group size
 	 */
+    @Override
 	public void setGroupSize(int groupSize) {
 		this.groupSize = groupSize;
 	}

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -34,6 +35,7 @@ public class OrganizationInstanceHistoryGenerator<
 	 *
 	 * @param obj Object to generate history for
 	 */
+    @Override
 	public void generateFor(@NotNull T obj) {
 
 		if (diffService.hasDiffs(obj)) {
@@ -61,6 +63,10 @@ public class OrganizationInstanceHistoryGenerator<
 			generateFor(t);
 		}
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
 
 	@Required
 	public void setDiffService(DiffService diffService) {
