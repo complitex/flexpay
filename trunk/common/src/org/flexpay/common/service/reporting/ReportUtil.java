@@ -1,7 +1,6 @@
 package org.flexpay.common.service.reporting;
 
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.*;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.fill.JRAbstractLRUVirtualizer;
 import net.sf.jasperreports.engine.fill.JRSwapFileVirtualizer;
 import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;

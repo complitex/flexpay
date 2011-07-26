@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +32,7 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+    @Override
 	public void generateFor(@NotNull Cashbox obj) {
 
 		Cashbox cashbox = cashboxService.read(stub(obj));
@@ -61,6 +63,10 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
+
 	@Required
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
@@ -80,4 +86,5 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 	public void setReferencesHistoryGenerator(CashboxReferencesHistoryGenerator referencesHistoryGenerator) {
 		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
+
 }

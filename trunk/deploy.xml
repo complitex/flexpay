@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="flexpay-deploy">
 
+    <import file="mule/mule_build.xml" />
     <import file="sz/sz_build.xml" />
     <import file="rent/rent_build.xml" />
     <import file="ab_sync/ab_sync_build.xml" />
@@ -25,6 +26,17 @@
         <antcall target="template.deploy.sjsas">
             <param name="application_archive" value="${distr.dir}/${ab.war.name}" />
             <param name="application_name" value="${ab.app.name}" />
+        </antcall>
+    </target>
+
+    <target name="mule.deploy.sjsas" depends="mule.war">
+        <antcall target="mule.deploy.sjsas.nobuild" />
+    </target>
+
+    <target name="mule.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${mule.war.name}" />
+            <param name="application_name" value="${mule.app.name}" />
         </antcall>
     </target>
 

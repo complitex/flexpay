@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 /**
  * Modification listener that does nothing
@@ -27,6 +28,7 @@ public class NopeModificationListener<T extends DomainObject> implements Modific
 	 *
 	 * @param obj New object
 	 */
+    @Override
 	public void onCreate(@NotNull T obj) {
 		// create dummy master index
 		String masterIndex = masterIndexService.getNewMasterIndex(obj);
@@ -50,6 +52,7 @@ public class NopeModificationListener<T extends DomainObject> implements Modific
 	 * @param objOld object old version
 	 * @param obj	object new version
 	 */
+    @Override
 	public void onUpdate(@NotNull T objOld, @NotNull T obj) {
 	}
 
@@ -58,8 +61,15 @@ public class NopeModificationListener<T extends DomainObject> implements Modific
 	 *
 	 * @param obj object that was deleted
 	 */
+    @Override
 	public void onDelete(@NotNull T obj) {
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        masterIndexService.setJpaTemplate(jpaTemplate);
+        correctionsService.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setMasterIndexService(MasterIndexService masterIndexService) {
@@ -70,4 +80,5 @@ public class NopeModificationListener<T extends DomainObject> implements Modific
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
+
 }

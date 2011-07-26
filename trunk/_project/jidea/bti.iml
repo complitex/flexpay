@@ -15,111 +15,40 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../../bti/src" />
         </sourceRoots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/out/exploded/btiWeb" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="facet" facetId="ab/web/Web">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="facet" facetId="common/web/Web">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="module" name="ab">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="module" name="bti">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-            <url>jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/</url>
-          </containerElement>
-          <containerElement type="library" name="Ajax" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="Commons" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="JBPM" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="JUnit" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="Struts2" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="hibernate3" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="logging" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="spring2" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-        </packaging>
       </configuration>
       <facet type="Struts2" name="Struts 2">
         <configuration>
           <fileset id="s2fileset1" name="My Fileset" removed="false">
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/measureunit/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/district/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/identity/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/apartment/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/town/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/actions/buildings/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/region/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/country/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/filters/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/actions/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/street/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/measureunit/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/district/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/identity/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/person/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/apartment/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/building/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/town/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts-config.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/struts-config.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts-config.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/region/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/country/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/filter/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/action/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/action/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/i18n/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/i18n/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/action/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/i18n/struts.xml</file>
           </fileset>
+          <propertiesKeys disabled="false" />
         </configuration>
       </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
-          <unit-entry name="flexpaySessionFactory" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
+          <unit-entry name="flexpay" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
+          <unit-entry name="flexpaySessionFactory" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../bti/web/WEB-INF/hibernate.cfg.xml" />
       </configuration>
@@ -134,17 +63,15 @@
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-services.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-struts.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data-export.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/stand-alone-tasks.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-actions.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-dao.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-cache.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-services.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-importexport.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-jobs.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
           <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-cache.xml</file>
@@ -159,15 +86,18 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans_self_testing.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-self-testing.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/config.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data-export.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security-opensso.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-ldap.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/tests/data/org/flexpay/ab/test/ab-beans.xml</file>
+          <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/beans.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -180,23 +110,14 @@
       <sourceFolder url="file://$MODULE_DIR$/../../bti/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../bti/tests/java" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="common" />
     <orderEntry type="module" module-name="ab" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="hibernate3" level="project" />
-    <orderEntry type="library" name="spring2" level="project" />
+    <orderEntry type="library" name="spring3" level="project" />
     <orderEntry type="library" name="Ajax" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
@@ -207,6 +128,7 @@
     <orderEntry type="library" name="Commons" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
     <orderEntry type="library" name="CSVReader" level="project" />
+    <orderEntry type="library" name="ldap" level="project" />
   </component>
 </module>
 

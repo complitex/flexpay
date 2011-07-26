@@ -8,10 +8,12 @@ import org.jetbrains.annotations.NotNull;
 public class ServiceProviderHistoryHandler
 		extends OrganizationInstanceHistoryHandler<ServiceProviderDescription, ServiceProvider> {
 
+    @Override
 	protected ServiceProvider newInstance() {
 		return new ServiceProvider();
 	}
 
+    @Override
 	protected Class<ServiceProvider> getType() {
 		return ServiceProvider.class;
 	}
@@ -22,6 +24,7 @@ public class ServiceProviderHistoryHandler
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+    @Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(ServiceProvider.class) == diff.getObjectType();
 	}

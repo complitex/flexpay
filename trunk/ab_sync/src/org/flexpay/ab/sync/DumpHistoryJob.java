@@ -17,6 +17,7 @@ public class DumpHistoryJob extends QuartzJobBean {
 	/**
 	 * Execute the actual job, i.e. run history records retrival
 	 */
+    @Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
 		if (log.isInfoEnabled()) {

@@ -25,7 +25,7 @@ public class StreetTypeTranslation extends Translation {
 		super(name, getDefaultLanguage());
 	}
 
-	public StreetTypeTranslation(String name, Language language) throws Exception {
+	public StreetTypeTranslation(String name, Language language) {
 		super(name, language);
 	}
 

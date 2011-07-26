@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-public interface DiffService {
+public interface DiffService extends JpaSetService {
 
 	/**
 	 * Persist a new Diff object

@@ -17,6 +17,7 @@ public class HistoryRecordsFiltersChain implements HistoryRecordsFilter {
 	 * @param record HistoryRecord  to check
 	 * @return <code>true</code> if record could be shared, or <code>false</code> otherwise
 	 */
+    @Override
 	public boolean accept(@NotNull HistoryRecord record) {
 
 		for (HistoryRecordsFilter filter : filters) {

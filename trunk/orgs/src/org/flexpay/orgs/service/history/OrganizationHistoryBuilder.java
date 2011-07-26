@@ -38,6 +38,7 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 	 * @param org2   Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable Organization org1, @NotNull Organization org2, @NotNull Diff diff) {
 
 		log.debug("creating new organizations diff");
@@ -158,6 +159,7 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 	 * @param org	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull Organization org, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- The created cache manager is an instance of net.sf.ehcache.CacheManager -->
+    <bean id="cacheManager"
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="classpath:ehcache-spring.xml" />
+
+    <bean id="cacheProviderFacade"
+          class="org.springmodules.cache.provider.ehcache.EhCacheFacade"
+          p:cacheManager-ref="cacheManager" />
+
+    <bean id="languageService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="languageServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="get*">cacheName=commonFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="update*">cacheNames=commonFlexpayCache</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="masterIndexService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="masterIndexServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="getMasterSourceDescription">cacheName=commonMasterIndexCache</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="userRoleService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
+          p:cacheProviderFacade-ref="cacheProviderFacade"
+          p:target-ref="userRoleServiceTarget">
+        <property name="cachingModels">
+            <props>
+                <prop key="readFull">cacheName=commonUserRoleFlexpayCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

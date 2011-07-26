@@ -3,6 +3,7 @@ package org.flexpay.common.service.internal;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +76,7 @@ public class SessionUtilsImpl implements SessionUtils {
 		return obj;
 	}
 
+    @Required
 	public void setJpaTemplate(JpaTemplate jpaTemplate) {
 		this.jpaTemplate = jpaTemplate;
 	}

@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class BuildingHistoryBuilderProxy implements HistoryBuilder<Building> {
 
@@ -47,8 +48,14 @@ public class BuildingHistoryBuilderProxy implements HistoryBuilder<Building> {
 		builderHolder.getInstance().patch(building, diff);
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        builderHolder.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setBuilderHolder(BuildingHistoryBuilderHolder builderHolder) {
 		this.builderHolder = builderHolder;
 	}
+
 }

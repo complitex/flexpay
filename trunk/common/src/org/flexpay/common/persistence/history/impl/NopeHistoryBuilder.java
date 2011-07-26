@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuilder<T> {
 
@@ -16,6 +17,7 @@ public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuild
 	 * @return Diff object
 	 */
 	@NotNull
+    @Override
 	public Diff diff(@Nullable T t1, @NotNull T t2) {
 		return new Diff();
 	}
@@ -27,6 +29,7 @@ public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuild
 	 * @return Diff object
 	 */
 	@NotNull
+    @Override
 	public Diff deleteDiff(@NotNull T obj) {
 		return new Diff();
 	}
@@ -37,6 +40,11 @@ public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuild
 	 * @param t	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull T t, @NotNull Diff diff) {
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
 }

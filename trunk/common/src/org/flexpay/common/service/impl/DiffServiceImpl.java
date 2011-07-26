@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -209,6 +210,21 @@ public class DiffServiceImpl implements DiffService {
 		return diffDaoExt.findNewHistoryRecords(range);
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffDao.setJpaTemplate(jpaTemplate);
+        diffDaoExt.setJpaTemplate(jpaTemplate);
+    }
+
+    @SuppressWarnings ({"unchecked"})
+    private void moveAllObjectsServices() {
+        for (Map.Entry<Class, AllObjectsService> entry : type2AllObjectsServiceMap.entrySet()) {
+            typeId2AllObjectsServiceMap.put(registry.getType(entry.getKey()), entry.getValue());
+        }
+
+        type2AllObjectsServiceMap = Collections.emptyMap();
+    }
+
 	@Required
 	public void setDiffDao(DiffDao diffDao) {
 		this.diffDao = diffDao;
@@ -228,12 +244,4 @@ public class DiffServiceImpl implements DiffService {
 		type2AllObjectsServiceMap.putAll(map);
 	}
 
-	@SuppressWarnings ({"unchecked"})
-	private void moveAllObjectsServices() {
-		for (Map.Entry<Class, AllObjectsService> entry : type2AllObjectsServiceMap.entrySet()) {
-			typeId2AllObjectsServiceMap.put(registry.getType(entry.getKey()), entry.getValue());
-		}
-
-		type2AllObjectsServiceMap = Collections.emptyMap();
-	}
 }

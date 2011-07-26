@@ -16,7 +16,7 @@ import java.util.List;
  * <p/>
  * Extended interfaces could include Collection, Page and FetchRange parameters
  */
-public interface GenericDao<T, PK extends Serializable> {
+public interface GenericDao<T, PK extends Serializable> extends JpaSetDao {
 
 	/**
 	 * Create a new persistent object

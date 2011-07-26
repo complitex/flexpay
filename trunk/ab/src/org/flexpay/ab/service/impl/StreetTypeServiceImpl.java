@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -289,6 +290,14 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		return translations;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        streetTypeDao.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        correctionsService.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {

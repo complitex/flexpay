@@ -1,6 +1,5 @@
 package org.flexpay.ab.dao.impl;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.HistorySourceDao;
 import org.flexpay.ab.persistence.FieldType;
 import org.flexpay.ab.persistence.HistoryRec;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements HistorySourceDao {
 
@@ -52,31 +53,31 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 	}
 
 	private void validateConfig() {
-		if (StringUtils.isBlank(tableName)) {
+		if (isBlank(tableName)) {
 			throw new IllegalArgumentException("Invalid configuration, property historyTableName cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldRecordId)) {
+		if (isBlank(fieldRecordId)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldRecordId cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldRecordDate)) {
+		if (isBlank(fieldRecordDate)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldRecordDate cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldOldValue)) {
+		if (isBlank(fieldOldValue)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldOldValue cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldCurrentValue)) {
+		if (isBlank(fieldCurrentValue)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldCurrentValue cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldObjectTypeId)) {
+		if (isBlank(fieldObjectTypeId)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldObjectTypeId cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldObjectId)) {
+		if (isBlank(fieldObjectId)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldObjectId cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldFieldName)) {
+		if (isBlank(fieldFieldName)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldFieldName cannot be blank.");
 		}
-		if (StringUtils.isBlank(fieldActionType)) {
+		if (isBlank(fieldActionType)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldActionType cannot be blank.");
 		}
 	}
@@ -88,6 +89,7 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 	 * @return List of new records
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public Iterator<HistoryRec> getRecords(Long lastRecord) throws Exception {
 
 		Connection con = DataSourceUtils.getConnection(getDataSource());
@@ -116,6 +118,7 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 		}
 	}
 
+    @Override
 	public void close() {
 		if (iterator != null) {
 			iterator.close();
@@ -133,6 +136,7 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 		private List<HistoryRec> recordsBuffer = new ArrayList<HistoryRec>(1000);
 		private Iterator<HistoryRec> it;
 
+        @Override
 		public boolean hasNext() {
 			if (it == null || !it.hasNext()) {
 				initBuffer();
@@ -169,10 +173,12 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 			it = recordsBuffer.iterator();
 		}
 
+        @Override
 		public HistoryRec next() {
 			return it.next();
 		}
 
+        @Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}

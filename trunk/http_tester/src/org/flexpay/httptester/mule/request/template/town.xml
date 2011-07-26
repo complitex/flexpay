@@ -1,0 +1,23 @@
+<org.flexpay.mule.Request>
+    <action>@town.action@</action>
+    <town>
+		<id>@town.id@</id>
+        <ids>
+            <long>@town.id1@</long>
+            <long>@town.id2@</long>
+        </ids>
+        <parentId>@town.parentId@</parentId>
+        <typeId>@town.typeId@</typeId>
+        <nameDate>@town.nameDate@</nameDate>
+        <translations>
+            <org.flexpay.mule.request.MuleTranslation>
+                <name>@town.translation1.name@</name>
+                <languageId>@town.translation1.languageId@</languageId>
+            </org.flexpay.mule.request.MuleTranslation>
+            <org.flexpay.mule.request.MuleTranslation>
+                <name>@town.translation2.name@</name>
+                <languageId>@town.translation2.languageId@</languageId>
+            </org.flexpay.mule.request.MuleTranslation>
+        </translations>
+    </town>
+</org.flexpay.mule.Request>

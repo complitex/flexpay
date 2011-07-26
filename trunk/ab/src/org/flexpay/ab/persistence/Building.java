@@ -1,5 +1,6 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -176,4 +177,13 @@ public class Building extends DomainObjectWithStatus {
 		}
 	}
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).
+                append("id", id).
+                append("status", status).
+                append("district", district).
+                append("buildingses", buildingses).
+                toString();
+    }
 }

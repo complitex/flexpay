@@ -26,6 +26,7 @@ import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -346,6 +347,16 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	protected GenericDao<TownName, Long> getNameValueDao() {
 		return townNameDao;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        townDao.setJpaTemplate(jpaTemplate);
+        townDaoExt.setJpaTemplate(jpaTemplate);
+        townNameDao.setJpaTemplate(jpaTemplate);
+        parentService.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setParentService(ParentService<RegionFilter> parentService) {

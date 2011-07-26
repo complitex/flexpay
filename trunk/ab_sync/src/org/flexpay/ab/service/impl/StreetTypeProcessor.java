@@ -37,6 +37,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	protected StreetType doCreateObject() throws Exception {
 		return new StreetType();
 	}
@@ -47,6 +48,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
+    @Override
 	protected StreetType readObject(@NotNull Stub<StreetType> stub) {
 		return streetTypeService.readFull(stub);
 	}
@@ -60,6 +62,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
@@ -108,6 +111,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
+    @Override
 	protected Stub<StreetType> findPersistentObject(StreetType object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 
 		if (object.getTranslations().isEmpty()) {
@@ -140,6 +144,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
+    @Override
 	protected void doSaveObject(StreetType object, String externalId) throws Exception {
 
 		if (object.isNew()) {

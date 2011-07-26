@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeSet;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
@@ -24,7 +25,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
-	private Set<StreetDistrictRelation> streetDistricts = Collections.emptySet();
+	private Set<StreetDistrictRelation> streetDistricts = set();
 	private SortedSet<StreetTypeTemporal> typeTemporals = EMPTY_SORTED_SET;
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
 	private Set<BuildingAddress> buildingses = Collections.emptySet();

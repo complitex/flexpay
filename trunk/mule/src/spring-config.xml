@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+<!--
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8" />
+        <property name="locations">
+            <list>
+                <value>classpath:mule.properties</value>
+            </list>
+        </property>
+    </bean>
+-->
+
+    <import resource="../applicationContext.xml" />
+    <import resource="../applicationContext-security-opensso.xml" />
+
+<!--
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:locations="classpath:mule.properties"
+          p:ignoreUnresolvablePlaceholders="true"
+          p:fileEncoding="UTF-8" />
+
+    <bean id="component1"
+          class="org.flexpay.mule.component.MuleComponent"
+          p:jdbcTemplate-ref="jdbcTemplate1" />
+
+    <bean id="component2"
+          class="org.flexpay.mule.component.MuleComponent"
+          p:jdbcTemplate-ref="jdbcTemplate2" />
+
+    <bean id="dataSource1"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close"
+          p:driverClass="${jdbc.driverClassName1}"
+          p:jdbcUrl="${jdbc.url1}"
+          p:user="${jdbc.username1}"
+          p:password="${jdbc.password1}"
+          p:initialPoolSize="3"
+          p:minPoolSize="${hibernate.c3p0.min_size1}"
+          p:maxPoolSize="${hibernate.c3p0.max_size1}"
+          p:idleConnectionTestPeriod="${hibernate.c3p0.idle_test_period1}"
+          p:acquireIncrement="${hibernate.c3p0.acquire_increment1}"
+          p:maxStatements="0"
+          p:numHelperThreads="3"
+          p:preferredTestQuery="${hibernate.c3p0.preferredTestQuery1}" />
+
+    <bean id="jdbcTemplate1"
+          class="org.springframework.jdbc.core.JdbcTemplate"
+          p:dataSource-ref="dataSource1"
+          lazy-init="true"/>
+
+    <bean id="dataSource2"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close"
+          p:driverClass="${jdbc.driverClassName2}"
+          p:jdbcUrl="${jdbc.url2}"
+          p:user="${jdbc.username2}"
+          p:password="${jdbc.password1}"
+          p:initialPoolSize="3"
+          p:minPoolSize="${hibernate.c3p0.min_size2}"
+          p:maxPoolSize="${hibernate.c3p0.max_size2}"
+          p:idleConnectionTestPeriod="${hibernate.c3p0.idle_test_period2}"
+          p:acquireIncrement="${hibernate.c3p0.acquire_increment2}"
+          p:maxStatements="0"
+          p:numHelperThreads="3"
+          p:preferredTestQuery="${hibernate.c3p0.preferredTestQuery2}" />
+
+    <bean id="jdbcTemplate2"
+          class="org.springframework.jdbc.core.JdbcTemplate"
+          p:dataSource-ref="dataSource2"
+          lazy-init="true"/>
+-->
+
+</beans>

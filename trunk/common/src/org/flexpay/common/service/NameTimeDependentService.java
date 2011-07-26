@@ -13,7 +13,7 @@ public interface NameTimeDependentService<
 		TV extends TemporaryValue<TV>,
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> {
+		T extends Translation> extends JpaSetService {
 
 	/**
 	 * Read object by its unique id

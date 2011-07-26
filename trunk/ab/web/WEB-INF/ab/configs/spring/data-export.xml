@@ -60,25 +60,6 @@
           class="org.flexpay.ab.service.importexport.RawPersonDataConverter"
           p:identityTypeService-ref="identityTypeService" />
 
-    <bean id="classToTypeRegistryAb"
-          autowire-candidate="false"
-          class="org.flexpay.ab.service.importexport.impl.ClassToTypeRegistryAb" />
-
-    <bean id="classToTypeRegistryFactoryAb"
-          depends-on="classToTypeRegistryFactory"
-          class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
-        <property name="registry">
-            <bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
-                <property name="registries">
-                    <list>
-                        <ref bean="classToTypeRegistryAb" />
-                        <ref bean="classToTypeRegistryCommon" />
-                    </list>
-                </property>
-            </bean>
-        </property>
-    </bean>
-
     <!-- Import-Export services -->
     <bean id="importServiceAb" 
           class="org.flexpay.ab.service.importexport.ImportServiceImpl"

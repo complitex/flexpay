@@ -15,6 +15,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.List;
 
@@ -132,6 +133,11 @@ public class HistoryBuilderHelper {
 
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
+
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        masterIndexService.setJpaTemplate(jpaTemplate);
+        correctionsService.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setMasterIndexService(MasterIndexService masterIndexService) {

@@ -20,6 +20,7 @@ public class OrganizationHistoryHandler extends HistoryHandlerBase<Organization>
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+    @Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(Organization.class) == diff.getObjectType();
 	}
@@ -29,6 +30,7 @@ public class OrganizationHistoryHandler extends HistoryHandlerBase<Organization>
 	 *
 	 * @param diff Diff
 	 */
+    @Override
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
 		Organization object;

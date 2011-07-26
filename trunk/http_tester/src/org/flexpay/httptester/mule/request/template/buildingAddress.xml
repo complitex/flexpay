@@ -1,0 +1,23 @@
+<org.flexpay.mule.Request>
+    <action>@buildingAddress.action@</action>
+    <buildingAddress>
+        <id>@buildingAddress.id@</id>
+        <ids>
+            <long>@buildingAddress.id1@</long>
+            <long>@buildingAddress.id2@</long>
+        </ids>
+        <buildingId>@buildingAddress.buildingId@</buildingId>
+        <streetId>@buildingAddress.streetId@</streetId>
+        <primary>@buildingAddress.primary@</primary>
+        <attributes>
+            <org.flexpay.mule.request.MuleAddressAttribute>
+                <id>@buildingAddress.attribute1.id@</id>
+                <value>@buildingAddress.attribute1.value@</value>
+            </org.flexpay.mule.request.MuleAddressAttribute>
+            <org.flexpay.mule.request.MuleAddressAttribute>
+                <id>@buildingAddress.attribute2.id@</id>
+                <value>@buildingAddress.attribute2.value@</value>
+            </org.flexpay.mule.request.MuleAddressAttribute>
+        </attributes>
+    </buildingAddress>
+</org.flexpay.mule.Request>

@@ -86,11 +86,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void buildNameDiff(Subdivision p1, Subdivision p2, Diff diff) {
 
 		builderHelper.buildTranslationDiff(p1, p2, diff, new TranslationExtractor<Translation, Subdivision>() {
-
+            @Override
 			public Translation getTranslation(Subdivision obj, @NotNull Language language) {
 				return obj.getNameTranslation(language);
 			}
 
+            @Override
 			public int getTranslationField() {
 				return FIELD_NAME;
 			}
@@ -100,11 +101,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void buildDescriptionDiff(Subdivision p1, Subdivision p2, Diff diff) {
 
 		builderHelper.buildTranslationDiff(p1, p2, diff, new TranslationExtractor<Translation, Subdivision>() {
-
+            @Override
 			public Translation getTranslation(Subdivision obj, @NotNull Language language) {
 				return obj.getDescriptionTranslation(language);
 			}
 
+            @Override
 			public int getTranslationField() {
 				return FIELD_DESCRIPTION;
 			}
@@ -114,11 +116,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void buildHeadOrganizationRefDiff(Subdivision p1, Subdivision p2, Diff diff) {
 
 		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<Organization, Subdivision>() {
-
+            @Override
 			public Organization getReference(Subdivision obj) {
 				return obj.getHeadOrganization();
 			}
 
+            @Override
 			public int getReferenceField() {
 				return FIELD_HEAD_ORG_ID;
 			}
@@ -128,11 +131,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void buildJuridicalPersonRefDiff(Subdivision p1, Subdivision p2, Diff diff) {
 
 		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<Organization, Subdivision>() {
-
+            @Override
 			public Organization getReference(Subdivision obj) {
 				return obj.getJuridicalPerson();
 			}
 
+            @Override
 			public int getReferenceField() {
 				return FIELD_JURIDICAL_PERSON_ID;
 			}
@@ -142,11 +146,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void buildParentSubdivisionRefDiff(Subdivision p1, Subdivision p2, Diff diff) {
 
 		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<Subdivision, Subdivision>() {
-
+            @Override
 			public Subdivision getReference(Subdivision obj) {
 				return obj.getParentSubdivision();
 			}
 
+            @Override
 			public int getReferenceField() {
 				return FIELD_PARENT_SUBDIVISION_ID;
 			}
@@ -200,11 +205,13 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void patchName(Subdivision obj, HistoryRecord record) {
 
 		builderHelper.patchTranslation(obj, record, new TranslationPatcher<SubdivisionName, Subdivision>() {
+            @Override
 			public SubdivisionName getNotNullTranslation(Subdivision obj, @NotNull Language language) {
 				SubdivisionName tr = obj.getNameTranslation(language);
 				return tr == null ? new SubdivisionName() : tr;
 			}
 
+            @Override
 			public void setTranslation(Subdivision obj, SubdivisionName tr, String name) {
 				tr.setName(name);
 				obj.setName(tr);
@@ -215,11 +222,13 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 	private void patchDescription(Subdivision obj, HistoryRecord record) {
 
 		builderHelper.patchTranslation(obj, record, new TranslationPatcher<SubdivisionDescription, Subdivision>() {
+            @Override
 			public SubdivisionDescription getNotNullTranslation(Subdivision obj, @NotNull Language language) {
 				SubdivisionDescription tr = obj.getDescriptionTranslation(language);
 				return tr == null ? new SubdivisionDescription() : tr;
 			}
 
+            @Override
 			public void setTranslation(Subdivision obj, SubdivisionDescription tr, String name) {
 				tr.setName(name);
 				obj.setDescription(tr);
@@ -231,10 +240,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 		log.debug("Patching head organization reference {}", record);
 
 		builderHelper.patchReference(obj, record, new ReferencePatcher<Organization, Subdivision>() {
+            @Override
 			public Class<Organization> getType() {
 				return Organization.class;
 			}
 
+            @Override
 			public void setReference(Subdivision obj, Stub<Organization> ref) {
 				Organization org = organizationService.readFull(ref);
 				obj.setHeadOrganization(org);
@@ -246,10 +257,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 		log.debug("Patching juridical person reference {}", record);
 
 		builderHelper.patchReference(obj, record, new ReferencePatcher<Organization, Subdivision>() {
+            @Override
 			public Class<Organization> getType() {
 				return Organization.class;
 			}
 
+            @Override
 			public void setReference(Subdivision obj, Stub<Organization> ref) {
 				Organization org = ref == null ? null : organizationService.readFull(ref);
 				obj.setJuridicalPerson(org);
@@ -261,10 +274,12 @@ public class SubdivisionHistoryBuilder extends HistoryBuilderBase<Subdivision> {
 		log.debug("Patching parent subdivision reference {}", record);
 
 		builderHelper.patchReference(obj, record, new ReferencePatcher<Subdivision, Subdivision>() {
+            @Override
 			public Class<Subdivision> getType() {
 				return Subdivision.class;
 			}
 
+            @Override
 			public void setReference(Subdivision obj, Stub<Subdivision> ref) {
 				Subdivision parent = ref == null ? null : subdivisionService.read(ref);
 				obj.setParentSubdivision(parent);

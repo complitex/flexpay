@@ -22,6 +22,7 @@ public class SyncAbJob extends QuartzJobBean {
 	/**
 	 * Execute the actual job, i.e. run synchronisation process
 	 */
+    @Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
 		if (log.isDebugEnabled()) {

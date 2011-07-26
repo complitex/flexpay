@@ -24,6 +24,7 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 	/**
 	 * Dump history from external source
 	 */
+    @Override
 	public void dumpHistory() {
 
 		if (!lockManager.lock("sync_ab_lock")) {

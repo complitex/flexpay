@@ -34,6 +34,7 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable ServiceType t1, @NotNull ServiceType t2, @NotNull Diff diff) {
 
 		log.debug("creating new service types diff");
@@ -67,11 +68,12 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 
 		TranslationExtractor<ServiceTypeNameTranslation, ServiceType> extractor =
 				new TranslationExtractor<ServiceTypeNameTranslation, ServiceType>() {
-
+                    @Override
 					public ServiceTypeNameTranslation getTranslation(ServiceType obj, @NotNull Language language) {
 						return obj.getTranslation(language);
 					}
 
+                    @Override
 					public int getTranslationField() {
 						return FIELD_NAME;
 					}
@@ -112,6 +114,7 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 	 * @param type Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull ServiceType type, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
@@ -139,11 +142,13 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 		log.debug("Patching type name {}", record);
 
 		builderHelper.patchTranslation(type, record, new TranslationPatcher<ServiceTypeNameTranslation, ServiceType>() {
+            @Override
 			public ServiceTypeNameTranslation getNotNullTranslation(ServiceType obj, @NotNull Language language) {
 				ServiceTypeNameTranslation tr = obj.getTranslation(language);
 				return tr == null ? new ServiceTypeNameTranslation() : tr;
 			}
 
+            @Override
 			public void setTranslation(ServiceType obj, ServiceTypeNameTranslation tr, String name) {
 				tr.setName(name);
 				obj.setTypeName(tr);
@@ -156,11 +161,13 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 		log.debug("Patching type description {}", record);
 
 		builderHelper.patchTranslation(type, record, new TranslationPatcher<ServiceTypeNameTranslation, ServiceType>() {
+            @Override
 			public ServiceTypeNameTranslation getNotNullTranslation(ServiceType obj, @NotNull Language language) {
 				ServiceTypeNameTranslation tr = obj.getTranslation(language);
 				return tr == null ? new ServiceTypeNameTranslation() : tr;
 			}
 
+            @Override
 			public void setTranslation(ServiceType obj, ServiceTypeNameTranslation tr, String name) {
 				tr.setDescription(name);
 				obj.setTypeName(tr);

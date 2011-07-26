@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/fp.css" />" />
 
-<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.5.1.min.js" />"></script>
+<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.6.2.min.js" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/protify/jquery.protify-0.3.min.js" />"></script>
 <%--<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/dump/jquery.dump.min.js" />"></script>--%>
 <script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" />"></script>

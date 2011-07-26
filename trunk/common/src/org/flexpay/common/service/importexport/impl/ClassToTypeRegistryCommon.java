@@ -8,6 +8,7 @@ public class ClassToTypeRegistryCommon implements ClassToTypeRegistry {
 
 	private static final int MODULE_BASE = 0x6000;
 
+    @Override
 	public int getType(Class<? extends DomainObject> clazz) {
 
 		if (MeasureUnit.class.isAssignableFrom(clazz)) {

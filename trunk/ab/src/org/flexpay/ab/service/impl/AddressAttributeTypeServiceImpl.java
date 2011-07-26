@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -204,6 +205,13 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 		}
 
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        addressAttributeTypeDao.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setAddressAttributeTypeDao(AddressAttributeTypeDao addressAttributeTypeDao) {

@@ -376,6 +376,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
         this.namingStrategy = namingStrategy;
     }
 
+    @Override
     @Required
     public void setJpaTemplate(JpaTemplate jpaTemplate) {
         this.jpaTemplate = jpaTemplate;

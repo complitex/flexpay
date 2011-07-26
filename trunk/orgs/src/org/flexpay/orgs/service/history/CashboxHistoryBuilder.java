@@ -38,6 +38,7 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+    @Override
 	protected void doDiff(@Nullable Cashbox t1, @NotNull Cashbox t2, @NotNull Diff diff) {
 
 		log.debug("creating new cashboxes diff");
@@ -55,10 +56,12 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 
 		builderHelper.buildTranslationDiff(p1, p2, diff, new TranslationExtractor<Translation, Cashbox>() {
 
+            @Override
 			public Translation getTranslation(Cashbox obj, @NotNull Language language) {
 				return obj.getTranslation(language);
 			}
 
+            @Override
 			public int getTranslationField() {
 				return FIELD_NAME;
 			}
@@ -69,10 +72,12 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 
 		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<PaymentPoint, Cashbox>() {
 
+            @Override
 			public PaymentPoint getReference(Cashbox obj) {
 				return obj.getPaymentPoint();
 			}
 
+            @Override
 			public int getReferenceField() {
 				return FIELD_PAYMENT_POINT_ID;
 			}
@@ -85,6 +90,7 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 	 * @param cashbox Object to apply diff to
 	 * @param diff	Diff to apply
 	 */
+    @Override
 	public void patch(@NotNull Cashbox cashbox, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
@@ -106,11 +112,13 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 	private void patchName(Cashbox cashbox, HistoryRecord record) {
 
 		builderHelper.patchTranslation(cashbox, record, new TranslationPatcher<CashboxNameTranslation, Cashbox>() {
+            @Override
 			public CashboxNameTranslation getNotNullTranslation(Cashbox obj, @NotNull Language language) {
 				CashboxNameTranslation tr = obj.getTranslation(language);
 				return tr == null ? new CashboxNameTranslation() : tr;
 			}
 
+            @Override
 			public void setTranslation(Cashbox obj, CashboxNameTranslation tr, String name) {
 				tr.setName(name);
 				obj.setName(tr);
@@ -122,10 +130,12 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 		log.debug("Patching payment point reference {}", record);
 
 		builderHelper.patchReference(cashbox, record, new ReferencePatcher<PaymentPoint, Cashbox>() {
+            @Override
 			public Class<PaymentPoint> getType() {
 				return PaymentPoint.class;
 			}
 
+            @Override
 			public void setReference(Cashbox obj, Stub<PaymentPoint> ref) {
 				PaymentPoint point = pointService.read(ref);
 				obj.setPaymentPoint(point);

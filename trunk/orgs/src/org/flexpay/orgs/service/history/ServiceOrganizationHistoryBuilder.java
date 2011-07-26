@@ -10,10 +10,12 @@ public class ServiceOrganizationHistoryBuilder
 
 	private OrgsObjectsFactory objectsFactory;
 
+    @Override
 	protected ServiceOrganization newInstance() {
 		return objectsFactory.newServiceOrganization();
 	}
 
+    @Override
 	protected ServiceOrganizationDescription newDescriptionInstance() {
 		return new ServiceOrganizationDescription();
 	}

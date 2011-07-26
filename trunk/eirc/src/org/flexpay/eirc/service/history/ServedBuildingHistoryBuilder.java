@@ -41,11 +41,12 @@ public class ServedBuildingHistoryBuilder extends BtiBuildingHistoryBuilder {
 		log.debug("building service organization reference");
 
 		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<ServiceOrganization, ServedBuilding>() {
-
+            @Override
 			public ServiceOrganization getReference(ServedBuilding obj) {
 				return obj.getServiceOrganization();
 			}
 
+            @Override
 			public int getReferenceField() {
 				return FIELD_SERVICE_ORGANIZATION_ID;
 			}
@@ -83,10 +84,12 @@ public class ServedBuildingHistoryBuilder extends BtiBuildingHistoryBuilder {
 		log.debug("Patching service organization reference {}", record);
 
 		builderHelper.patchReference(building, record, new ReferencePatcher<ServiceOrganization, ServedBuilding>() {
+            @Override
 			public Class<ServiceOrganization> getType() {
 				return ServiceOrganization.class;
 			}
 
+            @Override
 			public void setReference(ServedBuilding obj, Stub<ServiceOrganization> ref) {
 				ServiceOrganization organization = ref == null ? null :
 												   serviceOrganizationService.read(ref);

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class ModificationListenerImpl<T extends DomainObject> implements ModificationListener<T> {
 
@@ -39,6 +40,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 *
 	 * @param obj New object
 	 */
+    @Override
 	public void onCreate(@NotNull T obj) {
 
 		log.debug("On CREATE: {}", obj);
@@ -57,6 +59,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 * @param objOld object old version
 	 * @param obj	object new version
 	 */
+    @Override
 	public void onUpdate(@NotNull T objOld, @NotNull T obj) {
 
 		log.debug("On UPDATE:\n{}\n{}", objOld, obj);
@@ -81,6 +84,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 *
 	 * @param obj object that was deleted
 	 */
+    @Override
 	public void onDelete(@NotNull T obj) {
 
 		Diff diff = historyBuilder.deleteDiff(obj);
@@ -88,6 +92,13 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        historyBuilder.setJpaTemplate(jpaTemplate);
+        diffService.setJpaTemplate(jpaTemplate);
+        referencesHistoryGenerator.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setHistoryBuilder(HistoryBuilder<T> historyBuilder) {
@@ -107,4 +118,5 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	public void setDiffProcessor(DiffProcessor<T> diffProcessor) {
 		this.diffProcessor = diffProcessor;
 	}
+
 }

@@ -15,14 +15,17 @@ public class BankHistoryBuilder
 	public static final int FIELD_CORESPONDING_ACCOUNT = 4;
 
 
+    @Override
 	protected Bank newInstance() {
 		return new Bank();
 	}
 
+    @Override
 	protected BankDescription newDescriptionInstance() {
 		return new BankDescription();
 	}
 
+    @Override
 	protected void doInstanceDiff(@NotNull Bank org1, @NotNull Bank org2, @NotNull Diff diff) {
 
 		if (!EqualsHelper.strEquals(org1.getBankIdentifierCode(), org2.getBankIdentifierCode())) {

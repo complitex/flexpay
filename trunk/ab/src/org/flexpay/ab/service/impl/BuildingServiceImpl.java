@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -660,6 +661,18 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 		return buildingFilter;
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        buildingDao.setJpaTemplate(jpaTemplate);
+        buildingsDao.setJpaTemplate(jpaTemplate);
+        buildingsDaoExt.setJpaTemplate(jpaTemplate);
+        parentService.setJpaTemplate(jpaTemplate);
+        districtParentService.setJpaTemplate(jpaTemplate);
+//        addressService.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setBuildingDao(BuildingDao buildingDao) {

@@ -106,6 +106,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 		return new ApartmentSorterStub();
 	}
 
+    @Override
 	@Required
 	public void setJpaTemplate(JpaTemplate jpaTemplate) {
 		this.jpaTemplate = jpaTemplate;

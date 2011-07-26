@@ -1,5 +1,7 @@
 package org.flexpay.common.service.internal;
 
+import org.springframework.orm.jpa.JpaTemplate;
+
 import java.util.Collection;
 
 /**
@@ -7,23 +9,23 @@ import java.util.Collection;
  */
 public interface SessionUtils {
 
-	public void flush();
+	void flush();
 
-	public void clear();
+	void clear();
 
 	/**
 	 * Evict objects from session
 	 *
 	 * @param o Object to be evicted
 	 */
-	public void evict(Object o);
+	void evict(Object o);
 
 	/**
 	 * Evict all objects from a collection
 	 *
 	 * @param c Collection that elements should be evicted
 	 */
-	public void evict(Collection<?> c);
+	void evict(Collection<?> c);
 
 	/**
 	 * Check if object is a proxy and get real domain object
@@ -32,5 +34,7 @@ public interface SessionUtils {
 	 * @param <T> Object type
 	 * @return Object back
 	 */
-	public <T> T unproxy(T obj);
+	<T> T unproxy(T obj);
+
+    void setJpaTemplate(JpaTemplate jpaTemplate);
 }

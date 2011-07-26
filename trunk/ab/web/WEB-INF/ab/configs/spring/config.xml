@@ -10,6 +10,7 @@
 
     <import resource="stand-alone-tasks.xml" />
     <import resource="data-export.xml" />
+    <import resource="beans.xml" />
 
     <import resource="../menu.cfg.xml" />
 

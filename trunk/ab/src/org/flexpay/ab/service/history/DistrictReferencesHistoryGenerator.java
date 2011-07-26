@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public class DistrictReferencesHistoryGenerator implements ReferencesHistoryGenerator<District> {
 
@@ -14,8 +15,14 @@ public class DistrictReferencesHistoryGenerator implements ReferencesHistoryGene
 		townHistoryGenerator.generateFor(obj.getTown());
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        townHistoryGenerator.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setTownHistoryGenerator(TownHistoryGenerator townHistoryGenerator) {
 		this.townHistoryGenerator = townHistoryGenerator;
 	}
+
 }

@@ -3,6 +3,7 @@ package org.flexpay.ab.dao;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.common.dao.JpaSetDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-public interface BuildingsDaoExt {
+public interface BuildingsDaoExt extends JpaSetDao {
 
 	/**
 	 * Find building by number

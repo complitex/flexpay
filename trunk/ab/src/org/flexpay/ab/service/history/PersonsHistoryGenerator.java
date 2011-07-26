@@ -6,6 +6,7 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Iterator;
 import java.util.List;
@@ -51,6 +52,11 @@ public class PersonsHistoryGenerator {
 
 		log.debug("Ended generating history for persons");
 	}
+
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        personService.setJpaTemplate(jpaTemplate);
+        historyGenerator.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setPersonService(PersonService personService) {

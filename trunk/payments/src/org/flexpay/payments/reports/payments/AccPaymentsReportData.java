@@ -7,7 +7,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 public class AccPaymentsReportData extends AccReportData {
 

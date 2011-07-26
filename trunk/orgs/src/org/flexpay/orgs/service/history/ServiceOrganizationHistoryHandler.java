@@ -12,10 +12,12 @@ public class ServiceOrganizationHistoryHandler
 
 	private OrgsObjectsFactory objectsFactory;
 
+    @Override
 	protected ServiceOrganization newInstance() {
 		return objectsFactory.newServiceOrganization();
 	}
 
+    @Override
 	protected Class<ServiceOrganization> getType() {
 		return ServiceOrganization.class;
 	}
@@ -26,6 +28,7 @@ public class ServiceOrganizationHistoryHandler
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+    @Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(ServiceOrganization.class) == diff.getObjectType();
 	}

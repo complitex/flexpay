@@ -15,6 +15,7 @@ public class XmlHistoryUnPacker extends HistoryUnPackerBase {
 	private ObjectInputStream ois = null;
 
 	private RefRestorer refRestorer = new RefRestorer() {
+        @Override
 		public void restoreReferences(Diff diff) {
 			diff.setId(null);
 			for (HistoryRecord record : diff.getHistoryRecords()) {
@@ -65,6 +66,7 @@ public class XmlHistoryUnPacker extends HistoryUnPackerBase {
 	 * @throws Exception if unpacking fails
 	 */
 	@NotNull
+    @Override
 	protected List<Diff> unpackBatch(InputStream is, HistoryPackingContext context) throws Exception {
 
 		List<Diff> diffs = CollectionUtils.list();

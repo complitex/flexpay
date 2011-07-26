@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+	<!-- a SessionFactory instance listed as /jndi/name -->
+	<session-factory name="flexpay">
+
+		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/TransportConfig.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/HistoryReceiver.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/file/FPFile.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/ValueObject.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Gender.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Certificate.hbm.xml" />
+
+		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/BuildingBase.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
+        <mapping resource="org/flexpay/ab/persistence/ApartmentBase.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/UserPreferences.hbm.xml" />
+
+	</session-factory>
+
+</hibernate-configuration>

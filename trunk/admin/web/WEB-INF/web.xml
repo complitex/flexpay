@@ -31,11 +31,11 @@
 		<param-value>/WEB-INF/common/configs/tiles-common.xml,/WEB-INF/admin/configs/tiles-admin.xml</param-value>
 	</context-param>
 
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -51,6 +52,13 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        streetTypeService.setJpaTemplate(jpaTemplate);
+        diffService.setJpaTemplate(jpaTemplate);
+        historyBuilder.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
@@ -65,4 +73,5 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 	public void setHistoryBuilder(StreetTypeHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
+
 }

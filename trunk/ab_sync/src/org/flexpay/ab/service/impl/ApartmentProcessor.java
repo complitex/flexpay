@@ -39,6 +39,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	protected Apartment doCreateObject() throws Exception {
 		return factory.newApartment();
 	}
@@ -50,6 +51,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @return DomainObject instance
 	 */
 	@Nullable
+    @Override
 	protected Apartment readObject(@NotNull Stub<Apartment> stub) {
 		return apartmentService.readFull(stub);
 	}
@@ -63,6 +65,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
+    @Override
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
 							Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
@@ -144,6 +147,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
+    @Override
 	public void doSaveObject(Apartment object, String externalId) throws FlexPayExceptionContainer {
 		if (object.hasNoBuilding()) {
 			log.warn("Invalid sync data, no building specified");
@@ -164,6 +168,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
+    @Override
 	protected Stub<Apartment> findPersistentObject(Apartment object, Stub<DataSourceDescription> sd,
 												   CorrectionsService cs) {
 		if (object.getApartmentNumbers().isEmpty()) {

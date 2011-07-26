@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface DiffDaoExt {
+public interface DiffDaoExt extends JpaSetDao {
 
 	@NotNull
 	List<Diff> findNewHistoryRecords(FetchRange range);

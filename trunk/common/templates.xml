@@ -291,7 +291,7 @@
 	<target name="common.war.include.libs">
 		<war destfile="${warfile}" update="true">
 			<lib dir="${common.dir}/lib/antlr" />
-			<lib dir="${common.dir}/lib/hibernate3" />
+ 			<lib dir="${common.dir}/lib/hibernate3" />
 			<lib dir="${common.dir}/lib/spring3" />
 			<lib dir="${common.dir}/lib/commons" />
 			<lib dir="${common.dir}/lib/struts2" />
@@ -589,6 +589,7 @@
 			<fileset dir="${build.dir}">
 				<include name="sql/init_db.sql" />
 				<include name="web/WEB-INF/common.properties" />
+                <include name="web/WEB-INF/classes/common.properties" />
 			</fileset>
 		</replaceregexp>
 	</target>

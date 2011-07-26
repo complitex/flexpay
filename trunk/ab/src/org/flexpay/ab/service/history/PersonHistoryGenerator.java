@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 import java.util.List;
@@ -69,6 +70,14 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 		log.debug("Ended generating history for person {}", person);
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffService.setJpaTemplate(jpaTemplate);
+        historyBuilder.setJpaTemplate(jpaTemplate);
+        referencesHistoryGenerator.setJpaTemplate(jpaTemplate);
+        personService.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
@@ -88,4 +97,5 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 	public void setReferencesHistoryGenerator(PersonReferencesHistoryGenerator referencesHistoryGenerator) {
 		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
+
 }

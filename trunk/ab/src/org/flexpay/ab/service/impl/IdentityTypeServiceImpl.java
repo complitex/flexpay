@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -223,6 +224,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		}
 		return types.isEmpty() ? null : types.get(0);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        identityTypeDao.setJpaTemplate(jpaTemplate);
+        sessionUtils.setJpaTemplate(jpaTemplate);
+        modificationListener.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setIdentityTypeDao(IdentityTypeDao identityTypeDao) {

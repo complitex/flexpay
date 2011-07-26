@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collection;
 
@@ -28,6 +29,7 @@ public class ServiceTypeHistoryGenerator implements HistoryGenerator<ServiceType
 	 *
 	 * @param obj Object to generate history for
 	 */
+    @Override
 	public void generateFor(@NotNull ServiceType obj) {
 
 		if (diffService.hasDiffs(obj)) {
@@ -58,6 +60,10 @@ public class ServiceTypeHistoryGenerator implements HistoryGenerator<ServiceType
 		}
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+    }
+
 	@Required
 	public void setTypeService(ServiceTypeService typeService) {
 		this.typeService = typeService;
@@ -72,4 +78,5 @@ public class ServiceTypeHistoryGenerator implements HistoryGenerator<ServiceType
 	public void setHistoryBuilder(ServiceTypeHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
+
 }
