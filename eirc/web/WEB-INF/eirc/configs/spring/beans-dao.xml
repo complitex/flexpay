@@ -47,7 +47,7 @@
 
     <bean id="quittanceReportDao"
           class="org.flexpay.eirc.dao.impl.QuittanceReportDaoImpl"
-          p:jdbcTemplate-ref="jdbcTemplate" />
+          p:dataSource-ref="dataSource" />
 
     <bean id="eircAccountDao"
           parent="abstractDao"

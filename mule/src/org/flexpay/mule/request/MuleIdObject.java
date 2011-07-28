@@ -3,7 +3,7 @@ package org.flexpay.mule.request;
 import java.io.Serializable;
 import java.util.Set;
 
-public class MuleIdObject implements Serializable {
+public abstract class MuleIdObject implements Serializable {
 
     protected Set<Long> ids;
 

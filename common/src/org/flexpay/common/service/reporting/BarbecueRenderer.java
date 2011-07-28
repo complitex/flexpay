@@ -24,6 +24,7 @@ public class BarbecueRenderer extends JRAbstractSvgRenderer
         this.rotate = rotate;
     }
 
+    @Override
     public void render(Graphics2D grx, Rectangle2D rectangle)  throws JRException
     {
         if (barcode != null)

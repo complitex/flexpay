@@ -34,7 +34,7 @@ public class MuleComponent implements Callable {
         log.debug("Setting jpaTemplate...");
         muleService.setJpaTemplate(jpaTemplate);
 
-        log.debug("Processing request");
+        log.debug("Processing request for jpaTemplate {}", jpaTemplate);
 
         Request request = (Request) context.getMessage().getPayload();
         log.debug("request = {}", request);
@@ -70,14 +70,14 @@ public class MuleComponent implements Callable {
 
         } catch (FlexPayExceptionContainer e) {
             for (FlexPayException e1 : e.getExceptions()) {
-                log.error("Error in proccesing request", e1);
+                log.error("Error in proccesing request: {}", e1.getMessage());
             }
             transactionManager.rollback(status);
         } catch (FlexPayException e) {
-            log.error("Error in proccesing request", e);
+            log.error("Error in proccesing request: {}", e.getMessage());
             transactionManager.rollback(status);
         } catch (Exception e) {
-            log.error("Some errors", e);
+            log.error("Some errors: {}", e.getMessage());
             transactionManager.rollback(status);
         }
 

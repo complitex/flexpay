@@ -8,7 +8,6 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.mule.Request;
-import org.flexpay.mule.request.MuleAddressAttribute;
 import org.flexpay.mule.request.MuleBuildingAddress;
 import org.flexpay.mule.service.MuleService;
 import org.slf4j.Logger;
@@ -85,12 +84,17 @@ public class MuleServiceImpl implements MuleService {
             BuildingAddress address = new BuildingAddress();
             request.getBuildingAddress().convert(address, addressAttributeTypeService);
             log.debug("Converted building address: {}", address);
-            Building building = buildingService.readFull(new Stub<Building>(request.getBuildingAddress().getBuildingId()));
+            Long buildingId = request.getBuildingAddress().getBuildingId();
+            Building building = buildingService.readFull(new Stub<Building>(buildingId));
+            if (building == null) {
+                log.warn("Can't create building address, because can't found building with id {}", buildingId);
+                throw new FlexPayException("Can't create building address, because can't found building with id " + buildingId);
+            }
             building.addAddress(address);
             buildingService.update(building);
             log.debug("Created building address: {}", address);
-        } else if (request.isUpdateAction()) {
-            log.debug("Updating building address");
+        } else if (request.isUpdateAddressSetPrimaryAction()) {
+            log.debug("Setting building address primary status");
             BuildingAddress address;
             MuleBuildingAddress muleAddress = request.getBuildingAddress();
             Long addressId = muleAddress.getId();
@@ -104,19 +108,23 @@ public class MuleServiceImpl implements MuleService {
                 log.warn("Can't update building address with id {}, because id is incorrect", addressId);
                 throw new FlexPayException("Can't update building address. Incorrect address id - \"" + addressId + "\"");
             }
-            address.setPrimaryStatus(muleAddress.getPrimary());
-            address.setStreet(new Street(muleAddress.getStreetId()));
-            for (MuleAddressAttribute muleAttr : muleAddress.getAttributes()) {
-                for (AddressAttribute attr : address.getBuildingAttributes()) {
-                    if (attr.getBuildingAttributeType().getId().equals(muleAttr.getId())) {
-                        attr.setValue(muleAttr.getValue());
-                    } else {
-                        attr.setValue("");
-                    }
+            address.setPrimaryStatus(true);
+        } else if (request.isUpdateAction()) {
+            log.debug("Updating building address");
+            Building building;
+            MuleBuildingAddress muleAddress = request.getBuildingAddress();
+            Long addressId = muleAddress.getId();
+            if (addressId != null && addressId > 0) {
+                building = buildingService.findBuilding(new Stub<BuildingAddress>(addressId));
+                if (building == null) {
+                    log.warn("Can't update building address with id {}, because it's not found", addressId);
+                    throw new FlexPayException("Can't update building address with id " + addressId + ", because it's not found");
                 }
+            } else {
+                log.warn("Can't update building address with id {}, because id is incorrect", addressId);
+                throw new FlexPayException("Can't update building address. Incorrect address id - \"" + addressId + "\"");
             }
-            Building building = buildingService.readFull(new Stub<Building>(muleAddress.getBuildingId()));
-            building.addAddress(address);
+            building.setPrimaryAddress(new Stub<BuildingAddress>(addressId));
             buildingService.update(building);
         }
     }
