@@ -32,8 +32,6 @@
     </bean>
 -->
 
-	<!-- Create transaction manager  -->
-
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 	<!--
 	<bean id="transactionManager"

@@ -13,17 +13,9 @@
 		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/TransportConfig.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/HistoryReceiver.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
         <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/file/FPFile.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/ValueObject.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/Gender.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Certificate.hbm.xml" />
 

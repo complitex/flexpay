@@ -6,7 +6,7 @@
 
     <bean id="dataExportDao"
           class="org.flexpay.ab.dao.importexport.impl.HarkovCenterNachisleniyDataSource"
-          p:jdbcTemplate-ref="dataExportJdbcTemplate" />
+          p:dataSource-ref="dataSource" />
 
     <bean id="allObjectsDao"
           class="org.flexpay.ab.service.importexport.impl.AllObjectsDao"

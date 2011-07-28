@@ -30,11 +30,6 @@
           p:fpFileTypeDao-ref="fpFileTypeDao"
           p:fpModuleDao-ref="fpModuleDao" />
 
-    <bean id="sequenceService"
-          class="org.flexpay.common.service.impl.SequenceServiceImpl"
-          scope="singleton"
-          p:sequenceDao-ref="sequenceDao" />
-
     <bean id="commonServiceFactory"
           class="org.flexpay.common.service.impl.ServiceFactory" />
 

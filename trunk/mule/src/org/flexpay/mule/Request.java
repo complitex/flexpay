@@ -11,6 +11,7 @@ public class Request implements Serializable {
     public static String ACTION_INSERT = "insert";
     public static String ACTION_UPDATE = "update";
     public static String ACTION_UPDATE_STREET_DISTRICTS = "update_sd";
+    public static String ACTION_UPDATE_ADDRESS_SET_PRIMARY = "set_primary";
 
     private String action;
 
@@ -39,6 +40,10 @@ public class Request implements Serializable {
 
     public boolean isUpdateStreetDistrictsAction() {
         return ACTION_UPDATE_STREET_DISTRICTS.equals(action);
+    }
+
+    public boolean isUpdateAddressSetPrimaryAction() {
+        return ACTION_UPDATE_ADDRESS_SET_PRIMARY.equals(action);
     }
 
     public boolean isCountry() {

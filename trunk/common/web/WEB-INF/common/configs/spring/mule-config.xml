@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <import resource="beans-data-source.xml" />
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:locations="/WEB-INF/*.properties"
+          p:ignoreUnresolvablePlaceholders="true"
+          p:fileEncoding="UTF-8" />
+
     <import resource="hibernate.xml" />
-    <import resource="mule-entity-manager.xml" />
     <import resource="mule-beans-cache.xml" />
     <import resource="mule-beans-dao.xml" />
     <import resource="mule-beans-services.xml" />
     <import resource="beans-schedule.xml" />
-    <!--<import resource="beans-struts.xml" />-->
     <import resource="beans-ldap.xml" />
-
-    <!--<import resource="stand-alone-tasks.xml" />-->
-    <!--<import resource="data-export.xml" />-->
-
     <import resource="history/config.xml" />
-
-    <!--<import resource="beans-self-testing.xml" />-->
-    <!--<import resource="../menu.cfg.xml" />-->
 
 </beans>

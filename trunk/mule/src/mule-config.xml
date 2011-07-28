@@ -12,7 +12,7 @@
                                   returnClass="org.flexpay.mule.Request" />
 
     <flow name="httpLoader">
-        <http:inbound-endpoint host="altro.flexpay.complitex" port="65082" path="mule" keep-alive="false"/>
+        <http:inbound-endpoint host="altro.flexpay.complitex" port="65082" path="mule" keep-alive="false" encoding="UTF-8" />
         <transformer ref="XmlToRequestObject" />
         <all>
             <processor-chain>

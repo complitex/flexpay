@@ -84,28 +84,4 @@
         <url-pattern>/ws/*</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>mule</servlet-name>
-        <servlet-class>org.mule.transport.servlet.MuleRESTReceiverServlet</servlet-class>
-
-        <!-- Responses from the servlet are of type HTML by default -->
-        <init-param>
-            <param-name>org.mule.servlet.default.content.type</param-name>
-            <param-value>text/html</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>mule</servlet-name>
-        <url-pattern>/mule/*</url-pattern>
-    </servlet-mapping>
-
-    <error-page>
-        <error-code>403</error-code>
-        <location>/resources/common/jsp/forbidden.jsp</location>
-    </error-page>
-
-    <welcome-file-list>
-        <welcome-file>/resources/mule/jsp/index.jsp</welcome-file>
-    </welcome-file-list>
-
 </web-app>

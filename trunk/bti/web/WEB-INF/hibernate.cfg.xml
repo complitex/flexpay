@@ -20,7 +20,6 @@
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/file/FPFile.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/ValueObject.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/registry/RegistryImport.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/registry/RegistryProperties.hbm.xml" />

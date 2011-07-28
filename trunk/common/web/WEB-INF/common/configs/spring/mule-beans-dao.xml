@@ -68,36 +68,6 @@
         </property>
     </bean>
 
-    <bean id="sequenceDao"
-          parent="abstractDao"
-          p:proxyInterfaces="org.flexpay.common.dao.SequenceDao">
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.Sequence" />
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="reportPrintHistoryRecordDao"
-          parent="abstractDao"
-          p:proxyInterfaces="org.flexpay.common.dao.report.ReportPrintHistoryRecordDao">
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.report.ReportPrintHistoryRecord" />
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="currencyInfoDao"
-          parent="abstractDao"
-          p:proxyInterfaces="org.flexpay.common.dao.CurrencyInfoDao">
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.CurrencyInfo" />
-            </bean>
-        </property>
-    </bean>
-
     <bean id="dataSourceDescriptionDao"
           parent="abstractDao"
           p:proxyInterfaces="org.flexpay.common.dao.DataSourceDescriptionDao">
