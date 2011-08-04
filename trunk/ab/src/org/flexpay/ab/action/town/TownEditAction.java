@@ -154,6 +154,7 @@ public class TownEditAction extends FPActionSupport {
 
         town.setNameForDate(townName, beginDateFilter.getDate());
         town.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
+        town.setNameDate(beginDateFilter.getDate());
 
         // setup region for new object
         if (town.isNew()) {

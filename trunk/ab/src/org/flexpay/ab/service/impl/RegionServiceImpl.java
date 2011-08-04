@@ -12,8 +12,10 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +49,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	private RegionDaoExt regionDaoExt;
 	private RegionNameDao regionNameDao;
 
+    private EsbSyncRequestExecutor<Region> esbSyncRequestExecutor;
 	private ParentService<CountryFilter> parentService;
 	private TownTypeService townTypeService;
 	private SessionUtils sessionUtils;
@@ -95,6 +99,20 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 			modificationListener.onDelete(region);
 			log.debug("Region disabled: {}", region);
 		}
+
+        Region region = new Region();
+        region.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        region.setIds(regionIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(region);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -114,6 +132,18 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		regionDao.create(region);
 
 		modificationListener.onCreate(region);
+
+        region.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(region);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return region;
 	}
@@ -141,7 +171,27 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, region);
 
+        log.debug("Region = {}", region);
+        for (RegionNameTemporal name : region.getNameTemporals()) {
+            log.debug(" - Region name temporal = {}", name);
+            for (RegionNameTranslation trans : name.getValue().getTranslations()) {
+                log.debug(" - - Region name translation: {}", trans);
+            }
+        }
+
 		regionDao.update(region);
+
+        region.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(region);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return region;
 	}
@@ -347,7 +397,11 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<Region> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setParentService(ParentService<CountryFilter> parentService) {
 		this.parentService = parentService;
 	}

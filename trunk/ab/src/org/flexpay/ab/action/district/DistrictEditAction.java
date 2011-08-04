@@ -126,6 +126,7 @@ public class DistrictEditAction extends FPActionSupport {
 		}
 
 		district.setNameForDate(districtName, beginDateFilter.getDate());
+        district.setNameDate(beginDateFilter.getDate());
 
 		if (district.isNew()) {
 			district.setParent(new Town(townFilter));

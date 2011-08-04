@@ -115,9 +115,12 @@ public class BuildingAddressEditAction extends FPActionSupport {
 			AddressAttributeType type = addressAttributeTypeService.readFull(new Stub<AddressAttributeType>(attr.getKey()));
 			address.setBuildingAttribute(attr.getValue(), type);
 		}
-		building.addAddress(address);
 
-		buildingService.update(building);
+        if (address.isNew()) {
+            buildingService.createAddress(address, building);
+        } else {
+            buildingService.updateAddress(address, building);
+        }
 
 		addActionMessage(getText("ab.building.saved"));
 

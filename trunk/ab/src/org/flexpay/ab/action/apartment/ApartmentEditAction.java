@@ -1,12 +1,10 @@
 package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.action.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -14,9 +12,6 @@ import org.springframework.beans.factory.annotation.Required;
 import static org.flexpay.common.persistence.Stub.stub;
 
 public class ApartmentEditAction extends FPActionSupport {
-
-    public final String APARTMENTS_SEPARATOR = ",";
-    public final String INTERVAL_SEPARATOR = "\\.\\.";
 
 	private Apartment apartment = Apartment.newInstance();
 	private Long countryFilter;
@@ -61,9 +56,10 @@ public class ApartmentEditAction extends FPActionSupport {
 				return INPUT;
 			}
             if (apartment.isNew()) {
-                processApartmentNumber();
+                apartmentService.createSomeApartments(apartmentNumber, new Stub<BuildingAddress>(buildingFilter));
             } else {
-                updateApartment();
+                apartment.setNumber(apartmentNumber);
+                apartmentService.update(apartment);
             }
 
             if (hasActionErrors()) {
@@ -86,70 +82,6 @@ public class ApartmentEditAction extends FPActionSupport {
 
 		return INPUT;
 
-	}
-
-    @SuppressWarnings({"ObjectToString"})
-    private void processApartmentNumber() throws FlexPayExceptionContainer {
-
-        log.debug("ApartmentNumbers string = {}", apartmentNumber);
-
-        String[] apIntervals = apartmentNumber.contains(APARTMENTS_SEPARATOR) ? apartmentNumber.trim().split(APARTMENTS_SEPARATOR) : new String[] {apartmentNumber.trim()};
-        log.debug("Apartment intervals = {}", apIntervals.toString());
-
-        Building building = buildingService.findBuilding(new Stub<BuildingAddress>(buildingFilter));
-
-        for (String interval : apIntervals) {
-
-            String[] apValues = interval.contains("..") ? interval.trim().split(INTERVAL_SEPARATOR) : new String[] {interval.trim()};
-            log.debug("Apartment values = {}", apValues.toString());
-
-            if (apValues.length == 1) {
-                log.debug("Creating apartment with number = {} for building with id = {}", apValues[0], buildingFilter);
-                createApartment(apValues[0], building);
-            } else if (apValues.length == 2) {
-
-                int start;
-                int finish;
-
-                try {
-                    start = Integer.parseInt(apValues[0].trim());
-                } catch (NumberFormatException e) {
-                    log.debug("Incorrect start value in apartment interval");
-                    addActionError(getText("ab.error.apartment.incorrect_start_value_in_interval"));
-                    return;
-                }
-                try {
-                    finish = Integer.parseInt(apValues[1].trim());
-                } catch (NumberFormatException e) {
-                    log.debug("Incorrect finish value in apartment interval");
-                    addActionError(getText("ab.error.apartment.incorrect_finish_value_in_interval"));
-                    return;
-                }
-
-                if (start > finish) {
-                    log.debug("Incorrect apartment interval: start value more than finish value");
-                    addActionError(getText("ab.error.apartment.incorrect_start_value_more_than_finish_value"));
-                    return;
-                }
-
-                for (int i = start; i <= finish; i++) {
-                    log.debug("Creating apartment with number = {} for building with id = {}", i, buildingFilter);
-                    createApartment(i + "", building);
-                }
-            }
-        }
-    }
-
-    private void createApartment(String apartmentNumber, Building building) throws FlexPayExceptionContainer {
-        Apartment ap = Apartment.newInstance();
-        ap.setBuilding(building);
-        ap.setNumber(apartmentNumber);
-        apartmentService.create(ap);
-    }
-
-	private void updateApartment() throws FlexPayExceptionContainer {
-		apartment.setNumber(apartmentNumber);
-        apartmentService.update(apartment);
 	}
 
 	private boolean doValidate() {

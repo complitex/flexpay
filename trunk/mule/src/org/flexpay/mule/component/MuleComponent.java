@@ -72,12 +72,15 @@ public class MuleComponent implements Callable {
             for (FlexPayException e1 : e.getExceptions()) {
                 log.error("Error in proccesing request: {}", e1.getMessage());
             }
+            log.debug("{}", e);
             transactionManager.rollback(status);
         } catch (FlexPayException e) {
             log.error("Error in proccesing request: {}", e.getMessage());
+            log.debug("{}", e);
             transactionManager.rollback(status);
         } catch (Exception e) {
             log.error("Some errors: {}", e.getMessage());
+            log.debug("{}", e);
             transactionManager.rollback(status);
         }
 

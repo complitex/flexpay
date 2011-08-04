@@ -36,6 +36,8 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	private String dataRoot;
 	private int logPreviewLinesNumber;
 
+    private String syncServerAddress;
+
 	private String keystorePath;
 	private String keystorePassword;
 	private String selfKeyAlias;
@@ -85,6 +87,14 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	 */
 	private ApplicationConfig() {
 	}
+
+    public static String getSyncServerAddress() {
+        return getInstance().syncServerAddress;
+    }
+
+    public void setSyncServerAddress(String syncServerAddress) {
+        this.syncServerAddress = syncServerAddress;
+    }
 
 	/**
 	 * Getter for property 'languages'.

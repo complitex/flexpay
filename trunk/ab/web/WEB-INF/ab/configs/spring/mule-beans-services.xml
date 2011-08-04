@@ -133,6 +133,8 @@
           p:buildingsDao-ref="buildingsDao"
           p:buildingsDaoExt-ref="buildingsDaoExt"
           p:propertiesInitializerHolder-ref="buildingPropertiesInitializerHolder"
+          p:objectsFactory-ref="objectsFactory"
+          p:addressAttributeTypeService-ref="addressAttributeTypeService"
           p:addressService-ref="addressService"
           p:parentService-ref="streetService"
           p:districtParentService-ref="districtService"

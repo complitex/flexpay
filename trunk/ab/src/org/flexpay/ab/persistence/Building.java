@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +16,7 @@ import static org.flexpay.common.util.CollectionUtils.set;
 /**
  * Building
  */
-public class Building extends DomainObjectWithStatus {
+public class Building extends EsbXmlSyncObject {
 
 	private District district;
 	private Set<BuildingStatus> buildingStatuses = Collections.emptySet();
@@ -34,7 +34,43 @@ public class Building extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	public static Building newInstance() {
+    @Override
+    public String getXmlString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <building>\n");
+
+        if (ACTION_INSERT.equals(action)) {
+
+            BuildingAddress address = getDefaultBuildings();
+
+            builder.append("        <districtId>").append(district.getId()).append("</districtId>\n").
+                    append("        <buildingAddress>\n").
+                    append("            <streetId>").append(address.getStreet().getId()).append("</streetId>\n").
+                    append("            <attributes>\n");
+            for (AddressAttribute attr : address.getBuildingAttributes()) {
+                builder.append("                <org.flexpay.mule.request.MuleAddressAttribute>\n").
+                        append("                    <id>").append(attr.getBuildingAttributeType().getId()).append("</id>\n").
+                        append("                    <value>").append(attr.getValue()).append("</value>\n").
+                        append("                </org.flexpay.mule.request.MuleAddressAttribute>\n");
+            }
+            builder.append("            </attributes>\n").
+                    append("        </buildingAddress>\n");
+        } else if (ACTION_DELETE.equals(action)) {
+            builder.append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        }
+
+        builder.append("    </building>\n");
+
+        return builder.toString();
+    }
+
+    public static Building newInstance() {
 		return new Building();
 	}
 

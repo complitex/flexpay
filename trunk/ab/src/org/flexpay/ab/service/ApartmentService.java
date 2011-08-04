@@ -71,6 +71,9 @@ public interface ApartmentService extends JpaSetService {
 	@NotNull
 	Apartment create(@NotNull Apartment apartment) throws FlexPayExceptionContainer;
 
+    @Secured (Roles.APARTMENT_ADD)
+    void createSomeApartments(String apartmentNumbers, Stub<BuildingAddress> addressStub) throws FlexPayExceptionContainer, FlexPayException;
+
 	/**
 	 * Update or create apartment
 	 *

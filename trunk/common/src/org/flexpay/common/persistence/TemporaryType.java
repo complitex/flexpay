@@ -15,7 +15,6 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 		extends TemporaryValue<TV> implements ObjectWithStatus {
 
 	private Set<T> translations = Collections.emptySet();
-	private int status;
 
 	protected TemporaryType() {
 	}
@@ -30,37 +29,6 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 
 	public void setTranslations(Set<T> translations) {
 		this.translations = translations;
-	}
-
-	@Override
-	public int getStatus() {
-		return status;
-	}
-
-	@Override
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public void disable() {
-		status = STATUS_DISABLED;
-	}
-
-	public void activate() {
-		status = STATUS_ACTIVE;
-	}
-
-	/**
-	 * Check if object is active
-	 *
-	 * @return <code>true</code> if object status is active, or <code>false</code> otherwise
-	 */
-	public boolean isActive() {
-		return status == STATUS_ACTIVE;
-	}
-
-	public boolean isNotActive() {
-		return status == STATUS_DISABLED;
 	}
 
 	/**

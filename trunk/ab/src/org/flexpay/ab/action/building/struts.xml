@@ -26,6 +26,7 @@
 
 		<action name="buildingCreate" class="buildingCreateAction">
 			<result name="input" type="tiles">ab.buildings.create</result>
+            <result name="redirectError" type="redirectAction">buildingsList</result>
 			<result name="redirectSuccess" type="redirectAction">
 				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>

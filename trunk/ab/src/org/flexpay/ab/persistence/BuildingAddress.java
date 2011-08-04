@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.TranslationUtil;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ import static org.flexpay.common.util.CollectionUtils.set;
 /**
  * Buildings is a logical relation between building and several street addresses
  */
-public class BuildingAddress extends DomainObjectWithStatus {
+public class BuildingAddress extends EsbXmlSyncObject {
 
 	private Street street;
 	private Building building;
@@ -38,6 +38,44 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	public BuildingAddress(Stub<BuildingAddress> stub) {
 		super(stub.getId());
 	}
+
+    @Override
+    public String getXmlString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <buildingAddress>\n");
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+
+            builder.append("        <id>").append(id).append("</id>\n").
+                    append("        <buildingId>").append(building.getId()).append("</buildingId>\n").
+                    append("        <streetId>").append(street.getId()).append("</streetId>\n").
+                    append("        <primary>").append(primaryStatus).append("</primary>\n").
+                    append("        <attributes>\n");
+            for (AddressAttribute attr : addressAttributes) {
+                builder.append("            <org.flexpay.mule.request.MuleAddressAttribute>\n").
+                        append("                <id>").append(attr.getBuildingAttributeType().getId()).append("</id>\n").
+                        append("                <value>").append(attr.getValue()).append("</value>\n").
+                        append("            </org.flexpay.mule.request.MuleAddressAttribute>\n");
+            }
+            builder.append("        </attributes>\n");
+        } else if (ACTION_DELETE.equals(action)) {
+            builder.append("        <buildingId>").append(building.getId()).append("</buildingId>\n").
+                    append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        } else if (ACTION_UPDATE_ADDRESS_SET_PRIMARY.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n").
+                    append("        <buildingId>").append(building.getId()).append("</buildingId>\n");
+        }
+
+        builder.append("    </buildingAddress>\n");
+
+        return builder.toString();
+    }
 
 	public Street getStreet() {
 		return this.street;

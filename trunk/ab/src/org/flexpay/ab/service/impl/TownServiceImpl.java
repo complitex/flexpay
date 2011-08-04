@@ -12,8 +12,10 @@ import org.flexpay.ab.service.TownService;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
@@ -29,6 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +50,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private TownDaoExt townDaoExt;
 	private TownNameDao townNameDao;
 
+    private EsbSyncRequestExecutor<Town> esbSyncRequestExecutor;
 	private ParentService<RegionFilter> parentService;
 	private SessionUtils sessionUtils;
 	private ModificationListener<Town> modificationListener;
@@ -88,6 +92,20 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 			modificationListener.onDelete(town);
 			log.debug("Town disabled: {}", town);
 		}
+
+        Town town = new Town();
+        town.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        town.setIds(townIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(town);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -107,6 +125,18 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		townDao.create(town);
 
 		modificationListener.onCreate(town);
+
+        town.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(town);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return town;
 	}
@@ -135,6 +165,18 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		modificationListener.onUpdate(old, town);
 
 		townDao.update(town);
+
+        town.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(town);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return town;
 	}
@@ -358,7 +400,11 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<Town> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setParentService(ParentService<RegionFilter> parentService) {
 		this.parentService = parentService;
 	}

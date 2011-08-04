@@ -25,6 +25,11 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 		return object;
 	}
 
+    @Override
+    public String getXmlString() {
+        return "";
+    }
+
 	public Stub<DomainObject> getStub() {
 		return stub(object);
 	}
@@ -88,6 +93,7 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 	 *
 	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
 	 */
+    @Override
 	public boolean isEmpty() {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		return isNew() && translations == Collections.EMPTY_SET;

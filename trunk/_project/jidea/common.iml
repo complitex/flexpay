@@ -112,6 +112,7 @@
     <orderEntry type="library" name="iText" level="project" />
     <orderEntry type="library" name="ldap" level="project" />
     <orderEntry type="library" name="Ant Libs" level="project" />
+    <orderEntry type="library" name="HttpClient" level="project" />
   </component>
 </module>
 

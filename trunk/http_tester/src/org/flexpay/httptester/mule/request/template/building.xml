@@ -1,7 +1,6 @@
 <org.flexpay.mule.Request>
     <action>@building.action@</action>
     <building>
-        <id>@building.id@</id>
         <ids>
             <long>@building.id1@</long>
             <long>@building.id2@</long>

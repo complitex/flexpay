@@ -28,7 +28,7 @@ public class ApplicationConfig {
 		Security.touch();
 	}
 
-	public static Town getDefaultTown() {
+    public static Town getDefaultTown() {
 		return getInstance().defaultTown;
 	}
 
@@ -69,7 +69,7 @@ public class ApplicationConfig {
         return INSTANCE;
     }
 
-	@Required
+    @Required
 	public void setDefaultTownId(Long townId) {
 		defaultTown = new Town(townId);
 	}

@@ -9,8 +9,10 @@ import org.flexpay.ab.persistence.CountryTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +39,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+    private EsbSyncRequestExecutor<Country> esbSyncRequestExecutor;
 	private CountryDao countryDao;
 	private CountryDaoExt countryDaoExt;
 
@@ -108,7 +112,20 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
         log.debug("Creating country in DB");
 		countryDao.create(country);
         log.debug("Country created {}", country);
-		return country;
+
+        country.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(country);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
+
+        return country;
 
 	}
 
@@ -308,4 +325,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 		this.countryDaoExt = countryDaoExt;
 	}
 
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<Country> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
 }

@@ -107,6 +107,7 @@ public class StreetEditAction extends FPActionSupport {
 
 		street.setNameForDate(streetName, beginDateFilter.getDate());
 		street.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
+        street.setNameDate(beginDateFilter.getDate());
 
 		if (street.isNew()) {
 			street.setParent(new Town(townFilter));
