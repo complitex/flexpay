@@ -62,6 +62,9 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		for (Street street : streets) {
 			streetIds.add(street.getId());
 		}
+        if (streetIds.isEmpty()) {
+            return SUCCESS;
+        }
 
 		streets = streetService.readFull(streetIds, true);
 
