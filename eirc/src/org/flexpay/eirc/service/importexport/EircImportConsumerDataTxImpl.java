@@ -69,7 +69,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 		initWatch(findConsumerWatch);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.MANDATORY)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public boolean processBatch(Stub<DataSourceDescription> sd, RawConsumerData data,
 								Map<String, List<Street>> nameObjsMap, DelayedUpdatesContainer delayedUpdates) {
@@ -104,6 +104,7 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 
 		InMemoryRawConsumersDataSource dataSource = new InMemoryRawConsumersDataSource(set(data.getRegistryRecord()));
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
+		log.debug("Registered alias");
 
 		try {
 			// set service if not found
@@ -125,6 +126,8 @@ public class EircImportConsumerDataTxImpl implements EircImportConsumerDataTx {
 
 				props.setService(service);
 			}
+
+			log.debug("Found service: {}", service);
 
 			// try to find consumer (correction lost or service code came in a different format?)
 //			findConsumerWatch.resume();

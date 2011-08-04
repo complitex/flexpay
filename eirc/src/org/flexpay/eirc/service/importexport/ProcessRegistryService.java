@@ -16,6 +16,8 @@ public interface ProcessRegistryService {
 
 	public boolean processRegistryRecordEnumeration(@NotNull List<Long> recordIds, @NotNull ProcessRegistryVariableInstance variable, @NotNull ProcessingContext context);
 
+	public boolean processRestRegistryRecordRange(@NotNull FetchRange range, @NotNull ProcessingContext context);
+
 	public ProcessRegistryVariableInstance prepare(@NotNull ProcessingContext context, @NotNull ProcessRegistryVariableInstance variable) throws Exception;
 
 	public boolean endProcessing(@NotNull ProcessingContext context);

@@ -17,6 +17,8 @@ import static org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Stat
 
 public class TradingDayControlPanel {
 
+	private static final String TRANSITIONS = "transitions";
+
     private static final Logger controlPanelLog = LoggerFactory.getLogger(TradingDayControlPanel.class);
 
 	private List<String> availableCommands = Collections.emptyList();
@@ -64,72 +66,49 @@ public class TradingDayControlPanel {
 		}
 		
 		if (tradingDayProcessInstanceId == null) {
-			controlPanelLog.warn("Trading day process not found. Command processing canceled.");
+			controlPanelLog.warn("Trading day process instance id not found. Command processing canceled.");
 			return;
 		}
-		/*
-		TaskInstance taskInstance = getTaskInstance();
-		if (taskInstance == null) {
-			controlPanelLog.warn("Trading day process task instance not found. Command processing canceled.");
+
+		ProcessInstance processInstance = processManager.getProcessInstance(tradingDayProcessInstanceId);
+		if (processInstance == null) {
+			controlPanelLog.warn("Trading day process instance not found. Command processing canceled.");
 			return;
 		}
-		final Long taskInstanceId = taskInstance.getId();
 
-        userLog.debug("processManager.executing...");
+		if (processInstance.getParameters().containsKey(TRANSITIONS) &&
+				processInstance.getParameters().get(TRANSITIONS) instanceof List && ((List)processInstance.getParameters().get(TRANSITIONS)).contains(command)) {
+			controlPanelLog.debug("Send signal '{}' to {} (actor={})", new Object[]{command, tradingDayProcessInstanceId, actor});
+			processManager.completeHumanTask(processInstance, actor, command);
+			userLog.debug("Signal '{}' sent to {} (actor={})", new Object[]{command, tradingDayProcessInstanceId, actor});
 
-		processManager.execute(new ContextCallback<Void>() {
-			@Override
-			public Void doInContext(@NotNull JbpmContext context) {
-				TaskInstance tInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
-				if (tInstance.isSignalling()) {
-                    userLog.debug("Signalling {} transition command", command);
-					tInstance.getProcessInstance().signal(command);
-				}
-				return null;
-			}
-		});
-
-        userLog.debug("processManager.execute completed");
-
-		command = ""; // reset command
-		*/
+			command = ""; // reset command
+			return;
+		}
+		controlPanelLog.warn("Can not find '{}' or signal value '{}' on trading day process instance {}",
+				new Object[]{TRANSITIONS, command, tradingDayProcessInstanceId});
 	}
 
+	@SuppressWarnings({"unchecked"})
 	private void loadAvailableCommands() {
-		/*
+
 		if (tradingDayProcessInstanceId == null) {
-			controlPanelLog.warn("Trading day process not found. Loading available commands canceled.");
+			controlPanelLog.warn("Trading day process instance id not found. Loading available commands canceled.");
 			return;
 		}
 
-		final TaskInstance taskInstance = getTaskInstance();
-		if (taskInstance == null) {
-			controlPanelLog.warn("Trading day process task instance not found. Loading available commands canceled.");
+		ProcessInstance processInstance = processManager.getProcessInstance(tradingDayProcessInstanceId);
+		if (processInstance == null) {
+			controlPanelLog.warn("Trading day process instance not found. Loading available commands canceled.");
 			return;
 		}
 
-		availableCommands = processManager.execute(new ContextCallback<List<String>>() {
-			@Override
-			public List<String> doInContext(@NotNull JbpmContext context) {
-				TaskInstance currentTaskInstance = context.getTaskInstance(taskInstance.getId());
-				if (currentTaskInstance == null) {
-					return Collections.emptyList();
-				}
-
-				List<String> availableTransitions = list();
-				for (Object o : currentTaskInstance.getProcessInstance().getRootToken().getAvailableTransitions()) {
-					Transition t = (Transition) o;
-					if (t.getName() != null && !t.getName().startsWith(".")) {
-						availableTransitions.add(t.getName());
-					}
-				}
-
-				return availableTransitions;
-			}
-		});
+		if (processInstance.getParameters().containsKey(TRANSITIONS) &&
+					processInstance.getParameters().get(TRANSITIONS) instanceof List) {
+			availableCommands = (List<String>)processInstance.getParameters().get(TRANSITIONS);
+		}
 
         Collections.sort(availableCommands);
-        */
 	}
 
 	private void loadProcessStatus() {
@@ -141,8 +120,18 @@ public class TradingDayControlPanel {
 		}
 
 		ProcessInstance process = processManager.getProcessInstance(tradingDayProcessInstanceId);
-		processStatus = process != null ? (Status) process.getParameters().get(PROCESS_STATUS) :
+		processStatus = process != null ? getStatus(process, Status.CLOSED) :
 				PaymentCollectorTradingDayConstants.Status.CLOSED;
+	}
+
+	private Status getStatus(ProcessInstance tradingDayProcess, Status defaultStatus) {
+		Object statusObject = tradingDayProcess.getParameters().get(PROCESS_STATUS);
+		if (statusObject instanceof Status) {
+			defaultStatus = (Status)statusObject;
+		} else if (statusObject instanceof String) {
+			defaultStatus = PaymentCollectorTradingDayConstants.getStatusByName((String)statusObject);
+		}
+		return defaultStatus;
 	}
 
 	public boolean isTradingDayOpened() {

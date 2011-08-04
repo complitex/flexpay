@@ -56,4 +56,10 @@ public interface ProcessRegistryVariableInstanceService {
 	@Secured(Roles.PROCESS_READ)
 	ProcessRegistryVariableInstance readFull(@NotNull Stub<ProcessRegistryVariableInstance> stub);
 
+	@Nullable
+	@Secured(Roles.PROCESS_READ)
+	ProcessRegistryVariableInstance update(@NotNull Stub<ProcessRegistryVariableInstance> stub,
+										   @NotNull Long lastProcessedRegistryRecord,
+										   @NotNull Integer incProcessedCountRecords);
+
 }

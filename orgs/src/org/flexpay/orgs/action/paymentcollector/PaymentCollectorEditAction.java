@@ -2,6 +2,8 @@ package org.flexpay.orgs.action.paymentcollector;
 
 import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.filter.BeginTimeFilter;
+import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
@@ -12,6 +14,8 @@ import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -21,12 +25,17 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 
 	private PaymentCollector collector = new PaymentCollector();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
+	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter(false);
+	private EndTimeFilter endTimeFilter = new EndTimeFilter(false);
 	private Map<Long, String> descriptions = map();
 	private String email;
 
 	private String crumbCreateKey;
 	private PaymentCollectorService collectorService;
 	private OrganizationService organizationService;
+
+	private Date defaultBeginTime;
+	private Date defaultEndTime;
 
 	public PaymentCollectorEditAction() {
 		organizationFilter.setAllowEmpty(false);
@@ -45,9 +54,17 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 		collectorService.initInstancelessFilter(organizationFilter, oldCollector);
 
 		if (isNotSubmit()) {
+			beginTimeFilter.setTime(defaultBeginTime);
+			endTimeFilter.setTime(defaultEndTime);
 			if (oldCollector.isNotNew()) {
 				organizationFilter.setSelectedId(oldCollector.getOrganizationStub().getId());
 				email = oldCollector.getEmail();
+				if (oldCollector.getTradingDayBeginTime() != null) {
+					beginTimeFilter = new BeginTimeFilter(oldCollector.getTradingDayEndTime(), false);
+				}
+				if (oldCollector.getTradingDayEndTime() != null) {
+					endTimeFilter = new EndTimeFilter(oldCollector.getTradingDayEndTime(), false);
+				}
 			}
 			collector = oldCollector;
 			initDescriptions();
@@ -73,6 +90,21 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 		}
 
 		oldCollector.setEmail(email);
+		if (beginTimeFilter.getHours() != 0 || beginTimeFilter.getMinutes() != 0 || beginTimeFilter.getSeconds() != 0) {
+			oldCollector.setTradingDayBeginTime(new Time(beginTimeFilter.getHours(), beginTimeFilter.getMinutes(), beginTimeFilter.getSeconds()));
+		} else {
+			oldCollector.setTradingDayBeginTime(null);
+		}
+		if (endTimeFilter.getHours() != 0 || endTimeFilter.getMinutes() != 0 || endTimeFilter.getSeconds() != 0) {
+			oldCollector.setTradingDayEndTime(new Time(endTimeFilter.getHours(), endTimeFilter.getMinutes(), endTimeFilter.getSeconds()));
+		} else {
+			oldCollector.setTradingDayEndTime(null);
+		}
+		if (oldCollector.getTradingDayBeginTime() != null && oldCollector.getTradingDayEndTime() != null &&
+				oldCollector.getTradingDayBeginTime().getTime() >= oldCollector.getTradingDayEndTime().getTime()) {
+			addActionError(getText("orgs.error.payment_collector.invalid_end_time"));
+			return INPUT;
+		}
 
 		if (oldCollector.isNew()) {
 			collectorService.create(oldCollector);
@@ -151,6 +183,22 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 		this.email = email;
 	}
 
+	public BeginTimeFilter getBeginTimeFilter() {
+		return beginTimeFilter;
+	}
+
+	public void setBeginTimeFilter(BeginTimeFilter beginTimeFilter) {
+		this.beginTimeFilter = beginTimeFilter;
+	}
+
+	public EndTimeFilter getEndTimeFilter() {
+		return endTimeFilter;
+	}
+
+	public void setEndTimeFilter(EndTimeFilter endTimeFilter) {
+		this.endTimeFilter = endTimeFilter;
+	}
+
 	public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;
 	}
@@ -165,4 +213,13 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 		this.collectorService = collectorService;
 	}
 
+	@Required
+	public void setDefaultBeginTime(Date defaultBeginTime) {
+		this.defaultBeginTime = defaultBeginTime;
+	}
+
+	@Required
+	public void setDefaultEndTime(Date defaultEndTime) {
+		this.defaultEndTime = defaultEndTime;
+	}
 }

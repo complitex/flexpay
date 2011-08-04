@@ -422,6 +422,35 @@
 		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code <> 4
 	]]></query>
 
+	<query name="RegistryRecord.listLoadedAndFixedRecords.stats.restriction"><![CDATA[
+		select distinct min(rr.id), max(rr.id), count(rr.id)
+		from RegistryRecord rr
+			left join rr.recordStatus rrs
+		where rr.registry.id=? and rrs.code in (1, 3) and rr.id>?
+	]]></query>
+
+	<query name="RegistryRecord.listLoadedAndFixedRecords.stats"><![CDATA[
+		select distinct min(rr.id), max(rr.id), count(rr.id)
+		from RegistryRecord rr
+			left join rr.recordStatus rrs
+		where rr.registry.id=? and rrs.code in (1, 3)
+	]]></query>
+
+	<query name="RegistryRecord.listLoadedAndFixedRecords"><![CDATA[
+		select distinct rr
+		from RegistryRecord rr
+			left join fetch rr.properties
+			left join fetch rr.recordStatus rrs
+			left join fetch rr.importError
+			left join fetch rr.containers
+		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code in (1, 3)
+	]]></query>
+
+	<query name="RegistryRecord.hasLoadedAndFixedRecords">
+		from Dual
+		where exists (from RegistryRecord rr where rr.registry.id=? and rr.recordStatus.code in (1, 3))
+	</query>
+
 	<query name="RegistryRecord.listRecordsForProcessingCollection"><![CDATA[
 		select distinct rr
 		from RegistryRecord rr

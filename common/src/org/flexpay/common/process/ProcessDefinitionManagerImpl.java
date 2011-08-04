@@ -68,6 +68,8 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	private String guvnorUserName;
 	private String guvnorUserPassword;
 
+	public static volatile boolean PROCESS_DEFINITIONS_LOADED = false;
+
 	/**
 	 * protected constructor
 	 */
@@ -125,13 +127,16 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 			log.debug("Looking up {}", path);
 			File file = ApplicationConfig.getResourceAsFile(path);
 			File[] definitions;
-			if (file.isDirectory()) {
-				definitions = file.listFiles((FilenameFilter) new SuffixFileFilter(PROCESS_FILE_EXTENTION));
-			} else {
-				definitions = new File[]{file};
+			if (file != null) {
+				if (file.isDirectory()) {
+					definitions = file.listFiles((FilenameFilter) new SuffixFileFilter(PROCESS_FILE_EXTENTION));
+				} else {
+					definitions = new File[]{file};
+				}
+				deployProcessDefinition(definitions, false, true);
 			}
-			deployProcessDefinition(definitions, false, true);
 		}
+		PROCESS_DEFINITIONS_LOADED = true;
 	}
 
 	/**
@@ -499,6 +504,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 				}
 			}
 		}
+		log.debug("delegate.addPackages");
 		delegate.addPackages(kbuilder.getKnowledgePackages());
 	}
 

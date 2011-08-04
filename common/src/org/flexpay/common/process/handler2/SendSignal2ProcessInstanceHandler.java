@@ -13,10 +13,10 @@ public class SendSignal2ProcessInstanceHandler extends TaskHandler {
 
 	private ProcessManager processManager;
 
-	public static final String WAITING_PROCESS_INSTANCE_ID = "waitingProcessInstanceId";
-	public static final String SIGNAL_VALUE = "signalValue";
-	public static final String TRANSITIONS = "transitions";
-	public static final Long TIME_OUT = 2000L;
+	private static final String WAITING_PROCESS_INSTANCE_ID = "waitingProcessInstanceId";
+	private static final String SIGNAL_VALUE = "signalValue";
+	private static final String TRANSITIONS = "transitions";
+	private static final Long TIME_OUT = 2000L;
 
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {

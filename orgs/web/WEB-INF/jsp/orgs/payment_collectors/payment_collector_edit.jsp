@@ -22,6 +22,14 @@
 			<td class="col"><s:text name="orgs.payment_collector.email"/>:</td>
 			<td class="col"><s:textfield name="email" /></td>
 		</tr>
+		<tr valign="middle" class="cols_1">
+			<td class="col"><s:text name="orgs.payment_collector.trading_day_begin_time"/>:</td>
+			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp" %></td>
+		</tr>
+		<tr valign="middle" class="cols_1">
+			<td class="col"><s:text name="orgs.payment_collector.trading_day_end_time"/>:</td>
+			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp" %></td>
+		</tr>
 		<tr valign="middle">
 			<td colspan="2">
                 <input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />

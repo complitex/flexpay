@@ -22,6 +22,17 @@ public abstract class PaymentCollectorTradingDayConstants {
 				Pair.make(Cashbox.class.getName(), "CashboxTradingDay"),
 				Pair.make(PaymentCollector.class.getName(), "PaymentCollectorTradingDay"));
 
+	public static Status getStatusByName(String statusName) {
+		return statusCollection.get(statusName);
+	}
+
+	private static Map<String, Status> statusCollection = map(
+			new Pair<String, Status>(Status.CLOSED.getStatusName(), Status.CLOSED),
+			new Pair<String, Status>(Status.ERROR.getStatusName(), Status.ERROR),
+			new Pair<String, Status>(Status.OPEN.getStatusName(), Status.OPEN),
+			new Pair<String, Status>(Status.PROCESSED.getStatusName(), Status.PROCESSED),
+			new Pair<String, Status>(Status.WAIT_APPROVE.getStatusName(), Status.WAIT_APPROVE));
+
 	// trading day statuses
 	public static enum Status {
 

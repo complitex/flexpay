@@ -60,7 +60,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param apartmentStub Apartment reference
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
-	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public EircAccount findAccount(@NotNull Stub<Apartment> apartmentStub) {
 		return eircAccountDaoExt.findAccount(apartmentStub.getId());

@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Time;
 import java.util.Collections;
 import java.util.Set;
 
@@ -13,6 +14,8 @@ public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescr
 	private String email;
 	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
 	private Long tradingDayProcessInstanceId;
+	private Time tradingDayBeginTime;
+	private Time tradingDayEndTime;
 
 	public PaymentCollector() {
 	}
@@ -49,12 +52,30 @@ public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescr
 		this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
 	}
 
+	public Time getTradingDayBeginTime() {
+		return tradingDayBeginTime;
+	}
+
+	public void setTradingDayBeginTime(Time tradingDayBeginTime) {
+		this.tradingDayBeginTime = tradingDayBeginTime;
+	}
+
+	public Time getTradingDayEndTime() {
+		return tradingDayEndTime;
+	}
+
+	public void setTradingDayEndTime(Time tradingDayEndTime) {
+		this.tradingDayEndTime = tradingDayEndTime;
+	}
+
 	@Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
                 append("id", id).
                 append("status", status).
                 append("email", email).
+				append("trading day begin time", tradingDayBeginTime).
+				append("trading day end time", tradingDayEndTime).
                 toString();
     }
 }

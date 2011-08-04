@@ -102,6 +102,8 @@
           p:collectorService-ref="paymentCollectorService"
           p:crumbNameKey="orgs.crumbs.payment_collector_edit"
           p:crumbCreateKey="orgs.crumbs.payment_collector_create"
+		  p:defaultBeginTime="${trading.day.begin_time.default}"
+		  p:defaultEndTime="${trading.day.end_time.default}"
           scope="prototype" />
 
     <!-- Service organization actions -->

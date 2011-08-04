@@ -26,7 +26,9 @@ public interface ExportJobParameterNames {
 	final static String FINISH_DATE = "finishDate";
 	final static String LAST_PROCESSED_DATE = "lastProcessedDate";
 	final static String EMAIL = "email";
-	
+	final static String TRADING_DAY_BEGIN_DATE = "tradingDayBeginDate";
+	final static String TRADING_DAY_END_DATE = "tradingDayEndDate";
+
 	final static String PRIVATE_KEY = "privateKey";
 
 	final static String REGISTRIES = "Registries";
@@ -36,6 +38,7 @@ public interface ExportJobParameterNames {
 
 	final static String CURRENT_INDEX_CASHBOX = "currentIndexCashbox";
 	final static String CASHBOXES = "cashboxes";
+	final static String CASHBOX_ID = "cashboxId";
 
 	final static String PAYMENT_COLLECTOR_ID = "paymentCollectorId";
 }

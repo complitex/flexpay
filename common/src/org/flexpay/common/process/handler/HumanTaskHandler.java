@@ -1,5 +1,7 @@
 package org.flexpay.common.process.handler;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
@@ -31,5 +33,11 @@ public class HumanTaskHandler implements WorkItemHandler {
 		return workItems;
 	}
 
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("workItems", workItems.toString())
+				.toString();
+	}
 }
 

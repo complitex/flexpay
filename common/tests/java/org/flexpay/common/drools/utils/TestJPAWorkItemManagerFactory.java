@@ -19,6 +19,7 @@ public class TestJPAWorkItemManagerFactory extends JPAWorkItemManagerFactory {
 			@Override
 			public void completeWorkItem(long id, Map<String, Object> results) {
 				log.debug("complete test work item");
+				System.out.println("complete test work item");
 				super.completeWorkItem(id, results);
 				log.debug("completed test work item");
 			}

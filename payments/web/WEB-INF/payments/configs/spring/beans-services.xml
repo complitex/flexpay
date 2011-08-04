@@ -303,7 +303,9 @@
     <bean id="paymentCollectorTradingDayService"
           class="org.flexpay.payments.service.impl.PaymentCollectorTradingDay"
           parent="tradingDayService"
-          p:paymentPointTradingDayService-ref="paymentPointTradingDayService" />
+          p:paymentPointTradingDayService-ref="paymentPointTradingDayService"
+		  p:defaultBeginTime="${trading.day.begin_time.default}"
+		  p:defaultEndTime="${trading.day.end_time.default}" />
 
 
     <bean id="paymentPointTradingDayService"

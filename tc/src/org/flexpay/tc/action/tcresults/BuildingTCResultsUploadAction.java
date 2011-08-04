@@ -9,7 +9,6 @@ import org.flexpay.tc.process.TariffCalcResultExportForBuildingJob;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Map;
 
 public class BuildingTCResultsUploadAction extends FPActionSupport {
@@ -28,7 +27,7 @@ public class BuildingTCResultsUploadAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<String, Object> contextVariables = CollectionUtils.map();
 
 		log.debug("Building id := {}", buildingId);
 		log.debug("CalculationDate := {}", calculationDate);
@@ -38,7 +37,7 @@ public class BuildingTCResultsUploadAction extends FPActionSupport {
 		contextVariables.put(TariffCalcResultExportForBuildingJob.BUILDING_ID, buildingId);
 		contextVariables.put(TariffCalcResultExportForBuildingJob.PERIOD_BEGIN_DATE, DateUtil.parseBeginDate(date));
 
-		processManager.createProcess("TariffCalcResultExportForBuildingProcess", contextVariables);
+		processManager.startProcess("TariffCalcResultExportForBuildingProcess", contextVariables);
 
 		log.info("TariffCalcResultExportForBuildingProcess started with parameters {} and {}", calculationDate, buildingId);
 

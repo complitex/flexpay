@@ -330,7 +330,7 @@ public class SPServiceImpl implements SPService {
 	 * @param serviceCode		 Service code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
 		List<Service> services;

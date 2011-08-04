@@ -542,8 +542,8 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 			@Override
 			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
 				return entityManager
-						.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=? and rr.importError.id>0 and rr.importError.status=0")
-						.setParameter(1, registryId).getSingleResult();
+						.createQuery("select count(rr.id) from RegistryRecord rr where rr.registry.id=:registryId and rr.importError.id>0 and rr.importError.status=0")
+						.setParameter("registryId", registryId).getSingleResult();
 			}
 		});
 		return count.intValue();
@@ -938,7 +938,18 @@ public class RegistryRecordDaoExtImpl extends SimpleJdbcDaoSupport implements Re
 		return minMax;
 	}
 
-    @Required
+	/**
+	 * @{inheritDoc}
+	 */
+	@Override
+	public boolean hasLoadedAndFixedRecords(@NotNull Long registryId) {
+		List<?> result = jpaTemplate
+				.findByNamedQuery("RegistryRecord.hasLoadedAndFixedRecords", registryId);
+		log.debug("hasLoadedAndFixedRecords: {} ({})", result, result.size());
+		return !result.isEmpty();
+	}
+
+	@Required
     public void setJpaTemplate(JpaTemplate jpaTemplate) {
         this.jpaTemplate = jpaTemplate;
     }

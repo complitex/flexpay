@@ -4,7 +4,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.fill.JRAbstractLRUVirtualizer;
 import net.sf.jasperreports.engine.fill.JRSwapFileVirtualizer;
-import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
+import net.sf.jasperreports.engine.query.JRJpaQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.engine.util.JRSwapFile;
@@ -16,7 +16,6 @@ import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.jboss.util.file.FilePrefixFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
@@ -82,7 +83,7 @@ public class ReportUtil {
 
 	private static final String RESOURCE_CONNECTION = ReportUtil.class.getName() + "_CONNECTION";
 
-	private SessionFactory sessionFactory;
+	private EntityManagerFactory entityManagerFactory;
 	private DataSource dataSource;
 
 	private FPFileService fileService;
@@ -388,14 +389,12 @@ public class ReportUtil {
 			if ("hql".equalsIgnoreCase(query.getLanguage())) {
 				log.debug("Found hql QUERY!");
 				@SuppressWarnings ({"HibernateResourceOpenedButNotSafelyClosed"})
-				Session session = sessionFactory.openSession();
-				parameters.put(JRHibernateQueryExecuterFactory.PARAMETER_HIBERNATE_SESSION, session);
-				resourceNames.add(JRHibernateQueryExecuterFactory.PARAMETER_HIBERNATE_SESSION);
+				EntityManager entityManager = entityManagerFactory.createEntityManager();
+				parameters.put(JRJpaQueryExecuterFactory.PARAMETER_JPA_ENTITY_MANAGER, entityManager);
+				resourceNames.add(JRJpaQueryExecuterFactory.PARAMETER_JPA_ENTITY_MANAGER);
 
 				// TODO: check if it is enough
-				report.setProperty(JRHibernateQueryExecuterFactory.PROPERTY_HIBERNATE_QUERY_LIST_PAGE_SIZE, "5000");
-				report.setProperty(JRHibernateQueryExecuterFactory.PROPERTY_HIBERNATE_QUERY_RUN_TYPE, "list");
-				report.setProperty(JRHibernateQueryExecuterFactory.PROPERTY_HIBERNATE_CLEAR_CACHE, "true");
+				report.setProperty(JRJpaQueryExecuterFactory.PROPERTY_JPA_QUERY_PAGE_SIZE, "5000");
 			}
 		}
 
@@ -579,8 +578,9 @@ public class ReportUtil {
 		return n;
 	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+	@Required
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		this.entityManagerFactory = entityManagerFactory;
 	}
 
 	@Required

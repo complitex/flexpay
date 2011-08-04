@@ -508,7 +508,7 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = false, propagation = Propagation.SUPPORTS)
 	@Override
 	public void importApartments(DataSourceDescription sourceDescription) throws Exception {
 		apartmentDataSource.initialize();
@@ -570,7 +570,7 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = false, propagation = Propagation.SUPPORTS)
 	@Override
 	public void importPersons(Stub<DataSourceDescription> sd) throws Exception {
 		personDataSource.initialize();

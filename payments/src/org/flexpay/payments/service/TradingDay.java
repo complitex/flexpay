@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface TradingDay<T extends DomainObject> {
 
-	void startTradingDay(@NotNull T o) throws FlexPayException;
+	boolean startTradingDay(@NotNull T o) throws FlexPayException;
 
 	void stopTradingDay(@NotNull T o) throws FlexPayException;
 

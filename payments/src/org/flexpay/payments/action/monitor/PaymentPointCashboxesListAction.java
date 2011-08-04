@@ -74,7 +74,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
                 if (tradingDayProcess.getEndDate() != null) {
                     finishDate = tradingDayProcess.getEndDate();
                 }
-                processStatus = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
+                processStatus = getStatus(tradingDayProcess, Status.CLOSED);
             }
 
         }
@@ -106,7 +106,7 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 			if (cashbox.getTradingDayProcessInstanceId() != null) {
 				ProcessInstance process = processManager.getProcessInstance(cashbox.getTradingDayProcessInstanceId());
 				if (process != null) {
-					container.setStatus((Status)process.getParameters().get(PaymentCollectorTradingDayConstants.PROCESS_STATUS));
+					container.setStatus(getStatus(process, Status.CLOSED));
 				}
 			}
 
@@ -114,6 +114,16 @@ public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActio
 		}
 
 		return SUCCESS;
+	}
+
+	private Status getStatus(ProcessInstance tradingDayProcess, Status defaultStatus) {
+		Object statusObject = tradingDayProcess.getParameters().get(PROCESS_STATUS);
+		if (statusObject instanceof Status) {
+			defaultStatus = (Status)statusObject;
+		} else if (statusObject instanceof String) {
+			defaultStatus = PaymentCollectorTradingDayConstants.getStatusByName((String)statusObject);
+		}
+		return defaultStatus;
 	}
 
 	/**

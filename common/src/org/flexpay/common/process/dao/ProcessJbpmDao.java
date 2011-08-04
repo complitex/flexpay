@@ -36,5 +36,7 @@ public interface ProcessJbpmDao {
 
 	void signalExecution(long executionId, String signal);
 
+	void messageExecution(long executionId, String messageName, String messageValue);
+
 	void registerEventListener(ProcessEventListener listener);
 }

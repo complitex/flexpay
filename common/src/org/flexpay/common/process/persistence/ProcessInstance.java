@@ -2,6 +2,8 @@ package org.flexpay.common.process.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 import java.util.Map;
@@ -114,12 +116,27 @@ public class ProcessInstance {
 		this.processDefinitionId = processDefinitionId;
 	}
 
+	@NotNull
 	public Map<String, Object> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(Map<String, Object> parameters) {
+	public void setParameters(@NotNull Map<String, Object> parameters) {
 		this.parameters = parameters;
+	}
+
+	/**
+	 * Get process instance`s parameter value by name
+	 *
+	 * @param parameterName Parameter name
+	 * @return  <code>null</code> if parameter does not exist
+	 */
+	@Nullable
+	public Object getParameter(@NotNull String parameterName) {
+		if (!parameters.containsKey(parameterName)) {
+			return null;
+		}
+		return parameters.get(parameterName);
 	}
 
 	public STATE getState() {

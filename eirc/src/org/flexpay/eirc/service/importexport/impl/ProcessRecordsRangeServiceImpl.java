@@ -42,6 +42,7 @@ public class ProcessRecordsRangeServiceImpl implements ProcessRecordsRangeServic
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public ProcessingContext prepareContext(Registry registry) throws FlexPayException {
 		ProcessingContext context = new ProcessingContext();
@@ -65,16 +66,20 @@ public class ProcessRecordsRangeServiceImpl implements ProcessRecordsRangeServic
 		return context;
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public boolean processRecords(Collection<RegistryRecord> records, ProcessingContext context) {
 		for (RegistryRecord record : records) {
+//			log.debug("Check record status");
 			if (record.getRecordStatus().getCode() == RegistryRecordStatus.PROCESSED) {
 				continue;
 			}
+//			log.debug("Processing record");
 			try {
 				context.setCurrentRecord(record);
+//				log.debug("Current record set");
 				processorTx.prepareRecordUpdates(context);
+//				log.debug("Record updates prepared");
 				if (context.getCurrentRecord() != null) {
 					recordWorkflowManager.setNextSuccessStatus(record);
 				}

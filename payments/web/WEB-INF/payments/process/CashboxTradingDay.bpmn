@@ -39,6 +39,8 @@
 			<tns:import name="org.flexpay.common.util.CollectionUtils" />
 			<tns:import name="org.flexpay.common.util.DateUtil" />
 			<tns:import name="org.apache.commons.lang.time.DateUtils" />
+			<tns:import name="org.flexpay.common.util.StringUtil" />
+			<tns:import name="org.apache.commons.lang.StringUtils" />
 		</extensionElements>
 
 		<!-- process variables -->
@@ -48,14 +50,17 @@
 
 		<property id="parentProcessId" itemSubjectRef="_processIdItem" />
 		<property id="cashboxId" itemSubjectRef="_paymentPointIdItem" />
-		<property id="processStatus" itemSubjectRef="_processStatusItem"/>
-		<property id="canUpdateOrCreateOperation" itemSubjectRef="_canUpdateOrCreateOperationItem"/>
+		<property id="PROCESS_STATUS" itemSubjectRef="_processStatusItem"/>
+		<property id="CAN_UPDATE_OR_CREATE_OPERATION" itemSubjectRef="_canUpdateOrCreateOperationItem"/>
 		<property id="transitions" itemSubjectRef="_transitionsItem"/>
 		<property id="signalValue" itemSubjectRef="_signalValueItem"/>
-		<property id="duration" itemSubjectRef="_durationItem"/>
+		<property id="beginDuration" itemSubjectRef="_durationItem"/>
+		<property id="endDuration" itemSubjectRef="_durationItem"/>
 		<property id="PROCESS_MANAGER_SECURITY_CONTEXT" itemSubjectRef="_securityContext"/>
 		<property id="now" itemSubjectRef="_dateItem"/>
-		<property id="endDate" itemSubjectRef="_dateItem"/>
+		<property id="tradingDayBeginDate" itemSubjectRef="_dateItem"/>
+		<property id="tradingDayEndDate" itemSubjectRef="_dateItem"/>
+		<property id="messageFromAdmin" itemSubjectRef="_signalValueItem"/>
 
 		<!-- nodes -->
 		<startEvent id="_1" name="StartProcess"/>
@@ -63,14 +68,35 @@
 		<scriptTask id="_3" name="Init duration">
 			<script>
 				now = new Date();
-				endDate = DateUtils.addHours(DateUtil.truncateDay(now), 20);
-				endDate = DateUtils.addMinutes(endDate, 0);
-				long odds = endDate.getTime() - now.getTime();
-				duration = Math.max(0, odds) + "ms";
-				System.out.println("Duration time: " + duration);
-				kcontext.setVariable("duration", duration);;
+				if (StringUtils.isEmpty(StringUtil.getString(kcontext.getVariable("tradingDayBeginDate")))) {
+					System.out.println("Set default begin trading day");
+					tradingDayBeginDate = DateUtil.truncateDay(now);
+					kcontext.setVariable("tradingDayBeginDate", tradingDayBeginDate);
+				}
+				System.out.println("Trading day begin date:" + kcontext.getVariable("tradingDayBeginDate"));
+				long odds1 = ((Date)kcontext.getVariable("tradingDayBeginDate")).getTime() - now.getTime();
+				beginDuration = Math.max(0, odds1) + "ms";
+				System.out.println("Begin duration time: " + beginDuration);
+				kcontext.setVariable("beginDuration", beginDuration);
+				if (StringUtils.isEmpty(StringUtil.getString(kcontext.getVariable("tradingDayEndDate")))) {
+					System.out.println("Set default end trading day");
+					tradingDayEndDate = DateUtils.addHours(DateUtil.truncateDay(now), 20);
+					tradingDayEndDate = DateUtils.addMinutes(tradingDayEndDate, 0);
+					kcontext.setVariable("tradingDayEndDate", tradingDayEndDate);
+				}
+				System.out.println("Trading day end date:" + kcontext.getVariable("tradingDayEndDate"));
+				long odds2 = ((Date)kcontext.getVariable("tradingDayEndDate")).getTime() - now.getTime();
+				endDuration = Math.max(0, odds2) + "ms";
+				System.out.println("End duration time: " + endDuration);
+				kcontext.setVariable("endDuration", endDuration);
 			</script>
 		</scriptTask>
+
+		<intermediateCatchEvent id="_4" name="timer" >
+			<timerEventDefinition>
+				<timeCycle>#{beginDuration}</timeCycle>
+			</timerEventDefinition>
+		</intermediateCatchEvent>
 
 		<subProcess id="_2" name="TradingDay">
 
@@ -78,13 +104,42 @@
 
 			<scriptTask id="_2-2" name="Init parameters">
 				<script>
-					kcontext.setVariable("processStatus", Status.OPEN);
-					kcontext.setVariable("canUpdateOrCreateOperation", Boolean.TRUE);
+					kcontext.setVariable("PROCESS_STATUS", Status.OPEN);
+					kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.TRUE);
 					transitions = CollectionUtils.list();
 					transitions.add("Close");
 					kcontext.setVariable("transitions", transitions);
 				</script>
 			</scriptTask>
+
+			<task id="_2-14" name="AddProcessIdToCashboxTask" tns:taskName="AddProcessIdToCashboxTask">
+				<ioSpecification>
+					<dataInput id="_2-14_cashboxId" name="cashboxId"/>
+					<dataInput id="_2-14_securityContext" name="PROCESS_MANAGER_SECURITY_CONTEXT" />
+					<dataOutput id="_2-14_result" name="Result"/>
+					<inputSet>
+						<dataInputRefs>_2-14_cashboxId</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_2-14_securityContext</dataInputRefs>
+					</inputSet>
+					<outputSet>
+						<dataOutputRefs>_2-14_result</dataOutputRefs>
+					</outputSet>
+				</ioSpecification>
+				<dataInputAssociation>
+					<sourceRef>cashboxId</sourceRef>
+					<targetRef>_2-14_cashboxId</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>PROCESS_MANAGER_SECURITY_CONTEXT</sourceRef>
+					<targetRef>_2-14_securityContext</targetRef>
+				</dataInputAssociation>
+				<dataOutputAssociation>
+					<sourceRef>_2-14_result</sourceRef>
+					<targetRef>addProcessIdToCashboxResult</targetRef>
+				</dataOutputAssociation>
+			</task>
 
 			<exclusiveGateway id="_2-3" name="Join 1" gatewayDirection="Converging"/>
 
@@ -97,20 +152,21 @@
 				</ioSpecification>
 				<potentialOwner>
 					<resourceAssignmentExpression>
-						<formalExpression>PaymentCollector</formalExpression>
+						<formalExpression>PAYMENT_COLLECTOR</formalExpression>
 					</resourceAssignmentExpression>
 				</potentialOwner>
 				<potentialOwner>
 					<resourceAssignmentExpression>
-						<formalExpression>Accounter</formalExpression>
+						<formalExpression>ACCOUNTER</formalExpression>
 					</resourceAssignmentExpression>
 				</potentialOwner>
 			</userTask>
 
-			<scriptTask id="_2-5" name="Send signal close to payment point">
+			<scriptTask id="_2-5" name="Prepare signal value 'Close'. Clear transitions list">
 				<script>
 					System.out.println("Send signal 'Close' to payment point (parentProcessId=" + parentProcessId + ", cashboxId=" + cashboxId + ")");
-					kcontext.setVariable("processStatus", Status.WAIT_APPROVE);
+					kcontext.setVariable("PROCESS_STATUS", Status.WAIT_APPROVE);
+					kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.FALSE);
 					kcontext.setVariable("signalValue", "Close");
 					transitions = CollectionUtils.list();
 					kcontext.setVariable("transitions", transitions);
@@ -121,12 +177,16 @@
 				<ioSpecification>
 					<dataInput id="_2-12_waitingProcessInstanceId" name="waitingProcessInstanceId" />
 					<dataInput id="_2-12_signalValue" name="signalValue" />
+					<dataInput id="_2-12_securityContext" name="PROCESS_MANAGER_SECURITY_CONTEXT" />
 					<dataOutput id="_2-12_result" name="Result"/>
 					<inputSet>
 						<dataInputRefs>_2-12_waitingProcessInstanceId</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_2-12_signalValue</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_2-12_securityContext</dataInputRefs>
 					</inputSet>
 					<outputSet>
 						<dataOutputRefs>_2-12_result</dataOutputRefs>
@@ -140,13 +200,17 @@
 					<sourceRef>signalValue</sourceRef>
 					<targetRef>_2-12_signalValue</targetRef>
 				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>PROCESS_MANAGER_SECURITY_CONTEXT</sourceRef>
+					<targetRef>_2-12_securityContext</targetRef>
+				</dataInputAssociation>
 				<dataOutputAssociation>
 					<sourceRef>_2-12_result</sourceRef>
 					<targetRef>sendSignal2ProcessInstanceResult</targetRef>
 				</dataOutputAssociation>
 			</task>
 
-			<scriptTask id="_2-13" name="Send signal close to payment point">
+			<scriptTask id="_2-13" name="Prepare transitions Cancel and Approve">
 				<script>
 					transitions = CollectionUtils.list();
 					transitions.add("Cancel");
@@ -170,18 +234,20 @@
 				</dataOutputAssociation>
 				<potentialOwner>
 					<resourceAssignmentExpression>
-						<formalExpression>PaymentCollector</formalExpression>
+						<formalExpression>ACCOUNTER</formalExpression>
 					</resourceAssignmentExpression>
 				</potentialOwner>
 			</userTask>
 
 			<exclusiveGateway id="_2-7" name="Split Cancel or Approve" gatewayDirection="Diverging"/>
 
-			<scriptTask id="_2-8" name="Send signal approve to payment point">
+			<scriptTask id="_2-8" name="Prepare signal value 'Approve'. Clear transitions list">
 				<script>
 					System.out.println("Send signal 'Approve' to payment point (parentProcessId=" + parentProcessId + ", cashboxId=" + cashboxId + ")");
-					kcontext.setVariable("processStatus", Status.CLOSED);
+					kcontext.setVariable("PROCESS_STATUS", Status.CLOSED);
 					kcontext.setVariable("signalValue", "Approve");
+					transitions = CollectionUtils.list();
+					kcontext.setVariable("transitions", transitions);
 				</script>
 			</scriptTask>
 
@@ -189,12 +255,16 @@
 				<ioSpecification>
 					<dataInput id="_2-10_waitingProcessInstanceId" name="waitingProcessInstanceId" />
 					<dataInput id="_2-10_signalValue" name="signalValue" />
+					<dataInput id="_2-10_securityContext" name="PROCESS_MANAGER_SECURITY_CONTEXT" />
 					<dataOutput id="_2-10_result" name="Result"/>
 					<inputSet>
 						<dataInputRefs>_2-10_waitingProcessInstanceId</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_2-10_signalValue</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_2-10_securityContext</dataInputRefs>
 					</inputSet>
 					<outputSet>
 						<dataOutputRefs>_2-10_result</dataOutputRefs>
@@ -208,17 +278,24 @@
 					<sourceRef>signalValue</sourceRef>
 					<targetRef>_2-10_signalValue</targetRef>
 				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>PROCESS_MANAGER_SECURITY_CONTEXT</sourceRef>
+					<targetRef>_2-10_securityContext</targetRef>
+				</dataInputAssociation>
 				<dataOutputAssociation>
 					<sourceRef>_2-10_result</sourceRef>
 					<targetRef>sendSignal2ProcessInstanceResult</targetRef>
 				</dataOutputAssociation>
 			</task>
 
-			<scriptTask id="_2-9" name="Send signal cancel to payment point">
+			<scriptTask id="_2-9" name="Prepare signal value 'Cancel'. Clear transitions list">
 				<script>
 					System.out.println("Send signal 'Cancel' to payment point (parentProcessId=" + parentProcessId + ", cashboxId=" + cashboxId + ")");
-					kcontext.setVariable("processStatus", Status.OPEN);
+					kcontext.setVariable("PROCESS_STATUS", Status.OPEN);
+					kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.TRUE);
 					kcontext.setVariable("signalValue", "Cancel");
+					transitions = CollectionUtils.list();
+					kcontext.setVariable("transitions", transitions);
 				</script>
 			</scriptTask>
 
@@ -226,12 +303,16 @@
 				<ioSpecification>
 					<dataInput id="_2-11_waitingProcessInstanceId" name="waitingProcessInstanceId" />
 					<dataInput id="_2-11_signalValue" name="signalValue" />
+					<dataInput id="_2-11_securityContext" name="PROCESS_MANAGER_SECURITY_CONTEXT" />
 					<dataOutput id="_2-11_result" name="Result"/>
 					<inputSet>
 						<dataInputRefs>_2-11_waitingProcessInstanceId</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_2-11_signalValue</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_2-11_securityContext</dataInputRefs>
 					</inputSet>
 					<outputSet>
 						<dataOutputRefs>_2-11_result</dataOutputRefs>
@@ -245,16 +326,29 @@
 					<sourceRef>signalValue</sourceRef>
 					<targetRef>_2-11_signalValue</targetRef>
 				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>PROCESS_MANAGER_SECURITY_CONTEXT</sourceRef>
+					<targetRef>_2-11_securityContext</targetRef>
+				</dataInputAssociation>
 				<dataOutputAssociation>
 					<sourceRef>_2-11_result</sourceRef>
 					<targetRef>sendSignal2ProcessInstanceResult</targetRef>
 				</dataOutputAssociation>
 			</task>
 
+			<scriptTask id="_2-15" name="Prepare transitions Close">
+				<script>
+					transitions = CollectionUtils.list();
+					transitions.add("Close");
+					kcontext.setVariable("transitions", transitions);
+				</script>
+			</scriptTask>
+
 			<endEvent id="_2-21" name="EndSubProcessProcess"/>
 
 			<sequenceFlow id="_2-1-_2-2" sourceRef="_2-1" targetRef="_2-2"/>
-			<sequenceFlow id="_2-2-_2-3" sourceRef="_2-2" targetRef="_2-3"/>
+			<sequenceFlow id="_2-2-_2-14" sourceRef="_2-2" targetRef="_2-14"/>
+			<sequenceFlow id="_2-14-_2-3" sourceRef="_2-14" targetRef="_2-3"/>
 			<sequenceFlow id="_2-3-_2-4" sourceRef="_2-3" targetRef="_2-4"/>
 			<sequenceFlow id="_2-4-_2-5" sourceRef="_2-4" targetRef="_2-5"/>
 			<sequenceFlow id="_2-5-_2-12" sourceRef="_2-5" targetRef="_2-12"/>
@@ -270,7 +364,8 @@
 				</conditionExpression>
 			</sequenceFlow>
 			<sequenceFlow id="_2-9-_2-11" sourceRef="_2-9" targetRef="_2-11"/>
-			<sequenceFlow id="_2-11-_2-3" sourceRef="_2-11" targetRef="_2-3"/>
+			<sequenceFlow id="_2-11-_2-15" sourceRef="_2-11" targetRef="_2-15"/>
+			<sequenceFlow id="_2-15-_2-3" sourceRef="_2-15" targetRef="_2-3"/>
 			<sequenceFlow id="_2-8-_2-10" sourceRef="_2-8" targetRef="_2-10"/>
 			<sequenceFlow id="_2-10-_2-21" sourceRef="_2-10" targetRef="_2-21"/>
 
@@ -280,16 +375,30 @@
 			<terminateEventDefinition />
 		</endEvent>
 
+		<intermediateCatchEvent id="_28" name="event" >
+			<dataOutput id="_28_Output" name="event" />
+			<dataOutputAssociation>
+				<sourceRef>_28_Output</sourceRef>
+			<targetRef>messageFromAdmin</targetRef>
+			</dataOutputAssociation>
+			<outputSet>
+				<dataOutputRefs>_28_Output</dataOutputRefs>
+			</outputSet>
+			<signalEventDefinition signalRef="closeTradingDayByAdmin"/>
+		</intermediateCatchEvent>
+
+		<exclusiveGateway id="_29" name="Join" gatewayDirection="Converging"/>
+
 		<boundaryEvent id="_30" name="TimerEvent" attachedToRef="_2" cancelActivity="false" >
 			<timerEventDefinition>
-				<timeDuration xs:type="tFormalExpression">#{duration}</timeDuration>
+				<timeDuration xs:type="tFormalExpression">#{endDuration}</timeDuration>
 			</timerEventDefinition>
 		</boundaryEvent>
 
 		<scriptTask id="_31" name="Send signal Approve to payment point">
 			<script>
 				System.out.println("Send signal 'Approve' to payment point by timer (parentProcessId=" + parentProcessId + ", cashboxId=" + cashboxId + ")");
-				kcontext.setVariable("processStatus", Status.CLOSED);
+				kcontext.setVariable("PROCESS_STATUS", Status.CLOSED);
 				kcontext.setVariable("signalValue", "Approve");
 			</script>
 		</scriptTask>
@@ -337,10 +446,13 @@
 
 		<!-- connections -->
 		<sequenceFlow id="_1-_3" sourceRef="_1" targetRef="_3"/>
-		<sequenceFlow id="_3-_2" sourceRef="_3" targetRef="_2"/>
+		<sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4"/>
+		<sequenceFlow id="_4-_2" sourceRef="_4" targetRef="_2"/>
 		<sequenceFlow id="_2-_21" sourceRef="_2" targetRef="_21"/>
 
-		<sequenceFlow id="_30-_31" sourceRef="_30" targetRef="_31"/>
+		<sequenceFlow id="_28-_29" sourceRef="_28" targetRef="_29"/>
+		<sequenceFlow id="_30-_29" sourceRef="_30" targetRef="_29"/>
+		<sequenceFlow id="_29-_31" sourceRef="_29" targetRef="_31"/>
 		<sequenceFlow id="_31-_32" sourceRef="_31" targetRef="_32"/>
 		<sequenceFlow id="_32-_33" sourceRef="_32" targetRef="_33"/>
 	</process>

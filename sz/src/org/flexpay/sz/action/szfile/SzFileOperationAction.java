@@ -9,7 +9,6 @@ import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,9 +65,9 @@ public class SzFileOperationAction extends FPActionSupport {
 
 		szFileService.updateStatus(objectIds, status);
 
-		Map<Serializable, Serializable> contextVariables = map();
-		contextVariables.put(FILE_IDS, (Serializable) objectIds);
-		processManager.createProcess(processName, contextVariables);
+		Map<String, Object> contextVariables = map();
+		contextVariables.put(FILE_IDS, objectIds);
+		processManager.startProcess(processName, contextVariables);
 
 		log.debug("Process for operation \"{}\" and fileIds={} started", action1, objectIds);
 

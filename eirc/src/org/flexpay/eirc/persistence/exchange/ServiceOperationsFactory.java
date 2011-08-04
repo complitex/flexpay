@@ -88,6 +88,24 @@ public class ServiceOperationsFactory {
 		}
 
 		return operations.size() > 1 ? new OperationsChain(operations) : operations.get(0);
+		/*
+		return new Operation() {
+
+			@Override
+			public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
+				log.debug("sleep start");
+				try {
+					for (int i = 0; i < 7; i++) {
+						Thread.sleep(RandomUtils.nextInt(200));
+					}
+				} catch (InterruptedException e) {
+					log.warn("Interrupted", e);
+				}
+				log.debug("sleep end");
+				return DelayedUpdateNope.INSTANCE;
+			}
+		};
+		*/
 	}
 
 	private Operation getOperation(Registry registry) throws FlexPayException {

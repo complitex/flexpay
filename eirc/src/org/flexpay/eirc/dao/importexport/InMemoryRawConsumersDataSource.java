@@ -18,7 +18,7 @@ public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 		this.records = records;
 		dataIterator = records.iterator();
 
-		log.debug("Created inmemory data source");
+//		log.debug("Created inmemory data source");
 	}
 
 	/**

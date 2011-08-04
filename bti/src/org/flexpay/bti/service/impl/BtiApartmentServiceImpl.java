@@ -23,6 +23,8 @@ public class BtiApartmentServiceImpl implements BtiApartmentService {
 	 * @param stub apartment stub to read
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public BtiApartment readWithAttributes(Stub<? extends Apartment> stub) {
 		return btiApartmentDaoExt.readApartmentWithAttributes(stub.getId());
 	}

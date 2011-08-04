@@ -23,6 +23,7 @@
 	<itemDefinition id="_transitionsItem" structureRef="java.util.List" />
 	<itemDefinition id="_processDefinitionIdItem" structureRef="java.lang.String" />
 	<itemDefinition id="_processDefinitionVersionIdItem" structureRef="java.lang.Long" />
+	<itemDefinition id="_dateItem" structureRef="java.util.Date"/>
 
 	<process processType="Public" isExecutable="true" id="PaymentPointTradingDay"
 			 name="Payment point trading day">
@@ -46,8 +47,8 @@
 
 		<property id="parentProcessId" itemSubjectRef="_processIdItem" />
 		<property id="paymentPointId" itemSubjectRef="_paymentPointIdItem" />
-		<property id="processStatus" itemSubjectRef="_processStatusItem" />
-		<property id="canUpdateOrCreateOperation" itemSubjectRef="_canUpdateOrCreateOperationItem" />
+		<property id="PROCESS_STATUS" itemSubjectRef="_processStatusItem" />
+		<property id="CAN_UPDATE_OR_CREATE_OPERATION" itemSubjectRef="_canUpdateOrCreateOperationItem" />
 		<property id="cashboxes" itemSubjectRef="_cashboxesItem" />
 		<property id="closedCountCashboxes" itemSubjectRef="_closedCountCashboxesItem" />
 		<property id="approvedClosingCountCashboxes" itemSubjectRef="_approvedClosingCountCashboxesItem" />
@@ -55,6 +56,8 @@
 		<property id="transitions" itemSubjectRef="_transitionsItem" />
 		<property id="processDefinitionId" itemSubjectRef="_processDefinitionIdItem" />
 		<property id="PROCESS_DEFINITION_VERSION_ID" itemSubjectRef="_processDefinitionVersionIdItem" />
+		<property id="tradingDayBeginDate" itemSubjectRef="_dateItem"/>
+		<property id="tradingDayEndDate" itemSubjectRef="_dateItem"/>
 
 		<!-- nodes -->
 		<startEvent id="_1" name="StartProcess"/>
@@ -62,8 +65,8 @@
 		<scriptTask id="_17" name="Init parameters">
 			<script>
 				System.out.println("Set processDefinitionId");
-				kcontext.setVariable("processStatus", Status.OPEN);
-				kcontext.setVariable("canUpdateOrCreateOperation", Boolean.TRUE);
+				kcontext.setVariable("PROCESS_STATUS", Status.OPEN);
+				kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.TRUE);
 				kcontext.setVariable("closedCountCashboxes", 0);
 				kcontext.setVariable("approvedClosingCountCashboxes", 0);
 				kcontext.setVariable("processDefinitionId", "CashboxTradingDay");
@@ -150,12 +153,20 @@
 					<dataInput id="_5-2_input" name="MultiInstanceInput"/>
 					<dataInput id="_5-2_item" name="cashboxId"/>
 					<dataInput id="_5-2_processIdInput" name="parentProcessId"/>
+					<dataInput id="_5-2_tradingDayBeginDate" name="tradingDayBeginDate"/>
+					<dataInput id="_5-2_tradingDayEndDate" name="tradingDayEndDate"/>
 					<dataInput id="_5-2_processDefinitionId" name="processDefinitionId"/>
 					<inputSet>
 						<dataInputRefs>_5-2_item</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_5-2_processIdInput</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_5-2_tradingDayBeginDate</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_5-2_tradingDayEndDate</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_5-2_processDefinitionId</dataInputRefs>
@@ -169,6 +180,14 @@
 				<dataInputAssociation>
 					<sourceRef>processId</sourceRef>
 					<targetRef>_5-2_processIdInput</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>tradingDayBeginDate</sourceRef>
+					<targetRef>_5-2_tradingDayBeginDate</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>tradingDayEndDate</sourceRef>
+					<targetRef>_5-2_tradingDayEndDate</targetRef>
 				</dataInputAssociation>
 				<dataInputAssociation>
 					<sourceRef>processDefinitionId</sourceRef>
@@ -214,23 +233,23 @@
 			</script>
 		</scriptTask>
 
-		<exclusiveGateway id="_8" name="Split 1" gatewayDirection="Diverging"/>
+		<exclusiveGateway id="_8" name="Payment point trading day Split 1" gatewayDirection="Diverging"/>
 
 		<scriptTask id="_9" name="Close">
 			<script>
-				System.out.println("1.Got signal Close to " + processId + ", process status: " + processStatus + ", closedCountCashboxes: " + kcontext.getVariable("closedCountCashboxes"));
+				System.out.println("1.Got signal Close to " + processId + ", process status: " + PROCESS_STATUS + ", closedCountCashboxes: " + kcontext.getVariable("closedCountCashboxes"));
 				kcontext.setVariable("closedCountCashboxes", ((Integer)kcontext.getVariable("closedCountCashboxes")) + 1);
-				kcontext.setVariable("processStatus", Status.WAIT_APPROVE);
-				System.out.println("2.Got signal Close to " + processId + ", process status: " + processStatus + ", closedCountCashboxes: " + kcontext.getVariable("closedCountCashboxes"));
+				kcontext.setVariable("PROCESS_STATUS", Status.WAIT_APPROVE);
+				System.out.println("2.Got signal Close to " + processId + ", process status: " + PROCESS_STATUS + ", closedCountCashboxes: " + kcontext.getVariable("closedCountCashboxes"));
 			</script>
 		</scriptTask>
 
 		<scriptTask id="_10" name="Approve">
 			<script>
-				System.out.println("1. Got signal Approve to " + processId + ", process status: " + processStatus);
+				System.out.println("1. Got signal Approve to " + processId + ", process status: " + PROCESS_STATUS);
 				kcontext.setVariable("closedCountCashboxes", ((Integer)kcontext.getVariable("closedCountCashboxes")) - 1);
 				kcontext.setVariable("approvedClosingCountCashboxes", ((Integer)kcontext.getVariable("approvedClosingCountCashboxes")) + 1);
-				System.out.println("2. Got signal Approve to " + processId + ", process status: " + processStatus);
+				System.out.println("2. Got signal Approve to " + processId + ", process status: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 
@@ -238,9 +257,9 @@
 			<script>
 				kcontext.setVariable("closedCountCashboxes", ((Integer)kcontext.getVariable("closedCountCashboxes")) - 1);
 				if (((Integer)kcontext.getVariable("closedCountCashboxes")) == 0) {
-					kcontext.setVariable("processStatus", Status.OPEN);
+					kcontext.setVariable("PROCESS_STATUS", Status.OPEN);
 				}
-				System.out.println("Got signal Cancel to " + processId + ", process status: " + processStatus);
+				System.out.println("Got signal Cancel to " + processId + ", process status: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 
@@ -281,9 +300,9 @@
 
 		<scriptTask id="_15" name="Set Processed status">
 			<script>
-				kcontext.setVariable("processStatus", Status.CLOSED);
-				kcontext.setVariable("canUpdateOrCreateOperation", Boolean.FALSE);
-				System.out.println("processStatus: " + processStatus);
+				kcontext.setVariable("PROCESS_STATUS", Status.CLOSED);
+				kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.FALSE);
+				System.out.println("PROCESS_STATUS: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 

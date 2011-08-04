@@ -69,7 +69,6 @@ public class TestPaymentsRegistryProcessing2 extends EircSpringBeanAwareTestCase
 	protected ProcessDefinitionManager processDefinitionManager;
 
 	@Test
-	//@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED, isolation = Isolation.READ_UNCOMMITTED)
 	public void testGeneratePaymentsRegistryAndProcess() throws Exception {
 		processDefinitionManager.deployProcessDefinition("ProcessingDBRegistry", true);
 

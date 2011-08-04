@@ -47,7 +47,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	private RegistryContainerBuilder registryContainerBuilder;
 
 
-	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.SUPPORTS, readOnly = false)
 	@Nullable
 	@Override
     public Registry generate(@NotNull PaymentCollector paymentCollector, @NotNull Organization organization,
