@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static org.flexpay.common.util.DateUtil.format;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
@@ -30,7 +31,39 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 		super(stub.getId());
 	}
 
-	/**
+    @Override
+    public String getXmlString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <region>\n");
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n").
+                    append("        <parentId>").append(getCountry().getId()).append("</parentId>\n").
+                    append("        <nameDate>").append(format(nameDate)).append("</nameDate>\n").
+                    append("        <translations>\n");
+            for (RegionNameTranslation translation : getNameForDate(nameDate).getTranslations()) {
+                builder.append("            <org.flexpay.mule.request.MuleTranslation>\n").
+                        append("                <name>").append(translation.getName()).append("</name>\n").
+                        append("                <languageId>").append(translation.getLang().getId()).append("</languageId>\n").
+                        append("            </org.flexpay.mule.request.MuleTranslation>\n");
+            }
+            builder.append("        </translations>\n");
+        } else if (ACTION_DELETE.equals(action)) {
+            builder.append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        }
+
+        builder.append("    </region>\n");
+
+        return builder.toString();
+    }
+
+    /**
 	 * Create a new empty temporal
 	 *
 	 * @return empty temporal

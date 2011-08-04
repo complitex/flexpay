@@ -11,8 +11,10 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +48,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	private DistrictDaoExt districtDaoExt;
 	private DistrictNameDao districtNameDao;
 
+    private EsbSyncRequestExecutor<District> esbSyncRequestExecutor;
 	private ParentService<TownFilter> parentService;
 	private SessionUtils sessionUtils;
 	private ModificationListener<District> modificationListener;
@@ -86,6 +90,20 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 			modificationListener.onDelete(district);
 			log.debug("District disabled: {}", district);
 		}
+
+        District district = new District();
+        district.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        district.setIds(districtIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(district);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -105,6 +123,18 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		districtDao.create(district);
 
 		modificationListener.onCreate(district);
+
+        district.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(district);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return district;
 	}
@@ -133,6 +163,18 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		modificationListener.onUpdate(old, district);
 
 		districtDao.update(district);
+
+        district.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(district);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return district;
 	}
@@ -361,7 +403,11 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<District> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setDistrictDao(DistrictDao districtDao) {
 		this.districtDao = districtDao;
 	}

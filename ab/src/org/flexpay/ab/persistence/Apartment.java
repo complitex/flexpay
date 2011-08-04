@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 /**
  * Apartment
  */
-public class Apartment extends DomainObjectWithStatus {
+public class Apartment extends EsbXmlSyncObject {
 
 	private Building building;
 	private Set<ApartmentNumber> apartmentNumbers = emptySet();
@@ -32,13 +32,38 @@ public class Apartment extends DomainObjectWithStatus {
 		super(id);
 	}
 
-	public Apartment(@NotNull Stub<Apartment> stub) {
+    public Apartment(@NotNull Stub<Apartment> stub) {
 		super(stub.getId());
 	}
 
 	public static Apartment newInstance() {
 		return new Apartment();
 	}
+
+    @Override
+    public String getXmlString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <apartment>\n");
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+
+            BuildingAddress address = getDefaultBuildings();
+
+            builder.append("        <buildingId>").append(getBuilding().getDefaultBuildings().getId()).append("</buildingId>\n").
+                    append("        <number>").append(getNumber()).append("</number>\n");
+        } else if (ACTION_DELETE.equals(action)) {
+            builder.append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        }
+
+        builder.append("    </apartment>\n");
+
+        return builder.toString();
+    }
 
 	public Building getBuilding() {
 		return building;

@@ -39,8 +39,7 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		building.setPrimaryAddress(addressStub);
-		buildingService.update(building);
+		buildingService.setPrimaryStatusForAddress(addressStub, building);
 
 		addActionMessage(getText("ab.building.primary_address_set"));
 

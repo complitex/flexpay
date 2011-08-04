@@ -23,9 +23,9 @@ public class RegionNameTranslation extends Translation {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("id", getId())
-				.append("Name", getName())
-				.append("Language", getLang().getLangIsoCode())
+				.append("id", id)
+				.append("name", name)
+				.append("language", lang.getLangIsoCode())
 				.toString();
 	}
 

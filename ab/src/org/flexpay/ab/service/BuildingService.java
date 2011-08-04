@@ -15,6 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface BuildingService extends JpaSetService {
@@ -58,6 +59,31 @@ public interface BuildingService extends JpaSetService {
 	@Secured (Roles.BUILDING_ADD)
 	@NotNull
 	Building create(@NotNull Building building) throws FlexPayExceptionContainer;
+
+    /**
+     * Creating some buildings
+     *
+     * @param attributesMap attributes map
+     * @param district district
+     * @param street street
+     * @return first created building
+     * @throws FlexPayExceptionContainer FlexPayExceptionContainer
+     * @throws FlexPayException FlexPayException
+     */
+    @Secured (Roles.BUILDING_ADD)
+    Building createSomeBuildings(Map<Long, String> attributesMap, District district, Street street) throws FlexPayExceptionContainer, FlexPayException;
+
+    @Secured (Roles.BUILDING_CHANGE)
+    @NotNull
+    Building createAddress(@NotNull BuildingAddress address, @NotNull Building building) throws FlexPayExceptionContainer;
+
+    @Secured (Roles.BUILDING_CHANGE)
+    @NotNull
+    Building updateAddress(@NotNull BuildingAddress address, @NotNull Building building) throws FlexPayExceptionContainer;
+
+    @Secured (Roles.BUILDING_CHANGE)
+    @NotNull
+    Building setPrimaryStatusForAddress(@NotNull Stub<BuildingAddress> address, @NotNull Building building) throws FlexPayExceptionContainer;
 
 	/**
 	 * Update or create building

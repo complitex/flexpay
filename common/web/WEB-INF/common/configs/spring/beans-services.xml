@@ -10,8 +10,7 @@
 				<constructor-arg value="HH:mm" />
 			</bean>
 		</constructor-arg>
-	<constructor-arg value="true" />
-
+	    <constructor-arg value="true" />
 	</bean>
 
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
@@ -27,6 +26,7 @@
     <bean id="commonApplicationConfig"
           factory-method="getInstance"
           class="org.flexpay.common.util.config.ApplicationConfig"
+          p:syncServerAddress="${app.config.common.synchronizationServerAddress}"
           p:applicationName="${app.config.common.appName}"
           p:dataRoot="${app.config.common.dataRoot}"
           p:defaultCurrencyCode="${app.config.common.defaultCurrencyCode}"
@@ -42,6 +42,9 @@
           p:certificateExpirationWarningPeriod="${app.config.common.certificateExpirationWarningPeriod}"
           p:maxCertificateSize="${app.config.common.maxCertificateSize}"
           p:languageService-ref="languageService" />
+
+    <bean id="muleSyncRequestExecutor"
+          class="org.flexpay.common.esb.impl.MuleEsbSyncRequestExecutor" />
 
     <bean id="sequenceService"
           class="org.flexpay.common.service.impl.SequenceServiceImpl"

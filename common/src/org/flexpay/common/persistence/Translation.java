@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class Translation extends DomainObject {
 
-	private String name;
-	private Language lang;
-	private DomainObject translatable;
+	protected String name;
+	protected Language lang;
+	protected DomainObject translatable;
 
 	public Translation() {
 	}

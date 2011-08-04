@@ -6,8 +6,10 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetTypeService;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +41,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 	private CorrectionsService correctionsService;
 
+    private EsbSyncRequestExecutor<StreetType> esbSyncRequestExecutor;
 	private SessionUtils sessionUtils;
 	private ModificationListener<StreetType> modificationListener;
 
@@ -99,6 +103,20 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 			modificationListener.onDelete(streetType);
 			log.debug("Street type disabled: {}", streetType);
 		}
+
+        StreetType streetType = new StreetType();
+        streetType.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        streetType.setIds(streetTypeIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(streetType);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -118,6 +136,18 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		streetTypeDao.create(streetType);
 
 		modificationListener.onCreate(streetType);
+
+        streetType.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(streetType);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return streetType;
 	}
@@ -146,6 +176,18 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		modificationListener.onUpdate(old, streetType);
 
 		streetTypeDao.update(streetType);
+
+        streetType.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(streetType);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return streetType;
 	}
@@ -299,7 +341,11 @@ public class StreetTypeServiceImpl implements StreetTypeService {
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<StreetType> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {
 		this.streetTypeDao = streetTypeDao;
 	}

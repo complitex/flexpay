@@ -120,6 +120,7 @@ public class RegionEditAction extends FPActionSupport {
 		}
 
         region.setNameForDate(regionName, beginDateFilter.getDate());
+        region.setNameDate(beginDateFilter.getDate());
 
         if (region.isNew()) {
             region.setParent(new Country(countryFilter));

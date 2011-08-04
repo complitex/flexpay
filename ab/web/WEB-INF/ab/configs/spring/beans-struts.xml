@@ -201,7 +201,6 @@
     <!-- Buildings -->
     <bean id="buildingCreateAction"
           class="org.flexpay.ab.action.building.BuildingCreateAction"
-          p:objectsFactory-ref="objectsFactory"
           p:addressAttributeTypeService-ref="addressAttributeTypeService"
           p:buildingService-ref="buildingService"
           p:streetService-ref="streetService"

@@ -14,9 +14,11 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
@@ -34,6 +36,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -49,6 +52,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private StreetNameDao streetNameDao;
 	private TownDao townDao;
 
+    private EsbSyncRequestExecutor<Street> esbSyncRequestExecutor;
 	private DistrictService districtService;
 	private ParentService<TownFilter> parentService;
 	private SessionUtils sessionUtils;
@@ -139,6 +143,20 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			modificationListener.onDelete(street);
 			log.debug("Street disabled: {}", street);
 		}
+
+        Street street = new Street();
+        street.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        street.setIds(streetIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(street);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -158,6 +176,18 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		streetDao.create(street);
 
 		modificationListener.onCreate(street);
+
+        street.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(street);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return street;
 	}
@@ -186,6 +216,18 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		modificationListener.onUpdate(old, street);
 
 		streetDao.update(street);
+
+        street.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(street);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return street;
 	}
@@ -506,7 +548,11 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<Street> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;
 	}

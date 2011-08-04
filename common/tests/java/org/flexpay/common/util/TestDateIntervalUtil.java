@@ -190,7 +190,12 @@ class Price extends TemporaryValue<Price> {
 		this.value = value;
 	}
 
-	/**
+    @Override
+    public String getXmlString() {
+        return "";
+    }
+
+    /**
 	 * Check if this value is empty
 	 *
 	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise

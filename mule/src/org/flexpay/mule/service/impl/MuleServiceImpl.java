@@ -8,6 +8,9 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.mule.Request;
+import org.flexpay.mule.request.MuleAddressAttribute;
+import org.flexpay.mule.request.MuleApartment;
+import org.flexpay.mule.request.MuleBuilding;
 import org.flexpay.mule.request.MuleBuildingAddress;
 import org.flexpay.mule.service.MuleService;
 import org.slf4j.Logger;
@@ -16,7 +19,11 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class MuleServiceImpl implements MuleService {
 
@@ -39,21 +46,18 @@ public class MuleServiceImpl implements MuleService {
 
         log.debug("Processing apartment");
 
+        MuleApartment muleApartment = request.getApartment();
+
         if (request.isDeleteAction()) {
             log.debug("Deleting apartment");
-            apartmentService.disable(request.getApartment().getIds());
+            apartmentService.disable(muleApartment.getIds());
         } else if (request.isInsertAction()) {
             log.debug("Creating apartment");
-            Set<Apartment> apartments = request.getApartment().convert();
-            log.debug("Converted apartments: {}", apartments);
-            for (Apartment apartment : apartments) {
-                apartmentService.create(apartment);
-                log.debug("Created apartment: {}", apartment);
-            }
+            apartmentService.createSomeApartments(muleApartment.getNumber(), new Stub<BuildingAddress>(muleApartment.getBuildingId()));
         } else if (request.isUpdateAction()) {
             log.debug("Updating apartment");
             Apartment apartment;
-            Long apartmentId = request.getApartment().getId();
+            Long apartmentId = muleApartment.getId();
             if (apartmentId != null && apartmentId > 0) {
                 apartment = apartmentService.readFull(new Stub<Apartment>(apartmentId));
                 if (apartment == null) {
@@ -65,8 +69,7 @@ public class MuleServiceImpl implements MuleService {
                 throw new FlexPayException("Can't update apartment. Incorrect apartment id - \"" + apartmentId + "\"");
             }
 
-            apartment.setNumber(request.getApartment().getNumber());
-            log.debug("Converted apartment = {}", apartment);
+            apartment.setNumber(muleApartment.getNumber());
             apartmentService.update(apartment);
         }
     }
@@ -90,27 +93,22 @@ public class MuleServiceImpl implements MuleService {
                 log.warn("Can't create building address, because can't found building with id {}", buildingId);
                 throw new FlexPayException("Can't create building address, because can't found building with id " + buildingId);
             }
-            building.addAddress(address);
-            buildingService.update(building);
+            buildingService.createAddress(address, building);
             log.debug("Created building address: {}", address);
-        } else if (request.isUpdateAddressSetPrimaryAction()) {
-            log.debug("Setting building address primary status");
-            BuildingAddress address;
-            MuleBuildingAddress muleAddress = request.getBuildingAddress();
-            Long addressId = muleAddress.getId();
-            if (addressId != null && addressId > 0) {
-                address = buildingService.readWithHierarchy(new Stub<BuildingAddress>(addressId));
-                if (address == null) {
-                    log.warn("Can't update building address with id {}, because it's not found", addressId);
-                    throw new FlexPayException("Can't update building address with id " + addressId + ", because it's not found");
-                }
-            } else {
-                log.warn("Can't update building address with id {}, because id is incorrect", addressId);
-                throw new FlexPayException("Can't update building address. Incorrect address id - \"" + addressId + "\"");
-            }
-            address.setPrimaryStatus(true);
         } else if (request.isUpdateAction()) {
             log.debug("Updating building address");
+            MuleBuildingAddress muleAddress = request.getBuildingAddress();
+            Building building = buildingService.readFull(new Stub<Building>(muleAddress.getBuildingId()));
+            if (building == null) {
+                log.warn("Can't update building with id {}, because building not found", muleAddress.getBuildingId());
+                throw new FlexPayException("Can't update building with id " + muleAddress.getBuildingId() + ", because it's not found");
+            }
+            BuildingAddress address = building.getAddress(new Stub<BuildingAddress>(muleAddress.getId()));
+            muleAddress.convert(address, addressAttributeTypeService);
+            buildingService.updateAddress(address, building);
+            log.debug("Updated building address: {}", address);
+        } else if (request.isUpdateAddressSetPrimaryAction()) {
+            log.debug("Setting building address primary status");
             Building building;
             MuleBuildingAddress muleAddress = request.getBuildingAddress();
             Long addressId = muleAddress.getId();
@@ -124,8 +122,8 @@ public class MuleServiceImpl implements MuleService {
                 log.warn("Can't update building address with id {}, because id is incorrect", addressId);
                 throw new FlexPayException("Can't update building address. Incorrect address id - \"" + addressId + "\"");
             }
-            building.setPrimaryAddress(new Stub<BuildingAddress>(addressId));
-            buildingService.update(building);
+            buildingService.setPrimaryStatusForAddress(new Stub<BuildingAddress>(addressId), building);
+            log.debug("Primary status setted for address with id {}", addressId);
         }
     }
 
@@ -134,17 +132,21 @@ public class MuleServiceImpl implements MuleService {
 
         log.debug("Processing building");
 
+        MuleBuilding muleBuilding = request.getBuilding();
+
         if (request.isDeleteAction()) {
             log.debug("Deleting building");
-            buildingService.disable(request.getBuilding().getIds());
+            buildingService.disable(muleBuilding.getIds());
         } else if (request.isInsertAction()) {
             log.debug("Creating buildings");
-            Set<Building> buildings = request.getBuilding().convert(addressAttributeTypeService);
-            log.debug("Converted buildings: {}", buildings);
-            for (Building building : buildings) {
-                buildingService.create(building);
-                log.debug("Created building: {}", building);
+
+            Map<Long, String> attributes = map();
+
+            for (MuleAddressAttribute attr : muleBuilding.getBuildingAddress().getAttributes()) {
+                attributes.put(attr.getId(), attr.getValue());
             }
+
+            buildingService.createSomeBuildings(attributes, new District(muleBuilding.getDistrictId()), new Street(muleBuilding.getBuildingAddress().getStreetId()));
         } else if (request.isUpdateAction()) {
             log.warn("We can't update buildings");
         }

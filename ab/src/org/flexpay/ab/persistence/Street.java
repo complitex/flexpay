@@ -14,6 +14,7 @@ import java.util.*;
 
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeSet;
+import static org.flexpay.common.util.DateUtil.format;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
@@ -40,6 +41,45 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	public Street(Stub<Street> stub) {
 		super(stub.getId());
 	}
+
+    @Override
+    public String getXmlString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <street>\n");
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n").
+                    append("        <parentId>").append(getTown().getId()).append("</parentId>\n").
+                    append("        <nameDate>").append(DateUtil.format(nameDate)).append("</nameDate>\n").
+                    append("        <typeId>").append(getTypeForDate(nameDate).getId()).append("</typeId>\n").
+                    append("        <translations>\n");
+            for (StreetNameTranslation translation : getNameForDate(nameDate).getTranslations()) {
+                builder.append("            <org.flexpay.mule.request.MuleTranslation>\n").
+                        append("                <name>").append(translation.getName()).append("</name>\n").
+                        append("                <languageId>").append(translation.getLang().getId()).append("</languageId>\n").
+                        append("            </org.flexpay.mule.request.MuleTranslation>\n");
+            }
+            builder.append("        </translations>\n");
+        } else if (ACTION_DELETE.equals(action)) {
+            builder.append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        } else if (ACTION_UPDATE_STREET_DISTRICTS.equals(action)) {
+            builder.append("        <districts>\n");
+            for (Long districtsId : districtIds) {
+                builder.append("            <long>").append(districtsId).append("</long>\n");
+            }
+            builder.append("        </districts>\n");
+        }
+
+        builder.append("    </street>\n");
+
+        return builder.toString();
+    }
 
 	/**
 	 * Create a new empty temporal

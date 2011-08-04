@@ -22,28 +22,13 @@ public class MuleBuildingAddress extends MuleIdObject {
 
     public BuildingAddress convert(BuildingAddress address, AddressAttributeTypeService addressAttributeTypeService) throws FlexPayException {
 
-        String buildingNumber = "";
-        String bulkNumber = "";
-        String partNumber = "";
-
         for (MuleAddressAttribute attr : attributes) {
             AddressAttributeType type = addressAttributeTypeService.readFull(new Stub<AddressAttributeType>(attr.getId()));
-            if (type == null) {
-                throw new FlexPayException("Incorrect addressAttributeType id - " + attr.getId());
-            } else if (type.isBuildingNumber()) {
-                buildingNumber = attr.getValue();
-            } else if (type.isBulkNumber()) {
-                bulkNumber = attr.getValue();
-            } else if (type.isPartNumber()) {
-                partNumber = attr.getValue();
-            }
+            address.setBuildingAttribute(attr.getValue(), type);
         }
 
         address.setPrimaryStatus(primary);
         address.setStreet(new Street(streetId));
-        address.setBuildingAttribute(buildingNumber, getBuildingAttributeTypeNumber());
-        address.setBuildingAttribute(bulkNumber, getBuildingAttributeTypeBulk());
-        address.setBuildingAttribute(partNumber, getBuildingAttributeTypePart());
 
         return address;
     }

@@ -9,13 +9,17 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -33,11 +37,11 @@ import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.flexpay.ab.util.config.ApplicationConfig.*;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -47,12 +51,19 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+    public final String BUILDINGS_SEPARATOR = ",";
+    public final String INTERVAL_SEPARATOR = "\\.\\.";
+
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
 	private BuildingsDaoExt buildingsDaoExt;
 
 	private PropertiesInitializerHolder<Building> propertiesInitializerHolder;
 
+    private EsbSyncRequestExecutor<Building> buildingEsbSyncRequestExecutor;
+    private EsbSyncRequestExecutor<BuildingAddress> addressEsbSyncRequestExecutor;
+    private ObjectsFactory objectsFactory;
+    private AddressAttributeTypeService addressAttributeTypeService;
 	private AddressService addressService;
 	private ParentService<StreetFilter> parentService;
 	private ParentService<DistrictFilter> districtParentService;
@@ -130,6 +141,20 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 			log.debug("Building disabled: {}", building);
 		}
+
+        Building building = new Building();
+        building.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        building.setIds(buildingIds);
+
+        try {
+            if (buildingEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                buildingEsbSyncRequestExecutor.executeRequest(building);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -153,6 +178,225 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		return building;
 	}
 
+    private Building privateUpdate(Building building) throws FlexPayExceptionContainer {
+
+        validate(building);
+
+        Building old = readFull(stub(building));
+        if (old == null) {
+            throw new FlexPayExceptionContainer(
+                    new FlexPayException("No building found to update " + building));
+        }
+        sessionUtils.evict(old);
+        modificationListener.onUpdate(old, building);
+
+        building = buildingDao.merge(building);
+
+        return building;
+    }
+
+    /**
+     * Create building address
+     *
+     * @param building Building to save
+     * @return Saved instance of building
+     * @throws FlexPayExceptionContainer if validation fails
+     */
+    @NotNull
+    @Transactional (readOnly = false)
+    @Override
+    public Building createAddress(@NotNull BuildingAddress address, @NotNull Building building) throws FlexPayExceptionContainer {
+
+        building.addAddress(address);
+
+        building = privateUpdate(building);
+
+        address.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (addressEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                addressEsbSyncRequestExecutor.executeRequest(address);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
+
+        return building;
+    }
+
+    @Transactional (readOnly = false)
+    @NotNull
+    @Override
+    public Building updateAddress(@NotNull BuildingAddress address, @NotNull Building building) throws FlexPayExceptionContainer {
+
+        building.addAddress(address);
+
+        building = privateUpdate(building);
+
+        address.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (addressEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                addressEsbSyncRequestExecutor.executeRequest(address);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
+
+        return building;
+    }
+
+    @Transactional (readOnly = false)
+    @NotNull
+    @Override
+    public Building setPrimaryStatusForAddress(@NotNull Stub<BuildingAddress> addressStub, @NotNull Building building) throws FlexPayExceptionContainer {
+        building.setPrimaryAddress(addressStub);
+        privateUpdate(building);
+
+        BuildingAddress address = new BuildingAddress(addressStub);
+        address.setAction(EsbXmlSyncObject.ACTION_UPDATE_ADDRESS_SET_PRIMARY);
+        address.setBuilding(building);
+
+        try {
+            if (addressEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                addressEsbSyncRequestExecutor.executeRequest(address);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
+
+        return building;
+    }
+
+    @Transactional (readOnly = false)
+    @Override
+    public Building createSomeBuildings(Map<Long, String> attributesMap, District district, Street street) throws FlexPayExceptionContainer, FlexPayException {
+
+        log.debug("Building Attributes map = {}", attributesMap);
+
+        String buildingNumber = "";
+        String bulkNumber = "";
+        String partNumber = "";
+
+        for (Map.Entry<Long, String> attr : attributesMap.entrySet()) {
+            AddressAttributeType type = addressAttributeTypeService.readFull(new Stub<AddressAttributeType>(attr.getKey()));
+            if (type.isBuildingNumber()) {
+                buildingNumber = attr.getValue();
+            } else if (type.isBulkNumber()) {
+                bulkNumber = attr.getValue();
+            } else if (type.isPartNumber()) {
+                partNumber = attr.getValue();
+            }
+        }
+
+        String[] bIntervals = buildingNumber.contains(BUILDINGS_SEPARATOR) ? buildingNumber.trim().split(BUILDINGS_SEPARATOR) : new String[] {buildingNumber.trim()};
+        log.debug("Building intervals = {}", Arrays.toString(bIntervals));
+
+        Building building = null;
+        boolean isFirst = true;
+
+        for (String interval : bIntervals) {
+
+            String[] bValues = interval.contains("..") ? interval.trim().split(INTERVAL_SEPARATOR) : new String[] {interval.trim()};
+            log.debug("Building values = {}", Arrays.toString(bValues));
+
+            if (bValues.length == 1) {
+                log.debug("Creating building with number = {}, bulk = {}, part = {}", new Object[] {bValues[0], bulkNumber, partNumber});
+                if (isFirst) {
+                    isFirst = false;
+                    building = createBuilding(createAddress(street, bValues[0], bulkNumber, partNumber), district);
+                } else {
+                    createBuilding(createAddress(street, bValues[0], bulkNumber, partNumber), district);
+                }
+            } else if (bValues.length == 2) {
+
+                int start;
+                int finish;
+
+                try {
+                    start = Integer.parseInt(bValues[0].trim());
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect start value in building interval");
+                    throw new FlexPayException("Incorrect start value in building interval", "ab.error.building.incorrect_start_value_in_interval");
+                }
+                try {
+                    finish = Integer.parseInt(bValues[1].trim());
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect finish value in building interval");
+                    throw new FlexPayException("Incorrect finish value in building interval", "ab.error.building.incorrect_finish_value_in_interval");
+                }
+
+                if (start > finish) {
+                    log.debug("Incorrect building interval: start value more than finish value");
+                    throw new FlexPayException("Incorrect building interval: start value more than finish value", "ab.error.building.incorrect_start_value_more_than_finish_value");
+                }
+
+                for (int i = start; i <= finish; i++) {
+                    log.debug("Creating building with number = {}, bulkNumber = {}, partNumber = {}", new Object[] {i, bulkNumber, partNumber});
+                    if (i == start || isFirst) {
+                        building = createBuilding(createAddress(street, i + "", bulkNumber, partNumber), district);
+                    } else {
+                        createBuilding(createAddress(street, i + "", bulkNumber, partNumber), district);
+                    }
+                    if (isFirst) {
+                        isFirst = false;
+                    }
+                }
+            }
+        }
+
+        Building buildingForEsb = objectsFactory.newBuilding();
+        buildingForEsb.setAction(EsbXmlSyncObject.ACTION_INSERT);
+        buildingForEsb.setDistrict(district);
+        buildingForEsb.addAddress(createAddress(street, buildingNumber, bulkNumber, partNumber));
+
+        try {
+            if (buildingEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                buildingEsbSyncRequestExecutor.executeRequest(buildingForEsb);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
+
+        return building;
+    }
+
+    private Building createBuilding(BuildingAddress address, District district) throws FlexPayExceptionContainer {
+        if (address == null) {
+            log.debug("Address are null. Building not created");
+            return null;
+        }
+        Building building = objectsFactory.newBuilding();
+        building.setDistrict(district);
+        building.addAddress(address);
+        return create(building);
+    }
+
+    private BuildingAddress createAddress(Street street, String buildingNumber, String bulkNumber, String partNumber) {
+
+        if (isEmpty(buildingNumber) && isEmpty(bulkNumber) && isEmpty(partNumber)) {
+            log.debug("All attributes are empty. Building address not created.");
+            return null;
+        }
+
+        BuildingAddress address = new BuildingAddress();
+        address.setPrimaryStatus(true);
+        address.setStreet(street);
+        address.setBuildingAttribute(buildingNumber, getBuildingAttributeTypeNumber());
+        address.setBuildingAttribute(bulkNumber, getBuildingAttributeTypeBulk());
+        address.setBuildingAttribute(partNumber, getBuildingAttributeTypePart());
+
+        return address;
+    }
+
 	/**
 	 * Update or create building
 	 *
@@ -166,17 +410,19 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	@Override
 	public Building update(@NotNull Building building) throws FlexPayExceptionContainer {
 
-		validate(building);
+        building = privateUpdate(building);
 
-		Building old = readFull(stub(building));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No building found to update " + building));
-		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, building);
+        building.setAction(EsbXmlSyncObject.ACTION_UPDATE);
 
-		building = buildingDao.merge(building);
+        try {
+            if (buildingEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                buildingEsbSyncRequestExecutor.executeRequest(building);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return building;
 	}
@@ -340,10 +586,25 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		}
 
 		try {
-			update(building);
+			privateUpdate(building);
 		} catch (FlexPayExceptionContainer e) {
  			// do nothing
 		}
+
+        BuildingAddress buildingAddress = new BuildingAddress();
+        buildingAddress.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        buildingAddress.setIds(addressIds);
+        buildingAddress.setBuilding(building);
+
+        try {
+            if (addressEsbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                addressEsbSyncRequestExecutor.executeRequest(buildingAddress);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 
 	}
 
@@ -674,7 +935,15 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setBuildingEsbSyncRequestExecutor(EsbSyncRequestExecutor<Building> buildingEsbSyncRequestExecutor) {
+        this.buildingEsbSyncRequestExecutor = buildingEsbSyncRequestExecutor;
+    }
+
+    public void setAddressEsbSyncRequestExecutor(EsbSyncRequestExecutor<BuildingAddress> addressEsbSyncRequestExecutor) {
+        this.addressEsbSyncRequestExecutor = addressEsbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setBuildingDao(BuildingDao buildingDao) {
 		this.buildingDao = buildingDao;
 	}
@@ -719,4 +988,13 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		this.propertiesInitializerHolder = propertiesInitializerHolder;
 	}
 
+    @Required
+    public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+        this.addressAttributeTypeService = addressAttributeTypeService;
+    }
+
+    @Required
+    public void setObjectsFactory(ObjectsFactory objectsFactory) {
+        this.objectsFactory = objectsFactory;
+    }
 }

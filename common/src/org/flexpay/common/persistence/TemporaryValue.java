@@ -1,6 +1,6 @@
 package org.flexpay.common.persistence;
 
-public abstract class TemporaryValue<T extends TemporaryValue> extends DomainObject {
+public abstract class TemporaryValue<T extends TemporaryValue> extends EsbXmlSyncObject {
 
 	protected TemporaryValue() {
 	}

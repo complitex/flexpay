@@ -2,6 +2,7 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TemporaryType;
 
@@ -20,9 +21,40 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 		super(id);
 	}
 
-	public StreetType(Stub<StreetType> stub) {
+    public StreetType(Stub<StreetType> stub) {
 		super(stub.getId());
 	}
+
+    @Override
+    public String getXmlString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <streetType>\n");
+
+        if (EsbXmlSyncObject.ACTION_INSERT.equals(action) || EsbXmlSyncObject.ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n").
+                    append("        <translations>\n");
+            for (StreetTypeTranslation translation : getTranslations()) {
+                builder.append("            <org.flexpay.mule.request.MuleTranslation>\n").
+                        append("                <name>").append(translation.getName()).append("</name>\n").
+                        append("                <shortName>").append(translation.getShortName()).append("</shortName>\n").
+                        append("                <languageId>").append(translation.getLang().getId()).append("</languageId>\n").
+                        append("            </org.flexpay.mule.request.MuleTranslation>\n");
+            }
+            builder.append("        </translations>\n");
+        } else if (EsbXmlSyncObject.ACTION_DELETE.equals(action)) {
+            builder.append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        }
+
+        builder.append("    </streetType>\n");
+
+        return builder.toString();
+    }
 
 	/**
 	 * Returns a string representation of the object.

@@ -14,7 +14,7 @@ import java.util.*;
  * Base class for objects that has time-dependent name
  */
 public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-		extends DomainObjectWithStatus {
+		extends EsbXmlSyncObject {
 
 	@SuppressWarnings ({"RawUseOfParameterizedType", "unchecked"})
 	private static final SortedSet EMPTY_SORTED_SET = Collections.unmodifiableSortedSet(new TreeSet());

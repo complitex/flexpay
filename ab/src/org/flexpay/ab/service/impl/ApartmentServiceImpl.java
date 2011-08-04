@@ -13,8 +13,10 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -30,6 +32,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.flexpay.common.persistence.Stub.stub;
@@ -39,6 +42,10 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+    public final String APARTMENTS_SEPARATOR = ",";
+    public final String INTERVAL_SEPARATOR = "\\.\\.";
+
+    private EsbSyncRequestExecutor<Apartment> esbSyncRequestExecutor;
 	private ApartmentDao apartmentDao;
 	private ApartmentDaoExt apartmentDaoExt;
 
@@ -111,6 +118,20 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 			modificationListener.onDelete(apartment);
 			log.debug("Apartment disabled: {}", apartment);
 		}
+
+        Apartment apartment = Apartment.newInstance();
+        apartment.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        apartment.setIds(apartmentIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(apartment);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -134,6 +155,79 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		return apartment;
 	}
 
+    @Transactional (readOnly = false)
+    @Override
+    public void createSomeApartments(String apartmentNumbers, Stub<BuildingAddress> addressStub) throws FlexPayExceptionContainer, FlexPayException {
+
+        log.debug("ApartmentNumbers string = {}", apartmentNumbers);
+
+        String[] apIntervals = apartmentNumbers.contains(APARTMENTS_SEPARATOR) ? apartmentNumbers.trim().split(APARTMENTS_SEPARATOR) : new String[] {apartmentNumbers.trim()};
+        log.debug("Apartment intervals = {}", Arrays.toString(apIntervals));
+
+        Building building = buildingService.findBuilding(addressStub);
+
+        for (String interval : apIntervals) {
+
+            String[] apValues = interval.contains("..") ? interval.trim().split(INTERVAL_SEPARATOR) : new String[] {interval.trim()};
+            log.debug("Apartment values = {}", Arrays.toString(apValues));
+
+            if (apValues.length == 1) {
+                log.debug("Creating apartment with number = {} for building with id = {}", apValues[0], addressStub.getId());
+                createApartment(apValues[0], building);
+            } else if (apValues.length == 2) {
+
+                int start;
+                int finish;
+
+                try {
+                    start = Integer.parseInt(apValues[0].trim());
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect start value in apartment interval");
+                    throw new FlexPayException("Incorrect start value in apartment interval", "ab.error.apartment.incorrect_start_value_in_interval");
+                }
+                try {
+                    finish = Integer.parseInt(apValues[1].trim());
+                } catch (NumberFormatException e) {
+                    log.debug("Incorrect finish value in apartment interval");
+                    throw new FlexPayException("Incorrect finish value in apartment interval", "ab.error.apartment.incorrect_finish_value_in_interval");
+                }
+
+                if (start > finish) {
+                    log.debug("Incorrect apartment interval: start value more than finish value");
+                    throw new FlexPayException("Incorrect apartment interval: start value more than finish value", "ab.error.apartment.incorrect_start_value_more_than_finish_value");
+                }
+
+                for (int i = start; i <= finish; i++) {
+                    log.debug("Creating apartment with number = {} for building with id = {}", i, addressStub.getId());
+                    createApartment(i + "", building);
+                }
+            }
+        }
+
+        Apartment apartment = Apartment.newInstance();
+        apartment.setAction(EsbXmlSyncObject.ACTION_INSERT);
+        apartment.setNumber(apartmentNumbers);
+        apartment.setBuilding(building);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(apartment);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
+
+    }
+
+    private void createApartment(String apartmentNumber, Building building) throws FlexPayExceptionContainer {
+        Apartment ap = Apartment.newInstance();
+        ap.setBuilding(building);
+        ap.setNumber(apartmentNumber);
+        create(ap);
+    }
+
 	/**
 	 * Update or create apartment
 	 *
@@ -156,6 +250,18 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		}
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, apartment);
+
+        apartment.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(apartment);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		apartmentDao.update(apartment);
 
@@ -433,6 +539,10 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 //        parentService.setJpaTemplate(jpaTemplate);
         sessionUtils.setJpaTemplate(jpaTemplate);
         modificationListener.setJpaTemplate(jpaTemplate);
+    }
+
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<Apartment> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
     }
 
 	@Required

@@ -6,8 +6,10 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownTypeService;
+import org.flexpay.common.esb.EsbSyncRequestExecutor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +38,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	private TownTypeDao townTypeDao;
 
+    private EsbSyncRequestExecutor<TownType> esbSyncRequestExecutor;
 	private SessionUtils sessionUtils;
 	private ModificationListener<TownType> modificationListener;
 
@@ -88,6 +92,19 @@ public class TownTypeServiceImpl implements TownTypeService {
 			log.debug("Town type disabled: {}", townType);
 		}
 
+        TownType townType = new TownType();
+        townType.setAction(EsbXmlSyncObject.ACTION_DELETE);
+        townType.setIds(townTypeIds);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(townType);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+        }
+
 	}
 
 	/**
@@ -107,6 +124,18 @@ public class TownTypeServiceImpl implements TownTypeService {
 		townTypeDao.create(townType);
 
 		modificationListener.onCreate(townType);
+
+        townType.setAction(EsbXmlSyncObject.ACTION_INSERT);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(townType);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return townType;
 	}
@@ -135,6 +164,18 @@ public class TownTypeServiceImpl implements TownTypeService {
 		modificationListener.onUpdate(oldType, townType);
 
 		townTypeDao.update(townType);
+
+        townType.setAction(EsbXmlSyncObject.ACTION_UPDATE);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(townType);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return townType;
 	}
@@ -270,7 +311,11 @@ public class TownTypeServiceImpl implements TownTypeService {
         modificationListener.setJpaTemplate(jpaTemplate);
     }
 
-	@Required
+    public void setEsbSyncRequestExecutor(EsbSyncRequestExecutor<TownType> esbSyncRequestExecutor) {
+        this.esbSyncRequestExecutor = esbSyncRequestExecutor;
+    }
+
+    @Required
 	public void setTownTypeDao(TownTypeDao townTypeDao) {
 		this.townTypeDao = townTypeDao;
 	}

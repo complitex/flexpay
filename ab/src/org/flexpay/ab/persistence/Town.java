@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 import static org.flexpay.common.util.CollectionUtils.treeSet;
+import static org.flexpay.common.util.DateUtil.format;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
@@ -39,6 +40,39 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	public Town(@NotNull Stub<Town> stub) {
 		super(stub.getId());
 	}
+
+    @Override
+    public String getXmlString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("    <town>\n");
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n").
+                    append("        <parentId>").append(getRegion().getId()).append("</parentId>\n").
+                    append("        <nameDate>").append(format(nameDate)).append("</nameDate>\n").
+                    append("        <typeId>").append(getTypeForDate(nameDate).getId()).append("</typeId>\n").
+                    append("        <translations>\n");
+            for (TownNameTranslation translation : getNameForDate(nameDate).getTranslations()) {
+                builder.append("            <org.flexpay.mule.request.MuleTranslation>\n").
+                        append("                <name>").append(translation.getName()).append("</name>\n").
+                        append("                <languageId>").append(translation.getLang().getId()).append("</languageId>\n").
+                        append("            </org.flexpay.mule.request.MuleTranslation>\n");
+            }
+            builder.append("        </translations>\n");
+        } else if (ACTION_DELETE.equals(action)) {
+            builder.append("        <ids>\n");
+            for (Long id : ids) {
+                builder.append("            <long>").append(id).append("</long>\n");
+            }
+            builder.append("        </ids>\n");
+        }
+
+        builder.append("    </town>\n");
+
+        return builder.toString();
+    }
 
 	/**
 	 * Create a new empty temporal
