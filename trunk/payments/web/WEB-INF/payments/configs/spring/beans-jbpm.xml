@@ -90,6 +90,12 @@
 		  parent="taskHandler"
 		  p:paymentPointService-ref="paymentPointService" />
 
+	<bean id="addProcessIdToCashboxHandler"
+		  name="AddProcessIdToCashboxTask"
+		  class="org.flexpay.payments.process.export.handler2.AddProcessIdToCashboxHandler"
+		  parent="taskHandler"
+		  p:cashboxService-ref="cashboxService" />
+
 	<bean id="getPaymentPointsHandler"
 		  name="GetPaymentPointsTask"
 		  class="org.flexpay.payments.process.export.handler2.GetPaymentPointsHandler"

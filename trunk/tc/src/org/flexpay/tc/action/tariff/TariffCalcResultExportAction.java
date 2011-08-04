@@ -11,7 +11,6 @@ import org.flexpay.tc.service.TariffCalculationResultService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +40,10 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<String, Object> contextVariables = CollectionUtils.map();
 		contextVariables.put(TariffCalcResultExportJob.CALCULATION_DATE, DateUtil.parseDate(date, ApplicationConfig.getFutureInfinite()));
 		contextVariables.put(TariffCalcResultExportJob.PERIOD_BEGIN_DATE, DateUtil.parseDate(tariffBegin, ApplicationConfig.getFutureInfinite()));
-		processManager.createProcess("TariffCalcResultExportProcess", contextVariables);
+		processManager.startProcess("TariffCalcResultExportProcess", contextVariables);
 
 		log.debug("Export tariff calculation result process started succesfully");
 

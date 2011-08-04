@@ -31,7 +31,7 @@ public class ProcessRegistryVariableInstanceServiceImpl implements ProcessRegist
 	 * {@inheritDoc}
 	 */
 	@NotNull
-	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = false, propagation = Propagation.SUPPORTS)
 	@Override
 	public ProcessRegistryVariableInstance update(@NotNull ProcessRegistryVariableInstance variable) {
 		processRegistryVariableInstanceDao.update(variable);
@@ -50,7 +50,7 @@ public class ProcessRegistryVariableInstanceServiceImpl implements ProcessRegist
 	/**
 	 * {@inheritDoc}
 	 */
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public ProcessRegistryVariableInstance findVariable(@NotNull Long processId) {
 		List<ProcessRegistryVariableInstance> variables = processRegistryVariableInstanceDao.findByProcessId(processId);
@@ -63,10 +63,35 @@ public class ProcessRegistryVariableInstanceServiceImpl implements ProcessRegist
 	/**
 	 * {@inheritDoc}
 	 */
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public ProcessRegistryVariableInstance readFull(@NotNull Stub<ProcessRegistryVariableInstance> stub) {
 		return processRegistryVariableInstanceDao.readFull(stub.getId());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Override
+	public ProcessRegistryVariableInstance update(@NotNull Stub<ProcessRegistryVariableInstance> stub,
+												  @NotNull Long lastProcessedRegistryRecord,
+												  @NotNull Integer incProcessedCountRecords) {
+		ProcessRegistryVariableInstance variable = readFull(stub);
+		if (variable == null) {
+			return null;
+		}
+
+		Integer processedCountRecords = variable.getProcessedCountRecords() == null? 0: variable.getProcessedCountRecords();
+		variable.setProcessedCountRecords(processedCountRecords + incProcessedCountRecords);
+
+		if (variable.getLastProcessedRegistryRecord() == null ||
+				lastProcessedRegistryRecord > variable.getLastProcessedRegistryRecord()) {
+
+			variable.setLastProcessedRegistryRecord(lastProcessedRegistryRecord);
+
+		}
+		return update(variable);
 	}
 
 	/**

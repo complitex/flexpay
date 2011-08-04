@@ -12,7 +12,6 @@ import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator;
 import org.flexpay.payments.util.registries.ExportBankPaymentsRegistry;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Date;
 import java.util.Map;
@@ -33,8 +32,6 @@ public class GenerateEndOperationDayRegistryHandler extends TaskHandler {
 
 		log.info("Start process generating end operation day registry and save it to file...");
 
-		log.debug("Authentication: {}", SecurityContextHolder.getContext().getAuthentication());
-
 		PaymentCollector paymentCollector = getPaymentCollector(parameters);
 		if (paymentCollector == null) {
 			return RESULT_ERROR;
@@ -51,6 +48,8 @@ public class GenerateEndOperationDayRegistryHandler extends TaskHandler {
 
 		Date beginDate = (Date) parameters.get(BEGIN_DATE);
 		Date endDate = (Date) parameters.get(END_DATE);
+
+		log.debug("Begin date: {}, End date: {}", beginDate, endDate);
 
 		Registry registry = registryGenerator.generate(paymentCollector, organization, beginDate, endDate);
 		if (registry == null) {

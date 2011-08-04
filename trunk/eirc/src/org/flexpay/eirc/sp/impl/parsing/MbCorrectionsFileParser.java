@@ -47,7 +47,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	private FPFileService fileService;
 	private RegistryFPFileTypeService registryFPFileTypeService;
 
-	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.SUPPORTS, readOnly = false)
 	@Override
 	public List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 		Logger plog = ProcessLogger.getLogger(getClass());

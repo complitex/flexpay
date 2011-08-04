@@ -2,8 +2,14 @@ package org.flexpay.eirc.dao.impl;
 
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.persistence.Consumer;
+import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 public class ConsumersDaoExtJdbcImpl extends JpaDaoSupport implements ConsumerDaoExt {
@@ -15,10 +21,18 @@ public class ConsumersDaoExtJdbcImpl extends JpaDaoSupport implements ConsumerDa
 	 * @param code		  Service id
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
-	public Consumer findConsumerByService(String accountNumber, Long code) {
-		Object[] params = {accountNumber, code};
-		List<?> results = getJpaTemplate().findByNamedQuery("Consumer.findConsumersByService", params);
+	public Consumer findConsumerByService(final String accountNumber, final Long code) {
+		List<?> results = getJpaTemplate().execute(new JpaCallback<List<?>>() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				entityManager.setFlushMode(FlushModeType.COMMIT);
+				return entityManager.createNamedQuery("Consumer.findConsumersByService").
+						setParameter(1, accountNumber).
+						setParameter(2, code).getResultList();
+			}
+		});
 		return results.isEmpty() ? null : (Consumer) results.get(0);
 	}
 
@@ -30,10 +44,19 @@ public class ConsumersDaoExtJdbcImpl extends JpaDaoSupport implements ConsumerDa
 	 * @param code		  Service provider external code code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
-	public Consumer findConsumerByProviderServiceCode(Long providerId, String accountNumber, String code) {
-		Object[] params = {providerId, accountNumber, code};
-		List<?> results = getJpaTemplate().findByNamedQuery("Consumer.findConsumersByProviderServiceCode", params);
+	public Consumer findConsumerByProviderServiceCode(final Long providerId, final String accountNumber, final String code) {
+		List<?> results = getJpaTemplate().execute(new JpaCallback<List<?>>() {
+			@Override
+			public List<?> doInJpa(EntityManager entityManager) throws PersistenceException {
+				entityManager.setFlushMode(FlushModeType.COMMIT);
+				return entityManager.createNamedQuery("Consumer.findConsumersByProviderServiceCode").
+						setParameter(1, providerId).
+						setParameter(2, accountNumber).
+						setParameter(3, code).getResultList();
+			}
+		});
 		return results.isEmpty() ? null : (Consumer) results.get(0);
 	}
 }

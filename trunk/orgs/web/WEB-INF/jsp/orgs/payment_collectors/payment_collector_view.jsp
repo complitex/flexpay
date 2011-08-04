@@ -31,6 +31,18 @@
             <s:property value="collector.email" />
         </td>
     </tr>
+	  <tr class="cols_1">
+        <td class="col_1s"><s:text name="orgs.payment_collector.trading_day_begin_time" />:</td>
+        <td class="col" colspan="2">
+            <s:property value="collector.tradingDayBeginTime" />
+        </td>
+    </tr>
+	  <tr class="cols_1">
+        <td class="col_1s"><s:text name="orgs.payment_collector.trading_day_end_time" />:</td>
+        <td class="col" colspan="2">
+            <s:property value="collector.tradingDayEndTime" />
+        </td>
+    </tr>
     <tr class="cols_1">
         <td class="col_1s"><s:text name="orgs.organization" />:</td>
         <td class="col" colspan="2">

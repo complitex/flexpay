@@ -11,6 +11,7 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
+import org.flexpay.payments.util.PaymentCollectorTradingDayConstants;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -81,7 +82,7 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
 
             Status status = Status.CLOSED;
             if (tradingDayProcess != null) {
-                status = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
+				status = getStatus(tradingDayProcess, status);
             }
             container.setId(paymentPoint.getId());
             container.setName(paymentPoint.getName(getLocale()));
@@ -113,16 +114,26 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
                 if (tradingDayProcess.getEndDate() != null) {
                     finishDate = tradingDayProcess.getEndDate();
                 }
-                processStatus = (Status) tradingDayProcess.getParameters().get(PROCESS_STATUS);
+                processStatus = getStatus(tradingDayProcess, Status.CLOSED);
             }
 
         }
 
-        if (!Status.CLOSED.equals(processStatus)) {
-            availableCommands.add(new Command(Transition.CLOSE, COMMAND_CLOSE));
-        } else {
+		if (log.isDebugEnabled()) {
+			log.debug("Payment collector trading day status: {}", processStatus);
+		}
+
+        if (!Status.CLOSED.equals(processStatus) && !Status.ERROR.equals(processStatus)) {
+			if (log.isDebugEnabled()) {
+				log.debug("add available command ({}, {})", Transition.CLOSE, COMMAND_CLOSE);
+			}
+			availableCommands.add(new Command(Transition.CLOSE, COMMAND_CLOSE));
+		} else {
             if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
-                availableCommands.add(new Command(Transition.OPEN, COMMAND_OPEN));
+				if (log.isDebugEnabled()) {
+					log.debug("add available command ({}, {})", Transition.CLOSE, COMMAND_CLOSE);
+				}
+				availableCommands.add(new Command(Transition.OPEN, COMMAND_OPEN));
             }
         }
 
@@ -133,7 +144,17 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
         return SUCCESS;
     }
 
-    @NotNull
+	private Status getStatus(ProcessInstance tradingDayProcess, Status defaultStatus) {
+		Object statusObject = tradingDayProcess.getParameters().get(PROCESS_STATUS);
+		if (statusObject instanceof Status) {
+			defaultStatus = (Status)statusObject;
+		} else if (statusObject instanceof String) {
+			defaultStatus = PaymentCollectorTradingDayConstants.getStatusByName((String)statusObject);
+		}
+		return defaultStatus;
+	}
+
+	@NotNull
     @Override
     protected String getErrorResult() {
         return SUCCESS;

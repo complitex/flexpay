@@ -257,7 +257,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @return List of persons
 	 */
 	@NotNull
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public List<Person> find(@NotNull Stub<Apartment> apartmentStub, Page<Person> pager) {
 		return personDao.findPersonsInApartment(apartmentStub.getId(), DomainObjectWithStatus.STATUS_ACTIVE, pager);
@@ -271,7 +271,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @return List of persons
 	 */
 	@NotNull
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public List<Person> findByFIO(@NotNull String searchString, Page<Person> pager) {
 		return personDao.findByFIO(searchString, pager);

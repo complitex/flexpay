@@ -1,9 +1,11 @@
 package org.flexpay.payments.service.impl;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.persistence.ProcessInstance;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -13,6 +15,7 @@ import org.flexpay.payments.service.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,12 +27,15 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 
 	private static Boolean childProcessDefinitionDeployed = false;
 	private TradingDay<PaymentPoint> paymentPointTradingDayService;
+	private Date defaultBeginTime;
+	private Date defaultEndTime;
 
 	@Override
-	public void startTradingDay(@NotNull PaymentCollector paymentCollector) throws FlexPayException {
+	public boolean startTradingDay(@NotNull PaymentCollector paymentCollector) throws FlexPayException {
 
 		if (paymentCollector.getTradingDayProcessInstanceId() != null && isOpened(paymentCollector.getTradingDayProcessInstanceId())) {
-			throw new FlexPayException("Trading day for Payment collector '" + paymentCollector.getId() + "' execute");
+			log.warn("Trading day for Payment collector '{}' execute", paymentCollector.getId());
+			return false;
 		}
 
 		deployChildProcessDefinitions();
@@ -38,19 +44,43 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 
 		Long paymentCollectorId = paymentCollector.getId();
 		parameters.put(ExportJobParameterNames.PAYMENT_COLLECTOR_ID, paymentCollectorId);
-		log.debug("Set paymentCollectorId {}", paymentCollectorId);
+		log.debug("Set {} {}", ExportJobParameterNames.PAYMENT_COLLECTOR_ID, paymentCollectorId);
 
 		Date now = now();
 
 		//fill begin and end date
 		parameters.put(ExportJobParameterNames.BEGIN_DATE, truncateDay(now));
-		log.debug("Set beginDate {}", truncateDay(now));
+		log.debug("Set {} {}", ExportJobParameterNames.BEGIN_DATE, truncateDay(now));
 
 		parameters.put(ExportJobParameterNames.END_DATE, getEndOfThisDay(now));
-		log.debug("Set endDate {}", getEndOfThisDay(now));
+		log.debug("Set {} {}", ExportJobParameterNames.END_DATE, getEndOfThisDay(now));
 
 		parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentCollector.getOrganization().getId());
-		log.debug("Set organizationId {}", paymentCollector.getOrganization().getId());
+		log.debug("Set {} {}", ExportJobParameterNames.ORGANIZATION_ID, paymentCollector.getOrganization().getId());
+
+		//set begin date
+		Date tradingDayBeginTime;
+		if (paymentCollector.getTradingDayBeginTime() != null) {
+			tradingDayBeginTime = paymentCollector.getTradingDayBeginTime();
+		} else {
+			tradingDayBeginTime = defaultBeginTime;
+		}
+
+		Date tradingDayBeginDate = setTimeAtDate(now, tradingDayBeginTime);
+		parameters.put(ExportJobParameterNames.TRADING_DAY_BEGIN_DATE, tradingDayBeginDate);
+		log.debug("Set {} {}", ExportJobParameterNames.TRADING_DAY_BEGIN_DATE, tradingDayBeginDate);
+
+		//set end date
+		Date tradingDayEndTime;
+		if (paymentCollector.getTradingDayEndTime() != null) {
+			tradingDayEndTime = paymentCollector.getTradingDayEndTime();
+		} else {
+			tradingDayEndTime = defaultEndTime;
+		}
+
+		Date tradingDayEndDate = setTimeAtDate(now, tradingDayEndTime);
+		parameters.put(ExportJobParameterNames.TRADING_DAY_END_DATE, tradingDayEndDate);
+		log.debug("Set {} {}", ExportJobParameterNames.TRADING_DAY_END_DATE, tradingDayEndDate);
 
 		try {
 			String tradingDayProcessDefinitionName = PROCESSES_DEFINITION_NAME.get(PaymentCollector.class.getName());
@@ -64,6 +94,16 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 			log.error("ProcessInstance trading day not started", e);
 			throw new FlexPayException(e);
 		}
+		return true;
+	}
+
+	private Date setTimeAtDate(Date now, Date tradingDayEndTime) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(tradingDayEndTime);
+
+		Date tradingDayEndDay = DateUtils.addHours(DateUtil.truncateDay(now), calendar.get(Calendar.HOUR_OF_DAY));
+		tradingDayEndDay      = DateUtils.addMinutes(tradingDayEndDay, calendar.get(Calendar.MINUTE));
+		return tradingDayEndDay;
 	}
 
 	@Override
@@ -102,5 +142,15 @@ public class PaymentCollectorTradingDay extends GeneralizationTradingDay<Payment
 	@Required
 	public void setPaymentPointTradingDayService(TradingDay<PaymentPoint> paymentPointTradingDayService) {
 		this.paymentPointTradingDayService = paymentPointTradingDayService;
+	}
+
+	@Required
+	public void setDefaultBeginTime(Date defaultBeginTime) {
+		this.defaultBeginTime = defaultBeginTime;
+	}
+
+	@Required
+	public void setDefaultEndTime(Date defaultEndTime) {
+		this.defaultEndTime = defaultEndTime;
 	}
 }

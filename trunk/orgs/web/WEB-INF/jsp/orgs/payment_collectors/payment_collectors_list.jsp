@@ -19,6 +19,8 @@
         <td class="th"><s:text name="orgs.organization.name" /></td>
         <td class="th"><s:text name="orgs.orginstance.description" /></td>
         <td class="th"><s:text name="orgs.organization.email" /></td>
+        <td class="th"><s:text name="orgs.payment_collector.trading_day_begin_time" /></td>
+        <td class="th"><s:text name="orgs.payment_collector.trading_day_end_time" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="collectors" status="status">
@@ -36,6 +38,8 @@
             </td>
             <td class="col"><s:property value="getTranslation(descriptions).name" /></td>
             <td class="col"><s:property value="email" /></td>
+            <td class="col"><s:property value="tradingDayBeginTime" /></td>
+            <td class="col"><s:property value="tradingDayEndTime" /></td>
             <td class="col">
                 <a href="<s:url action="paymentCollectorView"><s:param name="collector.id" value="%{id}" /></s:url>"><s:text name="common.view" /></a>&nbsp;
                 <a href="<s:url action="paymentCollectorEdit"><s:param name="collector.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>

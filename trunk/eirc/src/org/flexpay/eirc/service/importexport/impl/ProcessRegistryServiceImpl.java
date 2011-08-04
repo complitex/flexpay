@@ -72,11 +72,30 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 
 		context.setRegistry(registryService.read(Stub.stub(context.getRegistry())));
 		log.debug("Processing registry: {}", context.getRegistry());
-		List<RegistryRecord> records = processRegistryRecordRange(range, context);
-		return records != null && updateProcessState(variable, records);
+
+		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(Stub.stub(context.getRegistry()), range);
+
+		return processRegistryRecordRange(range, context, records) && updateProcessState(variable, records);
 	}
 
-	private List<RegistryRecord> processRegistryRecordRange(@NotNull FetchRange range, @NotNull ProcessingContext context) {
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	public boolean processRestRegistryRecordRange(@NotNull FetchRange range, @NotNull ProcessingContext context) {
+
+		if (!registryFileService.hasLoadedAndFixedRecords(Stub.stub(context.getRegistry()))) {
+			return false;
+		}
+
+		context.setRegistry(registryService.read(Stub.stub(context.getRegistry())));
+		log.debug("Processing registry: {}", context.getRegistry());
+
+		List<RegistryRecord> records = registryFileService.getLoadedAndFixedRecords(Stub.stub(context.getRegistry()), range);
+
+		return processRegistryRecordRange(range, context, records);
+	}
+
+	private boolean processRegistryRecordRange(@NotNull FetchRange range, @NotNull ProcessingContext context,
+															@NotNull List<RegistryRecord> records) {
 
 /*		EntityManager entityManager = transactionManager.getEntityManagerFactory().createEntityManager();
 
@@ -84,9 +103,6 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 		entityManager.setFlushMode(FlushModeType.COMMIT);
 		log.debug("New session flush mode: {}", entityManager.getFlushMode().toString());
 */
-		List<RegistryRecord> records;
-//		getRecordsWatch.resume();
-		records = registryFileService.getRecordsForProcessing(Stub.stub(context.getRegistry()), range);
 		for (RegistryRecord record : records) {
 			record.setRegistry(context.getRegistry());
 		}
@@ -97,7 +113,7 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 		try {
 			if (!processRecordsRangeService.processRecords(records, context)) {
 				log.debug("failed processRecordsRangeService.processRecords()");
-				return null;
+				return false;
 			}
 		} finally {
 //			processRecordsWatch.suspend();
@@ -107,11 +123,11 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 //		updateWatch.resume();
 		if (!doUpdate(context)) {
 			log.debug("failed doUpdate()");
-			return null;
+			return false;
 		}
 		log.debug("end doUpdate()");
 //		updateWatch.suspend();
-		return records;
+		return true;
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -168,29 +184,22 @@ public class ProcessRegistryServiceImpl implements ProcessRegistryService {
 		return processRecordsRangeService.doUpdate(context);
 	}
 
+	@SuppressWarnings({"null", "unchecked"})
 	private boolean updateProcessState(ProcessRegistryVariableInstance variable, List<RegistryRecord> records) {
 		if (records.size() > 0) {
 			synchronized (variable) {
-				ProcessRegistryVariableInstance currentVariable = processRegistryVariableInstanceService.readFull(Stub.stub(variable));
-
-				Long lastProcessedRegistryRecord = records.get(records.size() - 1).getId();
-				Integer processedCountRecords = currentVariable.getProcessedCountRecords() == null? 0: currentVariable.getProcessedCountRecords();
-				processedCountRecords += records.size();
-
-				currentVariable.setProcessedCountRecords(processedCountRecords);
-				variable.setProcessedCountRecords(processedCountRecords);
-
-				if (currentVariable.getLastProcessedRegistryRecord() != null
-						&& lastProcessedRegistryRecord > currentVariable.getLastProcessedRegistryRecord()) {
-
-					currentVariable.setLastProcessedRegistryRecord(lastProcessedRegistryRecord);
-					variable.setLastProcessedRegistryRecord(lastProcessedRegistryRecord);
-
+				ProcessRegistryVariableInstance currentVariable =
+						processRegistryVariableInstanceService.update(new Stub<ProcessRegistryVariableInstance>(variable),
+								records.get(records.size() - 1).getId(), records.size());
+				if (currentVariable == null) {
+					return false;
 				}
-				processRegistryVariableInstanceService.update(currentVariable);
+				variable.setProcessedCountRecords(currentVariable.getProcessedCountRecords());
+				variable.setLastProcessedRegistryRecord(currentVariable.getLastProcessedRegistryRecord());
 			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)

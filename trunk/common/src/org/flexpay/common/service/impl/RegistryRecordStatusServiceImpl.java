@@ -19,7 +19,7 @@ public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusServ
 
 	private RegistryRecordStatusDao registryRecordStatusDao;
 
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
 	public RegistryRecordStatus findByCode(int code) {
 
@@ -40,7 +40,7 @@ public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusServ
 	 * @return list of statuses
 	 */
 	@NotNull
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public List<RegistryRecordStatus> listAllStatuses() {
 		log.debug("Finding all statuses");

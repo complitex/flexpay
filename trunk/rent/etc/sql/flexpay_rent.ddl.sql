@@ -841,6 +841,8 @@
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled/Disabled status',
         email varchar(255) comment 'Collector email address',
+        tradingDayBeginTime time comment 'Begin trading day time',
+        tradingDayEndTime time comment 'End trading day time',
         tradingDayProcessInstance_Id bigint comment 'Trading date process instance id',
         organization_id bigint not null comment 'Organization reference',
         primary key (id)

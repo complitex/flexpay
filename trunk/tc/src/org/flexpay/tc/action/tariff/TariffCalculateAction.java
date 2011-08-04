@@ -29,10 +29,10 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 			return REDIRECT_SUCCESS;
 		}
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<String, Object> contextVariables = CollectionUtils.map();
 		contextVariables.put(TariffCalculationJob.RULES_ID, id);
 		contextVariables.put(TariffCalculationJob.CALC_DATE, DateUtil.parseDate(calcDate, ApplicationConfig.getFutureInfinite()));
-		processManager.createProcess("TariffCalculationProcess", contextVariables);
+		processManager.startProcess("TariffCalculationProcess", contextVariables);
 
 		log.debug("Calculation tariff process for rules with id {} for date {} started succesfully", id, calcDate);
 

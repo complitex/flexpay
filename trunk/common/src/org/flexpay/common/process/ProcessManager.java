@@ -126,6 +126,8 @@ public interface ProcessManager {
 
 	void signalExecution(@NotNull ProcessInstance execution, String signal);
 
+	void messageExecution(@NotNull ProcessInstance execution, @NotNull String messageName, @NotNull String messageValue);
+
 	boolean isHumanTaskExecute(@NotNull ProcessInstance processInstance);
 
 	@Secured (Roles.PROCESS_COMPLETE_HUMAN_TASK)

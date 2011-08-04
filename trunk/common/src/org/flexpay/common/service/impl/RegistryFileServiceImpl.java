@@ -16,6 +16,7 @@ import org.flexpay.common.service.impl.fetch.ProcessingReadHintsHandlerFactory;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -49,10 +50,34 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param range	Fetch range
 	 * @return list of records
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<Registry> registry, FetchRange range) {
 
 		List<RegistryRecord> records = registryRecordDao.listRecordsForProcessing(registry.getId(), range);
+
+		ReadHints hints = ReadHintsHolder.getHints();
+		if (hints == null) {
+			return records;
+		}
+
+		for (ProcessingReadHintsHandlerFactory factory : readHintsHandlerFactories) {
+			if (factory.supports(hints)) {
+				factory.getInstance(registry, range, records).read();
+			}
+		}
+
+		return records;
+	}
+
+	/**
+	 * @{inheritDoc}
+	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
+	public List<RegistryRecord> getLoadedAndFixedRecords(@NotNull Stub<Registry> registry, FetchRange range) {
+
+		List<RegistryRecord> records = registryRecordDao.listLoadedAndFixedRecords(registry.getId(), range);
 
 		ReadHints hints = ReadHintsHolder.getHints();
 		if (hints == null) {
@@ -122,6 +147,15 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	@Override
 	public boolean isLoaded(@NotNull Stub<FPFile> stub) {
 		return registryFileDaoExt.isLoaded(stub.getId());
+	}
+
+	/**
+	 * @{inheritDoc}
+	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
+	public boolean hasLoadedAndFixedRecords(@NotNull Stub<Registry> registry) {
+		return registryRecordDaoExt.hasLoadedAndFixedRecords(registry.getId());
 	}
 
 	/**

@@ -208,6 +208,11 @@ public class ProcessJbpmDaoImpl implements ProcessJbpmDao {
 	}
 
 	@Override
+	public void messageExecution(long executionId, String messageName, String messageValue) {
+		getSession().signalEvent(messageName, messageValue, executionId);
+	}
+
+	@Override
 	public void registerEventListener(ProcessEventListener listener) {
 		getSession().addEventListener(listener);
 	}
@@ -245,12 +250,14 @@ public class ProcessJbpmDaoImpl implements ProcessJbpmDao {
 
 		@Override
 		public void beforeNodeTriggered(ProcessNodeTriggeredEvent event) {
-
+			log.debug("Before Triggered: {}", event);
+			printStack();
 		}
 
 		@Override
 		public void afterNodeTriggered(ProcessNodeTriggeredEvent event) {
-
+			log.debug("After Triggered: {}", event);
+			printStack();
 		}
 
 		@Override
@@ -273,7 +280,13 @@ public class ProcessJbpmDaoImpl implements ProcessJbpmDao {
 
 		}
 
-
+		private void printStack() {
+			StringBuilder logBuilder = new StringBuilder();
+			for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+				logBuilder.append(element).append("\n");
+			}
+			log.debug("Stack: {}", logBuilder.toString());
+		}
 	}
 
 	@Required

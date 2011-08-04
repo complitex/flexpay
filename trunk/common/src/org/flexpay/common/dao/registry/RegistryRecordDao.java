@@ -23,6 +23,16 @@ public interface RegistryRecordDao extends GenericDao<RegistryRecord, Long> {
 	/**
 	 * List registry records
 	 *
+	 * @param registryId   Registry header id
+	 * @param range FetchRange
+	 * @return list of registry records
+	 */
+	@NotNull
+	List<RegistryRecord> listLoadedAndFixedRecords(Long registryId, FetchRange range);
+
+	/**
+	 * List registry records
+	 *
 	 * @param recordIds Registry records id
 	 * @return list of registry records
 	 */

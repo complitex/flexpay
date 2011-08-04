@@ -8,6 +8,8 @@ import org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnum;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnumValue;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ public class ApartmentAttributeTypeDaoExtImpl extends JpaDaoSupport implements A
 	private ApartmentAttributeTypeDao attributeTypeDao;
 	private ApartmentAttributeTypeEnumDao attributeTypeEnumDao;
 
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public ApartmentAttributeType readFull(Long id) {
 		ApartmentAttributeType type = attributeTypeDao.readFull(id);
 
@@ -36,6 +40,8 @@ public class ApartmentAttributeTypeDaoExtImpl extends JpaDaoSupport implements A
 	 * @param typeId Type key
 	 * @return <code>true</code> if this name is unique, or <code>false</code> otherwise
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public boolean isUniqueTypeName(String name, Long typeId) {
 		Object[] params = {name, name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
 		List<?> result = getJpaTemplate().findByNamedQuery("ApartmentAttributeType.checkUniqueName", params);

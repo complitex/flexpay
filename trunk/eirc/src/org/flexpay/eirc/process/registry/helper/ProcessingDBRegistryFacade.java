@@ -45,6 +45,10 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 	private Executor executor;
 	private Set<Long> currentExecuteRange = Collections.synchronizedSet(CollectionUtils.<Long>set());
 
+	private Integer countProcessedThreads;
+
+	private static final int DEFAULT_COUNT_PROCESSED_THREADS = 5;
+
 	private StopWatch processRegistryRecordRangeWatch = new StopWatch();
 
 	{
@@ -53,7 +57,7 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
 	public String processing(Map<String, Object> parameters) throws FlexPayException {
 		log.debug("start action");
@@ -133,6 +137,13 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 
 			processRegistryRecordRangeWatch.resume();
 
+			if (countProcessedThreads > 10) {
+				log.warn("Count processed threads: {}.", countProcessedThreads);
+			} else if (countProcessedThreads <= 0) {
+				log.warn("Failed count processed threads: {}. Use default value: {}.", countProcessedThreads, DEFAULT_COUNT_PROCESSED_THREADS);
+				countProcessedThreads = DEFAULT_COUNT_PROCESSED_THREADS;
+			}
+
 			do {
 
 				log.debug("current page: {}", range);
@@ -174,7 +185,7 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 
 				range.nextPage();
 
-				while (currentExecuteRange.size() >= 10) {
+				while (currentExecuteRange.size() >= countProcessedThreads) {
 					Thread.sleep(2000);
 				}
 				log.debug("current execute range: {}, size: {}", currentExecuteRange, currentExecuteRange.size());
@@ -184,6 +195,12 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 			while (currentExecuteRange.size() > 0) {
 				Thread.sleep(5000);
 				log.debug("Wait ending rest thread. Current execute range: {}, size: {}", currentExecuteRange, currentExecuteRange.size());
+			}
+
+			FetchRange restRange = new FetchRange(range.getPageSize());
+			log.debug("Check did not processed registry records");
+			while(processRegistryService.processRestRegistryRecordRange(restRange, context)) {
+				log.debug("Processed skipped registry records");
 			}
 
 			processRegistryRecordRangeWatch.suspend();
@@ -290,5 +307,10 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 	@Required
 	public void setExecutor(Executor executor) {
 		this.executor = executor;
+	}
+
+	@Required
+	public void setCountProcessedThreads(Integer countProcessedThreads) {
+		this.countProcessedThreads = countProcessedThreads;
 	}
 }

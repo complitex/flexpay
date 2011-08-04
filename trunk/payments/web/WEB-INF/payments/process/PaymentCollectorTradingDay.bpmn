@@ -17,12 +17,14 @@
 					structureRef="org.flexpay.payments.util.PaymentCollectorTradingDayConstants.Status"/>
 	<itemDefinition id="_canUpdateOrCreateOperationItem" structureRef="java.lang.Boolean"/>
 	<itemDefinition id="_paymentCollectorIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_organizationIdItem" structureRef="java.lang.Long"/>
 	<itemDefinition id="_paymentPointsItem" structureRef="java.util.List"/>
 	<itemDefinition id="_closedCountPaymentPointsItem" structureRef="java.lang.Integer"/>
 	<itemDefinition id="_approvedClosingCountPaymentPointsItem" structureRef="java.lang.Integer"/>
 	<itemDefinition id="_processIdItem" structureRef="java.lang.Long"/>
 	<itemDefinition id="_transitionsItem" structureRef="java.util.List"/>
 	<itemDefinition id="_processDefinitionIdItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_dateItem" structureRef="java.util.Date"/>
 
 	<process processType="Public" isExecutable="true" id="PaymentCollectorTradingDay"
 			 name="Payment collector trading day">
@@ -44,23 +46,28 @@
 		<property id="getPaymentPointsResult" itemSubjectRef="_resultItem"/>
 		<property id="signalFromPaymentPoint" itemSubjectRef="_resultItem"/>
 
-		<property id="processStatus" itemSubjectRef="_processStatusItem"/>
-		<property id="canUpdateOrCreateOperation" itemSubjectRef="_canUpdateOrCreateOperationItem"/>
+		<property id="PROCESS_STATUS" itemSubjectRef="_processStatusItem"/>
+		<property id="CAN_UPDATE_OR_CREATE_OPERATION" itemSubjectRef="_canUpdateOrCreateOperationItem"/>
 		<property id="paymentCollectorId" itemSubjectRef="_paymentCollectorIdItem"/>
+		<property id="organizationId" itemSubjectRef="_organizationIdItem"/>
 		<property id="paymentPoints" itemSubjectRef="_paymentPointsItem"/>
 		<property id="closedCountPaymentPoints" itemSubjectRef="_closedCountPaymentPointsItem"/>
 		<property id="approvedClosingCountPaymentPoints" itemSubjectRef="_approvedClosingCountPaymentPointsItem"/>
 		<property id="processId" itemSubjectRef="_processIdItem"/>
 		<property id="transitions" itemSubjectRef="_transitionsItem"/>
 		<property id="processDefinitionId" itemSubjectRef="_processDefinitionIdItem"/>
+		<property id="tradingDayBeginDate" itemSubjectRef="_dateItem"/>
+		<property id="tradingDayEndDate" itemSubjectRef="_dateItem"/>
+		<property id="beginDate" itemSubjectRef="_dateItem"/>
+		<property id="endDate" itemSubjectRef="_dateItem"/>
 
 		<!-- nodes -->
 		<startEvent id="_1" name="StartProcess"/>
 
 		<scriptTask id="_17" name="Init parameters">
 			<script>
-				kcontext.setVariable("processStatus", Status.OPEN);
-				kcontext.setVariable("canUpdateOrCreateOperation", Boolean.TRUE);
+				kcontext.setVariable("PROCESS_STATUS", Status.OPEN);
+				kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.TRUE);
 				kcontext.setVariable("closedCountPaymentPoints", 0);
 				kcontext.setVariable("approvedClosingCountPaymentPoints", 0);
 				process = kcontext.getProcessInstance();
@@ -147,12 +154,20 @@
 					<dataInput id="_5-2_input" name="MultiInstanceInput"/>
 					<dataInput id="_5-2_item" name="paymentPointId"/>
 					<dataInput id="_5-2_processIdInput" name="parentProcessId"/>
+					<dataInput id="_5-2_tradingDayBeginDate" name="tradingDayBeginDate"/>
+					<dataInput id="_5-2_tradingDayEndDate" name="tradingDayEndDate"/>
 					<dataInput id="_5-2_processDefinitionId" name="processDefinitionId"/>
 					<inputSet>
 						<dataInputRefs>_5-2_item</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_5-2_processIdInput</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_5-2_tradingDayBeginDate</dataInputRefs>
+					</inputSet>
+					<inputSet>
+						<dataInputRefs>_5-2_tradingDayEndDate</dataInputRefs>
 					</inputSet>
 					<inputSet>
 						<dataInputRefs>_5-2_processDefinitionId</dataInputRefs>
@@ -166,6 +181,14 @@
 				<dataInputAssociation>
 					<sourceRef>processId</sourceRef>
 					<targetRef>_5-2_processIdInput</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>tradingDayBeginDate</sourceRef>
+					<targetRef>_5-2_tradingDayBeginDate</targetRef>
+				</dataInputAssociation>
+				<dataInputAssociation>
+					<sourceRef>tradingDayEndDate</sourceRef>
+					<targetRef>_5-2_tradingDayEndDate</targetRef>
 				</dataInputAssociation>
 				<dataInputAssociation>
 					<sourceRef>processDefinitionId</sourceRef>
@@ -211,13 +234,13 @@
 			</script>
 		</scriptTask>
 
-		<exclusiveGateway id="_8" name="Split 1" gatewayDirection="Diverging"/>
+		<exclusiveGateway id="_8" name="Payment collector trading day Split 1" gatewayDirection="Diverging"/>
 
 		<scriptTask id="_9" name="Close">
 			<script>
 				kcontext.setVariable("closedCountPaymentPoints", ((Integer)kcontext.getVariable("closedCountPaymentPoints")) + 1);
-				kcontext.setVariable("processStatus", Status.WAIT_APPROVE);
-				System.out.println("Got signal Close to " + processId + ", process status: " + processStatus + ", closedCountPaymentPoints: " + kcontext.getVariable("closedCountPaymentPoints"));
+				kcontext.setVariable("PROCESS_STATUS", Status.WAIT_APPROVE);
+				System.out.println("Got signal Close to " + processId + ", process status: " + PROCESS_STATUS + ", closedCountPaymentPoints: " + kcontext.getVariable("closedCountPaymentPoints"));
 			</script>
 		</scriptTask>
 
@@ -225,7 +248,7 @@
 			<script>
 				kcontext.setVariable("closedCountPaymentPoints", ((Integer)kcontext.getVariable("closedCountPaymentPoints")) - 1);
 				kcontext.setVariable("approvedClosingCountPaymentPoints", ((Integer)kcontext.getVariable("approvedClosingCountPaymentPoints")) + 1);
-				System.out.println("Got signal Approve to " + processId + ", process status: " + processStatus);
+				System.out.println("Got signal Approve to " + processId + ", process status: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 
@@ -233,9 +256,9 @@
 			<script>
 				kcontext.setVariable("closedCountPaymentPoints", ((Integer)kcontext.getVariable("closedCountPaymentPoints")) - 1);
 				if (((Integer)kcontext.getVariable("closedCountPaymentPoints")) == 0) {
-					kcontext.setVariable("processStatus", Status.OPEN);
+					kcontext.setVariable("PROCESS_STATUS", Status.OPEN);
 				}
-				System.out.println("Got signal Cancel to " + processId + ", process status: " + processStatus);
+				System.out.println("Got signal Cancel to " + processId + ", process status: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 
@@ -247,18 +270,30 @@
 
 		<scriptTask id="_15" name="Set Processed status">
 			<script>
-				kcontext.setVariable("processStatus", Status.PROCESSED);
-				kcontext.setVariable("canUpdateOrCreateOperation", Boolean.FALSE);
-				System.out.println("GenerateEndOperationDayRegistryTask, processStatus: " + processStatus);
+				kcontext.setVariable("PROCESS_STATUS", Status.PROCESSED);
+				kcontext.setVariable("CAN_UPDATE_OR_CREATE_OPERATION", Boolean.FALSE);
+				System.out.println("GenerateEndOperationDayRegistryTask, PROCESS_STATUS: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 
 		<task id="_16" name="GenerateEndOperationDayRegistryTask" tns:taskName="GenerateEndOperationDayRegistryTask">
 			<ioSpecification>
 				<dataInput id="_16_paymentCollectorId" name="paymentCollectorId"/>
+				<dataInput id="_16_organizationId" name="organizationId"/>
+				<dataInput id="_16_beginDate" name="beginDate"/>
+				<dataInput id="_16_endDate" name="endDate"/>
 				<dataOutput id="_16_result" name="Result"/>
 				<inputSet>
 					<dataInputRefs>_16_paymentCollectorId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_16_organizationId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_16_beginDate</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_16_endDate</dataInputRefs>
 				</inputSet>
 				<outputSet>
 					<dataOutputRefs>_16_result</dataOutputRefs>
@@ -267,6 +302,18 @@
 			<dataInputAssociation>
 				<sourceRef>paymentCollectorId</sourceRef>
 				<targetRef>_16_paymentCollectorId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>organizationId</sourceRef>
+				<targetRef>_16_organizationId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>beginDate</sourceRef>
+				<targetRef>_16_beginDate</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>endDate</sourceRef>
+				<targetRef>_16_endDate</targetRef>
 			</dataInputAssociation>
 			<dataOutputAssociation>
 				<sourceRef>_16_result</sourceRef>
@@ -278,15 +325,15 @@
 
 		<scriptTask id="_21" name="Set Closed status">
 			<script>
-				kcontext.setVariable("processStatus", Status.CLOSED);
-				System.out.println("processStatus: " + processStatus);
+				kcontext.setVariable("PROCESS_STATUS", Status.CLOSED);
+				System.out.println("PROCESS_STATUS: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 
 		<scriptTask id="_22" name="Set Error status">
 			<script>
-				kcontext.setVariable("processStatus", Status.ERROR);
-				System.out.println("processStatus: " + processStatus);
+				kcontext.setVariable("PROCESS_STATUS", Status.ERROR);
+				System.out.println("PROCESS_STATUS: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
 

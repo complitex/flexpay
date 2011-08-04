@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class ApartmentAttributeTypeServiceImpl implements ApartmentAttributeType
 	 * @param stub Attribute type stub
 	 * @return type if found, or <code>null</code> otherwise
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public ApartmentAttributeType readFull(@NotNull Stub<ApartmentAttributeType> stub) {
 		return attributeTypeDaoExt.readFull(stub.getId());
 	}
@@ -45,6 +48,7 @@ public class ApartmentAttributeTypeServiceImpl implements ApartmentAttributeType
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public ApartmentAttributeType create(@NotNull ApartmentAttributeType type) throws FlexPayExceptionContainer {
 		validate(type);
 
@@ -61,6 +65,7 @@ public class ApartmentAttributeTypeServiceImpl implements ApartmentAttributeType
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public ApartmentAttributeType update(@NotNull ApartmentAttributeType type) throws FlexPayExceptionContainer {
 		validate(type);
 
@@ -137,10 +142,14 @@ public class ApartmentAttributeTypeServiceImpl implements ApartmentAttributeType
 	 * @param pager Page
 	 * @return list of apartment attributes
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public List<ApartmentAttributeType> listTypes(@NotNull Page<ApartmentAttributeType> pager) {
 		return attributeTypeDao.findTypes(pager);
 	}
 
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
     public List<ApartmentAttributeType> findTypes() {
         return attributeTypeDao.findAllTypes();
     }
@@ -151,6 +160,8 @@ public class ApartmentAttributeTypeServiceImpl implements ApartmentAttributeType
 	 * @param typeName Type name to look up
 	 * @return type if found, or <code>null</code> otherwise
 	 */
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public ApartmentAttributeType findTypeByName(String typeName) {
 		List<ApartmentAttributeType> types = attributeTypeDao.findTypesByName(typeName, typeName);
 		if (types.isEmpty()) {

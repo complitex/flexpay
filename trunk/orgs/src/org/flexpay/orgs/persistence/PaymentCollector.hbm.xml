@@ -25,6 +25,16 @@
 				<comment>Collector email address</comment>
 			</column>
 		</property>
+		<property name="tradingDayBeginTime">
+			<column name="tradingDayBeginTime" sql-type="time">
+				<comment>Begin trading day time</comment>
+			</column>
+		</property>
+		<property name="tradingDayEndTime">
+			<column name="tradingDayEndTime" sql-type="time">
+				<comment>End trading day time</comment>
+			</column>
+		</property>
 		<property name="tradingDayProcessInstanceId">
             <column name="tradingDayProcessInstance_Id">
                 <comment>Trading date process instance id</comment>

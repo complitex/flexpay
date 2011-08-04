@@ -34,6 +34,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	private ConsumerDaoExt consumerDaoExt;
 	private SPService spService;
 
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public List<Consumer> findConsumers(Stub<EircAccount> eircAccountStub) {
         return consumerDao.findConsumersByEIRCAccount(eircAccountStub.getId());
@@ -47,7 +48,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param serviceCode     Service code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
 	public Consumer findConsumer(Stub<ServiceProvider> serviceProviderStub, String accountNumber, String serviceCode) {
 		if (serviceCode.startsWith("#")) {
@@ -64,7 +65,8 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param serviceCode	   Subservice code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-    @Override
+    @Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
+	@Override
 	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
 		return spService.findService(serviceProviderStub, serviceCode);
 	}
@@ -76,7 +78,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @return Consumer instance
 	 */
 	@Nullable
-	@Transactional (readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
 	public Consumer read(@NotNull Stub<Consumer> stub) {
 		return consumerDao.readFull(stub.getId());

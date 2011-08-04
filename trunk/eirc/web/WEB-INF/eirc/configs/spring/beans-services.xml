@@ -114,7 +114,8 @@
           p:processRegistryVariableInstanceService-ref="processRegistryVariableInstanceService"
           p:processRegistryService-ref="processRegistryService"
           p:handleError-ref="registryHandleError"
-          p:executor-ref="taskExecutor" />
+          p:executor-ref="taskExecutor"
+		  p:countProcessedThreads="${app.config.eirc.countProcessedThreads}" />
 
     <bean id="eircAccountService"
           class="org.flexpay.eirc.service.impl.EircAccountServiceImpl"

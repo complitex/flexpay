@@ -97,4 +97,12 @@ public interface RegistryRecordDaoExt {
 	 */
 	@NotNull
 	Long[] getMinMaxIdsForImporting(@NotNull Long registryId);
+
+	/**
+	 * Check exist registry records with status FIXED and LOADED
+	 *
+	 * @param registryId Registry Id
+	 * @return <code>true</code> if records exist, or <code>false</code> otherwise
+	 */
+	boolean hasLoadedAndFixedRecords(@NotNull Long registryId);
 }

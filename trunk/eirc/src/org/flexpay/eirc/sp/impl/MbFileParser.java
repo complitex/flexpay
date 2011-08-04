@@ -56,7 +56,7 @@ public abstract class MbFileParser implements FileParser {
     private FileValidationSchema fileValidationSchema;
     protected LineParser lineParser;
 
-	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (propagation = Propagation.SUPPORTS)
 	@Override
 	public List<Registry> parse(FPFile spFile, Logger logger) throws FlexPayException {
         FileValidator validator = serviceValidationFactory.createFileValidator(fileValidationSchema, lineParser, logger);
@@ -84,7 +84,7 @@ public abstract class MbFileParser implements FileParser {
 		return registries;
     }
 
-    @Transactional (propagation = Propagation.NOT_SUPPORTED)
+    @Transactional (propagation = Propagation.SUPPORTS)
 	@Override
 	public List<Registry> parse(FPFile spFile) throws FlexPayException {
         return parse(spFile, null);

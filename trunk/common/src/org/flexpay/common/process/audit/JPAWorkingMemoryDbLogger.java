@@ -19,6 +19,8 @@ import java.util.Date;
 
 public class JPAWorkingMemoryDbLogger extends WorkingMemoryLogger {
 
+	private static final int MAX_STRING_LENGTH = 4000;
+
 	private ProcessInstanceLogDao processInstanceLogDao;
 	private VariableInstanceLogDao variableInstanceLogDao;
 	private NodeInstanceLogDao nodeInstanceLogDao;
@@ -86,8 +88,8 @@ public class JPAWorkingMemoryDbLogger extends WorkingMemoryLogger {
     }
 
     public void addVariableLog(long processInstanceId, String processId, String variableInstanceId, String variableId, String objectToString) {
-    	VariableInstanceLog log = new VariableInstanceLog(
-    		processInstanceId, processId, variableInstanceId, variableId, objectToString);
+		VariableInstanceLog log = new VariableInstanceLog(
+    		processInstanceId, processId, variableInstanceId, variableId, org.apache.commons.lang.StringUtils.left(objectToString, MAX_STRING_LENGTH));
         variableInstanceLogDao.create(log);
     }
 

@@ -13,11 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.flexpay.common.service.Roles.*;
-import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 
@@ -29,12 +28,11 @@ public class TradingDaySchedulingJob extends QuartzJobBean {
      * Authorities names for payments registry
      */
     private static final List<String> USER_TRADING_DAY_AUTHORITIES = list(
+			PROCESS_START,
             PROCESS_READ,
-			PROCESS_DELETE,
 			PROCESS_DEFINITION_UPLOAD_NEW,
-
-			PROCESS_DEFINITION_UPLOAD_NEW,
-			PROCESS_DEFINITION_UPLOAD_NEW,
+			PROCESS_DEFINITION_READ,
+			PROCESS_COMPLETE_HUMAN_TASK,
 
             PAYMENT_COLLECTOR_READ,
             PAYMENT_COLLECTOR_CHANGE,
@@ -57,32 +55,72 @@ public class TradingDaySchedulingJob extends QuartzJobBean {
 	@SuppressWarnings ({"unchecked"})
 	private TradingDay tradingDayService;
 
+	private static final Map<Long, Collection<PaymentCollector>> canNotStartedPaymentCollectorsCollection = map();
+
 	/**
 	 * Main execution method
 	 *
 	 * @param context - job execution context
 	 * @throws JobExecutionException when something goes wrong 
 	 */
-	@SuppressWarnings ({"unchecked"})
-    @Override
+	@Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
         log.debug("Starting trading day at {}", new Date());
 
         authenticateTradingDayGenerator();
 		FetchRange fetch = new FetchRange();
-		do {
-			List<PaymentCollector> paymentCollectors = paymentCollectorService.listInstances(fetch);
-			for (PaymentCollector paymentCollector : paymentCollectors) {
+		long threadId = Thread.currentThread().getId();
+		Collection<PaymentCollector> canNotStartedPaymentCollectorsCollectionInThisThread = set();
+		synchronized (canNotStartedPaymentCollectorsCollection) {
+			do {
+				List<PaymentCollector> paymentCollectors = paymentCollectorService.listInstances(fetch);
+				for (Collection<PaymentCollector> clearPaymentCollectors : canNotStartedPaymentCollectorsCollection.values()) {
+					paymentCollectors.removeAll(clearPaymentCollectors);
+				}
+				canNotStartedPaymentCollectorsCollectionInThisThread.addAll(startPaymentCollectors(paymentCollectors));
+				fetch.nextPage();
+			} while (fetch.hasMore());
+			canNotStartedPaymentCollectorsCollection.put(threadId, canNotStartedPaymentCollectorsCollectionInThisThread);
+		}
+
+		while (!canNotStartedPaymentCollectorsCollectionInThisThread.isEmpty()) {
+			log.debug("Timeout 60 sec. For repeat start trading day: {}", canNotStartedPaymentCollectorsCollectionInThisThread);
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				log.warn("Interrupted begin payment collector`s trading day", e);
+				canNotStartedPaymentCollectorsCollection.remove(threadId);
+				break;
+			}
+			synchronized (canNotStartedPaymentCollectorsCollection) {
 				try {
-					tradingDayService.startTradingDay(paymentCollector);
-				} catch (FlexPayException e) {
-					throw new JobExecutionException(e);
+					canNotStartedPaymentCollectorsCollectionInThisThread = startPaymentCollectors(canNotStartedPaymentCollectorsCollectionInThisThread);
+					canNotStartedPaymentCollectorsCollection.put(threadId, canNotStartedPaymentCollectorsCollectionInThisThread);
+				} catch (Throwable th) {
+					canNotStartedPaymentCollectorsCollection.remove(threadId);
+					throw new JobExecutionException(th);
 				}
 			}
-            fetch.nextPage();
-        } while (fetch.hasMore());
+		}
+
+		canNotStartedPaymentCollectorsCollection.remove(threadId);
     }
+
+	@SuppressWarnings ({"unchecked"})
+	private Collection<PaymentCollector> startPaymentCollectors(Collection<PaymentCollector> paymentCollectors) throws JobExecutionException {
+		Collection<PaymentCollector> newListCanNotStartedPaymentCollectors = set();
+		for (PaymentCollector paymentCollector : paymentCollectors) {
+			try {
+				if (!tradingDayService.startTradingDay(paymentCollector)) {
+					newListCanNotStartedPaymentCollectors.add(paymentCollector);
+				}
+			} catch (FlexPayException e) {
+				throw new JobExecutionException(e);
+			}
+		}
+		return newListCanNotStartedPaymentCollectors;
+	}
 
 	/**
 	 * Do payments registry user authentication

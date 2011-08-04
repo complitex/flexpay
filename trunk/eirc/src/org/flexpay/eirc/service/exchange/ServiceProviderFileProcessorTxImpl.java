@@ -18,12 +18,15 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+
+import static org.flexpay.common.process.ProcessDefinitionManagerImpl.getISODateFormat;
+
 /**
  * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br />
  * Precondition for processing file is complete import operation, i.e. all records should already have assigned
  * PersonalAccount.
  */
-@Transactional(readOnly = true)
 public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFileProcessorTx {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -35,6 +38,8 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 
 	private StopWatch getOperationWatch = new StopWatch();
 	private StopWatch processBatchWatch = new StopWatch();
+
+	private static final SimpleDateFormat sdf = getISODateFormat();
 
 	private OperationWatchContext watchContext = new OperationWatchContext();
 
@@ -71,7 +76,7 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	 * @param context Processing context
 	 * @throws Exception if failure occurs
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public void prepareRecordUpdates(@NotNull ProcessingContext context) throws Exception {
 
@@ -107,13 +112,20 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 		}
 
 		log.debug("Processing record to operate: {}", record.getId());
+//		System.out.println(sdf.format(new Date()) + " Processing record to operate");
 
 //		getOperationWatch.resume();
 		Operation op = serviceOperationsFactory.getOperation(context.getRegistry(), record);
 //		getOperationWatch.suspend();
 //		DelayedUpdate update = op.process(context, watchContext);
+//		log.debug("Operation class: {}", op.getClass());
+//		System.out.println(sdf.format(new Date()) + " Operation class: " + op.getClass());
 		DelayedUpdate update = op.process(context);
+		log.debug("Record processed");
+//		System.out.println(sdf.format(new Date()) + " Record processed");
 		context.addUpdate(update);
+		log.debug("Delayed update added to context");
+//		System.out.println(sdf.format(new Date()) + " Delayed update added to context");
 	}
 
 	/**

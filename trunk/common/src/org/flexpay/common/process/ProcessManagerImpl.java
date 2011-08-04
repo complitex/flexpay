@@ -288,6 +288,11 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 		delegate.signalExecution(execution.getId(), signal);
 	}
 
+	@Override
+	public void messageExecution(@NotNull ProcessInstance execution, @NotNull String messageName, @NotNull String messageValue) {
+		delegate.messageExecution(execution.getId(), messageName, messageValue);
+	}
+
 	/**
 	 * Check human task execute in process
 	 *
@@ -318,6 +323,7 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	@Override
 	synchronized public boolean completeHumanTask(@NotNull ProcessInstance processInstance, @NotNull String actorId, @Nullable String result) {
 		HumanTaskHandler handler = getHumanWorkItemHandler();
+		log.debug("Human task handler: {}", handler);
 		if (handler != null && handler.getWorkItems().containsKey(processInstance.getId())) {
 			WorkItem workItem = handler.getWorkItems().get(processInstance.getId());
 

@@ -31,7 +31,7 @@
 		<startEvent id="_1" name="StartProcess"/>
 
 		<scriptTask id="_2" name="SetConstantVariable" >
-			<script>kcontext.setVariable("range", new org.flexpay.common.dao.paging.FetchRange(200));</script>
+			<script>kcontext.setVariable("range", new org.flexpay.common.dao.paging.FetchRange(1000));</script>
 		</scriptTask>
 
 		<task id="_3" name="ProcessingDBRegistryTask" tns:taskName="ProcessingDBRegistryTask">

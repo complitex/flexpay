@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.JpaTemplate;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -72,12 +73,14 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	@Nullable
     @Override
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	public T read(@NotNull PK id) {
 		return jpaTemplate.find(type, id);
 	}
 
 	@Nullable
     @Override
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	public T readFull(@NotNull final PK id) {
 		final String queryName = type.getSimpleName() + ".readFull";
 		List<T> result = jpaTemplate.findByNamedQuery(queryName, id);
@@ -94,6 +97,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	 */
 	@NotNull
 	@Override
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<T> readFullCollection(final @NotNull Collection<PK> ids, boolean preserveOrder) {
 		if (ids.isEmpty()) {
 			return emptyList();
@@ -157,8 +161,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		}
 	}
 
-	@Transactional (readOnly = true)
     @Override
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
 		return (List<T>) findByNamedQuery(queryName, queryArgs);

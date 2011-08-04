@@ -15,7 +15,7 @@ public class PaymentPointTradingDay extends GeneralizationTradingDay<PaymentPoin
 	private TradingDay<Cashbox> cashboxTradingDayService;
 
 	@Override
-	public void startTradingDay(@NotNull PaymentPoint paymentPoint) throws FlexPayException {
+	public boolean startTradingDay(@NotNull PaymentPoint paymentPoint) throws FlexPayException {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
