@@ -207,15 +207,6 @@
         </element>
       </root>
     </artifact>
-    <artifact type="exploded-ear" name="mule:ear exploded">
-      <output-path>$PROJECT_DIR$/../../_build/classes/artifacts/mule_ear_exploded</output-path>
-      <root id="root">
-        <element id="javaee-facet-resources" facet="mule/javaeeApplication/javaEEApplication" />
-        <element id="directory" name="web.war">
-          <element id="artifact" artifact-name="mule:war exploded" />
-        </element>
-      </root>
-    </artifact>
     <artifact type="exploded-war" name="mule:war exploded2">
       <output-path>$PROJECT_DIR$/../../_build/classes/artifacts/mule_war_exploded2</output-path>
       <root id="root">
@@ -225,15 +216,6 @@
             <element id="module-output" name="mule" />
           </element>
           <element id="directory" name="lib" />
-        </element>
-      </root>
-    </artifact>
-    <artifact type="exploded-ear" name="mule:ear exploded2">
-      <output-path>$PROJECT_DIR$/../../_build/classes/artifacts/mule_ear_exploded2</output-path>
-      <root id="root">
-        <element id="javaee-facet-resources" facet="mule/javaeeApplication/javaEEApplication" />
-        <element id="directory" name="web.war">
-          <element id="artifact" artifact-name="mule:war exploded2" />
         </element>
       </root>
     </artifact>
@@ -485,7 +467,6 @@
   <component name="DBNavigator.Project.GenericSettings">
     <settings />
   </component>
-  <component name="DataSourceManagerImpl" compressed="false" />
   <component name="DependenciesAnalyzeManager">
     <option name="myForwardDirection" value="false" />
   </component>
@@ -1874,6 +1855,33 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../mule">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://flexpay.googlecode.com/svn/branches" />
+                  <option value="https://flexpay.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../orgs">
           <value>
             <SvnBranchConfiguration>
@@ -2173,6 +2181,14 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="HttpClient">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/httpclient/httpcore-4.1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/httpclient/httpclient-4.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="httpClientLibs">
       <CLASSES>
         <root url="file://$PROJECT_DIR$/../../http_tester/libs" />
@@ -2207,7 +2223,7 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasper-barcode.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/com-jaspersoft-ireport.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/ecj-3.6.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasperreports-4.0.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasperreports-4.0.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -2285,15 +2301,9 @@
         <root url="jar://$PROJECT_DIR$/../../mule/lib/backport-util-concurrent-3.1-osgi.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../mule/lib/jug-2.0.0-asl.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-transport-http-3.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-transport-servlet-3.1.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-transport-tcp-3.1.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../mule/lib/commons-httpclient-3.1-osgi.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-module-annotations-3.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-module-spring-extras-3.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-module-spring-security-3.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-module-scripting-3.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../mule/lib/stax-utils-20080702-osgi.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-pattern-core-3.1.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../mule/lib/mule-module-xml-3.1.2.jar!/" />
       </CLASSES>
       <JAVADOC />
