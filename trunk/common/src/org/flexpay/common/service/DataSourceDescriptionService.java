@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface DataSourceDescriptionService {
+public interface DataSourceDescriptionService extends JpaSetService {
 
     DataSourceDescription read(@NotNull Stub<DataSourceDescription> stub);
 

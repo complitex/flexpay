@@ -51,6 +51,7 @@ public abstract class NameDateInterval<T extends TemporaryValue<T>, DI extends N
 	 * @return Date interval copy
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public DI copy() {
 		NameDateInterval<T, DI> temporal = doGetCopy(this);
 		temporal.setObject(getObject());

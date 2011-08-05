@@ -14,7 +14,6 @@ import java.util.*;
 
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeSet;
-import static org.flexpay.common.util.DateUtil.format;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
@@ -49,9 +48,12 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
         builder.append("    <street>\n");
 
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
         if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <parentId>").append(getTown().getId()).append("</parentId>\n").
+            builder.append("        <parentId>").append(getTown().getId()).append("</parentId>\n").
                     append("        <nameDate>").append(DateUtil.format(nameDate)).append("</nameDate>\n").
                     append("        <typeId>").append(getTypeForDate(nameDate).getId()).append("</typeId>\n").
                     append("        <translations>\n");
@@ -107,7 +109,6 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		this.buildingses = buildingses;
 	}
 
-	@NotNull
 	public TimeLine<StreetType, StreetTypeTemporal> getTypesTimeLine() {
 
 		if (typesTimeLine == null) {
@@ -181,7 +182,6 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
 	}
 
-	@NotNull
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
 		return typeTemporals;
 	}

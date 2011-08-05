@@ -7,14 +7,16 @@ import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.service.DomainObjectService;
+import org.flexpay.common.service.JpaSetService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
-public class HistoryHandlerHelper {
+public class HistoryHandlerHelper implements JpaSetService {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
@@ -68,6 +70,11 @@ public class HistoryHandlerHelper {
 		log.debug("Saving master correction: {}", correction);
 		correctionsService.save(correction);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        masterIndexService.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setMasterIndexService(MasterIndexService masterIndexService) {

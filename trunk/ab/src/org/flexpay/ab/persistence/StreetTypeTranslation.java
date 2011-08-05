@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import org.jetbrains.annotations.NotNull;
 
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
@@ -44,7 +43,6 @@ public class StreetTypeTranslation extends Translation {
 	 *
 	 * @return Value for property 'shortName'.
 	 */
-	@NotNull
 	public String getShortName() {
 		return shortName != null ? shortName : "";
 	}

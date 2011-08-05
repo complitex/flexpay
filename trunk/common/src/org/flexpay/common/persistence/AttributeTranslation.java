@@ -24,7 +24,6 @@ public class AttributeTranslation extends Translation {
 	 *
 	 * @return Value for property 'value'.
 	 */
-	@NotNull
 	public String getValue() {
 		return value;
 	}
@@ -34,7 +33,7 @@ public class AttributeTranslation extends Translation {
 	 *
 	 * @param value Value to set for property 'value'.
 	 */
-	public void setValue(@NotNull String value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

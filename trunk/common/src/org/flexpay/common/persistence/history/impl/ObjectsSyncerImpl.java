@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Collections;
 import java.util.List;
@@ -78,6 +79,14 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 		diff.setErrorMessage(ex.getMessage());
 		diffService.update(diff);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffService.setJpaTemplate(jpaTemplate);
+        for (HistoryHandler handler : handlers) {
+            handler.setJpaTemplate(jpaTemplate);
+        }
+    }
 
 	@Required
 	public void setDiffService(DiffService diffService) {

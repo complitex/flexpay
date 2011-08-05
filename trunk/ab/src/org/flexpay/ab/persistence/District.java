@@ -35,9 +35,12 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 
         builder.append("    <district>\n");
 
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
         if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <parentId>").append(getTown().getId()).append("</parentId>\n").
+            builder.append("        <parentId>").append(getTown().getId()).append("</parentId>\n").
                     append("        <nameDate>").append(format(nameDate)).append("</nameDate>\n").
                     append("        <translations>\n");
             for (DistrictNameTranslation translation : getNameForDate(nameDate).getTranslations()) {

@@ -169,7 +169,6 @@
 
     <bean id="apartmentDaoExt"
           class="org.flexpay.ab.dao.impl.ApartmentDaoExtImpl"
-          p:dataSource-ref="dataSource"
           p:jpaTemplate-ref="jpaTemplate" />
 
     <bean id="streetDaoExt"

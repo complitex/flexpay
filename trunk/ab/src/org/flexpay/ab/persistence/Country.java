@@ -68,7 +68,7 @@ public class Country extends EsbXmlSyncObject {
 		this.translations = translations;
 	}
 
-	public void setTranslation(@NotNull CountryTranslation translation) {
+	public void setTranslation(CountryTranslation translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 

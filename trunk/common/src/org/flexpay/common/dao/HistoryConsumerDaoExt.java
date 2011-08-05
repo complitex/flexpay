@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface HistoryConsumerDaoExt {
+public interface HistoryConsumerDaoExt extends JpaSetDao {
 
 	@NotNull
 	List<Diff> findNewHistoryRecords(Long consumerId, FetchRange range);

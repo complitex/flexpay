@@ -46,10 +46,13 @@ public class BuildingAddress extends EsbXmlSyncObject {
 
         builder.append("    <buildingAddress>\n");
 
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
         if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
 
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <buildingId>").append(building.getId()).append("</buildingId>\n").
+            builder.append("        <buildingId>").append(building.getId()).append("</buildingId>\n").
                     append("        <streetId>").append(street.getId()).append("</streetId>\n").
                     append("        <primary>").append(primaryStatus).append("</primary>\n").
                     append("        <attributes>\n");
@@ -93,7 +96,6 @@ public class BuildingAddress extends EsbXmlSyncObject {
 		this.building = building;
 	}
 
-	@NotNull
 	public Set<AddressAttribute> getBuildingAttributes() {
 		return addressAttributes;
 	}

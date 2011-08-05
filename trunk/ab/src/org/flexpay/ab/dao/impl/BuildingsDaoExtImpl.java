@@ -16,8 +16,6 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
@@ -28,8 +26,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class BuildingsDaoExtImpl extends JpaDaoSupport implements BuildingsDaoExt {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private AddressAttributeTypeService addressAttributeTypeService;
 

@@ -19,6 +19,8 @@ import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.Date;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 public abstract class HistoryBuilderBase<T extends DomainObject> implements HistoryBuilder<T> {
 
 	protected MasterIndexService masterIndexService;
@@ -64,6 +66,9 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 			if (t2.isNotNew()) {
 				diff.setMasterIndex(masterIndexService.getMasterIndex(t2));
 			}
+            if (isEmpty(diff.getMasterIndex())) {
+                diff.setMasterIndex(masterIndexService.getNewMasterIndex(t2));
+            }
 		}
 
 		doDiff(t1, t2, diff);

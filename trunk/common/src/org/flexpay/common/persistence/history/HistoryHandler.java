@@ -1,11 +1,12 @@
 package org.flexpay.common.persistence.history;
 
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Handles external and internal diffs
  */
-public interface HistoryHandler {
+public interface HistoryHandler extends JpaSetService {
 
 	/**
 	 * Check if this handler can handle this <code>diff</code>

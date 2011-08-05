@@ -2,7 +2,6 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -15,7 +14,7 @@ public abstract class TemporalValueObject extends ValueObject {
 		return begin;
 	}
 
-	public void setBegin(@NotNull Date begin) {
+	public void setBegin(Date begin) {
 		if (begin.before(ApplicationConfig.getPastInfinite())) {
 			begin = ApplicationConfig.getPastInfinite();
 		}
@@ -26,7 +25,7 @@ public abstract class TemporalValueObject extends ValueObject {
 		return end;
 	}
 
-	public void setEnd(@NotNull Date end) {
+	public void setEnd(Date end) {
 		if (end.after(ApplicationConfig.getFutureInfinite())) {
 			end = ApplicationConfig.getFutureInfinite();
 		}

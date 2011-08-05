@@ -1,5 +1,6 @@
 package org.flexpay.common.persistence.history;
 
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * This manager saves the last recieved packets
  */
-public interface HistoryUnpackManager {
+public interface HistoryUnpackManager extends JpaSetService {
 
 	/**
 	 * Notify manager a new history records pack available

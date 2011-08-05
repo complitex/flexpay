@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -198,6 +199,14 @@ public class HistoryConsumerServiceImpl implements HistoryConsumerService {
 	public List<HistoryConsumptionGroup> listNotSentGroups(Stub<HistoryConsumer> consumerStub, Page<HistoryConsumptionGroup> pager) {
 		return consumerDao.listNotSentGroups(consumerStub.getId(), pager);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        consumerDao.setJpaTemplate(jpaTemplate);
+        consumerDaoExt.setJpaTemplate(jpaTemplate);
+        consumptionGroupDao.setJpaTemplate(jpaTemplate);
+        consumptionDao.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setConsumerDao(HistoryConsumerDao consumerDao) {

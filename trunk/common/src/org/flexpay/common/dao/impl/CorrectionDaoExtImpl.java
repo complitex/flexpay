@@ -6,17 +6,28 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.JpaTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements CorrectionDaoExt {
+
+    private Logger log = LoggerFactory.getLogger(getClass());
 
 	private JpaTemplate jpaTemplate;
 
@@ -112,12 +123,25 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	private Long getInternalId(final String externalId, final int type,
 							   final Stub<DataSourceDescription> sd) {
 
-		Object[] params = {externalId, type, sd.getId()};
-		List<Long> result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +
-												 "where external_object_id=? and object_type=? and data_source_description_id=?",
-				params, new SingleColumnRowMapper<Long>(Long.class));
+        List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+            @Override
+            public Object doInJpa(EntityManager entityManager) throws PersistenceException {
 
-		return result.isEmpty() ? null : result.get(0);
+                String sql = "select internal_object_id from common_data_corrections_tbl " +
+                             "where external_object_id=? and object_type=? and data_source_description_id=?";
+
+                List<? extends Serializable> params = list(externalId, type, sd.getId());
+
+                Query query = entityManager.createNativeQuery(sql);
+                for (int i = 0; i < params.size(); i++) {
+                    query.setParameter(i + 1, params.get(i));
+                }
+
+                return query.getResultList();
+            }
+        });
+
+        return result.isEmpty() ? null : ((BigInteger) result.get(0)).longValue();
 	}
 
 	@Nullable
@@ -125,21 +149,50 @@ public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements Correc
 	public String getExternalId(final Long internalId, final int type,
 								final Long dataSourceDescriptionId) {
 
-		Object[] params = {internalId, type, dataSourceDescriptionId};
-		List<String> result = getJdbcTemplate().query("select external_object_id from common_data_corrections_tbl " +
-												 "where internal_object_id=? and object_type=? and data_source_description_id=?",
-				params, new SingleColumnRowMapper<String>(String.class));
+        List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+            @Override
+            public Object doInJpa(EntityManager entityManager) throws PersistenceException {
 
-		return result.isEmpty() ? null : result.get(0);
+                String sql = "select external_object_id from common_data_corrections_tbl " +
+                             "where internal_object_id=? and object_type=? and data_source_description_id=?";
+
+                List<? extends Serializable> params = list(internalId, type, dataSourceDescriptionId);
+
+                Query query = entityManager.createNativeQuery(sql);
+                for (int i = 0; i < params.size(); i++) {
+                    query.setParameter(i + 1, params.get(i));
+                }
+
+                return query.getResultList();
+            }
+        });
+
+        return result.isEmpty() ? null : (String) result.get(0);
+
 	}
 
 	private Long getInternalCommonId(final String externalId, final int type) {
-		Object[] params = {externalId, type};
-		List<Long> result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +
-												 "where external_object_id=? and object_type=? and data_source_description_id IS NULL",
-				params, new SingleColumnRowMapper<Long>(Long.class));
 
-		return result.isEmpty() ? null : result.get(0);
+        List<?> result = jpaTemplate.executeFind(new JpaCallback() {
+            @Override
+            public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+
+                String sql = "select internal_object_id from common_data_corrections_tbl " +
+                             "where external_object_id=? and object_type=? and data_source_description_id IS NULL";
+
+                List<? extends Serializable> params = list(externalId, type);
+
+                Query query = entityManager.createNativeQuery(sql);
+                for (int i = 0; i < params.size(); i++) {
+                    query.setParameter(i + 1, params.get(i));
+                }
+
+                return query.getResultList();
+            }
+        });
+
+        return result.isEmpty() ? null : ((BigInteger) result.get(0)).longValue();
+
 	}
 
     @Required

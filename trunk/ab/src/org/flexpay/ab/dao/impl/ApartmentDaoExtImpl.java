@@ -11,20 +11,20 @@ import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.jpa.JpaCallback;
-import org.springframework.orm.jpa.JpaTemplate;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements ApartmentDaoExt {
+import static org.flexpay.common.util.CollectionUtils.list;
 
-	private JpaTemplate jpaTemplate;
+public class ApartmentDaoExtImpl extends JpaDaoSupport implements ApartmentDaoExt {
 
 	/**
 	 * Find apartment by number
@@ -35,14 +35,27 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	 */
 	@Nullable
 	@Override
-	public Stub<Apartment> findApartmentStub(@NotNull Building building, final String number) {
-		String sql = "SELECT id FROM ab_apartments_tbl a WHERE a.building_id=? AND EXISTS " +
-					 "(SELECT 1 FROM ab_apartment_numbers_tbl n WHERE n.apartment_id=a.id AND n.value=? AND n.end_date>?)";
+	public Stub<Apartment> findApartmentStub(@NotNull final Building building, final String number) {
 
-		Object[] args = {building.getId(), number, DateUtil.now()};
-		List<?> result = getJdbcTemplate().query(sql, args, new SingleColumnRowMapper<Long>(Long.class));
+        List<?> result = getJpaTemplate().executeFind(new JpaCallback() {
+            @Override
+            public Object doInJpa(EntityManager entityManager) throws PersistenceException {
 
-		return result.isEmpty() ? null : new Stub<Apartment>((Long) result.get(0));
+                String sql = "SELECT id FROM ab_apartments_tbl a WHERE a.building_id=? AND EXISTS " +
+                        "(SELECT 1 FROM ab_apartment_numbers_tbl n WHERE n.apartment_id=a.id AND n.value=? AND n.end_date>?)";
+
+                List<? extends Serializable> params = list(building.getId(), number, DateUtil.now());
+
+                Query query = entityManager.createNativeQuery(sql);
+                for (int i = 0; i < params.size(); i++) {
+                    query.setParameter(i + 1, params.get(i));
+                }
+
+                return query.getResultList();
+            }
+        });
+
+		return result.isEmpty() ? null : new Stub<Apartment>(((BigInteger) result.get(0)).longValue());
 	}
 
 	/**
@@ -79,19 +92,19 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		return jpaTemplate.executeFind(new JpaCallback() {
-			@Override
-			public Object doInJpa(EntityManager entityManager) throws PersistenceException {
-				javax.persistence.Query cntQuery = entityManager.createQuery(cntHql.toString());
-				Long count = (Long) cntQuery.getSingleResult();
-				pager.setTotalElements(count.intValue());
+		return getJpaTemplate().executeFind(new JpaCallback() {
+            @Override
+            public Object doInJpa(EntityManager entityManager) throws PersistenceException {
+                javax.persistence.Query cntQuery = entityManager.createQuery(cntHql.toString());
+                Long count = (Long) cntQuery.getSingleResult();
+                pager.setTotalElements(count.intValue());
 
-				return entityManager.createQuery(hql.toString())
-						.setFirstResult(pager.getThisPageFirstElementNumber())
-						.setMaxResults(pager.getPageSize())
-						.getResultList();
-			}
-		});
+                return entityManager.createQuery(hql.toString())
+                        .setFirstResult(pager.getThisPageFirstElementNumber())
+                        .setMaxResults(pager.getPageSize())
+                        .getResultList();
+            }
+        });
 	}
 
 	@NotNull
@@ -104,12 +117,6 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 		}
 
 		return new ApartmentSorterStub();
-	}
-
-    @Override
-	@Required
-	public void setJpaTemplate(JpaTemplate jpaTemplate) {
-		this.jpaTemplate = jpaTemplate;
 	}
 
 }

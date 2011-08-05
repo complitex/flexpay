@@ -5,7 +5,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -42,7 +41,6 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	 *
 	 * @return Value for property 'namesTimeLine'.
 	 */
-	@NotNull
 	public TimeLine<T, DI> getNamesTimeLine() {
 
 		if (namesTimeLine == null) {
@@ -108,7 +106,6 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	 *
 	 * @return Value for property 'nameTemporals'.
 	 */
-	@NotNull
 	public SortedSet<DI> getNameTemporals() {
 
 //		for (DI temporal : nameTemporals) {

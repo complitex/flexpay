@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.filter.DataSourceFilter;
 import org.flexpay.common.service.DataSourceDescriptionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -55,8 +56,14 @@ public class DataSourceDescriptionServiceImpl implements DataSourceDescriptionSe
         return filter;
     }
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        dataSourceDescriptionDao.setJpaTemplate(jpaTemplate);
+    }
+
     @Required
     public void setDataSourceDescriptionDao(DataSourceDescriptionDao dataSourceDescriptionDao) {
         this.dataSourceDescriptionDao = dataSourceDescriptionDao;
     }
+
 }

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public interface HistoryConsumerService {
+public interface HistoryConsumerService extends JpaSetService {
 
 	/**
 	 * Persist a new history consumer

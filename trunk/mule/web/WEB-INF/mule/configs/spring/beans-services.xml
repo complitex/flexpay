@@ -16,6 +16,8 @@
           p:buildingService-ref="buildingService"
           p:apartmentService-ref="apartmentService"
           p:addressAttributeTypeService-ref="addressAttributeTypeService"
-          p:lockManager-ref="lockManager" />
+          p:lockManager-ref="lockManager"
+          p:objectsSyncer-ref="abObjectsSyncer"
+          p:objectsSyncerJob-ref="objectsSyncerJob" />
 
 </beans>

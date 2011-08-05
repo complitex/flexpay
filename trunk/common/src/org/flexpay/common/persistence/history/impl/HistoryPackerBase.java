@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -226,7 +227,14 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	 */
 	protected abstract String getFileExtension();
 
-	@Required
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        consumerService.setJpaTemplate(jpaTemplate);
+        fileService.setJpaTemplate(jpaTemplate);
+        lockManager.setJpaTemplate(jpaTemplate);
+    }
+
+    @Required
 	public void setConsumerService(HistoryConsumerService consumerService) {
 		this.consumerService = consumerService;
 	}

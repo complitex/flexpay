@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.service.JpaSetService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * History packer generates {@link org.flexpay.common.persistence.file.FPFile} with a set of history records
  */
-public interface HistoryPacker {
+public interface HistoryPacker extends JpaSetService {
 
 	/**
 	 * Generate pack of history records for consumer

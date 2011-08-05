@@ -7,6 +7,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.ObjectsSyncer;
+import org.flexpay.common.persistence.history.ObjectsSyncerJob;
 import org.flexpay.mule.Request;
 import org.flexpay.mule.request.MuleAddressAttribute;
 import org.flexpay.mule.request.MuleApartment;
@@ -22,7 +24,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 
 public class MuleServiceImpl implements MuleService {
@@ -40,6 +41,8 @@ public class MuleServiceImpl implements MuleService {
     private ApartmentService apartmentService;
     private AddressAttributeTypeService addressAttributeTypeService;
     private LockManager lockManager;
+    private ObjectsSyncer objectsSyncer;
+    private ObjectsSyncerJob objectsSyncerJob;
 
     @Override
     public void processApartment(Request request) throws FlexPayExceptionContainer, FlexPayException {
@@ -541,6 +544,8 @@ public class MuleServiceImpl implements MuleService {
         buildingService.setJpaTemplate(jpaTemplate);
         addressAttributeTypeService.setJpaTemplate(jpaTemplate);
         apartmentService.setJpaTemplate(jpaTemplate);
+        objectsSyncer.setJpaTemplate(jpaTemplate);
+        objectsSyncerJob.setJpaTemplate(jpaTemplate);
     }
 
     @Required
@@ -598,4 +603,13 @@ public class MuleServiceImpl implements MuleService {
         this.lockManager = lockManager;
     }
 
+    @Required
+    public void setObjectsSyncer(ObjectsSyncer objectsSyncer) {
+        this.objectsSyncer = objectsSyncer;
+    }
+
+    @Required
+    public void setObjectsSyncerJob(ObjectsSyncerJob objectsSyncerJob) {
+        this.objectsSyncerJob = objectsSyncerJob;
+    }
 }

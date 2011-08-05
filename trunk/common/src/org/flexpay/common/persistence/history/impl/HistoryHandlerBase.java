@@ -12,6 +12,7 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 public abstract class HistoryHandlerBase<T extends DomainObject> implements HistoryHandler {
 
@@ -30,7 +31,15 @@ public abstract class HistoryHandlerBase<T extends DomainObject> implements Hist
 		correctionsService.save(correction);
 	}
 
-	@Required
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        historyBuilder.setJpaTemplate(jpaTemplate);
+        masterIndexService.setJpaTemplate(jpaTemplate);
+        correctionsService.setJpaTemplate(jpaTemplate);
+        historyHandlerHelper.setJpaTemplate(jpaTemplate);
+    }
+
+    @Required
 	public void setHistoryBuilder(HistoryBuilder<T> historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
