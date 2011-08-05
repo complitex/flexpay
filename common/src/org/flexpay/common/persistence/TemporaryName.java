@@ -38,12 +38,11 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 		this.object = object;
 	}
 
-	@NotNull
 	public Set<T> getTranslations() {
 		return translations;
 	}
 
-	public void setTranslations(@NotNull Set<T> translations) {
+	public void setTranslations(Set<T> translations) {
 		this.translations = translations;
 	}
 

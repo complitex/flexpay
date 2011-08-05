@@ -51,6 +51,7 @@ public abstract class TypeDateInterval<T extends TemporaryValue<T>, DI extends T
 	 * @return Date interval copy
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public DI copy() {
 		TypeDateInterval<T, DI> temporal = doGetCopy(this);
 		temporal.setObject(getObject());

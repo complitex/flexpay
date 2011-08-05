@@ -32,7 +32,7 @@ public class UserRole extends DomainObjectWithStatus {
 		this.translations = translations;
 	}
 
-	public void setTranslation(@NotNull UserRoleTranslation translation) {
+	public void setTranslation(UserRoleTranslation translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 

@@ -48,9 +48,12 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 
         builder.append("    <town>\n");
 
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
         if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <parentId>").append(getRegion().getId()).append("</parentId>\n").
+            builder.append("        <parentId>").append(getRegion().getId()).append("</parentId>\n").
                     append("        <nameDate>").append(format(nameDate)).append("</nameDate>\n").
                     append("        <typeId>").append(getTypeForDate(nameDate).getId()).append("</typeId>\n").
                     append("        <translations>\n");
@@ -102,7 +105,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		this.districts = districts;
 	}
 
-	@NotNull
 	public Set<Street> getStreets() {
 		return streets;
 	}
@@ -116,7 +118,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 *
 	 * @return Value for property 'typesTimeLine'.
 	 */
-	@NotNull
 	public TimeLine<TownType, TownTypeTemporal> getTypesTimeLine() {
 
 		if (typesTimeLine == null) {

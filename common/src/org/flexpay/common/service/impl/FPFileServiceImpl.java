@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -244,6 +245,14 @@ public class FPFileServiceImpl implements FPFileService {
 		List<FPFileStatus> l = fpFileStatusDao.listStatusesByCodeAndModule(code, moduleName);
 		return l.isEmpty() ? null : l.get(0);
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        fpFileDao.setJpaTemplate(jpaTemplate);
+        fpFileTypeDao.setJpaTemplate(jpaTemplate);
+        fpFileStatusDao.setJpaTemplate(jpaTemplate);
+        fpModuleDao.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setFpFileDao(FPFileDao fpFileDao) {

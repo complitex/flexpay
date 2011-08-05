@@ -1,6 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TemporaryType;
 import org.jetbrains.annotations.NotNull;
@@ -28,9 +27,12 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 
         builder.append("    <townType>\n");
 
-        if (EsbXmlSyncObject.ACTION_INSERT.equals(action) || EsbXmlSyncObject.ACTION_UPDATE.equals(action)) {
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <translations>\n");
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+            builder.append("        <translations>\n");
             for (TownTypeTranslation translation : getTranslations()) {
                 builder.append("            <org.flexpay.mule.request.MuleTranslation>\n").
                         append("                <name>").append(translation.getName()).append("</name>\n").
@@ -39,7 +41,7 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
                         append("            </org.flexpay.mule.request.MuleTranslation>\n");
             }
             builder.append("        </translations>\n");
-        } else if (EsbXmlSyncObject.ACTION_DELETE.equals(action)) {
+        } else if (ACTION_DELETE.equals(action)) {
             builder.append("        <ids>\n");
             for (Long id : ids) {
                 builder.append("            <long>").append(id).append("</long>\n");

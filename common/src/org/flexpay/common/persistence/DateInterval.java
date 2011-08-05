@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.*;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -52,7 +51,6 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		}
 	}
 
-	@NotNull
 	public Date getBegin() {
 		return begin;
 	}
@@ -71,7 +69,6 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		}
 	}
 
-	@NotNull
 	public Date getEnd() {
 		return end;
 	}
@@ -149,6 +146,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 			   (value != null && value.equals(di.getValue()));
 	}
 
+    @Override
 	public int compareTo(DI o) {
 
 		if (this == o) {

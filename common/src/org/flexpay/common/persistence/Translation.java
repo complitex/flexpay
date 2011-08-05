@@ -20,17 +20,15 @@ public class Translation extends DomainObject {
 		this.lang = lang;
 	}
 
-	@NotNull
 	public String getName() {
 		return name != null ? name : "";
 	}
 
-	@NotNull
 	public Language getLang() {
 		return lang;
 	}
 
-	public void setName(@NotNull String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -38,16 +36,15 @@ public class Translation extends DomainObject {
 		this.name = t.getName();
 	}
 
-	@NotNull
 	public DomainObject getTranslatable() {
 		return translatable;
 	}
 
-	public void setTranslatable(@NotNull DomainObject translatable) {
+	public void setTranslatable(DomainObject translatable) {
 		this.translatable = translatable;
 	}
 
-	public void setLang(@NotNull Language lang) {
+	public void setLang(Language lang) {
 		this.lang = lang;
 	}
 

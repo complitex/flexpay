@@ -194,7 +194,9 @@
     <bean id="propertiesFactoryHolder"
           class="org.flexpay.common.persistence.registry.PropertiesFactoryHolder" />
 
-    <bean id="propertiesFactory" factory-bean="propertiesFactoryHolder" factory-method="getFactory">
+    <bean id="propertiesFactory"
+          factory-bean="propertiesFactoryHolder"
+          factory-method="getFactory">
         <property name="factory">
             <bean class="org.flexpay.common.persistence.registry.CommonPropertiesFactory" autowire-candidate="false" />
         </property>

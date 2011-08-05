@@ -22,12 +22,11 @@ public class PersonRegistration extends DomainObject implements Comparable<Perso
 		this.person = person;
 	}
 
-	@NotNull
 	public Apartment getApartment() {
 		return apartment;
 	}
 
-	public void setApartment(@NotNull Apartment apartment) {
+	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
 	}
 

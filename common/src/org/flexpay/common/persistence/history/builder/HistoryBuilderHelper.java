@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.service.JpaSetService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.EqualsHelper;
@@ -19,7 +20,7 @@ import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.List;
 
-public class HistoryBuilderHelper {
+public class HistoryBuilderHelper implements JpaSetService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -134,6 +135,7 @@ public class HistoryBuilderHelper {
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 
+    @Override
     public void setJpaTemplate(JpaTemplate jpaTemplate) {
         masterIndexService.setJpaTemplate(jpaTemplate);
         correctionsService.setJpaTemplate(jpaTemplate);

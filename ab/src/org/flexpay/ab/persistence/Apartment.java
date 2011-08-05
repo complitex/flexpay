@@ -46,11 +46,12 @@ public class Apartment extends EsbXmlSyncObject {
 
         builder.append("    <apartment>\n");
 
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
         if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
-
-            BuildingAddress address = getDefaultBuildings();
-
-            builder.append("        <buildingId>").append(getBuilding().getDefaultBuildings().getId()).append("</buildingId>\n").
+            builder.append("        <buildingId>").append(getDefaultBuildings().getId()).append("</buildingId>\n").
                     append("        <number>").append(getNumber()).append("</number>\n");
         } else if (ACTION_DELETE.equals(action)) {
             builder.append("        <ids>\n");
@@ -73,7 +74,6 @@ public class Apartment extends EsbXmlSyncObject {
 		this.building = building;
 	}
 
-	@NotNull
 	public Set<ApartmentNumber> getApartmentNumbers() {
 		return this.apartmentNumbers;
 	}
@@ -240,7 +240,6 @@ public class Apartment extends EsbXmlSyncObject {
 		return getNumber();
 	}
 
-	@NotNull
 	public Stub<Building> getBuildingStub() {
 		return stub(building);
 	}

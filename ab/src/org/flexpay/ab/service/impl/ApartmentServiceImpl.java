@@ -535,7 +535,7 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
     public void setJpaTemplate(JpaTemplate jpaTemplate) {
         apartmentDao.setJpaTemplate(jpaTemplate);
         apartmentDaoExt.setJpaTemplate(jpaTemplate);
-//        buildingService.setJpaTemplate(jpaTemplate);
+        buildingService.setJpaTemplate(jpaTemplate);
 //        parentService.setJpaTemplate(jpaTemplate);
         sessionUtils.setJpaTemplate(jpaTemplate);
         modificationListener.setJpaTemplate(jpaTemplate);

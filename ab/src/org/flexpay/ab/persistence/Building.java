@@ -86,31 +86,28 @@ public class Building extends EsbXmlSyncObject {
 		return stub(district);
 	}
 
-	@NotNull
 	public Set<BuildingStatus> getBuildingStatuses() {
 		return this.buildingStatuses;
 	}
 
-	public void setBuildingStatuses(@NotNull Set<BuildingStatus> buildingStatuses) {
+	public void setBuildingStatuses(Set<BuildingStatus> buildingStatuses) {
 		this.buildingStatuses = buildingStatuses;
 	}
 
-	@NotNull
 	public Set<BuildingAddress> getBuildingses() {
 		return buildingses;
 	}
 
 	@SuppressWarnings ({"UnusedDeclaration"})
-	private void setBuildingses(@NotNull Set<BuildingAddress> buildingses) {
+	private void setBuildingses(Set<BuildingAddress> buildingses) {
 		this.buildingses = buildingses;
 	}
 
-	@NotNull
 	public Set<Apartment> getApartments() {
 		return apartments;
 	}
 
-	public void setApartments(@NotNull Set<Apartment> apartments) {
+	public void setApartments(Set<Apartment> apartments) {
 		this.apartments = apartments;
 	}
 

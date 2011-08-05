@@ -24,7 +24,7 @@ import java.util.List;
  * FPFileStatus and FPFileType - entities for defining type and
  * current status of file. This entities both references on FPModule.
  */
-public interface FPFileService {
+public interface FPFileService extends JpaSetService {
 
 	/**
 	 * Create FPFile entity in database

@@ -38,26 +38,24 @@ public class Person extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	@NotNull
 	public Set<PersonAttribute> getPersonAttributes() {
 		return personAttributes;
 	}
 
-	public void setPersonAttributes(@NotNull Set<PersonAttribute> personAttributes) {
+	public void setPersonAttributes(Set<PersonAttribute> personAttributes) {
 		this.personAttributes = personAttributes;
 	}
 
-	@NotNull
 	public Set<PersonIdentity> getPersonIdentities() {
 		return personIdentities;
 	}
 
-	public void setPersonIdentities(@NotNull Set<PersonIdentity> personIdentities) {
+	public void setPersonIdentities(Set<PersonIdentity> personIdentities) {
 		this.personIdentities = personIdentities;
 	}
 
 
-	public void setPersonAttributes(@NotNull List<PersonAttribute> personAttributes) {
+	public void setPersonAttributes(List<PersonAttribute> personAttributes) {
 		this.personAttributes = set(personAttributes);
 	}
 
@@ -261,7 +259,7 @@ public class Person extends DomainObjectWithStatus {
 		this.personRegistrations = personRegistrations;
 	}
 
-	public void setPersonRegistrations(@NotNull List<PersonRegistration> personRegistrations) {
+	public void setPersonRegistrations(List<PersonRegistration> personRegistrations) {
 		this.personRegistrations = set(personRegistrations);
 	}
 

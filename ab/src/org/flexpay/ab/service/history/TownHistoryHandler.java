@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.util.CollectionUtils.list;
@@ -71,6 +72,13 @@ public class TownHistoryHandler extends HistoryHandlerBase<Town> {
 			townService.update(object);
 		}
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        townService.setJpaTemplate(jpaTemplate);
+        super.setJpaTemplate(jpaTemplate);
+    }
+
 
 	@Required
 	public void setTownService(TownService townService) {

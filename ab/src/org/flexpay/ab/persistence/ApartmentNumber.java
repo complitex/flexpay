@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.DateUtil;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -42,12 +41,11 @@ public class ApartmentNumber extends DomainObject implements Comparable<Apartmen
 		this.end = end;
 	}
 
-	@NotNull
 	public String getValue() {
 		return this.value;
 	}
 
-	public void setValue(@NotNull String value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

@@ -38,9 +38,12 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 
         builder.append("    <region>\n");
 
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
         if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <parentId>").append(getCountry().getId()).append("</parentId>\n").
+            builder.append("        <parentId>").append(getCountry().getId()).append("</parentId>\n").
                     append("        <nameDate>").append(format(nameDate)).append("</nameDate>\n").
                     append("        <translations>\n");
             for (RegionNameTranslation translation : getNameForDate(nameDate).getTranslations()) {

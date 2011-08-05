@@ -68,7 +68,7 @@ public class AddressAttributeType extends DomainObjectWithStatus implements Comp
 		return equals(type);
 	}
 
-	public void setTranslation(@NotNull AddressAttributeTypeTranslation translation) {
+	public void setTranslation(AddressAttributeTypeTranslation translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 
@@ -79,7 +79,11 @@ public class AddressAttributeType extends DomainObjectWithStatus implements Comp
 	 * @return translation if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public AddressAttributeTypeTranslation getTranslation(@NotNull Language lang) {
+	public AddressAttributeTypeTranslation getTranslation(Language lang) {
+
+        if (lang == null) {
+            return null;
+        }
 
 		for (AddressAttributeTypeTranslation translation : getTranslations()) {
 			if (lang.equals(translation.getLang())) {

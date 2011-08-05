@@ -3,14 +3,16 @@ package org.flexpay.common.persistence.history;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.service.DiffService;
+import org.flexpay.common.service.JpaSetService;
 import org.flexpay.common.service.Security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.util.List;
 
-public class ObjectsSyncerJob {
+public class ObjectsSyncerJob implements JpaSetService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -48,6 +50,13 @@ public class ObjectsSyncerJob {
 
 		log.debug("Ended objects sync");
 	}
+
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffService.setJpaTemplate(jpaTemplate);
+        lockManager.setJpaTemplate(jpaTemplate);
+        syncer.setJpaTemplate(jpaTemplate);
+    }
 
 	@Required
 	public void setDiffService(DiffService diffService) {

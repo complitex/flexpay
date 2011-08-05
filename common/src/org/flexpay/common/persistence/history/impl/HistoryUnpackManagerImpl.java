@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -100,6 +101,12 @@ public class HistoryUnpackManagerImpl implements HistoryUnpackManager {
 		return data;
 	}
 
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        historyPackDao.setJpaTemplate(jpaTemplate);
+        unPackDataDao.setJpaTemplate(jpaTemplate);
+    }
+
 	@Required
 	public void setHistoryPackDao(ExternalHistoryPackDao historyPackDao) {
 		this.historyPackDao = historyPackDao;
@@ -109,4 +116,5 @@ public class HistoryUnpackManagerImpl implements HistoryUnpackManager {
 	public void setUnPackDataDao(HistoryUnPackDataDao unPackDataDao) {
 		this.unPackDataDao = unPackDataDao;
 	}
+
 }

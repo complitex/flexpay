@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.jpa.JpaTemplate;
 
 import java.io.InputStream;
 import java.util.List;
@@ -95,7 +96,12 @@ public abstract class HistoryUnPackerBase implements HistoryUnPacker {
 		}
 	}
 
-	@Required
+    @Override
+    public void setJpaTemplate(JpaTemplate jpaTemplate) {
+        diffService.setJpaTemplate(jpaTemplate);
+    }
+
+    @Required
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
 	}

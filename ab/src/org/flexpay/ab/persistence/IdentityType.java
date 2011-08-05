@@ -61,7 +61,7 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 		return typeId == TYPE_FIO;
 	}
 
-	public void setTranslation(@NotNull IdentityTypeTranslation translation) {
+	public void setTranslation(IdentityTypeTranslation translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 

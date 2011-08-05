@@ -2,7 +2,6 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.EsbXmlSyncObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TemporaryType;
 
@@ -32,9 +31,12 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 
         builder.append("    <streetType>\n");
 
-        if (EsbXmlSyncObject.ACTION_INSERT.equals(action) || EsbXmlSyncObject.ACTION_UPDATE.equals(action)) {
-            builder.append("        <id>").append(id).append("</id>\n").
-                    append("        <translations>\n");
+        if (ACTION_UPDATE.equals(action)) {
+            builder.append("        <id>").append(id).append("</id>\n");
+        }
+
+        if (ACTION_INSERT.equals(action) || ACTION_UPDATE.equals(action)) {
+            builder.append("        <translations>\n");
             for (StreetTypeTranslation translation : getTranslations()) {
                 builder.append("            <org.flexpay.mule.request.MuleTranslation>\n").
                         append("                <name>").append(translation.getName()).append("</name>\n").
@@ -43,7 +45,7 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
                         append("            </org.flexpay.mule.request.MuleTranslation>\n");
             }
             builder.append("        </translations>\n");
-        } else if (EsbXmlSyncObject.ACTION_DELETE.equals(action)) {
+        } else if (ACTION_DELETE.equals(action)) {
             builder.append("        <ids>\n");
             for (Long id : ids) {
                 builder.append("            <long>").append(id).append("</long>\n");
