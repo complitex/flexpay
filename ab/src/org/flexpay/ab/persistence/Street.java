@@ -1,5 +1,6 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
@@ -17,18 +18,16 @@ import static org.flexpay.common.util.CollectionUtils.treeSet;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
-/**
- * Street
- */
 public class Street extends NameTimeDependentChild<StreetName, StreetNameTemporal> {
 
 	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
-	private Set<StreetDistrictRelation> streetDistricts = set();
 	private SortedSet<StreetTypeTemporal> typeTemporals = EMPTY_SORTED_SET;
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
-	private Set<BuildingAddress> buildingses = Collections.emptySet();
+
+    private Set<StreetDistrictRelation> streetDistricts = set();
+	private Set<BuildingAddress> buildingses = set();
 
 	public Street() {
 	}
@@ -37,7 +36,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		super(id);
 	}
 
-	public Street(Stub<Street> stub) {
+	public Street(@NotNull Stub<Street> stub) {
 		super(stub.getId());
 	}
 
@@ -48,7 +47,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
         builder.append("    <street>\n");
 
-        if (ACTION_UPDATE.equals(action)) {
+        if (ACTION_UPDATE.equals(action) || ACTION_UPDATE_STREET_DISTRICTS.equals(action)) {
             builder.append("        <id>").append(id).append("</id>\n");
         }
 
@@ -120,34 +119,42 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return typesTimeLine;
 	}
 
-	public Street addTypeTemporal(StreetTypeTemporal temporal) {
-		TimeLine<StreetType, StreetTypeTemporal> tlNew;
-		if (typesTimeLine == null) {
-			tlNew = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
-		} else {
-			tlNew = DateIntervalUtil.addInterval(typesTimeLine, temporal);
-		}
+    public void setTypesTimeLine(TimeLine<StreetType, StreetTypeTemporal> typesTimeLine) {
+        this.typesTimeLine = typesTimeLine;
 
-		if (typesTimeLine == tlNew) {
-			// nothing to do, timeline did not changed
-			return this;
-		}
+        if (typeTemporals == EMPTY_SORTED_SET) {
+            typeTemporals = treeSet();
+        }
+        typeTemporals.addAll(typesTimeLine.getIntervals());
+    }
 
-		if (typeTemporals == EMPTY_SORTED_SET) {
-			typeTemporals = treeSet();
-		}
+    public void setTypeTemporals(SortedSet<StreetTypeTemporal> typeTemporals) {
+        this.typeTemporals = typeTemporals;
+        typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
+    }
 
-		// add all new intervals
-		typeTemporals.addAll(tlNew.getIntervals());
-		typesTimeLine = tlNew;
+    public SortedSet<StreetTypeTemporal> getTypeTemporals() {
 
-		for (StreetTypeTemporal typeTemporal : typeTemporals) {
-			if (typeTemporal.getValue() != null && typeTemporal.getValue().isNew()) {
-				typeTemporal.setValue(null);
-			}
-		}
+        for (StreetTypeTemporal temporal : typeTemporals) {
+            if (temporal.getValue() != null && temporal.getValue().isNew()) {
+                temporal.setValue(null);
+            }
+        }
 
-		return this;
+        return typeTemporals;
+    }
+
+	public void addTypeTemporal(StreetTypeTemporal temporal) {
+        if (typesTimeLine == null) {
+            typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
+        } else {
+            typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
+        }
+
+        if (typeTemporals == EMPTY_SORTED_SET) {
+            typeTemporals = treeSet();
+        }
+        typeTemporals.addAll(typesTimeLine.getIntervals());
 	}
 
 	public void setType(StreetType type) {
@@ -163,49 +170,53 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		temporal.setBegin(beginDate);
 		temporal.setEnd(endDate);
 		temporal.setValue(type);
-		temporal.setObject(this);
+		temporal.setStreet(this);
 
 		addTypeTemporal(temporal);
 	}
 
-	public void setTypesTimeLine(TimeLine<StreetType, StreetTypeTemporal> typesTimeLine) {
-		this.typesTimeLine = typesTimeLine;
+    /**
+     * Find temporal for date
+     *
+     * @return Value which interval includes specified date, or <code>null</code> if not found
+     */
+    @Nullable
+    public StreetTypeTemporal getCurrentTypeTemporal() {
+        return getTypeTemporalForDate(DateUtil.now());
+    }
 
-		if (typeTemporals == EMPTY_SORTED_SET) {
-			typeTemporals = treeSet();
-		}
-		typeTemporals.addAll(typesTimeLine.getIntervals());
-	}
+    /**
+     * Find temporal for date
+     *
+     * @param dt Date to get value for
+     * @return Value which interval includes specified date, or <code>null</code> if not found
+     */
+    @Nullable
+    public StreetTypeTemporal getTypeTemporalForDate(Date dt) {
+        if (typesTimeLine == null) {
+            return null;
+        }
+        List<StreetTypeTemporal> intervals = typesTimeLine.getIntervals();
+        for (StreetTypeTemporal di : intervals) {
+            if (DateIntervalUtil.includes(dt, di)) {
+                return di;
+            }
+        }
 
-	public void setTypeTemporals(SortedSet<StreetTypeTemporal> typeTemporals) {
-		this.typeTemporals = typeTemporals;
-		typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
-	}
+        return null;
+    }
 
-	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
-		return typeTemporals;
-	}
-
-	/**
-	 * Find value for date
-	 *
-	 * @param dt Date to get value for
-	 * @return Value which interval includes specified date, or <code>null</code> if not found
-	 */
-	@Nullable
-	public StreetType getTypeForDate(Date dt) {
-		if (typesTimeLine == null) {
-			return null;
-		}
-		List<StreetTypeTemporal> intervals = typesTimeLine.getIntervals();
-		for (StreetTypeTemporal di : intervals) {
-			if (DateIntervalUtil.includes(dt, di)) {
-				return di.getValue();
-			}
-		}
-
-		return null;
-	}
+    /**
+     * Find value for date
+     *
+     * @param dt Date to get value for
+     * @return Value which interval includes specified date, or <code>null</code> if not found
+     */
+    @Nullable
+    public StreetType getTypeForDate(Date dt) {
+        StreetTypeTemporal di = getTypeTemporalForDate(dt);
+        return di != null ? di.getValue() : null;
+    }
 
 	/**
 	 * Find value for current date
@@ -214,66 +225,27 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	@Nullable
 	public StreetType getCurrentType() {
-		return getTypeForDate(DateUtil.now());
+        StreetTypeTemporal di = getCurrentTypeTemporal();
+        return di != null ? di.getValue() : null;
 	}
 
-	@NotNull
-	public String format(@NotNull Locale locale, boolean shortMode) throws FlexPayException {
-		StringBuilder formatted = new StringBuilder();
+    public void setTown(Town town) {
+        setParent(town);
+    }
 
-		StreetTypeTranslation typeTanslation = getTypeTranslation(locale);
-		if (typeTanslation != null) {
-			if (shortMode) {
-				formatted.append(typeTanslation.getShortName()).append(".");
-			} else {
-				formatted.append(typeTanslation.getName());
-			}
-		}
-
-		StreetNameTranslation nameTranslation = getNameTranslation(locale);
-		if (nameTranslation != null) {
-			formatted.append(" ").append(nameTranslation.getName());
-		}
-
-		return formatted.toString();
-	}
-
-	@Nullable
-	private StreetNameTranslation getNameTranslation(@NotNull Locale locale) {
-		StreetName name = getCurrentName();
-		StreetNameTranslation nameTranslation = null;
-		if (name != null) {
-			nameTranslation = TranslationUtil.getTranslation(name.getTranslations(), locale);
-		}
-		return nameTranslation;
-	}
-
-	@Nullable
-	private StreetTypeTranslation getTypeTranslation(@NotNull Locale locale) {
-		StreetType type = getCurrentType();
-		StreetTypeTranslation typeTanslation = null;
-		if (type != null) {
-			typeTanslation = TranslationUtil.getTranslation(type.getTranslations(), locale);
-		}
-		return typeTanslation;
-	}
-
-	@NotNull
 	public Town getTown() {
 		return (Town) getParent();
 	}
 
-	@NotNull
+    @NotNull
 	public Stub<Town> getTownStub() {
 		return new Stub<Town>(getTown());
 	}
 
-	@NotNull
 	public Region getRegion() {
 		return getTown().getRegion();
 	}
 
-	@NotNull
 	public Country getCountry() {
 		return getTown().getCountry();
 	}
@@ -309,9 +281,61 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		addNameTemporal(temporal);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof Street && super.equals(obj);
-	}
+    public String format(Locale locale, boolean shortMode) throws FlexPayException {
+        StringBuilder formatted = new StringBuilder();
+
+        StreetTypeTranslation typeTanslation = getTypeTranslation(locale);
+        if (typeTanslation != null) {
+            if (shortMode) {
+                formatted.append(typeTanslation.getShortName()).append(".");
+            } else {
+                formatted.append(typeTanslation.getName());
+            }
+        }
+
+        StreetNameTranslation nameTranslation = getNameTranslation(locale);
+        if (nameTranslation != null) {
+            formatted.append(" ").append(nameTranslation.getName());
+        }
+
+        return formatted.toString();
+    }
+
+    @Nullable
+    private StreetNameTranslation getNameTranslation(Locale locale) {
+        StreetName name = getCurrentName();
+        StreetNameTranslation nameTranslation = null;
+        if (name != null) {
+            nameTranslation = TranslationUtil.getTranslation(name.getTranslations(), locale);
+        }
+        return nameTranslation;
+    }
+
+    @Nullable
+    private StreetTypeTranslation getTypeTranslation(Locale locale) {
+        StreetType type = getCurrentType();
+        StreetTypeTranslation typeTanslation = null;
+        if (type != null) {
+            typeTanslation = TranslationUtil.getTranslation(type.getTranslations(), locale);
+        }
+        return typeTanslation;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Street)) {
+            return false;
+        }
+
+        Street that = (Street) obj;
+
+        return new EqualsBuilder()
+                .append(typesTimeLine, that.typesTimeLine)
+                .appendSuper(super.equals(obj))
+                .isEquals();
+    }
 
 }

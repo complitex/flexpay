@@ -19,16 +19,16 @@ public class TownNameTranslation extends Translation {
 		super(name, getDefaultLanguage());
 	}
 
-	public TownNameTranslation(String name, Language language) {
-		super(name, language);
+	public TownNameTranslation(String name, Language lang) {
+		super(name, lang);
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("Id", getId())
-				.append("Language", getLang().getLangIsoCode())
-				.append("Name", getName())
+				.append("id", getId())
+				.append("language", getLang().getLangIsoCode())
+				.append("name", getName())
 				.toString();
 	}
 

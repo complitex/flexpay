@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 /**
  * Internal EIRC tracker for personal accounts
  */
@@ -23,7 +25,7 @@ public class EircAccount extends DomainObjectWithStatus {
 	private Apartment apartment;
 	private ConsumerInfo consumerInfo;
 
-	private Set<Consumer> consumers = Collections.emptySet();
+	private Set<Consumer> consumers = set();
 
 	public EircAccount() {
 	}

@@ -11,7 +11,6 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
 
@@ -214,7 +213,7 @@ public class BuildingAddress extends EsbXmlSyncObject {
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
 			//noinspection CollectionsFieldAccessReplaceableByMethodCall
-			if (addressAttributes == Collections.EMPTY_SET) {
+			if (addressAttributes == null) {
 				addressAttributes = set();
 			}
 			addressAttributes.add(attribute);

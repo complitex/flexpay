@@ -1,12 +1,14 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TypeDateInterval;
+
+import java.util.Date;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeTemporal> {
 
-	/**
-	 * Constructs a new TypeTemporal.
-	 */
 	public StreetTypeTemporal() {
 		super(new StreetType());
 	}
@@ -20,9 +22,14 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 		super(di.getBegin(), di.getEnd(), di.getValue());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    public StreetTypeTemporal(Date beginDate, StreetType streetType) {
+        super(beginDate, getFutureInfinite(), streetType);
+    }
+
+    public StreetTypeTemporal(Date beginDate, Stub<StreetType> typeStub) {
+        this(beginDate, new StreetType(typeStub.getId()));
+    }
+
     @Override
 	protected StreetTypeTemporal doGetCopy(TypeDateInterval<StreetType, StreetTypeTemporal> di) {
 		return new StreetTypeTemporal(di);
@@ -36,9 +43,6 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 		setObject(street);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,14 +53,13 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 		return super.equals(obj);
 	}
 
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 	@Override
 	public String toString() {
 		return super.toString();
 	}
-
 }

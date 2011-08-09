@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Particular Juridical person instance, may be only one for single organisation
@@ -25,7 +26,7 @@ public abstract class OrganizationInstance<
 		extends DomainObjectWithStatus {
 
 	private Organization organization;
-	private Set<D> descriptions = Collections.emptySet();
+	private Set<D> descriptions = set();
 
 	/**
 	 * Constructs a new DomainObject.

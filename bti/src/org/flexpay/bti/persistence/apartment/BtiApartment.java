@@ -11,9 +11,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class BtiApartment extends Apartment {
 
-	private Set<ApartmentAttribute> attributes = Collections.emptySet();
+	private Set<ApartmentAttribute> attributes = set();
 
 	protected BtiApartment() {
 	}

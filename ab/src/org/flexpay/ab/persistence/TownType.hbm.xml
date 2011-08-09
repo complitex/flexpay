@@ -29,18 +29,6 @@
 		</properties>
 	</class>
 
-	<class name="TownTypeTemporal" table="ab_town_types_temporal_tbl">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="begin" column="begin_date" type="date" not-null="true" />
-		<property name="end" column="end_date" type="date" not-null="true" />
-		<property name="createDate" column="create_date" type="date" not-null="true" />
-		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
-		<many-to-one name="town" class="Town" column="town_id" not-null="true" />
-		<many-to-one name="value" class="TownType" column="town_type_id" />
-	</class>
-
 	<query name="TownType.listTownTypes">
 		select distinct tt
 		from TownType tt

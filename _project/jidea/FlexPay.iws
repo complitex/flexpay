@@ -110,75 +110,82 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="36eda022-69d1-48a4-9337-17612c9c98ff" name="Default" comment="Исправление некоторых ошибок в синхронизации через mule-приложение">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.ipr" afterPath="$PROJECT_DIR$/FlexPay.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.iws" afterPath="$PROJECT_DIR$/FlexPay.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/impl/ApartmentDaoExtImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/impl/ApartmentDaoExtImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/impl/BuildingsDaoExtImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/impl/BuildingsDaoExtImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/street/StreetEditAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/street/StreetEditAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/town/TownEditAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/town/TownEditAction.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/AddressAttributeType.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/AddressAttributeType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Apartment.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Apartment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/ApartmentNumber.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/ApartmentNumber.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAddress.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAddress.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Country.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Country.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/District.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/District.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/DistrictName.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/DistrictName.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/IdentityType.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/IdentityType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Person.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Person.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/PersonRegistration.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/PersonRegistration.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/PersonIdentity.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/PersonIdentity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Region.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Region.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/RegionName.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/RegionName.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.hbm.xml" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.hbm.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetName.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetName.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetNameTemporal.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetNameTemporal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetNameTranslation.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetNameTranslation.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetType.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetTypeTranslation.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetTypeTranslation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetTypeTemporal.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetTypeTemporal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.hbm.xml" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.hbm.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownName.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownName.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTemporal.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTemporal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTranslation.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTranslation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownType.hbm.xml" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownType.hbm.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownType.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/AddressAttributeTypeHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/AddressAttributeTypeHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/ApartmentHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/ApartmentHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/BuildingHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/BuildingHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/DistrictHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/DistrictHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/RegionHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/RegionHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/StreetHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/StreetHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/StreetTypeHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/StreetTypeHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/TownHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/TownHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/TownTypeHistoryHandler.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/history/TownTypeHistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/ApartmentServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/ApartmentServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-dao.xml" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-dao.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/mule-beans-dao.xml" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/mule-beans-dao.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/CorrectionDaoExt.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/CorrectionDaoExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/HistoryConsumerDaoExt.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/HistoryConsumerDaoExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/CorrectionDaoExtImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/CorrectionDaoExtImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/AttributeTranslation.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/AttributeTranslation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DateInterval.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DateInterval.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameDateInterval.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameDateInterval.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameTimeDependent.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameTimeDependent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TemporalValueObject.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TemporalValueObject.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownTypeTemporal.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownTypeTemporal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/StreetServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/StreetServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/TownServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/TownServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/Person.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/Person.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/ApartmentAttributeGroup.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/ApartmentAttributeGroup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/ApartmentAttributeType.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/ApartmentAttributeType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/ApartmentAttributeTypeEnum.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/ApartmentAttributeTypeEnum.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/BtiApartment.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/apartment/BtiApartment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/building/BuildingAttributeGroup.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/building/BuildingAttributeGroup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/building/BuildingAttributeType.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/building/BuildingAttributeType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/building/BuildingAttributeTypeEnum.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/building/BuildingAttributeTypeEnum.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/CurrencyInfo.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/CurrencyInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/Language.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/Language.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnit.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnit.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TemporaryName.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TemporaryName.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/Translation.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/Translation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TypeDateInterval.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TypeDateInterval.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TemporaryType.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TemporaryType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/UserRole.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/UserRole.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryConsumptionGroupsDistributor.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryConsumptionGroupsDistributor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryHandler.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryPacker.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryPacker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryUnPacker.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryUnPacker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryUnpackManager.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryUnpackManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/ObjectsSyncer.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/ObjectsSyncer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/ObjectsSyncerJob.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/ObjectsSyncerJob.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/builder/HistoryBuilderHelper.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/builder/HistoryBuilderHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/handler/HistoryHandlerHelper.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/handler/HistoryHandlerHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryBuilderBase.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryBuilderBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryHandlerBase.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryHandlerBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryPackerBase.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryPackerBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryUnPackerBase.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryUnPackerBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryUnpackManagerImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryUnpackManagerImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/ObjectsSyncerImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/ObjectsSyncerImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/DataSourceDescriptionService.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/DataSourceDescriptionService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/FPFileService.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/FPFileService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/HistoryConsumerService.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/HistoryConsumerService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/DataSourceDescriptionServiceImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/DataSourceDescriptionServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/FPFileServiceImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/FPFileServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/HistoryConsumerServiceImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/HistoryConsumerServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/mule-beans-services.xml" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/mule-beans-services.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mule/src/org/flexpay/mule/service/impl/MuleServiceImpl.java" afterPath="$PROJECT_DIR$/../../mule/src/org/flexpay/mule/service/impl/MuleServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mule/web/WEB-INF/mule/configs/spring/beans-services.xml" afterPath="$PROJECT_DIR$/../../mule/web/WEB-INF/mule/configs/spring/beans-services.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/process/export/TradingDaySchedulingJob.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/process/export/TradingDaySchedulingJob.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/TranslationUtil.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/TranslationUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/ConsumerInfo.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/ConsumerInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/EircAccount.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/EircAccount.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/EircServiceOrganization.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/EircServiceOrganization.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/QuittancePacket.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/QuittancePacket.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/QuittancePayment.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/QuittancePayment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/EircAccountPlan.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/EircAccountPlan.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/Quittance.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/Quittance.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/QuittanceDetails.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/QuittanceDetails.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/consumer/ConsumerAttributeTypeBase.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/consumer/ConsumerAttributeTypeBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Bank.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Bank.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Cashbox.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Cashbox.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Organization.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Organization.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/OrganizationInstance.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/OrganizationInstance.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/PaymentCollector.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/PaymentCollector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/PaymentPoint.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/PaymentPoint.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Subdivision.java" afterPath="$PROJECT_DIR$/../../orgs/src/org/flexpay/orgs/persistence/Subdivision.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/Document.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/Document.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/DocumentAdditionType.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/DocumentAdditionType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/DocumentStatus.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/DocumentStatus.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/DocumentType.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/DocumentType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/Operation.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/Operation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationAdditionType.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationAdditionType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationLevel.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationLevel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationStatus.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationStatus.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationType.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/OperationType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/Service.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/Service.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/ServiceType.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/persistence/ServiceType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../tc/src/org/flexpay/tc/persistence/Tariff.java" afterPath="$PROJECT_DIR$/../../tc/src/org/flexpay/tc/persistence/Tariff.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../tc/src/org/flexpay/tc/persistence/TariffCalculationRulesFile.java" afterPath="$PROJECT_DIR$/../../tc/src/org/flexpay/tc/persistence/TariffCalculationRulesFile.java" />
     </list>
     <ignored path="FlexPay.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -268,22 +275,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/HistoryUnpackManager.java" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/history/impl/HistoryUnpackManagerImpl.java" />
-        <option value="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/mule-beans-services.xml" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/DataSourceDescriptionService.java" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/impl/DataSourceDescriptionServiceImpl.java" />
-        <option value="$PROJECT_DIR$/../../mule/web/WEB-INF/mule/configs/spring/beans-schedule1.xml" />
-        <option value="$PROJECT_DIR$/../../mule/web/WEB-INF/mule/configs/spring/config.xml" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameTimeDependent.java" />
-        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownName.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetName.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTemporal.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetNameTemporal.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownTypeTemporal.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetTypeTemporal.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownType.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetType.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTranslation.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/StreetNameTranslation.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/street/StreetEditAction.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/town/TownEditAction.java" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.hbm.xml" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.hbm.xml" />
+        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/StreetServiceImpl.java" />
         <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.java" />
-        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAddress.java" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DateInterval.java" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameDateInterval.java" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TypeDateInterval.java" />
-        <option value="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/GenericDaoHibernateImpl.java" />
-        <option value="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Region.hbm.xml" />
       </list>
     </option>
   </component>
@@ -595,8 +602,340 @@
       <sortByType PackagesPane="true" ProjectPane="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Problems" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="persistence" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="persistence" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="action" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FlexPay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flexpay" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="action" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="street" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Favorites">
+        <subPane subId="FlexPay" />
       </pane>
       <pane id="PackagesPane">
         <subPane>
@@ -608,18 +947,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FlexPay" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Favorites">
-        <subPane subId="FlexPay" />
+      <pane id="Scope">
+        <subPane subId="Problems" />
       </pane>
     </panes>
   </component>
@@ -1461,39 +1790,39 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1098" extended-state="7" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.46660483" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17700535" sideWeight="0.37026778" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1961518" sideWeight="0.53781515" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44747898" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="24" y="342" width="1631" height="317" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.2667023" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39888683" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44117647" sideWeight="0.0" order="26" side_tool="false" content_ui="tabs" x="595" y="212" width="465" height="480" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5472689" sideWeight="0.99679315" order="27" side_tool="false" content_ui="tabs" x="732" y="46" width="1002" height="1078" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32745826" sideWeight="0.5" order="23" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26563334" sideWeight="0.43907562" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19090909" sideWeight="0.34351853" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3335115" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39925173" sideWeight="0.6325023" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908458" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2362373" sideWeight="0.4527311" order="1" side_tool="false" content_ui="tabs" x="704" y="257" width="512" height="685" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2362373" sideWeight="0.552521" order="1" side_tool="false" content_ui="tabs" x="704" y="257" width="512" height="685" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43067226" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="21" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292357" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Atlassian" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4965197" sideWeight="0.5" order="22" side_tool="false" content_ui="tabs" />
       <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32960895" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4965197" sideWeight="0.5" order="22" side_tool="false" content_ui="tabs" />
       <window_info id="Maven projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22928914" sideWeight="0.5491651" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44935971" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="SQL" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47058824" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36860466" sideWeight="0.5" order="24" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44747898" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="24" y="342" width="1631" height="317" />
       <window_info id="Library Finder" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.65281624" sideWeight="0.5" order="25" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5472689" sideWeight="0.99679315" order="27" side_tool="false" content_ui="tabs" x="732" y="46" width="1002" height="1078" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18653126" sideWeight="0.53781515" order="4" side_tool="false" content_ui="tabs" />
@@ -2422,84 +2751,114 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Java/jdk1.6.0_25/src.zip!/java/util/HashSet.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownNameTranslation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="56" selection-start="7753" selection-end="7753" vertical-scroll-proportion="0.0" />
+        <state line="46" column="0" selection-start="1077" selection-end="1077" vertical-scroll-proportion="0.75514627">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Java/jdk1.6.0_25/src.zip!/java/util/TreeSet.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/street/StreetEditAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="236" column="19" selection-start="9574" selection-end="9574" vertical-scroll-proportion="0.6468039" />
+        <state line="223" column="0" selection-start="7006" selection-end="7006" vertical-scroll-proportion="0.9631636">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Java/jdk1.6.0_25/src.zip!/java/util/AbstractSet.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.hbm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1304" selection-end="1304" vertical-scroll-proportion="0.33261105" />
+        <state line="248" column="19" selection-start="8787" selection-end="8787" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Java/jdk1.6.0_25/src.zip!/java/util/AbstractCollection.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.hbm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="219" column="0" selection-start="7500" selection-end="7500" vertical-scroll-proportion="0.42470205" />
+        <state line="123" column="12" selection-start="4585" selection-end="4585" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/ApartmentServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/TownTypeTemporal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="13" selection-start="1752" selection-end="1752" vertical-scroll-proportion="0.09209101" />
+        <state line="9" column="45" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/RegionServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TypeDateInterval.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="171" column="31" selection-start="5508" selection-end="5508" vertical-scroll-proportion="0.0" />
+        <state line="5" column="23" selection-start="186" selection-end="186" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameTimeDependent.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Town.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="19" selection-start="2030" selection-end="2030" vertical-scroll-proportion="0.33261105" />
+        <state line="265" column="18" selection-start="7855" selection-end="7855" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Region.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DateInterval.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="17" selection-start="3679" selection-end="3679" vertical-scroll-proportion="0.0" />
+        <state line="106" column="20" selection-start="2711" selection-end="2711" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/region/RegionEditAction.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateIntervalUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="23" selection-start="3761" selection-end="3761" vertical-scroll-proportion="0.0" />
+        <state line="255" column="18" selection-start="8023" selection-end="8023" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../common/lib/spring3/org.springframework.orm-3.0.5.RELEASE.jar!/org/springframework/orm/jpa/JpaTemplate.class">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TimeLine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="17" selection-start="2134" selection-end="2134" vertical-scroll-proportion="0.3943503" />
+        <state line="94" column="34" selection-start="2371" selection-end="2371" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../common/lib/hibernate3/hibernate-jpa-2.0-api-1.0.1.Final.jar!/javax/persistence/EntityManager.class">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/town/TownEditAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="10" selection-start="234" selection-end="234" vertical-scroll-proportion="-6.12" />
+        <state line="146" column="16" selection-start="4832" selection-end="4832" vertical-scroll-proportion="0.18418202">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/GenericDaoHibernateImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/action/street/StreetDistrictEditAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="49" selection-start="4429" selection-end="4429" vertical-scroll-proportion="0.29577464" />
+        <state line="47" column="23" selection-start="1586" selection-end="1586" vertical-scroll-proportion="0.5709643">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/GenericDao.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/StreetService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="0" selection-start="1536" selection-end="1536" vertical-scroll-proportion="0.0" />
+        <state line="129" column="0" selection-start="3853" selection-end="3853" vertical-scroll-proportion="0.33261105">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Apartment.hbm.xml">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/StreetServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="196" column="14" selection-start="6514" selection-end="6514" vertical-scroll-proportion="0.26002166">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/Hibernate/lib/hibernate.jar!/resources/schemas/hibernate-mapping-3.0.dtd">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="552" column="18" selection-start="23586" selection-end="23586" vertical-scroll-proportion="0.7746479" />
+        <state line="65" column="39" selection-start="2859" selection-end="2859" vertical-scroll-proportion="0.5709643">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Region.hbm.xml">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/impl/BuildingServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="76" selection-start="564" selection-end="564" vertical-scroll-proportion="0.018418202">
+        <state line="211" column="19" selection-start="7042" selection-end="7042" vertical-scroll-proportion="0.35211268">
           <folding />
         </state>
       </provider>

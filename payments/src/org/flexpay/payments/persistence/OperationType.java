@@ -6,6 +6,8 @@ import org.flexpay.common.util.CollectionUtils;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class OperationType extends DomainObject {
 
 	public static final int SERVICE_CASH_PAYMENT = 1;
@@ -32,7 +34,7 @@ public class OperationType extends DomainObject {
 	);
 
 	private int code;
-	private Set<OperationTypeTranslation> translations = Collections.emptySet();
+	private Set<OperationTypeTranslation> translations = set();
 
 	public Set<OperationTypeTranslation> getTranslations() {
 		return translations;

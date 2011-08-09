@@ -5,9 +5,11 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class EircAccountPlan extends DomainObjectWithStatus {
 
-	private Set<Account> accounts = Collections.emptySet();
+	private Set<Account> accounts = set();
 
 	public Set<Account> getAccounts() {
 		return accounts;

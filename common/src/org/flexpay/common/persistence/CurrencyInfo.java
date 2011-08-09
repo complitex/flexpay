@@ -2,10 +2,11 @@ package org.flexpay.common.persistence;
 
 import org.flexpay.common.util.TranslationUtil;
 
-import java.util.Collections;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Currency details the system is working with
@@ -14,7 +15,7 @@ public class CurrencyInfo extends DomainObject {
 
 	private String currencyIsoCode;
 	private Integer gender;
-	private Set<CurrencyName> names = Collections.emptySet();
+	private Set<CurrencyName> names = set();
 
 	public Currency getCurrency() {
 		return Currency.getInstance(currencyIsoCode);

@@ -19,9 +19,9 @@ import static org.flexpay.common.util.CollectionUtils.set;
 public class Building extends EsbXmlSyncObject {
 
 	private District district;
-	private Set<BuildingStatus> buildingStatuses = Collections.emptySet();
-	private Set<BuildingAddress> buildingses = Collections.emptySet();
-	private Set<Apartment> apartments = Collections.emptySet();
+	private Set<BuildingStatus> buildingStatuses = set();
+	private Set<BuildingAddress> buildingses = set();
+	private Set<Apartment> apartments = set();
 
 	public Building() {
 	}
@@ -113,7 +113,7 @@ public class Building extends EsbXmlSyncObject {
 
 	public void addAddress(@NotNull BuildingAddress buildingAddress) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (buildingses == Collections.EMPTY_SET) {
+		if (buildingses == null) {
 			buildingses = set();
 		}
 
@@ -134,7 +134,7 @@ public class Building extends EsbXmlSyncObject {
 
 	@SuppressWarnings ({"CollectionsFieldAccessReplaceableByMethodCall"})
 	public void addAll(Collection<BuildingAddress> buildingses) {
-		if (this.buildingses == Collections.EMPTY_SET) {
+		if (this.buildingses == null) {
 			this.buildingses = set();
 		}
 

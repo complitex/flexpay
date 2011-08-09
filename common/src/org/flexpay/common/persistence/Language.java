@@ -6,16 +6,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class Language extends DomainObjectWithStatus {
 
 	private boolean isDefault = false;
 	private String langIsoCode;
 
-	private Set<LangNameTranslation> translations = Collections.emptySet();
+	private Set<LangNameTranslation> translations = set();
 
 	/**
 	 * Constructs a new Language.

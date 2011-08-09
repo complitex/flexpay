@@ -7,10 +7,10 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Temporary object name having reference to object and a collection of translations
@@ -19,7 +19,7 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 		extends TemporaryValue<TV> {
 
 	private DomainObject object;
-	private Set<T> translations = Collections.emptySet();
+	private Set<T> translations = set();
 
 	public DomainObject getObject() {
 		return object;
@@ -95,7 +95,7 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
     @Override
 	public boolean isEmpty() {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		return isNew() && translations == Collections.EMPTY_SET;
+		return isNew() && (translations == null || translations.isEmpty());
 	}
 
 	@Override

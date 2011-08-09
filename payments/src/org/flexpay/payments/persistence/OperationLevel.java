@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class OperationLevel extends DomainObject {
 
 	public static final int LOWEST = 1;
@@ -14,7 +16,7 @@ public class OperationLevel extends DomainObject {
 	public static final int SUSPENDED = 5;
 
 	private int code;
-	private Set<OperationLevelTranslation> translations = Collections.emptySet();
+	private Set<OperationLevelTranslation> translations = set();
 
 	public Set<OperationLevelTranslation> getTranslations() {
 		return translations;

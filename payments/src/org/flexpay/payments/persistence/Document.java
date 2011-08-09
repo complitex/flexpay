@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class Document extends DomainObject {
 
@@ -31,7 +32,7 @@ public class Document extends DomainObject {
 	private RegistryRecord registryRecord;
 
 	private Document referenceDocument;
-	private Set<Document> referencedDocuments = Collections.emptySet();
+	private Set<Document> referencedDocuments = set();
 	private DocumentType documentType;
 	private DocumentStatus documentStatus;
 
@@ -54,7 +55,7 @@ public class Document extends DomainObject {
 
 	private BigDecimal debt;
 
-	private Set<DocumentAddition> additions = Collections.emptySet();
+	private Set<DocumentAddition> additions = set();
 
 	public BigDecimal getSum() {
 		return sum;

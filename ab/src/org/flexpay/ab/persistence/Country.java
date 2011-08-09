@@ -5,16 +5,17 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Country entity class
  */
 public class Country extends EsbXmlSyncObject {
 
-	private Set<CountryTranslation> translations = Collections.emptySet();
-	private Set<Region> regions = Collections.emptySet();
+	private Set<CountryTranslation> translations = set();
+	private Set<Region> regions = set();
 
 	public Country() {
         super();

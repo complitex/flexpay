@@ -3,7 +3,7 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.TemporaryName;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,14 +14,9 @@ public class TownName extends TemporaryName<TownName, TownNameTranslation> {
 	public TownName() {
 	}
 
-	/**
-	 * Copy constructor
-	 *
-	 * @param townName Town name to copy from
-	 */
 	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
 	public TownName(@Nullable TownName townName) {
-		Set<TownNameTranslation> translations = townName != null ? townName.getTranslations() : Collections.EMPTY_SET;
+		Set<TownNameTranslation> translations = townName != null ? townName.getTranslations() : new HashSet<TownNameTranslation>();;
 		for (TownNameTranslation translation : translations) {
 			TownNameTranslation copy = new TownNameTranslation(
 					translation.getName(), translation.getLang());

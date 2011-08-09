@@ -15,10 +15,11 @@ import java.util.Locale;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class Cashbox extends DomainObjectWithStatus {
 
-	private Set<CashboxNameTranslation> names = Collections.emptySet();
+	private Set<CashboxNameTranslation> names = set();
 
 	private PaymentPoint paymentPoint;
 	private Long tradingDayProcessInstanceId;

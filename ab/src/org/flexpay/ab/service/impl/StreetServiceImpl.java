@@ -192,6 +192,25 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return street;
 	}
 
+    @Transactional (readOnly = false)
+    @NotNull
+    private Street privateUpdate(@NotNull Street street) throws FlexPayExceptionContainer {
+
+        validate(street);
+
+        Street old = readFull(stub(street));
+        if (old == null) {
+            throw new FlexPayExceptionContainer(
+                    new FlexPayException("No street found to update " + street));
+        }
+        sessionUtils.evict(old);
+        modificationListener.onUpdate(old, street);
+
+        streetDao.update(street);
+
+        return street;
+    }
+
 	/**
 	 * Update or create street
 	 *
@@ -205,17 +224,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public Street update(@NotNull Street street) throws FlexPayExceptionContainer {
 
-		validate(street);
-
-		Street old = readFull(stub(street));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No street found to update " + street));
-		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, street);
-
-		streetDao.update(street);
+		privateUpdate(street);
 
         street.setAction(EsbXmlSyncObject.ACTION_UPDATE);
 
@@ -386,7 +395,19 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
         street = readFull(Stub.stub(street));
         street.getStreetDistricts().addAll(streetDistricts);
 
-		update(street);
+        privateUpdate(street);
+
+        street.setAction(EsbXmlSyncObject.ACTION_UPDATE_STREET_DISTRICTS);
+
+        try {
+            if (esbSyncRequestExecutor != null) {
+                log.debug("Sending synchronizing request...");
+                esbSyncRequestExecutor.executeRequest(street);
+            }
+        } catch (IOException e) {
+            log.error("Error with synchronizing request");
+            throw new FlexPayExceptionContainer(new FlexPayException("Error with synchronizing request"));
+        }
 
 		return street;
 	}

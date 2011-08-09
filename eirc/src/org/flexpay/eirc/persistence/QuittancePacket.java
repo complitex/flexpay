@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 public class QuittancePacket extends DomainObjectWithStatus {
@@ -27,7 +28,7 @@ public class QuittancePacket extends DomainObjectWithStatus {
 	private String creatorUserName;
 	private String closerUserName;
 
-	private Set<QuittancePayment> payments = Collections.emptySet();
+	private Set<QuittancePayment> payments = set();
 
 	public QuittancePacket() {
 	}

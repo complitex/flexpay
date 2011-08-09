@@ -10,15 +10,16 @@ import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Building address attribute type
  */
 public class AddressAttributeType extends DomainObjectWithStatus implements Comparable<AddressAttributeType> {
 
-	private Set<AddressAttributeTypeTranslation> translations = Collections.emptySet();
+	private Set<AddressAttributeTypeTranslation> translations = set();
 
 	public AddressAttributeType() {
 	}

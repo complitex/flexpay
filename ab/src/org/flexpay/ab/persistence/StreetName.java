@@ -3,7 +3,7 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.TemporaryName;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,37 +16,13 @@ public class StreetName extends TemporaryName<StreetName, StreetNameTranslation>
 
 	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
 	public StreetName(@Nullable StreetName name) {
-		Set<StreetNameTranslation> translations = name != null ? name.getTranslations() : Collections.EMPTY_SET;
+		Set<StreetNameTranslation> translations = name != null ? name.getTranslations() : new HashSet<StreetNameTranslation>();;
 		for (StreetNameTranslation translation : translations) {
 			StreetNameTranslation copy = new StreetNameTranslation(
 					translation.getName(), translation.getLang());
 			addNameTranslation(copy);
 		}
 
-	}
-
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return super.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof StreetName)) {
-			return false;
-		}
-
-		return super.equals(obj);
 	}
 
 	/**
@@ -60,5 +36,26 @@ public class StreetName extends TemporaryName<StreetName, StreetNameTranslation>
 		empty.setObject(getObject());
 		return empty;
 	}
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (!(obj instanceof StreetName)) {
+            return false;
+        }
+
+        return super.equals(obj);
+    }
 
 }

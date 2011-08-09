@@ -2,7 +2,6 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TemporaryType;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * TownType entity class holds a general representation of various types of localities, such as towns, villages, etc.
@@ -16,7 +15,7 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 		super(id);
 	}
 
-	public TownType(@NotNull Stub<TownType> stub) {
+	public TownType(Stub<TownType> stub) {
 		super(stub.getId());
 	}
 

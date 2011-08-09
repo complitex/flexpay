@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class Service extends DomainObjectWithStatus {
 
@@ -27,8 +28,8 @@ public class Service extends DomainObjectWithStatus {
 	private MeasureUnit measureUnit;
 	private Service parentService;
 
-    private Set<ServiceDescription> descriptions = Collections.emptySet();
-	private Set<Service> childServices = Collections.emptySet();
+    private Set<ServiceDescription> descriptions = set();
+	private Set<Service> childServices = set();
 
 	public Service() {
 	}
@@ -113,8 +114,8 @@ public class Service extends DomainObjectWithStatus {
     }
 
     public void setDescription(ServiceDescription serviceDescription) {
-		if (Collections.emptySet().equals(descriptions)) {
-			descriptions = new HashSet<ServiceDescription>();
+		if (descriptions == null) {
+			descriptions = set();
 		}
 
 		ServiceDescription candidate = null;

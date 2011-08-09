@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 /**
  * Person
  */
@@ -17,7 +19,7 @@ public class Person extends DomainObjectWithStatus {
 	private BtiApartment apartment;
 	private Set<Personact> personacts = new HashSet<Personact>(0);
 	private Set<PersonAttribute> personAttributes = new HashSet<PersonAttribute>(0);
-	private Set<PersonIdentity> personIdentities = Collections.emptySet();
+	private Set<PersonIdentity> personIdentities = set();
 	private Set<ApartmentRelation> apartmentRelations = new HashSet<ApartmentRelation>(0);
 
 	/**

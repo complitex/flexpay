@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 /**
  * Simple building attribute type
  */
@@ -19,7 +21,7 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 	private int isTemporal;
 	private String uniqueCode;
 	private BuildingAttributeGroup group;
-	private Set<BuildingAttributeTypeName> translations = Collections.emptySet();
+	private Set<BuildingAttributeTypeName> translations = set();
 
 	/**
 	 * Constructs a new DomainObject.

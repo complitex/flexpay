@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class Subdivision extends DomainObjectWithStatus {
 
 	private Organization headOrganization;
@@ -21,9 +23,9 @@ public class Subdivision extends DomainObjectWithStatus {
 
 	private String realAddress;
 
-	private Set<SubdivisionName> names = Collections.emptySet();
-	private Set<SubdivisionDescription> descriptions = Collections.emptySet();
-	private Set<Subdivision> childSubdivisions = Collections.emptySet();
+	private Set<SubdivisionName> names = set();
+	private Set<SubdivisionDescription> descriptions = set();
+	private Set<Subdivision> childSubdivisions = set();
 
 	// tree path is a parents path devided with dots, like .1.35.24
 	private String treePath = "";

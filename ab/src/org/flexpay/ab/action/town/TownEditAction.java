@@ -37,14 +37,6 @@ public class TownEditAction extends FPActionSupport {
     private TownService townService;
 	private RegionService regionService;
 
-    /**
-     * Perform action execution.
-     * <p/>
-     * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-     *
-     * @return execution result code
-     * @throws Exception if failure occurs
-     */
     @NotNull
 	@Override
     protected String doExecute() throws Exception {
@@ -130,7 +122,7 @@ public class TownEditAction extends FPActionSupport {
 		}
 
         if (!beginDateFilter.needFilter()) {
-			log.warn("Incorrect beginDateFilter value");
+            log.warn("Incorrect begin date in filter ({})", beginDateFilter);
             addActionError(getText("ab.error.town.no_begin_date"));
         }
 
@@ -156,7 +148,6 @@ public class TownEditAction extends FPActionSupport {
         town.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
         town.setNameDate(beginDateFilter.getDate());
 
-        // setup region for new object
         if (town.isNew()) {
             town.setRegion(new Region(regionFilter));
             townService.create(town);
@@ -176,6 +167,7 @@ public class TownEditAction extends FPActionSupport {
 	}
 
 	private void initData() {
+
 		TownNameTemporal temporal = town.getCurrentNameTemporal();
 		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 

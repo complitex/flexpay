@@ -10,10 +10,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class Tariff extends DomainObjectWithStatus {
 
 	private String subServiceCode;
-	private Set<TariffTranslation> translations = Collections.emptySet();
+	private Set<TariffTranslation> translations = set();
 
 	public Tariff() {
 	}

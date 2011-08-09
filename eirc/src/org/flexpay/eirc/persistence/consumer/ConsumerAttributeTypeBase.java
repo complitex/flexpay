@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public abstract class ConsumerAttributeTypeBase extends DomainObjectWithStatus {
 
 	private int isTemporal;
@@ -22,7 +24,7 @@ public abstract class ConsumerAttributeTypeBase extends DomainObjectWithStatus {
 	private int valueType;
 	// optional measure unit
 	private MeasureUnit measureUnit;
-	private Set<ConsumerAttributeTypeName> names = Collections.emptySet();
+	private Set<ConsumerAttributeTypeName> names = set();
 
 	public ConsumerAttributeTypeBase() {
 	}

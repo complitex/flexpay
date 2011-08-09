@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class ServiceType extends DomainObjectWithStatus {
 
 	//Квартплата
@@ -114,7 +116,7 @@ public class ServiceType extends DomainObjectWithStatus {
 	public static final int COUNTERS_REPAIR = 1017;
 
 	private int code;
-	private Set<ServiceTypeNameTranslation> typeNames = Collections.emptySet();
+	private Set<ServiceTypeNameTranslation> typeNames = set();
 
 	public ServiceType() {
 	}
@@ -144,8 +146,8 @@ public class ServiceType extends DomainObjectWithStatus {
 	}
 
 	public void setTypeName(ServiceTypeNameTranslation nameTranslation) {
-		if (Collections.emptySet().equals(typeNames)) {
-			typeNames = new HashSet<ServiceTypeNameTranslation>();
+		if (typeNames == null) {
+			typeNames = set();
 		}
 
 		ServiceTypeNameTranslation candidate = null;
