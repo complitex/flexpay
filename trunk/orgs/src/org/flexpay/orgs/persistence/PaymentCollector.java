@@ -9,10 +9,12 @@ import java.sql.Time;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescription, PaymentCollector> {
 
 	private String email;
-	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
+	private Set<PaymentPoint> paymentPoints = set();
 	private Long tradingDayProcessInstanceId;
 	private Time tradingDayBeginTime;
 	private Time tradingDayEndTime;

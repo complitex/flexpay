@@ -8,8 +8,9 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * IdentityType entity class holds a general representation of various types of identities.
@@ -28,7 +29,7 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 
 	private int typeId = TYPE_UNKNOWN;
 
-	private Set<IdentityTypeTranslation> translations = Collections.emptySet();
+	private Set<IdentityTypeTranslation> translations = set();
 
 	public IdentityType() {
 	}

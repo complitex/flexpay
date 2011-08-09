@@ -11,7 +11,10 @@ import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -23,9 +26,9 @@ import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
  */
 public class Person extends DomainObjectWithStatus {
 
-	private Set<PersonAttribute> personAttributes = Collections.emptySet();
-	private Set<PersonIdentity> personIdentities = Collections.emptySet();
-	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
+	private Set<PersonAttribute> personAttributes = set();
+	private Set<PersonIdentity> personIdentities = set();
+	private Set<PersonRegistration> personRegistrations = set();
 
 	public Person() {
 	}
@@ -98,7 +101,7 @@ public class Person extends DomainObjectWithStatus {
 		if (needRemove) {
 			personAttributes.remove(attribute);
 		} else {
-			if (Collections.emptySet().equals(personAttributes)) {
+			if (personAttributes == null) {
 				personAttributes = set();
 			}
 
@@ -134,7 +137,7 @@ public class Person extends DomainObjectWithStatus {
 
 	public void addIdentity(PersonIdentity identity) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (personIdentities == Collections.EMPTY_SET) {
+		if (personIdentities == null) {
 			personIdentities = set();
 		}
 
@@ -234,7 +237,7 @@ public class Person extends DomainObjectWithStatus {
 	private void addRegistration(PersonRegistration registration) {
 
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (personRegistrations == Collections.EMPTY_SET) {
+		if (personRegistrations == null) {
 			personRegistrations = set();
 		}
 
@@ -244,7 +247,7 @@ public class Person extends DomainObjectWithStatus {
 	private void addRegistrations(Collection<PersonRegistration> registrations) {
 
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (personRegistrations == Collections.EMPTY_SET) {
+		if (personRegistrations == null) {
 			personRegistrations = set();
 		}
 
@@ -334,7 +337,7 @@ public class Person extends DomainObjectWithStatus {
 			current.setEndDate(identity.getBeginDate());
 		}
 
-		if (Collections.emptySet().equals(personIdentities)) {
+		if (personIdentities == null) {
 			personIdentities = set();
 		}
 

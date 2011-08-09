@@ -50,8 +50,7 @@ public class StreetEditAction extends FPActionSupport {
 
 		if (street.isNotNew()) {
 			Stub<Street> stub = stub(street);
-			street = streetService.readWithHierarchy(stub(street));
-
+			street = streetService.readWithHierarchy(stub);
 			if (street == null) {
 				log.warn("Can't get street with id {} from DB", stub.getId());
 				addActionError(getText("ab.error.street.cant_get_street"));
@@ -87,34 +86,6 @@ public class StreetEditAction extends FPActionSupport {
 		}
 
 		return INPUT;
-
-	}
-
-	/**
-	 * Creates new street if it is a new one
-	 * (haven't been yet persisted) or updates persistent one
-	 *
-	 * @throws FlexPayExceptionContainer if some errors
-	 */
-	private void updateStreet() throws FlexPayExceptionContainer {
-
-		StreetName streetName = new StreetName();
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			streetName.setTranslation(new StreetNameTranslation(value, lang));
-		}
-
-		street.setNameForDate(streetName, beginDateFilter.getDate());
-		street.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
-        street.setNameDate(beginDateFilter.getDate());
-
-		if (street.isNew()) {
-			street.setParent(new Town(townFilter));
-			streetService.create(street);
-		} else {
-			streetService.update(street);
-		}
 
 	}
 
@@ -161,6 +132,32 @@ public class StreetEditAction extends FPActionSupport {
 		return !hasActionErrors();
 	}
 
+    /**
+     * Creates new street if it is a new one
+     * (haven't been yet persisted) or updates persistent one
+     *
+     * @throws FlexPayExceptionContainer if some errors
+     */
+    private void updateStreet() throws FlexPayExceptionContainer {
+
+        StreetName streetName = new StreetName();
+        for (Map.Entry<Long, String> name : names.entrySet()) {
+            String value = name.getValue();
+            Language lang = getLang(name.getKey());
+            streetName.setTranslation(new StreetNameTranslation(value, lang));
+        }
+
+        street.setNameForDate(streetName, beginDateFilter.getDate());
+        street.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
+        street.setNameDate(beginDateFilter.getDate());
+
+        if (street.isNew()) {
+            street.setTown(new Town(townFilter));
+            streetService.create(street);
+        } else {
+            streetService.update(street);
+        }
+    }
 
 	private void initFilters() throws Exception {
 
@@ -172,26 +169,14 @@ public class StreetEditAction extends FPActionSupport {
 		streetTypeFilter = streetTypeService.initFilter(streetTypeFilter, getUserPreferences().getLocale());
 	}
 
-	private void correctNames() {
-		if (names == null) {
-			log.warn("Names parameter is null");
-			names = treeMap();
-		}
-		Map<Long, String> newNames = treeMap();
-		for (Language lang : getLanguages()) {
-			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
-		}
-		names = newNames;
-	}
-
 	private void initData() {
 
 		StreetNameTemporal temporal = street.getCurrentNameTemporal();
 		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
-		StreetType type = street.getCurrentType();
-		if (type != null) {
-			streetTypeFilter.setSelectedId(type.getId());
+		StreetTypeTemporal tmprlType = street.getCurrentTypeTemporal();
+		if (tmprlType != null) {
+			streetTypeFilter.setSelectedId(tmprlType.getValue().getId());
 		}
 
 		StreetName streetName = temporal != null ? temporal.getValue() : null;
@@ -208,6 +193,18 @@ public class StreetEditAction extends FPActionSupport {
 		}
 
 	}
+
+    private void correctNames() {
+        if (names == null) {
+            log.warn("Names parameter is null");
+            names = treeMap();
+        }
+        Map<Long, String> newNames = treeMap();
+        for (Language lang : getLanguages()) {
+            newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+        }
+        names = newNames;
+    }
 
 	/**
 	 * Get default error execution result

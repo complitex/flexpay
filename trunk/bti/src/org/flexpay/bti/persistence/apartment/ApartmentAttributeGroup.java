@@ -5,13 +5,16 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Group of a apartment attribute types
  */
 public class ApartmentAttributeGroup extends DomainObjectWithStatus {
+
+    private Set<ApartmentAttributeGroupName> translations = set();
 
 	public ApartmentAttributeGroup() {
 	}
@@ -23,8 +26,6 @@ public class ApartmentAttributeGroup extends DomainObjectWithStatus {
 	public ApartmentAttributeGroup(Stub<ApartmentAttributeGroup> stub) {
 		super(stub.getId());
 	}
-
-	private Set<ApartmentAttributeGroupName> translations = Collections.emptySet();
 
 	public Set<ApartmentAttributeGroupName> getTranslations() {
 		return translations;

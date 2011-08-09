@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Financial operation
@@ -47,14 +48,14 @@ public class Operation extends DomainObject {
 	private OperationLevel operationLevel;
 	private OperationStatus operationStatus;
 
-	private Set<Document> documents = CollectionUtils.set();
+	private Set<Document> documents = set();
 
 	private Operation referenceOperation;
-	private Set<Operation> referencedOperations = Collections.emptySet();
+	private Set<Operation> referencedOperations = set();
 
     private Cashbox cashbox;
 
-	private Set<OperationAddition> additions = Collections.emptySet();
+	private Set<OperationAddition> additions = set();
 
 	/**
 	 * Constructs a new DomainObject.

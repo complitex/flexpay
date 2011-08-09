@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class DocumentType extends DomainObject {
 
 	public static final int CASH_PAYMENT = 1;
@@ -13,7 +15,7 @@ public class DocumentType extends DomainObject {
 	public static final int CASHLESS_PAYMENT_RETURN = 4;
 
 	private int code;
-	private Set<DocumentTypeTranslation> translations = Collections.emptySet();
+	private Set<DocumentTypeTranslation> translations = set();
 
 	public int getCode() {
 		return code;

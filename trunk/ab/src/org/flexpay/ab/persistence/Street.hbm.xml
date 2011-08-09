@@ -12,11 +12,11 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<set name="nameTemporals" inverse="true" cascade="all" lazy="true" sort="natural">
+		<set name="nameTemporals" inverse="true" sort="natural" cascade="all">
 			<key column="street_id" not-null="true" />
 			<one-to-many class="StreetNameTemporal" />
 		</set>
-		<set name="typeTemporals" inverse="true" cascade="all" lazy="true" sort="natural">
+		<set name="typeTemporals" inverse="true" sort="natural" cascade="all">
 			<key column="street_id" not-null="true" />
 			<one-to-many class="StreetTypeTemporal" />
 		</set>
@@ -28,27 +28,6 @@
 			<key column="street_id" />
 			<one-to-many class="org.flexpay.ab.persistence.BuildingAddress" />
 		</set>
-	</class>
-
-	<class name="StreetTypeTemporal" table="ab_street_types_temporal_tbl">
-        <comment>Street type temporals</comment>
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="begin" column="begin_date" type="date" not-null="true" />
-		<property name="end" column="end_date" type="date" not-null="true" />
-		<property name="createDate" column="create_date" type="date" not-null="true" />
-		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
-		<many-to-one name="object" class="Street" foreign-key="FK_ab_street_types_temporal_tbl_street_id">
-			<column name="street_id" not-null="true">
-				<comment>Street reference</comment>
-			</column>
-		</many-to-one>
-		<many-to-one name="value" class="StreetType" foreign-key="FK_ab_street_types_temporal_tbl_street_type_id">
-			<column name="street_type_id">
-				<comment>Street type reference</comment>
-			</column>
-		</many-to-one>
 	</class>
 
 	<class name="StreetNameTemporal" table="ab_street_names_temporal_tbl">
@@ -85,8 +64,7 @@
 		</set>
 	</class>
 
-	<class name="StreetNameTranslation" table="ab_street_name_translations_tbl"
-		   optimistic-lock="version">
+	<class name="StreetNameTranslation" table="ab_street_name_translations_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -98,6 +76,27 @@
 						 class="org.flexpay.common.persistence.Language" />
 		</properties>
 	</class>
+
+    <class name="StreetTypeTemporal" table="ab_street_types_temporal_tbl">
+        <comment>Street type temporals</comment>
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+        <property name="begin" column="begin_date" type="date" not-null="true" />
+        <property name="end" column="end_date" type="date" not-null="true" />
+        <property name="createDate" column="create_date" type="date" not-null="true" />
+        <property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+        <many-to-one name="object" class="Street" foreign-key="FK_ab_street_types_temporal_tbl_street_id">
+            <column name="street_id" not-null="true">
+                <comment>Street reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="value" class="StreetType" foreign-key="FK_ab_street_types_temporal_tbl_street_type_id">
+            <column name="street_type_id">
+                <comment>Street type reference</comment>
+            </column>
+        </many-to-one>
+    </class>
 
     <class name="StreetDistrictRelation" table="ab_streets_districts_tbl" optimistic-lock="version">
         <id name="id" column="id">
@@ -118,8 +117,8 @@
             left join fetch s.typeTemporals tt
             left join fetch tt.value tv
             left join fetch tv.translations
-		where t.end='2100-12-31'
-            and (tt is null or tt.end ='2100-12-31')
+		where t.invalidDate='2100-12-31'
+            and (tt is null or tt.invalidDate ='2100-12-31')
 		    and s.status=?
             and s.parent.id=?
 	</query>
@@ -142,8 +141,8 @@
             left join fetch s.streetDistricts sd
             left join fetch sd.district
 		where s.id=?
-            and t.end='2100-12-31'
-            and (tt is null or tt.end ='2100-12-31')
+            and t.invalidDate='2100-12-31'
+            and tt.invalidDate ='2100-12-31'
 	</query>
 
     <query name="Street.readFullCollection">
@@ -156,8 +155,8 @@
             left join fetch v.translations
         where s.id in (:ids)
             and s.status=0
-            and t.end='2100-12-31'
-            and (tt is null or tt.end='2100-12-31')
+            and t.invalidDate='2100-12-31'
+            and tt.invalidDate='2100-12-31'
     </query>
 
     <query name="Street.findWithTypes">
@@ -168,7 +167,7 @@
             left join fetch v.translations
         where s.id in (:list_1)
             and s.status=0
-            and (tt is null or tt.end ='2100-12-31')
+            and tt.invalidDate ='2100-12-31'
     </query>
 
 	<query name="Street.findTypeTemporals">
@@ -178,7 +177,7 @@
 			left join fetch v.translations
 		where stt.object.id=?
             and stt.object.status=0
-            and stt.end='2100-12-31'
+            and stt.invalidDate='2100-12-31'
 		order by stt.createDate 
 	</query>
 
@@ -190,19 +189,24 @@
 			left join fetch d.nameTemporals dt
 			left join fetch dt.value dv
 			left join fetch dv.translations
-		where s.id=? and s.status=0 and dt.end='2100-12-31'
+		where s.id=?
+            and s.status=0
+            and dt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="Street.findSimpleByTown.stats">
 		select min(id), max(id), count(id)
 		from Street
-		where status=0 and parent.id=?
+		where status=0
+            and parent.id=?
 	</query>
 
 	<query name="Street.findSimpleByTown">
 		select new Street(id)
 		from Street
-		where status=0 and parent.id=? and id between ? and ?
+		where status=0
+            and parent.id=?
+            and id between ? and ?
 	</query>
 
 	<query name="Street.findByTownAndNameAndType">
@@ -212,9 +216,12 @@
             left join t.value v
             left join v.translations tr
             left join s.typeTemporals tt
-		where s.status=0 and s.parent.id=?
-			and t.end='2100-12-31' and upper(tr.name)=?
-			and tt.end='2100-12-31' and tt.value.id=?
+		where s.status=0
+            and s.parent.id=?
+			and t.invalidDate='2100-12-31'
+            and upper(tr.name)=?
+			and tt.invalidDate='2100-12-31'
+            and tt.value.id=?
 	</query>
 
     <query name="Street.findByParentAndQuery">
@@ -226,9 +233,11 @@
             left join fetch s.typeTemporals tt
             left join fetch tt.value tv
             left join fetch tv.translations ttr
-        where s.status=0 and t.end='2100-12-31'
-            and (tt is null or tt.end ='2100-12-31')
-            and s.parent.id=? and upper(tr.name) like ?
+        where s.status=0
+            and t.invalidDate='2100-12-31'
+            and tt.invalidDate ='2100-12-31'
+            and s.parent.id=?
+            and upper(tr.name) like ?
     </query>
 
     <query name="Street.findByTownAndNameAndTypeAndLanguage">
@@ -238,10 +247,13 @@
             left join t.value v
             left join v.translations tr
             left join s.typeTemporals tt
-        where s.status=0 and t.end='2100-12-31'
-            and (tt is null or tt.end ='2100-12-31')
-            and s.parent.id=? and tr.name=?
-            and tt.value.id=? and tr.lang.id=?
+        where s.status=0
+            and t.invalidDate='2100-12-31'
+            and tt.invalidDate ='2100-12-31'
+            and s.parent.id=?
+            and tr.name=?
+            and tt.value.id=?
+            and tr.lang.id=?
     </query>
 
     <query name="Street.deleteStreet">
@@ -290,8 +302,9 @@
             left join fetch s.streetDistricts sd
             left join fetch sd.district
             left join s.typeTemporals tt
-        where s.id=? and nt.end='2100-12-31'
-            and (tt is null or tt.end ='2100-12-31')
+        where s.id=?
+            and nt.invalidDate='2100-12-31'
+            and tt.invalidDate ='2100-12-31'
     </query>
 
     <query name="StreetName.readFull">

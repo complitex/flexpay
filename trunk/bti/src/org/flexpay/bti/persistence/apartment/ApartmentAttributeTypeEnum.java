@@ -13,9 +13,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class ApartmentAttributeTypeEnum extends ApartmentAttributeType {
 
-	private Set<ApartmentAttributeTypeEnumValue> values = Collections.emptySet();
+	private Set<ApartmentAttributeTypeEnumValue> values = set();
 
 	public ApartmentAttributeTypeEnum() {
 	}
@@ -43,8 +45,8 @@ public class ApartmentAttributeTypeEnum extends ApartmentAttributeType {
 
 	@SuppressWarnings ({"CollectionsFieldAccessReplaceableByMethodCall"})
 	public void addValue(ApartmentAttributeTypeEnumValue value) {
-		if (values == Collections.EMPTY_SET) {
-			values = CollectionUtils.set();
+		if (values == null) {
+			values = set();
 		}
 
 		values.add(value);
@@ -105,8 +107,8 @@ public class ApartmentAttributeTypeEnum extends ApartmentAttributeType {
 			}
 		}
 
-		if (values == Collections.EMPTY_SET) {
-			values = CollectionUtils.set();
+		if (values == null) {
+			values = set();
 		}
 
 		// now create all new values

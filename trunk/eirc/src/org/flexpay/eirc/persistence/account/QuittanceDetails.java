@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class QuittanceDetails extends DomainObject {
 
 	private Consumer consumer;
@@ -27,7 +29,7 @@ public class QuittanceDetails extends DomainObject {
 	private BigDecimal payment;
 	private Date month;
 
-    private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = Collections.emptySet();
+    private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = set();
 
 	public Consumer getConsumer() {
 		return consumer;

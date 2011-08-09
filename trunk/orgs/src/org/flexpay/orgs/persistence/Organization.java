@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class Organization extends DomainObjectWithStatus {
 
@@ -23,18 +24,18 @@ public class Organization extends DomainObjectWithStatus {
 	private String juridicalAddress;
 	private String postalAddress;
 
-	private Set<OrganizationDescription> descriptions = Collections.emptySet();
-	private Set<OrganizationName> names = Collections.emptySet();
+	private Set<OrganizationDescription> descriptions = set();
+	private Set<OrganizationName> names = set();
 
 	// instances
-	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
-	private Set<Bank> banks = Collections.emptySet();
-    private Set<ServiceOrganization> serviceOrganizations = Collections.emptySet();
-	private Set<PaymentCollector> paymentCollectors = Collections.emptySet();
+	private Set<ServiceProvider> serviceProviders = set();
+	private Set<Bank> banks = set();
+    private Set<ServiceOrganization> serviceOrganizations = set();
+	private Set<PaymentCollector> paymentCollectors = set();
 
-	private Set<BankAccount> accounts = Collections.emptySet();
-	private Set<Subdivision> childSubdivisions = Collections.emptySet();
-	private Set<Subdivision> dependentSubdivisions = Collections.emptySet();
+	private Set<BankAccount> accounts = set();
+	private Set<Subdivision> childSubdivisions = set();
+	private Set<Subdivision> dependentSubdivisions = set();
 
 	private DataSourceDescription dataSourceDescription;
 

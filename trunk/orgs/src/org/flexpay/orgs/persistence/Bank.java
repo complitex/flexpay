@@ -8,12 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class Bank extends OrganizationInstance<BankDescription, Bank> {
 
 	private String bankIdentifierCode;
 	private String correspondingAccount;
 
-	private Set<BankAccount> accounts = Collections.emptySet();
+	private Set<BankAccount> accounts = set();
 
 	public Bank() {
 	}

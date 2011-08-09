@@ -3,7 +3,7 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.TemporaryName;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,7 +21,7 @@ public class RegionName extends TemporaryName<RegionName, RegionNameTranslation>
 	 */
 	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
 	public RegionName(@Nullable RegionName regionName) {
-		Set<RegionNameTranslation> translations = regionName != null ? regionName.getTranslations() : Collections.EMPTY_SET;
+		Set<RegionNameTranslation> translations = regionName != null ? regionName.getTranslations() : new HashSet<RegionNameTranslation>();
 		for (RegionNameTranslation translation : translations) {
 			RegionNameTranslation copy = new RegionNameTranslation(
 					translation.getName(), translation.getLang());

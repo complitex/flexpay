@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 /**
  * Simple apartment attribute type
  */
@@ -19,7 +21,7 @@ public abstract class ApartmentAttributeType extends DomainObjectWithStatus {
 	private int isTemporal;
 	private String uniqueCode;
 	private ApartmentAttributeGroup group;
-	private Set<ApartmentAttributeTypeName> translations = Collections.emptySet();
+	private Set<ApartmentAttributeTypeName> translations = set();
 
 	public ApartmentAttributeType() {
 	}

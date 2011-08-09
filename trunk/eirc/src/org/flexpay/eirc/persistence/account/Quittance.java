@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class Quittance extends DomainObject {
 
 	private Date creationDate;
@@ -19,7 +21,7 @@ public class Quittance extends DomainObject {
 	private Date dateFrom;
 	private Date dateTill;
 	private EircAccount eircAccount;
-	private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = Collections.emptySet();
+	private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = set();
 
     public Quittance() {
     }

@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class OperationStatus extends DomainObject {
 
 	public static final int CREATED = 1;
@@ -15,7 +17,7 @@ public class OperationStatus extends DomainObject {
 	public static final int BLANK = 6;
 
 	private int code;
-	private Set<OperationStatusTranslation> translations = Collections.emptySet();
+	private Set<OperationStatusTranslation> translations = set();
 
 	public Set<OperationStatusTranslation> getTranslations() {
 		return translations;

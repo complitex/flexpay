@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class DocumentStatus extends DomainObject {
 
 	public static final int CREATED = 1;
@@ -14,7 +16,7 @@ public class DocumentStatus extends DomainObject {
 	public static final int ERROR = 5;
 
 	private int code;
-	private Set<DocumentStatusTranslation> translations = Collections.emptySet();
+	private Set<DocumentStatusTranslation> translations = set();
 
 	public int getCode() {
 		return code;

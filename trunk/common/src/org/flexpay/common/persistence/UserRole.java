@@ -5,12 +5,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class UserRole extends DomainObjectWithStatus {
 
-	private Set<UserRoleTranslation> translations = Collections.emptySet();
+	private Set<UserRoleTranslation> translations = set();
 	private String externalId;
 
 	public UserRole() {

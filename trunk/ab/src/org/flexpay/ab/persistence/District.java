@@ -5,17 +5,17 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.DateUtil.format;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 public class District extends NameTimeDependentChild<DistrictName, DistrictNameTemporal> {
 
-	private Set<StreetDistrictRelation> streetDistricts = Collections.emptySet();
+	private Set<StreetDistrictRelation> streetDistricts = set();
 
 	public District() {
 	}

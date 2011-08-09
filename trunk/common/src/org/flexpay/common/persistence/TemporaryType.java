@@ -5,8 +5,9 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Temporary object name having reference to object and a collection of translations
@@ -14,7 +15,7 @@ import java.util.Set;
 public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Translation>
 		extends TemporaryValue<TV> implements ObjectWithStatus {
 
-	private Set<T> translations = Collections.emptySet();
+	private Set<T> translations = set();
 
 	protected TemporaryType() {
 	}

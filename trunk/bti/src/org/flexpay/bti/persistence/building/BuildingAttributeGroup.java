@@ -10,12 +10,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 /**
  * Group of a building attribute types
  */
 public class BuildingAttributeGroup extends DomainObjectWithStatus {
 
-	private Set<BuildingAttributeGroupName> translations = Collections.emptySet();
+	private Set<BuildingAttributeGroupName> translations = set();
 
 	/**
 	 * Constructs a new DomainObject.

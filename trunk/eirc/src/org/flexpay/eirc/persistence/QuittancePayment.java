@@ -12,13 +12,15 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class QuittancePayment extends DomainObject {
 
 	private QuittancePacket packet;
 	private QuittancePaymentStatus paymentStatus;
 	private Quittance quittance;
 	private BigDecimal amount;
-	private Set<QuittanceDetailsPayment> detailsPayments = Collections.emptySet();
+	private Set<QuittanceDetailsPayment> detailsPayments = set();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -88,8 +90,8 @@ public class QuittancePayment extends DomainObject {
 
 	public void addDetailsPayment(QuittanceDetailsPayment payment) {
 		payment.setPayment(this);
-		if (detailsPayments == Collections.EMPTY_SET) {
-			detailsPayments = CollectionUtils.set();
+		if (detailsPayments == null) {
+			detailsPayments = set();
 		}
 		detailsPayments.add(payment);
 	}

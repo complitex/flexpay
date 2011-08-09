@@ -227,7 +227,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 				container.addException(new FlexPayException(
 						"No default language translation", "ab.error.town.full_name_is_required"));
 			}
-
 		}
 
 		if (container.isNotEmpty()) {

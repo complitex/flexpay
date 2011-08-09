@@ -5,12 +5,14 @@ import org.flexpay.orgs.persistence.ServiceOrganization;
 import java.util.Collections;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 /**
  * Service organization
  */
 public class EircServiceOrganization extends ServiceOrganization {
 
-	private Set<ServedBuilding> servedBuildings = Collections.emptySet();
+	private Set<ServedBuilding> servedBuildings = set();
 
 	/**
 	 * Constructs a new DomainObject.

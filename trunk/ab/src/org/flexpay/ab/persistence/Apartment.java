@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static java.util.Collections.emptySet;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.*;
 import static org.flexpay.common.util.DateUtil.*;
@@ -22,8 +21,8 @@ import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 public class Apartment extends EsbXmlSyncObject {
 
 	private Building building;
-	private Set<ApartmentNumber> apartmentNumbers = emptySet();
-	private Set<PersonRegistration> personRegistrations = emptySet();
+	private Set<ApartmentNumber> apartmentNumbers = set();
+	private Set<PersonRegistration> personRegistrations = set();
 
 	protected Apartment() {
 	}
@@ -297,7 +296,7 @@ public class Apartment extends EsbXmlSyncObject {
 		}
 
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (apartmentNumbers == Collections.EMPTY_SET) {
+		if (apartmentNumbers == null) {
 			apartmentNumbers = set();
 		}
 

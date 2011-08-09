@@ -11,14 +11,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeSet;
 import static org.flexpay.common.util.DateUtil.format;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
-/**
- * Town
- */
 public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 
 	private static final SortedSet<TownTypeTemporal> EMPTY_SORTED_SET =
@@ -27,8 +25,8 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	private SortedSet<TownTypeTemporal> typeTemporals = EMPTY_SORTED_SET;
 	private TimeLine<TownType, TownTypeTemporal> typesTimeLine;
 
-	private Set<District> districts = Collections.emptySet();
-	private Set<Street> streets = Collections.emptySet();
+	private Set<District> districts = set();
+	private Set<Street> streets = set();
 
 	public Town() {
 	}
@@ -87,20 +85,10 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		return new TownNameTemporal(this);
 	}
 
-	/**
-	 * Getter for property 'districts'.
-	 *
-	 * @return Value for property 'districts'.
-	 */
 	public Set<District> getDistricts() {
 		return districts;
 	}
 
-	/**
-	 * Setter for property 'districts'.
-	 *
-	 * @param districts Value to set for property 'districts'.
-	 */
 	public void setDistricts(Set<District> districts) {
 		this.districts = districts;
 	}
@@ -113,11 +101,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		this.streets = streets;
 	}
 
-	/**
-	 * Getter for property 'typesTimeLine'.
-	 *
-	 * @return Value for property 'typesTimeLine'.
-	 */
 	public TimeLine<TownType, TownTypeTemporal> getTypesTimeLine() {
 
 		if (typesTimeLine == null) {
@@ -129,11 +112,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		return typesTimeLine;
 	}
 
-	/**
-	 * Setter for property 'typesTimeLine'.
-	 *
-	 * @param typesTimeLine Value to set for property 'typesTimeLine'.
-	 */
 	public void setTypesTimeLine(TimeLine<TownType, TownTypeTemporal> typesTimeLine) {
 		this.typesTimeLine = typesTimeLine;
 
@@ -143,21 +121,11 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		typeTemporals.addAll(typesTimeLine.getIntervals());
 	}
 
-	/**
-	 * Setter for property 'typeTemporals'.
-	 *
-	 * @param temporals Value to set for property 'typeTemporals'.
-	 */
 	public void setTypeTemporals(SortedSet<TownTypeTemporal> temporals) {
 		this.typeTemporals = temporals;
 		typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(temporals);
 	}
 
-	/**
-	 * Getter for property 'typeTemporals'.
-	 *
-	 * @return Value for property 'typeTemporals'.
-	 */
 	public SortedSet<TownTypeTemporal> getTypeTemporals() {
 
 		for (TownTypeTemporal temporal : typeTemporals) {
@@ -169,10 +137,36 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		return typeTemporals;
 	}
 
-	@NotNull
-	public Stub<Region> getRegionStub() {
-		return new Stub<Region>(getParentStub().getId());
-	}
+    public void addTypeTemporal(TownTypeTemporal temporal) {
+        if (typesTimeLine == null) {
+            typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(temporal);
+        } else {
+            typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
+        }
+
+        if (typeTemporals == EMPTY_SORTED_SET) {
+            typeTemporals = treeSet();
+        }
+        typeTemporals.addAll(typesTimeLine.getIntervals());
+    }
+
+    public void setType(TownType type) {
+        setTypeForDate(type, DateUtil.now());
+    }
+
+    public void setTypeForDate(TownType type, Date beginDate) {
+        setTypeForDates(type, beginDate, getFutureInfinite());
+    }
+
+    public void setTypeForDates(TownType type, Date beginDate, Date endDate) {
+        TownTypeTemporal temporal = new TownTypeTemporal();
+        temporal.setBegin(beginDate);
+        temporal.setEnd(endDate);
+        temporal.setValue(type);
+        temporal.setTown(this);
+
+        addTypeTemporal(temporal);
+    }
 
 	/**
 	 * Find temporal for date
@@ -228,19 +222,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		return di != null ? di.getValue() : null;
 	}
 
-	public void addTypeTemporal(TownTypeTemporal temporal) {
-		if (typesTimeLine == null) {
-			typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(temporal);
-		} else {
-			typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
-		}
-
-		if (typeTemporals == EMPTY_SORTED_SET) {
-			typeTemporals = treeSet();
-		}
-		typeTemporals.addAll(typesTimeLine.getIntervals());
-	}
-
 	public void setRegion(Region region) {
 		setParent(region);
 	}
@@ -248,6 +229,11 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	public Region getRegion() {
 		return (Region) getParent();
 	}
+
+    @NotNull
+    public Stub<Region> getRegionStub() {
+        return new Stub<Region>(getParentStub().getId());
+    }
 
 	public Country getCountry() {
 		return getRegion().getCountry();
@@ -282,24 +268,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		temporal.setObject(this);
 
 		addNameTemporal(temporal);
-	}
-
-	public void setType(TownType type) {
-		setTypeForDate(type, DateUtil.now());
-	}
-
-	public void setTypeForDate(TownType type, Date beginDate) {
-		setTypeForDates(type, beginDate, getFutureInfinite());
-	}
-
-	public void setTypeForDates(TownType type, Date beginDate, Date endDate) {
-		TownTypeTemporal temporal = new TownTypeTemporal();
-		temporal.setBegin(beginDate);
-		temporal.setEnd(endDate);
-		temporal.setValue(type);
-		temporal.setTown(this);
-
-		addTypeTemporal(temporal);
 	}
 
     @Override

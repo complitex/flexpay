@@ -97,7 +97,7 @@ public class TranslationUtil {
 			@NotNull Set<T> translations, @NotNull DomainObject translatable, @NotNull T translation) {
 
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (translations == Collections.EMPTY_SET) {
+		if (translations == null) {
 			translations = set();
 		}
 

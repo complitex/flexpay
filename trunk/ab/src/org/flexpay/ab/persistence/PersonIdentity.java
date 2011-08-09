@@ -13,11 +13,11 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Person Identity
@@ -41,7 +41,7 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 	private String documentNumber;
 	private short sex;
 	private boolean isDefault;
-	private Set<PersonIdentityAttribute> personIdentityAttributes = Collections.emptySet();
+	private Set<PersonIdentityAttribute> personIdentityAttributes = set();
 
 	public PersonIdentity() {
 	}

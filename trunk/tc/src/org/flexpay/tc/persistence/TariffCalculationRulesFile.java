@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class TariffCalculationRulesFile extends DomainObjectWithStatus {
 
 	public static final Long TARIFF_CALCULATION_RULES_FILE_TYPE = 1L;
@@ -21,7 +23,7 @@ public class TariffCalculationRulesFile extends DomainObjectWithStatus {
 	private String userName;
 	private FPFileType type;
 	private FPFile file;
-	private Set<TariffCalculationRulesFileTranslation> translations = Collections.emptySet();
+	private Set<TariffCalculationRulesFileTranslation> translations = set();
 
 	public TariffCalculationRulesFile() {
 	}

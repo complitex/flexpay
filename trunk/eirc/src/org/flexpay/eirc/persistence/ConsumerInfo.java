@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Consumer info is a general consumer info given by provider
@@ -27,7 +28,7 @@ public class ConsumerInfo extends DomainObjectWithStatus {
     private String buildingBulk;
     private String apartmentNumber;
 
-    private Set<Consumer> consumers = Collections.emptySet();
+    private Set<Consumer> consumers = set();
 
     public ConsumerInfo() {
     }

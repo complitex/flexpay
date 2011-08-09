@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 /**
  * Place where payments are taken
@@ -26,7 +27,7 @@ public class PaymentPoint extends DomainObjectWithStatus {
     private Long tradingDayProcessInstanceId;
 
 	private PaymentCollector collector;
-	private Set<PaymentPointName> names = Collections.emptySet();
+	private Set<PaymentPointName> names = set();
 
     public PaymentPoint() {
 	}

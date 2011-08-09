@@ -31,6 +31,7 @@
 	</class>
 
 	<class name="TownNameTemporal" table="ab_town_names_temporal_tbl">
+        <comment>Town name temporals</comment>
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -42,11 +43,11 @@
 		<many-to-one name="value" class="TownName" column="town_name_id" cascade="all" />
 	</class>
 
-	<class name="TownName" table="ab_town_names_tbl">
+	<class name="TownName" table="ab_town_names_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="object" column="town_id" not-null="true" class="Town" />
+		<many-to-one name="object" column="town_id" class="Town" not-null="true" />
 
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="town_name_id" not-null="true" />
@@ -54,7 +55,7 @@
 		</set>
 	</class>
 
-	<class name="TownNameTranslation" table="ab_town_name_translations_tbl">
+	<class name="TownNameTranslation" table="ab_town_name_translations_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -67,6 +68,19 @@
 		</properties>
 	</class>
 
+    <class name="TownTypeTemporal" table="ab_town_types_temporal_tbl">
+        <comment>Town type temporals</comment>
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+        <property name="begin" column="begin_date" type="date" not-null="true" />
+        <property name="end" column="end_date" type="date" not-null="true" />
+        <property name="createDate" column="create_date" type="date" not-null="true" />
+        <property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+        <many-to-one name="town" class="Town" column="town_id" not-null="true" />
+        <many-to-one name="value" class="TownType" column="town_type_id" />
+    </class>
+
 	<query name="Town.findObjects">
         select distinct t
         from Town t
@@ -76,14 +90,17 @@
             left join fetch t.typeTemporals tt
             left join fetch tt.value tv
             left join fetch tv.translations
-		where nt.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
-		    and t.status=? and t.parent.id=?
+		where nt.invalidDate='2100-12-31'
+            and (tt is null or tt.invalidDate ='2100-12-31')
+		    and t.status=?
+            and t.parent.id=?
 	</query>
 
 	<query name="Town.findObjects.count">
 		select count(*)
 		from Town t
-		where t.status=? and t.parent.id=?
+		where t.status=?
+            and t.parent.id=?
 	</query>
 
 	<query name="Town.readFull">
@@ -95,7 +112,9 @@
             left join fetch t.typeTemporals tt
             left join fetch tt.value ttv
             left join fetch ttv.translations
-		where t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
+		where t.id=?
+            and nt.invalidDate='2100-12-31'
+            and tt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="Town.readFullCollection">
@@ -107,7 +126,9 @@
             left join fetch t.typeTemporals tt
             left join fetch tt.value ttv
             left join fetch ttv.translations
-		where t.id in (:ids) and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
+		where t.id in (:ids)
+            and nt.invalidDate='2100-12-31'
+            and tt.invalidDate='2100-12-31'
 	</query>
 
     <query name="Town.findByParentAndQuery">
@@ -116,8 +137,10 @@
             left join fetch t.nameTemporals nt
             left join fetch nt.value v
             left join fetch v.translations tr
-        where t.status=0 and nt.invalidDate='2100-12-31'
-              and t.parent.id=? and upper(tr.name) like ?
+        where t.status=0
+            and nt.invalidDate='2100-12-31'
+            and t.parent.id=?
+            and upper(tr.name) like ?
     </query>
 
     <query name="Town.findByRegionAndNameAndLanguage">
@@ -126,8 +149,11 @@
             left join t.nameTemporals nt
             left join nt.value v
             left join v.translations tr
-        where t.status=0 and nt.invalidDate='2100-12-31'
-            and t.parent.id=? and tr.name=? and tr.lang.id=?
+        where t.status=0
+            and nt.invalidDate='2100-12-31'
+            and t.parent.id=?
+            and tr.name=?
+            and tr.lang.id=?
     </query>
 
     <query name="Town.findWithFullHierarchy">
@@ -141,7 +167,9 @@
             left join fetch t.typeTemporals tt
             left join fetch tt.value ttv
             left join fetch ttv.translations
-        where t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
+        where t.id=?
+            and nt.invalidDate='2100-12-31'
+            and tt.invalidDate='2100-12-31'
     </query>
 
 	<query name="TownName.readFull">
