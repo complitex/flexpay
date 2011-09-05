@@ -29,6 +29,8 @@ import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static org.flexpay.common.persistence.Stub.stub;
+
 /**
  * Generate file in FP format.
  * <br/>
@@ -54,6 +56,8 @@ public class RegistryFPFileFormat {
 
 		log.info("Start generating FPfile for registry #{}", registry.getId());
 
+        Registry registryTransactional = registryService.readWithContainers(stub(registry));
+
         RegistryFPFileType fpFileType = registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT);
         if (fpFileType == null) {
             log.error("Did not find registry FP file type");
@@ -62,14 +66,14 @@ public class RegistryFPFileFormat {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		FPFile result = export(registry, createFile(registry), privateKey);
+		FPFile result = export(registryTransactional, createFile(registryTransactional), privateKey);
 
         FPFile fpFile = fpFileService.update(result);
-        registry.getFiles().put(fpFileType, fpFile);
+        registryTransactional.getFiles().put(fpFileType, fpFile);
 
-		registryService.update(registry);
+		registryService.update(registryTransactional);
 
-		log.info("Finished dumping registry #{}, time spent {}", registry.getId(), watch);
+		log.info("Finished dumping registry #{}, time spent {}", registryTransactional.getId(), watch);
 		return result;
 	}
 
