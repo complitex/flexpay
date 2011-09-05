@@ -49,10 +49,10 @@ public class ProcessInstanceLogDaoJpa extends JpaDaoSupport implements ProcessIn
 						.createQuery("FROM ProcessInstanceLog WHERE processInstanceId = :processInstance")
 						.setParameter("processInstance", processInstanceId)
 						.getResultList();
-				ProcessInstanceLog result = resultList != null && resultList.size() != 0?
-						(ProcessInstanceLog)resultList.get(resultList.size() - 1 ): null;
+				ProcessInstanceLog result = resultList != null && resultList.size() != 0 ?
+						(ProcessInstanceLog) resultList.get(resultList.size() - 1 ) : null;
 				if (result != null) {
-					Date endDate = (Date)entityManager
+					Date endDate = (Date) entityManager
 							.createQuery("SELECT p.end FROM ProcessInstanceLog p WHERE p.processInstanceId = :processInstance")
 							.setParameter("processInstance", processInstanceId)
 							.getSingleResult();

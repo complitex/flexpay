@@ -208,8 +208,8 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
                            "    inner join (" +
                            "        select q1.eirc_account_id, max(q1.order_number) as maxOrderNumber, max(q1.date_from) as maxDateFrom " +
                            "        from eirc_quittances_tbl q1 " +
-                           "            inner join eirc_eirc_accounts_tbl a on q1.eirc_account_id=a.id " +
-                           "        where a.consumer_info_id in (:consumerIds) " +
+                           "            inner join eirc_consumers_tbl c on q1.eirc_account_id=c.eirc_account_id " +
+                           "        where c.id in (:consumerIds) " +
                            "        group by q1.eirc_account_id " +
                            "    ) qj on q.eirc_account_id = qj.eirc_account_id and q.order_number = qj.maxOrderNumber and q.date_From = qj.maxDateFrom " +
                            "order by q.date_from desc", new RowMapper<Quittance>() {
