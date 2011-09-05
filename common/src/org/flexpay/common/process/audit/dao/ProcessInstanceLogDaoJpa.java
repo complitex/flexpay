@@ -35,7 +35,7 @@ public class ProcessInstanceLogDaoJpa extends JpaDaoSupport implements ProcessIn
 	@Nullable
 	@Override
 	public ProcessInstanceLog findProcessInstance(final long processInstanceId) {
-		log.debug("Execute findProcessInstance");
+		log.debug("Execute findProcessInstance for processInstanceId = {}", processInstanceId);
 		/*
 		List<ProcessInstanceLog> result =
 				getJpaTemplate().find("FROM ProcessInstanceLog p WHERE p.processInstanceId = ?", processInstanceId);
@@ -46,18 +46,28 @@ public class ProcessInstanceLogDaoJpa extends JpaDaoSupport implements ProcessIn
 			@Override
 			public ProcessInstanceLog doInJpa(EntityManager entityManager) throws PersistenceException {
 				List resultList = entityManager
-						.createQuery("FROM ProcessInstanceLog WHERE processInstanceId = :processInstance")
+						.createQuery("FROM ProcessInstanceLog " +
+                                "WHERE processInstanceId = :processInstance " +
+                                "ORDER BY start DESC")
 						.setParameter("processInstance", processInstanceId)
 						.getResultList();
 				ProcessInstanceLog result = resultList != null && resultList.size() != 0 ?
 						(ProcessInstanceLog) resultList.get(resultList.size() - 1 ) : null;
 				if (result != null) {
-					Date endDate = (Date) entityManager
-							.createQuery("SELECT p.end FROM ProcessInstanceLog p WHERE p.processInstanceId = :processInstance")
+					List<?> endDates = entityManager
+							.createQuery("SELECT p.end " +
+                                    "FROM ProcessInstanceLog p " +
+                                    "WHERE p.processInstanceId = :processInstance " +
+                                    "ORDER BY start DESC")
 							.setParameter("processInstance", processInstanceId)
-							.getSingleResult();
-					result.setEnd(endDate);
-					log.debug("End date: {}", endDate);
+							.getResultList();
+                    if (endDates == null || endDates.isEmpty()) {
+                        log.error("Can't get endDate for processInstanceLog = {}", processInstanceId);
+                        result.setEnd(null);
+                    } else {
+                        result.setEnd((Date) endDates.get(0));
+                    }
+					log.debug("End date: {}", result.getEnd());
 				}
 				return result;
 				//find(ProcessInstanceLog.class, processInstanceId);
