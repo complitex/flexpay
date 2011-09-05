@@ -91,12 +91,12 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 
 		oldCollector.setEmail(email);
 		if (beginTimeFilter.getHours() != 0 || beginTimeFilter.getMinutes() != 0 || beginTimeFilter.getSeconds() != 0) {
-			oldCollector.setTradingDayBeginTime(new Time(beginTimeFilter.getHours(), beginTimeFilter.getMinutes(), beginTimeFilter.getSeconds()));
+			oldCollector.setTradingDayBeginTime(new Time((beginTimeFilter.getHours()*3600 + beginTimeFilter.getMinutes()*60 + beginTimeFilter.getSeconds())*1000));
 		} else {
 			oldCollector.setTradingDayBeginTime(null);
 		}
 		if (endTimeFilter.getHours() != 0 || endTimeFilter.getMinutes() != 0 || endTimeFilter.getSeconds() != 0) {
-			oldCollector.setTradingDayEndTime(new Time(endTimeFilter.getHours(), endTimeFilter.getMinutes(), endTimeFilter.getSeconds()));
+			oldCollector.setTradingDayEndTime(new Time((endTimeFilter.getHours()*3600 + endTimeFilter.getMinutes()*60 + endTimeFilter.getSeconds())*1000));
 		} else {
 			oldCollector.setTradingDayEndTime(null);
 		}
