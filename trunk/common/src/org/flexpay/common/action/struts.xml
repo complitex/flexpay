@@ -19,7 +19,7 @@
 
 		<result-types>
 			<result-type name="rawtext"
-						 class="com.davidjc.ajaxfileupload.result.RawTextResult"/>
+						 class="com.devedup.ajaxfileupload.result.RawTextResult"/>
 		</result-types>
 
 		<interceptors>
