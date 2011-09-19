@@ -92,13 +92,17 @@ public class FPFileUtil {
 	 * @param fpFile flexpay file
 	 * @throws IOException if an error occurred
 	 */
-	public static void copy(@Nullable File file, @NotNull FPFile fpFile) throws IOException {
+    public static void copy(@Nullable File file, @NotNull FPFile fpFile) throws IOException {
 
-		File fileOnServer = createFile(fpFile);
-		if (file != null && file.length() > 0) {
-			FileUtils.copyFile(file, fileOnServer);
-		}
-	}
+        LOG.debug("Trying create file on server");
+        File fileOnServer = createFile(fpFile);
+        LOG.debug("File on server created: {}", fileOnServer);
+        if (file != null && file.length() > 0) {
+            LOG.debug("Copy file to file on server...");
+            FileUtils.copyFile(file, fileOnServer);
+            LOG.debug("File copy complete");
+        }
+    }
 
 	/**
 	 * Saves all data from given input stream to file system

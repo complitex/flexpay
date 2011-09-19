@@ -1,6 +1,6 @@
 package org.flexpay.common.action;
 
-import com.devedup.ajaxfileupload.multipart.ProgressMonitor;
+import org.flexpay.common.progressbar.ProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 public class FileUploadProgressAction extends FPActionSupport {
@@ -10,8 +10,10 @@ public class FileUploadProgressAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() {
-		Object mon_obj = session.get("com.devedup.ajaxfileupload.multipart.ProgressMonitor");
+		Object mon_obj = session.get(ProgressMonitor.SESSION_PROGRESS_MONITOR);
+        log.debug("mon_obj = {}", mon_obj);
 		ProgressMonitor monitor = (ProgressMonitor) mon_obj;
+        log.debug("moninor = {}", monitor);
 		String progressInfo = monitor == null ? "" : monitor.percentComplete();
 		log.debug("progressInfo = {}", progressInfo);
 		setStringResult(progressInfo);

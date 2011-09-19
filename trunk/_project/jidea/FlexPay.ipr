@@ -2101,9 +2101,9 @@
   <component name="libraryTable">
     <library name="Ajax">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/ajax/ezmorph-1.0.6.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/ajax/json-lib-2.4-jdk15.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/ajax/ajax-file-upload-plugin-0.4.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -2148,13 +2148,13 @@
     </library>
     <library name="Drools">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/knowledge-api-5.2.0.M2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/mvel2-2.1.beta2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-decisiontables-5.2.0.M2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-core-5.2.0.M2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-spring-5.2.0.M2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-persistence-jpa-5.2.0.M2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-compiler-5.2.0.M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-spring-5.2.0.M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-core-5.2.0.M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/mvel2-2.1.beta2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-decisiontables-5.2.0.M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/knowledge-api-5.2.0.M2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-grid-impl-5.2.0.M2.jar!/" />
       </CLASSES>
       <JAVADOC />
@@ -2240,19 +2240,19 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/hornetq-core-2.0.0.GA.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/hornetq-transports-2.0.0.GA.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jboss-el-1.0_02.CR2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-flow-5.1.0.M1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-flow-builder-5.1.0.M1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-bpmn2-5.1.0.M1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/xpp3_min-1.1.4c.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/mina-core-2.0.0-RC1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-persistence-jpa-5.1.0.M1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-bam-5.1.0.M1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/rome-0.9.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-workitems-5.1.0.M1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/smack-3.0.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jboss-seam-2.1.0.GA.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/persistence-api-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-workitems-5.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-persistence-jpa-5.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-bam-5.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-flow-builder-5.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-flow-5.1.0.M1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-human-task-5.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-bpmn2-5.1.0.M1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -2378,12 +2378,12 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/tiles-servlet-2.2.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/oro-2.0.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/tiles-template-2.2.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-core-2.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/xwork-core-2.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.2.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/ognl-3.0.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-core-2.2.3.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.2.3.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.2.3.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.2.3.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/xwork-core-2.2.3.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
