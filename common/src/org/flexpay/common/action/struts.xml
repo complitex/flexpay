@@ -19,7 +19,7 @@
 
 		<result-types>
 			<result-type name="rawtext"
-						 class="com.devedup.ajaxfileupload.result.RawTextResult"/>
+						 class="org.flexpay.common.progressbar.RawTextResult"/>
 		</result-types>
 
 		<interceptors>

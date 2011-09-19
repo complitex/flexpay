@@ -26,8 +26,11 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 	@Override
 	public String execute() throws Exception {
 
+        log.debug("File action support started");
+
 		if (isSubmit() && StringUtils.isEmpty(uploadFileName)) {
 			addActionError(getText("common.error.no_file"));
+            log.error("Can't find file");
 			return getErrorResult();
 		}
 
@@ -44,6 +47,7 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 			fpFile.setModule(module);
 			fpFile.setOriginalName(uploadFileName);
 			fpFile.setUserName(userName);
+            log.debug("Trying copy input file to fpFile");
 			FPFileUtil.copy(upload, fpFile);
 
 			fpFileService.create(fpFile);
