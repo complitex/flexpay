@@ -96,7 +96,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public PayDebtResponse quittancePay(PayDebtRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest(request.getLogin());
+// unused code?
+//        Security.authenticateOuterRequest(request.getLogin());
 
         Cashbox cashbox = new Cashbox(request.getPaymentsUserPreferences().getCashboxId());
         Operation oper = operationService.createBlankOperation(request.getPaymentsUserPreferences().getFullName(), stub(cashbox));
@@ -122,7 +123,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
                 operationService.update(oper);
             }
             log.debug("Operation created");
-        } else {
+        } else if( response.getStatus() != null ) {
+            log.debug("Response: {}", response);
             log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
             operationService.delete(stub(oper));
             response.setStatus(Status.INCORRECT_PAY_SUM);
@@ -409,7 +411,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public RegistryCommentResponse addRegistryComment(RegistryCommentRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest(request.getLogin());
+// unused code?
+//        Security.authenticateOuterRequest(request.getLogin());
 
         RegistryCommentResponse response = request.getResponse();
 
@@ -460,7 +463,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public GetRegistryListResponse getRegistryList(GetRegistryListRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest(request.getLogin());
+// unused code?
+//        Security.authenticateOuterRequest(request.getLogin());
 
         GetRegistryListResponse response = request.getResponse();
 
@@ -510,7 +514,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Override
     public GetServiceListResponse getServiceList(GetServiceListRequest request) throws FlexPayException {
 
-        Security.authenticateOuterRequest(request.getLogin());
+// unused code?
+//        Security.authenticateOuterRequest(request.getLogin());
 
         GetServiceListResponse response = request.getResponse();
 
