@@ -123,11 +123,13 @@ public class OuterRequestServiceImpl implements OuterRequestService {
                 operationService.update(oper);
             }
             log.debug("Operation created");
-        } else if( response.getStatus() != null ) {
+        } else if (response.getStatus() != null) {
             log.debug("Response: {}", response);
             log.debug("Zero sum for operation or zero documents for operation created. Operation was not created");
             operationService.delete(stub(oper));
-            response.setStatus(Status.INCORRECT_PAY_SUM);
+            if (response.getStatus() == null || response.getStatus().equals(Status.SUCCESS)) {
+                response.setStatus(Status.INCORRECT_PAY_SUM);
+            }
             return response;
         }
 

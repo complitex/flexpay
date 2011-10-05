@@ -3,6 +3,7 @@ package org.flexpay.httptester.outerrequest.request;
 import org.apache.commons.digester3.Digester;
 import org.flexpay.httptester.outerrequest.request.response.PayResponse;
 
+import java.math.BigDecimal;
 import java.security.Signature;
 import java.util.Properties;
 
@@ -48,10 +49,10 @@ public class PayDebtRequest extends Request<PayResponse> {
     protected void addParamsToSignature() throws Exception {
 
         updateRequestSignature(params.get("requestId"));
-        updateRequestSignature(params.get("totalPaySum"));
+        updateRequestSignature(new BigDecimal(params.get("totalPaySum")).setScale(2).toString());
         updateRequestSignature(params.get("serviceId1"));
         updateRequestSignature(params.get("serviceProviderAccount1"));
-        updateRequestSignature(params.get("paySum1"));
+        updateRequestSignature(new BigDecimal(params.get("paySum1")).setScale(2).toString());
 
     }
 

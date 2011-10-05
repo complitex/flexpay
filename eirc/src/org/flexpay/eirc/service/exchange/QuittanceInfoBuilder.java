@@ -120,7 +120,7 @@ public class QuittanceInfoBuilder {
             log.debug("Building quittanceDetails for service {}", service);
 
             ServiceDetails serviceDetails = new ServiceDetails();
-            serviceDetails.setServiceId(service.getServiceType().getId());
+            serviceDetails.setServiceId(service.getId());
             serviceDetails.setServiceName(getTranslation(service.getDescriptions(), locale).getName());
             serviceDetails.setAmount(details.getAmount().setScale(2));
             serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
@@ -167,7 +167,7 @@ public class QuittanceInfoBuilder {
             log.debug("Building quittanceDetails for service {}", service);
 
             ServiceDetails serviceDetails = new ServiceDetails();
-            serviceDetails.setServiceId(service.getServiceType().getId());
+            serviceDetails.setServiceId(service.getId());
             serviceDetails.setServiceName(getTranslation(service.getDescriptions(), request.getLocale()).getName());
             serviceDetails.setAmount(details.getAmount().setScale(2));
             serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
