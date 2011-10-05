@@ -27,7 +27,7 @@ public class Cashbox extends DomainObjectWithStatus {
     public Cashbox() {
     }
 
-    public Cashbox(@NotNull Long id) {
+    public Cashbox(Long id) {
         super(id);
     }
 
