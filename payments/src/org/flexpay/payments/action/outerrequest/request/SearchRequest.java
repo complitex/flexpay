@@ -28,6 +28,8 @@ public abstract class SearchRequest<R extends SearchResponse> extends Request<R>
     public static final int TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER = 4;
     public static final int TYPE_ADDRESS = 5;
     public static final int TYPE_COMBINED = 6;
+    public static final int TYPE_ERC_KVP_NUMBER = 7;
+    public static final int TYPE_ERC_KVP_ADDRESS = 8;
 
     protected String searchCriteria;
     protected String searchTypeString;
@@ -51,7 +53,9 @@ public abstract class SearchRequest<R extends SearchResponse> extends Request<R>
                 || searchType == TYPE_APARTMENT_NUMBER
                 || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER
                 || searchType == TYPE_ADDRESS
-                || searchType == TYPE_COMBINED;
+                || searchType == TYPE_COMBINED
+                || searchType == TYPE_ERC_KVP_NUMBER
+                || searchType == TYPE_ERC_KVP_ADDRESS;
     }
 
     public String getSearchCriteria() {
@@ -89,8 +93,10 @@ public abstract class SearchRequest<R extends SearchResponse> extends Request<R>
             log.debug("!new combined request (5)");
             searchType = TYPE_COMBINED;
         }
-        log.debug("!new service provider request (4)");
-        searchType = TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER;
+        else {
+            log.debug("!new service provider request (4)");
+            searchType = TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER;
+        }
     }
 
     public String getJmsRequestId() {

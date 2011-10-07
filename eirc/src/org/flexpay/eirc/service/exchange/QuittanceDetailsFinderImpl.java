@@ -10,6 +10,8 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.persistence.account.QuittanceDetailsQuittance;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
@@ -19,6 +21,8 @@ import org.flexpay.payments.action.outerrequest.request.GetQuittanceDebtInfoRequ
 import org.flexpay.payments.action.outerrequest.request.SearchRequest;
 import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
 import org.flexpay.payments.action.outerrequest.request.response.Status;
+import org.flexpay.payments.action.outerrequest.request.response.data.QuittanceInfo;
+import org.flexpay.payments.action.outerrequest.request.response.data.ServiceDetails;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -27,7 +31,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -79,6 +86,12 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
                 break;
             case TYPE_COMBINED:
                 findByCombined(request);
+                break;
+            case TYPE_ERC_KVP_NUMBER:
+                findByERCAccountNumber(request);
+                break;
+            case TYPE_ERC_KVP_ADDRESS:
+                findByERCAccountAddress(request);
                 break;
 			default:
                 request.getResponse().setStatus(Status.UNKNOWN_REQUEST);
@@ -333,6 +346,70 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         buildResponse(quittances, request);
     }
 
+    private void findByERCAccountNumber(SearchRequest<?> request) {
+
+        List<Consumer> consumers;
+        try {
+            consumers = getConsumers(request);
+        } catch (FlexPayException e) {
+            request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+            return;
+        }
+        if (consumers == null) {
+            log.debug("Consumers not found");
+            request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+            return;
+        }
+
+        log.debug("Find quittances by consumers ({})", consumers);
+
+        List<Quittance> quittances = quittanceService.getQuittances(consumers);
+
+        if (quittances.isEmpty()) {
+            log.debug("Quittances not found");
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} quittances", quittances.size());
+        }
+
+        buildFilteredByServiceResponse(quittances, request, 1);
+    }
+
+    private void findByERCAccountAddress(SearchRequest<?> request) {
+
+        List<Consumer> consumers;
+        try {
+            consumers = getConsumers(request);
+        } catch (FlexPayException e) {
+            request.getResponse().setStatus(Status.SERVICE_NOT_FOUND);
+            return;
+        }
+        if (consumers == null) {
+            log.debug("Consumers not found");
+            request.getResponse().setStatus(Status.ACCOUNT_NOT_FOUND);
+            return;
+        }
+
+        log.debug("Find quittances by consumers ({})", consumers);
+
+        List<Quittance> quittances = quittanceService.getQuittancesByApartments(consumers);
+
+        if (quittances.isEmpty()) {
+            log.debug("Quittances not found");
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} quittances", quittances.size());
+        }
+
+        buildResponse(quittances, request);
+    }
+
     private List<Consumer> getConsumers(SearchRequest<?> request) throws FlexPayException {
 
         List<Consumer> consumers;
@@ -356,6 +433,10 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
                 consumers = consumerService.findConsumersByERCAccount(account);
             } else if (searchType == TYPE_ADDRESS || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER) {
                 consumers = consumerService.findConsumersByExAccount(account);
+            } else if (searchType == TYPE_ERC_KVP_NUMBER || searchType == TYPE_ERC_KVP_ADDRESS) {
+                // TODO There is hardcoded the service with id=1 by the client request
+                Stub<ServiceType> serviceTypeStub = getServiceTypeStub("1");
+                consumers = consumerService.findConsumersByERCAccountAndServiceType(account, serviceTypeStub);
             } else {
                 log.debug("Incorrect searchType");
                 return null;
@@ -403,6 +484,71 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             request.getResponse().setStatus(Status.INTERNAL_ERROR);
         }
 
+    }
+
+    private void buildFilteredByServiceResponse(@NotNull List<Quittance> quittances, SearchRequest<?> request, long serviceId) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} quittances", quittances.size());
+        }
+        if (quittances.isEmpty()) {
+            request.getResponse().setStatus(Status.QUITTANCE_NOT_FOUND);
+            return;
+        }
+
+        try {
+
+            if (request instanceof GetQuittanceDebtInfoRequest) {
+                GetQuittanceDebtInfoRequest getQuittanceDebtInfoRequest = (GetQuittanceDebtInfoRequest) request;
+                for (Quittance quittance : quittances) {
+                    QuittanceInfo qInfo = filterInfo(quittanceInfoBuilder.buildInfo(stub(quittance), getQuittanceDebtInfoRequest), serviceId);
+                    if (qInfo != null) {
+                        getQuittanceDebtInfoRequest.getResponse().addQuiitanceInfo( qInfo );
+                    }
+                }
+            } else {
+                GetDebtInfoRequest getDebtInfoRequest = (GetDebtInfoRequest) request;
+                for (Quittance quittance : quittances) {
+                    List<ServiceDetails> sdList = filterDetails(quittanceInfoBuilder.buildServiceDetails(stub(quittance), getDebtInfoRequest), serviceId);
+                    if (sdList != null && sdList.size() > 0) {
+                        getDebtInfoRequest.getResponse().addAllServiceDetails(sdList);
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            log.error("Failed building quittance info", ex);
+            request.getResponse().setStatus(Status.INTERNAL_ERROR);
+        }
+
+    }
+
+    private QuittanceInfo filterInfo(QuittanceInfo quittanceInfo, long serviceId) {
+        List<ServiceDetails> filteredDetails = new ArrayList<ServiceDetails>(quittanceInfo.getServiceDetailses().size()) ;
+        for( ServiceDetails sDetail : quittanceInfo.getServiceDetailses()) {
+            if( sDetail.getServiceId() == serviceId ) {
+                filteredDetails.add(sDetail);
+            }
+        }
+        if( filteredDetails.size() > 0) {
+            quittanceInfo.setServiceDetailses( filteredDetails );
+            return quittanceInfo;
+        }
+        else {
+            return null;
+        }
+
+    }
+
+    private List<ServiceDetails> filterDetails(List<ServiceDetails> sdList, long serviceId) {
+        List<ServiceDetails> filteredDetails = new ArrayList<ServiceDetails>(sdList.size()) ;
+        for( ServiceDetails sDetail : sdList) {
+            if( sDetail.getServiceId() == serviceId ) {
+                filteredDetails.add(sDetail);
+            }
+        }
+
+        return filteredDetails;
     }
 
     private Stub<ServiceType> getServiceTypeStub(String serviceTypeIdStr) throws FlexPayException {
