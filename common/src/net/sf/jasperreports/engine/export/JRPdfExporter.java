@@ -1,6 +1,6 @@
 /*
  * JasperReports - Free Java Reporting Library.
- * Copyright (C) 2001 - 2009 Jaspersoft Corporation. All rights reserved.
+ * Copyright (C) 2001 - 2011 Jaspersoft Corporation. All rights reserved.
  * http://www.jaspersoft.com
  *
  * Unless you have purchased a commercial license agreement from Jaspersoft,
@@ -17,7 +17,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with JasperReports. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,6 +39,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.base.JRBaseFont;
+import net.sf.jasperreports.engine.base.JRBasePrintText;
 import net.sf.jasperreports.engine.export.legacy.BorderOffset;
 import net.sf.jasperreports.engine.fonts.FontFace;
 import net.sf.jasperreports.engine.fonts.FontFamily;
@@ -48,20 +49,21 @@ import net.sf.jasperreports.engine.type.LineDirectionEnum;
 import net.sf.jasperreports.engine.type.LineStyleEnum;
 import net.sf.jasperreports.engine.type.ModeEnum;
 import net.sf.jasperreports.engine.util.*;
+import net.sf.jasperreports.engine.util.JRProperties.PropertySuffix;
+import net.sf.jasperreports.repo.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.awt.color.ICC_Profile;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.AttributedCharacterIterator;
+import java.text.AttributedCharacterIterator.Attribute;
 import java.text.AttributedString;
 import java.util.*;
 import java.util.List;
@@ -72,19 +74,13 @@ import java.util.List;
  * a free-form layout.
  * 
  * @author Teodor Danciu (teodord@users.sourceforge.net)
- * @version $Id: JRPdfExporter.java 4288 2011-04-13 13:24:53Z teodord $
+ * @version $Id: JRPdfExporter.java 4644 2011-10-03 15:43:36Z teodord $
  */
-@SuppressWarnings({"deprecation", "RawUseOfParameterizedType", "unchecked"})
 public class JRPdfExporter extends JRAbstractExporter
 {
 
 	private static final Logger log = LoggerFactory.getLogger(JRPdfExporter.class);
 	
-	/**
-	 * @deprecated Replaced by {@link JRPdfExporterParameter#PROPERTY_FORCE_SVG_SHAPES}.
-	 */
-	public static final String PDF_FORCE_SVG_SHAPES = JRPdfExporterParameter.PROPERTY_FORCE_SVG_SHAPES;
-
 	public static final String PDF_EXPORTER_PROPERTIES_PREFIX = JRProperties.PROPERTY_PREFIX + "export.pdf.";
 
 	/**
@@ -151,7 +147,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	/**
 	 *
 	 */
-	protected Map loadedImagesMap;
+	protected Map<JRRenderable,com.lowagie.text.Image> loadedImagesMap;
 	protected Image pxImage;
 
 	private BookmarkStack bookmarkStack;
@@ -159,10 +155,8 @@ public class JRPdfExporter extends JRAbstractExporter
 	/**
 	 * @deprecated
 	 */
-	private Map fontMap;
+	private Map<FontKey,PdfFont> fontMap;
 
-	private SplitCharacter splitCharacter;
-	
 	protected JRPdfExporterContext exporterContext = new ExporterContext();
 	
 	/**
@@ -176,7 +170,7 @@ public class JRPdfExporter extends JRAbstractExporter
 			{
 				pxImage =
 					Image.getInstance(
-						JRLoader.loadBytesFromLocation("net/sf/jasperreports/engine/images/pixel.GIF", null)
+						JRLoader.loadBytesFromResource("net/sf/jasperreports/engine/images/pixel.GIF")
 						);
 			}
 			catch(Exception e)
@@ -279,9 +273,8 @@ public class JRPdfExporter extends JRAbstractExporter
 						JRPdfExporterParameter.PROPERTY_PDF_VERSION
 						);
 
-			fontMap = (Map) parameters.get(JRExporterParameter.FONT_MAP);
+			fontMap = (Map<FontKey,PdfFont>) parameters.get(JRExporterParameter.FONT_MAP);
 
-			setSplitCharacter();
 			setHyperlinkProducerFactory();
 
 			pdfJavaScript = 
@@ -361,31 +354,6 @@ public class JRPdfExporter extends JRAbstractExporter
 	}
 
 
-	protected void setSplitCharacter()
-	{
-		boolean useFillSplitCharacter;
-		Boolean useFillSplitCharacterParam = (Boolean) parameters.get(JRPdfExporterParameter.FORCE_LINEBREAK_POLICY);
-		if (useFillSplitCharacterParam == null)
-		{
-			useFillSplitCharacter = 
-				JRProperties.getBooleanProperty(
-					jasperPrint.getPropertiesMap(),
-					JRPdfExporterParameter.PROPERTY_FORCE_LINEBREAK_POLICY,
-					false
-					);
-		}
-		else
-		{
-			useFillSplitCharacter = useFillSplitCharacterParam.booleanValue();
-		}
-
-		if (useFillSplitCharacter)
-		{
-			splitCharacter = new BreakIteratorSplitCharacter();
-		}
-	}
-
-
 	/**
 	 *
 	 */
@@ -435,7 +403,6 @@ public class JRPdfExporter extends JRAbstractExporter
 					);
 			}
 			
-			pdfWriter.setRgbTransparencyBlending(true);
 
 			if (printScaling != null) 
 			{
@@ -480,8 +447,55 @@ public class JRPdfExporter extends JRAbstractExporter
 			{
 				document.addCreator("JasperReports (" + jasperPrint.getName() + ")");
 			}
+			
+			// BEGIN: PDF/A support
+			String pdfaConformance = getStringParameter( JRPdfExporterParameter.PDFA_CONFORMANCE, JRPdfExporterParameter.PROPERTY_PDFA_CONFORMANCE);
+			boolean gotPdfa = false;
+			if (pdfaConformance != null && !JRPdfExporterParameter.PDFA_CONFORMANCE_NONE.equalsIgnoreCase(pdfaConformance)) 
+			{
+				if (JRPdfExporterParameter.PDFA_CONFORMANCE_1A.equalsIgnoreCase(pdfaConformance))
+				{
+					pdfWriter.setPDFXConformance(PdfWriter.PDFA1A);
+					gotPdfa = true;
+				}
+				else if (JRPdfExporterParameter.PDFA_CONFORMANCE_1B.equalsIgnoreCase(pdfaConformance))
+				{
+					pdfWriter.setPDFXConformance(PdfWriter.PDFA1B);
+					gotPdfa = true;
+				}
+			}
+
+			if (gotPdfa) 
+			{
+				pdfWriter.createXmpMetadata();
+			} else 
+			{
+				pdfWriter.setRgbTransparencyBlending(true);
+			}
+			// END: PDF/A support
 
 			document.open();
+			
+			// BEGIN: PDF/A support
+			if (gotPdfa) {
+				String iccProfilePath = getStringParameter( JRPdfExporterParameter.PDFA_ICC_PROFILE_PATH, JRPdfExporterParameter.PROPERTY_PDFA_ICC_PROFILE_PATH);
+				if (iccProfilePath != null) {
+					PdfDictionary pdfDictionary = new PdfDictionary(PdfName.OUTPUTINTENT);
+					pdfDictionary.put(PdfName.OUTPUTCONDITIONIDENTIFIER, new PdfString("sRGB IEC61966-2.1"));
+					pdfDictionary.put(PdfName.INFO, new PdfString("sRGB IEC61966-2.1"));
+					pdfDictionary.put(PdfName.S, PdfName.GTS_PDFA1);
+					
+					InputStream iccIs = RepositoryUtil.getInputStream(iccProfilePath);
+					PdfICCBased pdfICCBased = new PdfICCBased(ICC_Profile.getInstance(iccIs));
+					pdfICCBased.remove(PdfName.ALTERNATE);
+					pdfDictionary.put(PdfName.DESTOUTPUTPROFILE, pdfWriter.addToBody(pdfICCBased).getIndirectReference());
+
+					pdfWriter.getExtraCatalog().put(PdfName.OUTPUTINTENTS, new PdfArray(pdfDictionary));
+				} else {
+					throw new JRPdfaIccProfileNotFoundException();
+				}
+			}
+			// END: PDF/A support
 			
 			if(pdfJavaScript != null)
 			{
@@ -506,8 +520,8 @@ public class JRPdfExporter extends JRAbstractExporter
 
 			for(reportIndex = 0; reportIndex < jasperPrintList.size(); reportIndex++)
 			{
-				setJasperPrint((JasperPrint)jasperPrintList.get(reportIndex));
-				loadedImagesMap = new HashMap();
+				setJasperPrint(jasperPrintList.get(reportIndex));
+				loadedImagesMap = new HashMap<JRRenderable,com.lowagie.text.Image>();
 				
 				Rectangle pageSize;
 				switch (jasperPrint.getOrientationValue())
@@ -528,7 +542,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					JRProperties.getBooleanProperty(jasperPrint, BorderOffset.PROPERTY_LEGACY_BORDER_OFFSET, false)
 					);
 
-				List pages = jasperPrint.getPages();
+				List<JRPrintPage> pages = jasperPrint.getPages();
 				if (pages != null && pages.size() > 0)
 				{
 					if (isModeBatch)
@@ -552,7 +566,7 @@ public class JRPdfExporter extends JRAbstractExporter
 							throw new JRException("Current thread interrupted.");
 						}
 
-						JRPrintPage page = (JRPrintPage)pages.get(pageIndex);
+						JRPrintPage page = pages.get(pageIndex);
 
 						document.newPage();
 						
@@ -614,19 +628,12 @@ public class JRPdfExporter extends JRAbstractExporter
 	}
 
 
-	protected void writePageAnchor(int pageIndex) throws DocumentException {
-		Map pdfFontAttrs = getDefaultPdfFontAttributes();
-		Chunk chunk;
-		if (pdfFontAttrs == null) 
-		{
-			chunk = new Chunk(" ");
-		} 
-		else 
-		{
-			// no underline or strikethrough
-			Font pdfFont = getFont(pdfFontAttrs, getLocale(), false);
-			chunk = new Chunk(" ", pdfFont);
-		}
+	protected void writePageAnchor(int pageIndex) throws DocumentException 
+	{
+		Map<Attribute,Object> attributes = new HashMap<Attribute,Object>();
+		JRFontUtil.getAttributesWithoutAwtFont(attributes, new JRBasePrintText(jasperPrint.getDefaultStyleProvider()));
+		Font pdfFont = getFont(attributes, getLocale(), false);
+		Chunk chunk = new Chunk(" ", pdfFont);
 		
 		chunk.setLocalDestination(JR_PAGE_ANCHOR_PREFIX + reportIndex + "_" + (pageIndex + 1));
 
@@ -648,35 +655,6 @@ public class JRPdfExporter extends JRAbstractExporter
 		tagHelper.endPageAnchor();
 	}
 
-	protected Map getDefaultPdfFontAttributes() {
-		Map attrs;
-		JRStyle style = jasperPrint.getDefaultStyle();
-		if (style != null) 
-		{
-			attrs = new HashMap();
-			//FIXME font name for extensions
-			attrs.put(JRTextAttribute.PDF_FONT_NAME, style.getPdfFontName());
-			attrs.put(JRTextAttribute.PDF_ENCODING, style.getPdfEncoding());
-			attrs.put(JRTextAttribute.IS_PDF_EMBEDDED, style.isPdfEmbedded());
-		} 
-		else 
-		{
-			JRReportFont font = jasperPrint.getDefaultFont();
-			if (font != null) 
-			{
-				attrs = new HashMap();
-				attrs.put(JRTextAttribute.PDF_FONT_NAME, font.getPdfFontName());
-				attrs.put(JRTextAttribute.PDF_ENCODING, font.getPdfEncoding());
-				attrs.put(JRTextAttribute.IS_PDF_EMBEDDED, font.isPdfEmbedded() ? Boolean.TRUE : Boolean.FALSE);
-			} 
-			else 
-			{
-				attrs = null;
-			}
-		}
-		return attrs;
-	}
-
 	/**
 	 *
 	 */
@@ -684,7 +662,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	{
 		tagHelper.startPage();
 		
-		Collection elements = page.getElements();
+		Collection<JRPrintElement> elements = page.getElements();
 		exportElements(elements);
 		
 		tagHelper.endPage();
@@ -695,13 +673,13 @@ public class JRPdfExporter extends JRAbstractExporter
 		}
 	}
 
-	protected void exportElements(Collection elements) throws DocumentException, IOException, JRException
+	protected void exportElements(Collection<JRPrintElement> elements) throws DocumentException, IOException, JRException
 	{
 		if (elements != null && elements.size() > 0)
 		{
-			for(Iterator it = elements.iterator(); it.hasNext();)
+			for(Iterator<JRPrintElement> it = elements.iterator(); it.hasNext();)
 			{
-				JRPrintElement element = (JRPrintElement)it.next();
+				JRPrintElement element = it.next();
 
 				if (filter == null || filter.isToExport(element))
 				{
@@ -1065,7 +1043,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	/**
 	 *
 	 */
-	protected void exportImage(JRPrintImage printImage) throws DocumentException, IOException,  JRException
+	public void exportImage(JRPrintImage printImage) throws DocumentException, IOException,  JRException
 	{
 		if (printImage.getModeValue() == ModeEnum.OPAQUE)
 		{
@@ -1197,7 +1175,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					{
 						if (printImage.isUsingCache() && loadedImagesMap.containsKey(renderer))
 						{
-							image = (com.lowagie.text.Image)loadedImagesMap.get(renderer);
+							image = loadedImagesMap.get(renderer);
 						}
 						else
 						{
@@ -1235,7 +1213,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					{
 						if (printImage.isUsingCache() && loadedImagesMap.containsKey(renderer))
 						{
-							image = (com.lowagie.text.Image)loadedImagesMap.get(renderer);
+							image = loadedImagesMap.get(renderer);
 						}
 						else
 						{
@@ -1637,7 +1615,7 @@ public class JRPdfExporter extends JRAbstractExporter
 		boolean firstChunk = true;
 		while(runLimit < text.length() && (runLimit = iterator.getRunLimit()) <= text.length())
 		{
-			Map attributes = iterator.getAttributes();
+			Map<Attribute,Object> attributes = iterator.getAttributes();
 			Chunk chunk = getChunk(attributes, text.substring(iterator.getIndex(), runLimit), locale);
 			
 			if (firstChunk)
@@ -1666,7 +1644,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	/**
 	 *
 	 */
-	protected Chunk getChunk(Map attributes, String text, Locale locale)
+	protected Chunk getChunk(Map<Attribute,Object> attributes, String text, Locale locale)
 	{
 		// underline and strikethrough are set on the chunk below
 		Font font = getFont(attributes, locale, false);
@@ -1706,22 +1684,22 @@ public class JRPdfExporter extends JRAbstractExporter
 			}
 		}
 
-		if (splitCharacter != null)
-		{
-			//TODO use line break offsets if available?
-			chunk.setSplitCharacter(splitCharacter);
-		}
+//		if (splitCharacter != null)
+//		{
+//			//TODO use line break offsets if available?
+//			chunk.setSplitCharacter(splitCharacter);
+//		}
 
 		return chunk;
 	}
 
-	protected boolean hasUnderline(Map textAttributes)
+	protected boolean hasUnderline(Map<Attribute,Object> textAttributes)
 	{
 		Integer underline = (Integer) textAttributes.get(TextAttribute.UNDERLINE);
 		return TextAttribute.UNDERLINE_ON.equals(underline);
 	}
 
-	protected boolean hasStrikethrough(Map textAttributes)
+	protected boolean hasStrikethrough(Map<Attribute,Object> textAttributes)
 	{
 		Boolean strike = (Boolean) textAttributes.get(TextAttribute.STRIKETHROUGH);
 		return TextAttribute.STRIKETHROUGH_ON.equals(strike);
@@ -1736,7 +1714,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	 * @param setFontLines whether to set underline and strikethrough as font style
 	 * @return the PDF font for the specified attributes
 	 */
-	protected Font getFont(Map attributes, Locale locale, boolean setFontLines)
+	protected Font getFont(Map<Attribute,Object> attributes, Locale locale, boolean setFontLines)
 	{
 		JRFont jrFont = new JRBaseFont(attributes);
 
@@ -1760,7 +1738,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		if (fontMap != null && fontMap.containsKey(key))
 		{
-			pdfFont = (PdfFont) fontMap.get(key);
+			pdfFont = fontMap.get(key);
 		}
 		else
 		{
@@ -1901,7 +1879,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 			try
 			{
-				bytes = JRLoader.loadBytesFromLocation(pdfFont.getPdfFontName(), classLoader, urlHandlerFactory, fileResolver);
+				bytes = RepositoryUtil.getBytes(pdfFont.getPdfFontName());
 			}
 			catch(JRException e)
 			{
@@ -1956,7 +1934,7 @@ public class JRPdfExporter extends JRAbstractExporter
 	 */
 	public void exportText(JRPrintText text) throws DocumentException
 	{
-		PdfTextRenderer textRenderer = new PdfTextRenderer(false);//FIXMETAB optimize this
+		PdfTextRenderer textRenderer = PdfTextRenderer.getInstance();//FIXMETAB optimize this
 		
 		textRenderer.initialize(this, pdfContentByte, text, getOffsetX(), getOffsetY());
 		
@@ -1967,21 +1945,17 @@ public class JRPdfExporter extends JRAbstractExporter
 			return;
 		}
 
-		int xFillCorrection = 0;
-		int yFillCorrection = 0;
 		double angle = 0;
 
 		switch (text.getRotationValue())
 		{
 			case LEFT :
 			{
-				xFillCorrection = 1;
 				angle = Math.PI / 2;
 				break;
 			}
 			case RIGHT :
 			{
-				yFillCorrection = -1;
 				angle = - Math.PI / 2;
 				break;
 			}
@@ -2009,8 +1983,8 @@ public class JRPdfExporter extends JRAbstractExporter
 				backcolor.getBlue()
 				);
 			pdfContentByte.rectangle(
-				textRenderer.getX() + xFillCorrection,
-				jasperPrint.getPageHeight() - textRenderer.getY() + yFillCorrection,
+				textRenderer.getX(),
+				jasperPrint.getPageHeight() - textRenderer.getY(),
 				textRenderer.getWidth(),
 				- textRenderer.getHeight()
 				);
@@ -2363,12 +2337,12 @@ public class JRPdfExporter extends JRAbstractExporter
 	{
 		if (!fontsRegistered)
 		{
-			List fontFiles = JRProperties.getProperties(JRProperties.PDF_FONT_FILES_PREFIX);
+			List<PropertySuffix> fontFiles = JRProperties.getProperties(JRProperties.PDF_FONT_FILES_PREFIX);
 			if (!fontFiles.isEmpty())
 			{
-				for (Iterator i = fontFiles.iterator(); i.hasNext();)
+				for (Iterator<PropertySuffix> i = fontFiles.iterator(); i.hasNext();)
 				{
-					JRProperties.PropertySuffix font = (JRProperties.PropertySuffix) i.next();
+					JRProperties.PropertySuffix font = i.next();
 					String file = font.getValue();
 					if (file.toLowerCase().endsWith(".ttc"))
 					{
@@ -2382,12 +2356,12 @@ public class JRPdfExporter extends JRAbstractExporter
 				}
 			}
 
-			List fontDirs = JRProperties.getProperties(JRProperties.PDF_FONT_DIRS_PREFIX);
+			List<PropertySuffix> fontDirs = JRProperties.getProperties(JRProperties.PDF_FONT_DIRS_PREFIX);
 			if (!fontDirs.isEmpty())
 			{
-				for (Iterator i = fontDirs.iterator(); i.hasNext();)
+				for (Iterator<PropertySuffix> i = fontDirs.iterator(); i.hasNext();)
 				{
-					JRProperties.PropertySuffix dir = (JRProperties.PropertySuffix) i.next();
+					JRProperties.PropertySuffix dir = i.next();
 					FontFactory.registerDirectory(dir.getValue());
 				}
 			}
@@ -2422,11 +2396,11 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	static protected class BookmarkStack
 	{
-		LinkedList stack;
+		LinkedList<Bookmark> stack;
 
 		BookmarkStack()
 		{
-			stack = new LinkedList();
+			stack = new LinkedList<Bookmark>();
 		}
 
 		void push(Bookmark bookmark)
@@ -2436,12 +2410,12 @@ public class JRPdfExporter extends JRAbstractExporter
 
 		Bookmark pop()
 		{
-			return (Bookmark) stack.removeLast();
+			return stack.removeLast();
 		}
 
 		Bookmark peek()
 		{
-			return (Bookmark) stack.getLast();
+			return stack.getLast();
 		}
 	}
 
@@ -2573,7 +2547,9 @@ public class JRPdfExporter extends JRAbstractExporter
 			// not setting underline and strikethrough as we only need the base font.
 			// underline and strikethrough will not work here because PdfGraphics2D
 			// doesn't check the font attributes.
-			return getFont(font.getAttributes(), null, false).getBaseFont();
+			Map<Attribute,Object> atts = new HashMap<Attribute,Object>();
+			atts.putAll(font.getAttributes());
+			return getFont(atts, null, false).getBaseFont();
 		}
 
 		public java.awt.Font pdfToAwt(BaseFont font, int size)

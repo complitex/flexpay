@@ -26,7 +26,7 @@
                 <s:set name="serviceId" value="%{getServiceId(#sd.serviceMasterIndex)}"/>
                 <s:set name="serviceIndx" value="%{getServiceFullIndex(#nQI.index, #serviceId)}"/>
 
-                <s:hidden name="payerFios['%{#serviceIndx}']" value="%{getPersonFio(#qi)}"/>
+                <s:hidden name="payerFios['%{#serviceIndx}']" value="%{#sd.personFio}"/>
                 <s:hidden name="addresses['%{#serviceIndx}']" value="%{getApartmentAddress(#qi)}"/>
                 <s:hidden name="eircAccounts['%{#serviceIndx}']" value="%{getEircAccount(#qi)}"/>
                 <s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{#sd.serviceProviderAccount}"/>
@@ -40,7 +40,6 @@
                     <td class="col"><s:property value="#sd.serviceProviderAccount" /></td>
                     <td class="col">
                         <s:property value="#sd.personFio" />
-                        <%--<s:property value="getPersonFio(#qi)" />--%>
                     </td>
                     <td class="col"><s:property value="getServiceName(#sd.serviceMasterIndex)" /></td>
                     <td class="col"><s:property value="getProviderName(#sd.serviceMasterIndex)" /></td>
