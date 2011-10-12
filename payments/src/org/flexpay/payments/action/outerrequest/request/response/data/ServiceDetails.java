@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 public class ServiceDetails implements Serializable {
@@ -42,6 +43,24 @@ public class ServiceDetails implements Serializable {
     private String roomNumber;
 
     private List<ServiceAttribute> attributes = list();
+
+    public String getPersonFio() {
+        StringBuilder fioBuilder = new StringBuilder();
+
+        if (isNotEmpty(personLastName)) {
+            fioBuilder.append(personLastName);
+        }
+
+        if (isNotEmpty(personFirstName)) {
+            fioBuilder.append(" ").append(personFirstName.charAt(0)).append(".");
+        }
+
+        if (isNotEmpty(personMiddleName)) {
+            fioBuilder.append(" ").append(personMiddleName.charAt(0)).append(".");
+        }
+
+        return fioBuilder.toString();
+    }
 
     public Long getServiceId() {
         return serviceId;
