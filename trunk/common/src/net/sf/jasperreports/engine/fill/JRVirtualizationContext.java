@@ -1,6 +1,6 @@
 /*
  * JasperReports - Free Java Reporting Library.
- * Copyright (C) 2001 - 2009 Jaspersoft Corporation. All rights reserved.
+ * Copyright (C) 2001 - 2011 Jaspersoft Corporation. All rights reserved.
  * http://www.jaspersoft.com
  *
  * Unless you have purchased a commercial license agreement from Jaspersoft,
@@ -17,31 +17,33 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with JasperReports. If not, see <http://www.gnu.org/licenses/>.
  */
 package net.sf.jasperreports.engine.fill;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.jasperreports.engine.JRConstants;
 import net.sf.jasperreports.engine.JRPrintImage;
 import net.sf.jasperreports.engine.JRRenderable;
 import net.sf.jasperreports.engine.JasperPrint;
-import org.apache.commons.collections.map.ReferenceMap;
+
+import org.apache.commons.collections.ReferenceMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Context used to store data shared by virtualized objects resulted from a report fill process.
  * 
  * @author Lucian Chirita (lucianc@users.sourceforge.net)
- * @version $Id: JRVirtualizationContext.java 3659 2010-03-31 10:20:49Z shertage $
+ * @version $Id: JRVirtualizationContext.java 4595 2011-09-08 15:55:10Z teodord $
  */
-@SuppressWarnings({"RawUseOfParameterizedType", "unchecked"})
 public class JRVirtualizationContext implements Serializable
 {
 	private static final long serialVersionUID = JRConstants.SERIAL_VERSION_UID;
@@ -50,8 +52,8 @@ public class JRVirtualizationContext implements Serializable
 	
 	private static final ReferenceMap contexts = new ReferenceMap(ReferenceMap.WEAK, ReferenceMap.WEAK);
 	
-	private Map cachedRenderers;
-	private Map cachedTemplates;
+	private Map<String,JRRenderable> cachedRenderers;
+	private Map<String,JRTemplateElement> cachedTemplates;
 	
 	private boolean readOnly;
 	
@@ -60,8 +62,8 @@ public class JRVirtualizationContext implements Serializable
 	 */
 	public JRVirtualizationContext()
 	{
-		cachedRenderers = new HashMap();
-		cachedTemplates = new HashMap();
+		cachedRenderers = new HashMap<String,JRRenderable>();
+		cachedTemplates = new HashMap<String,JRTemplateElement>();
 	}
 
 	
@@ -88,7 +90,7 @@ public class JRVirtualizationContext implements Serializable
 	 */
 	public JRRenderable getCachedRenderer(String id)
 	{
-		return (JRRenderable) cachedRenderers.get(id);
+		return cachedRenderers.get(id);
 	}
 
 	
@@ -124,9 +126,9 @@ public class JRVirtualizationContext implements Serializable
 	public void cacheTemplate(JRTemplateElement template)
 	{
 		Object old = cachedTemplates.put(template.getId(), template);
-		if (old == null)
+		if (old == null && log.isDebugEnabled())
 		{
-			log.debug("Cached template {} having id {}", template, template.getId());
+			log.debug("Cached template " + template + " having id " + template.getId());
 		}
 	}
 	
@@ -139,7 +141,7 @@ public class JRVirtualizationContext implements Serializable
 	 */
 	public JRTemplateElement getCachedTemplate(String templateId)
 	{
-		return (JRTemplateElement) cachedTemplates.get(templateId);
+		return cachedTemplates.get(templateId);
 	}
 
 
