@@ -22,30 +22,33 @@
             <td class="th">&nbsp;</td>
         </tr>
         <s:iterator value="quittanceInfos" id="qi" status="nQI">
-            <s:iterator value="serviceDetailses" status="status">
-                <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>
+            <s:iterator value="serviceDetailses" id="sd" status="status">
+                <s:set name="serviceId" value="%{getServiceId(#sd.serviceMasterIndex)}"/>
                 <s:set name="serviceIndx" value="%{getServiceFullIndex(#nQI.index, #serviceId)}"/>
 
                 <s:hidden name="payerFios['%{#serviceIndx}']" value="%{getPersonFio(#qi)}"/>
                 <s:hidden name="addresses['%{#serviceIndx}']" value="%{getApartmentAddress(#qi)}"/>
                 <s:hidden name="eircAccounts['%{#serviceIndx}']" value="%{getEircAccount(#qi)}"/>
-                <s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{serviceProviderAccount}"/>
-                <s:hidden name="debts['%{#serviceIndx}']" value="%{outgoingBalance}"/>
-                <s:hidden name="ercAccounts['%{#serviceIndx}']" value="%{getErcAccount(attributes)}"/>
+                <s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{#sd.serviceProviderAccount}"/>
+                <s:hidden name="debts['%{#serviceIndx}']" value="%{#sd.outgoingBalance}"/>
+                <s:hidden name="ercAccounts['%{#serviceIndx}']" value="%{getErcAccount(#sd.attributes)}"/>
 
                 <tr class="cols_1_error" style="display:none;">
                     <td colspan="7"></td>
                 </tr>
                 <tr class="cols_1 service_payment">
-                    <td class="col"><s:property value="serviceProviderAccount" /></td>
-                    <td class="col"><s:property value="getPersonFio(#qi)" /></td>
-                    <td class="col"><s:property value="getServiceName(serviceMasterIndex)" /></td>
-                    <td class="col"><s:property value="getProviderName(serviceMasterIndex)" /></td>
-                    <td class="col"><s:property value="outgoingBalance" /></td>
+                    <td class="col"><s:property value="#sd.serviceProviderAccount" /></td>
+                    <td class="col">
+                        <s:property value="#sd.personFio" />
+                        <%--<s:property value="getPersonFio(#qi)" />--%>
+                    </td>
+                    <td class="col"><s:property value="getServiceName(#sd.serviceMasterIndex)" /></td>
+                    <td class="col"><s:property value="getProviderName(#sd.serviceMasterIndex)" /></td>
+                    <td class="col"><s:property value="#sd.outgoingBalance" /></td>
                     <td class="col">
                         <s:textfield name="payments['%{#serviceIndx}']"
                                      id="payments_%{#serviceIndx}"
-                                     value="%{outgoingBalance}"
+                                     value="%{#sd.outgoingBalance}"
                                      onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"
                                      cssStyle="width:100%;text-align:right;"/>
                     </td>

@@ -267,7 +267,7 @@ public class ProcessDaoImpl implements ProcessDao {
 				Query instancesCount = session.getNamedQuery("Process.listForDelete.count");
 				Query instancesQuery = session.getNamedQuery("Process.listForDelete");
 
-				int n = 0;
+				int n = 1;
 				instancesCount.setParameter(n, range.getStart());
 				instancesQuery.setParameter(n, range.getStart());
 				++n;

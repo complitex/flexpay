@@ -159,8 +159,8 @@ public class EircAccountDaoExtImpl extends JpaDaoSupport implements EircAccountD
                 Query qCount = entityManager.createQuery(hqlCount.toString());
                 Query query = entityManager.createQuery(hql.toString());
                 for (int n = 0; n < params.size(); ++n) {
-                    qCount.setParameter(n, params.get(n));
-                    query.setParameter(n, params.get(n));
+                    qCount.setParameter(n + 1, params.get(n));
+                    query.setParameter(n + 1, params.get(n));
                 }
 
                 Number objectsCount = (Number) qCount.getSingleResult();
@@ -294,8 +294,8 @@ where count.c > 1
                 Query query = entityManager.createNativeQuery(sql.toString());
 
                 for (int n = 0; n < params.size(); ++n) {
-                    qCount.setParameter(n, params.get(n));
-                    query.setParameter(n, params.get(n));
+                    qCount.setParameter(n + 1, params.get(n));
+                    query.setParameter(n + 1, params.get(n));
                 }
 
                 query.setParameter("type_codes", ConsumerAttributes.EIRC_ATTRIBUTES);
