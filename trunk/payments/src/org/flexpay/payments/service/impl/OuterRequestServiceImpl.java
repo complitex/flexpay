@@ -213,7 +213,33 @@ public class OuterRequestServiceImpl implements OuterRequestService {
             log.debug("searchRequest = {}", searchRequest);
             getQuittanceDeftInfo(searchRequest);
             GetQuittanceDebtInfoResponse quittanceDetailsResponse = searchRequest.getResponse();
-            if (quittanceDetailsResponse.getInfos() == null || quittanceDetailsResponse.getInfos().isEmpty()) {
+            QuittanceInfo info = null;
+            ServiceDetails serviceDetails = null;
+            log.debug("getInfos = {}", quittanceDetailsResponse.getInfos());
+            if ( quittanceDetailsResponse.getInfos() != null ) {
+                log.debug("not null!");
+                for(QuittanceInfo aInfo : quittanceDetailsResponse.getInfos()) {
+                    for (ServiceDetails sDetails : aInfo.getServiceDetailses() ) {
+                        log.debug("sId1 = '{}'", sDetails.getServiceId());
+                        log.debug("sId2 = '{}'", spDetails.getServiceId());
+                        log.debug("equals = {}", sDetails.getServiceId().equals(spDetails.getServiceId()));
+                        log.debug("spId1 = '{}'", sDetails.getServiceProviderAccount());
+                        log.debug("spId2 = '{}'", spDetails.getServiceProviderAccount());
+                        log.debug("equals = {}", sDetails.getServiceProviderAccount().equals(spDetails.getServiceProviderAccount()));
+                        if( sDetails.getServiceId().equals(spDetails.getServiceId()) && sDetails.getServiceProviderAccount().equals(spDetails.getServiceProviderAccount()) ) {
+                            info = aInfo;
+                            serviceDetails = sDetails;
+                            log.debug("found!");
+                            break;
+                        }
+                    }
+                    if( info != null ) {
+                        log.debug("break!");
+                        break;
+                    }
+                }
+            }
+            if (info == null) {
                 log.info("Cant't find quittances by serviceId and spAccountNumber ({}, {})", spDetails.getServiceId(), spDetails.getServiceProviderAccount());
                 servicePayInfo.setServiceStatus(quittanceDetailsResponse.getStatus());
                 servicePayInfo.setServiceId(spDetails.getServiceId());
@@ -222,7 +248,7 @@ public class OuterRequestServiceImpl implements OuterRequestService {
                 continue;
             }
 
-            Document document = buildDocument(quittanceDetailsResponse.getInfos().get(0), spDetails.getPaySum(), cashbox, request.getLocale());
+            Document document = buildDocument(info, serviceDetails, spDetails.getPaySum(), cashbox, request.getLocale());
 
             if (isEmpty(operation.getAddress())) {
                 operation.setAddress(document.getAddress());
@@ -240,9 +266,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     }
 
     @SuppressWarnings({"unchecked"})
-    private Document buildDocument(QuittanceInfo info, BigDecimal paySum, Cashbox cashbox, Locale locale) throws Exception {
+    private Document buildDocument(QuittanceInfo info, ServiceDetails serviceDetails, BigDecimal paySum, Cashbox cashbox, Locale locale) throws Exception {
 
-        ServiceDetails serviceDetails = info.getServiceDetailses().get(0);
         Service service = spService.readFull(new Stub<Service>(serviceDetails.getServiceId()));
         ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
         Organization serviceProviderOrganization = serviceProvider.getOrganization();
