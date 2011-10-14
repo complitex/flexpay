@@ -42,6 +42,17 @@ public class ServiceDaoExtImpl extends JpaDaoSupport implements ServiceDaoExt {
 		return objects.isEmpty() ? null : (ServiceType) objects.get(0);
 	}
 
+    /**
+     * Find Service by its code
+     *
+     * @param code service code
+     * @return Service instance
+     */
+    public Service findServiceByCode(int code) {
+        List<?> objects = getJpaTemplate().find("from Service where id=? and status=0", code);
+        return objects.isEmpty() ? null : (Service) objects.get(0);
+    }
+
 	/**
 	 * List active services using filters and pager
 	 *

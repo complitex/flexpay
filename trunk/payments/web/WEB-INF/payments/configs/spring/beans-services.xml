@@ -91,6 +91,7 @@
     <bean id="serviceTypeServiceTarget"
           class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
           p:serviceDaoExt-ref="serviceDaoExt"
+          p:serviceDao-ref="serviceDao"
           p:serviceTypeDao-ref="serviceTypeDao"
           p:sessionUtils-ref="sessionUtils"
           p:modificationListener-ref="serviceTypeHistoryChangesListener"

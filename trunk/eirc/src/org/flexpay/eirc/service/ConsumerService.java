@@ -78,7 +78,7 @@ public interface ConsumerService {
      * @return found Consumers
      */
     @Nullable
-    List<Consumer> findConsumersByExAccountAndService(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceStub);
+    List<Consumer> findConsumersByExAccountAndService(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub);
 
     /**
      * Try to find consumer by external account number
@@ -118,7 +118,7 @@ public interface ConsumerService {
      * @return found Consumers
      */
     @NotNull
-    List<Consumer> findConsumersByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<ServiceType> serviceStub);
+    List<Consumer> findConsumersByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<Service> serviceStub);
 
     /**
      * Try to find consumers by ERC account number

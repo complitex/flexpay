@@ -131,7 +131,7 @@ public class ConsumerServiceImpl implements ConsumerService {
      */
     @Nullable
     @Override
-    public List<Consumer> findConsumersByExAccountAndService(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceStub) {
+    public List<Consumer> findConsumersByExAccountAndService(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub) {
 
         List<Consumer> consumers = consumerDao.findConsumersByAccountAndService(accountNumber, serviceStub.getId());
 
@@ -192,7 +192,7 @@ public class ConsumerServiceImpl implements ConsumerService {
      */
     @NotNull
     @Override
-    public List<Consumer> findConsumersByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<ServiceType> serviceStub) {
+    public List<Consumer> findConsumersByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<Service> serviceStub) {
 
         List<Consumer> consumers = consumerDao.findConsumersByERCAccountAndService(ercAccount, serviceStub.getId());
 

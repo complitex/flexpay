@@ -7,8 +7,10 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.payments.dao.ServiceDao;
 import org.flexpay.payments.dao.ServiceDaoExt;
 import org.flexpay.payments.dao.ServiceTypeDao;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
@@ -29,6 +31,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ServiceTypeDao serviceTypeDao;
+    private ServiceDao serviceDao;
 	private ServiceDaoExt serviceDaoExt;
 
 	private SessionUtils sessionUtils;
@@ -82,6 +85,18 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		log.debug("Reading service type {}", stub);
 		return serviceTypeDao.readFull(stub.getId());
 	}
+
+    /**
+     * Read full service type info
+     *
+     * @param stub Service type stub
+     * @return ServiceType
+     */
+    @Override
+    public Service readService(@NotNull Stub<Service> stub) {
+        log.debug("Reading service {}", stub);
+        return serviceDao.readFull(stub.getId());
+    }
 
 	/**
 	 * Save ServiceType object
@@ -232,6 +247,11 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	public void setServiceDaoExt(ServiceDaoExt serviceDaoExt) {
 		this.serviceDaoExt = serviceDaoExt;
 	}
+
+    @Required
+    public void setServiceDao(ServiceDao serviceDao) {
+        this.serviceDao = serviceDao;
+    }
 
 	@Required
 	public void setServiceTypeDao(ServiceTypeDao serviceTypeDao) {

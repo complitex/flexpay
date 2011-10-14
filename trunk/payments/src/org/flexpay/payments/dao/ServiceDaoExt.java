@@ -20,6 +20,14 @@ public interface ServiceDaoExt {
 	 */
 	ServiceType findByCode(int code);
 
+    /**
+     * Find Service by its code
+     *
+     * @param code service code
+     * @return Service instance
+     */
+    Service findServiceByCode(int code);
+
 	/**
 	 * List active services using filters and pager
 	 *
