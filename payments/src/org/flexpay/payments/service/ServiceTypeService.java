@@ -3,6 +3,7 @@ package org.flexpay.payments.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,16 @@ public interface ServiceTypeService {
 	@Secured (Roles.SERVICE_TYPE_READ)
 	@Nullable
 	ServiceType read(@NotNull Stub<ServiceType> stub);
+
+    /**
+     * Read full service info
+     *
+     * @param stub Service stub
+     * @return Service
+     */
+    @Secured (Roles.SERVICE_READ)
+    @Nullable
+    Service readService(@NotNull Stub<Service> stub);
 
 	/**
 	 * Create a new ServiceType object

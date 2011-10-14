@@ -418,12 +418,12 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         String[] reqMas = request.getSearchCriteria().split(":");
         Integer searchType = request.getSearchType();
         if (reqMas.length > 1) {
-            Stub<ServiceType> serviceTypeStub = getServiceTypeStub(reqMas[0]);
+            Stub<Service> serviceStub = getServiceStub(reqMas[0]);
             String account = reqMas[1];
             if (searchType == TYPE_COMBINED) {
-                consumers = consumerService.findConsumersByERCAccountAndService(account, serviceTypeStub);
+                consumers = consumerService.findConsumersByERCAccountAndService(account, serviceStub);
             } else if (searchType == TYPE_ADDRESS || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER) {
-                consumers = consumerService.findConsumersByExAccountAndService(account, serviceTypeStub);
+                consumers = consumerService.findConsumersByExAccountAndService(account, serviceStub);
             } else {
                 log.debug("Incorrect searchType");
                 return null;
@@ -436,8 +436,8 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
                 consumers = consumerService.findConsumersByExAccount(account);
             } else if (searchType == TYPE_ERC_KVP_NUMBER || searchType == TYPE_ERC_KVP_ADDRESS) {
                 // TODO There is hardcoded the service with id=1 by the client request
-                Stub<ServiceType> serviceTypeStub = getServiceTypeStub("1");
-                consumers = consumerService.findConsumersByERCAccountAndService(account, serviceTypeStub);
+                Stub<Service> serviceStub = getServiceStub("1");
+                consumers = consumerService.findConsumersByERCAccountAndService(account, serviceStub);
             } else {
                 log.debug("Incorrect searchType");
                 return null;
@@ -561,6 +561,17 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             throw new FlexPayException("Can't get service type with id " + serviceTypeStub.getId() + " from DB");
         }
         return serviceTypeStub;
+    }
+
+    private Stub<Service> getServiceStub(String serviceIdStr) throws FlexPayException {
+
+        Stub<Service> serviceStub = new Stub<Service>(Long.parseLong(serviceIdStr));
+        Service service = serviceTypeService.readService(serviceStub);
+        if (service == null) {
+            log.warn("Can't get service with id {} from DB", serviceStub.getId());
+            throw new FlexPayException("Can't get service with id " + serviceStub.getId() + " from DB");
+        }
+        return serviceStub;
     }
 
 	@Required
