@@ -61,7 +61,7 @@ public interface ConsumerService {
 	Consumer read(@NotNull Stub<Consumer> stub);
 
     /**
-     * Try to find consumer by external account number and service
+     * Try to find consumer by external account number and service type
      *
      * @param accountNumber External account number
      * @param serviceTypeStub   Service type stub
@@ -69,6 +69,16 @@ public interface ConsumerService {
      */
     @Nullable
     List<Consumer> findConsumersByExAccountAndServiceType(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceTypeStub);
+
+    /**
+     * Try to find consumer by external account number and service
+     *
+     * @param accountNumber External account number
+     * @param serviceStub   Service stub
+     * @return found Consumers
+     */
+    @Nullable
+    List<Consumer> findConsumersByExAccountAndService(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceStub);
 
     /**
      * Try to find consumer by external account number
@@ -98,6 +108,17 @@ public interface ConsumerService {
      */
     @NotNull
     List<Consumer> findConsumersByERCAccountAndServiceType(@NotNull String ercAccount, @NotNull Stub<ServiceType> serviceTypeStub);
+
+    /**
+     * Try to find consumers by ERC account number and service
+     *
+     * @param ercAccount ERC account number
+     * @param serviceStub   Service stub
+     *
+     * @return found Consumers
+     */
+    @NotNull
+    List<Consumer> findConsumersByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<ServiceType> serviceStub);
 
     /**
      * Try to find consumers by ERC account number

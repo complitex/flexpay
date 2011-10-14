@@ -23,6 +23,7 @@ import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
 import org.flexpay.payments.action.outerrequest.request.response.Status;
 import org.flexpay.payments.action.outerrequest.request.response.data.QuittanceInfo;
 import org.flexpay.payments.action.outerrequest.request.response.data.ServiceDetails;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -420,9 +421,9 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             Stub<ServiceType> serviceTypeStub = getServiceTypeStub(reqMas[0]);
             String account = reqMas[1];
             if (searchType == TYPE_COMBINED) {
-                consumers = consumerService.findConsumersByERCAccountAndServiceType(account, serviceTypeStub);
+                consumers = consumerService.findConsumersByERCAccountAndService(account, serviceTypeStub);
             } else if (searchType == TYPE_ADDRESS || searchType == TYPE_SERVICE_PROVIDER_ACCOUNT_NUMBER) {
-                consumers = consumerService.findConsumersByExAccountAndServiceType(account, serviceTypeStub);
+                consumers = consumerService.findConsumersByExAccountAndService(account, serviceTypeStub);
             } else {
                 log.debug("Incorrect searchType");
                 return null;
@@ -436,7 +437,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             } else if (searchType == TYPE_ERC_KVP_NUMBER || searchType == TYPE_ERC_KVP_ADDRESS) {
                 // TODO There is hardcoded the service with id=1 by the client request
                 Stub<ServiceType> serviceTypeStub = getServiceTypeStub("1");
-                consumers = consumerService.findConsumersByERCAccountAndServiceType(account, serviceTypeStub);
+                consumers = consumerService.findConsumersByERCAccountAndService(account, serviceTypeStub);
             } else {
                 log.debug("Incorrect searchType");
                 return null;

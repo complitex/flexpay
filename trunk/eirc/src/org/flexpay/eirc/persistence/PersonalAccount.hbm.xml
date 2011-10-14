@@ -210,6 +210,13 @@
             and c.service.serviceType.id=?
 	</query>
 
+    <query name="Consumer.findConsumersByAccountAndService">
+        select distinct c
+        from Consumer c
+        where c.status=0 and c.externalAccountNumber=?
+            and c.service.id=?
+    </query>
+
     <query name="Consumer.findConsumersByAccount">
         select distinct c
         from Consumer c
@@ -227,6 +234,13 @@
         from Consumer c
             left join c.attributes attr
         where c.status=0 and attr.stringValue=? and c.service.serviceType.id=?
+    </query>
+
+    <query name="Consumer.findConsumersByERCAccountAndService">
+        select distinct c
+        from Consumer c
+            left join c.attributes attr
+        where c.status=0 and attr.stringValue=? and c.service.id=?
     </query>
 
     <query name="Consumer.findConsumersByERCAccount">

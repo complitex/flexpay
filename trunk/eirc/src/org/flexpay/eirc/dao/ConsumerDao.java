@@ -25,13 +25,22 @@ public interface ConsumerDao extends GenericDao<Consumer, Long> {
 	List<Consumer> findConsumers(Page pager, Long personId, Long serviceId, String accountNumber, Long apartmentId);
 
 	/**
-	 * Find consumer by external account number and service key
+	 * Find consumer by external account number and service type key
 	 *
 	 * @param accountNumber Extrernal account number
 	 * @param serviceId	 Service id
 	 * @return List of found consumers
 	 */
 	List<Consumer> findConsumersByAccountAndServiceType(String accountNumber, Long serviceId);
+
+    /**
+     * Find consumer by external account number and service key
+     *
+     * @param accountNumber Extrernal account number
+     * @param serviceId	 Service id
+     * @return List of found consumers
+     */
+    List<Consumer> findConsumersByAccountAndService(String accountNumber, Long serviceId);
 
     /**
      * Find consumer by external account number
@@ -50,13 +59,22 @@ public interface ConsumerDao extends GenericDao<Consumer, Long> {
     List<Consumer> findConsumersByApartments(Collection<Long> apartmentIds);
 
     /**
-     * Find consumer by ERC account number and service
+     * Find consumer by ERC account number and service type
      *
      * @param ercAccount ERC account
      * @param serviceTypeId Service type id
      * @return List of found consumers
      */
     List<Consumer> findConsumersByERCAccountAndServiceType(String ercAccount, Long serviceTypeId);
+
+    /**
+     * Find consumer by ERC account number and service
+     *
+     * @param ercAccount ERC account
+     * @param serviceTypeId Service type id
+     * @return List of found consumers
+     */
+    List<Consumer> findConsumersByERCAccountAndService(String ercAccount, Long serviceTypeId);
 
     /**
      * Find consumer by ERC account number
