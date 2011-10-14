@@ -103,7 +103,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	}
 
 	/**
-	 * Try to find consumer by external account number and service
+	 * Try to find consumer by external account number and service type
 	 *
 	 * @param accountNumber External account number
 	 * @param serviceTypeStub Service type stub
@@ -121,6 +121,26 @@ public class ConsumerServiceImpl implements ConsumerService {
 
 		return consumers;
 	}
+
+    /**
+     * Try to find consumer by external account number and service
+     *
+     * @param accountNumber External account number
+     * @param serviceStub Service stub
+     * @return found Consumers
+     */
+    @Nullable
+    @Override
+    public List<Consumer> findConsumersByExAccountAndService(@NotNull String accountNumber, @NotNull Stub<ServiceType> serviceStub) {
+
+        List<Consumer> consumers = consumerDao.findConsumersByAccountAndService(accountNumber, serviceStub.getId());
+
+        if (consumers.size() > 1) {
+            log.info("Found several consumers by service {} and external account {}", serviceStub, accountNumber);
+        }
+
+        return consumers;
+    }
 
     /**
      * Try to find consumer by external account number
@@ -158,6 +178,26 @@ public class ConsumerServiceImpl implements ConsumerService {
 
         if (consumers.size() > 1) {
             log.info("Found several consumers by service type {} and ERC account {}", serviceTypeStub, ercAccount);
+        }
+
+        return consumers;
+    }
+
+    /**
+     * Try to find consumer by ERC account number and service
+     *
+     * @param ercAccount ERC account number
+     * @param serviceStub   Service stub
+     * @return found Consumers
+     */
+    @NotNull
+    @Override
+    public List<Consumer> findConsumersByERCAccountAndService(@NotNull String ercAccount, @NotNull Stub<ServiceType> serviceStub) {
+
+        List<Consumer> consumers = consumerDao.findConsumersByERCAccountAndService(ercAccount, serviceStub.getId());
+
+        if (consumers.size() > 1) {
+            log.info("Found several consumers by service {} and ERC account {}", serviceStub, ercAccount);
         }
 
         return consumers;
