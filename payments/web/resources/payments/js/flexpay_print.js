@@ -37,9 +37,9 @@ var FPP = {
         var fc = this.fieldChain;
         $.each(fc, function(i, v) {
             if (v == selectedFieldId) {
-                this.currentFieldIndex = i;
+                FPP.currentFieldIndex = i;
                 $("#" + v).select();
-                return false;
+                return true;
             }
         });
     },

@@ -49,7 +49,7 @@
                                      id="payments_%{#serviceIndx}"
                                      value="%{#sd.outgoingBalance}"
                                      onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"
-                                     cssStyle="width:100%;text-align:right;"/>
+                                     cssStyle="width:100%;text-align:right;" />
                     </td>
                     <td class="col">
                         <img id="payments_<s:property value="#serviceIndx" />_copy"
@@ -118,14 +118,14 @@
     $("#quittancePayForm").ready(function() {
         FPP.bindEvents([
             <s:iterator value="quittanceInfos" id="qi" status="nQI">
-                <s:iterator value="serviceDetailses" status="status">
+                <s:iterator value="serviceDetailses" id="sd" status="status">
                     <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}" />
                     {
                             index: "<s:property value="getServiceFullIndex(#nQI.index, #serviceId)" />",
                             content: '"<s:property value="getErcAccount(attributes)" />";' +
                                           '"<s:property value="serviceProviderAccount" />";' +
                                           '"<s:property value="getApartmentAddress(#qi)" />";' +
-                                          '"<s:property value="getPersonFio(#qi)" />";' +
+                                          '"<s:property value="%{#sd.personFio}" />";' +
                                           '"<s:property value="getMBServiceCode(serviceMasterIndex)" />"'
                     }<s:property value="quittanceInfos.size() - 1 == #nQI.index && serviceDetailses.size() - 1 == #status.index ? '' : ','" />
                 </s:iterator>
