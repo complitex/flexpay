@@ -322,7 +322,7 @@
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="260" y="50" width="154" height="11"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.operation.report.footer.payer} + " __________________ /"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{payment.operation.report.footer.payer} + " ___________________"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="535" height="11"/>

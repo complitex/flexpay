@@ -77,7 +77,7 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 		// operation type filtering (payments only)
 		filterHql.append(" (o.operationType.code = 1 OR o.operationType.code = 2 OR o.operationType.code = 5 OR o.operationType.code = 6)");
 		// opeartion status filtering (non-deleted ones)
-		filterHql.append(" AND o.operationStatus.code <> 3");
+		filterHql.append(" AND o.operationStatus.code <> 3 and o.operationStatus.code <> 6");
         filterHql.append(" AND doc.documentStatus.code <> 3");
 
         for (Object f : filters) {
@@ -156,6 +156,8 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
             }
         }
 
+        log.debug("Search operations query = {}", hql.toString());
+
 		return (List<Operation>) getJpaTemplate().executeFind(new JpaCallback<List<Operation>>() {
 			@Override
 			public List<Operation> doInJpa(EntityManager entityManager) throws HibernateException {
@@ -167,7 +169,7 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 
 				javax.persistence.Query query = entityManager.createQuery(hql.toString());
 				setCashboxOperationSearchQueryParameters(query, filters);
-                log.debug("Operations search query: {}", query);
+                log.debug("Operations search query: {}", query.toString());
 				return (List<Operation>) query.setFirstResult(pager.getThisPageFirstElementNumber()).
                         setMaxResults(pager.getPageSize()).
                         getResultList();
@@ -184,7 +186,7 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 		// operation type filtering (payments only)
 		filterHql.append(" (o.operationType.code = 1 OR o.operationType.code = 2 OR o.operationType.code = 5 OR o.operationType.code = 6)");
 		// status filtering (non-deleted ones)
-		filterHql.append(" AND o.operationStatus.code <> 3");
+		filterHql.append(" AND o.operationStatus.code <> 3 and o.operationStatus.code <> 6");
 
         for (Object f : filters) {
 

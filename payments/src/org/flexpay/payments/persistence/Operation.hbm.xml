@@ -513,7 +513,7 @@
             left join fetch organization.names names
 		where (o.creationDate >= ? and o.creationDate < ?)
 			and (o.operationType.code in (1, 2, 5, 6))
-			and (status.code <> 3)
+			and (status.code <> 3 and status.code <> 6)
 		order by o.creationDate 
 	]]></query>
 
@@ -522,7 +522,7 @@
 		from Operation o
 		where (o.creationDate >= ? and o.creationDate < ?)
 			and (o.operationType.code in (1, 2, 5, 6))
-			and (o.operationStatus.code <> 3)			
+			and (o.operationStatus.code <> 3 and o.operationStatus.code <> 6)
 	]]></query>
 
 	<query name="Operation.listPayments"><![CDATA[
@@ -576,7 +576,7 @@
             left join fetch organization.names names
 		where (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ?))
 			and (o.operationType.code in (1, 2, 5, 6))
-			and (status.code <> 3)
+			and (status.code <> 3 and status.code <> 6)
 		order by o.creationDate
 	]]></query>
 
@@ -586,7 +586,7 @@
 		where o.cashbox.id = ?
 		    and o.creationDate >= ? and o.creationDate <= ?
 			and o.operationType.code in (1, 2, 5, 6)
-			and o.operationStatus.code <> 3
+			and o.operationStatus.code <> 3 and o.operationStatus.code <> 6
 		order by o.creationDate desc
 	]]></query>
 
@@ -598,7 +598,7 @@
 		where o.paymentPoint.id = ?
 		    and o.creationDate >= ? and o.creationDate <= ?
 			and o.operationType.code in (1, 2, 5, 6)
-			and o.operationStatus.code <> 3
+			and o.operationStatus.code <> 3 and o.operationStatus.code <> 6
 		order by o.creationDate desc
 	]]></query>
 
