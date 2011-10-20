@@ -6,8 +6,10 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -114,17 +116,21 @@ public class OperationsListAccAction extends AccountantAWPWithPagerActionSupport
         beginDateFilter.setDate(beginTimeFilter.setTime(beginDateFilter.getDate()));
         endDateFilter.setDate(endTimeFilter.setTime(endDateFilter.getDate()));
 
+        PaymentCollector paymentCollector = getPaymentCollector();
+
+        PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter(paymentCollector.getId());
+
         if (log.isDebugEnabled()) {
             log.debug("beginDateFilter = {}, endDateFilter = {}", beginDateFilter, endDateFilter);
             log.debug("minimaSumFilter = {}, maximalSumFilter = {}", minimalSumFilter, maximalSumFilter);
-            log.debug("paymentPointId = {}, cashboxId = {}, serviceTypeId = {}", new Object[] {paymentPointFilter.getSelectedId(), cashboxFilter.getSelectedId(), serviceTypeFilter.getSelectedId()});
+            log.debug("paymentCollectorId = {}, paymentPointId = {}, cashboxId = {}, serviceTypeId = {}", new Object[] {paymentCollectorFilter.getSelectedId(), paymentPointFilter.getSelectedId(), cashboxFilter.getSelectedId(), serviceTypeFilter.getSelectedId()});
         }
 
         List<Operation> searchResults;
 
         if (documentSearch != null && documentSearch) {
             searchResults = operationService.searchDocuments(operationSorterById.isActivated() ? operationSorterById : null,
-                                    arrayStack(paymentPointFilter, cashboxFilter, beginDateFilter, endDateFilter, minimalSumFilter, maximalSumFilter), getPager());
+                                    arrayStack(paymentCollectorFilter, paymentPointFilter, cashboxFilter, beginDateFilter, endDateFilter, minimalSumFilter, maximalSumFilter), getPager());
             highlightedDocumentIds = list();
 
             for (Operation operation : searchResults) {
@@ -135,7 +141,7 @@ public class OperationsListAccAction extends AccountantAWPWithPagerActionSupport
             }
         } else {
             searchResults = operationService.searchOperations(operationSorterById.isActivated() ? operationSorterById : null,
-                    arrayStack(paymentPointFilter, cashboxFilter, beginDateFilter, endDateFilter, minimalSumFilter, maximalSumFilter), getPager());
+                    arrayStack(paymentCollectorFilter, paymentPointFilter, cashboxFilter, beginDateFilter, endDateFilter, minimalSumFilter, maximalSumFilter), getPager());
         }
 
         if (log.isDebugEnabled()) {

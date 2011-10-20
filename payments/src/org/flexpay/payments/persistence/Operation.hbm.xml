@@ -676,8 +676,12 @@
     ]]></query>
 
 	<query name="Operation.deleteAllBlankOperations">
-		delete from Operation 
-		where operationStatus.code = ?
+		delete from Operation o
+		where o.operationStatus.id in (
+            select id
+            from OperationStatus
+            where code = ?
+        )
 	</query>
 
 </hibernate-mapping>
