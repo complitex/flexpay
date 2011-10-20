@@ -152,18 +152,19 @@
     ]]></query>
 
 	<query name="ServiceProviderAttribute.listServiceProviderAttributes">
-		FROM ServiceProviderAttribute o
-		WHERE o.serviceProvider.id=?
+		from ServiceProviderAttribute o
+		where o.serviceProvider.id=?
 	</query>
 
     <query name="ServiceProviderAttribute.findServiceProviderAttribute">
-        FROM ServiceProviderAttribute o
-        left outer join fetch o.serviceProvider
-        WHERE o.serviceProvider.id = ? and o.name = ?
+        from ServiceProviderAttribute o
+            left outer join fetch o.serviceProvider
+        where o.serviceProvider.id = ? and o.name = ?
     </query>
 
     <query name="ServiceProviderAttribute.deleteByServiceProvider">
-        delete from ServiceProviderAttribute where serviceProvider.id=?
+        delete from ServiceProviderAttribute
+        where serviceProvider.id=?
     </query>
 
 </hibernate-mapping>

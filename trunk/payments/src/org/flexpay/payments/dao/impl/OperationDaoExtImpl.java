@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
@@ -86,7 +87,9 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 
             if (filter.needFilter()) {
 
-                if (filter instanceof PaymentPointFilter) {
+                if (filter instanceof PaymentCollectorFilter) {
+                    filterHql.append(" AND o.paymentPoint.collector.id = :paymentCollectorId");
+                } else if (filter instanceof PaymentPointFilter) {
                     filterHql.append(" AND o.paymentPoint.id = :paymentPointId");
                 } else if (filter instanceof CashboxFilter) {
                     filterHql.append(" AND o.cashbox.id = :cashboxId");
@@ -116,7 +119,9 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
             ObjectFilter filter = (ObjectFilter) f;
             if (filter.needFilter()) {
 
-                if (filter instanceof PaymentPointFilter) {
+                if (filter instanceof PaymentCollectorFilter) {
+                    query.setParameter("paymentCollectorId", ((PaymentCollectorFilter) filter).getSelectedId());
+                } else if (filter instanceof PaymentPointFilter) {
                     query.setParameter("paymentPointId", ((PaymentPointFilter) filter).getSelectedId());
                 } else if (filter instanceof CashboxFilter) {
                     query.setParameter("cashboxId", ((CashboxFilter) filter).getSelectedId());
@@ -169,7 +174,7 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 
 				javax.persistence.Query query = entityManager.createQuery(hql.toString());
 				setCashboxOperationSearchQueryParameters(query, filters);
-                log.debug("Operations search query: {}", query.toString());
+
 				return (List<Operation>) query.setFirstResult(pager.getThisPageFirstElementNumber()).
                         setMaxResults(pager.getPageSize()).
                         getResultList();
@@ -194,7 +199,9 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 
             if (filter.needFilter()) {
 
-                if (filter instanceof PaymentPointFilter) {
+                if (filter instanceof PaymentCollectorFilter) {
+                    filterHql.append(" AND o.paymentPoint.collector.id = :paymentCollectorId");
+                } else if (filter instanceof PaymentPointFilter) {
                     filterHql.append(" AND o.paymentPoint.id = :paymentPointId");
                 } else if (filter instanceof CashboxFilter) {
                     filterHql.append(" AND o.cashbox.id = :cashboxId");
@@ -225,7 +232,9 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
             ObjectFilter filter = (ObjectFilter) f;
             if (filter.needFilter()) {
 
-                if (filter instanceof PaymentPointFilter) {
+                if (filter instanceof PaymentCollectorFilter) {
+                    query.setParameter("paymentCollectorId", ((PaymentCollectorFilter) filter).getSelectedId());
+                } else if (filter instanceof PaymentPointFilter) {
                     query.setParameter("paymentPointId", ((PaymentPointFilter) filter).getSelectedId());
                 } else if (filter instanceof CashboxFilter) {
                     query.setParameter("cashboxId", ((CashboxFilter) filter).getSelectedId());
