@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -62,6 +63,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	 * @return Payments registry
 	 * @throws FlexPayException
 	 */
+	@Transactional(readOnly = false)
 	@Nullable
 	public Registry createRegistry(@NotNull ServiceProvider serviceProvider,
 								   @NotNull Organization registerOrganization,
@@ -148,6 +150,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registryProperties.setRecipient(provider.getOrganization());
 		registryProperties.setSender(registerer);
 		registryProperties.setServiceProvider(provider);
+		registryProperties.setRegistry(registry);
 		registry.setProperties(registryProperties);
 
 		// TODO: remove this dirty hack
