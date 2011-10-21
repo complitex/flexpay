@@ -305,4 +305,17 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 			}
 		});
 	}
+
+	@Override
+	public void deleteBlankOperations(final Long paymentCollectorId) {
+		getJpaTemplate().execute(new JpaCallback<Void>() {
+			@Override
+			public Void doInJpa(EntityManager entityManager) throws HibernateException {
+				entityManager.createNamedQuery("Operation.deleteBlankOperations").
+						setParameter(1, 6).
+						setParameter(2, paymentCollectorId).executeUpdate();
+				return null;
+			}
+		});
+	}
 }

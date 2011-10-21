@@ -234,6 +234,12 @@ public class OperationServiceImpl implements OperationService {
 		operationDaoExt.deleteAllBlankOperations();
 	}
 
+	@Transactional (readOnly = false)
+    @Override
+	public void deleteBlankOperations(Stub<PaymentCollector> stub) throws FlexPayException {
+		operationDaoExt.deleteBlankOperations(stub.getId());
+	}
+
 	@Required
 	public void setOperationDao(OperationDao operationDao) {
 		this.operationDao = operationDao;

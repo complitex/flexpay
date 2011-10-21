@@ -684,4 +684,17 @@
         )
 	</query>
 
+	<query name="Operation.deleteBlankOperations">
+		delete from Operation o
+		where o.operationStatus.id in (
+            select id
+            from OperationStatus
+            where code = ?
+        ) and o.paymentPoint.id in (
+			select id
+			from PaymentPoint
+			where collector.id = ?
+		)
+	</query>
+
 </hibernate-mapping>

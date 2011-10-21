@@ -43,6 +43,7 @@
 		<!-- process variables -->
 		<property id="addProcessIdToPaymentCollectorResult" itemSubjectRef="_resultItem"/>
 		<property id="generateEndOperationDayRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="deleteBlankOperationsResult" itemSubjectRef="_resultItem"/>
 		<property id="getPaymentPointsResult" itemSubjectRef="_resultItem"/>
 		<property id="signalFromPaymentPoint" itemSubjectRef="_resultItem"/>
 
@@ -276,6 +277,27 @@
 			</script>
 		</scriptTask>
 
+		<task id="_25" name="DeleteBlankOperationsTask" tns:taskName="DeleteBlankOperationsTask">
+			<ioSpecification>
+				<dataInput id="_25_paymentCollectorId" name="paymentCollectorId"/>
+				<dataOutput id="_25_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_25_paymentCollectorId</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_25_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>paymentCollectorId</sourceRef>
+				<targetRef>_25_paymentCollectorId</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_25_result</sourceRef>
+				<targetRef>deleteBlankOperationsResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
 		<task id="_16" name="GenerateEndOperationDayRegistryTask" tns:taskName="GenerateEndOperationDayRegistryTask">
 			<ioSpecification>
 				<dataInput id="_16_paymentCollectorId" name="paymentCollectorId"/>
@@ -390,7 +412,8 @@
 		<sequenceFlow id="_5-_14" sourceRef="_5" targetRef="_14"/>
 
 		<sequenceFlow id="_14-_15" sourceRef="_14" targetRef="_15"/>
-		<sequenceFlow id="_15-_16" sourceRef="_15" targetRef="_16"/>
+		<sequenceFlow id="_15-_25" sourceRef="_15" targetRef="_25"/>
+		<sequenceFlow id="_25-_16" sourceRef="_25" targetRef="_16"/>
 		<sequenceFlow id="_16-_20" sourceRef="_16" targetRef="_20"/>
 
 		<sequenceFlow id="_20-_21" sourceRef="_20" targetRef="_21">
