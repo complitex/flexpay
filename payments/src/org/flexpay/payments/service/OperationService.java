@@ -13,6 +13,7 @@ import org.flexpay.payments.persistence.operation.sorter.OperationSorter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.ws.server.endpoint.adapter.PayloadMethodEndpointAdapter;
 
 import java.util.Collection;
 import java.util.Date;
@@ -223,5 +224,8 @@ public interface OperationService {
 
 	@Secured (Roles.OPERATION_DELETE)
 	void deleteAllBlankOperations() throws FlexPayException;
+
+	@Secured (Roles.OPERATION_DELETE)
+	void deleteBlankOperations(Stub<PaymentCollector> stub) throws FlexPayException;
 
 }

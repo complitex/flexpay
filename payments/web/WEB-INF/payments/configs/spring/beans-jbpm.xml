@@ -117,4 +117,11 @@
           p:registryGenerator-ref="endOperationDayRegistryGenerator"
           p:paymentCollectorService-ref="paymentCollectorService" />
 
+	<bean id="deleteBlankOperationsHandler"
+		  name="DeleteBlankOperationsTask"
+		  class="org.flexpay.payments.process.export.handler2.DeleteBlankOperationsHandler"
+		  parent="taskHandler"
+		  p:operationService-ref="operationService"
+		  p:paymentCollectorService-ref="paymentCollectorService" />
+
 </beans>
