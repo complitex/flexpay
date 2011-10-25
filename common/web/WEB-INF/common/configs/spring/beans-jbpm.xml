@@ -73,7 +73,7 @@
 		</drools:resources>
 	</drools:kagent>
        -->
-	<drools:kbase id="knowledgeBase">
+	<drools:kbase id="kbase">
 		<drools:resources>
 			<!--
 			<drools:resource type="BPMN2"
@@ -112,6 +112,16 @@
 	<bean id="statefulKnowledgeSession"
 		  factory-bean="statefulKnowledgeSessionFactory"
 		  factory-method="getSession" />
+
+	<bean id="knowledgeBaseFactory"
+		  class="org.flexpay.common.process.KnowledgeBaseContainerFactory"
+		  init-method="deployProcessDefitions"
+		  p:knowledgeBase-ref="kbase"
+		  p:processDefinitionManager-ref="processDefinitionManager" />
+
+	<bean id="knowledgeBase"
+		  factory-bean="knowledgeBaseFactory"
+		  factory-method="getKnowledgeBase" />
 
     <bean id="workingMemoryDbLogger"
           class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean"
@@ -174,6 +184,10 @@
 		  init-method="registerEventListeners"
 		  />
 
+	<bean id="processDefinitionJbpmDao"
+		  class="org.flexpay.common.process.dao.ProcessDefinitionJbpmImpl"
+		  p:kbase-ref="kbase" />
+
 	<bean id="workItemInfoDao"
 		  class="org.flexpay.common.process.dao.WorkItemDaoImpl"
 		  p:session-ref="statefulKnowledgeSession"
@@ -195,8 +209,7 @@
 	<bean name="processDefinitionManager"
 		  class="org.flexpay.common.process.ProcessDefinitionManagerImpl"
 		  factory-method="getInstance"
-		  init-method="deployProcessDefinitions"
-		  p:delegate-ref="processJbpmDao"
+		  p:delegate-ref="processDefinitionJbpmDao"
 	 	  p:guvnorUrl="${process_manager.guvnor_url}"
 		  p:guvnorPackageName="${process_manager.processes_package}"
 		  p:guvnorUserName="${process_manager.guvnor_user_name}"

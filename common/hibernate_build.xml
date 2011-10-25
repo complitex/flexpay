@@ -29,7 +29,7 @@
 		<hibernatetool destdir="${build.dir}/src/sql"
 					   classpath="${build.dir}/classes:${src.dir}">
 
-			<jpaconfiguration persistenceunit="org.jbpm.persistence.jpa" />
+			<jpaconfiguration persistenceunit="org.jbpm.persistence.jpa" propertyfile="${common.dir}/web/WEB-INF/common.properties" />
 
 			<classpath>
 				<path refid="jbpm.lib" />

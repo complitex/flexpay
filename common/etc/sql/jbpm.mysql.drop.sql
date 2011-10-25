@@ -1,4 +1,3 @@
-
 alter table Attachment
 	drop
 	foreign key FK1C935438EF5F064;
