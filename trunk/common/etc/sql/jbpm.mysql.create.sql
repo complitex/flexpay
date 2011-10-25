@@ -212,7 +212,9 @@ create table Task (
 	outputType varchar(255),
 	parentId bigint not null,
 	previousStatus integer,
+	processId varchar(255),
 	processInstanceId bigint not null,
+	processSessionId integer not null,
 	skipable bit not null,
 	status varchar(255),
 	workItemId bigint not null,
@@ -227,7 +229,7 @@ create table VariableInstanceLog (
 	log_date datetime,
 	processId varchar(255),
 	processInstanceId bigint not null,
-	value varchar(4000),
+	value varchar(255),
 	variableId varchar(255),
 	variableInstanceId varchar(255),
 	primary key (id)

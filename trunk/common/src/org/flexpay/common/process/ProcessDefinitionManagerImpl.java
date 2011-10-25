@@ -21,7 +21,7 @@ import org.drools.definition.KnowledgePackage;
 import org.drools.definition.process.Process;
 import org.drools.io.ResourceFactory;
 import org.drools.util.codec.Base64;
-import org.flexpay.common.process.dao.ProcessJbpmDao;
+import org.flexpay.common.process.dao.ProcessDefinitionJbpmDao;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.persistence.ProcessDefinition;
 import org.flexpay.common.util.CollectionUtils;
@@ -51,7 +51,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 
 	private static final String PROCESS_FILE_EXTENTION = "bpmn";
 
-	private ProcessJbpmDao delegate;
+	private ProcessDefinitionJbpmDao delegate;
 
 	/**
 	 * singleton instance
@@ -105,7 +105,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	}
 
 	public List<ProcessDefinition> removeProcessDefinition(String definitionId) {
-		delegate.removeProcess(definitionId);
+		//delegate.removeProcess(definitionId);
 		return getProcessDefinitions();
 	}
 
@@ -118,10 +118,10 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 			processingProcessDefinition(getProcessesDefinitionContent(), true);
 		} catch (IOException e) {
 			throw new ProcessDefinitionException("Can not get process definition content", e,
-							"error.common.pm.pd_deployment_failed");
+							"common.error.pm.pd_deployment_failed");
 		} catch (SAXException e) {
 			throw new ProcessDefinitionException("Process definition deployment failed to knowledge base", e,
-					"error.common.pm.pd_deployment_failed");
+					"common.error.pm.pd_deployment_failed");
 		}
 		for (String path : definitionPaths) {
 			log.debug("Looking up {}", path);
@@ -170,10 +170,10 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 					processingProcessDefinition(list(getProcessDefinitionContent(name + "." + PROCESS_FILE_EXTENTION)), false);
 				} catch (IOException e) {
 					throw new ProcessDefinitionException("Process definition deployment failed " + name, e,
-							"error.common.pm.pd_deployment_failed", name);
+							"common.error.pm.pd_deployment_failed", name);
 				} catch (SAXException e) {
 					throw new ProcessDefinitionException("Process definition deployment failed " + name, e,
-							"error.common.pm.pd_deployment_failed", name);
+							"common.error.pm.pd_deployment_failed", name);
 				}
 				log.debug("Did not deploy process definition {}. It content in storage. Version {}", name, processVersion);
 				return;
@@ -193,7 +193,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 
 		log.warn("No definition found: {}", name);
 		throw new ProcessDefinitionException("Process definition for name " + name + " file did not find!",
-				"error.common.pm.pd_file_not_found", name);
+				"common.error.pm.pd_file_not_found", name);
 	}
 
 	/**
@@ -213,17 +213,17 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 			InputStream is = getPackageProcessContent(guvnorPackageName, name, Long.toString(version));
 			if (is == null) {
 				throw new ProcessDefinitionException("Process definition for name " + fileName +" file not found in storage!",
-						"error.common.pm.pd_file_not_found_in_storage", fileName);
+						"common.error.pm.pd_file_not_found_in_storage", fileName);
 			}
 			ProcessDefinition definition = new ProcessDefinition(name, name, version);
 			definition.setDeploymentId(fileName);
 			processingProcessDefinition(list(new ProcessDefinitionContent(definition, is)), false);
 		} catch (IOException e) {
 			throw new ProcessDefinitionException("Can not get process definition content", e,
-							"error.common.pm.pd_deployment_failed", name);
+							"common.error.pm.pd_deployment_failed", name);
 		} catch (SAXException e) {
 			throw new ProcessDefinitionException("Process definition deployment failed " + name, e,
-					"error.common.pm.pd_deployment_failed", name);
+					"common.error.pm.pd_deployment_failed", name);
 		}
 	}
 
@@ -235,7 +235,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 					if (forceAddFileToStorage || !isPackageContentProcessDefinition(StringUtils.removeEnd(definitionFile.getName(), "." + PROCESS_FILE_EXTENTION))) {
 						if (!addFileToStorage(definitionFile)) {
 							throw new ProcessDefinitionException("Process definition deployment failed to storage",
-									"error.common.pm.pd_deployment_failed_to_storage", definitionFile.getName());
+									"common.error.pm.pd_deployment_failed_to_storage", definitionFile.getName());
 						}
 						if (!buildPackage(guvnorPackageName)) {
 							deleteFile(definitionFile.getName());
@@ -244,7 +244,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 					}
 				} catch (IOException e) {
 					throw new ProcessDefinitionException("Process definition deployment failed " + definitionFile.getName(), e,
-							"error.common.pm.pd_deployment_failed", definitionFile.getName());
+							"common.error.pm.pd_deployment_failed", definitionFile.getName());
 				}
 			} catch (ProcessDefinitionException e) {
 				if (ignoreExceptions) {
@@ -258,10 +258,10 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 			processingProcessDefinition(contents, ignoreExceptions);
 		} catch (IOException e) {
 			throw new ProcessDefinitionException("Process definition deployment failed " + ArrayUtils.toString(definitionFiles), e,
-					"error.common.pm.pd_deployment_failed", ArrayUtils.toString(definitionFiles));
+					"common.error.pm.pd_deployment_failed", ArrayUtils.toString(definitionFiles));
 		} catch (SAXException e) {
 			throw new ProcessDefinitionException("Process definition deployment failed " + ArrayUtils.toString(definitionFiles), e,
-					"error.common.pm.pd_deployment_failed", ArrayUtils.toString(definitionFiles));
+					"common.error.pm.pd_deployment_failed", ArrayUtils.toString(definitionFiles));
 		}
 	}
 
@@ -298,7 +298,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 		}
 		if (resultGuvnorProcess == null) {
 			throw new ProcessDefinitionException("Process did not find in storage",
-					"error.common.pm.pd_file_not_found_in_storage", processDefinitionFileName);
+					"common.error.pm.pd_file_not_found_in_storage", processDefinitionFileName);
 		}
 		return new ProcessDefinitionContent(resultGuvnorProcess,
 				getPackageProcessContent(guvnorPackageName, processDefinitionFileName, Long.toString(resultGuvnorProcess.getVersion())));
@@ -587,7 +587,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	}
 
 	@Required
-	public void setDelegate(ProcessJbpmDao delegate) {
+	public void setDelegate(ProcessDefinitionJbpmDao delegate) {
 		this.delegate = delegate;
 	}
 
