@@ -23,13 +23,15 @@ public abstract class GeneralizationTradingDay<T extends DomainObject> implement
 			log.debug("ProcessInstance Instance {} was not found", processInstanceId);
 			return false;
 		}
-		Boolean canCreateOrUpdate = (Boolean) processInstance.getParameter(CAN_UPDATE_OR_CREATE_OPERATION);
+		Object canCreateOrUpdate = processInstance.getParameter(CAN_UPDATE_OR_CREATE_OPERATION);
 		log.debug("{} = {} for process instance id = {}", new Object[]{CAN_UPDATE_OR_CREATE_OPERATION, canCreateOrUpdate, processInstanceId});
-		if (canCreateOrUpdate == null) {
-			log.debug("{} is null, then return false", CAN_UPDATE_OR_CREATE_OPERATION);
-			return false;
+		if (canCreateOrUpdate instanceof Boolean) {
+			return (Boolean) canCreateOrUpdate;
+		} else if (canCreateOrUpdate instanceof String) {
+			return Boolean.parseBoolean((String)canCreateOrUpdate);
 		}
-		return canCreateOrUpdate;
+		log.debug("{} is null or failed class, then return false", CAN_UPDATE_OR_CREATE_OPERATION);
+		return false;
 	}
 
 	@Required
