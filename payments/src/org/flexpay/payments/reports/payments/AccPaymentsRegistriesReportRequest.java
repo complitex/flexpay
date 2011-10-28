@@ -22,6 +22,7 @@ public class AccPaymentsRegistriesReportRequest extends AccReportRequest {
                 append("beginDate", beginDate).
                 append("endDate", endDate).
                 append("paymentCollectorId", paymentCollectorId).
+				append("requiredFileterdByPymentCollector", requiredFileterdByPymentCollector).
                 append("locale", locale).
                 append("serviceProviderId", serviceProviderId).
                 toString();

@@ -61,6 +61,8 @@ public interface OperationDaoExt {
 
 	Long getBlankOperationsCount();
 
+	Long getBlankOperationsCount(Long paymentCollectorId);
+
 	void deleteAllBlankOperations();
 
 	void deleteBlankOperations(Long paymentCollectorId);

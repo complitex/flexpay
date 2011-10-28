@@ -17,6 +17,7 @@ public abstract class AccReportRequest {
     protected Date beginDate;
     protected Date endDate;
     protected Long paymentCollectorId;
+	protected boolean requiredFileterdByPymentCollector = false;
     protected Locale locale;
 
     public int getPaymentStatus() {
@@ -59,7 +60,15 @@ public abstract class AccReportRequest {
         this.paymentCollectorId = paymentCollectorId;
     }
 
-    public Locale getLocale() {
+	public boolean isRequiredFileterdByPymentCollector() {
+		return requiredFileterdByPymentCollector;
+	}
+
+	public void setRequiredFileterdByPymentCollector(boolean requiredFileterdByPymentCollector) {
+		this.requiredFileterdByPymentCollector = requiredFileterdByPymentCollector;
+	}
+
+	public Locale getLocale() {
         return locale;
     }
 
@@ -74,6 +83,7 @@ public abstract class AccReportRequest {
                 append("beginDate", beginDate).
                 append("endDate", endDate).
                 append("paymentCollectorId", paymentCollectorId).
+				append("requiredFileterdByPymentCollector", requiredFileterdByPymentCollector).
                 append("locale", locale).
                 toString();
     }

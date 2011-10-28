@@ -228,6 +228,12 @@ public class OperationServiceImpl implements OperationService {
 		return operationDaoExt.getBlankOperationsCount();
 	}
 
+	@Transactional (readOnly = true)
+    @Override
+	public Long getBlankOperationsCount(Stub<PaymentCollector> stub) throws FlexPayException {
+		return operationDaoExt.getBlankOperationsCount(stub.getId());
+	}
+
 	@Transactional (readOnly = false)
     @Override
 	public void deleteAllBlankOperations() throws FlexPayException {

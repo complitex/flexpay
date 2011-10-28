@@ -294,6 +294,12 @@ public class OperationDaoExtImpl extends JpaDaoSupport implements OperationDaoEx
 		return DataAccessUtils.longResult(getJpaTemplate().find("SELECT COUNT(o) FROM Operation o WHERE o.operationStatus.code = 6"));
 	}
 
+    @Override
+	public Long getBlankOperationsCount(Long paymentCollectorId) {
+		return DataAccessUtils.longResult(getJpaTemplate().find(
+				"SELECT COUNT(o) FROM Operation o WHERE o.operationStatus.code = 6 and o.paymentPoint.collector.id = ?", paymentCollectorId));
+	}
+
 	@Override
 	public void deleteAllBlankOperations() {
 		getJpaTemplate().execute(new JpaCallback<Void>() {
