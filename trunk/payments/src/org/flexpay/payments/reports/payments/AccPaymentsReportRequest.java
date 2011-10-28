@@ -40,6 +40,7 @@ public class AccPaymentsReportRequest extends AccReportRequest {
                 append("beginDate", beginDate).
                 append("endDate", endDate).
                 append("paymentCollectorId", paymentCollectorId).
+				append("requiredFileterdByPymentCollector", requiredFileterdByPymentCollector).
                 append("locale", locale).
                 append("paymentStatus", paymentStatus).
                 append("detailsLevel", detailsLevel).

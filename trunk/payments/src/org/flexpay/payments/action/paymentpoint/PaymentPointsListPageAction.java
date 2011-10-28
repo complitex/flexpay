@@ -1,10 +1,18 @@
 package org.flexpay.payments.action.paymentpoint;
 
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.action.AccountantAWPActionSupport;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
+import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
 
 public class PaymentPointsListPageAction extends AccountantAWPActionSupport {
 
@@ -24,7 +32,21 @@ public class PaymentPointsListPageAction extends AccountantAWPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		collectorService.initFilter(paymentCollectorFilter);
+		UserPreferences userPreferences = getUserPreferences();
+		if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
+			collectorService.initFilter(paymentCollectorFilter);
+		} else if (userPreferences != null && userPreferences instanceof PaymentsUserPreferences &&
+					((PaymentsUserPreferences)userPreferences).getPaymentCollectorId() != null) {
+			PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>((((PaymentsUserPreferences) userPreferences)).getPaymentCollectorId()));
+			if (paymentCollector != null) {
+				paymentCollectorFilter.setInstances(CollectionUtils.list(paymentCollector));
+				paymentCollectorFilter.setSelectedId(paymentCollector.getId());
+				paymentCollectorFilter.setReadOnly(true);
+			} else {
+				log.warn("Can not find payment collector '{}' (see user preferences {})",
+						(((PaymentsUserPreferences) userPreferences)).getPaymentCollectorId(), userPreferences);
+			}
+		}
 
 		return SUCCESS;
 	}

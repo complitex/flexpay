@@ -323,6 +323,18 @@
         order by r.creationDate desc
     ]]></query>
 
+    <query name="Registry.findRegistriesByDateIntervalAndSenderAndRecipient"><![CDATA[
+        select distinct r
+        from Registry r
+			left join fetch r.registryType
+            left join fetch r.containers
+        where r.senderCode = ?
+            and r.recipientCode = ?
+            and r.creationDate >= ?
+            and r.creationDate <= ?
+        order by r.creationDate desc
+    ]]></query>
+
 	<query name="Registry.findObjects">
         select distinct r
 		from Registry r

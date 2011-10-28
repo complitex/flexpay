@@ -1,6 +1,11 @@
 package org.flexpay.payments.action.reports;
 
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -11,6 +16,8 @@ import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.springframework.beans.factory.annotation.Required;
 
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
+import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
 
 public class AccReturnedPaymentsReportAction extends AccPaymentsReportAction {
 
@@ -27,6 +34,7 @@ public class AccReturnedPaymentsReportAction extends AccPaymentsReportAction {
 	private static final String ACC_RETURNED_PAYMENT_POINT_PAYMENTS = PREFIX + "PaymentPointPayments";
 	private static final String ACC_RETURNED_CASHBOX_PAYMENTS = PREFIX + "CashboxPayments";
 
+	PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter();
     private PaymentPointFilter paymentPointFilter = new PaymentPointFilter();
     private CashboxFilter cashboxFilter = new CashboxFilter();
     private Integer details;
@@ -37,8 +45,24 @@ public class AccReturnedPaymentsReportAction extends AccPaymentsReportAction {
     @SuppressWarnings({"unchecked"})
     @Override
     protected void initFilters() {
-        paymentPointFilter.initFilter(session);
-        paymentPointService.initFilter(paymentPointFilter);
+
+		paymentPointFilter.initFilter(session);
+
+		UserPreferences userPreferences = getUserPreferences();
+		if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
+			paymentPointService.initFilter(paymentPointFilter);
+		} else if (userPreferences != null && userPreferences instanceof PaymentsUserPreferences &&
+					((PaymentsUserPreferences)userPreferences).getPaymentCollectorId() != null) {
+			PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>((((PaymentsUserPreferences) userPreferences)).getPaymentCollectorId()));
+			if (paymentCollector != null) {
+				paymentCollectorFilter.setInstances(CollectionUtils.list(paymentCollector));
+				paymentCollectorFilter.setSelectedId(paymentCollector.getId());
+				paymentPointService.initFilter(arrayStack(paymentCollectorFilter), paymentPointFilter);
+			} else {
+				log.warn("Can not find payment collector '{}' (see user preferences {})",
+						(((PaymentsUserPreferences) userPreferences)).getPaymentCollectorId(), userPreferences);
+			}
+		}
 
         if (paymentPointFilter.needFilter()) {
             cashboxFilter.initFilter(session);
@@ -56,6 +80,10 @@ public class AccReturnedPaymentsReportAction extends AccPaymentsReportAction {
         request.setPaymentStatus(OperationStatus.RETURNED);
         request.setLocale(getUserPreferences().getLocale());
         request.setPaymentCollectorId(((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId());
+
+		if (paymentCollectorFilter.needFilter()) {
+			request.setRequiredFileterdByPymentCollector(true);
+		}
 
         request.setDetailsLevel(details);
 

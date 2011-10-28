@@ -1,25 +1,34 @@
 package org.flexpay.payments.action.registry;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.action.AccountantAWPActionSupport;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static org.apache.commons.lang.time.DateUtils.addDays;
 import static org.flexpay.common.util.DateUtil.*;
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
+import static org.flexpay.payments.service.Roles.PAYMENTS_DEVELOPER;
 
 public class RegistriesListPageAction extends AccountantAWPActionSupport {
 
@@ -33,6 +42,7 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
     private ServiceProviderService serviceProviderService;
 	private OrganizationService organizationService;
 	private RegistryTypeService registryTypeService;
+	private PaymentCollectorService paymentCollectorService;
 
 	/**
 	* Perform action execution.
@@ -49,20 +59,40 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
         serviceProviderService.initServiceProvidersFilter(serviceProviderFilter);
         serviceProviderFilter.setNeedAutoChange(false);
 
-		List<Organization> orgs = organizationService.listOrganizations();
+		List<Organization> allOrgs = organizationService.listOrganizations();
+
+		List<Organization> senderOrganizations = Collections.emptyList();
+		UserPreferences userPreferences = getUserPreferences();
+		PaymentCollector paymentCollector = null;
+		if (isAuthenticationGranted(PAYMENTS_DEVELOPER)) {
+			senderOrganizations = allOrgs;
+		} else if (userPreferences != null && userPreferences instanceof PaymentsUserPreferences &&
+					((PaymentsUserPreferences)userPreferences).getPaymentCollectorId() != null) {
+			paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>((((PaymentsUserPreferences) userPreferences)).getPaymentCollectorId()));
+			if (paymentCollector != null) {
+				senderOrganizations = CollectionUtils.list(paymentCollector.getOrganization());
+			} else {
+				log.warn("Can not find payment collector '{}' (see user preferences {})",
+						(((PaymentsUserPreferences) userPreferences)).getPaymentCollectorId(), userPreferences);
+			}
+		}
 
 		StopWatch watch = new StopWatch();
 		if (log.isDebugEnabled()) {
 			watch.start();
 		}
-		senderOrganizationFilter.setOrganizations(orgs);
+		senderOrganizationFilter.setOrganizations(senderOrganizations);
+		if (paymentCollector != null) {
+			senderOrganizationFilter.setSelectedId(paymentCollector.getOrganization().getId());
+			senderOrganizationFilter.setDisabled(true);
+		}
 		if (log.isDebugEnabled()) {
 			watch.stop();
 			log.debug("Time spent initializing sender filter: {}", watch);
 			watch.reset();
 			watch.start();
 		}
-		recipientOrganizationFilter.setOrganizations(orgs);
+		recipientOrganizationFilter.setOrganizations(allOrgs);
 		if (log.isDebugEnabled()) {
 			watch.stop();
 			log.debug("Time spent initializing recipient filter: {}", watch);
@@ -152,4 +182,9 @@ public class RegistriesListPageAction extends AccountantAWPActionSupport {
     public void setServiceProviderService(ServiceProviderService serviceProviderService) {
         this.serviceProviderService = serviceProviderService;
     }
+
+	@Required
+	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+		this.paymentCollectorService = paymentCollectorService;
+	}
 }

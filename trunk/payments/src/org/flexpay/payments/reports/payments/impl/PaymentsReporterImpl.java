@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 import static org.flexpay.common.persistence.registry.RegistryContainer.*;
@@ -352,8 +349,19 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
         log.debug("Request = {}", request);
 
-        List<Registry> registries = registryService.findRegistries(serviceProviderId, request.getBeginDate(), request.getEndDate());
-        if (log.isDebugEnabled()) {
+		Long paymentCollectorId = request.getPaymentCollectorId();
+
+		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+		if (paymentCollector == null) {
+			log.warn("Payment collector did not find by id '{}'. Return empty collection List<AccPaymentsReportData.PaymentDetails>", paymentCollectorId);
+			return Collections.emptyList();
+		}
+
+		List<Registry> registries = request.isRequiredFileterdByPymentCollector()?
+				registryService.findRegistries(paymentCollector.getOrganization().getId(), serviceProviderId, request.getBeginDate(), request.getEndDate()):
+				registryService.findRegistries(serviceProviderId, request.getBeginDate(), request.getEndDate());
+
+		if (log.isDebugEnabled()) {
             log.debug("Found {} registries", registries.size());
         }
 
@@ -392,24 +400,30 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
     private List<AccPaymentsReportData.PaymentDetails> fillDetailses(AccPaymentsReportRequest request) {
 
+		Long paymentCollectorId = request.getPaymentCollectorId();
 		Long paymentPointId = request.getPaymentPointId();
 		Long cashboxId = request.getCashboxId();
 		Date beginDate = request.getBeginDate();
 		Date endDate = request.getEndDate();
 		int status = request.getPaymentStatus();
 		Locale locale = request.getLocale();
+		boolean requiredFilterByPaymentCollector = request.isRequiredFileterdByPymentCollector();
 
 		switch (request.getDetailsLevel()) {
 			case AccPaymentsReportRequest.DETAILS_LEVEL_PAYMENT_POINT:
-				if (paymentPointId == null && cashboxId == null) {
+				if (paymentPointId == null && cashboxId == null && !requiredFilterByPaymentCollector) {
 					return getAllPaymentPointsNoDetails(status, beginDate, endDate, locale);
+				} else if (paymentPointId == null && cashboxId == null && requiredFilterByPaymentCollector) {
+					return getPaymentCollectorPaymentPointsNoDetails(paymentCollectorId, status, beginDate, endDate, locale);
 				} else if (paymentPointId != null && cashboxId == null) {
 					return getPaymentPointNoDetails(paymentPointId, status, beginDate, endDate, locale);
 				}
 				break;
 			case AccPaymentsReportRequest.DETAILS_LEVEL_CASHBOX:
-				if (paymentPointId == null && cashboxId == null) {
+				if (paymentPointId == null && cashboxId == null && !requiredFilterByPaymentCollector) {
 					return getAllPaymentPointsCashboxes(status, beginDate, endDate, locale);
+				} else if (paymentPointId == null && cashboxId == null && requiredFilterByPaymentCollector) {
+					return getPaymentCollectorCashboxes(paymentCollectorId, status, beginDate, endDate, locale);
 				} else if (paymentPointId != null && cashboxId == null) {
 					return getPaymentPointCashboxes(paymentPointId, status, beginDate, endDate, locale);
 				} else if (paymentPointId != null && cashboxId != null) {
@@ -417,8 +431,10 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 				}
 				break;
 			case AccPaymentsReportRequest.DETAILS_LEVEL_PAYMENT:
-				if (paymentPointId == null && cashboxId == null) {
+				if (paymentPointId == null && cashboxId == null && !requiredFilterByPaymentCollector) {
 					return getAllPaymentPointsPayments(status, beginDate, endDate, locale);
+				} else if (paymentPointId == null && cashboxId == null && requiredFilterByPaymentCollector) {
+					return getPaymentCollectorPaymentPointsPayments(paymentCollectorId, status, beginDate, endDate, locale);
 				} else if (paymentPointId != null && cashboxId == null) {
 					return getPaymentPointPayments(paymentPointId, status, beginDate, endDate, locale);
 				} else if (paymentPointId != null && cashboxId != null) {
@@ -430,6 +446,24 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		}
 
 		return null;
+	}
+
+	private List<AccPaymentsReportData.PaymentDetails> getPaymentCollectorPaymentPointsNoDetails(Long paymentCollectorId,
+																								 int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentsReportData.PaymentDetails> result = list();
+
+		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+		if (paymentCollector == null) {
+			log.warn("Payment collector did not find by id '{}'. Return empty collection List<AccPaymentsReportData.PaymentDetails>", paymentCollectorId);
+			return Collections.emptyList();
+		}
+		for (PaymentPoint paymentPoint : paymentCollector.getPaymentPoints()) {
+			AccPaymentsReportData.PaymentDetails pointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
+			result.add(pointSummary);
+		}
+
+		return result;
 	}
 
 	private List<AccPaymentsReportData.PaymentDetails> getAllPaymentPointsNoDetails(int status, Date beginDate, Date endDate, Locale locale) {
@@ -449,6 +483,33 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 		AccPaymentsReportData.PaymentDetails details = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPointId), status, beginDate, endDate, locale);
 		return list(details);
+	}
+
+	private List<AccPaymentsReportData.PaymentDetails> getPaymentCollectorCashboxes(Long paymentCollectorId,
+																					int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentsReportData.PaymentDetails> paymentPointSummaries = list();
+
+		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+		if (paymentCollector == null) {
+			log.warn("Payment collector did not find by id '{}'. Return empty collection List<AccPaymentsReportData.PaymentDetails>", paymentCollectorId);
+			return Collections.emptyList();
+		}
+		for (PaymentPoint paymentPoint : paymentCollector.getPaymentPoints()) {
+			List<AccPaymentsReportData.PaymentDetails> cashboxSummaries = list();
+			List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
+			for (Cashbox cashbox : cashboxes) {
+				AccPaymentsReportData.PaymentDetails cashboxSummary = getCashboxSummary(new Stub<Cashbox>(cashbox.getId()), status, beginDate, endDate, locale);
+				cashboxSummaries.add(cashboxSummary);
+			}
+
+			AccPaymentsReportData.PaymentDetails pointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
+			pointSummary.setChildDetailses(cashboxSummaries);
+
+			paymentPointSummaries.add(pointSummary);
+		}
+
+		return paymentPointSummaries;
 	}
 
 	private List<AccPaymentsReportData.PaymentDetails> getAllPaymentPointsCashboxes(int status, Date beginDate, Date endDate, Locale locale) {
@@ -499,6 +560,25 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 		List<PaymentPoint> allPaymentPoints = paymentPointService.findAll();
 		for (PaymentPoint paymentPoint : allPaymentPoints) {
+			AccPaymentsReportData.PaymentDetails paymentPointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
+			paymentPointSummary.setChildDetailses(getPaymentPointPayments(paymentPoint.getId(), status, beginDate, endDate, locale));
+			paymentPointSummaries.add(paymentPointSummary);
+		}
+
+		return paymentPointSummaries;
+	}
+
+	private List<AccPaymentsReportData.PaymentDetails> getPaymentCollectorPaymentPointsPayments(Long paymentCollectorId,
+																								int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentsReportData.PaymentDetails> paymentPointSummaries = list();
+
+		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+		if (paymentCollector == null) {
+			log.warn("Payment collector did not find by id '{}'. Return empty collection List<AccPaymentsReportData.PaymentDetails>", paymentCollectorId);
+			return Collections.emptyList();
+		}
+		for (PaymentPoint paymentPoint : paymentCollector.getPaymentPoints()) {
 			AccPaymentsReportData.PaymentDetails paymentPointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
 			paymentPointSummary.setChildDetailses(getPaymentPointPayments(paymentPoint.getId(), status, beginDate, endDate, locale));
 			paymentPointSummaries.add(paymentPointSummary);

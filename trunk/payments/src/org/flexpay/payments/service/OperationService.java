@@ -222,6 +222,9 @@ public interface OperationService {
 	@Secured (Roles.OPERATION_READ)
 	Long getBlankOperationsCount() throws FlexPayException;
 
+	@Secured (Roles.OPERATION_READ)
+	Long getBlankOperationsCount(Stub<PaymentCollector> stub) throws FlexPayException;
+
 	@Secured (Roles.OPERATION_DELETE)
 	void deleteAllBlankOperations() throws FlexPayException;
 

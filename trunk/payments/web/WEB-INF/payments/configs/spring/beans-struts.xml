@@ -384,6 +384,7 @@
           p:organizationService-ref="organizationService"
           p:registryTypeService-ref="registryTypeService"
           p:serviceProviderService-ref="serviceProviderService"
+		  p:paymentCollectorService-ref="paymentCollectorService"
           scope="prototype" />
 
     <bean id="checkRegistryErrorsNumberAction"

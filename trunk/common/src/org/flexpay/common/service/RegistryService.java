@@ -75,6 +75,8 @@ public interface RegistryService {
 
     List<Registry> findRegistries(Long recipientCode, Date from, Date till);
 
+	List<Registry> findRegistries(Long senderCode, Long recipientCode, Date from, Date till);
+
 	/**
 	 * Delete all records for registry
 	 *
