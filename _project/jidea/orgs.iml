@@ -4,7 +4,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
+          <unit-entry name="flexpay" value="3129d828-31e2-4db7-9ae0-986bd00fc591" />
           <unit-entry name="flexpaySessionFactory" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../orgs/web/WEB-INF/hibernate.cfg.xml" />

@@ -5,6 +5,7 @@ import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.action.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.OperationActionLog;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -28,6 +29,9 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 		try {
 			Operation newOperationBlank = operationService.createBlankOperation(SecurityUtil.getUserName(), getCashboxStub());
 			operationId = newOperationBlank.getId();
+
+            createActionLog(getCashbox());
+
 			status = STATUS_OK;
 		} catch (Throwable t) {
 			log.error("Error creating blank operation", t);
@@ -38,6 +42,18 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 
 		return SUCCESS;
 	}
+
+    private OperationActionLog createActionLog(Cashbox cashbox) throws Exception {
+        OperationActionLog actionLog = new OperationActionLog();
+
+        actionLog.setUserName(getUserPreferences().getUsername());
+        actionLog.setAction(OperationActionLog.PRINT_QUITTANCE);
+        actionLog.setActionString("Квитанция №" + operationId);
+        actionLog.setCashbox(cashbox);
+
+        return actionLog;
+    }
+
 
 	private Cashbox getCashbox() {
 

@@ -21,7 +21,9 @@ import org.flexpay.payments.action.outerrequest.request.response.Status;
 import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.action.outerrequest.request.response.data.QuittanceInfo;
 import org.flexpay.payments.action.outerrequest.request.response.data.ServiceDetails;
+import org.flexpay.payments.persistence.OperationActionLog;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.OperationActionLogService;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.TradingDay;
@@ -45,6 +47,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private List<QuittanceInfo> quittanceInfos;
 	private String actionName;
 
+    private OperationActionLogService operationActionLogService;
 	private AddressService addressService;
 	private ApartmentService apartmentService;
 	private PersonService personService;
@@ -72,6 +75,14 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			Long cashboxId = getCashboxId();
 
 			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+            if (!quittanceInfos.isEmpty()) {
+                OperationActionLog actionLog = createActionLog(request, cashbox);
+                if (actionLog != null) {
+                    operationActionLogService.create(actionLog);
+                }
+            } else {
+                log.debug("Quittances not found. Action log not created");
+            }
 			Long cashboxProcessId = cashbox.getTradingDayProcessInstanceId();
 
             if (cashboxProcessId == null || cashboxProcessId == 0) {
@@ -90,6 +101,29 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
 		return SUCCESS;
 	}
+
+    private OperationActionLog createActionLog(GetQuittanceDebtInfoRequest request, Cashbox cashbox) throws Exception {
+        OperationActionLog actionLog = new OperationActionLog();
+
+        actionLog.setUserName(getUserPreferences().getUsername());
+        if (request.getSearchType() == SearchRequest.TYPE_ACCOUNT_NUMBER) {
+            actionLog.setAction(OperationActionLog.SEARCH_BY_EIRC_ACCOUNT);
+            actionLog.setActionString(request.getSearchCriteria());
+        } else if (request.getSearchType() == SearchRequest.TYPE_QUITTANCE_NUMBER) {
+            actionLog.setAction(OperationActionLog.SEARCH_BY_QUITTANCE_NUMBER);
+            actionLog.setActionString(request.getSearchCriteria());
+        } else if (request.getSearchType() == SearchRequest.TYPE_APARTMENT_NUMBER) {
+            actionLog.setAction(OperationActionLog.SEARCH_BY_ADDRESS);
+            actionLog.setActionString(addressService.getAddress(new Stub<Apartment>(Long.parseLong(searchCriteria)), getLocale()));
+        } else {
+            log.debug("Unknows operation search type! Can't create log record");
+            return null;
+        }
+        actionLog.setActionString(request.getSearchCriteria());
+        actionLog.setCashbox(cashbox);
+
+        return actionLog;
+    }
 
 	private GetQuittanceDebtInfoRequest buildQuittanceRequest() throws FlexPayException {
 
@@ -186,6 +220,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private String getStatusText(Status status) {
         return getText(status.getTextKey());
 	}
+
 	@NotNull
     @Override
 	protected String getErrorResult() {
@@ -373,7 +408,12 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		this.cashboxTradingDayService = cashboxTradingDayService;
 	}
 
-	public static class ServiceFullIndexUtil {
+    @Required
+    public void setOperationActionLogService(OperationActionLogService operationActionLogService) {
+        this.operationActionLogService = operationActionLogService;
+    }
+
+    public static class ServiceFullIndexUtil {
 
 		private static final String DELIMITER = "z";
 

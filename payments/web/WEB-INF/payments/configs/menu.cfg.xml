@@ -428,4 +428,15 @@
         </property>
     </bean>
 
+    <bean name="payments.operation_action_logs" parent="payments.operations.operations"
+          p:name="payments.operation_action_logs"
+          p:title="payments.menu4.operation_action_logs_list"
+          p:namespace="/payments"
+          p:action="operationActionLogsList"
+          p:parent-ref="payments.operations.operations">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACC_OPERATIONS_3" />
+        </property>
+    </bean>
+
 </beans>

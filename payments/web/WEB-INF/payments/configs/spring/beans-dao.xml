@@ -64,6 +64,20 @@
         </property>
     </bean>
 
+    <bean id="operationActionLogDao"
+          parent="abstractDao"
+          p:proxyInterfaces="org.flexpay.payments.dao.OperationActionLogDao">
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.OperationActionLog" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="operationActionLogDaoExt"
+          class="org.flexpay.payments.dao.impl.OperationActionLogDaoExtImpl"
+          p:jpaTemplate-ref="jpaTemplate" />
+
     <bean id="operationDaoExt"
           class="org.flexpay.payments.dao.impl.OperationDaoExtImpl"
           p:jpaTemplate-ref="jpaTemplate" />
