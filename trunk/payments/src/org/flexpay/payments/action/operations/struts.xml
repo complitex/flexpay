@@ -26,6 +26,21 @@
             <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
+        <action name="operationsListAccAjax" class="operationsListAccAction">
+            <result>/WEB-INF/jsp/payments/operations/operations_list.jsp</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
+        <action name="operationActionLogsListAjax" class="operationActionLogsListAction">
+            <result>/WEB-INF/jsp/payments/operations/operation_ation_logs_list.jsp</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
+        <action name="operationActionLogsList" class="operationActionLogsListPageAction">
+            <result type="tiles">payments.operation_action_logs.list</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
 	</package>
 
     <package name="operations_operator" namespace="/payments" extends="payments_operator">

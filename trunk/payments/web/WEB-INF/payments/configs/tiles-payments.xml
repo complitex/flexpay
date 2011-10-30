@@ -136,6 +136,11 @@
         <put-attribute name="body" value="/WEB-INF/jsp/payments/operations/operations_list_acc_page.jsp"/>
     </definition>
 
+    <definition name="payments.operation_action_logs.list" extends="payments.accountant">
+        <put-attribute name="title" value="payments.operation_action_logs.list.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/operations/operation_action_logs_list_page.jsp"/>
+    </definition>
+
     <!-- Import -->
 	<definition name="payments.registry" extends="payments.accountant">
 		<put-attribute name="title" value="payments.menu2.registry" />

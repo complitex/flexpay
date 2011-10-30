@@ -54,6 +54,7 @@
     <bean id="searchQuittanceAction"
           parent="operatorAWPAction"
           class="org.flexpay.payments.action.quittance.SearchQuittanceAction"
+          p:operationActionLogService-ref="operationActionLogService"
           p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
@@ -111,6 +112,22 @@
           p:currencyInfoService-ref="currencyInfoService"
           scope="prototype" >
     </bean>
+
+    <bean id="operationActionLogsListPageAction"
+          parent="accountantAWPAction"
+          class="org.flexpay.payments.action.operations.OperationActionLogsListPageAction"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:crumbNameKey="payments.crumbs.operation_action_logs_list"
+          scope="prototype" />
+
+    <bean id="operationActionLogsListAction"
+          parent="accountantAWPAction"
+          class="org.flexpay.payments.action.operations.OperationActionLogsListAction"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:operationActionLogService-ref="operationActionLogService"
+          scope="prototype" />
 
     <bean id="operationsListPageAction"
           parent="operatorAWPAction"

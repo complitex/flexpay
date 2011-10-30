@@ -68,6 +68,11 @@
           p:operationDao-ref="operationDao"
           p:operationDaoExt-ref="operationDaoExt" />
 
+    <bean id="operationActionLogService"
+          class="org.flexpay.payments.service.impl.OperationActionLogServiceImpl"
+          p:operationActionLogDao-ref="operationActionLogDao"
+          p:operationActionLogDaoExt-ref="operationActionLogDaoExt" />
+
     <bean id="operationTypeServiceTarget"
           autowire-candidate="false"
           class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
