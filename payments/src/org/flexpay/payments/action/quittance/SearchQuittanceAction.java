@@ -80,6 +80,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
                 if (actionLog != null) {
                     operationActionLogService.create(actionLog);
                 }
+                log.debug("Quittances found. Creating action log {}", actionLog);
             } else {
                 log.debug("Quittances not found. Action log not created");
             }
@@ -105,7 +106,9 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
     private OperationActionLog createActionLog(GetQuittanceDebtInfoRequest request, Cashbox cashbox) throws Exception {
         OperationActionLog actionLog = new OperationActionLog();
 
+        actionLog.setCashbox(cashbox);
         actionLog.setUserName(getUserPreferences().getUsername());
+
         if (request.getSearchType() == SearchRequest.TYPE_ACCOUNT_NUMBER) {
             actionLog.setAction(OperationActionLog.SEARCH_BY_EIRC_ACCOUNT);
             actionLog.setActionString(request.getSearchCriteria());
@@ -116,11 +119,9 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
             actionLog.setAction(OperationActionLog.SEARCH_BY_ADDRESS);
             actionLog.setActionString(addressService.getAddress(new Stub<Apartment>(Long.parseLong(searchCriteria)), getLocale()));
         } else {
-            log.debug("Unknows operation search type! Can't create log record");
+            log.debug("Unknown operation search type! Can't create log record");
             return null;
         }
-        actionLog.setActionString(request.getSearchCriteria());
-        actionLog.setCashbox(cashbox);
 
         return actionLog;
     }

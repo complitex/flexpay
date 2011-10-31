@@ -32,7 +32,7 @@
         </action>
 
         <action name="operationActionLogsListAjax" class="operationActionLogsListAction">
-            <result>/WEB-INF/jsp/payments/operations/operation_ation_logs_list.jsp</result>
+            <result>/WEB-INF/jsp/payments/operations/operation_action_logs_list.jsp</result>
             <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 

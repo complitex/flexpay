@@ -99,7 +99,7 @@ public class OperationActionLogsListAction extends AccountantAWPWithPagerActionS
             log.debug("paymentCollectorId = {}, paymentPointId = {}, cashboxId = {}, serviceTypeId = {}", new Object[] {paymentCollectorFilter.getSelectedId(), paymentPointFilter.getSelectedId(), cashboxFilter.getSelectedId()});
         }
 
-        List<OperationActionLog> operationActionLogs = operationActionLogService.searchOperationActionLogs(null,
+        operationActionLogs = operationActionLogService.searchOperationActionLogs(null,
                     arrayStack(paymentCollectorFilter, paymentPointFilter, cashboxFilter, beginDateFilter, endDateFilter), getPager());
 
         if (log.isDebugEnabled()) {
@@ -116,6 +116,10 @@ public class OperationActionLogsListAction extends AccountantAWPWithPagerActionS
 
     public List<OperationActionLog> getOperationActionLogs() {
         return operationActionLogs;
+    }
+
+    public void setOperationActionLogs(List<OperationActionLog> operationActionLogs) {
+        this.operationActionLogs = operationActionLogs;
     }
 
     public void setCashboxFilter(CashboxFilter cashboxFilter) {

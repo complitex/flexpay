@@ -34,11 +34,17 @@
                 </td>
                 <td><s:date name="actionDate" format="yyyy.MM.dd HH:mm:ss" /></td>
                 <td><s:property value="userName" /></td>
-                <td><s:property value="action == OperationActionLog.SEARCH_BY_ADRESS ? getText('payments.operation_action_logs.list.action.search_by_address') :
-                                       action == OperationActionLog.SEARCH_BY_QUITTANCE ? getText('payments.operation_action_logs.list.action.search_by_quittance') :
-                                       action == OperationActionLog.SEARCH_BY_EIRC_ACCOUNT ? getText('payments.operation_action_logs.list.action.search_by_eirc_account') :
-                                       action == OperationActionLog.PRINT_QUITTANCE ? getText('payments.operation_action_logs.list.action.print_quittanceO') :
-                                       " /></td>
+                <td>
+                    <s:if test="action == 1">
+                        <s:text name="payments.operation_action_logs.list.action.search_by_address" />
+                    </s:if><s:elseif test="action == 2">
+                        <s:text name="payments.operation_action_logs.list.action.search_by_quittance" />
+                    </s:elseif><s:elseif test="action == 3">
+                        <s:text name="payments.operation_action_logs.list.action.search_by_eirc_account" />
+                    </s:elseif><s:elseif test="action == 4">
+                        <s:text name="payments.operation_action_logs.list.action.print_quittance" />
+                    </s:elseif>
+                </td>
                 <td><s:property value="actionString" /></td>
             </tr>
         </s:iterator>

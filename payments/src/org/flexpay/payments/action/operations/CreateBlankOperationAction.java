@@ -6,6 +6,7 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.action.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationActionLog;
+import org.flexpay.payments.service.OperationActionLogService;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -20,6 +21,7 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 	private Long operationId;
 
 	private OperationService operationService;
+    private OperationActionLogService operationActionLogService;
 
 	@NotNull
 	@Override
@@ -50,6 +52,8 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
         actionLog.setAction(OperationActionLog.PRINT_QUITTANCE);
         actionLog.setActionString("Квитанция №" + operationId);
         actionLog.setCashbox(cashbox);
+
+        operationActionLogService.create(actionLog);
 
         return actionLog;
     }
@@ -89,4 +93,8 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 		this.operationService = operationService;
 	}
 
+    @Required
+    public void setOperationActionLogService(OperationActionLogService operationActionLogService) {
+        this.operationActionLogService = operationActionLogService;
+    }
 }

@@ -177,6 +177,7 @@
           class="org.flexpay.payments.action.operations.CreateBlankOperationAction"
           p:cashboxService-ref="cashboxService"
           p:operationService-ref="operationService"
+          p:operationActionLogService-ref="operationActionLogService"
           scope="prototype" />
 
     <bean id="accBlankOperationReportAction"
