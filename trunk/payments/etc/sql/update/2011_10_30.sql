@@ -4,7 +4,7 @@ create table payments_operation_action_logs_tbl (
     version integer not null comment 'Optimistic lock version',
     user_name varchar(255) not null comment 'User name',
     action_time datetime not null comment 'Action time',
-    action integer not null comment 'Action type',
+    action integer not null comment 'Action (1 - search by address, 2 - search by quittance number, 3 - search by EIRC account, 4 - print quittance)',
     action_string varchar(300) comment 'Action string',
     cashbox_id bigint not null comment 'Cashbox reference',
     primary key (id)
