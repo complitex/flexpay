@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -91,12 +92,20 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 
 		oldCollector.setEmail(email);
 		if (beginTimeFilter.getHours() != 0 || beginTimeFilter.getMinutes() != 0 || beginTimeFilter.getSeconds() != 0) {
-			oldCollector.setTradingDayBeginTime(new Time((beginTimeFilter.getHours()*3600 + beginTimeFilter.getMinutes()*60 + beginTimeFilter.getSeconds())*1000));
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.HOUR_OF_DAY, endTimeFilter.getHours());
+			calendar.set(Calendar.MINUTE, endTimeFilter.getMinutes());
+			calendar.set(Calendar.SECOND, endTimeFilter.getSeconds());
+			oldCollector.setTradingDayBeginTime(new Time(calendar.getTimeInMillis()));
 		} else {
 			oldCollector.setTradingDayBeginTime(null);
 		}
 		if (endTimeFilter.getHours() != 0 || endTimeFilter.getMinutes() != 0 || endTimeFilter.getSeconds() != 0) {
-			oldCollector.setTradingDayEndTime(new Time((endTimeFilter.getHours()*3600 + endTimeFilter.getMinutes()*60 + endTimeFilter.getSeconds())*1000));
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.HOUR_OF_DAY, endTimeFilter.getHours());
+			calendar.set(Calendar.MINUTE, endTimeFilter.getMinutes());
+			calendar.set(Calendar.SECOND, endTimeFilter.getSeconds());
+			oldCollector.setTradingDayEndTime(new Time(calendar.getTimeInMillis()));
 		} else {
 			oldCollector.setTradingDayEndTime(null);
 		}
