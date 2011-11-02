@@ -220,4 +220,25 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
                             }
                         }, parameters);
     }
+
+    @Override
+    public List<Quittance> findQuittancesByConsumerIds(Collection<Long> consumerIds) {
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("consumerIds", consumerIds);
+
+        return getSimpleJdbcTemplate().query("select q.id " +
+                            "from eirc_quittances_tbl q " +
+                            "  inner join eirc_quittance_details_quittances_tbl qdq on qdq.quittance_id = q.id " +
+                            "  inner join eirc_quittance_details_tbl qd on qd.id = qdq.quittance_details_id " +
+                            "where qd.consumer_id in (:consumerIds) " +
+                           "order by q.date_from desc", new RowMapper<Quittance>() {
+                            @Override
+                            public Quittance mapRow(ResultSet rs, int i) throws SQLException {
+                                log.debug("ResultSet = {}", rs);
+                                return new Quittance(rs.getLong("id"));
+                            }
+                        }, parameters);
+    }
+
 }

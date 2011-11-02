@@ -196,6 +196,16 @@ public class QuittanceServiceImpl implements QuittanceService {
 
     @NotNull
     @Override
+    public List<Quittance> getQuittancesByConsumers(@NotNull List<Consumer> consumers) {
+        Set<Long> consumerIds = set();
+        for (Consumer consumer : consumers) {
+            consumerIds.add(consumer.getId());
+        }
+        return quittanceDaoExt.findQuittancesByConsumerIds(consumerIds);
+    }
+
+    @NotNull
+    @Override
     public List<Quittance> getQuittancesByApartments(@NotNull List<Consumer> consumers) {
         Set<Long> apartmentIds = set();
         for (Consumer consumer : consumers) {
