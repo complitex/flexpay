@@ -32,6 +32,8 @@ public interface QuittanceDaoExt {
 
     List<Quittance> findQuittances(Collection<Long> consumerIds);
 
+    List<Quittance> findQuittancesByConsumerIds(Collection<Long> consumerIds);
+
 	/**
 	 * Simple create quittances operation properties container
 	 */
