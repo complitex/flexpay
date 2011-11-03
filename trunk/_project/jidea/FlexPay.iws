@@ -111,9 +111,9 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="36eda022-69d1-48a4-9337-17612c9c98ff" name="Default" comment="Исправление некоторых ошибок в синхронизации через mule-приложение">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/dao/impl/OperationDaoExtImpl.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/dao/impl/OperationDaoExtImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/service/impl/OperationServiceImpl.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/service/impl/OperationServiceImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/service/OperationService.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/service/OperationService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/dao/OperationDaoExt.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/dao/OperationDaoExt.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/service/impl/OperationServiceImpl.java" afterPath="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/service/impl/OperationServiceImpl.java" />
     </list>
     <ignored path="FlexPay.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -190,10 +190,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="QuittanceDetailsFinderImpl.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="QuittanceDetailsFinderImpl.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/exchange/QuittanceDetailsFinderImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="278" column="23" selection-start="11158" selection-end="11158" vertical-scroll-proportion="0.0">
+            <state line="270" column="74" selection-start="10941" selection-end="10941" vertical-scroll-proportion="0.54042083">
               <folding />
             </state>
           </provider>
@@ -229,7 +229,7 @@
       <file leaf-file-name="QuittanceServiceImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/impl/QuittanceServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="203" column="47" selection-start="7142" selection-end="7142" vertical-scroll-proportion="0.0">
+            <state line="198" column="51" selection-start="6891" selection-end="6915" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -244,33 +244,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QuittanceDaoExtImpl.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="QuittanceDaoExtImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/impl/QuittanceDaoExtImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="225" column="45" selection-start="10674" selection-end="10674" vertical-scroll-proportion="0.52934664">
-              <folding>
-                <marker date="1320258252151" expanded="true" signature="2832:3383" placeholder="insert into eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="2986:3383" placeholder="select b.eir..eirc_eirc_accounts_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="3589:4143" placeholder="insert into eirc_quittance_details_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="3704:4143" placeholder="select q.id,..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="4338:4473" placeholder="create tempo..tmp_eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="4536:4612" placeholder="alter table tmp_eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="4684:4938" placeholder="insert into tmp_eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="4769:4937" placeholder="select max(q..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="5021:5293" placeholder="update eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="5402:5436" placeholder="drop table t..." />
-                <marker date="1320258252151" expanded="true" signature="5523:5702" placeholder="delete q fro..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="6051:6738" placeholder="select id fr..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="6208:6525" placeholder="select q1.ei..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="7501:8760" placeholder="select id fr..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="7658:8547" placeholder="select q1.ei..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="9404:10194" placeholder="select id fr..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="9561:9981" placeholder="select q1.ei..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="10851:11279" placeholder="select id fr..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="10851:11279" placeholder="select q.id ..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="10851:11226" placeholder="select q.id ..eirc_quittances_tbl..." />
-                <marker date="1320258252151" expanded="true" signature="11254:11279" placeholder="order by q.d..." />
-              </folding>
+            <state line="224" column="54" selection-start="10614" selection-end="10641" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -317,12 +295,12 @@
         <option value="$PROJECT_DIR$/../../payments/src/org/flexpay/payments/action/operations/CreateBlankOperationAction.java" />
         <option value="$PROJECT_DIR$/../../payments/etc/sql/update/2011_10_30.sql" />
         <option value="$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/operations/operation_action_logs_list.jsp" />
-        <option value="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/exchange/QuittanceDetailsFinderImpl.java" />
         <option value="$PROJECT_DIR$/../../http_tester/outerrequest_config.properties" />
         <option value="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/QuittanceDaoExt.java" />
         <option value="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/impl/QuittanceDaoExtImpl.java" />
         <option value="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/QuittanceService.java" />
         <option value="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/impl/QuittanceServiceImpl.java" />
+        <option value="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/exchange/QuittanceDetailsFinderImpl.java" />
       </list>
     </option>
   </component>
@@ -334,26 +312,23 @@
   </component>
   <component name="JspContextManager">
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/payment_point_filter.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/cashboxes/cashboxes_list_page.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/data_source_filter.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/service_providers/service_provider_correction_create.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/subdivision_filter.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/subdivisions/subdivision_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_ajax.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions/regions_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/data/registry_record_info.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/data/correspondence/correct_address_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/buildings_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings/buildings_list.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/streets/street_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/organization_filter.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/banks/bank_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/registry_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/quittance/print.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/quittance/search_by_address.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/person_search_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/flexpay_fileupload.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/sp_files/sp_file_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/sorters/process_sort_by_start_date_header.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/sender_organization_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/town_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns/town_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/cashbox_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/admin/user/user_payment_parameters.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/apartment_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartments/apartments_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/sorters/record_errors_group_sort_by_name_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_record_errors_groups_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/jquery_timeentry.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_time_with_sec_filter.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/taglibs.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/user.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/trading_day/trading_day_control_panel.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/monitor/payment_points_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/country_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/countries/countries_list.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/service_organization_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/quittances/generate_quittances.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/filters/process_state_filter.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_apartment_ajax.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list_page.jsp" />
@@ -365,57 +340,60 @@
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/sorters/process_sort_by_state_header.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/jquery_bbq.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_records_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_list_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_edit_page.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/sorters/record_errors_group_sort_by_name_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_record_errors_groups_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/town_sort_by_type_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns/towns_list.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/subdivision_filter.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/subdivisions/subdivision_edit.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/sorters/operation_sort_by_id_header.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/operations/operations_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/includes/flexpay_print.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/quittance/search_by_address.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/payment_collector_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/admin/user/user_payment_parameters.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/district_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/districts/districts_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_date_filter.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_ajax.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns/towns_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/close_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/quittances/quittance_packet_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_ajax.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings/building_create.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/region_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/jquery_ui_datepicker.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_date_filter.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/town_sort_by_name_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns/towns_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/filters/process_name_filter.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list_page.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/service_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/operations/operations_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_edit_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/jquery_validation.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/quittances/quittance_pay.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/end_time_filter.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/includes/stylesheet.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/monitor/payment_points_monitor.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/payment_collector_filter_ajax.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/payment_points/payment_points_list_page.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/parent_service_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/services/service_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street_ajax.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings/buildings_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/data/registry_records_group_info.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/data/correspondence/correct_person.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_ajax.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/streets/street_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../admin/web/WEB-INF/jsp/admin/user/user_form_data.jsp" context-file="file://$PROJECT_DIR$/../../admin/web/WEB-INF/jsp/admin/user/user_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/sorters/operation_sort_by_id_header.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/operations/operations_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/create_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/quittances/quittance_packet_edit.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/sorters/eirc_account_sort_by_address_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/sorters/process_sort_by_end_date_header.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_time_filter.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/service_provider_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/sorters/registry_sort_by_creation_date_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_record_errors_groups_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../admin/web/WEB-INF/jsp/admin/user/user_extend.jsp" context-file="file://$PROJECT_DIR$/../../admin/web/WEB-INF/jsp/admin/user/user_form_data.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartments/apartments_list_page.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/apartment_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartments/apartments_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/street_sort_by_type_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/streets/streets_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/street_sort_by_name_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/streets/streets_list.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/sorters/region_sorter_header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions/regions_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/data_source_filter.jsp" context-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/service_providers/service_provider_correction_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../orgs/web/WEB-INF/jsp/orgs/filters/recipient_organization_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/responses/simple_response.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_response.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view_attributes.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/responses/response.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_response.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/sorters/eirc_account_sort_by_address_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/person_search_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../tc/web/WEB-INF/jsp/tc/filters/building_attribute_group_filter.jsp" context-file="file://$PROJECT_DIR$/../../tc/web/WEB-INF/jsp/tc/building_attributes/building_attribute_type_edit.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/persons/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/parent_service_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/services/service_edit.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/taglibs.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/user.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/registry/registries_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/group/begin_end_dates_service_provider.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/services/services_list_page.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/town_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns/town_edit.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/sorters/registry_sort_by_creation_date_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_record_errors_groups_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/end_time_with_sec_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/reports/day_returned_payments_report.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/errors_messages.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list_page.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/sorters/record_errors_group_sort_by_number_of_errors_header.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_record_errors_groups_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/includes/jquery_ui_core.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/registry_records_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/end_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/processing/processes_cleanup.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/filters/service_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/operations/operations_list_page.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/streets/street_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/measure_unit_filter.jsp" context-file="file://$PROJECT_DIR$/../../payments/web/WEB-INF/jsp/payments/services/service_edit.jsp" />
   </component>
   <component name="LogFilters">
@@ -645,11 +623,11 @@
       <sortByType PackagesPane="true" ProjectPane="true" />
     </navigator>
     <panes>
-      <pane id="Favorites">
-        <subPane subId="FlexPay" />
-      </pane>
       <pane id="Scope">
         <subPane subId="Problems" />
+      </pane>
+      <pane id="Favorites">
+        <subPane subId="FlexPay" />
       </pane>
       <pane id="PackagesPane">
         <subPane>
@@ -951,16 +929,16 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="RESOURCE_BUNDLE_SPLITTER_PROPORTION" value="0.5" />
-    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
     <property name="options.lastSelected" value="editor.preferences.tabs" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="453" />
-    <property name="project.structure.last.edited" value="Libraries" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="453" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="15" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="453" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
@@ -1346,6 +1324,18 @@
         <option name="PhingTarget" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+        <option name="PhingTarget" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Remote">
       <option name="LOCAL" value="false" />
       <server-settings>
@@ -1362,18 +1352,6 @@
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-        <option name="PhingTarget" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
-      <option name="VM_PARAMETERS" value="" />
-      <option name="USER_CFG_CLASS" />
-      <option name="CONTEXT_PROVIDER" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -1627,13 +1605,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1098" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22941177" sideWeight="0.46743697" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.46660483" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17700535" sideWeight="0.37026778" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1961518" sideWeight="0.53781515" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.53256303" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="24" y="342" width="1631" height="317" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.2667023" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39888683" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44117647" sideWeight="0.0" order="26" side_tool="false" content_ui="tabs" x="595" y="212" width="465" height="480" />
@@ -1645,8 +1624,8 @@
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908458" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.54831934" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977018" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="21" side_tool="false" content_ui="tabs" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="21" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292357" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32960895" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Atlassian" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4965197" sideWeight="0.5" order="22" side_tool="false" content_ui="tabs" />
@@ -1655,7 +1634,6 @@
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44935971" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="SQL" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47058824" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36860466" sideWeight="0.5" order="24" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.53256303" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="24" y="342" width="1631" height="317" />
       <window_info id="Library Finder" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.65281624" sideWeight="0.5" order="25" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5472689" sideWeight="0.99679315" order="27" side_tool="false" content_ui="tabs" x="732" y="46" width="1002" height="1078" />
@@ -2780,6 +2758,11 @@
         <state line="80" column="0" selection-start="2572" selection-end="2572" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/QuittanceDetailsQuittance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="13" selection-start="199" selection-end="199" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/impl/ConsumerServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="135" column="46" selection-start="4680" selection-end="4713" vertical-scroll-proportion="0.0" />
@@ -2790,79 +2773,44 @@
         <state line="212" column="25" selection-start="7245" selection-end="7245" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/QuittanceDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="472" selection-end="472" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/Quittance.hbm.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="37" selection-start="2083" selection-end="2083" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/QuittanceDetailsQuittance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="13" selection-start="199" selection-end="199" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/QuittanceService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="120" column="0" selection-start="4028" selection-end="4028" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/impl/QuittanceServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/QuittanceDaoExt.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="203" column="47" selection-start="7142" selection-end="7142" vertical-scroll-proportion="0.0">
+        <state line="34" column="0" selection-start="1039" selection-end="1039" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/QuittanceDetails.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="13" selection-start="472" selection-end="472" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/persistence/account/Quittance.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="37" selection-start="2083" selection-end="2083" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/impl/QuittanceDaoExtImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="224" column="54" selection-start="10614" selection-end="10641" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/QuittanceDaoExt.java">
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/impl/QuittanceServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="0" selection-start="1039" selection-end="1039" vertical-scroll-proportion="0.0">
+        <state line="198" column="51" selection-start="6891" selection-end="6915" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/exchange/QuittanceDetailsFinderImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="278" column="23" selection-start="11158" selection-end="11158" vertical-scroll-proportion="0.0">
+        <state line="270" column="74" selection-start="10941" selection-end="10941" vertical-scroll-proportion="0.54042083">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/impl/QuittanceDaoExtImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="45" selection-start="10674" selection-end="10674" vertical-scroll-proportion="0.52934664">
-          <folding>
-            <marker date="1320258252151" expanded="true" signature="2832:3383" placeholder="insert into eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="2986:3383" placeholder="select b.eir..eirc_eirc_accounts_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="3589:4143" placeholder="insert into eirc_quittance_details_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="3704:4143" placeholder="select q.id,..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="4338:4473" placeholder="create tempo..tmp_eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="4536:4612" placeholder="alter table tmp_eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="4684:4938" placeholder="insert into tmp_eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="4769:4937" placeholder="select max(q..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="5021:5293" placeholder="update eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="5402:5436" placeholder="drop table t..." />
-            <marker date="1320258252151" expanded="true" signature="5523:5702" placeholder="delete q fro..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="6051:6738" placeholder="select id fr..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="6208:6525" placeholder="select q1.ei..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="7501:8760" placeholder="select id fr..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="7658:8547" placeholder="select q1.ei..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="9404:10194" placeholder="select id fr..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="9561:9981" placeholder="select q1.ei..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="10851:11279" placeholder="select id fr..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="10851:11279" placeholder="select q.id ..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="10851:11226" placeholder="select q.id ..eirc_quittances_tbl..." />
-            <marker date="1320258252151" expanded="true" signature="11254:11279" placeholder="order by q.d..." />
-          </folding>
         </state>
       </provider>
     </entry>
