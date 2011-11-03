@@ -8,7 +8,7 @@
 	<package name="monitor" namespace="/payments" extends="payments">
 
         <action name="operationsListMonitor" class="operationsListMonitorPageAction">
-            <result type="tiles">payments.operations.list</result>
+            <result type="tiles">payments.operations.list.monitor</result>
             <result name="redirectError" type="redirectAction">
                 <param name="actionName">paymentPointDetailMonitor</param>
                 <param name="parse">true</param>
