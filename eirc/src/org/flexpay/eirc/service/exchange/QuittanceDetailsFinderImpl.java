@@ -268,7 +268,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
         log.debug("Find quittances by consumers ({})", consumers);
 
-        List<Quittance> quittances = quittanceService.getQuittances(consumers);
+        List<Quittance> quittances = quittanceService.getQuittancesByConsumers(consumers);
 
         if (quittances.isEmpty()) {
             log.debug("Quittances not found");
