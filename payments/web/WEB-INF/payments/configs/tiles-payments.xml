@@ -87,6 +87,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/operations/operations_list_page.jsp"/>
 	</definition>
 
+	<definition name="payments.operations.list.monitor" extends="payments.operator">
+		<put-attribute name="title" value="payments.operations.list.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/operations_list_monitor_page.jsp"/>
+	</definition>
+
 	<!-- operator reports-related definitions -->
 	<definition name="payments.report.day.received" extends="payments.operator">
 		<put-attribute name="title" value="payments.reports.received.title"/>

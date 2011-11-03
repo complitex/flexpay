@@ -207,6 +207,7 @@
           p:cashboxService-ref="cashboxService"
           p:paymentPointService-ref="paymentPointService"
           p:serviceTypeService-ref="serviceTypeService"
+		  p:processManager-ref="processManager"
           p:crumbNameKey="payments.crumbs.operations_list"
           scope="prototype" />
 
