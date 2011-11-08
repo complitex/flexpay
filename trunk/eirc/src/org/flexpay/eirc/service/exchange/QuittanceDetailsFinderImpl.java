@@ -11,7 +11,6 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.persistence.account.QuittanceDetailsQuittance;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
@@ -33,9 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -269,6 +266,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         log.debug("Find quittances by consumers ({})", consumers);
 
         List<Quittance> quittances = quittanceService.getQuittancesByConsumers(consumers);
+        List<QuittanceDetails> detailses = quittanceService.getQuittanceDetailsByConsumers(consumers);
 
         if (quittances.isEmpty()) {
             log.debug("Quittances not found");
@@ -280,7 +278,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             log.debug("Found {} quittances", quittances.size());
         }
 
-        buildResponse(quittances, request);
+        buildResponse(quittances, detailses, request);
     }
 
     private void findByAddress(SearchRequest<?> request) {
@@ -457,6 +455,10 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
     }
 
     private void buildResponse(@NotNull List<Quittance> quittances, SearchRequest<?> request) {
+        buildResponse(quittances, null, request);
+    }
+
+    private void buildResponse(@NotNull List<Quittance> quittances, List<QuittanceDetails> detailses, SearchRequest<?> request) {
 
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
@@ -471,7 +473,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             if (request instanceof GetQuittanceDebtInfoRequest) {
                 GetQuittanceDebtInfoRequest getQuittanceDebtInfoRequest = (GetQuittanceDebtInfoRequest) request;
                 for (Quittance quittance : quittances) {
-                    getQuittanceDebtInfoRequest.getResponse().addQuiitanceInfo(quittanceInfoBuilder.buildInfo(stub(quittance), getQuittanceDebtInfoRequest));
+                    getQuittanceDebtInfoRequest.getResponse().addQuiitanceInfo(quittanceInfoBuilder.buildInfo(stub(quittance), detailses, getQuittanceDebtInfoRequest));
                 }
             } else {
                 GetDebtInfoRequest getDebtInfoRequest = (GetDebtInfoRequest) request;
@@ -502,7 +504,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             if (request instanceof GetQuittanceDebtInfoRequest) {
                 GetQuittanceDebtInfoRequest getQuittanceDebtInfoRequest = (GetQuittanceDebtInfoRequest) request;
                 for (Quittance quittance : quittances) {
-                    QuittanceInfo qInfo = filterInfo(quittanceInfoBuilder.buildInfo(stub(quittance), getQuittanceDebtInfoRequest), serviceId);
+                    QuittanceInfo qInfo = filterInfo(quittanceInfoBuilder.buildInfo(stub(quittance), null, getQuittanceDebtInfoRequest), serviceId);
                     if (qInfo != null) {
                         getQuittanceDebtInfoRequest.getResponse().addQuiitanceInfo( qInfo );
                     }

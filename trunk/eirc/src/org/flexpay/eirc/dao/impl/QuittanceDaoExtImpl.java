@@ -227,6 +227,8 @@ public class QuittanceDaoExtImpl extends SimpleJdbcDaoSupport implements Quittan
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("consumerIds", consumerIds);
 
+        log.debug("Find quittances for consumer with ids {}", consumerIds);
+
         return getSimpleJdbcTemplate().query("select q.id " +
                             "from eirc_quittances_tbl q " +
                             "  inner join eirc_quittance_details_quittances_tbl qdq on qdq.quittance_id = q.id " +

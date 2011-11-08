@@ -161,6 +161,21 @@
         where qdq.quittance.id=?
     ]]></query>
 
+    <query name="QuittanceDetails.findByConsumerIds"><![CDATA[
+        select distinct d
+        from QuittanceDetails d
+			left join fetch d.consumer c
+			left join fetch c.consumerInfo
+			left join fetch c.eircAccount ea
+			left join fetch ea.consumerInfo ci
+			left join fetch c.attributes attr
+			left join fetch attr.type
+			left join fetch c.service s
+			left join fetch s.descriptions
+			left join fetch d.quittanceDetailsQuittances qdq
+        where d.consumer.id in (:list_1)
+    ]]></query>
+
 	<query name="Quittance.findQuittanceByNumber"><![CDATA[
 		select distinct q
 		from Quittance q

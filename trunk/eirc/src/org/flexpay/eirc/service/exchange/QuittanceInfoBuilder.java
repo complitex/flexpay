@@ -14,6 +14,7 @@ import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.persistence.account.QuittanceDetailsQuittance;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.process.QuittanceNumberService;
@@ -58,7 +59,7 @@ public class QuittanceInfoBuilder {
     private RegionService regionService;
 
     @Nullable
-    public QuittanceInfo buildInfo(Stub<Quittance> stub, GetQuittanceDebtInfoRequest request) throws Exception {
+    public QuittanceInfo buildInfo(Stub<Quittance> stub, List<QuittanceDetails> detailses, GetQuittanceDebtInfoRequest request) throws Exception {
 
         List<QuittanceDetails> quittanceDetailses;
         QuittanceInfo info = new QuittanceInfo();
@@ -107,49 +108,63 @@ public class QuittanceInfoBuilder {
         info.setTotalToPay(getTotalPayable(q));
         info.setTotalPayed(getTotalPayed(q, payments));
 
-        quittanceDetailses = q.getQuittanceDetails();
+        if (detailses != null) {
+            quittanceDetailses = list();
+            for (QuittanceDetails details : detailses) {
+                for (QuittanceDetailsQuittance qdq : details.getQuittanceDetailsQuittances()) {
+                    if (qdq.getQuittance().getId().equals(q.getId())) {
+                        quittanceDetailses.add(details);
+                    }
+                }
+            }
+        } else {
+            quittanceDetailses = q.getQuittanceDetails();
+        }
 
         // prepare sum to pay
         if (log.isDebugEnabled()) {
             log.debug("Total detailses: {}", quittanceDetailses.size());
         }
         for (QuittanceDetails details : quittanceDetailses) {
-
-            Consumer consumer = details.getConsumer();
-            Service service = consumer.getService();
-            log.debug("Building quittanceDetails for service {}", service);
-
-            ServiceDetails serviceDetails = new ServiceDetails();
-            serviceDetails.setServiceId(service.getId());
-            serviceDetails.setServiceName(getTranslation(service.getDescriptions(), locale).getName());
-            serviceDetails.setAmount(details.getAmount().setScale(2));
-            serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
-            serviceDetails.setIncomingBalance(details.getIncomingBalance());
-            serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
-            serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
-            serviceDetails.setExpence(details.getExpence().setScale(2));
-            serviceDetails.setRate(details.getRate().setScale(2));
-            serviceDetails.setRecalculation(details.getRecalculation().setScale(2));
-            serviceDetails.setBenifit(details.getBenifit().setScale(2));
-            serviceDetails.setSubsidy(details.getSubsidy().setScale(2));
-            serviceDetails.setPayment(details.getPayment().setScale(2));
-            serviceDetails.setPayed(getPayedSum(details, payments).setScale(2));
-            serviceDetails.setAttributes(getConsumerAttributes(consumer));
-
-            ConsumerInfo cinfo = consumer.getConsumerInfo();
-            serviceDetails.setPersonFirstName(cinfo.getFirstName());
-            serviceDetails.setPersonMiddleName(cinfo.getMiddleName());
-            serviceDetails.setPersonLastName(cinfo.getLastName());
-            //TODO: Пока что непонятно откуда брать apartment, в темповом режиме берем из consumer'а
-            setAddress2(serviceDetails, consumer.getApartmentStub(), locale);
-//            serviceDetails.setRoomNumber("");
-
-            info.addServiceDetails(serviceDetails);
+            info.addServiceDetails(createServiceDetails(details, payments, locale));
         }
 
         log.debug("QuittanceInfo: {}", info);
 
         return info;
+    }
+
+    private ServiceDetails createServiceDetails(QuittanceDetails details, List<QuittancePayment> payments, Locale locale) throws FlexPayException {
+        Consumer consumer = details.getConsumer();
+        Service service = consumer.getService();
+        log.debug("Building quittanceDetails for service {}", service);
+
+        ServiceDetails serviceDetails = new ServiceDetails();
+        serviceDetails.setServiceId(service.getId());
+        serviceDetails.setServiceName(getTranslation(service.getDescriptions(), locale).getName());
+        serviceDetails.setAmount(details.getAmount().setScale(2));
+        serviceDetails.setServiceProviderAccount(consumer.getExternalAccountNumber());
+        serviceDetails.setIncomingBalance(details.getIncomingBalance());
+        serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
+        serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
+        serviceDetails.setExpence(details.getExpence().setScale(2));
+        serviceDetails.setRate(details.getRate().setScale(2));
+        serviceDetails.setRecalculation(details.getRecalculation().setScale(2));
+        serviceDetails.setBenifit(details.getBenifit().setScale(2));
+        serviceDetails.setSubsidy(details.getSubsidy().setScale(2));
+        serviceDetails.setPayment(details.getPayment().setScale(2));
+        serviceDetails.setPayed(getPayedSum(details, payments).setScale(2));
+        serviceDetails.setAttributes(getConsumerAttributes(consumer));
+
+        ConsumerInfo cinfo = consumer.getConsumerInfo();
+        serviceDetails.setPersonFirstName(cinfo.getFirstName());
+        serviceDetails.setPersonMiddleName(cinfo.getMiddleName());
+        serviceDetails.setPersonLastName(cinfo.getLastName());
+        //TODO: Пока что непонятно откуда брать apartment, в темповом режиме берем из consumer'а
+        setAddress2(serviceDetails, consumer.getApartmentStub(), locale);
+
+        return serviceDetails;
+//            serviceDetails.setRoomNumber("");
     }
 
     public List<ServiceDetails> buildServiceDetails(Stub<Quittance> stub, GetDebtInfoRequest request) throws Exception {

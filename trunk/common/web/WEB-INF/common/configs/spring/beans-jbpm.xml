@@ -89,7 +89,7 @@
 
 	<drools:ksession id="jpaSingleSessionCommandService" type="stateful" kbase="knowledgeBase">
         <drools:configuration>
-            <drools:jpa-persistence load="1">
+            <drools:jpa-persistence>
                 <drools:transaction-manager ref="transactionManager" />
                 <drools:entity-manager-factory ref="entityManagerFactory" />
             </drools:jpa-persistence>

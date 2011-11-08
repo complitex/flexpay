@@ -122,6 +122,10 @@ public interface QuittanceService {
 
     @Secured (Roles.QUITTANCE_READ)
     @NotNull
+    List<QuittanceDetails> getQuittanceDetailsByConsumers(@NotNull List<Consumer> consumers);
+
+    @Secured (Roles.QUITTANCE_READ)
+    @NotNull
     List<Quittance> getQuittancesByConsumers(@NotNull List<Consumer> consumers);
 
     /**
