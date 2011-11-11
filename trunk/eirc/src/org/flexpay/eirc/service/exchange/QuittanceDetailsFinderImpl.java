@@ -27,6 +27,7 @@ import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -458,7 +459,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
         buildResponse(quittances, null, request);
     }
 
-    private void buildResponse(@NotNull List<Quittance> quittances, List<QuittanceDetails> detailses, SearchRequest<?> request) {
+    private void buildResponse(@NotNull List<Quittance> quittances, @Nullable List<QuittanceDetails> detailses, SearchRequest<?> request) {
 
         if (log.isDebugEnabled()) {
             log.debug("Found {} quittances", quittances.size());
@@ -478,7 +479,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             } else {
                 GetDebtInfoRequest getDebtInfoRequest = (GetDebtInfoRequest) request;
                 for (Quittance quittance : quittances) {
-                    getDebtInfoRequest.getResponse().addAllServiceDetails(quittanceInfoBuilder.buildServiceDetails(stub(quittance), getDebtInfoRequest));
+                    getDebtInfoRequest.getResponse().addAllServiceDetails(quittanceInfoBuilder.buildServiceDetails(stub(quittance), detailses, getDebtInfoRequest));
                 }
             }
 
@@ -512,7 +513,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
             } else {
                 GetDebtInfoRequest getDebtInfoRequest = (GetDebtInfoRequest) request;
                 for (Quittance quittance : quittances) {
-                    List<ServiceDetails> sdList = filterDetails(quittanceInfoBuilder.buildServiceDetails(stub(quittance), getDebtInfoRequest), serviceId);
+                    List<ServiceDetails> sdList = filterDetails(quittanceInfoBuilder.buildServiceDetails(stub(quittance), null, getDebtInfoRequest), serviceId);
                     if (sdList != null && sdList.size() > 0) {
                         getDebtInfoRequest.getResponse().addAllServiceDetails(sdList);
                     }
