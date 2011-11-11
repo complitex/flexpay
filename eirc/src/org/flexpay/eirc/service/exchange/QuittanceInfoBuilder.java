@@ -59,7 +59,7 @@ public class QuittanceInfoBuilder {
     private RegionService regionService;
 
     @Nullable
-    public QuittanceInfo buildInfo(Stub<Quittance> stub, List<QuittanceDetails> detailses, GetQuittanceDebtInfoRequest request) throws Exception {
+    public QuittanceInfo buildInfo(Stub<Quittance> stub, @Nullable List<QuittanceDetails> detailses, GetQuittanceDebtInfoRequest request) throws Exception {
 
         List<QuittanceDetails> quittanceDetailses;
         QuittanceInfo info = new QuittanceInfo();
@@ -167,10 +167,23 @@ public class QuittanceInfoBuilder {
 //            serviceDetails.setRoomNumber("");
     }
 
-    public List<ServiceDetails> buildServiceDetails(Stub<Quittance> stub, GetDebtInfoRequest request) throws Exception {
+    public List<ServiceDetails> buildServiceDetails(Stub<Quittance> stub, @Nullable List<QuittanceDetails> detailses, GetDebtInfoRequest request) throws Exception {
 
-        List<QuittanceDetails> quittanceDetailses = quittanceService.getQuittanceDetailsByQuittanceId(stub);
+        List<QuittanceDetails> quittanceDetailses;
         List<ServiceDetails> serviceDetailses = list();
+
+        if (detailses != null) {
+            quittanceDetailses = list();
+            for (QuittanceDetails details : detailses) {
+                for (QuittanceDetailsQuittance qdq : details.getQuittanceDetailsQuittances()) {
+                    if (qdq.getQuittance().getId().equals(stub.getId())) {
+                        quittanceDetailses.add(details);
+                    }
+                }
+            }
+        } else {
+            quittanceDetailses = quittanceService.getQuittanceDetailsByQuittanceId(stub);
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("Total detailses: {}", quittanceDetailses.size());
