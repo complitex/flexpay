@@ -117,7 +117,7 @@ public class SpFileAction extends FPActionSupport {
 				while (lineLength < MbParsingConstants.FIRST_FILE_STRING_SIZE) {
 					lineLength += reader.readLine().length() + 1;
 				}
-				if (line.length() == MbParsingConstants.FIRST_FILE_STRING_SIZE) {
+				if (lineLength == MbParsingConstants.FIRST_FILE_STRING_SIZE) {
 					line = reader.readLine();
 
 					String[] fields = lineParser.parse(line);
