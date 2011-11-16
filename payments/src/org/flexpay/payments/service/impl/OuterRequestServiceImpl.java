@@ -553,10 +553,15 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
             serviceInfo.setServiceId(service.getId());
             serviceInfo.setServiceName(service.format(request.getLocale()));
+            log.debug( "serviceInfo: {}", serviceInfo );
             Language language = LanguageUtil.getLanguage(request.getLocale());
+            log.debug( "language: {}", language );
             ServiceProvider serviceProvider = service.getServiceProvider();
+            log.debug( "serviceProvider: {}", serviceProvider );
             ServiceProviderDescription description = serviceProvider.getDescription(language);
+            log.debug( "description: {}", description );
             String name = description.getName();
+            log.debug( "name: {}", name );
             serviceInfo.setServiceProvider(name);
 
             response.addServiceInfo(serviceInfo);
