@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
@@ -16,10 +17,7 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -551,10 +549,15 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         for (Service service : services) {
 
             ServiceInfo serviceInfo = new ServiceInfo();
+            log.debug( "next service: {}", service );
 
             serviceInfo.setServiceId(service.getId());
             serviceInfo.setServiceName(service.format(request.getLocale()));
-            serviceInfo.setServiceProvider(service.getServiceProvider().getDescription(LanguageUtil.getLanguage(request.getLocale())).getName());
+            Language language = LanguageUtil.getLanguage(request.getLocale());
+            ServiceProvider serviceProvider = service.getServiceProvider();
+            ServiceProviderDescription description = serviceProvider.getDescription(language);
+            String name = description.getName();
+            serviceInfo.setServiceProvider(name);
 
             response.addServiceInfo(serviceInfo);
         }
