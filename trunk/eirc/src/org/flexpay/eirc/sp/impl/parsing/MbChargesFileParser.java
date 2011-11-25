@@ -188,6 +188,7 @@ public class MbChargesFileParser extends MbFileParser {
 		}
 
 		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
+		registryProperties.setRegistry(registry);
 		registryProperties.setServiceProvider(serviceProvider);
 		registry.setSenderCode(serviceProvider.getOrganizationStub().getId());
 		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
