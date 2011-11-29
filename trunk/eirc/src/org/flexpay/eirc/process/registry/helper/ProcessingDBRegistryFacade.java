@@ -199,8 +199,9 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 
 			FetchRange restRange = new FetchRange(range.getPageSize());
 			log.debug("Check did not processed registry records");
-			while(processRegistryService.processRestRegistryRecordRange(restRange, context)) {
-				log.debug("Processed skipped registry records");
+			while(processRegistryService.processRestRegistryRecordRange(restRange, context) && restRange.hasMore()) {
+				log.debug("Processed skipped registry records: {}", restRange);
+				restRange.nextPage();
 			}
 
 			processRegistryRecordRangeWatch.suspend();
