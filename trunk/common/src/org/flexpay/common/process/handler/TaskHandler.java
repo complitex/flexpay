@@ -37,21 +37,27 @@ public abstract class TaskHandler implements WorkItemHandler {
 	public void executeWorkItem(final WorkItem workItem, final WorkItemManager manager) {
 		final Map<String, Object> parameters = workItem.getParameters();
 		parameters.put(PROCESS_INSTANCE_ID, workItem.getProcessInstanceId());
-		final Authentication auth = SecurityUtil.getAuthentication();
+
+		Authentication runAuthentication;
+		if (parameters.containsKey(PARAM_SECURITY_CONTEXT)
+						&& parameters.get(PARAM_SECURITY_CONTEXT) instanceof Authentication) {
+			runAuthentication = (Authentication)parameters.get(PARAM_SECURITY_CONTEXT);
+			log.debug("Authentication in parameters: {}", runAuthentication);
+		} else {
+			runAuthentication = SecurityUtil.getAuthentication();
+			parameters.put(PARAM_SECURITY_CONTEXT, runAuthentication);
+		}
+
+		final Authentication auth = runAuthentication;
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				log.debug("Run execute work item: {} ({})", workItem.getId(), workItem.getName());
 
-				Authentication runAuthentication = auth;
-				if (runAuthentication == null && parameters.containsKey(PARAM_SECURITY_CONTEXT)
-						&& parameters.get(PARAM_SECURITY_CONTEXT) instanceof Authentication) {
-					runAuthentication = (Authentication)parameters.get(PARAM_SECURITY_CONTEXT);
-				}
-				log.debug("Work item authentication: {}", runAuthentication);
+				log.debug("Work item authentication: {}", auth);
 
-				SecurityContextHolder.getContext().setAuthentication(runAuthentication);
+				SecurityContextHolder.getContext().setAuthentication(auth);
 
 				String result = RESULT_ERROR;
 				try {

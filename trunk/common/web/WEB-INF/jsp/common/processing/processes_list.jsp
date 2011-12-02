@@ -48,18 +48,18 @@
             </td>
             <td class="col">
                 <a href="<s:url action="processView"><s:param name="process.id" value="%{id}" /></s:url>">
-                    <s:text name="%{processDefinitionName}" />
+                    <s:text name="%{processDefinitionId}" />
                 </a>
             </td>
             <td class="col" nowrap>
-                <s:date name="processStartDate" format="yyyy/MM/dd HH:mm" />
+                <s:date name="startDate" format="yyyy/MM/dd HH:mm" />
             </td>
             <td class="col" nowrap>
-                <s:date name="processEndDate" format="yyyy/MM/dd HH:mm" />
+                <s:date name="endDate" format="yyyy/MM/dd HH:mm" />
             </td>
             <td class="col">&nbsp;</td>
             <td class="col">
-                <s:property value="getTranslation(processState)" />
+                <s:property value="getTranslation(state)" />
             </td>
             <td class="col">&nbsp;</td>
         </tr>

@@ -3,9 +3,12 @@ package org.flexpay.common.process.dao;
 import org.drools.definition.KnowledgePackage;
 import org.drools.event.process.ProcessEventListener;
 import org.drools.runtime.process.ProcessInstance;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.process.audit.ProcessInstanceLog;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +26,9 @@ public interface ProcessJbpmDao {
 	List<ProcessInstanceLog> getProcessInstanceLogs();
 
 	ProcessInstanceLog getProcessInstanceLog(long processInstanceId);
+
+	List<ProcessInstanceLog> getProcessInstances(ProcessSorter sorter, Page pager, Date startFrom, Date endBefore,
+											   org.flexpay.common.process.persistence.ProcessInstance.STATE state, String name);
 
 	List<ProcessInstanceLog> getProcessInstanceLogsByProcessId(String processId);
 

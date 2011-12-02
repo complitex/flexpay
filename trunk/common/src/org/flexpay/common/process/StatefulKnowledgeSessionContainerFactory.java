@@ -18,8 +18,6 @@ public class StatefulKnowledgeSessionContainerFactory implements StatefulKnowled
 		return ksession;
 	}
 
-
-
 	@Required
 	public void setSession(StatefulKnowledgeSession ksession) {
 		StatefulKnowledgeSessionContainerFactory.ksession = ksession;

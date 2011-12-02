@@ -11,7 +11,7 @@ public interface WorkItemHandlerDao {
 	/**
 	 * Register work item handlers in system
 	 *
-	 * @param Handlers work item handlers
+	 * @param handlers work item handlers
 	 */
 	void registerWorkItemHandlers(@NotNull Map<String, WorkItemHandler> handlers);
 
