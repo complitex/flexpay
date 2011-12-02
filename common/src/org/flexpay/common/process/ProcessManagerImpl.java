@@ -41,7 +41,7 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	private static final Logger log = LoggerFactory.getLogger(ProcessManagerImpl.class);
 
 	private static final String HUMAN_TASK_NAME = "Human Task";
-	private static final String PROCESS_DEFINITION_VERSION_ID = "_PROCESS_DEFINITION_VERSION_ID";
+	private static final String PROCESS_DEFINITION_VERSION_ID = "PROCESS_DEFINITION_VERSION_ID";
 
 		/**
 	 * singleton instance
@@ -142,10 +142,19 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	@Override
 	public List<ProcessInstance> getProcesses(ProcessSorter processSorter, Page<ProcessInstance> pager, Date startFrom, Date endBefore,
 											  ProcessInstance.STATE state, String name) {
-		return Collections.emptyList();
-		/*
-		return processDao.findProcesses(processSorter, pager, startFrom, endBefore, state, name);
-		*/
+		List<ProcessInstanceLog> processInstanceLogs = delegate.getProcessInstances(processSorter, pager, startFrom, endBefore, state, name);
+
+		if (processInstanceLogs.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		List<ProcessInstance> result = list();
+
+		for (ProcessInstanceLog processInstanceLog : processInstanceLogs) {
+			result.add(refactorProcessInstance(processInstanceLog));
+		}
+
+		return result;
 	}
 
 	/**
@@ -236,11 +245,11 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 		if (processInstanceLog == null) {
 			return null;
 		}
-		Map<String, Object> variables = delegate.getProcessInstanceVariables(processInstanceLog.getProcessInstanceId());
+		Map<String, Object> variables = getInstanceData(processInstanceLog.getProcessInstanceId());
 
 		Long processDefinitionVersionId = getProcessDefinitionVersion(variables);
 		ProcessInstance processInstance = processInstance(processInstanceLog, processDefinitionVersionId);
-		processInstance.setParameters(getInstanceData(processInstance.getId()));
+		processInstance.setParameters(variables);
 		return processInstance;
 	}
 
@@ -355,6 +364,11 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 
 		Map<String, WorkItemHandler> workItemHandlers = applicationContext.getBeansOfType(WorkItemHandler.class);
 
+		Map<String, WorkItem> workItemsWaiting = map();
+		for (WorkItem workItem : workItemDao.getWorkItemsWaiting()) {
+			workItemsWaiting.put(workItem.getName(), workItem);
+		}
+
 		for (Map.Entry<String, WorkItemHandler> workItemHandlerEntry : workItemHandlers.entrySet()) {
 
 			List<String> workItemHandlerNames = list();
@@ -367,6 +381,14 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 			}
 
 			workItemHandlerDao.registerWorkItemHandler(workItemHandlerEntry.getValue(), workItemHandlerNames);
+
+			for (String workItemHandlerName : workItemHandlerNames) {
+				if (workItemsWaiting.containsKey(workItemHandlerName)) {
+					WorkItem workItem = workItemsWaiting.get(workItemHandlerName);
+					workItemDao.executeWorkItem(workItemHandlerEntry.getValue(), workItem);
+					log.debug("execute waiting work item: {}", workItem);
+				}
+			}
 		}
 	}
 
@@ -387,14 +409,15 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	}
 
 	private static ProcessInstance processInstance(ProcessInstanceLog processInstance, Long version) {
-		log.debug("Process instance log: {}, start date {}, end date {}", new Object[]{processInstance, processInstance.getStart(), processInstance.getEnd()});
+		log.debug("Process instance log: {}, start date {}, end date {}, version {}",
+				new Object[]{processInstance, processInstance.getStart(), processInstance.getEnd(), version});
 		ProcessInstance result = new ProcessInstance(
 				processInstance.getProcessInstanceId(),
 				processInstance.getProcessId(),
 				processInstance.getStart(),
 				processInstance.getEnd(),
 				false);
-		result.setProcessDefenitionVersion(version == null? -1: version);
+		result.setProcessDefenitionVersion(version);
 		/*
 		TokenReference token = new TokenReference(
 				processInstance.getProcessInstanceId() + "", null, "");
@@ -410,7 +433,7 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 				now(),
 				null,
 				false);
-		result.setProcessDefenitionVersion(version == null ? -1 : version);
+		result.setProcessDefenitionVersion(version);
 		/*
 		switch (processInstance.getState()) {
 			case 0:
@@ -441,16 +464,21 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	}
 
 	private Long getProcessDefinitionVersion(Map<String, Object> variables) {
-		Long processDefinitionVersionId = null;
 		Object pdv = variables.get(PROCESS_DEFINITION_VERSION_ID);
-		if (pdv instanceof String) {
-			processDefinitionVersionId = Long.getLong((String)pdv);
+		if (pdv == null) {
+			log.warn("Did not find process definition version from process instance variable");
+		} else if (pdv instanceof String) {
+			try{
+				return Long.valueOf((String)pdv);
+			} catch (NumberFormatException e) {
+				log.warn("Did not parse process definition version '{}': number format exception", pdv);
+			}
 		} else if (pdv instanceof Long) {
-			processDefinitionVersionId = (Long)pdv;
+			return (Long)pdv;
 		} else {
 			log.warn("Can not get process definition version from process instance variable: {}. Class is {}, but need String or Long.", pdv, pdv.getClass());
 		}
-		return processDefinitionVersionId;
+		return -1L;
 	}
 
 	@Required

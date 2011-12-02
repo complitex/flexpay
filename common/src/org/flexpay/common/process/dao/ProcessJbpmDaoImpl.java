@@ -5,7 +5,9 @@ import org.drools.definition.KnowledgePackage;
 import org.drools.event.process.*;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.process.audit.ProcessInstanceDbLog;
+import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.process.audit.ProcessInstanceLog;
 import org.jbpm.process.audit.VariableInstanceLog;
 import org.jbpm.process.core.context.variable.VariableScope;
@@ -96,6 +98,12 @@ public class ProcessJbpmDaoImpl implements ProcessJbpmDao {
 	public ProcessInstanceLog getProcessInstanceLog(long processInstanceId) {
 		log.debug("Execute getProcessInstanceLog");
 		return processInstanceDbLog.findProcessInstance(processInstanceId);
+	}
+
+	@Override
+	public List<ProcessInstanceLog> getProcessInstances(ProcessSorter sorter, Page pager, Date startFrom, Date endBefore,
+														org.flexpay.common.process.persistence.ProcessInstance.STATE state, String name) {
+		return processInstanceDbLog.findProcessInstances(sorter, pager, startFrom, endBefore, state, name);
 	}
 
 	@Override

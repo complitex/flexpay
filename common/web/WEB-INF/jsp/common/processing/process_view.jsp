@@ -37,23 +37,23 @@
         </tr>
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="common.processing.process.start_date"/></td>
-            <td class="col"><s:property value="process.processStartDate"/></td>
+            <td class="col"><s:property value="process.startDate"/></td>
         </tr>
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="common.processing.process.end_date"/></td>
-            <td class="col"><s:property value="process.processEndDate"/></td>
+            <td class="col"><s:property value="process.endDate"/></td>
         </tr>
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="common.processing.process.state"/></td>
-            <td class="col"><s:property value="process.processState"/></td>
+            <td class="col"><s:property value="process.state"/></td>
         </tr>
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="common.processing.process.definition_name"/></td>
-            <td class="col"><s:text name="%{process.processDefinitionName}"/></td>
+            <td class="col"><s:text name="%{process.processDefinitionId}"/></td>
         </tr>
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="common.processing.process.instance_id"/></td>
-            <td class="col"><s:property value="process.processInstaceId"/></td>
+            <td class="col"><s:property value="process.id"/></td>
         </tr>
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="common.processing.process.definition_version"/></td>

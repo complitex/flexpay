@@ -24,6 +24,7 @@
 	<itemDefinition id="_processIdItem" structureRef="java.lang.Long"/>
 	<itemDefinition id="_transitionsItem" structureRef="java.util.List"/>
 	<itemDefinition id="_processDefinitionIdItem" structureRef="java.lang.String"/>
+	<itemDefinition id="_processDefinitionVersionIdItem" structureRef="java.lang.Long" />
 	<itemDefinition id="_dateItem" structureRef="java.util.Date"/>
 
 	<process processType="Public" isExecutable="true" id="PaymentCollectorTradingDay"
@@ -57,6 +58,7 @@
 		<property id="processId" itemSubjectRef="_processIdItem"/>
 		<property id="transitions" itemSubjectRef="_transitionsItem"/>
 		<property id="processDefinitionId" itemSubjectRef="_processDefinitionIdItem"/>
+		<property id="PROCESS_DEFINITION_VERSION_ID" itemSubjectRef="_processDefinitionVersionIdItem" />
 		<property id="tradingDayBeginDate" itemSubjectRef="_dateItem"/>
 		<property id="tradingDayEndDate" itemSubjectRef="_dateItem"/>
 		<property id="beginDate" itemSubjectRef="_dateItem"/>

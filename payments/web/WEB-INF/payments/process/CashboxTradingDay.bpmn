@@ -21,6 +21,7 @@
 	<itemDefinition id="_signalValueItem" structureRef="java.lang.String"/>
 	<itemDefinition id="_durationItem" structureRef="java.lang.String"/>
 	<itemDefinition id="_securityContext" structureRef="org.springframework.security.core.Authentication"/>
+	<itemDefinition id="_processDefinitionVersionIdItem" structureRef="java.lang.Long" />
 	<itemDefinition id="_dateItem" structureRef="java.util.Date"/>
 
 	<process processType="Public" isExecutable="true" id="CashboxTradingDay"
@@ -58,6 +59,7 @@
 		<property id="endDuration" itemSubjectRef="_durationItem"/>
 		<property id="PROCESS_MANAGER_SECURITY_CONTEXT" itemSubjectRef="_securityContext"/>
 		<property id="now" itemSubjectRef="_dateItem"/>
+		<property id="PROCESS_DEFINITION_VERSION_ID" itemSubjectRef="_processDefinitionVersionIdItem" />
 		<property id="tradingDayBeginDate" itemSubjectRef="_dateItem"/>
 		<property id="tradingDayEndDate" itemSubjectRef="_dateItem"/>
 		<property id="messageFromAdmin" itemSubjectRef="_signalValueItem"/>
