@@ -54,16 +54,16 @@
         var id = $("input[type='radio'][name='objectIds']:checked").val();
         $.post("<s:url action="setCorrection" />", {
                     <s:if test="group != null">
-                        <s:if test="group.townName != null">"group.townName":"<s:property value="group.townName" />",</s:if>
-                        <s:if test="group.streetType != null">"group.streetType":"<s:property value="group.streetType" />",</s:if>
-                        <s:if test="group.streetName != null">"group.streetName":"<s:property value="group.streetName" />",</s:if>
-                        <s:if test="group.buildingNumber != null">"group.buildingNumber":"<s:property value="group.buildingNumber" />",</s:if>
-                        <s:if test="group.buildingBulk != null">"group.buildingBulk":"<s:property value="group.buildingBulk" />",</s:if>
-                        <s:if test="group.apartmentNumber != null">"group.apartmentNumber":"<s:property value="group.apartmentNumber" />",</s:if>
-                        <s:if test="group.lastName != null">"group.lastName":"<s:property value="group.lastName" />",</s:if>
-                        <s:if test="group.middleName != null">"group.middleName":"<s:property value="group.middleName" />",</s:if>
-                        <s:if test="group.firstName != null">"group.firstName":"<s:property value="group.firstName" />",</s:if>
-                        "group.errorType":<s:property value="group.errorType" />,
+                        <s:if test="group.townName != null">"group.townName":"<s:property escapeHtml="false" value="group.townName" />",</s:if>
+                        <s:if test="group.streetType != null">"group.streetType":"<s:property escapeHtml="false" value="group.streetType" />",</s:if>
+                        <s:if test="group.streetName != null">"group.streetName":"<s:property escapeHtml="false" value="group.streetName" />",</s:if>
+                        <s:if test="group.buildingNumber != null">"group.buildingNumber":"<s:property escapeHtml="false" value="group.buildingNumber" />",</s:if>
+                        <s:if test="group.buildingBulk != null">"group.buildingBulk":"<s:property escapeHtml="false" value="group.buildingBulk" />",</s:if>
+                        <s:if test="group.apartmentNumber != null">"group.apartmentNumber":"<s:property escapeHtml="false" value="group.apartmentNumber" />",</s:if>
+                        <s:if test="group.lastName != null">"group.lastName":"<s:property escapeHtml="false" value="group.lastName" />",</s:if>
+                        <s:if test="group.middleName != null">"group.middleName":"<s:property escapeHtml="false" value="group.middleName" />",</s:if>
+                        <s:if test="group.firstName != null">"group.firstName":"<s:property escapeHtml="false" value="group.firstName" />",</s:if>
+                        "group.errorType":<s:property escapeHtml="false" value="group.errorType" />,
                         "registry.id":<s:property value="registry.id" />,
                     </s:if><s:else>
                         "record.id":<s:property value="record.id" />,
