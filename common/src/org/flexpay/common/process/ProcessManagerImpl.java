@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.io.File;
 import java.util.*;
 
 import static org.flexpay.common.util.CollectionUtils.list;
@@ -418,6 +419,12 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 				processInstance.getEnd(),
 				false);
 		result.setProcessDefenitionVersion(version);
+        File logFile = ProcessLogger.getLogFile(processInstance.getId());
+		if (logFile.exists()) {
+			result.setLogFileName(logFile.getAbsolutePath());
+		} else {
+			result.setLogFileName("");
+		}
 		/*
 		TokenReference token = new TokenReference(
 				processInstance.getProcessInstanceId() + "", null, "");

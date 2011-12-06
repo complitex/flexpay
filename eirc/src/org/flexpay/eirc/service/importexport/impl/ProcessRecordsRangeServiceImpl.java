@@ -48,10 +48,14 @@ public class ProcessRecordsRangeServiceImpl implements ProcessRecordsRangeServic
 		ProcessingContext context = new ProcessingContext();
 		context.setRegistry(registry);
 
-		Town defaultTown = getDefaultTown();
 		ArrayStack filters = new ArrayStack();
-		filters.push(new TownFilter(defaultTown.getId()));
-		List<Street> townStreets = streetService.find(filters);
+
+        Town defaultTown = getDefaultTown();
+        if (defaultTown == null) {
+            throw new FlexPayException("Can not find default town in application config");
+        }
+        filters.push(new TownFilter(defaultTown.getId()));
+        List<Street> townStreets = streetService.find(filters);
 
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 		context.setNameStreetMap(nameObjsMap);

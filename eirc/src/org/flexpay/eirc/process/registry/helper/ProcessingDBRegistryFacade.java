@@ -220,7 +220,9 @@ public class ProcessingDBRegistryFacade implements ProcessingRegistryFacade {
 			if (variable.isNew()) {
 				variable = processRegistryService.prepare(context, variable);
 				//registryService.update(context.getRegistry());
-			}
+			} else if (!context.isProcessingStarted()) {
+                context.startProcessing();
+            }
 			return variable;
 		} catch (TransitionNotAllowed e) {
 			log.debug("Inner error {}", e);
