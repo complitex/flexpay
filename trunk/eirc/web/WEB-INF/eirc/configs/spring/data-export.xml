@@ -78,6 +78,7 @@
 
     <bean id="processRecordsRangeService"
           class="org.flexpay.eirc.service.importexport.impl.ProcessRecordsRangeServiceImpl"
+          depends-on="abApplicationConfig"
           p:handleError-ref="registryHandleError"
           p:recordWorkflowManager-ref="registryRecordWorkflowManagerRO"
           p:streetService-ref="streetService"
