@@ -9,7 +9,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
-import org.flexpay.common.process.audit.WorkItemCompleteLocker;
+//import org.flexpay.common.process.audit.WorkItemCompleteLocker;
 import org.flexpay.common.process.jpa.LockedManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
