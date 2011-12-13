@@ -3,10 +3,13 @@ package org.flexpay.common.process.dao;
 import org.drools.command.SingleSessionCommandService;
 import org.drools.command.impl.CommandBasedStatefulKnowledgeSession;
 import org.drools.command.impl.KnowledgeCommandContext;
-import org.drools.process.instance.WorkItem;
+import org.drools.persistence.jpa.processinstance.JPAWorkItemManager;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.process.WorkItem;
+import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
+import org.flexpay.common.process.audit.WorkItemCompleteLocker;
 import org.flexpay.common.process.jpa.LockedManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
@@ -29,7 +32,7 @@ public class WorkItemDaoImpl implements WorkItemDao {
 
 	@SuppressWarnings({"unchecked"})
 	@Override
-	public List<WorkItem> getWorkItems() {
+	public List<WorkItem> getWorkItemsWaiting() {
 
 		EntityManager em = (EntityManager)session.getEnvironment().get(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER);
 
@@ -49,7 +52,7 @@ public class WorkItemDaoImpl implements WorkItemDao {
 		session.getEnvironment().set(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER, em);
 		WorkItemManager manager = getWorkItemManager();
 		for (Long workItemId : workItemIds) {
-			WorkItem workItem = ((org.flexpay.common.process.jpa.JPAWorkItemManager) manager).getWorkItem(workItemId);
+			WorkItem workItem = ((JPAWorkItemManager) manager).getWorkItem(workItemId);
 			workItems.add(workItem);
 			log.debug("work item: {}", workItem);
 		}
@@ -79,6 +82,11 @@ public class WorkItemDaoImpl implements WorkItemDao {
 				log.debug("completeWorkItem unlocked");
 			}
 		}
+	}
+
+	@Override
+	public void executeWorkItem(WorkItemHandler workItemHandler, WorkItem workItem) {
+		workItemHandler.executeWorkItem(workItem, getWorkItemManager());
 	}
 
 	@Required
