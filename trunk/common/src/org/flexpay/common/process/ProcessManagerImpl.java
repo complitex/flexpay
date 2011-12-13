@@ -26,6 +26,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.*;
@@ -37,6 +38,7 @@ import static org.flexpay.common.util.DateUtil.now;
 /**
  * ProcessInstance manager allows to create and maintain processes life cycle
  */
+@Transactional (readOnly = true)
 public class ProcessManagerImpl implements ProcessManager, ApplicationContextAware {
 
 	private static final Logger log = LoggerFactory.getLogger(ProcessManagerImpl.class);
@@ -218,11 +220,11 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 
 	}
 
+    @Transactional(readOnly = false)
 	@Override
-	public void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter) {
-		/*
-		processDao.deleteProcessInstances(range, nameFilter.getSelectedName());
-		*/
+	public void deleteProcessInstances(DateRange range, String processDefinitionName) {
+
+		delegate.deleteFinishedProcessInstances(range, processDefinitionName);
 	}
 
 	@Override

@@ -233,6 +233,12 @@
 		  class="org.flexpay.common.process.handler2.SendEmailToAdministratorHandler"
 		  parent="taskHandler" />
 
+    <bean id="ftpUploadWorkItemHandler"
+		  name="FTPUploadTask"
+		  class="org.flexpay.common.process.handler2.FTPUploadWorkItemHandler"
+		  parent="taskHandler"
+          p:fpFileService-ref="fpFileService" />
+
 	<bean id="processesCleanupHandler"
 		  name="ProcessCleanupTask"
 		  class="org.flexpay.common.process.handler2.ProcessesCleanupHandler"

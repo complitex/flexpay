@@ -119,7 +119,7 @@ public interface ProcessManager {
 	List<ProcessInstance> getProcessInstances();
 
 	@Secured (Roles.PROCESS_DELETE)
-	void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter);
+	void deleteProcessInstances(DateRange range, String processDefinitionName);
 
 	@Secured (Roles.PROCESS_READ)
 	List<ProcessInstance> getProcessInstances(@NotNull String definitionId);

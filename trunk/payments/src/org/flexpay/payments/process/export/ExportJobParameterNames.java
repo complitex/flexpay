@@ -1,11 +1,13 @@
 package org.flexpay.payments.process.export;
 
+import org.flexpay.common.process.handler2.FTPUploadWorkItemHandler;
+
 public interface ExportJobParameterNames {
 
 	final static String GENERATED_FILE_NAME = "GeneratedFileName";
 
-	final static String FILE = "file";
-	final static String FILE_ID = "fileId";
+	final static String FILE = FTPUploadWorkItemHandler.FILE;
+	final static String FILE_ID = FTPUploadWorkItemHandler.FILE_ID;
 
 	final static String PAYMENT_POINT_ID = "paymentPointId";
 

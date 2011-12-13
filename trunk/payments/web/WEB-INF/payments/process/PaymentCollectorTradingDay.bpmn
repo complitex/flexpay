@@ -26,6 +26,8 @@
 	<itemDefinition id="_processDefinitionIdItem" structureRef="java.lang.String"/>
 	<itemDefinition id="_processDefinitionVersionIdItem" structureRef="java.lang.Long" />
 	<itemDefinition id="_dateItem" structureRef="java.util.Date"/>
+	<itemDefinition id="_fileIdItem" structureRef="java.lang.Long"/>
+	<itemDefinition id="_stringItem" structureRef="java.lang.String"/>
 
 	<process processType="Public" isExecutable="true" id="PaymentCollectorTradingDay"
 			 name="Payment collector trading day">
@@ -46,6 +48,8 @@
 		<property id="generateEndOperationDayRegistryResult" itemSubjectRef="_resultItem"/>
 		<property id="deleteBlankOperationsResult" itemSubjectRef="_resultItem"/>
 		<property id="getPaymentPointsResult" itemSubjectRef="_resultItem"/>
+		<property id="sendRegistryResult" itemSubjectRef="_resultItem"/>
+		<property id="ftpUploadResult" itemSubjectRef="_resultItem"/>
 		<property id="signalFromPaymentPoint" itemSubjectRef="_resultItem"/>
 
 		<property id="PROCESS_STATUS" itemSubjectRef="_processStatusItem"/>
@@ -63,6 +67,13 @@
 		<property id="tradingDayEndDate" itemSubjectRef="_dateItem"/>
 		<property id="beginDate" itemSubjectRef="_dateItem"/>
 		<property id="endDate" itemSubjectRef="_dateItem"/>
+		<property id="fileId" itemSubjectRef="_fileIdItem"/>
+		<property id="remoteFilePath" itemSubjectRef="_stringItem"/>
+		<property id="user" itemSubjectRef="_stringItem"/>
+		<property id="password" itemSubjectRef="_stringItem"/>
+		<property id="host" itemSubjectRef="_stringItem"/>
+		<property id="port" itemSubjectRef="_stringItem"/>
+		<property id="email" itemSubjectRef="_stringItem"/>
 
 		<!-- nodes -->
 		<startEvent id="_1" name="StartProcess"/>
@@ -306,6 +317,13 @@
 				<dataInput id="_16_organizationId" name="organizationId"/>
 				<dataInput id="_16_beginDate" name="beginDate"/>
 				<dataInput id="_16_endDate" name="endDate"/>
+				<dataOutput id="_16_fileId" name="fileId"/>
+				<dataOutput id="_16_email" name="email"/>
+				<dataOutput id="_16_remoteFilePath" name="remoteFilePath"/>
+				<dataOutput id="_16_user" name="user"/>
+				<dataOutput id="_16_password" name="password"/>
+				<dataOutput id="_16_host" name="host"/>
+				<dataOutput id="_16_port" name="port"/>
 				<dataOutput id="_16_result" name="Result"/>
 				<inputSet>
 					<dataInputRefs>_16_paymentCollectorId</dataInputRefs>
@@ -319,6 +337,27 @@
 				<inputSet>
 					<dataInputRefs>_16_endDate</dataInputRefs>
 				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_16_fileId</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_16_email</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_16_remoteFilePath</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_16_user</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_16_password</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_16_host</dataOutputRefs>
+				</outputSet>
+				<outputSet>
+					<dataOutputRefs>_16_port</dataOutputRefs>
+				</outputSet>
 				<outputSet>
 					<dataOutputRefs>_16_result</dataOutputRefs>
 				</outputSet>
@@ -340,12 +379,136 @@
 				<targetRef>_16_endDate</targetRef>
 			</dataInputAssociation>
 			<dataOutputAssociation>
+				<sourceRef>_16_email</sourceRef>
+				<targetRef>email</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_fileId</sourceRef>
+				<targetRef>fileId</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_remoteFilePath</sourceRef>
+				<targetRef>remoteFilePath</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_host</sourceRef>
+				<targetRef>host</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_port</sourceRef>
+				<targetRef>port</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_user</sourceRef>
+				<targetRef>user</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_16_password</sourceRef>
+				<targetRef>password</targetRef>
+			</dataOutputAssociation>
+			<dataOutputAssociation>
 				<sourceRef>_16_result</sourceRef>
 				<targetRef>generateEndOperationDayRegistryResult</targetRef>
 			</dataOutputAssociation>
 		</task>
 
-		<exclusiveGateway id="_20" name="Split 3" default="_20-_22" gatewayDirection="Diverging"/>
+        <exclusiveGateway id="_20" name="Split 3" default="_20-_33" gatewayDirection="Diverging"/>
+
+        <task id="_26" name="FTPUploadTask" tns:taskName="FTPUploadTask">
+			<ioSpecification>
+				<dataInput id="_26_fileId" name="fileId"/>
+				<dataInput id="_26_remoteFilePath" name="remoteFilePath"/>
+				<dataInput id="_26_user" name="user"/>
+				<dataInput id="_26_password" name="password"/>
+				<dataInput id="_26_host" name="host"/>
+				<dataInput id="_26_port" name="port"/>
+				<dataOutput id="_26_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_26_fileId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_26_remoteFilePath</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_26_user</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_26_password</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_26_host</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_26_port</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_26_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_26_fileId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>remoteFilePath</sourceRef>
+				<targetRef>_26_remoteFilePath</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>user</sourceRef>
+				<targetRef>_26_user</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>password</sourceRef>
+				<targetRef>_26_password</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>host</sourceRef>
+				<targetRef>_26_host</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>port</sourceRef>
+				<targetRef>_26_port</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_26_result</sourceRef>
+				<targetRef>ftpUploadResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+        <exclusiveGateway id="_29" name="Split 4" default="_29-_33" gatewayDirection="Diverging"/>
+
+        <task id="_27" name="SendRegistryTask" tns:taskName="SendRegistryTask">
+			<ioSpecification>
+				<dataInput id="_27_fileId" name="fileId"/>
+				<dataInput id="_27_email" name="email"/>
+				<dataOutput id="_27_result" name="Result"/>
+				<inputSet>
+					<dataInputRefs>_27_fileId</dataInputRefs>
+				</inputSet>
+				<inputSet>
+					<dataInputRefs>_27_email</dataInputRefs>
+				</inputSet>
+				<outputSet>
+					<dataOutputRefs>_27_result</dataOutputRefs>
+				</outputSet>
+			</ioSpecification>
+			<dataInputAssociation>
+				<sourceRef>fileId</sourceRef>
+				<targetRef>_27_fileId</targetRef>
+			</dataInputAssociation>
+			<dataInputAssociation>
+				<sourceRef>email</sourceRef>
+				<targetRef>_27_email</targetRef>
+			</dataInputAssociation>
+			<dataOutputAssociation>
+				<sourceRef>_27_result</sourceRef>
+				<targetRef>sendRegistryResult</targetRef>
+			</dataOutputAssociation>
+		</task>
+
+        <exclusiveGateway id="_31" name="Split 5" default="_31-_33" gatewayDirection="Diverging"/>
+
+        <exclusiveGateway id="_32" name="Mixed 1" gatewayDirection="Converging"/>
 
 		<scriptTask id="_21" name="Set Closed status">
 			<script>
@@ -353,6 +516,8 @@
 				System.out.println("PROCESS_STATUS: " + PROCESS_STATUS);
 			</script>
 		</scriptTask>
+
+        <exclusiveGateway id="_33" name="Mixed 2" gatewayDirection="Converging"/>
 
 		<scriptTask id="_22" name="Set Error status">
 			<script>
@@ -363,9 +528,9 @@
 
 		<task id="_23" name="SendEmailToAdministratorTask" tns:taskName="SendEmailToAdministratorTask"/>
 
-		<exclusiveGateway id="_24" name="Join 3" gatewayDirection="Converging"/>
+		<exclusiveGateway id="_24" name="Join 6" gatewayDirection="Converging"/>
 
-		<endEvent id="_30" name="EndProcess">
+		<endEvent id="_40" name="EndProcess">
 			<terminateEventDefinition/>
 		</endEvent>
 
@@ -418,19 +583,49 @@
 		<sequenceFlow id="_25-_16" sourceRef="_25" targetRef="_16"/>
 		<sequenceFlow id="_16-_20" sourceRef="_16" targetRef="_20"/>
 
-		<sequenceFlow id="_20-_21" sourceRef="_20" targetRef="_21">
+		<sequenceFlow id="_20-_32" sourceRef="_20" targetRef="_32">
 			<conditionExpression xs:type="tFormalExpression">return generateEndOperationDayRegistryResult == "next";
 			</conditionExpression>
 		</sequenceFlow>
-		<sequenceFlow id="_20-_22" sourceRef="_20" targetRef="_22">
+		<sequenceFlow id="_20-_26" sourceRef="_20" targetRef="_26">
+			<conditionExpression xs:type="tFormalExpression">return generateEndOperationDayRegistryResult == "Send registry by ftp";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_20-_27" sourceRef="_20" targetRef="_27">
+			<conditionExpression xs:type="tFormalExpression">return generateEndOperationDayRegistryResult == "Send registry by email";
+			</conditionExpression>
+		</sequenceFlow>
+		<sequenceFlow id="_20-_33" sourceRef="_20" targetRef="_33">
 			<conditionExpression xs:type="tFormalExpression">return generateEndOperationDayRegistryResult == "error";
 			</conditionExpression>
 		</sequenceFlow>
 
+        <sequenceFlow id="_26-_29" sourceRef="_26" targetRef="_29"/>
+		<sequenceFlow id="_29-_32" sourceRef="_29" targetRef="_32">
+			<conditionExpression xs:type="tFormalExpression">return ftpUploadResult == "next";
+			</conditionExpression>
+		</sequenceFlow>
+        <sequenceFlow id="_29-_33" sourceRef="_29" targetRef="_33">
+			<conditionExpression xs:type="tFormalExpression">return ftpUploadResult == "error";
+			</conditionExpression>
+		</sequenceFlow>
+
+        <sequenceFlow id="_27-_31" sourceRef="_27" targetRef="_31"/>
+		<sequenceFlow id="_31-_32" sourceRef="_31" targetRef="_32">
+			<conditionExpression xs:type="tFormalExpression">return ftpUploadResult == "next";
+			</conditionExpression>
+		</sequenceFlow>
+        <sequenceFlow id="_31-_33" sourceRef="_31" targetRef="_33">
+			<conditionExpression xs:type="tFormalExpression">return ftpUploadResult == "error";
+			</conditionExpression>
+		</sequenceFlow>
+
+		<sequenceFlow id="_32-_21" sourceRef="_32" targetRef="_21"/>
 		<sequenceFlow id="_21-_24" sourceRef="_21" targetRef="_24"/>
-		<sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23"/>
+        <sequenceFlow id="_33-_22" sourceRef="_33" targetRef="_22"/>
+        <sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23"/>
 		<sequenceFlow id="_23-_24" sourceRef="_23" targetRef="_24"/>
-		<sequenceFlow id="_24-_30" sourceRef="_24" targetRef="_30"/>
+		<sequenceFlow id="_24-_40" sourceRef="_24" targetRef="_40"/>
 
 	</process>
 

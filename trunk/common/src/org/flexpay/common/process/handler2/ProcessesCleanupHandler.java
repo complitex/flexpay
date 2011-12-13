@@ -24,10 +24,11 @@ public class ProcessesCleanupHandler extends TaskHandler {
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 
-		Date beginTime = required(PARAM_COMPLETE_BEGIN_TIME, parameters);
-		Date endTime = required(PARAM_COMPLETE_END_TIME, parameters);
+		Date beginTime = optional(PARAM_COMPLETE_BEGIN_TIME, parameters);
+		Date endTime = optional(PARAM_COMPLETE_END_TIME, parameters);
 		String definitionName = optional(PARAM_DEFINITION_NAME, parameters);
 
+        /*
 		ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
 		if (definitionName != null) {
@@ -39,8 +40,9 @@ public class ProcessesCleanupHandler extends TaskHandler {
 				}
 			}
 		}
+		*/
 
-		processManager.deleteProcessInstances(new DateRange(beginTime, endTime), processNameFilter);
+		processManager.deleteProcessInstances(new DateRange(beginTime, endTime), definitionName);
 
 		return RESULT_NEXT;
 	}

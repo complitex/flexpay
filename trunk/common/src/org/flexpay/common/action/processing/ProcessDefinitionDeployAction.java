@@ -6,6 +6,7 @@ import org.flexpay.common.process.ProcessDefinitionManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class ProcessDefinitionDeployAction extends FPFileActionSupport {
@@ -32,7 +33,12 @@ public class ProcessDefinitionDeployAction extends FPFileActionSupport {
 		InputStream is = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			processDefinitionManager.deployProcessDefinition(getUpload());
+			processDefinitionManager.deployProcessDefinition(new File(getUpload().toURI()) {
+                @Override
+                public String getName() {
+                    return getUploadFileName();
+                }
+            });
 			addActionMessage(getText("common.processing.deployment_success"));
 		} finally {
 			IOUtils.closeQuietly(is);
