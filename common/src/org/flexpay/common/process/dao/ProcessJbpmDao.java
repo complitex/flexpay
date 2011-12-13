@@ -4,6 +4,8 @@ import org.drools.definition.KnowledgePackage;
 import org.drools.event.process.ProcessEventListener;
 import org.drools.runtime.process.ProcessInstance;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.process.audit.ProcessInstanceLog;
 
@@ -35,6 +37,8 @@ public interface ProcessJbpmDao {
 	ProcessInstance startProcess(String processId, Map<String, Object> parameters);
 
 	void abortProcessInstance(long processInstanceId);
+
+    void deleteFinishedProcessInstances(DateRange range, String processDefinitionId);
 
 	Map<String, Object> getProcessInstanceVariables(long processInstanceId);
 

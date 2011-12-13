@@ -9,7 +9,7 @@
     <tr>
         <td colspan="9">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
-            <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
+            <!--input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" /-->
             <input type="button" class="btn-exit" value="<s:text name="common.process.cleanup" />"
 				   onclick="window.location='<s:url action="processesCleanup" />';" />
         </td>
@@ -67,7 +67,7 @@
     <tr>
         <td colspan="9">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
-            <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
+            <!--input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" /-->
             <input type="button" class="btn-exit" value="<s:text name="common.process.cleanup" />"
 				   onclick="window.location='<s:url action="processesCleanup" />';" />
         </td>

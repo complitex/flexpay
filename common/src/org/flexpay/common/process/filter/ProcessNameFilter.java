@@ -29,7 +29,7 @@ public class ProcessNameFilter extends ObjectFilter {
 
 		long id = 0L;
 		for (ProcessDefinition definition : definitions) {
-			processNames.add(new ProcessNameObject(id++, definition.getName()));
+			processNames.add(new ProcessNameObject(id++, definition.getId()));
 		}
 	}
 

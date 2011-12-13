@@ -1,6 +1,7 @@
 package org.flexpay.common.process.audit;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.process.audit.NodeInstanceLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
@@ -36,6 +37,8 @@ public interface ProcessInstanceDbLog {
 
 	@NotNull
 	List<VariableInstanceLog> findVariableInstances(long processInstanceId, @NotNull String variableId);
+
+    void deleteFinishedProcessInstances(@NotNull DateRange range, @NotNull String processDefinitionId);
 
 	void clear();
 }

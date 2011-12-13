@@ -1,6 +1,7 @@
 package org.flexpay.common.process.audit.dao;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.process.audit.ProcessInstanceLog;
@@ -43,5 +44,7 @@ public interface ProcessInstanceLogDao {
 
 	@NotNull
 	ProcessInstanceLog update(@NotNull ProcessInstanceLog processInstance);
+
+    void deleteFinishedProcessInstances(@NotNull DateRange range, @Nullable String processId);
 
 }

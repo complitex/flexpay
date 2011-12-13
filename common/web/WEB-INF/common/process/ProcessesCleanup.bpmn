@@ -16,7 +16,7 @@
 	<itemDefinition id="_completeEndTimeItem" structureRef="java.util.Date"/>
 	<itemDefinition id="_definitionNameItem" structureRef="java.lang.String"/>
 
-	<process processType="Public" isExecutable="true" id="TestWorkHandler2" name="Test work item handler"
+	<process processType="Public" isExecutable="true" id="ProcessesCleanup" name="Clear finished process instances"
 			 tns:packageName="defaultPackage">
 
 		<!-- process variables -->

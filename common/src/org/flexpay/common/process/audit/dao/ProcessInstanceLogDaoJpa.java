@@ -1,6 +1,8 @@
 package org.flexpay.common.process.audit.dao;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.persistence.ProcessInstance;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.hibernate.HibernateException;
@@ -128,7 +130,48 @@ public class ProcessInstanceLogDaoJpa extends JpaDaoSupport implements ProcessIn
 		return getProcessInstances(pager, hql, cntHql, startFrom, endBefore, state, name);
 	}
 
-	private List<ProcessInstanceLog> getProcessInstances(Page pager, StringBuilder hql, StringBuilder cntHql,
+    @Override
+    public void deleteFinishedProcessInstances(@NotNull final DateRange range, @Nullable final String processId) {
+
+        final StringBuilder filterHql = new StringBuilder();
+        addFiltering(filterHql, ENDED, range.getStart(), range.getEnd(), processId);
+
+        List<Long> processInstanceIds = getJpaTemplate().execute(new JpaCallback<List<Long>>() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public List<Long> doInJpa(EntityManager entityManager) throws PersistenceException {
+
+                final StringBuilder hql = new StringBuilder("select distinct pi.processInstanceId from ProcessInstanceLog pi ");
+
+		        hql.append(filterHql);
+
+				Query query = entityManager.createQuery(hql.toString());
+                setQueryParameters(query, ENDED, range.getStart(), range.getEnd(), processId);
+
+                return query.getResultList();
+            }
+        });
+
+        for (Long processInstanceId : processInstanceIds) {
+            ProcessLogger.removeLogFile(processInstanceId);
+        }
+
+        getJpaTemplate().execute(new JpaCallback<Void>() {
+			@Override
+			public Void doInJpa(EntityManager entityManager) throws PersistenceException {
+                final StringBuilder hql = new StringBuilder("DELETE ProcessInstanceLog pi ");
+
+		        hql.append(filterHql);
+
+				Query query = entityManager.createQuery(hql.toString());
+                setQueryParameters(query, ENDED, range.getStart(), range.getEnd(), processId);
+                query.executeUpdate();
+                return null;
+			}
+		});
+    }
+
+    private List<ProcessInstanceLog> getProcessInstances(Page pager, StringBuilder hql, StringBuilder cntHql,
 													  Date startFrom, Date endBefore, ProcessInstance.STATE state, String name) {
 
 		List<ProcessInstanceLog> instances;
@@ -176,13 +219,17 @@ public class ProcessInstanceLogDaoJpa extends JpaDaoSupport implements ProcessIn
 			}
 		}
 
-		if (startFrom != null && state != PENDING) {
+		if (startFrom != null && state == ENDED) {
+            appendHqlWhereClause(whereClause, "pi.end >= :startFrom");
+        } else if (startFrom != null && state != PENDING) {
 			appendHqlWhereClause(whereClause, "pi.start >= :startFrom");
 		}
 
-		if (endBefore != null && state != RUNNING) {
-			appendHqlWhereClause(whereClause, "pi.end <= :endBefore");
-		}
+		if (endBefore != null && state == RUNNING) {
+			appendHqlWhereClause(whereClause, "pi.start <= :endBefore");
+		} else if (endBefore != null) {
+            appendHqlWhereClause(whereClause, "pi.end <= :endBefore");
+        }
 
 		if (whereClause.length() > 0) {
 			hql.append(" where ").append(whereClause);
@@ -223,7 +270,7 @@ public class ProcessInstanceLogDaoJpa extends JpaDaoSupport implements ProcessIn
 			query.setParameter("startFrom", startFrom);
 		}
 
-		if (endBefore != null && state != RUNNING) {
+		if (endBefore != null) {
 			query.setParameter("endBefore", endBefore);
 		}
 

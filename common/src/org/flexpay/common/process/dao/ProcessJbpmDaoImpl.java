@@ -6,7 +6,9 @@ import org.drools.event.process.*;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.audit.ProcessInstanceDbLog;
+import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.process.audit.ProcessInstanceLog;
 import org.jbpm.process.audit.VariableInstanceLog;
@@ -163,7 +165,12 @@ public class ProcessJbpmDaoImpl implements ProcessJbpmDao {
 		}
 	}
 
-	@Override
+    @Override
+    public void deleteFinishedProcessInstances(DateRange range, String processDefinitionId) {
+        processInstanceDbLog.deleteFinishedProcessInstances(range, processDefinitionId);
+    }
+
+    @Override
 	public Map<String, Object> getProcessInstanceVariables(long processInstanceId) {
 		ProcessInstanceImpl processInstance = (ProcessInstanceImpl)getSession().getProcessInstance(processInstanceId);
 		if (processInstance != null) {

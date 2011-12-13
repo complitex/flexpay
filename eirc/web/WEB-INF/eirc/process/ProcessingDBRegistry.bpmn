@@ -16,6 +16,7 @@
 	<itemDefinition id="_rangeItem" structureRef="java.lang.String"/>
 	<itemDefinition id="_registryIdItem" structureRef="java.lang.Long"/>
 	<itemDefinition id="_recordIdsItem" structureRef="java.util.List"/>
+	<itemDefinition id="_PROCESS_MANAGER_SECURITY_CONTEXT_Item" structureRef="org.springframework.security.core.Authentication"/>
 
 	<process processType="Public" isExecutable="true" id="ProcessingDBRegistry" name="Processing db registry"
 			 tns:packageName="defaultPackage">
@@ -26,6 +27,7 @@
 		<property id="range" itemSubjectRef="_rangeItem"/>
 		<property id="registryId" itemSubjectRef="_registryIdItem"/>
 		<property id="recordIds" itemSubjectRef="_recordIdsItem"/>
+		<dataObject id="PROCESS_MANAGER_SECURITY_CONTEXT" itemSubjectRef="_PROCESS_MANAGER_SECURITY_CONTEXT_Item"/>
 
 		<!-- nodes -->
 		<startEvent id="_1" name="StartProcess"/>
@@ -39,6 +41,7 @@
 				<dataInput id="_3_range" name="range"/>
 				<dataInput id="_3_registryId" name="registryId"/>
 				<dataInput id="_3_recordIds" name="recordIds"/>
+				<!--dataInput id="_3_PROCESS_MANAGER_SECURITY_CONTEXT" name="PROCESS_MANAGER_SECURITY_CONTEXT"/-->
 				<dataOutput id="_3_result" name="Result"/>
 				<inputSet>
 					<dataInputRefs>_3_range</dataInputRefs>
@@ -49,6 +52,9 @@
 				<inputSet>
 					<dataInputRefs>_3_recordIds</dataInputRefs>
 				</inputSet>
+				<!--inputSet>
+					<dataInputRefs>_3_PROCESS_MANAGER_SECURITY_CONTEXT</dataInputRefs>
+				</inputSet-->
 				<outputSet>
 					<dataOutputRefs>_3_result</dataOutputRefs>
 				</outputSet>
@@ -65,6 +71,10 @@
 				<sourceRef>recordIds</sourceRef>
 				<targetRef>_3_recordIds</targetRef>
 			</dataInputAssociation>
+			<!--dataInputAssociation>
+				<sourceRef>PROCESS_MANAGER_SECURITY_CONTEXT</sourceRef>
+				<targetRef>_3_PROCESS_MANAGER_SECURITY_CONTEXT</targetRef>
+			</dataInputAssociation-->
 			<dataOutputAssociation>
 				<sourceRef>_3_result</sourceRef>
 				<targetRef>processingDBRegistryResult</targetRef>

@@ -322,7 +322,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	private boolean postFile(@NotNull File file) throws IOException {
 		FileEntity fileEntity = new FileEntity(file, "text/plain");
 
-		HttpPost httppost = new HttpPost(builUri("org.drools.guvnor.Guvnor/api/packages/" + guvnorPackageName + "/" + file.getName()));
+		HttpPost httppost = new HttpPost(buildUri("org.drools.guvnor.Guvnor/api/packages/" + guvnorPackageName + "/" + file.getName()));
 		httppost.setEntity(fileEntity);
 		httppost.setHeader("Authorization", getAuthorizationString());
 
@@ -337,7 +337,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	private boolean putFile(@NotNull File file) throws IOException {
 		FileEntity fileEntity = new FileEntity(file, "text/plain");
 
-		HttpPut httpput = new HttpPut(builUri("org.drools.guvnor.Guvnor/api/packages/" + guvnorPackageName + "/" + file.getName()));
+		HttpPut httpput = new HttpPut(buildUri("org.drools.guvnor.Guvnor/api/packages/" + guvnorPackageName + "/" + file.getName()));
 		httpput.setEntity(fileEntity);
 		httpput.setHeader("Authorization", getAuthorizationString());
 
@@ -350,7 +350,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	}
 
 	private boolean deleteFile(String fileName) throws IOException {
-		HttpDelete httpDelete = new HttpDelete(builUri("org.drools.guvnor.Guvnor/api/packages/" + guvnorPackageName + "/" + fileName));
+		HttpDelete httpDelete = new HttpDelete(buildUri("org.drools.guvnor.Guvnor/api/packages/" + guvnorPackageName + "/" + fileName));
 		httpDelete.setHeader("Authorization", getAuthorizationString());
 
 		org.apache.http.client.HttpClient httpclient = new DefaultHttpClient();
@@ -362,7 +362,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 	}
 
 	private boolean buildPackage(String packageName) throws IOException {
-		HttpPost httppost = new HttpPost(builUri("org.drools.guvnor.Guvnor/action/compile"));
+		HttpPost httppost = new HttpPost(buildUri("org.drools.guvnor.Guvnor/action/compile"));
 		httppost.setHeader("Authorization", getAuthorizationString());
 
 		List<BasicNameValuePair> formparams = new ArrayList<BasicNameValuePair>();
@@ -381,7 +381,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 
 	private List<ProcessDefinition> getPackageContent(String packageName) throws IOException {
 		List<ProcessDefinition> processDefinitions = list();
-		HttpGet httpGet = new HttpGet(builUri("org.drools.guvnor.Guvnor/api/packages/" + packageName));
+		HttpGet httpGet = new HttpGet(buildUri("org.drools.guvnor.Guvnor/api/packages/" + packageName));
 		httpGet.setHeader("Authorization", getAuthorizationString());
 
 		org.apache.http.client.HttpClient httpclient = new DefaultHttpClient();
@@ -442,7 +442,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 			uriBuilder.append("?version=")
 					  .append(version);
 		}
-		HttpGet httpGet = new HttpGet(builUri(uriBuilder.toString()));
+		HttpGet httpGet = new HttpGet(buildUri(uriBuilder.toString()));
 		httpGet.setHeader("Authorization", getAuthorizationString());
 
 		org.apache.http.client.HttpClient httpclient = new DefaultHttpClient();
@@ -508,7 +508,7 @@ public class ProcessDefinitionManagerImpl implements ProcessDefinitionManager {
 		delegate.addPackages(kbuilder.getKnowledgePackages());
 	}
 
-	private String builUri(String end) {
+	private String buildUri(String end) {
 		String resultUri = guvnorUrl + end;
 		log.debug("Request: {}", resultUri);
 		return resultUri;

@@ -1,6 +1,7 @@
 package org.flexpay.common.process.audit;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.audit.dao.NodeInstanceLogDao;
 import org.flexpay.common.process.audit.dao.ProcessInstanceLogDao;
 import org.flexpay.common.process.audit.dao.VariableInstanceLogDao;
@@ -74,7 +75,12 @@ public class ProcessInstanceDbLogImpl implements ProcessInstanceDbLog {
     	return variableInstanceLogDao.findVariableInstances(processInstanceId, variableId);
     }
 
-	@Override
+    @Override
+    public void deleteFinishedProcessInstances(@NotNull DateRange range, @NotNull String processDefinitionId) {
+        processInstanceLogDao.deleteFinishedProcessInstances(range, processDefinitionId);
+    }
+
+    @Override
 	public void clear() {
 
     }

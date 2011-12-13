@@ -1,12 +1,13 @@
 package org.flexpay.common.action.jbpm;
 
 import org.flexpay.common.action.FPActionSupport;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessDefinitionManager;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.filter.ProcessNameFilter;
-import org.flexpay.common.process.jobs.ProcessesCleanupJob;
+import org.flexpay.common.process.handler2.ProcessesCleanupHandler;
 import org.flexpay.common.process.persistence.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
@@ -46,13 +47,17 @@ public class ProcessesCleanupAction extends FPActionSupport implements Initializ
 			if (!haveFilterSet()) {
 				addActionError("common.error.process.cleanup.need_filter");
 			} else {
-				Map<String, Object> params = map();
-				params.put(ProcessesCleanupJob.PARAM_COMPLETE_BEGIN_TIME, beginDateFilter.getDate());
-				params.put(ProcessesCleanupJob.PARAM_COMPLETE_END_TIME, endDateFilter.getDate());
-				params.put(ProcessesCleanupJob.PARAM_DEFINITION_NAME, processNameFilter.getSelectedName());
-				ProcessInstance processInstance = processManager.startProcess("ProcessesCleanupProcess", params);
+				/*Map<String, Object> params = map();
+				params.put(ProcessesCleanupHandler.PARAM_COMPLETE_BEGIN_TIME, beginDateFilter.getDate());
+				params.put(ProcessesCleanupHandler.PARAM_COMPLETE_END_TIME, endDateFilter.getDate());
+				params.put(ProcessesCleanupHandler.PARAM_DEFINITION_NAME, processNameFilter.getSelectedName());
+				ProcessInstance processInstance = processManager.startProcess("ProcessesCleanup", params);
 
 				processId = processInstance != null? processInstance.getId(): null;
+				*/
+
+                processManager.deleteProcessInstances(new DateRange(beginDateFilter.getDate(), endDateFilter.getDate()),
+                        processNameFilter.getSelectedName());
 
 				log.debug("Processes cleanup launched");
 				addActionMessage(getText("common.process.cleanup.started"));
