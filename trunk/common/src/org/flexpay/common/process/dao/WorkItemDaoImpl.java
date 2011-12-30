@@ -9,15 +9,20 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
-//import org.flexpay.common.process.audit.WorkItemCompleteLocker;
+import org.flexpay.common.process.audit.WorkItemCompleteLocker;
 import org.flexpay.common.process.jpa.LockedManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.FlushModeType;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +39,15 @@ public class WorkItemDaoImpl implements WorkItemDao {
 	@Override
 	public List<WorkItem> getWorkItemsWaiting() {
 
+        /*
 		EntityManager em = (EntityManager)session.getEnvironment().get(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER);
 
 		if (!em.isOpen()) {
 			em = emf.createEntityManager();
 		}
+		*/
+
+        EntityManager em = emf.createEntityManager();
 
 		Query processInstancesForEvent = em.createNamedQuery("WorkItemsWaiting");
 		//processInstancesForEvent.setFlushMode(FlushModeType.COMMIT);
@@ -49,7 +58,7 @@ public class WorkItemDaoImpl implements WorkItemDao {
 
 		List<WorkItem> workItems = CollectionUtils.list();
 
-		session.getEnvironment().set(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER, em);
+		//session.getEnvironment().set(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER, em);
 		WorkItemManager manager = getWorkItemManager();
 		for (Long workItemId : workItemIds) {
 			WorkItem workItem = ((JPAWorkItemManager) manager).getWorkItem(workItemId);
@@ -64,7 +73,8 @@ public class WorkItemDaoImpl implements WorkItemDao {
 		return ((KnowledgeCommandContext)((SingleSessionCommandService)((CommandBasedStatefulKnowledgeSession)session).getCommandService()).getContext()).getWorkItemManager();
 	}
 
-	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Override
 	public void completeWorkItem(long workItemId, Map<String, Object> results) {
 		WorkItemManager manager = getWorkItemManager();
 		log.debug("completeWorkItem class", manager.getClass());

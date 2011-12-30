@@ -323,5 +323,9 @@
     <bean id="cashboxTradingDayService"
           class="org.flexpay.payments.service.impl.CashboxTradingDay"
           parent="tradingDayService" />
+
+    <bean id="addProcessIdToPaymentCollectorFacade"
+          class="org.flexpay.payments.process.export.helper.AddProcessIdToPaymentCollectorFacadeImpl"
+          p:paymentCollectorService-ref="paymentCollectorService" />
     
 </beans>

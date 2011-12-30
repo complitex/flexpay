@@ -5,6 +5,7 @@ import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.process.audit.WorkItemCompleteLocker;
 import org.flexpay.common.process.dao.ProcessJbpmDao;
 import org.flexpay.common.process.dao.WorkItemDao;
 import org.flexpay.common.process.dao.WorkItemHandlerDao;
@@ -26,6 +27,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -121,7 +123,17 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 		parameters.put(PROCESS_DEFINITION_VERSION_ID, definition.getVersion());
 		parameters.put(PARAM_SECURITY_CONTEXT, SecurityUtil.getAuthentication());
 		org.drools.runtime.process.ProcessInstance processInstance = delegate.startProcess(definitionId, parameters);
-		return processInstance(processInstance, definition.getVersion());
+        log.debug("Started process {} (definitionId={}, parameters={}, version={})", new Object[]{processInstance.getId(), definitionId, parameters, processDefinitionVersion});
+
+        try {
+            log.debug("Start sleep: {}", processInstance.getId());
+            Thread.sleep(10000);
+            log.debug("End sleep: {}", processInstance.getId());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return processInstance(processInstance, definition.getVersion());
 	}
 
 	/**
@@ -227,6 +239,7 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 		delegate.deleteFinishedProcessInstances(range, processDefinitionName);
 	}
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	@Override
 	public ProcessInstance getProcessInstance(@NotNull Long instanceId) {
 
@@ -258,16 +271,20 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 
 	@Override
 	public List<ProcessInstance> getProcessInstances(@NotNull String definitionId) {
-		// TODO: query for active process instances only
-		List<ProcessInstanceLog> processInstances = delegate.getProcessInstanceLogsByProcessId(definitionId);
-		List<ProcessInstance> result = new ArrayList<ProcessInstance>();
-		for (ProcessInstanceLog processInstance : processInstances) {
-			if (processInstance.getEnd() == null) {
-				Map<String, Object> variables = delegate.getProcessInstanceVariables(processInstance.getProcessInstanceId());
-				Long processDefinitionVersionId = getProcessDefinitionVersion(variables);
-				result.add(processInstance(processInstance, processDefinitionVersionId));
-			}
-		}
+        WorkItemCompleteLocker.lock();
+        List<ProcessInstance> result = new ArrayList<ProcessInstance>();
+        try {
+            List<ProcessInstanceLog> processInstances = delegate.getProcessInstanceLogsByProcessId(definitionId);
+            for (ProcessInstanceLog processInstance : processInstances) {
+                if (processInstance.getEnd() == null) {
+                    Map<String, Object> variables = delegate.getProcessInstanceVariables(processInstance.getProcessInstanceId());
+                    Long processDefinitionVersionId = getProcessDefinitionVersion(variables);
+                    result.add(processInstance(processInstance, processDefinitionVersionId));
+                }
+		    }
+        } finally {
+            WorkItemCompleteLocker.unlock();
+        }
 		return result;
 	}
 
@@ -280,7 +297,12 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	}
 
 	public Map<String, Object> getInstanceData(long instanceId) {
-		return delegate.getProcessInstanceVariables(instanceId);
+        WorkItemCompleteLocker.lock();
+        try {
+		    return delegate.getProcessInstanceVariables(instanceId);
+        } finally {
+            WorkItemCompleteLocker.unlock();
+        }
 	}
 
 	public void setStarted(boolean started) {
@@ -303,6 +325,14 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	@Override
 	public void messageExecution(@NotNull ProcessInstance execution, @NotNull String messageName, @NotNull String messageValue) {
 		delegate.messageExecution(execution.getId(), messageName, messageValue);
+
+        try {
+            log.debug("Start sleep messageExecution: {}", execution.getId());
+            Thread.sleep(10000);
+            log.debug("End sleep messageExecution: {}", execution.getId());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 	}
 
 	/**
@@ -368,9 +398,13 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 		Map<String, WorkItemHandler> workItemHandlers = applicationContext.getBeansOfType(WorkItemHandler.class);
 
 		Map<String, WorkItem> workItemsWaiting = map();
-		for (WorkItem workItem : workItemDao.getWorkItemsWaiting()) {
-			workItemsWaiting.put(workItem.getName(), workItem);
-		}
+        try {
+            for (WorkItem workItem : workItemDao.getWorkItemsWaiting()) {
+                workItemsWaiting.put(workItem.getName(), workItem);
+            }
+        } catch (Throwable th) {
+            log.warn("Can not get waiting work items. Continue register work item handlers...", th);
+        }
 
 		for (Map.Entry<String, WorkItemHandler> workItemHandlerEntry : workItemHandlers.entrySet()) {
 
