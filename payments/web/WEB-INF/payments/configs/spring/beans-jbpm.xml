@@ -82,7 +82,7 @@
 		  name="AddProcessIdToPaymentCollectorTask"
 		  class="org.flexpay.payments.process.export.handler2.AddProcessIdToPaymentCollectorHandler"
 		  parent="taskHandler"
-		  p:paymentCollectorService-ref="paymentCollectorService" />
+		  p:addProcessIdToPaymentCollectorFacade-ref="addProcessIdToPaymentCollectorFacade" />
 
 	<bean id="addProcessIdToPaymentPointHandler"
 		  name="AddProcessIdToPaymentPointTask"

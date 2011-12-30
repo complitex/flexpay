@@ -1,10 +1,13 @@
 package org.flexpay.common.process.handler;
 
+import org.drools.base.evaluators.SetEvaluatorsDefinition;
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.process.audit.WorkItemCompleteLocker;
 import org.flexpay.common.process.dao.WorkItemDao;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import javax.persistence.Transient;
+import java.util.*;
 
 import static org.flexpay.common.process.ProcessManager.PARAM_SECURITY_CONTEXT;
 
@@ -32,7 +36,9 @@ public abstract class TaskHandler implements WorkItemHandler {
 
 	private WorkItemDao workItemDao;
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
+    private Set<Boolean> completed = Collections.synchronizedSet(new HashSet<Boolean>());
+
+	//@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
 	@Override
 	public void executeWorkItem(final WorkItem workItem, final WorkItemManager manager) {
 		final Map<String, Object> parameters = workItem.getParameters();
@@ -66,12 +72,25 @@ public abstract class TaskHandler implements WorkItemHandler {
 					log.error("Failed execute task handler", th);
 				}
 				parameters.put("Result", result);
-				workItemDao.completeWorkItem(workItem.getId(), parameters);
+                try {
+                    WorkItemCompleteLocker.lock();
+				    workItemDao.completeWorkItem(workItem.getId(), parameters);
+                } catch (RuntimeException ex) {
+                    log.error("Exception in work item: {}", workItem.getName());
+                    log.error("{}", ex);
+                } finally {
+                    WorkItemCompleteLocker.unlock();
+                }
 				log.debug("Completed work item: {} ({}), {}", new Object[]{workItem.getId(), workItem.getName(), parameters});
+                completed.add(true);
 			}
 		}).start();
 		log.debug("Executed work item thread: {}", workItem.getId());
 	}
+
+    protected boolean isCompleted() {
+        return !completed.isEmpty();
+    }
 
 	@Override
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {

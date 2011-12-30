@@ -19,6 +19,8 @@ import org.jbpm.workflow.instance.impl.WorkflowProcessInstanceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -113,6 +115,7 @@ public class ProcessJbpmDaoImpl implements ProcessJbpmDao {
 		return processInstanceDbLog.findProcessInstances(processId);
 	}
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	@Override
 	public ProcessInstance startProcess(final String processId, final Map<String, Object> parameters) {
 
