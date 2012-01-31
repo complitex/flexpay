@@ -61,7 +61,7 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 				organizationFilter.setSelectedId(oldCollector.getOrganizationStub().getId());
 				email = oldCollector.getEmail();
 				if (oldCollector.getTradingDayBeginTime() != null) {
-					beginTimeFilter = new BeginTimeFilter(oldCollector.getTradingDayEndTime(), false);
+					beginTimeFilter = new BeginTimeFilter(oldCollector.getTradingDayBeginTime(), false);
 				}
 				if (oldCollector.getTradingDayEndTime() != null) {
 					endTimeFilter = new EndTimeFilter(oldCollector.getTradingDayEndTime(), false);
@@ -93,9 +93,9 @@ public class PaymentCollectorEditAction extends FPActionSupport {
 		oldCollector.setEmail(email);
 		if (beginTimeFilter.getHours() != 0 || beginTimeFilter.getMinutes() != 0 || beginTimeFilter.getSeconds() != 0) {
 			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.HOUR_OF_DAY, endTimeFilter.getHours());
-			calendar.set(Calendar.MINUTE, endTimeFilter.getMinutes());
-			calendar.set(Calendar.SECOND, endTimeFilter.getSeconds());
+			calendar.set(Calendar.HOUR_OF_DAY, beginTimeFilter.getHours());
+			calendar.set(Calendar.MINUTE, beginTimeFilter.getMinutes());
+			calendar.set(Calendar.SECOND, beginTimeFilter.getSeconds());
 			oldCollector.setTradingDayBeginTime(new Time(calendar.getTimeInMillis()));
 		} else {
 			oldCollector.setTradingDayBeginTime(null);
