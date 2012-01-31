@@ -39,15 +39,11 @@ public class WorkItemDaoImpl implements WorkItemDao {
 	@Override
 	public List<WorkItem> getWorkItemsWaiting() {
 
-        /*
 		EntityManager em = (EntityManager)session.getEnvironment().get(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER);
 
 		if (!em.isOpen()) {
 			em = emf.createEntityManager();
 		}
-		*/
-
-        EntityManager em = emf.createEntityManager();
 
 		Query processInstancesForEvent = em.createNamedQuery("WorkItemsWaiting");
 		//processInstancesForEvent.setFlushMode(FlushModeType.COMMIT);
@@ -58,7 +54,7 @@ public class WorkItemDaoImpl implements WorkItemDao {
 
 		List<WorkItem> workItems = CollectionUtils.list();
 
-		//session.getEnvironment().set(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER, em);
+		session.getEnvironment().set(EnvironmentName.CMD_SCOPED_ENTITY_MANAGER, em);
 		WorkItemManager manager = getWorkItemManager();
 		for (Long workItemId : workItemIds) {
 			WorkItem workItem = ((JPAWorkItemManager) manager).getWorkItem(workItemId);
