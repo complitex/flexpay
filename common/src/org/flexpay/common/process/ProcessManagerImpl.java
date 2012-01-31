@@ -320,6 +320,14 @@ public class ProcessManagerImpl implements ProcessManager, ApplicationContextAwa
 	@Override
 	public void signalExecution(@NotNull ProcessInstance execution, String signal) {
 		delegate.signalExecution(execution.getId(), signal);
+
+        try {
+            log.debug("Start sleep signalExecution: {}", execution.getId());
+            Thread.sleep(10000);
+            log.debug("End sleep signalExecution: {}", execution.getId());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
