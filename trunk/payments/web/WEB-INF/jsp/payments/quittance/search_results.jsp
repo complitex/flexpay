@@ -31,7 +31,6 @@
                 <s:hidden name="eircAccounts['%{#serviceIndx}']" value="%{getEircAccount(#qi)}"/>
                 <s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{#sd.serviceProviderAccount}"/>
                 <s:hidden name="debts['%{#serviceIndx}']" value="%{#sd.outgoingBalance}"/>
-                <s:hidden name="ercAccounts['%{#serviceIndx}']" value="%{getErcAccount(#sd.attributes)}"/>
 
                 <tr class="cols_1_error" style="display:none;">
                     <td colspan="7"></td>
@@ -122,11 +121,11 @@
                     <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}" />
                     {
                             index: "<s:property value="getServiceFullIndex(#nQI.index, #serviceId)" />",
-                            content: '"<s:property value="getErcAccount(attributes)" />";' +
-                                          '"<s:property value="serviceProviderAccount" />";' +
-                                          '"<s:property value="getApartmentAddress(#qi)" />";' +
-                                          '"<s:property value="%{#sd.personFio}" />";' +
-                                          '"<s:property value="getMBServiceCode(serviceMasterIndex)" />"'
+                            content: '"<s:property value="getEircAccount(#qi)" escapeHtml="false" />";' +
+                                          '"<s:property value="serviceProviderAccount" escapeHtml="false" />";' +
+                                          '"<s:property value="getApartmentAddress(#qi)" escapeHtml="false" />";' +
+                                          '"<s:property value="%{#sd.personFio}" escapeHtml="false" />";' +
+                                          '"<s:property value="getMBServiceCode(serviceMasterIndex)" escapeHtml="false" />"'
                     }<s:property value="quittanceInfos.size() - 1 == #nQI.index && serviceDetailses.size() - 1 == #status.index ? '' : ','" />
                 </s:iterator>
             </s:iterator>
