@@ -246,7 +246,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		return serviceProvider.getName();
 	}
 
-	public String getErcAccount(ServiceDetails.ServiceAttribute[] attributes) {
+	public String getErcAccount(List<ServiceDetails.ServiceAttribute> attributes) {
 
 		for (ServiceDetails.ServiceAttribute attribute : attributes) {
 			if (attribute.getName().equals(ConsumerAttributes.ATTR_ERC_ACCOUNT)) {
