@@ -13,6 +13,7 @@
 
     <table class="search_results" cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
+            <td class="th"><s:text name="payments.quittances.quittance_pay.erc_consumer_account" /></td>
             <td class="th"><s:text name="payments.quittances.quittance_pay.consumer_account" /></td>
             <td class="th"><s:text name="payments.quittances.quittance_pay.fio" /></td>
             <td class="th"><s:text name="payments.quittances.quittance_pay.service" /></td>
@@ -31,11 +32,13 @@
                 <s:hidden name="eircAccounts['%{#serviceIndx}']" value="%{getEircAccount(#qi)}"/>
                 <s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{#sd.serviceProviderAccount}"/>
                 <s:hidden name="debts['%{#serviceIndx}']" value="%{#sd.outgoingBalance}"/>
+                <s:hidden name="ercAccounts['%{#serviceIndx}']" value="%{getErcAccount(#sd.attributes)}"/>
 
                 <tr class="cols_1_error" style="display:none;">
                     <td colspan="7"></td>
                 </tr>
                 <tr class="cols_1 service_payment">
+                    <td class="col"><s:property value="getErcAccount(#sd.attributes)" /></td>
                     <td class="col"><s:property value="#sd.serviceProviderAccount" /></td>
                     <td class="col">
                         <s:property value="#sd.personFio" />
@@ -60,10 +63,10 @@
         </s:iterator>
 
         <tr class="cols_1_error" style="display:none;">
-            <td colspan="7"></td>
+            <td colspan="8"></td>
         </tr>
         <tr class="cols_1">
-            <td class="col" colspan="5" style="text-align:right;font-weight:bold;">
+            <td class="col" colspan="6" style="text-align:right;font-weight:bold;">
                 <s:text name="payments.quittances.quittance_pay.total_payable" />
             </td>
             <td class="col">
@@ -72,10 +75,10 @@
             <td class="col"></td>
         </tr>
         <tr class="cols_1_error" style="display:none;">
-            <td colspan="7"></td>
+            <td colspan="8"></td>
         </tr>
         <tr class="cols_1">
-            <td colspan="5" style="font-weight:bold;text-align:right;">
+            <td colspan="6" style="font-weight:bold;text-align:right;">
                 <s:text name="payments.quittance.payment.input" />
             </td>
             <td>
@@ -85,7 +88,7 @@
             <td class="col"></td>
         </tr>
         <tr class="cols_1">
-            <td colspan="5" style="font-weight:bold;text-align:right;">
+            <td colspan="6" style="font-weight:bold;text-align:right;">
                 <s:text name="payments.quittance.payment.change" />
             </td>
             <td>
@@ -95,7 +98,7 @@
         </tr>
         <s:if test="!hasActionErrors()">
             <tr>
-                <td colspan="5" style="text-align:right;">
+                <td colspan="6" style="text-align:right;">
                     <span style="display:none;">&nbsp;</span>
                     <img id="indicator" src="<s:url value="/resources/common/img/indicator.gif" />" style="display:none;" />
                     <input type="button" id="printQuittanceButton" class="btn-exit" style="width:80px;" value="<s:text name="payments.quittances.quittance_pay.print_quittance" />" />
@@ -121,7 +124,7 @@
                     <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}" />
                     {
                             index: "<s:property value="getServiceFullIndex(#nQI.index, #serviceId)" />",
-                            content: '"<s:property value="getEircAccount(#qi)" escapeHtml="false" />";' +
+                            content: '"<s:property value="%{getErcAccount(#sd.attributes)}" escapeHtml="false" />";' +
                                           '"<s:property value="serviceProviderAccount" escapeHtml="false" />";' +
                                           '"<s:property value="getApartmentAddress(#qi)" escapeHtml="false" />";' +
                                           '"<s:property value="%{#sd.personFio}" escapeHtml="false" />";' +
