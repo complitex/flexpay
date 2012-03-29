@@ -102,7 +102,7 @@
 	}
 
 	function validateAddress() {
-		if (FF.filters["apartment"].value.val().length == 0) {
+		if (FF.filters["apartment"].value.val() == 0) {
 			alert("<s:text name="payments.error.apartment_is_not_selected" />");
 			return false;
 		}
