@@ -139,8 +139,16 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
             request.setSearchCriteria(searchCriteria);
             request.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
-			Apartment apartment = apartmentService.readFull(
-					new Stub<Apartment>(Long.parseLong(searchCriteria)));
+            Apartment apartment = null;
+            try {
+                apartment = apartmentService.readFull(
+                        new Stub<Apartment>(Long.parseLong(searchCriteria)));
+            } catch (Exception ex) {
+                log.error("Exception in time apartment reading", ex);
+            }
+            if (apartment == null) {
+                throw new FlexPayException("Apartment did not find by seartch criteria", "payments.quittance.payment.appartment_did_not_set");
+            }
 			String indx = masterIndexService.getMasterIndex(apartment);
 			if (indx == null) {
 				throw new FlexPayException("No master index for apartment #" + searchCriteria);
