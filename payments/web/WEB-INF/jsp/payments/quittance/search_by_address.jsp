@@ -87,6 +87,8 @@
         {
             searchType: "ADDRESS",
             searchCriteria: FF.filters["apartment"].value.val(),
+            apartmentNumber: $("#apartment_string").val(),
+            parentSearchCriteria: FF.filters["building"].value.val(),
             actionName: "searchByAddress"
         },
         function(response) {
@@ -102,7 +104,7 @@
 	}
 
 	function validateAddress() {
-		if (FF.filters["apartment"].value.val() == 0) {
+		if ($("#apartment_string").val() == "") {
 			alert("<s:text name="payments.error.apartment_is_not_selected" />");
 			return false;
 		}

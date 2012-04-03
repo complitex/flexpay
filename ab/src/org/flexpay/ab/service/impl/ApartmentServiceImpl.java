@@ -422,7 +422,17 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		return apartmentDao.findObjects(addressStub.getId());
 	}
 
-	/**
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public Apartment findByParent(@NotNull Stub<BuildingAddress> addressStub, @NotNull String aparmentNumber) {
+        List<Apartment> apartments = apartmentDao.findAparmentInBuilding(addressStub.getId(), aparmentNumber);
+        return apartments.isEmpty() ? null : apartments.get(0);
+    }
+
+    /**
 	 * Get apartment number
 	 *
 	 * @param apartmentStub Apartment stub

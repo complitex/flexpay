@@ -44,6 +44,17 @@
 		order by n.value
 	]]></query>
 
+    <query name="Apartment.findAparmentInBuilding">
+		select distinct a
+		from Apartment a
+			inner join fetch a.building b
+			left join b.buildingses bs
+			left join fetch a.apartmentNumbers n
+		where a.status=0 and bs.id=?
+              and n.value=? and current_date() >= n.begin and n.end >= current_date()
+		order by n.value
+	</query>
+
 	<query name="Apartment.readFull">
         select distinct a
 		from Apartment a
