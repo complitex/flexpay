@@ -1,6 +1,7 @@
 package org.flexpay.payments.action.quittance;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.ApartmentService;
@@ -44,6 +45,8 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
 	private String searchType;
 	private String searchCriteria;
+    private String parentSearchCriteria;
+    private String apartmentNumber;
 	private List<QuittanceInfo> quittanceInfos;
 	private String actionName;
 
@@ -146,9 +149,20 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
             } catch (Exception ex) {
                 log.error("Exception in time apartment reading", ex);
             }
-            if (apartment == null) {
-                throw new FlexPayException("Apartment did not find by seartch criteria", "payments.quittance.payment.appartment_did_not_set");
+            if (apartment == null && apartmentNumber != null) {
+                Long addressId;
+                try {
+                    addressId = Long.parseLong(parentSearchCriteria);
+                } catch (Exception e) {
+                    log.warn("Incorrect building address id in filter ({})", parentSearchCriteria);
+                    throw new FlexPayException("Incorrect building address id", "ab.error.building_address.incorrect_address_id");
+                }
+                apartment = apartmentService.findByParent(new Stub<BuildingAddress>(addressId), apartmentNumber);
             }
+            if (apartment == null) {
+                throw new FlexPayException("Apartment did not find by seartch criteria", "payments.quittance.payment.appartment_did_not_find");
+            }
+            searchCriteria = apartment.getId().toString();
 			String indx = masterIndexService.getMasterIndex(apartment);
 			if (indx == null) {
 				throw new FlexPayException("No master index for apartment #" + searchCriteria);
@@ -354,6 +368,14 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	public void setSearchCriteria(String searchCriteria) {
 		this.searchCriteria = searchCriteria;
 	}
+
+    public void setParentSearchCriteria(String parentSearchCriteria) {
+        this.parentSearchCriteria = parentSearchCriteria;
+    }
+
+    public void setApartmentNumber(String apartmentNumber) {
+        this.apartmentNumber = apartmentNumber;
+    }
 
     public List<QuittanceInfo> getQuittanceInfos() {
         return quittanceInfos;

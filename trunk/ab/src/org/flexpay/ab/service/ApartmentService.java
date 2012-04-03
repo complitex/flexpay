@@ -150,6 +150,17 @@ public interface ApartmentService extends JpaSetService {
 	@NotNull
 	List<Apartment> findByParent(@NotNull Stub<BuildingAddress> addressStub);
 
+    /**
+	 * Lookup apartment by building address id and aparment number.
+	 *
+	 * @param addressStub  Building address stub
+     * @param aparmentNumber Apartment number
+	 * @return Found apartment
+	 */
+	@Secured (Roles.APARTMENT_READ)
+	@Nullable
+	Apartment findByParent(@NotNull Stub<BuildingAddress> addressStub, @NotNull String aparmentNumber);
+
 	/**
 	 * Get apartment number
 	 *

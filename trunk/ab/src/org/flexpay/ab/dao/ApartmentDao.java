@@ -20,6 +20,15 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	 */
 	List<Apartment> findObjects(Long buildingsId, Page<Apartment> pager);
 
+    /**
+	 * Find apartment in the building by apartment number
+	 *
+	 * @param buildingsId Building address identifier
+     * @param apartmentNumber Apartment number
+	 * @return Apartment in the building
+	 */
+	List<Apartment> findAparmentInBuilding(Long buildingsId, String apartmentNumber);
+
 	/**
 	 * Find apartments in the building
 	 *
