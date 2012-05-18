@@ -8,7 +8,6 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.struts2.StrutsConstants;
-import org.apache.struts2.dispatcher.multipart.MultiPartRequest;
 import org.flexpay.common.progressbar.ProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +25,9 @@ import static org.flexpay.common.util.CollectionUtils.map;
 /**
  * Multipart form data request adapter for Jakarta Commons Fileupload package.
  */
-public class JakartaMultiPartRequest implements MultiPartRequest {
+public class JakartaMultiPartRequest2 implements MultiPartRequest {
 
-    static final Logger log = LoggerFactory.getLogger(JakartaMultiPartRequest.class);
+    static final Logger log = LoggerFactory.getLogger(JakartaMultiPartRequest2.class);
 
     // maps parameter name -> List of FileItem objects
     protected Map<String, List<FileItem>> files = map();
