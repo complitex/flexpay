@@ -12,7 +12,7 @@
 	<constant name="struts.ui.theme" value="simple"/>
 	<constant name="struts.multipart.maxSize" value="1073741824"/>
 
-	<include file="struts-default.xml" />
+	<include file="org/flexpay/common/struts-default.xml" />
 	<include file="struts-plugin.xml" />
 
 	<package name="common" namespace="/common" extends="tiles-default">
