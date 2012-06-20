@@ -74,14 +74,6 @@ objectClass: groupofurls
 objectClass: flexpayGroup
 cn: COMMON_PROCESS_START
 
-# COMMON_PROCESS_START, groups, opensso.java.net
-dn: cn=COMMON_PROCESS_START,ou=groups,dc=opensso,dc=java,dc=net
-objectClass: groupofuniquenames
-objectClass: top
-objectClass: groupofurls
-objectClass: flexpayGroup
-cn: COMMON_PROCESS_START
-
 # COMMON_PROCESS_END, groups, opensso.java.net
 dn: cn=COMMON_PROCESS_END,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
