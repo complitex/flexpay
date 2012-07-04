@@ -6,6 +6,7 @@
     FPFile.constants = {
         progressBarUrl: "<s:url action="fileUploadProgress" namespace="/common" />",
         statusWaiting: "<s:text name="common.file_upload.progress_bar.waiting" />",
+        statusWaitingTime: "<s:text name="common.file_upload.progress_bar.waiting_time" />",
         statusUploading: "<s:text name="common.file_upload.progress_bar.uploading" />",
         statusProcessing: "<s:text name="common.file_upload.progress_bar.processing" />",
         statusUploaded: "<s:text name="common.file_upload.progress_bar.uploaded" />",
