@@ -39,6 +39,7 @@ function FPFileUploadForm(formId, options) {
     this.wait = false;
     this.uploadingFilename = "";
     this.curRetry = 0;
+    this.waitRetry = 0;
 
     this.uploadForms = [];
     this.responses = [];
@@ -140,9 +141,16 @@ function FPFileUploadForm(formId, options) {
                     if (data == "" && textStatus == "success") {
                         window.location.href = FP.base;
                     }
+                    console.log('Success responce');
                     if (textStatus == form.successResponse && data != null && data != "") {
-                        var ajaxResponse = $("#" + form.responseId + form.uploadingId).
-                                text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, data]));
+                        var ajaxResponse;
+                        if (data == "Wait") {
+                            ajaxResponse = $("#" + form.responseId + form.uploadingId).
+                                    text(FP.formatI18nMessage(FPFile.constants.statusWaitingTime, [form.uploadingFilename, ++form.waitRetry]));
+                        } else {
+                            ajaxResponse = $("#" + form.responseId + form.uploadingId).
+                                    text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, data]));
+                        }
                         if (data == "100") {
                             form.uploaded = true;
                             form.wait = true;
@@ -223,6 +231,7 @@ var FPFile = {
     constants: {
         progressBarUrl: "",
         statusWaiting: "",
+        statusWaitingTime: "",
         statusUploading: "",
         statusProcessing: "",
         statusUploaded: "",
