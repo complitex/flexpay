@@ -14,6 +14,7 @@ function FPFileUploadForm(formId, options) {
         successResponse : "success",
         errorResponse : "error",
         retries : 5,
+        uuid : "",
         validate : function() {
             return true;
         }
@@ -45,6 +46,9 @@ function FPFileUploadForm(formId, options) {
     this.responses = [];
     this.uploadFrames = [];
 
+    this.uuid = "";
+    this.nginx = false;
+
     var test = "";
     var test1 = null;
 
@@ -68,7 +72,11 @@ function FPFileUploadForm(formId, options) {
 
         var index = form.total;
 
-        form.uploadForms[index] = $('<form id="' + form.uploadFormId + index + '" action="' + options.action + '"'
+        var uuid = "";
+        for (i = 0; i < 32; i++) { uuid += Math.floor(Math.random() * 16).toString(16); }
+        form.uuid = uuid;
+
+        form.uploadForms[index] = $('<form id="' + form.uploadFormId + index + '" action="' + options.action + '?X-Progress-ID=' + uuid + '"'
                          + 'method="post" enctype="multipart/form-data" target="' + form.uploadFrameId + index + '"></form>').css({display : "none"});
 
         $(":input:not(:button):not(:reset):not(:image):not(:file):not(:submit):not(:disabled)").each(function() {
@@ -145,9 +153,41 @@ function FPFileUploadForm(formId, options) {
                     if (textStatus == form.successResponse && data != null && data != "") {
                         var ajaxResponse;
                         if (data == "Wait") {
-                            ajaxResponse = $("#" + form.responseId + form.uploadingId).
-                                    text(FP.formatI18nMessage(FPFile.constants.statusWaitingTime, [form.uploadingFilename, ++form.waitRetry]));
-                        } else {
+                            /*
+                            $.ajax({
+                                type: "GET",
+                                url: "/progress?X-Progress-ID=" + form.uuid,
+                                dataType: "json",
+                                success: function(data) {
+                                    console.debug("upload=%s", data);
+                                    if (data.state == 'uploading') {
+                                        console.debug("uploading");
+                                        data.percents = Math.floor((upload.received / upload.size)*1000)/10;
+                                        ajaxResponse = $("#" + form.responseId + form.uploadingId).
+                                            text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, data.percents]));
+                                    }
+                                }
+                            });
+                            */
+                            $.get("/progress", {"X-Progress-ID" : form.uuid},
+                                function(data, status) {
+                                    console.debug("upload=%s", data);
+                                    var upload = $.parseJSON(data.substring(1, data.length - 4));
+                                    console.debug("upload2=%s", upload.state);
+                                    if (status == "success" && upload.state == 'uploading') {
+                                        form.nginx = true;
+                                        upload.percents = Math.floor((upload.received / upload.size)*1000)/10;
+                                        //console.debug("uploading s%/%s=%s", upload.received, upload.size, );
+                                        ajaxResponse = $("#" + form.responseId + form.uploadingId).
+                                            text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, upload.percents]));
+                                    }
+                                }
+                            );
+                          if (!form.nginx) {
+                              ajaxResponse = $("#" + form.responseId + form.uploadingId).
+                                        text(FP.formatI18nMessage(FPFile.constants.statusWaitingTime, [form.uploadingFilename, ++form.waitRetry]));
+                          }
+                        } else if (!form.nginx || data == "100") {
                             ajaxResponse = $("#" + form.responseId + form.uploadingId).
                                     text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, data]));
                         }
