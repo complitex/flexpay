@@ -1,1 +1,1 @@
-java -cp ../_build/classes/http_tester:libs/* org.flexpay.httptester.outerrequest.OuterRequestClient
+/usr/java/jdk1.7.0_04/bin/java -cp build/classes:libs/* org.flexpay.httptester.outerrequest.OuterRequestClient

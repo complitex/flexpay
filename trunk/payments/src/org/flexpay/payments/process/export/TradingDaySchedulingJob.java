@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
@@ -23,6 +24,7 @@ import static org.flexpay.common.util.CollectionUtils.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 
+@Transactional(readOnly = true)
 public class TradingDaySchedulingJob extends QuartzJobBean {
 
     private Logger log = LoggerFactory.getLogger(getClass());

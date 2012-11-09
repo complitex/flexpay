@@ -41,6 +41,8 @@ public class AddProcessIdToCashboxActionHandler extends FlexPayActionHandler {
 			log.error("Failed update cashbox", flexPayExceptionContainer);
 		}
 
+
+
 		return RESULT_NEXT;
 	}
 

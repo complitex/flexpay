@@ -28,18 +28,21 @@ import org.flexpay.payments.action.outerrequest.request.response.data.*;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.service.Roles;
-import org.flexpay.payments.service.Security;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import static org.apache.commons.lang.StringUtils.*;
+import static org.flexpay.ab.util.TranslationUtil.getBuildingNumberWithoutHouseType;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountryStub;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegionStub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.persistence.registry.RegistryContainer.*;
 import static org.flexpay.common.util.BigDecimalUtil.isNotZero;
@@ -51,6 +54,8 @@ public class OuterRequestServiceImpl implements OuterRequestService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private CountryService countryService;
+    private BuildingService buildingService;
     private StreetService streetService;
     private TownService townService;
     private RegionService regionService;
@@ -570,6 +575,175 @@ public class OuterRequestServiceImpl implements OuterRequestService {
         return response;
     }
 
+    @NotNull
+    @Override
+    public GetAddressMasterIndexResponse getAddressMasterIndex(@NotNull GetAddressMasterIndexRequest request) throws FlexPayException {
+        GetAddressMasterIndexResponse response = request.getResponse();
+        Locale locale = request.getLocale();
+        String parentMasterIndex = request.getParentMasterIndex();
+
+        response.setAddressInfoType(request.getParentAddressInfoType() + 1);
+        switch (request.getParentAddressInfoType()) {
+            case 0:
+                if (isNotCorrectInputData(request)) {
+                    return response;
+                }
+                log.debug("Start search country by data: {}", request.getSearchingData());
+                List<Country> countries = countryService.findByQuery("%" + request.getSearchingData() + "%");
+                for (Country country : countries) {
+                    response.addRegistryInfo(new AddressInfo(getTranslation(country.getTranslations(), locale).getName(),
+                            masterIndexService.getMasterIndex(country)));
+                }
+                break;
+            case 1:
+                if (isNotCorrectInputData(request)) {
+                    return response;
+                }
+                Stub<Country> countryStub;
+                if (StringUtils.isEmpty(parentMasterIndex)) {
+                    countryStub = new Stub<Country>(getDefaultCountryStub().getId());
+                } else {
+                    countryStub = correctionsService.findCorrection(parentMasterIndex,
+                            Country.class, masterIndexService.getMasterSourceDescriptionStub());
+                }
+                if (countryStub == null) {
+                    log.warn("Parent did not find by master-index: {}", parentMasterIndex);
+                    response.setStatus(Status.PARENT_NOT_FOUND);
+                    break;
+                }
+                log.debug("Start search region by data: {}, {}", countryStub, request.getSearchingData());
+                List<Region> regions = regionService.findByParentAndQuery(countryStub, "%" + request.getSearchingData() + "%");
+                for (Region region : regions) {
+                    RegionName name = region.getCurrentName();
+                    if (name == null) {
+                        log.warn("Found incorrect region: {}", region);
+                        continue;
+                    }
+                    response.addRegistryInfo(new AddressInfo(getTranslation(name.getTranslations(), locale).getName(),
+                            masterIndexService.getMasterIndex(region)));
+                }
+                break;
+            case 2:
+                if (isNotCorrectInputData(request)) {
+                    return response;
+                }
+                Stub<Region> regionStub;
+                if (StringUtils.isEmpty(parentMasterIndex)) {
+                    regionStub = new Stub<Region>(getDefaultRegionStub().getId());
+                } else {
+                    regionStub = correctionsService.findCorrection(parentMasterIndex,
+                            Region.class, masterIndexService.getMasterSourceDescriptionStub());
+                }
+                if (regionStub == null) {
+                    response.setStatus(Status.PARENT_NOT_FOUND);
+                    log.warn("Parent did not find by master-index: {}", parentMasterIndex);
+                    break;
+                }
+                log.debug("Start search town by data: {}, {}", regionStub, request.getSearchingData());
+                List<Town> towns = townService.findByParentAndQuery(regionStub, "%" + request.getSearchingData() + "%");
+                for (Town town : towns) {
+                    TownName name = town.getCurrentName();
+                    if (name == null) {
+                        log.warn("Found incorrect town: {}", town);
+                        continue;
+                    }
+                    response.addRegistryInfo(new AddressInfo(getTranslation(name.getTranslations(), locale).getName(),
+                            masterIndexService.getMasterIndex(town)));
+                }
+                break;
+            case 3:
+                if (isNotCorrectInputData(request)) {
+                    return response;
+                }
+                Stub<Town> townStub;
+                townStub = correctionsService.findCorrection(parentMasterIndex,
+                        Town.class, masterIndexService.getMasterSourceDescriptionStub());
+                if (townStub == null) {
+                    response.setStatus(Status.PARENT_NOT_FOUND);
+                    log.warn("Parent did not find by master-index: {}", parentMasterIndex);
+                    break;
+                }
+                log.debug("Start search street by data: {}, {}", townStub, request.getSearchingData());
+                List<Street> streets = streetService.findByParentAndQuery(townStub, "%" + request.getSearchingData() + "%");
+                for (Street street : streets) {
+                    StreetType streetType = street.getCurrentType();
+			        StreetName streetName = street.getCurrentName();
+                    if (streetType == null || streetName == null) {
+                        log.warn("Found incorrect street: {}", street);
+                        continue;
+                    }
+                    response.addRegistryInfo(new AddressInfo(getTranslation(streetType.getTranslations(), locale).getShortName() + " " +
+                            getTranslation(streetName.getTranslations(), locale).getName(),
+                            masterIndexService.getMasterIndex(street)));
+                }
+                break;
+            case 4:
+                Stub<Street> streetStub;
+                streetStub = correctionsService.findCorrection(parentMasterIndex,
+                        Street.class, masterIndexService.getMasterSourceDescriptionStub());
+                if (streetStub == null) {
+                    response.setStatus(Status.PARENT_NOT_FOUND);
+                    log.warn("Parent did not find by master-index: {}", parentMasterIndex);
+                    break;
+                }
+                log.debug("Start search building on street: {}", streetStub);
+                List<BuildingAddress> buildingAddresses = buildingService.findAddressesByParent(streetStub);
+                if (StringUtils.isEmpty(request.getSearchingData())) {
+                    response.setAddressInfos(new ArrayList<AddressInfo>(buildingAddresses.size()));
+                    for (BuildingAddress buildingAddress : buildingAddresses) {
+                        response.addRegistryInfo(new AddressInfo(
+                                getBuildingNumberWithoutHouseType(buildingAddress.getBuildingAttributes(), locale),
+                                masterIndexService.getMasterIndex(buildingAddress)));
+                    }
+                } else {
+                    for (BuildingAddress buildingAddress : buildingAddresses) {
+                        String foundValue = getBuildingNumberWithoutHouseType(buildingAddress.getBuildingAttributes(), locale);
+                        if (StringUtils.startsWithIgnoreCase(foundValue, request.getSearchingData())) {
+                            response.addRegistryInfo(new AddressInfo(foundValue, masterIndexService.getMasterIndex(buildingAddress)));
+                        }
+                    }
+                }
+                break;
+            case 5:
+                Stub<BuildingAddress> buildingAddressStub;
+                buildingAddressStub = correctionsService.findCorrection(parentMasterIndex,
+                        BuildingAddress.class, masterIndexService.getMasterSourceDescriptionStub());
+                if (buildingAddressStub == null) {
+                    response.setStatus(Status.PARENT_NOT_FOUND);
+                    log.warn("Parent did not find by master-index: {}", parentMasterIndex);
+                    break;
+                }
+                log.debug("Start search apartment on building: {}", buildingAddressStub);
+                List<Apartment> apartments = apartmentService.findByParent(buildingAddressStub);
+                if (StringUtils.isEmpty(request.getSearchingData())) {
+                    response.setAddressInfos(new ArrayList<AddressInfo>(apartments.size()));
+                    for (Apartment apartment : apartments) {
+                        response.addRegistryInfo(new AddressInfo(apartment.getNumber(), masterIndexService.getMasterIndex(apartment)));
+                    }
+                } else {
+                    for (Apartment apartment : apartments) {
+                        String foundValue = apartment.getNumber();
+                        if (StringUtils.startsWithIgnoreCase(foundValue, request.getSearchingData())) {
+                            response.addRegistryInfo(new AddressInfo(foundValue, masterIndexService.getMasterIndex(apartment)));
+                        }
+                    }
+                }
+                break;
+        }
+
+        return response;
+    }
+
+    private boolean isNotCorrectInputData(GetAddressMasterIndexRequest request) {
+        String inputData = request.getSearchingData();
+        if (StringUtils.isEmpty(inputData) || inputData.length() < 3) {
+            log.error("Source searching data '{}' must be longer than 2 chars");
+            request.getResponse().setStatus(Status.INCORRECT_MASTER_INDEX_ADDRESS_INPUT_DATA);
+            return true;
+        }
+        return false;
+    }
+
     @Required
     public void setPaymentPointService(PaymentPointService paymentPointService) {
         this.paymentPointService = paymentPointService;
@@ -688,5 +862,15 @@ public class OuterRequestServiceImpl implements OuterRequestService {
     @Required
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
+    }
+
+    @Required
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
+    }
+
+    @Required
+    public void setBuildingService(BuildingService buildingService) {
+        this.buildingService = buildingService;
     }
 }

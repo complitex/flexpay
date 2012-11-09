@@ -279,6 +279,8 @@
           p:streetService-ref="streetService"
           p:townService-ref="townService"
           p:regionService-ref="regionService"
+          p:countryService-ref="countryService"
+          p:buildingService-ref="buildingService"
           p:registryService-ref="registryService" />
 
     <bean id="paymentsUserPreferencesFactory"

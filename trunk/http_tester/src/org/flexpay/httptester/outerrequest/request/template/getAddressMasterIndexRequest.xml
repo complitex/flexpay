@@ -1,0 +1,10 @@
+<request>
+    <getAddressMasterIndex>
+        <requestId>@requestId@</requestId>
+        <parentMasterIndex>@parentMasterIndex@</parentMasterIndex>
+        <parentAddressInfoType>@parentAddressInfoType@</parentAddressInfoType>
+        <searchingData>@searchingData@</searchingData>
+    </getAddressMasterIndex>
+    <login>@login@</login>
+    <signature>@signature@</signature>
+</request>

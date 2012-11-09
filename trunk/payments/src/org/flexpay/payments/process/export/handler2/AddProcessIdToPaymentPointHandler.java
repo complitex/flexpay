@@ -3,19 +3,22 @@ package org.flexpay.payments.process.export.handler2;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.handler.TaskHandler;
+import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_POINT_ID;
 
-public class AddProcessIdToPaymentPointHandler extends TaskHandler {
+public class AddProcessIdToPaymentPointHandler extends ProcessInstanceExecuteHandler {
 
 	private PaymentPointService paymentPointService;
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 

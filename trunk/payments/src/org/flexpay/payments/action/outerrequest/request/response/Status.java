@@ -20,7 +20,9 @@ public enum Status {
     INCORRECT_OPERATION_ID(19, "payments.outer_request.status.incorrect_operation_id"),
     REVERSE_IS_NOT_POSSIBLE(20, "payments.outer_request.status.reverse_is_not_possible"),
     REGISTRY_NOT_FOUND(21, "payments.outer_request.status.registry_not_found"),
-    REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED(22, "payments.outer_request.status.request_is_not_processed_trading_day_closed");
+    REQUEST_IS_NOT_PROCESSED_TRADING_DAY_WAS_CLOSED(22, "payments.outer_request.status.request_is_not_processed_trading_day_closed"),
+    INCORRECT_MASTER_INDEX_ADDRESS_INPUT_DATA(23, "payments.outer_request.status.incorrect_master_index_address_input_data"),
+    PARENT_NOT_FOUND(24, "payments.outer_request.status.parent_not_found");
 
     private int code;
     private String textKey;

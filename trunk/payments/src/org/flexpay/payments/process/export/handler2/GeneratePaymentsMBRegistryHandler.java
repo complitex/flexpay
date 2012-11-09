@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
-import org.flexpay.common.process.handler.TaskHandler;
+import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.service.RegistryService;
@@ -15,13 +15,15 @@ import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.service.SignatureService;
 import org.flexpay.payments.service.registry.PaymentsRegistryMBGenerator;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Signature;
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
-public class GeneratePaymentsMBRegistryHandler extends TaskHandler {
+public class GeneratePaymentsMBRegistryHandler extends ProcessInstanceExecuteHandler {
 
 	private FPFileService fpFileService;
 	private PaymentsRegistryMBGenerator paymentsRegistryMBGenerator;
@@ -30,6 +32,7 @@ public class GeneratePaymentsMBRegistryHandler extends TaskHandler {
     private RegistryFPFileTypeService registryFPFileTypeService;
 	private SignatureService signatureService;
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 

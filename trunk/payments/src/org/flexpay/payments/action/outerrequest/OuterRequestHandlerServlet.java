@@ -142,6 +142,9 @@ public class OuterRequestHandlerServlet extends HttpServlet {
             } else if (request instanceof GetServiceListRequest) {
                 log.debug("Processing get service list request: {}", request);
                 outerRequestService.getServiceList((GetServiceListRequest) request);
+            } else if (request instanceof GetAddressMasterIndexRequest) {
+                log.debug("Processing get address master index: {}", request);
+                outerRequestService.getAddressMasterIndex((GetAddressMasterIndexRequest) request);
             } else {
                 log.warn("Can't process request: Unknown request");
                 throw new FlexPayException("Unknown request");
@@ -175,6 +178,7 @@ public class OuterRequestHandlerServlet extends HttpServlet {
         RegistryCommentRequest.configParser(digester);
         GetRegistryListRequest.configParser(digester);
         GetServiceListRequest.configParser(digester);
+        GetAddressMasterIndexRequest.configParser(digester);
 
         digester.addBeanPropertySetter("request/login", "login");
         digester.addBeanPropertySetter("request/signature", "signature");
