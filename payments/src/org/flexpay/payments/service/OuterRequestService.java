@@ -28,4 +28,7 @@ public interface OuterRequestService {
     @NotNull
     GetServiceListResponse getServiceList(GetServiceListRequest request) throws FlexPayException;
 
+    @NotNull
+    GetAddressMasterIndexResponse getAddressMasterIndex(GetAddressMasterIndexRequest request) throws FlexPayException;
+
 }

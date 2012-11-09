@@ -38,6 +38,9 @@ public class OuterRequestClient {
         if ("true".equals(props.getProperty("request.getServiceList"))) {
             executeRequest(new GetServiceListRequest(props), httpClient);
         }
+        if ("true".equals(props.getProperty("request.getAddressMasterIndex"))) {
+            executeRequest(new GetAddressMasterIndexRequest(props), httpClient);
+        }
     }
 
     private static void executeRequest(Request<?> request, HttpClient httpClient) throws Exception {

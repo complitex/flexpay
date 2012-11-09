@@ -2,7 +2,7 @@ package org.flexpay.payments.process.export.handler2;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.handler.TaskHandler;
+import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentCollectorService;
@@ -15,7 +15,7 @@ import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_COLLECTOR_ID;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_POINTS;
 
-public class GetPaymentPointsHandler extends TaskHandler {
+public class GetPaymentPointsHandler extends ProcessInstanceExecuteHandler {
 
 	private PaymentCollectorService paymentCollectorService;
 

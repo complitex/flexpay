@@ -2,7 +2,7 @@ package org.flexpay.payments.process.export.handler2;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.RegistryType;
-import org.flexpay.common.process.handler.TaskHandler;
+import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.DateUtil;
 import org.springframework.beans.factory.annotation.Required;
@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.GENERATED_FILE_NAME;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.ORGANIZATION_ID;
 
-public class GeneratePaymentRegistryFileNameHandler extends TaskHandler {
+public class GeneratePaymentRegistryFileNameHandler extends ProcessInstanceExecuteHandler {
 
 	private RegistryService registryService;
 

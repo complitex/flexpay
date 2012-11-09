@@ -1,7 +1,7 @@
 package org.flexpay.payments.process.export.handler2;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.process.handler.TaskHandler;
+import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
 import org.springframework.beans.factory.annotation.Required;
@@ -13,7 +13,7 @@ import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.CASHBOXES;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_POINT_ID;
 
-public class GetCashboxesHandler extends TaskHandler {
+public class GetCashboxesHandler extends ProcessInstanceExecuteHandler {
 
 	private CashboxService cashboxService;
 

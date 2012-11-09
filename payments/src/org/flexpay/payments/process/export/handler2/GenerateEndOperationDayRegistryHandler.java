@@ -5,9 +5,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.process.handler.TaskHandler;
+import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
 import org.flexpay.common.process.handler2.FTPUploadWorkItemHandler;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.service.OrganizationService;
@@ -15,13 +14,15 @@ import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator;
 import org.flexpay.payments.util.registries.ExportBankPaymentsRegistry;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
-public class GenerateEndOperationDayRegistryHandler extends TaskHandler {
+public class GenerateEndOperationDayRegistryHandler extends ProcessInstanceExecuteHandler {
 
 	public final static String RESULT_NO_REGISTRY_CREATED = "No registry created";
     public final static String RESULT_SEND_REGISTRY_BY_EMAIL = "Send registry by email";
@@ -35,6 +36,7 @@ public class GenerateEndOperationDayRegistryHandler extends TaskHandler {
 	private EndOperationDayRegistryGenerator registryGenerator;
 	private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 

@@ -30,6 +30,7 @@ public abstract class SearchRequest<R extends SearchResponse> extends Request<R>
     public static final int TYPE_COMBINED = 6;
     public static final int TYPE_ERC_KVP_NUMBER = 7;
     public static final int TYPE_ERC_KVP_ADDRESS = 8;
+    public static final int TYPE_ADDRESS_STR = 9;
 
     protected String searchCriteria;
     protected String searchTypeString;
