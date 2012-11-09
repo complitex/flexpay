@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
-import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
+import org.flexpay.common.process.handler.TaskHandler;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.payments.process.export.ExportJobParameterNames;
@@ -20,12 +20,12 @@ import java.util.Map;
 /**
  * Delete file
  */
-public class DeleteFPFileHandler extends ProcessInstanceExecuteHandler {
+public class DeleteFPFileHandler extends TaskHandler {
 
 	private FPFileService fpFileService;
 	private RegistryService registryService;
 
-	@Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 
 		FPFile file = getFile(parameters);

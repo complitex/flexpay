@@ -1,15 +1,16 @@
 package org.flexpay.payments.process.export.handler2;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
+import org.flexpay.common.process.handler.TaskHandler;
 import org.flexpay.payments.process.export.helper.AddProcessIdToPaymentCollectorFacade;
+import org.flexpay.payments.process.export.helper.AddProcessIdToPaymentCollectorFacadeImpl;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.ExportJobParameterNames.PAYMENT_COLLECTOR_ID;
 
-public class AddProcessIdToPaymentCollectorHandler extends ProcessInstanceExecuteHandler {
+public class AddProcessIdToPaymentCollectorHandler extends TaskHandler {
 	private AddProcessIdToPaymentCollectorFacade addProcessIdToPaymentCollectorFacade;
 
 	@Override

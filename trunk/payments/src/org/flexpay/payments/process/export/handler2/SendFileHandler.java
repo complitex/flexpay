@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
+import org.flexpay.common.process.handler.TaskHandler;
 import org.flexpay.common.service.FPFileService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -17,7 +17,7 @@ import java.util.Map;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
-public class SendFileHandler extends ProcessInstanceExecuteHandler {
+public class SendFileHandler extends TaskHandler {
 
 	private String emailPassword;
 	private String emailUserName;

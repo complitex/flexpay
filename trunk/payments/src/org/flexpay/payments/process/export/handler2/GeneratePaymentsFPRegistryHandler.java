@@ -4,12 +4,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
+import org.flexpay.common.process.handler.TaskHandler;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.payments.util.registries.RegistryFPFileFormat;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -18,7 +16,7 @@ import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 /**
  * Job generate payments registry in FP format.
  */
-public class GeneratePaymentsFPRegistryHandler extends ProcessInstanceExecuteHandler {
+public class GeneratePaymentsFPRegistryHandler extends TaskHandler {
 
 	private RegistryService registryService;
 
@@ -33,8 +31,6 @@ public class GeneratePaymentsFPRegistryHandler extends ProcessInstanceExecuteHan
      * @return {@link #RESULT_NEXT} if file generated successfully.<br/>{@link #RESULT_ERROR} if registry did not find in job parameters map or generation had errors.
      * @throws org.flexpay.common.exception.FlexPayException
      */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    @Override
     public String execute(Map<String, Object> parameters) throws FlexPayException {
 
 		Registry registry = getRegistry(parameters);
