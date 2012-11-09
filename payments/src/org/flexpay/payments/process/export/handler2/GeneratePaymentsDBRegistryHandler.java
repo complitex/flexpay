@@ -4,29 +4,26 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
+import org.flexpay.common.process.handler.TaskHandler;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.ExportJobParameterNames.*;
 
-public class GeneratePaymentsDBRegistryHandler extends ProcessInstanceExecuteHandler {
+public class GeneratePaymentsDBRegistryHandler extends TaskHandler {
 
 	// required services
 	private PaymentsRegistryDBGenerator paymentsRegistryDBGenerator;
 	private OrganizationService organizationService;
 	private ServiceProviderService serviceProviderService;
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 

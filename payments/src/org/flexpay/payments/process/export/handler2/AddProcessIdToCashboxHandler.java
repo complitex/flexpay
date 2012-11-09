@@ -3,22 +3,19 @@ package org.flexpay.payments.process.export.handler2;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.handler.ProcessInstanceExecuteHandler;
+import org.flexpay.common.process.handler.TaskHandler;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.ExportJobParameterNames.CASHBOX_ID;
 
-public class AddProcessIdToCashboxHandler extends ProcessInstanceExecuteHandler {
+public class AddProcessIdToCashboxHandler extends TaskHandler {
 
 	private CashboxService cashboxService;
 
-    @Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public String execute(Map<String, Object> parameters) throws FlexPayException {
 
