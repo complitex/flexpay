@@ -26,7 +26,7 @@ public class GetDebtInfoRequest extends SearchRequest<GetDebtInfoResponse> {
                 addFieldToResponse(signature, "serviceProviderAccount", serviceDetails.getServiceProviderAccount());
                 addFieldToResponse(signature, "personFirstName", serviceDetails.getPersonFirstName());
                 addFieldToResponse(signature, "personMiddleName", serviceDetails.getPersonMiddleName());
-                addFieldToResponse(signature, "personLastName", serviceDetails.getPersonLastName());
+                addFieldToResponse(signature, "personLastName", OuterFIOHelper.getOuterLastName(serviceDetails.getPersonLastName()));
                 addFieldToResponse(signature, "townName", serviceDetails.getTownName());
                 addFieldToResponse(signature, "townType", serviceDetails.getTownType());
                 addFieldToResponse(signature, "streetName", serviceDetails.getStreetName());

@@ -26,7 +26,7 @@ public class GetQuittanceDebtInfoRequest extends SearchRequest<GetQuittanceDebtI
                 addFieldToResponse(signature, "creationDate", quittanceInfo.getCreationDate());
                 addFieldToResponse(signature, "personFirstName", quittanceInfo.getPersonFirstName());
                 addFieldToResponse(signature, "personMiddleName", quittanceInfo.getPersonMiddleName());
-                addFieldToResponse(signature, "personLastName", quittanceInfo.getPersonLastName());
+                addFieldToResponse(signature, "personLastName", OuterFIOHelper.getOuterLastName(quittanceInfo.getPersonLastName()));
                 addFieldToResponse(signature, "country", quittanceInfo.getCountry());
                 addFieldToResponse(signature, "region", quittanceInfo.getRegion());
                 addFieldToResponse(signature, "townName", quittanceInfo.getTownName());
@@ -57,7 +57,7 @@ public class GetQuittanceDebtInfoRequest extends SearchRequest<GetQuittanceDebtI
                     addFieldToResponse(signature, "serviceProviderAccount", serviceDetails.getServiceProviderAccount());
                     addFieldToResponse(signature, "personFirstName", serviceDetails.getPersonFirstName());
                     addFieldToResponse(signature, "personMiddleName", serviceDetails.getPersonMiddleName());
-                    addFieldToResponse(signature, "personLastName", serviceDetails.getPersonLastName());
+                    addFieldToResponse(signature, "personLastName", OuterFIOHelper.getOuterLastName(serviceDetails.getPersonLastName()));
                     addFieldToResponse(signature, "country", serviceDetails.getCountry());
                     addFieldToResponse(signature, "region", serviceDetails.getRegion());
                     addFieldToResponse(signature, "townName", serviceDetails.getTownName());
