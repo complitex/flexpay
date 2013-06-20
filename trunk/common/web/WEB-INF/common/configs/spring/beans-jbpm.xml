@@ -223,10 +223,16 @@
 
 	</bean>
 
+    <bean id="taskHandlerExecutor"
+          class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+          scope="singleton"
+          p:corePoolSize="10"/>
+
 	<bean id="taskHandler"
 		  class="org.flexpay.common.process.handler.TaskHandler"
 		  abstract="true"
-		  p:workItemDao-ref="workItemInfoDao" />
+		  p:workItemDao-ref="workItemInfoDao"
+          p:executor-ref="taskHandlerExecutor" />
 
 	<bean id="sendEmailToAdministratorHandler"
 		  name="SendEmailToAdministratorTask"

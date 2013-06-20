@@ -20,8 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Executor;
 
 import static org.flexpay.common.process.ProcessManager.PARAM_SECURITY_CONTEXT;
 
@@ -39,7 +38,7 @@ public abstract class TaskHandler implements WorkItemHandler {
 
     private Set<Boolean> completed = Collections.synchronizedSet(new HashSet<Boolean>());
 
-    private static ExecutorService pool = Executors.newCachedThreadPool();
+    private Executor executor;
 
 	//@Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
 	@Override
@@ -59,7 +58,7 @@ public abstract class TaskHandler implements WorkItemHandler {
 
 		final Authentication auth = runAuthentication;
 
-		pool.execute(new Runnable() {
+		executor.execute(new Runnable() {
             @Override
             public void run() {
                 log.debug("Run execute work item: {} ({})", workItem.getId(), workItem.getName());
@@ -146,4 +145,9 @@ public abstract class TaskHandler implements WorkItemHandler {
 	public void setWorkItemDao(WorkItemDao workItemDao) {
 		this.workItemDao = workItemDao;
 	}
+
+    @Required
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
+    }
 }
