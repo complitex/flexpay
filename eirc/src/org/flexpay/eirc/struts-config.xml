@@ -11,6 +11,7 @@
     <include file="org/flexpay/admin/action/struts.xml" />
     <include file="org/flexpay/orgs/action/struts.xml" />
     <include file="org/flexpay/admin/action/user/parameters/struts.xml" />
+    <include file="org/flexpay/admin/action/workplace/struts.xml" />
     <include file="org/flexpay/payments/action/struts.xml" />
     <include file="org/flexpay/eirc/action/struts.xml" />
     <include file="org/flexpay/eirc/i18n/struts.xml" />

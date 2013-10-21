@@ -23,7 +23,7 @@ add: objectClass
 objectClass: flexpayBaseDn
 -
 add: flexpayVersion
-flexpayVersion: 2011_02_08_1
+flexpayVersion: 2013_10_21_10
 
 # Groups
 # BASIC, groups, opensso.java.net

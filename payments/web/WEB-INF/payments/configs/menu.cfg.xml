@@ -55,6 +55,17 @@
         </property>
     </bean>
 
+    <bean name="admin_workplace" parent="admin"
+          p:name="admin.workplace"
+          p:title="payments.menu2.workplace"
+          p:action="workplaceCashboxesList"
+          p:namespace="/payments"
+          p:parent-ref="admin">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_WORKPLACE" />
+        </property>
+    </bean>
+
     <!-- level 3 -->
     <!-- level 3 search address-->
     <bean name="payments.quittance.search_address.operations" parent="payments.quittance.search_address"

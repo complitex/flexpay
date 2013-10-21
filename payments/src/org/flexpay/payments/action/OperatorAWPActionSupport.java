@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 public abstract class OperatorAWPActionSupport extends FPActionSupport implements CashboxAware {
 
-	protected CashboxService cashboxService;
+    protected Long cashboxId;
+
+    protected CashboxService cashboxService;
 	protected PaymentPointService paymentPointService;
 
 	public String getCashboxInfoString() {
@@ -37,13 +39,13 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 	}
 
 	private Cashbox getCashbox() {
-		Long cashboxId = getCashboxId();
+		Long id = getCashboxId();
 
-		if (cashboxId == null) {
+		if (id == null) {
 			return null;
 		}
 
-		return cashboxService.read(new Stub<Cashbox>(cashboxId));
+		return cashboxService.read(new Stub<Cashbox>(id));
 	}
 
 	protected PaymentPoint getPaymentPoint() {
@@ -63,16 +65,12 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 	@Override
 	public Long getCashboxId() {
 		
-		UserPreferences userPreferences = getUserPreferences();
-		if (userPreferences instanceof PaymentsUserPreferences) {
-			return ((PaymentsUserPreferences)userPreferences).getCashboxId();
-		}
-		return null;
+		return cashboxId;
 	}
 
 	@Override
 	public void setCashboxId(Long cashboxId) {
-		
+		this.cashboxId = cashboxId;
 	}
 
 	@Required
