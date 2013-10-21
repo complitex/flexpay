@@ -258,8 +258,9 @@
 	</target>
 
 	<target name="eirc.ldap.update">
-		<path id="ldap.files.ldif" refid="eirc.ldap.files.ldif" />
-		<antcall target="template.ldap.update"/>
+		<antcall target="template.ldap.update">
+            <reference torefid="ldap.files.ldif" refid="eirc.ldap.files.ldif"/>
+        </antcall>
 	</target>
 
 	<target name="eirc.ldap.init" depends="payments.ldap.init,bti.ldap.init">

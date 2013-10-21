@@ -5,12 +5,15 @@ import org.flexpay.common.action.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
+import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 
 public class SetCashboxIdAction extends FPActionSupport implements ServletResponseAware {
 
@@ -23,11 +26,11 @@ public class SetCashboxIdAction extends FPActionSupport implements ServletRespon
 
 	private CashboxService cashboxService;
 
-	@NotNull
+    @NotNull
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (validateCashboxId()) {
+		if (isAuthenticationGranted(Roles.ROLE_MENU_PAYMENTS_WORKPLACE) && validateCashboxId()) {
 			Cookie cookie = new Cookie(CASHBOX_ID, cashboxId);
 			cookie.setMaxAge(SIX_YEARS_IN_SECONDS);
 			response.addCookie(cookie);

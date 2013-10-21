@@ -247,8 +247,9 @@
 	</target>
 
 	<target name="payments.ldap.update">
-		<path id="ldap.files.ldif" refid="payments.ldap.files.ldif" />
-		<antcall target="template.ldap.update"/>
+		<antcall target="template.ldap.update">
+            <reference torefid="ldap.files.ldif" refid="payments.ldap.files.ldif"/>
+		</antcall>
 	</target>
 
 	<target name="payments.ldap.init" depends="ab.ldap.init,orgs.ldap.init,admin.ldap.init">

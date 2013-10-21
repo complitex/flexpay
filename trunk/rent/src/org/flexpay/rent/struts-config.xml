@@ -9,6 +9,7 @@
     <include file="org/flexpay/ab/action/struts.xml" />
     <include file="org/flexpay/admin/action/struts.xml" />
     <include file="org/flexpay/admin/action/user/parameters/struts.xml" />
+    <include file="org/flexpay/admin/action/workplace/struts.xml" />
     <include file="org/flexpay/orgs/action/struts.xml" />
     <include file="org/flexpay/payments/action/struts.xml" />
     <include file="org/flexpay/rent/action/struts.xml" />

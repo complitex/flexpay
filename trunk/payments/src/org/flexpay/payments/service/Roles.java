@@ -58,6 +58,8 @@ public abstract class Roles {
     public static final String ROLE_MENU_PAYMENTS_ACC_OPERATIONS = MENU_PAYMENTS_PREFIX + "_ACC_OPERATIONS";
     public static final String ROLE_MENU_PAYMENTS_MONITOR = MENU_PAYMENTS_PREFIX + "_MONITOR";
 
+    public static final String ROLE_MENU_PAYMENTS_WORKPLACE = MENU_PAYMENTS_PREFIX + "_WORKPLACE";
+
     // level 3
     public static final String ROLE_MENU_PAYMENTS_ACC_OPERATIONS_2 = MENU_PAYMENTS_PREFIX + "_ACC_OPERATIONS_2";
     public static final String ROLE_MENU_PAYMENTS_OPERATIONS = MENU_PAYMENTS_PREFIX + "_OPERATIONS";

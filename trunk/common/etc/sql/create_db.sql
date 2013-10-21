@@ -13,4 +13,4 @@ CREATE TABLE common_version_tbl (
 	date_version int NOT NULL
 );
 
-INSERT INTO common_version_tbl (last_modified_date, date_version) VALUES ('2011-07-04', 0);
+INSERT INTO common_version_tbl (last_modified_date, date_version) VALUES ('2013-10-18', 0);

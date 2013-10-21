@@ -124,10 +124,6 @@
             <td class="col"><s:text name="admin.payment.parameters.payment_point_id" />:</td>
             <td class="col" id="ppFilterBody"></td>
         </tr>
-        <tr id="cFilter" class="cols_1" style="display:none;">
-            <td class="col"><s:text name="admin.payment.parameters.cashbox_id" />:</td>
-            <td class="col" id="cFilterBody"></td>
-        </tr>
         <tr class="cols_1">
             <td colspan="2">
                 <input type="submit" name="submitted" class="btn-exit" value="<s:text name="common.save" />" />
