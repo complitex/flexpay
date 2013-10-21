@@ -1,0 +1,13 @@
+# MENU_PAYMENTS_WORKPLACE, groups, opensso.java.net
+dn: cn=MENU_PAYMENTS_WORKPLACE,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+objectClass: flexpayGroup
+flexpayGroupRole: localAdmin
+cn: MENU_PAYMENTS_WORKPLACE
+
+dn: dc=opensso,dc=java,dc=net
+changetype: modify
+replace: flexpayVersion
+flexpayVersion: 2013_10_18_0
