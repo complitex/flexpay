@@ -1,0 +1,68 @@
+# BASIC, groups, opensso.java.net
+dn: cn=BASIC,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_ORGANIZATION_READ, groups, opensso.java.net
+dn: cn=ORGS_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_BANK_READ, groups, opensso.java.net
+dn: cn=ORGS_BANK_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_SERVICE_ORGANIZATION_READ, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_SERVICE_PROVIDER_READ, groups, opensso.java.net
+dn: cn=ORGS_SERVICE_PROVIDER_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_PAYMENT_COLLECTOR_READ, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_PAYMENT_POINT_READ, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_POINT_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# ORGS_CASHBOX_READ, groups, opensso.java.net
+dn: cn=ORGS_CASHBOX_READ,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+########################################################################################################################
+#------------------------------------------- MENU ROLES ---------------------------------------------------------------#
+########################################################################################################################
+
+# MENU_ADMIN, groups, opensso.java.net
+dn: cn=MENU_ADMIN,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+# MENU_ADMIN_USERS, groups, opensso.java.net
+dn: cn=MENU_ADMIN_USERS,ou=groups,dc=opensso,dc=java,dc=net
+changetype: modify
+add: flexpayGroupRole
+flexpayGroupRole: localAdmin
+
+dn: dc=opensso,dc=java,dc=net
+changetype: modify
+replace: flexpayVersion
+flexpayVersion: 2013_10_21_0
