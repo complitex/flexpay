@@ -17,8 +17,8 @@ import static org.flexpay.common.util.SecurityUtil.isAuthenticationGranted;
 
 public class SetCashboxIdAction extends FPActionSupport implements ServletResponseAware {
 
-	private static final String CASHBOX_ID = "cashboxId";
-	private static final int SIX_YEARS_IN_SECONDS = 6 * 31536000;
+	public static final String CASHBOX_ID = "cashboxId";
+	public static final int SIX_MOUNTH_IN_SECONDS = 15768000;
 
 	private String cashboxId;
 
@@ -32,7 +32,7 @@ public class SetCashboxIdAction extends FPActionSupport implements ServletRespon
 
 		if (isAuthenticationGranted(Roles.ROLE_MENU_PAYMENTS_WORKPLACE) && validateCashboxId()) {
 			Cookie cookie = new Cookie(CASHBOX_ID, cashboxId);
-			cookie.setMaxAge(SIX_YEARS_IN_SECONDS);
+			cookie.setMaxAge(SIX_MOUNTH_IN_SECONDS);
 			response.addCookie(cookie);
 			addActionMessage(getText("payments.get_identity_cookie.cookies_successfully_set"));
 		}
