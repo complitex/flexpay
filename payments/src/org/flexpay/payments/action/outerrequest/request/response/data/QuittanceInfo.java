@@ -28,6 +28,7 @@ public class QuittanceInfo implements Serializable {
     private String buildingNumber;
     private String buildingBulk;
     private String apartmentNumber;
+    private String roomNumber;
     private BigDecimal totalPayed;
     private BigDecimal totalToPay;
 
@@ -250,6 +251,14 @@ public class QuittanceInfo implements Serializable {
 
     public void setApartmentNumber(String apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public List<ServiceDetails> getServiceDetailses() {
