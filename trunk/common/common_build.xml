@@ -29,6 +29,8 @@
         <path refid="opensso.lib" />
 		<path refid="httpclient.lib" />
 		<path refid="ldap.lib" />
+		<path refid="joda.lib" />
+		<path refid="jackson.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />

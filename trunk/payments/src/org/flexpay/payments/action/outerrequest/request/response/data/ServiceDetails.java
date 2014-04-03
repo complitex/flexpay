@@ -13,6 +13,7 @@ import static org.flexpay.common.util.CollectionUtils.list;
 public class ServiceDetails implements Serializable {
 
     private Long serviceId;
+    private String serviceCode;
     private String serviceName;
     private BigDecimal incomingBalance;
     private BigDecimal outgoingBalance;
@@ -68,6 +69,14 @@ public class ServiceDetails implements Serializable {
 
     public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
     }
 
     public String getServiceName() {
@@ -291,6 +300,11 @@ public class ServiceDetails implements Serializable {
             attributes = list();
         }
         attributes.add(serviceAttribute);
+    }
+
+    public void addServiceAttribute(String name, String value) {
+        ServiceAttribute serviceAttribute = new ServiceAttribute(name, value);
+        addServiceAttribute(serviceAttribute);
     }
 
     @Override

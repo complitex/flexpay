@@ -2,7 +2,9 @@ package org.flexpay.payments.action.outerrequest.request;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
+import org.flexpay.payments.util.RequestSerializer;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -10,6 +12,7 @@ import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;
 
+@JsonSerialize(using = RequestSerializer.class)
 public abstract class SearchRequest<R extends SearchResponse> extends Request<R> implements Serializable {
 
     /**

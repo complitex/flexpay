@@ -180,8 +180,20 @@
 	</path>
 
 	<path id="httpclient.lib">
-		<fileset dir="${common.dir}/lib">
-			<include name="httpclient/*.jar" />
+		<fileset dir="${common.dir}/lib/httpclient">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="joda.lib">
+		<fileset dir="${common.dir}/lib/joda">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="jackson.lib">
+		<fileset dir="${common.dir}/lib/jackson">
+			<include name="*.jar" />
 		</fileset>
 	</path>
 
@@ -313,6 +325,8 @@
 			<lib dir="${common.dir}/lib/opensso" />
 			<lib dir="${common.dir}/lib/ldap" />
 			<lib dir="${common.dir}/lib/httpclient" />
+			<lib dir="${common.dir}/lib/joda" />
+			<lib dir="${common.dir}/lib/jackson" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>

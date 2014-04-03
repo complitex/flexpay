@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="httpClient" class="org.springframework.http.client.CommonsClientHttpRequestFactory"/>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="httpClient"/>
+    </bean>
+
+    <bean id="restQuittanceDetailsFinder" class="org.flexpay.payments.service.impl.RestQuittanceDetailsFinder"
+            p:template-ref="restTemplate"
+            p:userName="${app.config.common.rest.user_name}"
+            p:password="${app.config.common.rest.user_password}"
+            p:uri="${app.config.common.rest.uri}"
+            init-method="init"/>
+
+</beans>
