@@ -12,9 +12,7 @@
 
     <bean id="restQuittanceDetailsFinder" class="org.flexpay.payments.service.impl.RestQuittanceDetailsFinder"
             p:template-ref="restTemplate"
-            p:userName="${app.config.common.rest.user_name}"
-            p:password="${app.config.common.rest.user_password}"
-            p:uri="${app.config.common.rest.uri}"
-            init-method="init"/>
+            p:key="${app.config.common.rest.module_key}"
+            p:uri="${app.config.common.rest.uri}"/>
 
 </beans>
