@@ -61,7 +61,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 	 */
 	@NotNull
     @Override
-	public SearchResponse findQuittance(SearchRequest<?> request) {
+	public <E extends SearchResponse, T extends SearchRequest<E>> E findQuittance(T request) {
 
 		Security.authenticateQuittanceFinder();
 

@@ -4,8 +4,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.action.outerrequest.request.SearchRequest;
-import org.flexpay.payments.action.outerrequest.request.response.GetDebtInfoResponse;
-import org.flexpay.payments.action.outerrequest.request.response.GetQuittanceDebtInfoResponse;
 import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +22,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author Pavel Sknar
@@ -38,16 +37,19 @@ public class RestQuittanceDetailsFinder implements QuittanceDetailsFinder {
     private static final Logger logger = LoggerFactory.getLogger(RestQuittanceDetailsFinder.class);
 
     private RestTemplate template;
-    private String uri;
     private byte[] key;
 
+    private Map<Class<? extends SearchRequest<? extends SearchResponse>>, Map<Class<? extends SearchResponse>, String>> requestSchemas;
+
+    /*
     public GetDebtInfoResponse findDebInfo(SearchRequest<GetDebtInfoResponse> searchRequest) {
         return template.getForObject(uri, GetDebtInfoResponse.class, searchRequest);
-    }
+    }*/
 
+    @SuppressWarnings("unchecked")
     @NotNull
     @Override
-    public SearchResponse findQuittance(SearchRequest<?> searchRequest) {
+    public <E extends SearchResponse, T extends SearchRequest<E>> E findQuittance(@NotNull T searchRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
@@ -71,10 +73,24 @@ public class RestQuittanceDetailsFinder implements QuittanceDetailsFinder {
 
 
         HttpEntity<?> entity = new HttpEntity<Object>(headers);
-        ResponseEntity<GetQuittanceDebtInfoResponse> responseEntity = template.exchange(uri, HttpMethod.GET, entity, GetQuittanceDebtInfoResponse.class,
-                searchRequest.getSearchType(), searchRequest.getSearchCriteria());
 
-        return responseEntity.getBody();
+        ResponseEntity<? extends SearchResponse> responseEntity = null;
+
+        Map<Class<? extends SearchResponse>, String> requestSchema = requestSchemas.get(searchRequest.getClass());
+        if (requestSchema == null) {
+            throw new RuntimeException("Request type unsupported");
+        }
+        for (Map.Entry<Class<? extends SearchResponse>, String> entry : requestSchema.entrySet()) {
+
+            responseEntity = template.exchange(entry.getValue(), HttpMethod.GET, entity, entry.getKey(),
+                    searchRequest.getSearchType(), searchRequest.getSearchCriteria());
+        }
+
+        if (responseEntity == null) {
+            throw new RuntimeException("Unknown response");
+        }
+
+        return (E) responseEntity.getBody();
         //return template.getForObject(uri, GetQuittanceDebtInfoResponse.class, searchRequest.getSearchType(), searchRequest.getSearchCriteria());
     }
 
@@ -107,12 +123,12 @@ public class RestQuittanceDetailsFinder implements QuittanceDetailsFinder {
     }
 
     @Required
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setKey(String key) {
+        this.key = Base64.decodeBase64(key.getBytes(Charset.forName("UTF-8")));
     }
 
     @Required
-    public void setKey(String key) {
-        this.key = Base64.decodeBase64(key.getBytes(Charset.forName("UTF-8")));
+    public void setRequestSchemas(Map<Class<? extends SearchRequest<? extends SearchResponse>>, Map<Class<? extends SearchResponse>, String>> requestSchemas) {
+        this.requestSchemas = requestSchemas;
     }
 }

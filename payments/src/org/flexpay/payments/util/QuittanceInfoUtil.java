@@ -129,9 +129,9 @@ public abstract class QuittanceInfoUtil {
             }
 
             //service`s details
-            JsonNode debInfo = node.findValue("serviceDetails");
-            if (debInfo != null && debInfo.size() > 0) {
-                info.setServiceDetailses(ServiceDetailsUtil.getServiceDetailes(debInfo.getElements()));
+            JsonNode debtInfo = node.findValue("serviceDetails");
+            if (debtInfo != null && debtInfo.size() > 0) {
+                info.setServiceDetailses(ServiceDetailsUtil.getServiceDetailes(debtInfo.getElements()));
             }
 
             quittanceInfos.add(info);

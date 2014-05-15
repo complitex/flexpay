@@ -12,7 +12,21 @@
 
     <bean id="restQuittanceDetailsFinder" class="org.flexpay.payments.service.impl.RestQuittanceDetailsFinder"
             p:template-ref="restTemplate"
-            p:key="${app.config.common.rest.module_key}"
-            p:uri="${app.config.common.rest.uri}"/>
+            p:key="${app.config.common.rest.module_key}">
+        <property name="requestSchemas">
+            <map>
+                <entry key="org.flexpay.payments.action.outerrequest.request.GetQuittanceDebtInfoRequest">
+                    <map>
+                        <entry key="org.flexpay.payments.action.outerrequest.request.response.GetQuittanceDebtInfoResponse" value="${app.config.common.quittance.rest.uri}"/>
+                    </map>
+                </entry>
+                <entry key="org.flexpay.payments.action.outerrequest.request.GetDebtInfoRequest">
+                    <map>
+                        <entry key="org.flexpay.payments.action.outerrequest.request.response.GetDebtInfoResponse" value="${app.config.common.debt.rest.uri}"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
 </beans>

@@ -28,9 +28,10 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	 * @param request Request for quittance details
 	 * @return Details response
 	 */
-	@NotNull
+	@SuppressWarnings("unchecked")
+    @NotNull
 	@Override
-	public SearchResponse findQuittance(final SearchRequest<?> request) {
+	public <E extends SearchResponse, T extends SearchRequest<E>> E findQuittance(final T request) {
 
         log.debug("FindQuittance started. Sending JMS message");
 		request.setJmsRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
@@ -53,7 +54,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
             return request.getResponse();
 		}
 
-		return response;
+        return (E) response;
 	}
 
 	@Required

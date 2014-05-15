@@ -13,5 +13,5 @@ public interface QuittanceDetailsFinder {
 	 * @return Details response
 	 */
 	@NotNull
-    SearchResponse findQuittance(SearchRequest<?> request);
+    <E extends SearchResponse, T extends SearchRequest<E>> E findQuittance(T request);
 }

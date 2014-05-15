@@ -19,6 +19,7 @@
         <datasource-map>
           <unit-entry name="flexpay" />
         </datasource-map>
+        <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../mule/web/WEB-INF/hibernate.cfg.xml" />
       </configuration>
     </facet>
@@ -38,12 +39,12 @@
     <orderEntry type="library" name="j2ee" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="logging" level="project" />
-    <orderEntry type="library" name="Mule" level="project" />
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="spring3" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
     <orderEntry type="library" name="ldap" level="project" />
+    <orderEntry type="library" name="joda" level="project" />
   </component>
 </module>
 
