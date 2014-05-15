@@ -10,15 +10,15 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.action.OperatorAWPActionSupport;
+import org.flexpay.payments.action.outerrequest.request.GetDebtInfoRequest;
 import org.flexpay.payments.action.outerrequest.request.GetQuittanceDebtInfoRequest;
 import org.flexpay.payments.action.outerrequest.request.SearchRequest;
-import org.flexpay.payments.action.outerrequest.request.response.GetQuittanceDebtInfoResponse;
-import org.flexpay.payments.action.outerrequest.request.response.SearchResponse;
-import org.flexpay.payments.action.outerrequest.request.response.Status;
+import org.flexpay.payments.action.outerrequest.request.response.*;
 import org.flexpay.payments.action.outerrequest.request.response.data.ConsumerAttributes;
 import org.flexpay.payments.action.outerrequest.request.response.data.QuittanceInfo;
 import org.flexpay.payments.action.outerrequest.request.response.data.ServiceDetails;
@@ -66,13 +66,25 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
     @Override
 	protected String doExecute() throws Exception {
 
-		GetQuittanceDebtInfoRequest request = buildQuittanceRequest();
+		SearchRequest<? extends Response> request = buildQuittanceRequest();
 		SearchResponse searchResponse = quittanceDetailsFinder.findQuittance(request);
 
 		if (searchResponse.isSuccess()) {
-            GetQuittanceDebtInfoResponse response = (GetQuittanceDebtInfoResponse) searchResponse;
-			quittanceInfos = response.getInfos();
-			filterSubservices();
+            if (searchResponse instanceof GetQuittanceDebtInfoResponse) {
+                GetQuittanceDebtInfoResponse response = (GetQuittanceDebtInfoResponse) searchResponse;
+                quittanceInfos = response.getInfos();
+            } else if (searchResponse instanceof GetDebtInfoResponse) {
+                GetDebtInfoResponse response = (GetDebtInfoResponse) searchResponse;
+                QuittanceInfo quittanceInfo = new QuittanceInfo();
+                quittanceInfo.setServiceDetailses(response.getServiceDetailses());
+                BigDecimal totalToPay = BigDecimal.ZERO;
+                for (ServiceDetails serviceDetails : response.getServiceDetailses()) {
+                    totalToPay = totalToPay.add(serviceDetails.getAmount());
+                }
+                quittanceInfo.setTotalToPay(totalToPay);
+                quittanceInfos = CollectionUtils.list(quittanceInfo);
+            }
+            filterSubservices();
 			filterNegativeSums();
 
 			Long cashboxId = getCashboxId();
@@ -106,7 +118,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		return SUCCESS;
 	}
 
-    private OperationActionLog createActionLog(GetQuittanceDebtInfoRequest request, Cashbox cashbox) throws Exception {
+    private OperationActionLog createActionLog(SearchRequest<? extends SearchResponse> request, Cashbox cashbox) throws Exception {
         OperationActionLog actionLog = new OperationActionLog();
 
         actionLog.setCashbox(cashbox);
@@ -129,50 +141,58 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
         return actionLog;
     }
 
-	private GetQuittanceDebtInfoRequest buildQuittanceRequest() throws FlexPayException {
+	private SearchRequest<? extends Response> buildQuittanceRequest() throws FlexPayException {
 
-        GetQuittanceDebtInfoRequest request = new GetQuittanceDebtInfoRequest();
+        SearchRequest<? extends Response> request;
+
+        switch (searchType) {
+            case SEARCH_TYPE_EIRC_ACCOUNT:
+                request = new GetQuittanceDebtInfoRequest();
+                request.setSearchCriteria(searchCriteria);
+                request.setSearchType(SearchRequest.TYPE_ACCOUNT_NUMBER);
+                break;
+            case SEARCH_TYPE_QUITTANCE_NUMBER:
+                request = new GetQuittanceDebtInfoRequest();
+                request.setSearchCriteria(searchCriteria);
+                request.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
+                break;
+            case SEARCH_TYPE_ADDRESS:
+                request = new GetDebtInfoRequest();
+                Apartment apartment = null;
+                try {
+                    apartment = apartmentService.readFull(
+                            new Stub<Apartment>(Long.parseLong(searchCriteria)));
+                } catch (Exception ex) {
+                    log.error("Exception in time apartment reading", ex);
+                }
+                if (apartment == null && apartmentNumber != null) {
+                    Long addressId;
+                    try {
+                        addressId = Long.parseLong(parentSearchCriteria);
+                    } catch (Exception e) {
+                        log.warn("Incorrect building address id in filter ({})", parentSearchCriteria);
+                        throw new FlexPayException("Incorrect building address id", "ab.error.building_address.incorrect_address_id");
+                    }
+                    apartment = apartmentService.findByParent(new Stub<BuildingAddress>(addressId), apartmentNumber);
+                }
+                if (apartment == null || apartment.getId() == null) {
+                    throw new FlexPayException("Apartment did not find by seartch criteria", "payments.quittance.payment.appartment_did_not_find");
+                }
+                searchCriteria = apartment.getId().toString();
+                String indx = masterIndexService.getMasterIndex(apartment);
+                if (indx == null) {
+                    throw new FlexPayException("No master index for apartment #" + searchCriteria);
+                }
+                //searchCriteria = indx;
+                request.setSearchCriteria(indx);
+                request.setSearchType(SearchRequest.TYPE_APARTMENT_NUMBER);
+                break;
+            default:
+                throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
+                        + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
+        }
 
         request.setLocale(getUserPreferences().getLocale());
-
-		if (SEARCH_TYPE_EIRC_ACCOUNT.equals(searchType)) {
-            request.setSearchCriteria(searchCriteria);
-            request.setSearchType(SearchRequest.TYPE_ACCOUNT_NUMBER);
-		} else if (SEARCH_TYPE_QUITTANCE_NUMBER.equals(searchType)) {
-            request.setSearchCriteria(searchCriteria);
-            request.setSearchType(SearchRequest.TYPE_QUITTANCE_NUMBER);
-		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
-            Apartment apartment = null;
-            try {
-                apartment = apartmentService.readFull(
-                        new Stub<Apartment>(Long.parseLong(searchCriteria)));
-            } catch (Exception ex) {
-                log.error("Exception in time apartment reading", ex);
-            }
-            if (apartment == null && apartmentNumber != null) {
-                Long addressId;
-                try {
-                    addressId = Long.parseLong(parentSearchCriteria);
-                } catch (Exception e) {
-                    log.warn("Incorrect building address id in filter ({})", parentSearchCriteria);
-                    throw new FlexPayException("Incorrect building address id", "ab.error.building_address.incorrect_address_id");
-                }
-                apartment = apartmentService.findByParent(new Stub<BuildingAddress>(addressId), apartmentNumber);
-            }
-            if (apartment == null) {
-                throw new FlexPayException("Apartment did not find by seartch criteria", "payments.quittance.payment.appartment_did_not_find");
-            }
-            searchCriteria = apartment.getId().toString();
-			String indx = masterIndexService.getMasterIndex(apartment);
-			if (indx == null) {
-				throw new FlexPayException("No master index for apartment #" + searchCriteria);
-			}
-            request.setSearchCriteria(searchCriteria);
-            request.setSearchType(SearchRequest.TYPE_APARTMENT_NUMBER);
-		} else {
-			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
-									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
-		}
 
         return request;
 	}

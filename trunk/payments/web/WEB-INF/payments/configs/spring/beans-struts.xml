@@ -55,7 +55,7 @@
           parent="operatorAWPAction"
           class="org.flexpay.payments.action.quittance.SearchQuittanceAction"
           p:operationActionLogService-ref="operationActionLogService"
-          p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
+          p:quittanceDetailsFinder-ref="restQuittanceDetailsFinder"
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
           p:addressService-ref="addressService"

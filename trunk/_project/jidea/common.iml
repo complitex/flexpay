@@ -22,6 +22,7 @@
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts-config.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/action/struts.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/i18n/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts-default.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>
@@ -34,6 +35,7 @@
           <unit-entry name="flexpaySessionFactory" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
           <unit-entry name="web:WEB-INF:jbpm.hibernate.cfg.xml" />
         </datasource-map>
+        <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../common/web/WEB-INF/hibernate.cfg.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../common/web/WEB-INF/jbpm.hibernate.cfg.xml" />
@@ -71,6 +73,22 @@
         </fileset>
       </configuration>
     </facet>
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="" />
+        <datasource-mapping>
+          <factory-entry name="entityManagerFactory" value="muleDataSource1" />
+          <factory-entry name="muleEntityManagerFactory1" value="muleDataSource1" />
+          <factory-entry name="muleEntityManagerFactory2" value="muleDataSource2" />
+          <factory-entry name="org.drools.grid" value="dc2a1ae9-0776-4786-ab14-5992015f6477" />
+          <factory-entry name="org.flexpay" />
+          <factory-entry name="org.jbpm.persistence.jpa" value="dataSource" />
+          <factory-entry name="org.jbpm.task" value="dataSource" />
+        </datasource-mapping>
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../common/web/META-INF/persistence.xml" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../_build/classes" />
@@ -81,7 +99,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../common/tests/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../common/lib" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="hibernate3" level="project" />
     <orderEntry type="library" name="spring3" level="project" />
@@ -113,6 +131,7 @@
     <orderEntry type="library" name="ldap" level="project" />
     <orderEntry type="library" name="Ant Libs" level="project" />
     <orderEntry type="library" name="HttpClient" level="project" />
+    <orderEntry type="library" name="joda" level="project" />
   </component>
 </module>
 

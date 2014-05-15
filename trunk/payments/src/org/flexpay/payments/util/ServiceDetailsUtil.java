@@ -12,16 +12,20 @@ import java.util.List;
  * @author Pavel Sknar
  */
 public abstract class ServiceDetailsUtil {
-    public static List<ServiceDetails> getServiceDetailes(Iterator<JsonNode> debInfo) {
+    public static List<ServiceDetails> getServiceDetailes(Iterator<JsonNode> debtInfo) {
         List<ServiceDetails> listServiceDetailses = CollectionUtils.list();
-        while (debInfo.hasNext()) {
-            JsonNode node = debInfo.next();
+        while (debtInfo.hasNext()) {
+            JsonNode node = debtInfo.next();
             ServiceDetails serviceDetails = new ServiceDetails();
 
             //service provider account
             final JsonNode serviceCode = node.get("serviceCode");
             if (serviceCode != null) {
                 serviceDetails.setServiceCode(serviceCode.getTextValue());
+            }
+            final JsonNode serviceMasterIndex = node.get("serviceMasterIndex");
+            if (serviceMasterIndex != null) {
+                serviceDetails.setServiceMasterIndex(serviceMasterIndex.getTextValue());
             }
             final JsonNode serviceProviderAccount = node.get("serviceProviderAccount");
             if (serviceProviderAccount != null) {

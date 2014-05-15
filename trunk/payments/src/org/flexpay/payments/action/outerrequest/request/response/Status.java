@@ -47,4 +47,13 @@ public enum Status {
                 append("textKey", getTextKey()).
                 toString();
     }
+
+    public static Status getStaus(int code) {
+        for (Status status : Status.values()) {
+            if (status.code == code) {
+                return status;
+            }
+        }
+        return null;
+    }
 }

@@ -7,6 +7,7 @@
           <unit-entry name="flexpay" value="3129d828-31e2-4db7-9ae0-986bd00fc591" />
           <unit-entry name="flexpaySessionFactory" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
         </datasource-map>
+        <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../orgs/web/WEB-INF/hibernate.cfg.xml" />
       </configuration>
     </facet>
@@ -82,7 +83,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../orgs/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../orgs/tests/java" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="Commons" level="project" />
@@ -95,6 +96,7 @@
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
+    <orderEntry type="library" name="joda" level="project" />
   </component>
 </module>
 

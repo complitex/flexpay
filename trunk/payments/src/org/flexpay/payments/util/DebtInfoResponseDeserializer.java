@@ -7,6 +7,7 @@ import org.codehaus.jackson.ObjectCodec;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.flexpay.payments.action.outerrequest.request.response.GetDebtInfoResponse;
+import org.flexpay.payments.action.outerrequest.request.response.Status;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -20,10 +21,13 @@ public class DebtInfoResponseDeserializer extends JsonDeserializer<GetDebtInfoRe
     public GetDebtInfoResponse deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         ObjectCodec oc = jsonParser.getCodec();
         JsonNode jsonNode = oc.readTree(jsonParser);
-        Iterator<JsonNode> debInfo = jsonNode.getElements();
+
         GetDebtInfoResponse response = new GetDebtInfoResponse();
-        if (debInfo != null && debInfo.hasNext()) {
-            response.setServiceDetailses(ServiceDetailsUtil.getServiceDetailes(debInfo));
+        JsonNode statusCode = jsonNode.findValue("statusCode");
+        response.setStatus(Status.getStaus(statusCode.asInt()));
+        List<JsonNode> debInfo = jsonNode.findValues("serviceDetails");
+        if (debInfo != null && debInfo.size() > 0 && debInfo.get(0).getElements().hasNext()) {
+            response.setServiceDetailses(ServiceDetailsUtil.getServiceDetailes(debInfo.get(0).getElements()));
         }
         return response;
     }

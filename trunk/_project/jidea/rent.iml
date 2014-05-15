@@ -84,6 +84,7 @@
           <unit-entry name="flexpay" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
           <unit-entry name="flexpaySessionFactory" value="19305da5-fe18-4aba-9abc-364e01dceb13" />
         </datasource-map>
+        <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../rent/web/WEB-INF/hibernate.cfg.xml" />
       </configuration>
     </facet>
@@ -132,7 +133,7 @@
             <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/action/struts.xml</file>
             <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/admin/action/user/parameters/struts.xml</file>
             <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/action/tradingday/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/action/workplace/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/admin/action/workplace/struts.xml</file>
             <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/action/filter/struts.xml</file>
             <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/i18n/struts.xml</file>
             <file>file://$MODULE_DIR$/../../rent/src/org/flexpay/rent/i18n/struts.xml</file>
@@ -156,7 +157,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../rent/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../rent/tests/java" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="module" module-name="payments" />
@@ -175,6 +176,7 @@
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="ldap" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
+    <orderEntry type="library" name="joda" level="project" />
   </component>
 </module>
 
